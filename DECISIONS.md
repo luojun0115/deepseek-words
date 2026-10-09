@@ -304,15 +304,25 @@ build 后页面出现 `<h2 id="反向测试">`、「未写」32→31、轻提示
 **pre-push 钩子已装且与源码一致**、**papers.json/master.json 与仓内词汇页重推一致**（`gen-data.py --check`）、
 **papers.md 与仓内文稿一致**（`refresh-papers.mjs --check`）、**notes/ 与 papers.json 篇目一一对应**
 （`gen-notes.mjs --check`）、**三个内容脚本的默认输入全在仓内**。
-其中「副本指纹」与「钩子一致」两项要仓库外的东西（源页 / `.git`），CI 里记为「跳过」（退出码仍为 0）；
+其中两项在 CI 记为「跳过」（退出码仍为 0），但**跳过理由不是一个**：「副本指纹」那一项要的是仓外源页目录，
+CI 确实没有；「钩子一致」那一项**不能拿「有没有 `.git`」当判据**——`actions/checkout` 会建 `.git`，
+CI 里它存得下、只是没人跑 `npm run hooks`，于是旧写法在 CI 直接判失败（首跑就栽在这儿）。
+现在它按环境变量跳（`GITHUB_ACTIONS=true` 或 `CI=true`），跳过时把是哪个变量打进理由里；
+本地（无这两个变量）照旧硬判——拿一个没装钩子的干净 clone 跑一遍仍是 `✗ exit 1`，确认没把门禁改成哑炮。
 其余 12 项在 CI 照跑。
 
-### D4. GitHub Pages 部署（2026-10-09 已接好，待 push）
+### D4. GitHub Pages 部署（2026-10-09 已 push · 首跑挂了 · 已修因，等重跑）
 
-站点 `https://luojun0115.github.io/deepseek-words/`，remote `origin → https://github.com/luojun0115/deepseek-words.git`
-（ls-remote 验证：零 ref，即空仓库）。**已配成自动部署**：`on: push → main`（外加 `workflow_dispatch` 可手动重跑），
+站点 `https://luojun0115.github.io/deepseek-words/`，remote `origin → https://github.com/luojun0115/deepseek-words.git`。
+**已配成自动部署**：`on: push → main`（外加 `workflow_dispatch` 可手动重跑），
 以后只要有改动 push 到 main，Action 就自动 对账 → 构建 → 发布，不用任何人再到网页上操作。
-本地 main 一条 commit（首次递交），未 push；推上去就是公开发布，要等用户口令：`git push -u origin main`。
+
+**首跑实况（REST 匿名读到，无需 gh CLI）**：仓已推上去（`git ls-remote` 实测 `refs/heads/main` 与本地 HEAD 同为
+`7d66c77`）；Actions run #1 `completed / failure`，挂在第四步 `Verify content consistency`（后面的装依赖/构建/发布全 skipped），
+所以线上 `https://…/deepseek-words/` 与 `/vocab.html` 都是 404。挂的原因就是上面第 7 项在 CI 里误判（不是 Node 20 那条告警——
+告警只是告警，Checkout 与 Setup Node 两步皆 success）。修完必须重新 push（或网页上 Re-run）才能上线。
+另：Settings → Pages → Source 是否已改成 GitHub Actions 仍没法匿名确认（`/pages` 端点返 404，可能是没启用也可能是要登录），
+推完看 Actions 绿的但站点仍 404，先查这一项。
 
 **需你在仓库页面上点一次（仅一次）**：Settings → Pages → Build and deployment → Source 选 **GitHub Actions**
 （本机没 gh CLI，这步只能网页上点；选错成 Branch 会拿仓库源码当站点发，页面全白）。
@@ -321,7 +331,8 @@ build 后页面出现 `<h2 id="反向测试">`、「未写」32→31、轻提示
 
 | 件 | 内容 |
 |---|---|
-| `.github/workflows/deploy.yml` | Checkout → Setup Node 22 → **`npm run verify`（排在装依赖之前，不对就立即失败）**→ `npm ci` → `npm run build` → upload `.vitepress/dist` → `deploy-pages` |
+| `.github/workflows/deploy.yml` | Checkout → Setup Node 22 → **`npm run verify`（排在装依赖之前，不对就立即失败）**→ `npm ci` → `npm run build` → upload `.vitepress/dist` → `deploy-pages`。action 版本见下条 |
+| action 版本（2026-10-09 迁 Node 24） | GitHub runner 上的 Node 20 已于 2026-09-23 移除（2026-06-16 起 Node 24 就是 JS action 默认运行时，源：github.blog/changelog/2025-09-19 及其 2026-08-25 编者注），旧 `@v4` 那批不会报错，只是被 runner 强行搬到 node24 上跑并刷一条告警。**降级会重新引出告警，别改回去**。拉各自 tag 的 `action.yml` 实测：仓里原来的**五个**引用全都声明着 `using: node20`（不只是告警里点名的 checkout / setup-node 两个，也不是只升两个就能干净），所以一次全升到 `checkout@v7` `setup-node@v7` `configure-pages@v6` `upload-pages-artifact@v5` `deploy-pages@v5`；其中 upload-pages-artifact 是 composite，自身不声明 runtime，靠它 v5 内部 pin 的 `upload-artifact@v7.0.0` 才拿到 node24。这五个主版本 tag 已用 `git ls-remote` 逐个核过存在。`node-version: 22` 是站点构建用的 Node，与 runner 自身用什么无关，两件事不要混；它**故意不跟到 24**：本机就是 v22.12.0，CI 跟本地一致才能叫可重现，要升也得先在本机升 Node 跑一遍全站自检。 |
 | `.githooks/pre-push` | push 前三步：`sync` → `verify` → `git status --porcelain` 必须为空（同步产生变化 = 你想推旧内容，先提交）。源码进仓，但 `.git/hooks/` 不跟仓走，所以每个克隆要 `npm run hooks` 装一次 |
 | `.sync-manifest.json` | sync 产出的 67 条「仓内副本 → 工作区源页 + 源页 sha1」，**跟仓一起提交** |
 | `public/.nojekyll` | 随 dist 进仓，关 Jekyll 处理（否则下划线开头资产会被剔，见 §C6）|

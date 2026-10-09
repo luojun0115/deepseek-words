@@ -35,6 +35,9 @@ arXiv 号 `2401.02954` → `2609.19969`）里需要单独学的单词挑出来�
 线上地址：**`https://luojun0115.github.io/deepseek-words/`**（仓库 `github.com/luojun0115/deepseek-words`）。
 本地预览：`npm run build && npm run preview` → `http://localhost:4173/deepseek-words/`。
 
+线上那个地址现在还是 404：首次自动部署在“内容守卫”那一步挂了（原因与修法见 `DECISIONS.md` §D4），
+修好后需要再 push 一次才真上线。
+
 **词汇学习页**（`/vocab` 选一篇进去）
 - 「按章节 / 按级别综合」两种看法：跟论文走，或按考试档集中扫
 - 「▶ 学习模式」像 PPT 一页一页过，空格下一页、`Esc` 退出

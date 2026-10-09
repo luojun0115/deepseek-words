@@ -145,10 +145,19 @@ if (!mfRaw) {
 }
 
 // 7) 门禁本身也要对账：钩子源码进了仓，但 .git/hooks/ 不跟仓走。
-//    新克隆没跑 npm run hooks → 整套“推前拦截”静默失效，比报错更坏，所以这里直接判失败
+//    新克隆没跑 npm run hooks → 整套“推前拦截”静默失效，比报错更坏，所以这里直接判失败。
+//    CI 例外（2026-10-09 修正）：原先只判「没有 .git 就跳过」，但 actions/checkout **会**建 .git，
+//    这条在 GitHub Actions 上不成立——首跑就栽在这儿（构建前置的 verify 判失败，站点没发布）。
+//    钩子只拦本地 push，CI 里没有 push 这回事，本地那一半在 CI 拦不到也不该拦；
+//    拿环境变量判并跳过，理由里点名靠哪个变量判的（行首是 `-` 不是 `✓`，不会伪装成“这项过了”）
 const GITDIR = path.join(PORTAL, '.git')
+const CIENV = process.env.GITHUB_ACTIONS === 'true' ? 'GITHUB_ACTIONS=true'
+  : process.env.CI === 'true' ? 'CI=true' : ''
 if (!fs.existsSync(GITDIR)) {
-  skip('pre-push 钩子已装且与 .githooks/pre-push 一致', '无 .git 目录（CI 正常），钩子只在本地起作用')
+  skip('pre-push 钩子已装且与 .githooks/pre-push 一致', '无 .git 目录（孤立副本或 CI），钩子只在本地起作用')
+} else if (CIENV) {
+  skip('pre-push 钩子已装且与 .githooks/pre-push 一致',
+    `${CIENV}：CI 的 .git 是 actions/checkout 建的，本地钩子在那儿无从安装也不该安装`)
 } else {
   const want = read(path.join(PORTAL, '.githooks/pre-push'))
   const HOOK = path.join(GITDIR, 'hooks/pre-push')

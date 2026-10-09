@@ -3,6 +3,24 @@
 # 一次性前提：仓库 Settings → Pages → Build and deployment → Source 选 GitHub Actions
 # （本机没有 gh CLI，这步只能网页上点一次；之后每次 push 全自动，改代码/改词页都会自己上线）
 #
+# action 版本一律跟到「自身跑在 Node 24」的那个主版本号（2026-10-09 迁移）。
+# 缘由（github.blog/changelog/2025-09-19，附 2026-08-25 编者注）：runner 上的 Node 20
+# 已于 2026-09-23 移除，2026-06-16 起 Node 24 就是 JS action 的默认运行时；
+# 还声明着 node20 的 @v4 那批不会报错，只是被 runner 「强行」搬到 node24 上跑，
+# 顺便刷一条弃用告警（就是用户看到的那条）。本仓五个引用全都还挂着 node20，所以这一次全升了，
+# 不只告警里点名的 checkout / setup-node 两个（下面每行是拉各自 tag 的 action.yml 核出来的）：
+#   checkout @v4 node20 → @v7 node24
+#   setup-node @v4 node20 → @v7 node24
+#   configure-pages @v4 node20 → @v6 node24
+#   deploy-pages @v4 node20 → @v5 node24
+#   upload-pages-artifact 是 composite（自身没有 using）：@v3 内部调 upload-artifact@v4（还跑 node20）
+#     → @v5 内部 pin 到 upload-artifact@v7.0.0（node24）——这一只靠升它自己的主版本才拿到 node24
+# 另：这些主版本 tag 已 git ls-remote 核过存在（写错版本号 = CI 直接报 Unable to resolve action）。
+# checkout 从 v4 跳到 v7，公开文档里说到的破坏性改动是收紧 pull_request_target 的默认行为、
+# 拒 pwn request（github.blog/changelog/2026-06-18），本工作流只有 push + workflow_dispatch，
+# 碰到不了这条；但这句只到「没查到别的」为止，真怀疑哪条行为变了请拿一次实际跑验证，不要只信这段注释。
+# 注意 `node-version: 22` 是「站点构建用的 Node」，跟 runner 自己用什么 Node 无关，别混。
+#
 # 自动部署分两半：本文件是「云端那一半」；「本地那一半」是 .githooks/pre-push
 # （npm run hooks 装）。内容层（文稿 content/ 与 data/*.json）已在 2026-10-09 搬进仓内，
 # CI 单靠仓库就能重建；只有 67 张词页本体仍在仓库外（../vocab_pages/ 等）CI 拿不到，
@@ -29,10 +47,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version: 22
           cache: npm
@@ -40,8 +58,10 @@ jobs:
       # 内容守卫：先对账再装依赖。改词表/加篇却忘了跑 sync-pages 就 push 时，
       # 这里直接失败而不是把缺页的站点发上线（期望值全从 data/*.json 现推，加篇不用改脚本）
       # 零依赖脚本，排在 npm ci 前面，不对就立即失败
-      # 十四项里的两项（与仓外源页比指纹、pre-push 钩子是否装了）在 CI 自动记为跳过：
-      # 它们要仓库外的东西（工作区源页 / .git 目录），CI 根本没有；其余十二项照跑，退出码仍为 0
+      # 十四项里的两项在 CI 记为跳过，但两者理由不同（踩过，2026-10-09）：
+      # 取副本指纹那项要的是仓外源页目录，CI 确实没有；pre-push 钩子那项**不能拿「有没有 .git」当判据**——
+      # checkout 会建 .git，旧写法就在 CI 里把整个构建前置卡死了（首跑因此挂）；现在它认 GITHUB_ACTIONS / CI
+      # 两个环境变量，本地照旧硬判。其余十二项在 CI 照跑，退出码仍为 0
       # 其中包括“内容层不许读仓外”的守卫（json ← 仓内词汇页、papers.md ← 仓内文稿、
       # 三个内容脚本拼路径的行不许上跳两级），另有一项守“取消了的 /master 页不得残留引用”，
       # 还有一项拿 gen-notes.mjs --check 对平 notes/ 与 papers.json 的篇目（学习笔记栏目），所以 CI 里也能验证站点只靠仓库自身就能重建
@@ -56,15 +76,15 @@ jobs:
       - name: Build site
         run: npm run build
 
-      # 61 项浏览器自检（scripts/check_portal.cjs）故意不放进 CI：
+      # 64 项浏览器自检（scripts/check_portal.cjs）故意不放进 CI：
       # 它要装 playwright + chromium，且本地页面与 ubuntu 字体/控件尺寸有差异，
       # 一旦误报就会直接卡住发布。所以它做本地提交前的手动门禁（理由见仓内 DECISIONS.md §D）
 
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v6
 
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: .vitepress/dist
 
@@ -77,4 +97,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
