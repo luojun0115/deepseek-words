@@ -1,0 +1,3457 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DeepSeek-Prover 论文核心词汇</title>
+<style>
+:root{--c4:#3b82f6;--c6:#8b5cf6;--ckaon:#f59e0b;--cphd:#ef4444;--ct:#0d9488;--cg:#d946ef;--cm4:#0ea5e9;--cm8:#f43f5e;--cy:#10b981;--csuper:#facc15}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;transition:background .3s,color .3s}
+.tag{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:4px;color:#fff;vertical-align:2px;margin-left:6px;font-style:normal;flex:none;white-space:nowrap}
+.tag.t4{background:var(--c4)}.tag.t6{background:var(--c6)}.tag.tk{background:var(--ckaon)}.tag.tp{background:var(--cphd)}.tag.tm4{background:var(--cm4)}.tag.tm8{background:var(--cm8)}
+.tag.tt{background:var(--ct)}.tag.tg{background:var(--cg)}.tag.ty{background:var(--cy)}.tag.tsuper{background:var(--csuper);color:#3a2f00}
+.ipa{font-family:"SF Mono",Menlo,monospace;font-size:.82em;font-weight:400;opacity:.62;margin-left:6px}
+
+
+/* 论文原标题小字 */
+.ptitle{font-size:12.5px;letter-spacing:.3px;margin-top:6px}
+.ptitle i{font-family:Georgia,serif}
+.theme-mag .ptitle{color:#999;text-transform:none}
+.theme-dark .ptitle{color:#6e7681}
+.theme-paper .ptitle{color:#a09578}
+.theme-fresh .ptitle{color:#9ca3af}
+body.lv-mode .ptitle{color:#7d8590}
+
+/* 预览工具条 */
+.toolbar{position:fixed;right:16px;bottom:16px;z-index:99;display:flex;flex-direction:column;gap:8px;background:rgba(20,22,30,.88);padding:12px;border-radius:14px;backdrop-filter:blur(8px);box-shadow:0 6px 24px rgba(0,0,0,.35)}
+.toolbar .row{display:flex;gap:6px}
+.toolbar button{border:none;cursor:pointer;padding:7px 12px;border-radius:8px;font-size:12.5px;background:#3a3f4d;color:#cbd2e0;transition:.15s}
+.toolbar button:hover{background:#4a5164}
+.toolbar button.on{background:#fff;color:#111;font-weight:600}
+.toolbar .lbl{font-size:10px;color:#8a93a6;text-align:left;margin:2px 0 -2px 2px}
+
+/* ---------- A 纸质阅读 ---------- */
+body.theme-paper{background:#faf6ee;color:#2c2a25}
+.theme-paper .wrap{max-width:880px;margin:0 auto;padding:56px 24px 140px}
+.theme-paper .hero h1{font-family:Georgia,"Songti SC",serif;font-size:34px}
+.theme-paper .hero p{color:#8a8272;margin:10px 0 42px;font-size:14px}
+.theme-paper .sec{margin-bottom:44px}
+.theme-paper .sec>h2{font-family:Georgia,"Songti SC",serif;font-size:20px;padding-left:14px;border-left:4px solid #b08d4f;margin-bottom:18px}
+.theme-paper .word{display:flex;gap:14px;padding:14px 16px;border-bottom:1px dashed #ddd2bc;align-items:baseline}
+.theme-paper .word:hover{background:#f3ecdc}
+.theme-paper .w{font-family:Georgia,serif;font-size:19px;font-weight:700;min-width:250px}
+.theme-paper .pos{color:#a09578;font-size:13px;margin-right:6px}
+.theme-paper .m{color:#4a463c;font-size:15px}
+.theme-paper .ex{margin-left:auto;max-width:270px;font-size:12.5px;color:#9a8f76;font-style:italic;text-align:right}
+.theme-paper .from{display:block;font-size:11px;color:#b3a888;font-style:normal;margin-top:3px}
+
+/* ---------- B 暗色科技 ---------- */
+body.theme-dark{background:#0d1117;color:#e6edf3}
+.theme-dark .wrap{max-width:1000px;margin:0 auto;padding:56px 24px 140px}
+.theme-dark .hero h1{font-family:"SF Mono",Menlo,monospace;font-size:26px}
+.theme-dark .hero h1::before{content:"$ ";color:#3fb950}
+.theme-dark .hero p{color:#7d8590;margin:10px 0 40px;font-size:14px;font-family:Menlo,monospace}
+.theme-dark .sec>h2{font-size:15px;font-family:Menlo,monospace;color:#58a6ff;padding:10px 16px;background:#161b22;border:1px solid #30363d;border-radius:8px 8px 0 0;margin-bottom:-1px}
+.theme-dark .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;padding:20px;background:#161b22;border:1px solid #30363d;border-radius:0 0 8px 8px}
+.theme-dark .card{background:#0d1117;border:1px solid #30363d;border-left:4px solid #58a6ff;border-radius:6px;padding:15px 17px;transition:.2s;cursor:pointer;font-family:Menlo,monospace}
+.theme-dark .card:hover{border-color:#58a6ff;box-shadow:0 0 14px rgba(88,166,255,.25);transform:translateY(-2px)}
+.theme-dark .w{font-family:Menlo,monospace;font-size:17px;color:#79c0ff}
+.theme-dark .ipa{color:#7ee787;opacity:.9}
+.theme-dark .m{color:#8b949e;font-size:13.5px;margin-top:7px;line-height:1.55}
+.theme-dark .ex{font-size:12px;color:#6e7681;margin-top:8px;border-top:1px solid #21262d;padding-top:8px;font-style:italic}
+.theme-dark .from{color:#484f58;font-size:11px;margin-top:4px}
+
+/* ---------- C 清新卡片 ---------- */
+body.theme-fresh{background:linear-gradient(160deg,#eef4ff 0%,#f6f0ff 50%,#fff7ec 100%);color:#1f2430}
+.theme-fresh .wrap{max-width:1020px;margin:0 auto;padding:56px 24px 140px}
+.theme-fresh .hero h1{font-size:32px;font-weight:800;background:linear-gradient(90deg,#3b82f6,#8b5cf6,#f59e0b);-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block}
+.theme-fresh .hero p{color:#6b7280;margin:10px 0 40px;font-size:14px}
+.theme-fresh .sec>h2{font-size:19px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.theme-fresh .sec>h2 .n{width:30px;height:30px;border-radius:10px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.08);display:inline-flex;align-items:center;justify-content:center;font-size:13px}
+.theme-fresh .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+.theme-fresh .card{background:rgba(255,255,255,.82);backdrop-filter:blur(6px);border-radius:18px;padding:17px 19px 15px;box-shadow:0 3px 14px rgba(80,80,140,.09);transition:.2s;cursor:pointer;border-top:5px solid #dbe3f5}
+.theme-fresh .card.lv四级{border-top-color:#3b82f6}.theme-fresh .card.lv六级{border-top-color:#8b5cf6}
+.theme-fresh .card.lv考研{border-top-color:#f59e0b}.theme-fresh .card.lv考博{border-top-color:#ef4444}
+.theme-fresh .card.lv专四{border-top-color:#0ea5e9}.theme-fresh .card.lv专八{border-top-color:#f43f5e}
+.theme-fresh .card.lv雅思{border-top-color:#10b981}.theme-fresh .card.lv托福{border-top-color:#0d9488}
+.theme-fresh .card.lvGRE{border-top-color:#d946ef}.theme-fresh .card.lv超纲{border-top-color:#facc15}
+.theme-fresh .card .w{display:inline-block;background:#f3f5fb;border-radius:8px;padding:2px 10px}
+.theme-fresh .card:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(80,80,140,.16)}
+.theme-fresh .w{font-size:18px;font-weight:700}
+.theme-fresh .m{color:#4b5563;font-size:14px;margin-top:6px;line-height:1.55}
+.theme-fresh .ex{color:#9ca3af;font-size:12.5px;margin-top:8px}
+.theme-fresh .from{color:#b6bcc9;font-size:11.5px;margin-top:4px}
+
+/* ---------- D 杂志表格（宽松版） ---------- */
+body.theme-mag{background:#fff;color:#111}
+.theme-mag .wrap{max-width:960px;margin:0 auto;padding:52px 28px 140px}
+.theme-mag .hero{border-bottom:3px solid #111;padding-bottom:16px;margin-bottom:10px}
+.theme-mag .hero h1{font-family:"Songti SC",Georgia,serif;font-size:38px;font-weight:900}
+.theme-mag .hero p{color:#888;font-size:13.5px;margin-top:8px}
+.theme-mag .sec>h2{font-size:14px;letter-spacing:3px;text-transform:uppercase;color:#c2410c;margin:44px 0 8px;border-bottom:1px solid #e5e5e5;padding-bottom:8px}
+.theme-mag table{width:100%;border-collapse:collapse}
+.theme-mag td{padding:16px 12px;border-bottom:1px solid #f0f0f0;font-size:15.5px;line-height:1.65;vertical-align:top}
+.theme-mag tr:hover td{background:#fff8f3}
+.theme-mag .w{font-weight:700;font-size:17px;width:300px}
+.theme-mag .lv{width:60px}
+.theme-mag .lv b{font-size:11.5px;padding:3px 0;display:block;text-align:center;border-radius:3px;color:#fff;font-weight:600}
+.theme-mag .m{color:#3d3d3d}
+.theme-mag .ex{color:#9a9a9a;font-size:13px;font-style:italic}
+.theme-mag .from{display:block;color:#c9c9c9;font-size:11.5px;font-style:normal;margin-top:4px}
+
+/* ---------- 按级别：学习模式同款暗色大页 ---------- */
+body.lv-mode{background:#0b0e13 !important}
+body.lv-mode .hero h1,body.lv-mode .hero p{color:#e8ecf3}
+body.lv-mode .hero p{color:#7d8590}
+.lvslide{background:#101318;color:#e8ecf3;border-radius:20px;padding:26px 32px 22px;margin-bottom:26px;border-top:6px solid var(--c4)}
+.lvslide.l6{border-top-color:var(--c6)}.lvslide.lk{border-top-color:var(--ckaon)}.lvslide.lp{border-top-color:var(--cphd)}
+.lvslide.lt{border-top-color:var(--ct)}.lvslide.lg{border-top-color:var(--cg)}.lvslide.lm4{border-top-color:var(--cm4)}.lvslide.lm8{border-top-color:var(--cm8)}.lvslide.ly{border-top-color:var(--cy)}.lvslide.lsuper{border-top-color:var(--csuper)}
+.lvslide .ltitle{font-size:26px;font-weight:800;font-family:Georgia,serif;display:flex;align-items:baseline;gap:14px}
+.lvslide .ltitle small{font-size:14px;color:#7d8590;font-family:Menlo,monospace;font-weight:400}
+.lvslide .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;padding:20px 0 8px}
+.lvslide .lcard{background:#171c26;border:1px solid #2b3342;border-radius:14px;padding:15px 17px;cursor:pointer;transition:.15s}
+.lvslide .lcard:hover{border-color:#79c0ff;transform:translateY(-2px)}
+.lvslide .lcard .w{font-size:19px;font-weight:700;font-family:Georgia,serif}
+.lvslide .lcard .ipa{font-family:Menlo,monospace;font-size:13px;color:#7ee787;margin-left:8px}
+.lvslide .lcard .m{color:#aeb6c4;font-size:14px;margin-top:7px;line-height:1.55}
+.lvslide .lcard .ex{color:#646d7d;font-size:12px;font-style:italic;margin-top:7px}
+.lvslide .lcard .from{color:#4d5563;font-size:11px;margin-top:6px}
+
+
+/* ---------- 白天 / 夜晚 ---------- */
+body.lv-mode:not(.night){background:#eef1f6 !important}
+body.lv-mode:not(.night) .hero h1{color:#1f2430}
+body.lv-mode:not(.night) .hero p{color:#6b7280}
+body.lv-mode:not(.night) .lvslide{background:#fff;color:#1f2430;box-shadow:0 4px 18px rgba(80,80,140,.10)}
+body.lv-mode:not(.night) .lvslide .lcard{background:#f7f9fd;border-color:#e4e9f3}
+body.lv-mode:not(.night) .lvslide .lcard:hover{border-color:#3b82f6}
+body.lv-mode:not(.night) .lvslide .lcard .m{color:#4b5563}
+body.lv-mode:not(.night) .lvslide .lcard .ex{color:#98a0ae}
+body.lv-mode:not(.night) .lvslide .lcard .from{color:#b3bac6}
+body.lv-mode:not(.night) .lvslide .lcard .ipa{color:#0a7d33}
+body.night.theme-mag{background:#0d1117;color:#e6edf3}
+body.night.theme-mag .hero{border-bottom-color:#e6edf3}
+body.night.theme-mag .hero p{color:#8b949e}
+body.night.theme-mag .sec>h2{color:#fbbf24;border-bottom-color:#30363d}
+body.night.theme-mag td{border-bottom-color:#1c2230}
+body.night.theme-mag tr:hover td{background:#161b22}
+body.night.theme-mag .m{color:#c9d1d9}
+body.night.theme-mag .ex{color:#8b949e}
+body.night.theme-mag .from{color:#57606a}
+body.night.theme-mag .w{color:#e6edf3}
+body.night.theme-mag .ptitle{color:#8b949e}
+body.night.theme-mag .ipa{opacity:.55}
+#study.day{background:#f5f7fa;color:#1f2430}
+#study.day .scard{background:#fff;border-color:#e4e9f3}
+#study.day .scard .m{color:#4b5563}
+#study.day .scard .ex{color:#98a0ae}
+#study.day .scard:hover{border-color:#3b82f6}
+#study.day .sfoot{color:#98a0ae;border-top-color:#e6e9f0}
+#study.day .snav button,#study.day #sClose{background:#fff;color:#1f2430;border-color:#d7dce6}
+#study.day .sfoot kbd{background:#e8ecf3;color:#1f2430}
+
+/* ---------- 学习模式（PPT 按章节翻页） ---------- */
+#study{position:fixed;inset:0;z-index:200;display:none;background:#101318;color:#e8ecf3;flex-direction:column}
+#study.on{display:flex}
+#study .sprog{height:4px;background:#262c38}
+#study .sprog i{display:block;height:100%;background:linear-gradient(90deg,#58a6ff,#8b5cf6);width:0;transition:width .25s}
+#study .sbody{flex:1;overflow:auto;padding:20px 40px}
+#study .stitle{font-size:24px;font-weight:800;font-family:Georgia,serif;padding:6px 4px 2px}
+#study .stitle small{color:#5b6472;font-size:14px;font-family:Menlo,monospace;font-weight:400;margin-left:12px}
+#study .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;padding:16px 2px 30px}
+#study .scard{background:#171c26;border:1px solid #2b3342;border-radius:14px;padding:16px 18px;cursor:pointer;transition:.15s}
+#study .scard:hover{border-color:#58a6ff;transform:translateY(-2px)}
+#study .scard .w{font-size:22px;font-weight:700;font-family:Georgia,serif}
+#study .scard .ipa{color:#7ee787;font-size:14px;margin-left:8px}
+#study .scard .m{color:#aeb6c4;font-size:14.5px;margin-top:8px;line-height:1.55}
+#study .scard .ex{color:#646d7d;font-size:12px;font-style:italic;margin-top:6px}
+#study .sfoot{display:flex;justify-content:space-between;align-items:center;padding:14px 28px;color:#5b6472;font-size:13px;border-top:1px solid #1d232e}
+#study .sfoot kbd{background:#262c38;border-radius:5px;padding:2px 8px;margin:0 2px;font-family:Menlo,monospace;font-size:12px}
+#study .snav{display:flex;gap:10px;align-items:center}
+#study .snav button{border:1px solid #333b4a;background:#1a2029;color:#cbd2e0;border-radius:8px;padding:8px 18px;cursor:pointer;font-size:14px}
+#study .snav button:hover{border-color:#58a6ff}
+#study .snav button:disabled{opacity:.35;cursor:default}
+
+
+
+/* —— 样式·暖白（暖白纸底） —— */
+
+body.theme-mag.paper{background:#f4f2ea!important;color:#23211c!important}
+body.theme-mag.paper .hero{border-bottom-color:#23211c}
+body.theme-mag.paper .hero h1{color:#1c1a12}
+body.theme-mag.paper .hero p{color:#6b6a5c}
+body.theme-mag.paper .ptitle{color:#8a8878}
+body.theme-mag.paper .sec>h2{color:#5f7a3f;border-bottom-color:#ddd8ca}
+body.theme-mag.paper td{border-bottom-color:#e6e1d3}
+body.theme-mag.paper tr:hover td{background:#ece7da}
+body.theme-mag.paper .m{color:#33312a}
+body.theme-mag.paper .ex{color:#8a8878}
+body.theme-mag.paper .from{color:#b3b0a0}
+body.theme-mag.paper .ipa{color:#6b6a5c}
+.theme-mag .hwband{padding:0 3px;font-weight:700}
+body.theme-mag.paper .hwband{background:linear-gradient(transparent 16%,#cdddb8 16%,#cdddb8 84%,transparent 84%);color:#1c1a12}
+
+
+</style>
+</head>
+<body class="theme-mag">
+<div class="wrap">
+  <div class="hero">
+    <h1>DeepSeek-Prover 论文核心词汇</h1>
+    <div class="ptitle"><i>DeepSeek-Prover: Advancing Theorem Proving in LLMs through Large-Scale Synthetic Data · arXiv:2405.14333 · DeepSeek-AI, 2024</i></div>
+    <p>全量口径重做 · 6 节 368 词 · 十一档 + 超纲（2026-10-08）</p>
+  </div>
+  <div id="app"></div>
+</div>
+
+<div class="toolbar">
+  <div class="lbl">视图</div>
+  <div class="row">
+    <button id="v-sec" class="on">按章节</button>
+    <button id="v-lv">按级别综合</button>
+    <button id="v-study">▶ 学习模式</button>
+  </div>
+  <div class="lbl">样式</div>
+  <div class="row">
+    <button id="st-day" class="on">☀ 白天</button>
+    <button id="st-night">🌙 夜晚</button>
+    <button id="st-paper">暖白</button>
+  </div>
+  <div class="lbl">朗读声音 · 多引擎</div>
+  <div class="row"><select id="voiceSel" style="flex:1;border:none;border-radius:8px;padding:7px 8px;background:#3a3f4d;color:#cbd2e0;font-size:12.5px;outline:none"></select><span id="srcState" style="align-self:center;font-size:10.5px;color:#8a93a6;min-width:34px;text-align:center"></span></div>
+</div>
+
+<div id="study">
+  <div class="sprog"><i id="sbar"></i></div>
+  <button id="sClose" title="退出学习模式 (Esc)" style="position:absolute;top:14px;right:18px;z-index:5;border:1px solid #333b4a;background:#1a2029;color:#cbd2e0;border-radius:8px;width:34px;height:34px;font-size:16px;cursor:pointer">✕</button>
+  <div class="sbody"><div id="sPage"></div></div>
+  <div class="sfoot">
+    <span><kbd>空格</kbd>/<kbd>→</kbd> 下一页 &nbsp; <kbd>←</kbd> 上一页 &nbsp; 点单词发音 &nbsp; <kbd>Esc</kbd> 退出</span>
+    <div class="snav">
+      <span id="sIdx">0 / 0</span>
+      <button id="sPrev">← 上一页</button>
+      <button id="sNext">下一页 →</button>
+      <button id="sExit" style="border-color:#5b3a3a">退出</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// lv: 4=四级 6=六级 k=考研 p=考博；ipa 为美式音标
+const DATA = [
+ {
+  "sec": "4. Experiments · 实验",
+  "short": "Exp",
+  "icon": "4",
+  "words": [
+   {
+    "w": "acceptance",
+    "ipa": "əkˈsɛptəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "接受，验收；承认",
+    "ex": "This complexity has led to the acceptance of erroneous proofs, with critical flaws often detected only after considerable time."
+   },
+   {
+    "w": "additionally",
+    "ipa": "əˈdɪʃəˌnəli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "此外；又，加之",
+    "ex": "Additionally, our approach solved 4 out of 148 problems in the FIMO benchmark with 100 samples, while GPT-4 solved none, and our approach solved 5 with 4096 samples."
+   },
+   {
+    "w": "align",
+    "ipa": "əˈlaɪn",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使结盟；使成一行；匹配",
+    "ex": "Recent advances in autoformalization [Wu et al., 2022] allow more aligned data to be synthesized to train LLM-based automated theorem provers."
+   },
+   {
+    "w": "assurance",
+    "ipa": "əˈʃʊrəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "保证",
+    "ex": "Scale Assurance: To accelerate the proof generation process, our method addresses the challenge of the large search space for proofs."
+   },
+   {
+    "w": "automate",
+    "ipa": "ˈɔtəˌmeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使自动化",
+    "ex": "Recent advances in autoformalization [Wu et al., 2022] allow more aligned data to be synthesized to train LLM-based automated theorem provers."
+   },
+   {
+    "w": "boost",
+    "ipa": "bust",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "推动,宣扬；促使，促进",
+    "ex": "In this paper, we aim to synthesise formal proofs via autoformalization at a much larger scale to boost the performance of a neural prover."
+   },
+   {
+    "w": "capability",
+    "ipa": "ˌkeɪpəˈbɪləti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "能力，才能",
+    "ex": "These results demonstrate the potential of leveraging large-scale synthetic data to enhance theorem-proving capabilities in LLMs."
+   },
+   {
+    "w": "commonly",
+    "ipa": "ˈkɑmənli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "普通地，一般地",
+    "ex": "theorems commonly found in modern proof assistants such as Lean [De Moura et al., 2015], Isabelle"
+   },
+   {
+    "w": "community",
+    "ipa": "kəmˈjunɪti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "社区；社会；公社",
+    "ex": "Additionally, our model successfully proved 5 out of 148 problems in the Lean 4 Formalized International Mathematical Olympiad (FIMO) benchmark, while GPT-4 failed to prove any. • We contribute to the mathematical and AI …"
+   },
+   {
+    "w": "confer",
+    "ipa": "kənˈfɜr",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "赋予，带来",
+    "g": "g",
+    "ex": "their extensive scale and parameter count confer significant capabilities"
+   },
+   {
+    "w": "constrain",
+    "ipa": "kənˈstreɪn",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "限制",
+    "ex": "Due to the limited availability of formal corpora for training, the performance of current large language models (LLMs) is also constrained."
+   },
+   {
+    "w": "corpus",
+    "ipa": "ˈkɔrpəs",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "[计] 语料库；文集；本金",
+    "ex": "Although these new methods [Jiang et al., 2022b, Zhao et al., 2023, Xin et al., 2023] represent significant improvements, they still fall short of practical applicability due to the lack of parallel corpus."
+   },
+   {
+    "w": "craft",
+    "ipa": "kræft",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "工艺；手艺，行业",
+    "ex": "In practice, however, amassing a large collection of manually crafted formal statements is challenging."
+   },
+   {
+    "w": "creation",
+    "ipa": "kriˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "创造， 创建； 创造的作品， 产物； 宇宙， 天地万物",
+    "ex": "These languages enable the creation of computer-verifiable proofs [Avigad, 2023]."
+   },
+   {
+    "w": "critical",
+    "ipa": "ˈkrɪtɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "批评的，爱挑剔的",
+    "ex": "This complexity has led to the acceptance of erroneous proofs, with critical flaws often detected only after considerable time."
+   },
+   {
+    "w": "cumulative",
+    "ipa": "ˈkjuːmjələtɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "累积的",
+    "ex": "cumulative scores of 60.2% on miniF2F-valid and 52.0% on miniF2F-test"
+   },
+   {
+    "w": "current",
+    "ipa": "ˈkɑrənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "当前的",
+    "ex": "Due to the limited availability of formal corpora for training, the performance of current large language models (LLMs) is also constrained."
+   },
+   {
+    "w": "depict",
+    "ipa": "dɪˈpɪkt",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "描绘， 描述",
+    "ex": "Approach In this section, we introduce our approach, which consists of four key processes as depicted in"
+   },
+   {
+    "w": "deplete",
+    "ipa": "dɪˈpliːt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "耗尽",
+    "g": "g",
+    "ex": "until a proof is either completed or resources are depleted"
+   },
+   {
+    "w": "detail",
+    "ipa": "ˈditeɪl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "细节",
+    "ex": "The details of each phase will be described in the subsequent sections."
+   },
+   {
+    "w": "detect",
+    "ipa": "dɪˈtɛkt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "觉察;检测",
+    "ex": "This complexity has led to the acceptance of erroneous proofs, with critical flaws often detected only after considerable time."
+   },
+   {
+    "w": "discard",
+    "ipa": "dɪˈskɑrd",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "丢弃，抛弃，遗弃",
+    "ex": "This method has the advantage of swiftly discarding the original statement when it is invalid by proving its negation."
+   },
+   {
+    "w": "effective",
+    "ipa": "ˈifɛktɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "有效的；有影响的",
+    "ex": "While effective, these methods are constrained by their reliance on predefined rules and lack flexibility for broader applications."
+   },
+   {
+    "w": "efficiency",
+    "ipa": "ɪˈfɪʃənsi",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "效率；功效，效能",
+    "ex": "Notably, to enhance proof efficiency, we prove concurrently both the original statements and their negations."
+   },
+   {
+    "w": "efficient",
+    "ipa": "ɪˈfɪʃənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "效率高的，有能力的",
+    "ex": "Initial efforts were directed at simpler logical frameworks, which led to the development of highly efficient first-order theorem provers like E [Schulz, 2002] and Vampire [Kovács and Voronkov, 2013]."
+   },
+   {
+    "w": "enable",
+    "ipa": "ɪˈneɪbəl",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使能够……",
+    "ex": "These languages enable the creation of computer-verifiable proofs [Avigad, 2023]."
+   },
+   {
+    "w": "enhance",
+    "ipa": "ɛnˈhæns",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "提高；加强；增加",
+    "ex": "These results demonstrate the potential of leveraging large-scale synthetic data to enhance theorem-proving capabilities in LLMs."
+   },
+   {
+    "w": "ensure",
+    "ipa": "ɪnˈʃʊr",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "确保",
+    "ex": "The primary challenge of this method is to ensure both the scale and quality of the synthetic data."
+   },
+   {
+    "w": "facilitate",
+    "ipa": "fəˈsɪləˌteɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使便利，促进",
+    "ex": "Both the synthetic dataset and the model will be made available to facilitate further research in this promising field."
+   },
+   {
+    "w": "flexibility",
+    "ipa": "ˌflɛksəˈbɪləti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "灵活性；适应性",
+    "ex": "While effective, these methods are constrained by their reliance on predefined rules and lack flexibility for broader applications."
+   },
+   {
+    "w": "formal",
+    "ipa": "ˈfɔrməl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "正式的；礼仪上的",
+    "ex": "Due to the limited availability of formal corpora for training, the performance of current large language models (LLMs) is also constrained."
+   },
+   {
+    "w": "formalize",
+    "ipa": "ˈfɔrməˌlaɪz",
+    "pos": "v.",
+    "lv": "托福",
+    "m": "使正式, 形式化",
+    "ex": "Additionally, our model successfully proved 5 out of 148 problems in the Lean 4 Formalized International Mathematical Olympiad (FIMO) benchmark, while GPT-4 failed to prove any."
+   },
+   {
+    "w": "fortunately",
+    "ipa": "ˈfɔrʧənətli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "幸运地",
+    "ex": "statements is challenging. Fortunately, the internet is replete with math-related problems expressed in"
+   },
+   {
+    "w": "fully",
+    "ipa": "ˈfʊli",
+    "pos": "adv.；n.",
+    "lv": "专四",
+    "m": "充分地；完全地；彻底地；(Fully)人名；(法)菲利",
+    "ex": "Nevertheless, the resulting dataset remains too small to fully unleash the capabilities of LLMs."
+   },
+   {
+    "w": "highly",
+    "ipa": "ˈhaɪli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "高度地，很，非常",
+    "ex": "Initial efforts were directed at simpler logical frameworks, which led to the development of highly efficient first-order theorem provers like E [Schulz, 2002] and Vampire [Kovács and Voronkov, 2013]."
+   },
+   {
+    "w": "hypothesis",
+    "ipa": "haɪˈpɑθəsəs",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "假设，假说",
+    "ex": "Next, the autoformalized statements are filtered through model scoring and hypothesis rejection methods to select high-quality statements."
+   },
+   {
+    "w": "improvement",
+    "ipa": "ˌɪmˈpruvmənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "改进，改善；改进处",
+    "ex": "However, these datasets remain smaller than needed and are limited to small mathematical benchmarks, leading to only minor improvements in training outcomes for language models."
+   },
+   {
+    "w": "ineffective",
+    "ipa": "ˌɪnɪˈfɛktɪv",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "无效的",
+    "ex": "However, these methods often struggle with the vast search spaces required for complex theorems, rendering them ineffective for more intricate proofs [Loos et al., 2017]."
+   },
+   {
+    "w": "informal",
+    "ipa": "ˌɪnˈfɔrməl",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "非正式的；不拘礼节的；随便的；通俗的；日常使用的",
+    "ex": "To address this issue, we propose a method for generating extensive Lean 4 proof data from informal mathematical problems."
+   },
+   {
+    "w": "initially",
+    "ipa": "ˌɪˈnɪʃəli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "最初，起初",
+    "ex": "Our novel iterative framework then improves proof quality by initially generating synthetic statements from informal math problems using an under-trained LLM fine-tuned on limited data."
+   },
+   {
+    "w": "interact",
+    "ipa": "ˌɪnərˈækt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "互动",
+    "ex": "These approaches typically involve language models that are fine-tuned with open-source proof data and interact with verifiers via a state-action transition program [Polu and Sutskever, 2020, Jiang et al., 2021, Han et al., 2021 …"
+   },
+   {
+    "w": "interaction",
+    "ipa": "ˌɪnərˈækʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "相互作用；干扰",
+    "ex": "To enhance efficiency, recent researches leverage language models to generate complete formal proofs directly [First et al., 2023, Jiang et al., 2022b, Zhao et al., 2023, Xin et al., 2023], thus bypassing the iterative …"
+   },
+   {
+    "w": "invalid",
+    "ipa": "ˌɪnˈvæləd",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "无效的",
+    "ex": "First, we filter out simple statements using a quality scoring model and exclude invalid statements via a hypothesis rejection strategy."
+   },
+   {
+    "w": "issue",
+    "ipa": "ˈɪʃu",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "发行；问题",
+    "ex": "To address this issue, we propose a method for generating extensive Lean 4 proof data from informal mathematical problems."
+   },
+   {
+    "w": "lean",
+    "ipa": "lin",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "倾斜，屈身；靠",
+    "ex": "We then automate proof generation using a large language model (LLM) and verify the correctness of these proofs within the Lean 4 environment."
+   },
+   {
+    "w": "logical",
+    "ipa": "ˈlɑʤɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "逻辑的；符合逻辑的",
+    "ex": "Initial efforts were directed at simpler logical frameworks, which led to the development of highly efficient first-order theorem provers like E [Schulz, 2002] and Vampire [Kovács and Voronkov, 2013]."
+   },
+   {
+    "w": "marginal",
+    "ipa": "ˈmɑrʤənəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "边缘的；记在页边的",
+    "ex": "This cycle continues until the improvements in DeepSeek-Prover become marginal."
+   },
+   {
+    "w": "mathematician",
+    "ipa": "ˌmæθəməˈtɪʃən",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "数学家",
+    "ex": "However, crafting formal proofs demands significant effort, specialized expertise, and poses challenges even for seasoned mathematicians."
+   },
+   {
+    "w": "methodology",
+    "ipa": "ˌmɛθəˈdɑləʤi",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "方法学，方法论",
+    "ex": "Recent methodologies adopt large language models to translating natural language problems into formal statements [Huang et al., 2024]."
+   },
+   {
+    "w": "minor",
+    "ipa": "ˈmaɪnər",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "小的",
+    "ex": "However, these datasets remain smaller than needed and are limited to small mathematical benchmarks, leading to only minor improvements in training outcomes for language models."
+   },
+   {
+    "w": "neural",
+    "ipa": "ˈnʊrəl",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "神经的",
+    "ex": "In this paper, we aim to synthesise formal proofs via autoformalization at a much larger scale to boost the performance of a neural prover."
+   },
+   {
+    "w": "nevertheless",
+    "ipa": "ˌnɛvərðəˈlɛs",
+    "pos": "conj.；adv.",
+    "lv": "四级",
+    "m": "然而；仍然",
+    "ex": "Nevertheless, the resulting dataset remains too small to fully unleash the capabilities of LLMs."
+   },
+   {
+    "w": "nonetheless",
+    "ipa": "ˌnənðəˈlɛs",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "尽管如此， 依然， 然而",
+    "ex": "Vampire [Kovács and Voronkov, 2013]. Nonetheless, these tools often fall short in handling complex"
+   },
+   {
+    "w": "notably",
+    "ipa": "ˈnoʊtəbli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "显著地，尤其",
+    "ex": "Notably, to enhance proof efficiency, we prove concurrently both the original statements and their negations."
+   },
+   {
+    "w": "olympiad",
+    "ipa": "oʊˈlɪmpiæd",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "奥林匹克竞赛（学科竞赛）",
+    "ex": "Additionally, our model successfully proved 5 out of 148 problems in the Lean 4 Formalized International Mathematical Olympiad (FIMO) benchmark, while GPT-4 failed to prove any."
+   },
+   {
+    "w": "originally",
+    "ipa": "ərˈɪʤənəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "最初,原先",
+    "ex": "Through several iterations, the model trained on large-scale synthetic data becomes significantly more powerful than the originally under-trained LLMs, resulting in higher-quality theorem-proof pairs."
+   },
+   {
+    "w": "peer",
+    "ipa": "pɪr",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "同龄人",
+    "ex": "Introduction In modern mathematics, the increasing complexity of proofs presents substantial challenges for peer review."
+   },
+   {
+    "w": "phase",
+    "ipa": "feɪz",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "阶段；方面；相位",
+    "ex": "The initial phase concentrates on generating formal mathematical statements from a broad"
+   },
+   {
+    "w": "pose",
+    "ipa": "poʊz",
+    "pos": "v.；n.",
+    "lv": "六级",
+    "m": "摆姿势，装腔作势；姿势",
+    "ex": "However, crafting formal proofs demands significant effort, specialized expertise, and poses challenges even for seasoned mathematicians."
+   },
+   {
+    "w": "previously",
+    "ipa": "ˈpriviəsli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "事先",
+    "ex": "After enhancing DeepSeek-Prover, we repeat the entire previously described process."
+   },
+   {
+    "w": "primarily",
+    "ipa": "praɪˈmɛrəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "主要地，首先",
+    "ex": "These approaches primarily utilize reinforcement learning techniques to enhance the accuracy of the model [Kaliszyk et al., 2018, Crouse et al., 2021, Wu et al., 2021, Lample et al., 2022]."
+   },
+   {
+    "w": "proof",
+    "ipa": "pruf",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "证据；证明；校样",
+    "ex": "In this paper, we aim to synthesise formal proofs via autoformalization at a much larger scale to boost the performance of a neural prover."
+   },
+   {
+    "w": "propose",
+    "ipa": "prəˈpoʊz",
+    "pos": "v.；v.",
+    "lv": "四级",
+    "m": "提议；求婚",
+    "ex": "With the development of deep learning, several approaches have been proposed to combine neural models with ATP [Loos et al., 2017]."
+   },
+   {
+    "w": "python",
+    "ipa": "ˈpaɪθɑn",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "巨蟒；大蟒",
+    "ex": "Unlike conventional programming languages such as Python or Java, formal proof languages are used by relatively few mathematicians, resulting in limited datasets."
+   },
+   {
+    "w": "recently",
+    "ipa": "ˈrisəntli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "最近，新近",
+    "ex": "Recently, advances in large language models (LLMs) have introduced a novel strategy, ∗Corresponding author."
+   },
+   {
+    "w": "reinforcement",
+    "ipa": "ˌriɪnˈfɔrsmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "加固；增援；援军；加强",
+    "ex": "This surpasses the baseline GPT-4 at 23.0% with 64 samples and a tree search reinforcement learning method at 41.0%."
+   },
+   {
+    "w": "rejection",
+    "ipa": "rɪˈʤɛkʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "拒绝",
+    "ex": "Next, the autoformalized statements are filtered through model scoring and hypothesis rejection methods to select high-quality statements."
+   },
+   {
+    "w": "relatively",
+    "ipa": "ˈrɛlətɪvli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "相对地，比较地",
+    "ex": "Unlike conventional programming languages such as Python or Java, formal proof languages are used by relatively few mathematicians, resulting in limited datasets."
+   },
+   {
+    "w": "reliance",
+    "ipa": "rɪˈlaɪəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "依靠， 依赖",
+    "ex": "While effective, these methods are constrained by their reliance on predefined rules and lack flexibility for broader applications."
+   },
+   {
+    "w": "render",
+    "ipa": "ˈrɛndər",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "给予",
+    "ex": "However, these methods often struggle with the vast search spaces required for complex theorems, rendering them ineffective for more intricate proofs [Loos et al., 2017]."
+   },
+   {
+    "w": "replete",
+    "ipa": "riˈplit",
+    "pos": "adj.",
+    "lv": "GRE",
+    "m": "充满的",
+    "ex": "statements is challenging. Fortunately, the internet is replete with math-related problems expressed in"
+   },
+   {
+    "w": "resource",
+    "ipa": "ˈrisɔrs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "资源； 财力； 应付办法， 谋略",
+    "ex": "Since the search space is significantly large, the searching process consumes considerable time and computing resources."
+   },
+   {
+    "w": "sample",
+    "ipa": "ˈsæmpəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "样品；实例，标本",
+    "ex": "This surpasses the baseline GPT-4 at 23.0% with 64 samples and a tree search reinforcement learning method at 41.0%."
+   },
+   {
+    "w": "scale",
+    "ipa": "skeɪl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "规模，比例",
+    "ex": "In this paper, we aim to synthesise formal proofs via autoformalization at a much larger scale to boost the performance of a neural prover."
+   },
+   {
+    "w": "scenario",
+    "ipa": "səˈnærioʊ",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "场景",
+    "ex": "demonstrating its effectiveness in handling complex proof scenarios"
+   },
+   {
+    "w": "series",
+    "ipa": "ˈsɪriz",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "连续，系列；丛书",
+    "ex": "A series of ATP approaches adopts tree search algorithms guided by neural models [Polu and Sutskever, 2020, Han et al., 2021, Polu et al., 2022, Jiang et al., 2022a, Yang et al., 2024]."
+   },
+   {
+    "w": "shortlist",
+    "ipa": "ˈʃɔrtlɪst",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "入围名单",
+    "ex": "149 formal problems which are sourced from the IMO shortlist"
+   },
+   {
+    "w": "significant",
+    "ipa": "sɪgˈnɪfɪkənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "重要的",
+    "ex": "However, crafting formal proofs demands significant effort, specialized expertise, and poses challenges even for seasoned mathematicians."
+   },
+   {
+    "w": "solve",
+    "ipa": "sɑlv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "解决",
+    "ex": "Additionally, our approach solved 4 out of 148 problems in the FIMO benchmark with 100 samples, while GPT-4 solved none, and our approach solved 5 with 4096 samples."
+   },
+   {
+    "w": "specialize",
+    "ipa": "ˈspɛʃəˌlaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "专业从事",
+    "ex": "However, crafting formal proofs demands significant effort, specialized expertise, and poses challenges even for seasoned mathematicians."
+   },
+   {
+    "w": "strategy",
+    "ipa": "ˈstrætəʤi",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "策略，战略",
+    "ex": "First, we filter out simple statements using a quality scoring model and exclude invalid statements via a hypothesis rejection strategy."
+   },
+   {
+    "w": "strongly",
+    "ipa": "ˈstrɔŋli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "强烈地；强有力地",
+    "ex": "The results show that our iteratively trained model performs strongly, achieving 46.3% accuracy in whole-proof generation on the miniF2F-test benchmark with 64 samples, surpassing GPT-4 [Achiam et al., 2023] at 23.0% and a …"
+   },
+   {
+    "w": "subsequently",
+    "ipa": "ˈsəbsəkwəntli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "随后",
+    "ex": "The correct theorem-proof pairs are subsequently used to further train the initial model."
+   },
+   {
+    "w": "swiftly",
+    "ipa": "sˈwɪftli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "很快地, 即刻",
+    "ex": "This method has the advantage of swiftly discarding the original statement when it is invalid by proving its negation."
+   },
+   {
+    "w": "synthesise",
+    "ipa": "ˈsɪnθəˌsaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "合成，综合（synthesise 英式拼写）",
+    "ex": "In this paper, we aim to synthesise formal proofs via autoformalization at a much larger scale to boost the performance of a neural prover."
+   },
+   {
+    "w": "synthesize",
+    "ipa": "ˈsɪnθəˌsaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "合成；综合",
+    "ex": "Recent advances in autoformalization [Wu et al., 2022] allow more aligned data to be synthesized to train LLM-based automated theorem provers."
+   },
+   {
+    "w": "theorem",
+    "ipa": "ˈθɪrəm",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "定理；原理，原则",
+    "ex": "Recent advances in autoformalization [Wu et al., 2022] allow more aligned data to be synthesized to train LLM-based automated theorem provers."
+   },
+   {
+    "w": "thereby",
+    "ipa": "ˈðɛrˈbaɪ",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "因此，从而，由此",
+    "ex": "Additionally, our model successfully proved 5 out of 148 problems in the Lean 4 Formalized International Mathematical Olympiad (FIMO) benchmark, while GPT-4 failed to prove any. • We contribute to the mathematical and AI …"
+   },
+   {
+    "w": "transformation",
+    "ipa": "ˌtrænsfərˈmeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "变化；改造；转变",
+    "ex": "Several studies have generated synthetic datasets of formal proofs using rule-based transformations of existing theorems [Wu et al., 2020, Wang and Deng, 2020, Xiong et al., 2023]."
+   },
+   {
+    "w": "transition",
+    "ipa": "trænˈzɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "过渡",
+    "ex": "These approaches typically involve language models that are fine-tuned with open-source proof data and interact with verifiers via a state-action transition program [Polu and Sutskever, 2020, Jiang et al., 2021, Han et al., 2021 …"
+   },
+   {
+    "w": "undergraduate",
+    "ipa": "ˌəndərˈgræʤəwət",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "大学在校生",
+    "ex": "Our approach translates high-school and undergraduate-level mathematical competition problems into formal statements."
+   },
+   {
+    "w": "unprovable",
+    "ipa": "ʌnˈpruːvəbəl",
+    "pos": "adj.",
+    "lv": "超纲",
+    "m": "不可证明的",
+    "ex": "A significant cause of delays is the generation of unprovable statements that continue to be processed until they reach the time limit."
+   },
+   {
+    "w": "vampire",
+    "ipa": "ˈvæmpaɪr",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "吸血鬼",
+    "ex": "Initial efforts were directed at simpler logical frameworks, which led to the development of highly efficient first-order theorem provers like E [Schulz, 2002] and Vampire [Kovács and Voronkov, 2013]."
+   },
+   {
+    "w": "verifiable",
+    "ipa": "ˈvɛrəˌfaɪəbəl",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "可证实的， 可核实的",
+    "ex": "These languages enable the creation of computer-verifiable proofs [Avigad, 2023]."
+   },
+   {
+    "w": "verify",
+    "ipa": "ˈvɛrəˌfaɪ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "证实，查证；证明",
+    "ex": "We then automate proof generation using a large language model (LLM) and verify the correctness of these proofs within the Lean 4 environment."
+   },
+   {
+    "w": "versatile",
+    "ipa": "ˈvɜrsətl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "多用途的，通用的",
+    "ex": "versatile general-purpose models such as GPT-3.5 and GPT-4"
+   },
+   {
+    "w": "writ",
+    "ipa": "rɪt",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "文书, 正式文件, 书面命令",
+    "ex": "To reduce the effort involved in writing formal mathematical proofs, several approaches [Polu and Sutskever, 2020, Jiang et al., 2021, Han et al., 2021, Polu et al., 2022, Lample et al., 2022, Jiang et al., 2022a, Yang et al. …"
+   },
+   {
+    "w": "yield",
+    "ipa": "jild",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "屈服，产出；产量",
+    "ex": "These statements are then proved by a model called DeepSeek-Prover, with their correctness verified by the formal verifier called Lean 42, yielding validated formal statements and proofs."
+   }
+  ]
+ },
+ {
+  "sec": "1. Introduction · 引言",
+  "short": "Intro",
+  "icon": "1",
+  "words": [
+   {
+    "w": "applicability",
+    "ipa": "ˌæplɪkəˈbɪləti",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "适用性",
+    "ex": "they still fall short of practical applicability due to the lack of parallel corpus"
+   },
+   {
+    "w": "complexity",
+    "ipa": "kəmˈpleksəti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "复杂性",
+    "ex": "the increasing complexity of proofs presents substantial challenges for peer review"
+   },
+   {
+    "w": "considerable",
+    "ipa": "kənˈsɪdərəbl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "相当大的",
+    "ex": "critical flaws often detected only after considerable time"
+   },
+   {
+    "w": "cumulatively",
+    "ipa": "ˈkjuːmjələtɪvli",
+    "pos": "adv.",
+    "lv": "超纲",
+    "m": "累积地",
+    "ex": "52% cumulatively on the Lean 4 miniF2F test"
+   },
+   {
+    "w": "effectiveness",
+    "ipa": "ɪˈfektɪvnəs",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "有效性",
+    "ex": "We assess the effectiveness of our method on Lean 4 theorem proving"
+   },
+   {
+    "w": "erroneous",
+    "ipa": "ɪˈroʊniəs",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "错误的",
+    "g": "g",
+    "ex": "This complexity has led to the acceptance of erroneous proofs"
+   },
+   {
+    "w": "expertise",
+    "ipa": "ˌekspɜrˈtiːz",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "专业知识",
+    "ex": "demands significant effort, specialized expertise, and poses challenges"
+   },
+   {
+    "w": "flaw",
+    "ipa": "flɔ",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "缺陷，瑕疵",
+    "ex": "with critical flaws often detected only after considerable time"
+   },
+   {
+    "w": "hinder",
+    "ipa": "ˈhɪndər",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "阻碍",
+    "ex": "their advancement in formal theorem proving is hindered by a lack of training data"
+   },
+   {
+    "w": "mitigate",
+    "ipa": "ˈmɪtɪɡeɪt",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "缓解，减轻",
+    "ex": "To mitigate this, we propose proving negated statements in parallel"
+   },
+   {
+    "w": "negate",
+    "ipa": "nɪˈɡeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "否定",
+    "ex": "we propose proving negated statements in parallel"
+   },
+   {
+    "w": "progressively",
+    "ipa": "prəˈɡresɪvli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "逐步地",
+    "ex": "the model progressively solves more problems in miniF2F with each iteration"
+   },
+   {
+    "w": "revolutionize",
+    "ipa": "ˌrevəˈluːʃənaɪz",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "彻底变革",
+    "ex": "Proof assistants like Lean have revolutionized mathematical proof verification"
+   },
+   {
+    "w": "substantial",
+    "ipa": "səbˈstænʃl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "大量的，实质的",
+    "ex": "presents substantial challenges for peer review"
+   },
+   {
+    "w": "surpass",
+    "ipa": "sərˈpæs",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "超过，胜过",
+    "ex": "surpassing the baseline GPT-4 at 23.0% with 64 samples"
+   },
+   {
+    "w": "synthetic",
+    "ipa": "sɪnˈθetɪk",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "合成的",
+    "ex": "generating proofs to create synthetic data"
+   },
+   {
+    "w": "terminate",
+    "ipa": "ˈtɜrmɪneɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "终止",
+    "ex": "the entire proving process is terminated"
+   },
+   {
+    "w": "unleash",
+    "ipa": "ˌʌnˈliːʃ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "释放，发挥",
+    "g": "g",
+    "ex": "the resulting dataset remains too small to fully unleash the capabilities of LLMs"
+   },
+   {
+    "w": "validate",
+    "ipa": "ˈvælɪdeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "验证，使生效",
+    "ex": "which are validated for correctness using a Lean 4 verifier"
+   }
+  ]
+ },
+ {
+  "sec": "2. Background & Related · 背景与相关工作",
+  "short": "Related",
+  "icon": "2",
+  "words": [
+   {
+    "w": "advent",
+    "ipa": "ˈædvent",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "出现，到来",
+    "g": "g",
+    "ex": "The advent of recent deep learning models and model-guided search techniques"
+   },
+   {
+    "w": "availability",
+    "ipa": "əˌveɪləˈbɪləti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "可获得性",
+    "ex": "Due to the limited availability of formal corpora"
+   },
+   {
+    "w": "bypass",
+    "ipa": "ˈbaɪpæs",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "绕过",
+    "ex": "thus bypassing the iterative interaction during proof generation"
+   },
+   {
+    "w": "harness",
+    "ipa": "ˈhɑrnɪs",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "利用，驾驭",
+    "g": "g",
+    "ex": "Another series of ATP approaches harnesses the power of large language models"
+   },
+   {
+    "w": "inception",
+    "ipa": "ɪnˈsepʃn",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "开端，初期",
+    "g": "g",
+    "ex": "has been a significant area of interest in artificial intelligence research since its inception"
+   },
+   {
+    "w": "intensive",
+    "ipa": "ɪnˈtensɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "密集的，集中的",
+    "ex": "Although these approaches achieve high performance, they are computationally intensive"
+   },
+   {
+    "w": "intricate",
+    "ipa": "ˈɪntrɪkət",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "错综复杂的",
+    "g": "g",
+    "ex": "expanded their applicability in solving more intricate mathematical problems"
+   },
+   {
+    "w": "reinvigorate",
+    "ipa": "ˌriːɪnˈvɪɡəreɪt",
+    "pos": "v.",
+    "lv": "雅思",
+    "m": "重振，使复兴",
+    "ex": "model-guided search techniques has reinvigorated the field"
+   }
+  ]
+ },
+ {
+  "sec": "3. Method · 方法（3.1-3.4）",
+  "short": "Method",
+  "icon": "3",
+  "words": [
+   {
+    "w": "aggregate",
+    "ipa": "ˈæɡrɪɡeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "汇总，聚合",
+    "ex": "are then aggregated to further train the DeepSeek-Prover"
+   },
+   {
+    "w": "amass",
+    "ipa": "əˈmæs",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "积累，积聚",
+    "g": "g",
+    "ex": "amassing a large collection of manually crafted formal statements is challenging"
+   },
+   {
+    "w": "augmentation",
+    "ipa": "ˌɔɡmenˈteɪʃn",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "增强，增广",
+    "ex": "this dual approach serves as a form of data augmentation"
+   },
+   {
+    "w": "compile",
+    "ipa": "kəmˈpaɪl",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "汇编，编译",
+    "ex": "To compile our dataset, we employed web scraping and careful data cleaning"
+   },
+   {
+    "w": "comprise",
+    "ipa": "kəmˈpraɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "包含，由…组成",
+    "ex": "which comprises formal statements from Lean 4's mathlib3"
+   },
+   {
+    "w": "conclusively",
+    "ipa": "kənˈkluːsɪvli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "决定性地，确凿地",
+    "ex": "conclusively demonstrating the unprovability of the other"
+   },
+   {
+    "w": "concurrent",
+    "ipa": "kənˈkɜrənt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "并发的，同时的",
+    "ex": "We implemented dual concurrent proof searches for each synthetic statement"
+   },
+   {
+    "w": "consistently",
+    "ipa": "kənˈsɪstəntli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "一贯地，始终",
+    "ex": "consistently enhances its performance, ultimately producing superior theorem-proof pairs"
+   },
+   {
+    "w": "efficacy",
+    "ipa": "ˈefɪkəsi",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "功效，效力",
+    "ex": "the model incrementally improves in strength and efficacy"
+   },
+   {
+    "w": "eliminate",
+    "ipa": "ɪˈlɪmɪneɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "消除，剔除",
+    "ex": "To eliminate such cases from our dataset, we implemented a hypothesis rejection method"
+   },
+   {
+    "w": "emphasis",
+    "ipa": "ˈemfəsɪs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "重点，强调",
+    "ex": "with a particular emphasis on algebra and number theory"
+   },
+   {
+    "w": "enrich",
+    "ipa": "ɪnˈrɪtʃ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "充实，丰富",
+    "ex": "enriching the dataset with both propositions and their negations"
+   },
+   {
+    "w": "exclude",
+    "ipa": "ɪkˈskluːd",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "剔除，排除",
+    "ex": "Statements rated as fair or poor were subsequently excluded"
+   },
+   {
+    "w": "exploit",
+    "ipa": "ɪkˈsplɔɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "利用",
+    "ex": "we exploited the logical symmetry between a statement and its negation"
+   },
+   {
+    "w": "fundamentally",
+    "ipa": "ˌfʌndəˈmentli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "根本上",
+    "ex": "The generation of formal proof data fundamentally relies on the availability"
+   },
+   {
+    "w": "inconsistent",
+    "ipa": "ˌɪnkənˈsɪstənt",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "不一致的，矛盾的",
+    "ex": "are based on inconsistent hypotheses leading to vacuous conclusions"
+   },
+   {
+    "w": "incrementally",
+    "ipa": "ˌɪŋkrəˈmentli",
+    "pos": "adv.",
+    "lv": "超纲",
+    "m": "逐步地，增量地",
+    "ex": "the model incrementally improves in strength and efficacy after each cycle"
+   },
+   {
+    "w": "intuition",
+    "ipa": "ˌɪntuˈɪʃn",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "直觉",
+    "ex": "closely matched human intuition and expectations"
+   },
+   {
+    "w": "meaningless",
+    "ipa": "ˈmiːnɪŋləs",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "无意义的",
+    "ex": "rendering the conclusions meaningless in mathematics"
+   },
+   {
+    "w": "necessitate",
+    "ipa": "nəˈsesɪteɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使成为必需",
+    "g": "g",
+    "ex": "advanced mathematical topics that necessitate intricate definitions and constructions"
+   },
+   {
+    "w": "pertain",
+    "ipa": "pərˈteɪn",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "关于，与…相关",
+    "ex": "The second issue pertains to formal statements that, although provable"
+   },
+   {
+    "w": "proposition",
+    "ipa": "ˌprɑpəˈzɪʃn",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "命题；主张",
+    "ex": "enriching the dataset with both propositions and their negations"
+   },
+   {
+    "w": "refinement",
+    "ipa": "rɪˈfaɪnmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "改进，精炼",
+    "ex": "each cycle of refinement and application"
+   },
+   {
+    "w": "repository",
+    "ipa": "rɪˈpɑzətɔri",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "仓库，存储库",
+    "ex": "we can generate a vast repository of formal statements"
+   },
+   {
+    "w": "robust",
+    "ipa": "roʊˈbʌst",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "稳健的，强大的",
+    "ex": "providing a robust foundation for further proof synthesis"
+   },
+   {
+    "w": "simplistic",
+    "ipa": "sɪmˈplɪstɪk",
+    "pos": "adj.",
+    "lv": "雅思",
+    "m": "过分简单化的",
+    "g": "g",
+    "ex": "many formal statements were overly simplistic"
+   },
+   {
+    "w": "suboptimal",
+    "ipa": "ˌsʌbˈɑptɪməl",
+    "pos": "adj.",
+    "lv": "超纲",
+    "m": "欠佳的，次优的",
+    "ex": "The quality of the autoformalized statements was found to be suboptimal"
+   },
+   {
+    "w": "symmetry",
+    "ipa": "ˈsɪmətri",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "对称（性）",
+    "ex": "the logical symmetry between a statement and its negation"
+   },
+   {
+    "w": "vacuous",
+    "ipa": "ˈvækjuəs",
+    "pos": "adj.",
+    "lv": "GRE",
+    "m": "空洞的，无意义的",
+    "g": "g",
+    "ex": "inconsistent hypotheses leading to vacuous conclusions"
+   }
+  ]
+ },
+ {
+  "sec": "5. Conclusion & Impact · 结论与影响",
+  "short": "Concl",
+  "icon": "5",
+  "words": [
+   {
+    "w": "absurdity",
+    "ipa": "əbˈsərdəti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "荒谬, 谬论",
+    "ex": "The model successfully identifies this inconsistency and provides a counterexample to demonstrate the absurdity of the hypothesis:"
+   },
+   {
+    "w": "additional",
+    "ipa": "əˈdɪʃənəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "额外的",
+    "ex": "By increasing the number of attempts per theorem to 4,096, we successfully proved an additional theorem."
+   },
+   {
+    "w": "advancement",
+    "ipa": "ədˈvænsmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "进步，提升",
+    "ex": "This remarkable advancement can enhance the capabilities of large language models in formal theorem proving, contributing to more reliable mathematical proof verification and providing valuable educational resources for students …"
+   },
+   {
+    "w": "approach",
+    "ipa": "əˈproʊʧ",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "靠近；接近，方法",
+    "ex": "We then instructed the model to translate these natural language problems into formal statements in Lean 4 using a structured approach."
+   },
+   {
+    "w": "artifact",
+    "ipa": "ˈɑrtəˌfækt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "人工制品；手工艺品",
+    "ex": "This methodology has been further advanced by Proof Artifact Co-Training [Han et al., 2021], ReProver [Yang et al., 2024], Llemma [Azerbayev et al., 2023], and COPRA [Thakur et al., 2023], which employ either specialized …"
+   },
+   {
+    "w": "assert",
+    "ipa": "əˈsərt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "主张，断言",
+    "ex": "statement by defining a specific 3 × 3 matrix dependent on real numbers a and b, and asserts that its"
+   },
+   {
+    "w": "augment",
+    "ipa": "ɔgˈmɛnt",
+    "pos": "v.；n.",
+    "lv": "六级",
+    "m": "增加；增大；增加；增大",
+    "ex": "This evidence underscores the success of our iterative enhancement strategy in augmenting theorem-proving capabilities."
+   },
+   {
+    "w": "automatically",
+    "ipa": "ˌɔtəˈmætɪkli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "自动地；不经思考地",
+    "ex": "This pattern highlights the pivotal importance of large-scale datasets for boosting model proficiency in automatically formalizing natural language questions."
+   },
+   {
+    "w": "batch",
+    "ipa": "bæʧ",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "一批， 一组， 一群； 一批生产量",
+    "ex": "We fine-tuned this model using a global batch size of 512 and a constant learning rate of 1 × 10−4,"
+   },
+   {
+    "w": "benchmark",
+    "ipa": "ˈbɛnʧˌmɑrk",
+    "pos": "n.；v.",
+    "lv": "专八",
+    "m": "基准；标准检查程序；用基准问题测试（计算机系统等）",
+    "ex": "We evaluate the theorem-proving efficacy of our model using the miniF2F [Zheng et al., 2021] and FIMO [Liu et al., 2023] benchmarks."
+   },
+   {
+    "w": "brute",
+    "ipa": "brut",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "禽兽，畜生",
+    "ex": "Traditionally, language models have been used predominantly in a brute-force manner to prove theorems—repeatedly attempting until a valid proof is found or computational resources are exhausted."
+   },
+   {
+    "w": "capture",
+    "ipa": "ˈkæpʧər",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "捕获，俘获；夺得",
+    "ex": "The autoformalization captures the essence of the original mathematical"
+   },
+   {
+    "w": "carefully",
+    "ipa": "ˈkɛrfəli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "小心地",
+    "ex": "Typically, language models are applied to human-curated formal statements that are carefully crafted and generally true and provable; however, in our task of proving autoformalized statements, many of the statements produced by …"
+   },
+   {
+    "w": "claim",
+    "ipa": "kleɪm",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "声称，主张；索取",
+    "ex": "This assumption is not supported by the problem statement, which does not claim universal applicability."
+   },
+   {
+    "w": "closely",
+    "ipa": "ˈkloʊsli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "紧密地，接近地",
+    "ex": "Manual review of these scores confirmed that the model’s evaluations closely matched human intuition and expectations."
+   },
+   {
+    "w": "comparative",
+    "ipa": "kəmˈpærətɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "比较的，相对的",
+    "ex": "To demonstrate the effectiveness of large-scale autoformalization, we conducted a comparative"
+   },
+   {
+    "w": "compliance",
+    "ipa": "kəmˈplaɪəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "合规，遵从",
+    "ex": "maintaining high standards of data privacy and intellectual property compliance"
+   },
+   {
+    "w": "compute",
+    "ipa": "kəmˈpjut",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "计算，估计，估算",
+    "ex": "The formalization employs the Matrix.det function to compute the determinant, utilizing the ![...] notation for lists of lists in Lean to represent the matrix rows."
+   },
+   {
+    "w": "consequently",
+    "ipa": "ˈkɑnsəkˌwɛntli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "结果",
+    "ex": "Consequently, the theorem-proof pairs generated by the model become increasingly higher in quality with each iteration."
+   },
+   {
+    "w": "continuous",
+    "ipa": "kənˈtɪnjuəs",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "连续不断的，持续的",
+    "ex": "continuous refinement."
+   },
+   {
+    "w": "contrast",
+    "ipa": "ˈkɑntræst",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "对比，反差；对比",
+    "ex": "In contrast, DeepSeekMath is a specialized model, explicitly pre-trained for mathematical content."
+   },
+   {
+    "w": "convert",
+    "ipa": "ˈkɑnvərt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使转变；使改变",
+    "ex": "Initially, the model struggled to convert informal math problems into formal statements."
+   },
+   {
+    "w": "core",
+    "ipa": "kɔr",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "果实的心，核心",
+    "ex": "Prompt: Mathematical Problem in Natural Language: {$informal_statement_with_answers} Translate the problem to Lean 4 (only the core declaration): “‘lean4 Response: {$formal_statement} “‘ 3.2 Quality Filtering The quality of the …"
+   },
+   {
+    "w": "correctly",
+    "ipa": "kərˈɛktli",
+    "pos": "adv.",
+    "lv": "考博",
+    "m": "正确地，恰当地",
+    "ex": "Thus, this dual approach serves as a form of data augmentation, enriching the dataset with both propositions and their negations—even if the original propositions were not correctly formalized by the model."
+   },
+   {
+    "w": "correlation",
+    "ipa": "ˌkɔrəˈleɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "相关，关联",
+    "ex": "Table 4 demonstrates a distinct correlation between the number of iterations in data synthesis and"
+   },
+   {
+    "w": "counterexample",
+    "ipa": "ˈkaʊntɚɪgˈzæmpl",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "反例",
+    "ex": "The model successfully identifies this inconsistency and provides a counterexample to demonstrate the absurdity of the hypothesis:"
+   },
+   {
+    "w": "crucial",
+    "ipa": "ˈkruʃəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "至关重要的",
+    "ex": "3.4 Iterative Enhancement Since the entire pipeline heavily relies on the DeepSeek-Prover, enhancing the model’s performance after each iteration is crucial."
+   },
+   {
+    "w": "currently",
+    "ipa": "ˈkərəntli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "当前；一般地",
+    "ex": "Currently, our work mainly focuses on algebra and number theory at the middle school and undergraduate levels."
+   },
+   {
+    "w": "declaration",
+    "ipa": "ˌdɛklərˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "宣布， 宣告； 宣言， 声明； 申报",
+    "ex": "Prompt: Mathematical Problem in Natural Language: {$informal_statement_with_answers} Translate the problem to Lean 4 (only the core declaration): “‘lean4 Response: {$formal_statement} “‘ 3.2 Quality Filtering The quality of the …"
+   },
+   {
+    "w": "define",
+    "ipa": "dɪˈfaɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "下定义，确定",
+    "ex": "We have observed that problems with explicit conditions and well-defined goals are typically easier to formalize compared to advanced mathematical topics that necessitate intricate definitions and constructions."
+   },
+   {
+    "w": "definition",
+    "ipa": "ˌdɛfəˈnɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "定义",
+    "ex": "We have observed that problems with explicit conditions and well-defined goals are typically easier to formalize compared to advanced mathematical topics that necessitate intricate definitions and constructions."
+   },
+   {
+    "w": "demonstrate",
+    "ipa": "ˈdɛmənˌstreɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "证明；展示",
+    "ex": "The model successfully identifies this inconsistency and provides a counterexample to demonstrate the absurdity of the hypothesis:"
+   },
+   {
+    "w": "denote",
+    "ipa": "dɪˈnoʊt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "指示，意味着",
+    "ex": "The metric pass@k is employed to denote the scenario where at least one valid proof is discovered among the first k attempts generated by the model."
+   },
+   {
+    "w": "dependent",
+    "ipa": "dɪˈpɛndənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "依靠的，依赖的",
+    "ex": "statement by defining a specific 3 × 3 matrix dependent on real numbers a and b, and asserts that its"
+   },
+   {
+    "w": "derive",
+    "ipa": "dəraɪv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "得到，导出",
+    "ex": "For example, consider the following model-generated statement: example (θ : R) (h0 : ∀z : C, z ^ 2 = -1 ∧z ^ 3 = -1 ∧z ^ 6 = 1) (h1 : Real.tan θ = 2 * Real.sqrt 3) : θ = 5 * Real.pi / 3 Here, the hypothesis z2 = −1 ∧z3 = −1 ∧z6 = …"
+   },
+   {
+    "w": "despite",
+    "ipa": "dɪˈspaɪt",
+    "pos": "prep.",
+    "lv": "四级",
+    "m": "不管",
+    "ex": "Despite their apparent simplicity, these problems often involve complex solution techniques, making them excellent candidates for constructing proof data to improve theorem-proving capabilities in Large Language Models (LLMs)."
+   },
+   {
+    "w": "determinant",
+    "ipa": "dɪˈtərmənənt",
+    "pos": "adj.；n.",
+    "lv": "考博",
+    "m": "决定性的；决定因素",
+    "ex": "The formalization employs the Matrix.det function to compute the determinant, utilizing the ![...] notation for lists of lists in Lean to represent the matrix rows."
+   },
+   {
+    "w": "differently",
+    "ipa": "ˈdɪfərˈɛntli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "不同地，有差别地",
+    "ex": "Table 3: Improvement in pass rates for miniF2F at pass@128 in models trained on differently scored"
+   },
+   {
+    "w": "directly",
+    "ipa": "dɪˈrɛkli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "直接地；立即",
+    "ex": "By directly releasing the code, model, and data, we aim to ensure the responsible use of our work, fostering further innovation and maintaining high standards of data privacy and intellectual property compliance."
+   },
+   {
+    "w": "distinct",
+    "ipa": "dɪˈstɪŋkt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "明显的；有区别的",
+    "ex": "Table 4 demonstrates a distinct correlation between the number of iterations in data synthesis and"
+   },
+   {
+    "w": "diversity",
+    "ipa": "daɪˈvɜrsəti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "多样性",
+    "ex": "we will aim to expand the diversity of mathematical problems addressed"
+   },
+   {
+    "w": "dual",
+    "ipa": "duəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "双的， 两重的",
+    "ex": "We implemented dual concurrent proof searches for each synthetic statement—one for the statement Γ ⊢P and another for its negation Γ ⊢¬P."
+   },
+   {
+    "w": "educational",
+    "ipa": "ˌɛʤəˈkeɪʃənəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "教育的， 教育性的",
+    "ex": "This remarkable advancement can enhance the capabilities of large language models in formal theorem proving, contributing to more reliable mathematical proof verification and providing valuable educational resources for students …"
+   },
+   {
+    "w": "effectively",
+    "ipa": "ˈifɛktɪvli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "有效地",
+    "ex": "This enhancement underscores the utility of the model in accurately scoring and effectively filtering out lower-quality statements."
+   },
+   {
+    "w": "emerge",
+    "ipa": "ˈimərʤ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "出现",
+    "ex": "Each proof search stream attempts up to k proofs unless a valid proof emerges sooner."
+   },
+   {
+    "w": "emphasize",
+    "ipa": "ˈɛmfəˌsaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "强调",
+    "ex": "These findings emphasize the significant potential and necessity of systematic data construction for progressing in the field of automated theorem proving."
+   },
+   {
+    "w": "enhancement",
+    "ipa": "ɛnˈhænsmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "增进, 增加",
+    "ex": "This enhancement underscores the utility of the model in accurately scoring and effectively filtering out lower-quality statements."
+   },
+   {
+    "w": "entail",
+    "ipa": "ɛnˈteɪl",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使需要，使必须",
+    "ex": "This iterative method entails generating formal proofs, fine-tune the model based on successful outcomes, and iterating this process until no additional enhancements are observed."
+   },
+   {
+    "w": "essence",
+    "ipa": "ˈɛsəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "本质，本体",
+    "ex": "The autoformalization captures the essence of the original mathematical"
+   },
+   {
+    "w": "evaluation",
+    "ipa": "ɪˌvæljuˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "评价，评估",
+    "ex": "Manual review of these scores confirmed that the model’s evaluations closely matched human intuition and expectations."
+   },
+   {
+    "w": "exclusion",
+    "ipa": "ɪkˈskluʒən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "排除；排斥；驱逐；被排除在外的事物",
+    "ex": "A successful proof indicates an invalid hypothesis, prompting exclusion of the statement."
+   },
+   {
+    "w": "exhaust",
+    "ipa": "ɪgˈzɔst",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使筋疲力尽",
+    "ex": "Traditionally, language models have been used predominantly in a brute-force manner to prove theorems—repeatedly attempting until a valid proof is found or computational resources are exhausted."
+   },
+   {
+    "w": "experimental",
+    "ipa": "ɪkˌspɛrɪˈmɛntəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "实验的，试验的",
+    "ex": "Experiments 4.1 Experimental Setup DeepSeek-Prover is built upon DeepSeekMath-Base 7B model [Shao et al., 2024], a decoder-only transformer [Vaswani et al., 2017] pre-trained on a corpus comprising 120 billion math-related tokens."
+   },
+   {
+    "w": "explicitly",
+    "ipa": "ɪkˈsplɪsətli",
+    "pos": "adv.",
+    "lv": "GRE",
+    "m": "直接地，明确地",
+    "ex": "Although not explicitly designed for theorem proving, their extensive scale and parameter count confer significant capabilities."
+   },
+   {
+    "w": "exponential",
+    "ipa": "ˌɛkspoʊˈnɛnʃəl",
+    "pos": "n.；adj.",
+    "lv": "考博",
+    "m": "指数；指数的, 幂数的",
+    "ex": "By examining subsets of the eight million generated proof data points, we observed that performance on the miniF2F benchmark improves proportionally to the exponential increase in dataset size."
+   },
+   {
+    "w": "extensive",
+    "ipa": "ɪkˈstɛnsɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "广阔的；广泛的",
+    "ex": "Although not explicitly designed for theorem proving, their extensive scale and parameter count confer significant capabilities."
+   },
+   {
+    "w": "extent",
+    "ipa": "ɪkˈstɛnt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "广度；范围；程度",
+    "ex": "Consequently, this paper primarily examines high school and undergraduate-level competition problems, with a particular emphasis on algebra and number theory, and to a lesser extent, combinatorics, geometry, and statistics."
+   },
+   {
+    "w": "extract",
+    "ipa": "ˈɛkˌstrækt",
+    "pos": "v.；n.",
+    "lv": "六级",
+    "m": "取出；提取；摘录",
+    "ex": "To compile our dataset, we employed web scraping and careful data cleaning techniques to extract problems from online resources featuring high school and undergraduate exercises, exams, and competitions, resulting in a dataset of …"
+   },
+   {
+    "w": "feature",
+    "ipa": "ˈfiʧər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "特点",
+    "ex": "To compile our dataset, we employed web scraping and careful data cleaning techniques to extract problems from online resources featuring high school and undergraduate exercises, exams, and competitions, resulting in a dataset of …"
+   },
+   {
+    "w": "filter",
+    "ipa": "ˈfɪltər",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "过滤；滤纸",
+    "ex": "This enhancement underscores the utility of the model in accurately scoring and effectively filtering out lower-quality statements."
+   },
+   {
+    "w": "fin",
+    "ipa": "fɪn",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "鱼鳍；鳍状物；尾翅；散热片",
+    "ex": "Matrix.det ![![a, b, c], ![1, 4, 9], ![3, 1, 2]] = D) : False := by have h1 := h0 1 2 3 have h2 := h0 1 4 9 simp [Matrix.det_fin_three] at h1 h2 linarith A corrected version of the autoformalized theorem can be proposed as …"
+   },
+   {
+    "w": "firstly",
+    "ipa": "ˈfərstli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "首先，第一（列举论点用）",
+    "ex": "Firstly, many formal statements were overly simplistic."
+   },
+   {
+    "w": "fraction",
+    "ipa": "ˈfrækʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "小部分；片断；分数",
+    "ex": "Table 5: Improvement in pass rates for miniF2F at pass@128 in models trained with a larger fraction"
+   },
+   {
+    "w": "general-purpose",
+    "ipa": "ˈʤɛnərəl ˈpərpəs",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "通用的，一般用途的（与专用 special-purpose 相对）",
+    "ex": "versatile general-purpose models such as GPT-3.5 and GPT-4 for the generation of proof"
+   },
+   {
+    "w": "generally",
+    "ipa": "ˈʤɛnərəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "一般地；通常地",
+    "ex": "Typically, language models are applied to human-curated formal statements that are carefully crafted and generally true and provable; however, in our task of proving autoformalized statements, many of the statements produced by …"
+   },
+   {
+    "w": "generate",
+    "ipa": "ˈʤɛnərˌeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "产生",
+    "ex": "The metric pass@k is employed to denote the scenario where at least one valid proof is discovered among the first k attempts generated by the model."
+   },
+   {
+    "w": "generative",
+    "ipa": "ˈʤɛnərətɪv",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "生产的，有生产力的",
+    "ex": "DeepSeek-Prover’s performance was evaluated against several baselines: • GPT-3.5 and GPT-4 [Achiam et al., 2023], developed by OpenAI, are advanced generative AI models known for their effectiveness in diverse tasks, including …"
+   },
+   {
+    "w": "global",
+    "ipa": "ˈgloʊbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "全球的， 全世界的； 总的， 完整的",
+    "ex": "We fine-tuned this model using a global batch size of 512 and a constant learning rate of 1 × 10−4,"
+   },
+   {
+    "w": "highlight",
+    "ipa": "ˈhaɪˌlaɪt",
+    "pos": "—",
+    "lv": "六级",
+    "m": "照亮；突出；强调",
+    "ex": "This pattern highlights the pivotal importance of large-scale datasets for boosting model proficiency in automatically formalizing natural language questions."
+   },
+   {
+    "w": "illustrate",
+    "ipa": "ˈɪləˌstreɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "说明,阐明",
+    "ex": "D ^ 2 = 154 These examples illustrate the model’s capability to verify proofs and identify hypothesis inconsistencies effectively."
+   },
+   {
+    "w": "impact",
+    "ipa": "ˌɪmˈpækt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "影响",
+    "ex": "Broader Impact The research presented in this paper has the potential to significantly advance automated theorem proving by leveraging large-scale synthetic proof data generated from informal mathematical problems."
+   },
+   {
+    "w": "implement",
+    "ipa": "ˈɪmpləmənt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "实施，执行",
+    "ex": "We implemented dual concurrent proof searches for each synthetic statement—one for the statement Γ ⊢P and another for its negation Γ ⊢¬P."
+   },
+   {
+    "w": "inconsistency",
+    "ipa": "ˌɪnkənˈsɪstənsi",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "矛盾",
+    "ex": "D ^ 2 = 154 These examples illustrate the model’s capability to verify proofs and identify hypothesis inconsistencies effectively."
+   },
+   {
+    "w": "incorporate",
+    "ipa": "ˌɪnˈkɔrpərˌeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "合并；体现",
+    "ex": "incorporating 6,000 warmup steps with synthetic data."
+   },
+   {
+    "w": "incorrect",
+    "ipa": "ˌɪnkərˈɛkt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "不正确的，错误的",
+    "ex": "Typically, language models are applied to human-curated formal statements that are carefully crafted and generally true and provable; however, in our task of proving autoformalized statements, many of the statements produced by …"
+   },
+   {
+    "w": "incorrectly",
+    "ipa": "ˌɪnkərˈɛktli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "错误地,不适当地",
+    "ex": "Matrix.det ![![a, b, c], ![1, 4, 9], ![3, 1, 2]] = D) : D ^ 2 = 154 The initial autoformalization incorrectly assumes that the condition D2 = 154 universally applies to all non-zero real numbers a, b, and c."
+   },
+   {
+    "w": "increasingly",
+    "ipa": "ˌɪnˈkrisɪŋgli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "日益，越来越多地",
+    "ex": "Consequently, the theorem-proof pairs generated by the model become increasingly higher in quality with each iteration."
+   },
+   {
+    "w": "inefficient",
+    "ipa": "ˌɪnɪˈfɪʃənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "效率低的，无能的",
+    "ex": "This approach is inefficient for our purposes."
+   },
+   {
+    "w": "innovation",
+    "ipa": "ˌɪnəˈveɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "改革，创新",
+    "ex": "By directly releasing the code, model, and data, we aim to ensure the responsible use of our work, fostering further innovation and maintaining high standards of data privacy and intellectual property compliance."
+   },
+   {
+    "w": "insight",
+    "ipa": "ˈɪnˌsaɪt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "洞察力，洞悉",
+    "ex": "The key insight from this iterative process is that the model incrementally improves in strength and efficacy after each cycle of refinement and application."
+   },
+   {
+    "w": "integration",
+    "ipa": "ˌɪnəˈgreɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "综合",
+    "ex": "iterations, facilitated by the incremental integration of synthesized data via autoformalization."
+   },
+   {
+    "w": "intellectual",
+    "ipa": "ˌɪnəˈlɛkʧuəl",
+    "pos": "n.；adj.",
+    "lv": "四级",
+    "m": "知识分子；智力的",
+    "ex": "By directly releasing the code, model, and data, we aim to ensure the responsible use of our work, fostering further innovation and maintaining high standards of data privacy and intellectual property compliance."
+   },
+   {
+    "w": "investigation",
+    "ipa": "ˌɪnˌvɛstəˈgeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "调查，调查研究",
+    "ex": "Model miniF2F-valid miniF2F-test iteration 0 38.1% 34.0% iteration 1 45.1% 39.3% iteration 2 49.2% 41.4% iteration 3 54.5% 45.1% iteration 4 59.4% 46.3% 4.3.4 The Effectiveness of Scaling Synthetic Theorem Proving Data Our …"
+   },
+   {
+    "w": "involve",
+    "ipa": "ˌɪnˈvɑlv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "卷入，包含",
+    "ex": "This involves using the DeepSeek-Prover model to attempt proving the formal statement with ’False’ as the conclusion."
+   },
+   {
+    "w": "iterate",
+    "ipa": "ˈɪtəreɪt",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "迭代；重复；反复说；重做",
+    "ex": "This iterative method entails generating formal proofs, fine-tune the model based on successful outcomes, and iterating this process until no additional enhancements are observed."
+   },
+   {
+    "w": "justify",
+    "ipa": "ˈʤəstəˌfaɪ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "证明……正当",
+    "ex": "All validated proofs, whether they justify the original theorems or their negations, are then aggregated to further train the DeepSeek-Prover."
+   },
+   {
+    "w": "known",
+    "ipa": "noʊn",
+    "pos": "adj.；v.",
+    "lv": "专四",
+    "m": "已知的；知名的；大家知道的；知道（know的过去分词）",
+    "ex": "DeepSeek-Prover’s performance was evaluated against several baselines: • GPT-3.5 and GPT-4 [Achiam et al., 2023], developed by OpenAI, are advanced generative AI models known for their effectiveness in diverse tasks, including …"
+   },
+   {
+    "w": "large-scale",
+    "ipa": "ˈlɑrʤˌskeɪl",
+    "pos": "adj.",
+    "lv": "雅思",
+    "m": "大规模的， 大范围的",
+    "ex": "To demonstrate the effectiveness of large-scale autoformalization, we conducted a comparative"
+   },
+   {
+    "w": "leverage",
+    "ipa": "ˈlevərɪdʒ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "利用",
+    "ex": "by leveraging large-scale synthetic proof data"
+   },
+   {
+    "w": "lower",
+    "ipa": "loʊər",
+    "pos": "adj.；v.",
+    "lv": "四级",
+    "m": "较低的；放下",
+    "ex": "This enhancement underscores the utility of the model in accurately scoring and effectively filtering out lower-quality statements."
+   },
+   {
+    "w": "mainly",
+    "ipa": "ˈmeɪnli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "主要地，大体上",
+    "ex": "Currently, our work mainly focuses on algebra and number theory at the middle school and undergraduate levels."
+   },
+   {
+    "w": "maintain",
+    "ipa": "meɪnˈteɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "维持，主张",
+    "ex": "By directly releasing the code, model, and data, we aim to ensure the responsible use of our work, fostering further innovation and maintaining high standards of data privacy and intellectual property compliance."
+   },
+   {
+    "w": "manual",
+    "ipa": "ˈmænjuəl",
+    "pos": "adj.；n.",
+    "lv": "四级",
+    "m": "体力的；手册",
+    "ex": "Manual review of these scores confirmed that the model’s evaluations closely matched human intuition and expectations."
+   },
+   {
+    "w": "mathematical",
+    "ipa": "ˌmæθəˈmætɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "数学的，数学上的",
+    "ex": "In future work, we will aim to expand the diversity of mathematical problems addressed, enhancing the general applicability of our methods in ATP."
+   },
+   {
+    "w": "matrix",
+    "ipa": "ˈmeɪtrɪks",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "[数] 矩阵；模型；[生物][地质] 基质；母体；子宫；[地质] 脉石",
+    "ex": "The formalization employs the Matrix.det function to compute the determinant, utilizing the ![...] notation for lists of lists in Lean to represent the matrix rows."
+   },
+   {
+    "w": "metric",
+    "ipa": "ˈmɛtrɪk",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "公制的，米制的",
+    "ex": "The metric pass@k is employed to denote the scenario where at least one valid proof is discovered among the first k attempts generated by the model."
+   },
+   {
+    "w": "minimize",
+    "ipa": "ˈmɪnəˌmaɪz",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "将…减少； 最小化",
+    "ex": "To minimize resource wastage on unprovable statements and improve the efficiency of the proof search process, we exploited the logical symmetry between a statement and its negation to accelerate proof synthesis."
+   },
+   {
+    "w": "necessity",
+    "ipa": "nəˈsɛsɪti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "必要性；必然性",
+    "ex": "These findings emphasize the significant potential and necessity of systematic data construction for progressing in the field of automated theorem proving."
+   },
+   {
+    "w": "negation",
+    "ipa": "nəˈgeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "否定；否认",
+    "ex": "All validated proofs, whether they justify the original theorems or their negations, are then aggregated to further train the DeepSeek-Prover."
+   },
+   {
+    "w": "newly",
+    "ipa": "ˈnuli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "新近，最近",
+    "ex": "To achieve this, we consistently fine-tune the model with newly generated data."
+   },
+   {
+    "w": "notation",
+    "ipa": "noʊˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "记号， 标记法",
+    "ex": "The formalization employs the Matrix.det function to compute the determinant, utilizing the ![...] notation for lists of lists in Lean to represent the matrix rows."
+   },
+   {
+    "w": "online",
+    "ipa": "ˈɔnˌlaɪn",
+    "pos": "adj.；adv.",
+    "lv": "六级",
+    "m": "联机的；在线的；在线地",
+    "ex": "To compile our dataset, we employed web scraping and careful data cleaning techniques to extract problems from online resources featuring high school and undergraduate exercises, exams, and competitions, resulting in a dataset of …"
+   },
+   {
+    "w": "original",
+    "ipa": "ərˈɪʤənəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "原始的，最初的",
+    "ex": "All validated proofs, whether they justify the original theorems or their negations, are then aggregated to further train the DeepSeek-Prover."
+   },
+   {
+    "w": "overly",
+    "ipa": "ˈoʊvərli",
+    "pos": "adv.；n.",
+    "lv": "专八",
+    "m": "过度地；极度地；(Overly)人名；(英)奥弗利",
+    "ex": "Firstly, many formal statements were overly simplistic."
+   },
+   {
+    "w": "overview",
+    "ipa": "ˈoʊvərvˌju",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "[图情] 综述；概观",
+    "ex": "Figure 1: An overview of our approach."
+   },
+   {
+    "w": "parameter",
+    "ipa": "pərˈæmətər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "参（变）数；参量",
+    "ex": "Although not explicitly designed for theorem proving, their extensive scale and parameter count confer significant capabilities."
+   },
+   {
+    "w": "pipeline",
+    "ipa": "ˈpaɪˌplaɪn",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "管道, 传递途径",
+    "ex": "3.4 Iterative Enhancement Since the entire pipeline heavily relies on the DeepSeek-Prover, enhancing the model’s performance after each iteration is crucial."
+   },
+   {
+    "w": "pivotal",
+    "ipa": "ˈpɪvətəl",
+    "pos": "adj.；n.",
+    "lv": "专八",
+    "m": "关键的；中枢的；枢轴的；关键事物；中心事物",
+    "ex": "This pattern highlights the pivotal importance of large-scale datasets for boosting model proficiency in automatically formalizing natural language questions."
+   },
+   {
+    "w": "predominantly",
+    "ipa": "ˌprɪˈdɑmənənˌtli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "占主导地位地",
+    "ex": "Traditionally, language models have been used predominantly in a brute-force manner to prove theorems—repeatedly attempting until a valid proof is found or computational resources are exhausted."
+   },
+   {
+    "w": "privacy",
+    "ipa": "ˈpraɪvəsi",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "隐私",
+    "ex": "By directly releasing the code, model, and data, we aim to ensure the responsible use of our work, fostering further innovation and maintaining high standards of data privacy and intellectual property compliance."
+   },
+   {
+    "w": "proficiency",
+    "ipa": "prəˈfɪʃənsi",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "熟练，精通",
+    "ex": "This pattern highlights the pivotal importance of large-scale datasets for boosting model proficiency in automatically formalizing natural language questions."
+   },
+   {
+    "w": "prompt",
+    "ipa": "prɑmpt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "敏捷的；v. 敦促",
+    "ex": "A successful proof indicates an invalid hypothesis, prompting exclusion of the statement."
+   },
+   {
+    "w": "property",
+    "ipa": "ˈprɑpərti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "财产，资产；性质",
+    "ex": "By directly releasing the code, model, and data, we aim to ensure the responsible use of our work, fostering further innovation and maintaining high standards of data privacy and intellectual property compliance."
+   },
+   {
+    "w": "proportionally",
+    "ipa": "prəˈpɔrʃənəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "成比例地,相称地",
+    "ex": "By examining subsets of the eight million generated proof data points, we observed that performance on the miniF2F benchmark improves proportionally to the exponential increase in dataset size."
+   },
+   {
+    "w": "provable",
+    "ipa": "ˈpruvəbəl",
+    "pos": "adj.",
+    "lv": "超纲",
+    "m": "可证明的",
+    "ex": "The second issue pertains to formal statements that, although provable, are based on inconsistent hypotheses leading to vacuous conclusions, rendering the conclusions meaningless in mathematics."
+   },
+   {
+    "w": "refine",
+    "ipa": "rɪˈfaɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "改善，精炼",
+    "ex": "Successive iterations not only refine the model’s ability to handle complex proofs but also significantly increase the quality and quantity of the synthetic data produced."
+   },
+   {
+    "w": "release",
+    "ipa": "riˈlis",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "发布，释放",
+    "ex": "By directly releasing the code, model, and data, we aim to ensure the responsible use of our work, fostering further innovation and maintaining high standards of data privacy and intellectual property compliance."
+   },
+   {
+    "w": "remarkable",
+    "ipa": "rɪˈmɑrkəbl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "非凡的，显著的",
+    "ex": "This remarkable advancement can enhance the capabilities of large language models"
+   },
+   {
+    "w": "repeatedly",
+    "ipa": "rɪˈpitɪdli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "重复地；一再",
+    "ex": "Traditionally, language models have been used predominantly in a brute-force manner to prove theorems—repeatedly attempting until a valid proof is found or computational resources are exhausted."
+   },
+   {
+    "w": "researcher",
+    "ipa": "ˈrisərʧər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "研究员",
+    "ex": "This remarkable advancement can enhance the capabilities of large language models in formal theorem proving, contributing to more reliable mathematical proof verification and providing valuable educational resources for students …"
+   },
+   {
+    "w": "respectively",
+    "ipa": "rɪˈspɛktɪvli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "各自地",
+    "ex": "higher than other methods, including GPT-4 which scores 25.41% and 22.95%, respectively."
+   },
+   {
+    "w": "response",
+    "ipa": "rɪˈspɑns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "反应",
+    "ex": "Prompt: Mathematical Problem in Natural Language: {$informal_statement_with_answers} Translate the problem to Lean 4 (only the core declaration): “‘lean4 Response: {$formal_statement} “‘ 3.2 Quality Filtering The quality of the …"
+   },
+   {
+    "w": "responsible",
+    "ipa": "rɪˈspɑnsəbl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "负责任的",
+    "ex": "we aim to ensure the responsible use of our work"
+   },
+   {
+    "w": "reveal",
+    "ipa": "rɪˈvil",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "揭露，揭示",
+    "ex": "Model miniF2F-valid miniF2F-test iteration 0 38.1% 34.0% iteration 1 45.1% 39.3% iteration 2 49.2% 41.4% iteration 3 54.5% 45.1% iteration 4 59.4% 46.3% 4.3.4 The Effectiveness of Scaling Synthetic Theorem Proving Data Our …"
+   },
+   {
+    "w": "scrap",
+    "ipa": "skræp",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "碎片；废料；废弃",
+    "ex": "To compile our dataset, we employed web scraping and careful data cleaning techniques to extract problems from online resources featuring high school and undergraduate exercises, exams, and competitions, resulting in a dataset of …"
+   },
+   {
+    "w": "setup",
+    "ipa": "ˈsɛˌtəp",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "装备, 安装,计划",
+    "ex": "Experiments 4.1 Experimental Setup DeepSeek-Prover is built upon DeepSeekMath-Base 7B model [Shao et al., 2024], a decoder-only transformer [Vaswani et al., 2017] pre-trained on a corpus comprising 120 billion math-related tokens."
+   },
+   {
+    "w": "showcase",
+    "ipa": "ˈʃoʊˌkeɪs",
+    "pos": "n.；vt.",
+    "lv": "六级",
+    "m": "陈列橱，[家具] 陈列柜；显示优点的东西；使展现；在玻璃橱窗陈列",
+    "ex": "It showcases both successful proofs and the identification of inconsistencies during the Hypothesis Rejection stage."
+   },
+   {
+    "w": "simplicity",
+    "ipa": "sɪmˈplɪsɪti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "简单",
+    "ex": "Despite their apparent simplicity, these problems often involve complex solution techniques, making them excellent candidates for constructing proof data to improve theorem-proving capabilities in Large Language Models (LLMs)."
+   },
+   {
+    "w": "solely",
+    "ipa": "ˈsoʊəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "单独地，唯一地",
+    "ex": "The results indicate that models trained with our autoformalized data significantly outperform those trained solely with mathlib data."
+   },
+   {
+    "w": "solution",
+    "ipa": "səˈluʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "解决，解答，解决办法",
+    "ex": "Despite their apparent simplicity, these problems often involve complex solution techniques, making them excellent candidates for constructing proof data to improve theorem-proving capabilities in Large Language Models (LLMs)."
+   },
+   {
+    "w": "source",
+    "ipa": "sɔrs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "来源",
+    "ex": "The FIMO benchmark comprises 149 formal problems which are sourced from the IMO shortlist translated into Lean 4."
+   },
+   {
+    "w": "specifically",
+    "ipa": "spəˈsɪfɪkli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "特别地， 特定地； 明确地， 具体地",
+    "ex": "Specifically, we initialized the DeepSeek-Prover using the DeepSeekMath-Base 7B model [Shao et al., 2024]."
+   },
+   {
+    "w": "structure",
+    "ipa": "ˈstrəkʧər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "结构",
+    "ex": "We then instructed the model to translate these natural language problems into formal statements in Lean 4 using a structured approach."
+   },
+   {
+    "w": "subsequent",
+    "ipa": "ˈsəbsəkwənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "随后的，后来的",
+    "ex": "The updated model is then utilized for subsequent autoformalization iterations."
+   },
+   {
+    "w": "successfully",
+    "ipa": "səkˈsɛsfəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "成功地",
+    "ex": "The model successfully identifies this inconsistency and provides a counterexample to demonstrate the absurdity of the hypothesis:"
+   },
+   {
+    "w": "successive",
+    "ipa": "səkˈsɛsɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "连续的；接连的",
+    "ex": "Successive iterations not only refine the model’s ability to handle complex proofs but also significantly increase the quality and quantity of the synthetic data produced."
+   },
+   {
+    "w": "synthesis",
+    "ipa": "ˈsɪnθəsəs",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "综合，综合物；（化学或生物学物质的）合成；（用电子方式对声音、语音或音乐的）合成",
+    "ex": "Table 4 demonstrates a distinct correlation between the number of iterations in data synthesis and"
+   },
+   {
+    "w": "tan",
+    "ipa": "tæn",
+    "pos": "vi.；vt.；n.",
+    "lv": "四级",
+    "m": "晒成棕褐色；使晒成棕褐色；硝制；棕褐色， 棕黄色； 晒成棕褐色， 晒黑",
+    "ex": "For example, consider the following model-generated statement: example (θ : R) (h0 : ∀z : C, z ^ 2 = -1 ∧z ^ 3 = -1 ∧z ^ 6 = 1) (h1 : Real.tan θ = 2 * Real.sqrt 3) : θ = 5 * Real.pi / 3 Here, the hypothesis z2 = −1 ∧z3 = −1 ∧z6 = …"
+   },
+   {
+    "w": "token",
+    "ipa": "ˈtoʊkən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "辅币；象征",
+    "ex": "Experiments 4.1 Experimental Setup DeepSeek-Prover is built upon DeepSeekMath-Base 7B model [Shao et al., 2024], a decoder-only transformer [Vaswani et al., 2017] pre-trained on a corpus comprising 120 billion math-related tokens."
+   },
+   {
+    "w": "traditionally",
+    "ipa": "trəˈdɪʃənəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "传统上, 照惯例",
+    "ex": "Traditionally, language models have been used predominantly in a brute-force manner to prove theorems—repeatedly attempting until a valid proof is found or computational resources are exhausted."
+   },
+   {
+    "w": "transformer",
+    "ipa": "trænsˈfɔrmər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "变压器，转换器",
+    "ex": "Experiments 4.1 Experimental Setup DeepSeek-Prover is built upon DeepSeekMath-Base 7B model [Shao et al., 2024], a decoder-only transformer [Vaswani et al., 2017] pre-trained on a corpus comprising 120 billion math-related tokens."
+   },
+   {
+    "w": "ultimately",
+    "ipa": "ˈəltəmətli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "最后，最终",
+    "ex": "consistently enhances its performance, ultimately producing superior theorem-proof pairs through"
+   },
+   {
+    "w": "underscore",
+    "ipa": "ˌəndərˈskɔr",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "强调",
+    "ex": "This enhancement underscores the utility of the model in accurately scoring and effectively filtering out lower-quality statements."
+   },
+   {
+    "w": "universally",
+    "ipa": "ˌjunəˈvərsəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "普遍地，一般地",
+    "ex": "Matrix.det ![![a, b, c], ![1, 4, 9], ![3, 1, 2]] = D) : D ^ 2 = 154 The initial autoformalization incorrectly assumes that the condition D2 = 154 universally applies to all non-zero real numbers a, b, and c."
+   },
+   {
+    "w": "unprovability",
+    "ipa": "ˌʌnpruːvəˈbɪləti",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "不可证性",
+    "ex": "The search terminates as soon as a valid proof is found for either, conclusively demonstrating the unprovability of the other."
+   },
+   {
+    "w": "unreasonable",
+    "ipa": "ənˈriznəbəl",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "不讲道理的；过高的",
+    "ex": "Indeed, it is unreasonable to expect the model to validate a false proposition within any reliable proof system."
+   },
+   {
+    "w": "utility",
+    "ipa": "juˈtɪləti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "使用，公共设施",
+    "ex": "This enhancement underscores the utility of the model in accurately scoring and effectively filtering out lower-quality statements."
+   },
+   {
+    "w": "utilize",
+    "ipa": "ˈjutəˌlaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "利用",
+    "ex": "The formalization employs the Matrix.det function to compute the determinant, utilizing the ![...] notation for lists of lists in Lean to represent the matrix rows."
+   },
+   {
+    "w": "verification",
+    "ipa": "ˌvɛrəfəˈkeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "确认",
+    "ex": "This remarkable advancement can enhance the capabilities of large language models in formal theorem proving, contributing to more reliable mathematical proof verification and providing valuable educational resources for students …"
+   },
+   {
+    "w": "wastage",
+    "ipa": "ˈwestɪdʒ",
+    "pos": "n.",
+    "lv": "雅思",
+    "m": "消耗量； 损耗； 减员",
+    "ex": "To minimize resource wastage on unprovable statements and improve the efficiency of the proof search process, we exploited the logical symmetry between a statement and its negation to accelerate proof synthesis."
+   },
+   {
+    "w": "whereas",
+    "ipa": "wɛˈræz",
+    "pos": "conj.",
+    "lv": "六级",
+    "m": "然而， 但是， 尽管",
+    "ex": "Our method successfully proved 4 theorems with 100 attempts per theorem, whereas GPT-4 failed to prove any."
+   }
+  ]
+ },
+ {
+  "sec": "References · 参考文献区用词（正文未出现）",
+  "short": "文献区",
+  "icon": "R",
+  "words": [
+   {
+    "w": "accordingly",
+    "ipa": "əˈkɔrdɪŋli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "因此，所以；照着",
+    "ex": "Customize your evaluation for each problem accordingly, assessing it as ‘excellent‘, ‘good‘, ‘above average‘, ‘fair‘ or ‘poor‘."
+   },
+   {
+    "w": "actively",
+    "ipa": "ˈæktɪvli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "活跃地, 积极地",
+    "ex": "Relevance to Current Research: Does the statement address a problem or concept that is actively being researched in mathematics or related fields?"
+   },
+   {
+    "w": "asymptotic",
+    "ipa": "ˈæsɪmpˌtɔtɪk",
+    "pos": "adj.",
+    "lv": "超纲",
+    "m": "渐近的，渐近线的",
+    "ex": "import Mathlib.Analysis.Asymptotics.AsymptoticEquivalent"
+   },
+   {
+    "w": "blog",
+    "ipa": "blɔg",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "博客， 日志",
+    "ex": "OpenAI blog, 1(8):9, 2019."
+   },
+   {
+    "w": "coefficient",
+    "ipa": "ˌkoʊəˈfɪʃənt",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "协同因素；系数，率",
+    "ex": "Problem in Natural Language: Define two functions, F and f, where F(k) is the binomial coefficient of (k + 2) choose 2, and f(k) is the binomial coefficient of (k + 1) choose 1."
+   },
+   {
+    "w": "commute",
+    "ipa": "kəmˈjut",
+    "pos": "vi.；vt.",
+    "lv": "六级",
+    "m": "乘公交车上下班，经常乘车往返于两地；减； 折合， 折偿； 上下班交通",
+    "ex": "import Mathlib.Algebra.Group.Commute.Basic"
+   },
+   {
+    "w": "correlate",
+    "ipa": "ˈkɔrəˌleɪt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "互相关联的事物",
+    "ex": "Addressing these needs directly correlates with interest."
+   },
+   {
+    "w": "customize",
+    "ipa": "ˈkəstəˌmaɪz",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "定制",
+    "ex": "Customize your evaluation for each problem accordingly, assessing it as ‘excellent‘, ‘good‘, ‘above average‘, ‘fair‘ or ‘poor‘."
+   },
+   {
+    "w": "decompose",
+    "ipa": "ˌdikəmˈpoʊz",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "腐败；分解",
+    "ex": "Decomposing the enigma: Subgoal-based demonstration learning for formal theorem proving. arXiv preprint arXiv:2305.16366, 2023."
+   },
+   {
+    "w": "deduction",
+    "ipa": "dɪˈdəkʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "扣款",
+    "ex": "In Automated Deduction–CADE 28: 28th International Conference on Automated Deduction, Virtual Event, July 12–15, 2021, Proceedings 28, pages 625–635."
+   },
+   {
+    "w": "degenerate",
+    "ipa": "dɪˈʤɛnərˌeɪt",
+    "pos": "vi.；adj.；n.",
+    "lv": "六级",
+    "m": "衰退，堕落，蜕化；衰退的，堕落的；堕落者",
+    "ex": "Problem in Natural Language: Determine all functions f from the set of positive integers into the set of positive integers such that for all x and y there exists a non degenerated triangle with sides of lengths x, f(y) and f(y + …"
+   },
+   {
+    "w": "demonstration",
+    "ipa": "ˌdɛmənˈstreɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "展示；游行",
+    "ex": "Decomposing the enigma: Subgoal-based demonstration learning for formal theorem proving. arXiv preprint arXiv:2305.16366, 2023."
+   },
+   {
+    "w": "digit",
+    "ipa": "ˈdɪʤɪt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "数字；手指或足趾；一指宽",
+    "ex": "import Mathlib.Data.Nat.Digits"
+   },
+   {
+    "w": "dimensional",
+    "ipa": "dɪˈmɛnʃənəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "空间的；尺寸的",
+    "ex": "Problem in Natural Language: Given three 3-dimensional vectors a, b, and c, where the dot product of a and b equals −3, the dot product of a and c equals 4, and the dot product of b and c equals 6."
+   },
+   {
+    "w": "element",
+    "ipa": "ˈɛləmənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "元素，要素",
+    "ex": "The notation of dot products is expanded to the sum of element-wise products by definition."
+   },
+   {
+    "w": "engagement",
+    "ipa": "ɛnˈgeɪʤmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "约会",
+    "ex": "Innovation drives interest and engagement."
+   },
+   {
+    "w": "enigma",
+    "ipa": "ɪˈnɪgmə",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "谜，不可思议的东西",
+    "ex": "Decomposing the enigma: Subgoal-based demonstration learning for formal theorem proving. arXiv preprint arXiv:2305.16366, 2023."
+   },
+   {
+    "w": "existential",
+    "ipa": "ˌɛgˌzɪˈstɛnʃəl",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "存在主义的；有关存在的；存在判断的",
+    "ex": "and the logical structure with existential quantifiers (∃) and implications (→) aligns well with the"
+   },
+   {
+    "w": "faithful",
+    "ipa": "ˈfeɪθfəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "忠诚的；如实的",
+    "ex": "simp [Nat.choose, Nat.mul_sub_left_distrib, Nat.sub_sub, Nat.mul_one] aesop Analysis: The formalization for this combinatorial problem involving binomial coefficients is seman-tically faithful and effective."
+   },
+   {
+    "w": "finite",
+    "ipa": "ˈfaɪˌnaɪt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "有限的；有尽的",
+    "ex": "import Mathlib.Data.Set.Finite"
+   },
+   {
+    "w": "furthermore",
+    "ipa": "ˈfərðərˌmɔr",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "而且，此外",
+    "ex": "Furthermore, there exists a natural number m such that F(m) equals (n −1) times n divided by 2, implying m equals k."
+   },
+   {
+    "w": "gap",
+    "ipa": "gæp",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "差距;缝隙缺口",
+    "ex": "Community Needs and Gaps: Does the statement fill an identified need or gap within the Lean4 community or the broader mathematical community?"
+   },
+   {
+    "w": "garner",
+    "ipa": "ˈgɑrnər",
+    "pos": "v.",
+    "lv": "GRE",
+    "m": "储存",
+    "ex": "Interdisciplinary projects often garner wide interest."
+   },
+   {
+    "w": "generalization",
+    "ipa": "ˌʤɛnərəlɪˈzeɪʃən",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "一般化",
+    "ex": "Int: An inequality benchmark for evaluating generalization in theorem proving. arXiv preprint arXiv:2007.02924, 2020."
+   },
+   {
+    "w": "generic",
+    "ipa": "ʤəˈnɛrɪk",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "【生物】 属的， 类的； 一般的， 普通的",
+    "ex": "Isabelle a Generic Theorem Prover."
+   },
+   {
+    "w": "identity",
+    "ipa": "aɪˈdɛntəˌti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "身份",
+    "ex": "The final answer is the identity function f(x) = x."
+   },
+   {
+    "w": "implication",
+    "ipa": "ˌɪmpləˈkeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "含义，暗示",
+    "ex": "and the logical structure with existential quantifiers (∃) and implications (→) aligns well with the"
+   },
+   {
+    "w": "imply",
+    "ipa": "ˌɪmˈplaɪ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "意味；暗示",
+    "ex": "Furthermore, there exists a natural number m such that F(m) equals (n −1) times n divided by 2, implying m equals k."
+   },
+   {
+    "w": "induction",
+    "ipa": "ˌɪnˈdəkʃən",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "就职；归纳推理",
+    "ex": "Formal Proof: theorem induction_1pxpownlt1pnx (x : R) (n : N) (h0 : -1 < x) (h1 : 0 < n)"
+   },
+   {
+    "w": "inequality",
+    "ipa": "ˌɪnɪkˈwɑləti",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "不平等；不同；不平均",
+    "ex": "Int: An inequality benchmark for evaluating generalization in theorem proving. arXiv preprint arXiv:2007.02924, 2020."
+   },
+   {
+    "w": "infinite",
+    "ipa": "ˈɪnfənət",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "无限的",
+    "ex": "and Set.Ioi 1 denotes an open-infinite interval begins at 1."
+   },
+   {
+    "w": "innovative",
+    "ipa": "ˈɪnəˌveɪtɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "创新的， 革新的",
+    "ex": "Innovativeness: How innovative is the statement?"
+   },
+   {
+    "w": "instance",
+    "ipa": "ˈɪnstəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "情况，例子",
+    "ex": "import Mathlib.Topology.Instances.NNReal"
+   },
+   {
+    "w": "integer",
+    "ipa": "ˈɪntəʤər",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "[数] 整数；整体；完整的事物",
+    "ex": "Problem in Natural Language: Prove that for every positive integer n, there exists a fraction a b where a and b are integers satisfying 0 < b ⩽√n + 1 and √n ⩽a b ⩽√n + 1."
+   },
+   {
+    "w": "integrate",
+    "ipa": "ˈɪnəˌgreɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "成为一体， 合并",
+    "ex": "Thor: Wielding hammers to integrate language models and automated theorem provers."
+   },
+   {
+    "w": "interdisciplinary",
+    "ipa": "ˌɪntərˈdɪsəpləˌnɛri",
+    "pos": "adj.",
+    "lv": "GRE",
+    "m": "跨学科的",
+    "ex": "Interdisciplinary Potential: Does the statement offer opportunities for interdisciplinary research, connecting mathematics with other fields such as computer science, physics, or biology?"
+   },
+   {
+    "w": "irrational",
+    "ipa": "ˌɪˈræʃənəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "不合理的，不理性的",
+    "ex": "import Mathlib.Data.Real.Irrational"
+   },
+   {
+    "w": "justification",
+    "ipa": "ˌʤəstəfəˈkeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "正当的理由， 借口",
+    "ex": "You should respond in the following format for each statement: “‘ Translate the code to natural language: (Detailed explanation of the informal statement, including any relevant background information, assumptions, and …"
+   },
+   {
+    "w": "learner",
+    "ipa": "ˈlərnər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "学习者, 初学者",
+    "ex": "Language models are unsupervised multitask learners."
+   },
+   {
+    "w": "log",
+    "ipa": "lɔg",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "原木，木料",
+    "ex": "import Mathlib.Analysis.SpecialFunctions.Log.Basic"
+   },
+   {
+    "w": "logic",
+    "ipa": "ˈlɑʤɪk",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "逻辑",
+    "ex": "Holist: An environment for machine learning of higher order logic theorem proving."
+   },
+   {
+    "w": "multiplicity",
+    "ipa": "ˌməltəˈplɪsɪti",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "多样性",
+    "ex": "import Mathlib.Data.Nat.Multiplicity"
+   },
+   {
+    "w": "norm",
+    "ipa": "nɔrm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "标准，规范；平均数",
+    "ex": "Formal Proof: theorem amc12b_2021_p4 (m a : N) (h0 : 0 < m ∧0 < a) (h1 : ↑m / ↑a = (3 : R) / 4) : (84 * ↑m + 70 * ↑a) / (↑m + ↑a) = (76 : R) := by have h2 := h0.1.ne’ have h3 := h0.2.ne’ field_simp at h2 h3 ⊢ ring_nf norm_num rw …"
+   },
+   {
+    "w": "opportunity",
+    "ipa": "ˌɑpərˈtunəti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "机会，良机",
+    "ex": "Interdisciplinary Potential: Does the statement offer opportunities for interdisciplinary research, connecting mathematics with other fields such as computer science, physics, or biology?"
+   },
+   {
+    "w": "option",
+    "ipa": "ˈɔpʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "选择",
+    "ex": "set_option trace.aesop.proof true"
+   },
+   {
+    "w": "parity",
+    "ipa": "ˈpɛrəti",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "同等， 相等",
+    "ex": "import Mathlib.Data.Int.Parity"
+   },
+   {
+    "w": "prefix",
+    "ipa": "ˈprifɪks",
+    "pos": "n.；v.",
+    "lv": "专四",
+    "m": "前缀；加前缀；将某事物加在前面",
+    "ex": "We verify the generated Lean 4 code with the following code as the prefix:"
+   },
+   {
+    "w": "prime",
+    "ipa": "praɪm",
+    "pos": "adj.；n.",
+    "lv": "四级",
+    "m": "首要的；春，青春",
+    "ex": "import Mathlib.Data.PNat.Prime"
+   },
+   {
+    "w": "proceeding",
+    "ipa": "prəˈsidɪŋ",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "程序，行动，事项",
+    "ex": "In Automated Deduction–CADE 28: 28th International Conference on Automated Deduction, Virtual Event, July 12–15, 2021, Proceedings 28, pages 625–635."
+   },
+   {
+    "w": "quantifier",
+    "ipa": "ˈkwɑntɪfaɪɚ",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "[数][语] 量词；数量词；精于计算的人",
+    "ex": "and the logical structure with existential quantifiers (∃) and implications (→) aligns well with the"
+   },
+   {
+    "w": "ratio",
+    "ipa": "ˈreɪʃiˌoʊ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比，比率",
+    "ex": "The ratio of the number of students in the morning class to the number of students in the afternoon class is 3 4."
+   },
+   {
+    "w": "reduction",
+    "ipa": "rɪˈdəkʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "减少，减小，缩减",
+    "ex": "Trigo: Benchmarking formal mathematical proof reduction for generative language models. arXiv preprint arXiv:2310.10180, 2023."
+   },
+   {
+    "w": "relevance",
+    "ipa": "ˈrɛləvəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "关联；适当；中肯",
+    "ex": "Relevance to Current Research: Does the statement address a problem or concept that is actively being researched in mathematics or related fields?"
+   },
+   {
+    "w": "reliability",
+    "ipa": "riˌlaɪəˈbɪləti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "可靠性",
+    "ex": "ensuring high accuracy and reliability. Although large language models (LLMs)"
+   },
+   {
+    "w": "retrieval",
+    "ipa": "rɪˈtrivəl",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "检索；恢复；取回；拯救",
+    "ex": "Leandojo: Theorem proving with retrieval-augmented language models."
+   },
+   {
+    "w": "self",
+    "ipa": "sɛlf",
+    "pos": "n.；adj.；vt.；vi.",
+    "lv": "四级",
+    "m": "自己，自我；本质；私心；同一的；使自花授精；使近亲繁殖；自花授精",
+    "ex": "simp_all only [ge_iff_le, gt_iff_lt, mul_one, mul_add, mul_comm, mul_assoc, mul_left_comm] use n + 1 constructor exact Nat.lt_succ_self n use 1 ring_nf nlinarith A.3.2 Results on FIMO Dataset Example a."
+   },
+   {
+    "w": "sketch",
+    "ipa": "skɛʧ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "略图；速写；概略",
+    "ex": "Draft, sketch, and prove: Guiding formal theorem provers with informal proofs. arXiv preprint arXiv:2210.12283, 2022b."
+   },
+   {
+    "w": "sum",
+    "ipa": "səm",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "总数；金额；共计",
+    "ex": "The notation of dot products is expanded to the sum of element-wise products by definition."
+   },
+   {
+    "w": "trace",
+    "ipa": "treɪs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "痕迹",
+    "ex": "set_option trace.aesop.proof true"
+   },
+   {
+    "w": "vector",
+    "ipa": "ˈvɛktər",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "矢量；飞机航线",
+    "ex": "Problem in Natural Language: Given three 3-dimensional vectors a, b, and c, where the dot product of a and b equals −3, the dot product of a and c equals 4, and the dot product of b and c equals 6."
+   },
+   {
+    "w": "virtual",
+    "ipa": "ˈvərʧuəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "虚拟的",
+    "ex": "In Automated Deduction–CADE 28: 28th International Conference on Automated Deduction, Virtual Event, July 12–15, 2021, Proceedings 28, pages 625–635."
+   },
+   {
+    "w": "volume",
+    "ipa": "ˈvɑljum",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "卷，册；容积；音量",
+    "ex": "In Proceedings of the AAAI Conference on Artificial Intelligence, volume 35, pages 6279–6287, 2021."
+   },
+   {
+    "w": "wield",
+    "ipa": "wild",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "挥（剑）；行使",
+    "ex": "Thor: Wielding hammers to integrate language models and automated theorem provers."
+   }
+  ]
+ }
+];
+// lv 一律写中文档名（十一档平级，2026-09-30 定案；旧短码由 build 脚本自动翻译）
+const LVCLS={"四级":"t4","六级":"t6","考研":"tk","考博":"tp","专四":"tm4","专八":"tm8","雅思":"ty","托福":"tt","GRE":"tg","超纲":"tsuper"};
+const LVNAME={"四级":"四级","六级":"六级","考研":"考研","考博":"考博","专四":"专业四级","专八":"专业八级","雅思":"雅思","托福":"托福","GRE":"GRE","超纲":"超纲（大纲未收）"};
+const LVSHORT={"四级":"4","六级":"6","考研":"考研","考博":"考博","专四":"专四","专八":"专八","雅思":"雅思","托福":"托福","GRE":"GRE","超纲":"★超纲"};
+const LVORDER=["四级","六级","考研","考博","专四","专八","雅思","托福","GRE","超纲"];
+
+let mode="sec";
+let theme="theme-mag"; // 章节视图固定杂志风；按级别视图固定暗色大页
+
+function cardHTML(x,sec){
+  const from = mode==="lv" ? `<div class="from">出自 ${sec}</div>` : "";
+  if(theme==="theme-paper"){
+    return `<div class="word"><span class="w">${x.w}<span class="ipa">/${x.ipa}/</span><i class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</i></span>
+      <span><span class="pos">${x.pos}</span><span class="m">${x.m}</span>${from}</span>
+      <span class="ex">${x.ex}</span></div>`;
+  }
+  if(theme==="theme-mag") return "";
+  return `<div class="card lv${x.lv}" data-say="${x.w}"><span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span><span class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</span>
+    <div class="m">${x.pos} ${x.m}</div><div class="ex">${x.ex}</div>${from}</div>`;
+}
+function magRow(x,sec){
+  return `<tr data-say="${x.w}"><td class="w"><span class="hwband">${x.w}</span><span class="ipa">/${x.ipa}/</span></td>
+    <td class="lv"><b class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</b></td>
+    <td class="m">${x.pos} ${x.m}${mode==="lv"?`<span class="from">出自 ${sec}</span>`:""}</td>
+    <td class="ex">${x.ex}</td></tr>`;
+}
+function groupHTML(title,icon,inner){
+  if(theme==="theme-mag") return `<div class="sec"><h2>${title}</h2><table>${inner}</table></div>`;
+  if(theme==="theme-dark"||theme==="theme-fresh")
+    return `<div class="sec"><h2>${theme==="theme-dark"?"":"<span class='n'>"+icon+"</span>"}${title}</h2><div class="grid">${inner}</div></div>`;
+  return `<div class="sec"><h2>${title}</h2>${inner}</div>`;
+}
+
+function render(){
+  document.body.classList.toggle("lv-mode",mode==="lv");
+  // 注意：必须用 classList.add，不能整体赋值 className —— 否则会抹掉 body.night，
+  // 而夜晚章节视图依赖 body.night.theme-mag 这条 CSS，抹掉后点「按章节」会静默退回白天。
+  if(mode==="sec")document.body.classList.add("theme-mag");
+  const app=document.getElementById("app");
+  let html="";
+  if(mode==="sec"){
+    for(const s of DATA){
+      html += theme==="theme-mag"
+        ? groupHTML(s.sec,s.icon,s.words.map(x=>magRow(x,s.short)).join(""))
+        : groupHTML(s.sec,s.icon,s.words.map(x=>cardHTML(x,s.short)).join(""));
+    }
+  }else{
+    // 学习模式同款暗色大页：每个级别一块
+    const dot={"四级":"var(--c4)","六级":"var(--c6)","考研":"var(--ckaon)","考博":"var(--cphd)","专四":"var(--cm4)","专八":"var(--cm8)","雅思":"var(--cy)","托福":"var(--ct)","GRE":"var(--cg)","超纲":"var(--csuper)"};
+    html=LVORDER.map(lv=>{
+      const items=[];
+      DATA.forEach(s=>s.words.forEach(x=>{if(x.lv===lv)items.push([x,s.short])}));   // ov 已废除（2026-09-30）
+      if(!items.length)return"";   // 本词表里没有这一档 → 不出空面板
+      items.sort((a,b)=>a[0].w.localeCompare(b[0].w));
+      const cls={"六级":"l6","考研":"lk","考博":"lp","专四":"lm4","专八":"lm8","雅思":"ly","托福":"lt","GRE":"lg","超纲":"lsuper"}[lv]||"";
+      return `<div class="lvslide ${cls}">
+        <div class="ltitle"><span style="color:${dot[lv]}">${LVNAME[lv]}</span>词汇<small>${items.length} words · 按字母排序 · 悬停看原文例句 · 点击发音</small></div>
+        <div class="sgrid">${items.map(([x,sec])=>`
+          <div class="lcard" data-say="${x.w}">
+            <span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span>
+            <div class="m">${x.pos} ${x.m}</div>
+            <div class="ex">${x.ex}</div>
+            <div class="from">出自 ${sec}</div>
+          </div>`).join("")}</div></div>`;
+    }).join("");
+  }
+  app.innerHTML=html;
+}
+function syncToolbar(){
+  document.getElementById("v-sec").classList.toggle("on",mode==="sec");
+  document.getElementById("v-lv").classList.toggle("on",mode==="lv");
+}
+document.getElementById("v-sec").onclick=()=>{mode="sec";theme="theme-mag";syncToolbar();render();};
+document.getElementById("v-lv").onclick=()=>{mode="lv";syncToolbar();render();};
+
+// 朗读：多引擎在线 TTS 自动降级（有道 / Polly / 百度 / 谷歌），可按下拉切换主音色
+// 合并自 .agents 有道源版 与 workbuddy Polly 源版 —— 单文件同时支持两套引擎
+const VOICE_MAP={
+  yd1:{src:"yd",label:"美式 · 有道（推荐）"},
+  yd0:{src:"yd",label:"英式 · 有道"},
+  Brian:{src:"se",label:"Brian · 英式男声"},
+  Amy:{src:"se",label:"Amy · 英式女声"},
+  Matthew:{src:"se",label:"Matthew · 美式男声"},
+  Joanna:{src:"se",label:"Joanna · 美式女声"},
+  Salli:{src:"se",label:"Salli · 美式女声"},
+  Ivy:{src:"se",label:"Ivy · 美式童声"},
+  bd:{src:"bd",label:"百度翻译 · 女声"},
+  gg:{src:"gg",label:"谷歌翻译"},
+  mute:{src:"mute",label:"🔇 不朗读"}
+};
+const VOICE_ORDER=["yd1","yd0","Brian","Amy","Matthew","Joanna","Salli","Ivy","bd","gg","mute"];
+let ONLINE="yd1"; // 默认有道 · 美音（保留 .agents 版行为）
+try{const sv=localStorage.getItem("vocab_voice");if(sv&&VOICE_MAP[sv])ONLINE=sv;}catch(e){}
+const ENG=["yd","se","bd","gg"];               // 全部可选引擎
+const ENG_NAME={yd:"有道",se:"Polly",bd:"百度",gg:"谷歌"};
+const POLLY_VOICES={Brian:1,Amy:1,Matthew:1,Joanna:1,Salli:1,Ivy:1};
+let SRC_ORDER=ENG.slice(),srcIdx=0;           // 降级顺序：按所选音色的主引擎优先
+function applyVoiceOrder(){
+  const want=VOICE_MAP[ONLINE].src;
+  const i=ENG.indexOf(want);
+  SRC_ORDER=i<0?ENG.slice():ENG.slice(i).concat(ENG.slice(0,i));
+}
+applyVoiceOrder();
+let audio=null;
+function ttsURL(src,t){
+  const q=encodeURIComponent(t);
+  if(src==="yd")return `https://dict.youdao.com/dictvoice?type=${ONLINE==="yd0"?"0":"1"}&audio=${q}`;
+  if(src==="se")return `https://api.streamelements.com/kappa/v2/speech?voice=${POLLY_VOICES[ONLINE]?ONLINE:"Brian"}&text=${q}`;
+  if(src==="bd")return `https://fanyi.baidu.com/gettts?lan=en&text=${q}&spd=5&source=web`;
+  return `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q=${q}`;
+}
+function fillVoiceSel(){
+  const sel=document.getElementById("voiceSel");if(!sel)return;
+  sel.innerHTML=VOICE_ORDER.map(v=>`<option value="${v}" ${ONLINE===v?"selected":""}>${VOICE_MAP[v].label}</option>`).join("");
+  const st=document.getElementById("srcState");
+  if(st)st.textContent=ENG_NAME[SRC_ORDER[srcIdx]]||"";
+}
+fillVoiceSel();
+let saying=0; // 防并发
+function say(t){
+  if(ONLINE==="mute"){try{if(audio){audio.pause();audio=null}}catch(e){}return}
+  const my=++saying;
+  trySrc(0,t,my);
+}
+function trySrc(i,t,my){
+  if(my!==saying)return;
+  if(i>=SRC_ORDER.length){const st=document.getElementById("srcState");if(st)st.textContent="无可用源";return}
+  const src=SRC_ORDER[i];
+  const st=document.getElementById("srcState");
+  if(st)st.textContent="尝试 "+ENG_NAME[src];
+  try{if(audio){audio.pause();audio=null}}catch(e){}
+  const a=new Audio(ttsURL(src,t));
+  let ok=false,advanced=false;
+  const advance=()=>{ if(!ok&&!advanced&&my===saying){advanced=true;trySrc(i+1,t,my);} };
+  a.addEventListener("playing",()=>{ok=true;
+    if(srcIdx!==i){srcIdx=i;fillVoiceSel();} // 记住能用的源
+  });
+  a.addEventListener("error",advance);
+  audio=a;
+  a.play().catch(advance);
+  setTimeout(()=>{ if(!ok&&my===saying&&a.paused)advance(); },2500);
+}
+document.getElementById("voiceSel").addEventListener("change",e=>{
+  ONLINE=e.target.value; applyVoiceOrder(); srcIdx=0; // 换音色重新从头试源
+  try{localStorage.setItem("vocab_voice",ONLINE);}catch(e){}
+  if(ONLINE!=="mute") say("Hello, let us learn new words together.");
+});
+/* ---- 白天 / 夜晚 ---- */
+let style="day";
+try{const s=localStorage.getItem("vocab_style");if(["day","night","paper"].indexOf(s)>=0)style=s;}catch(e){}
+function applyStyle(){
+  document.body.classList.toggle("night",style==="night");
+  document.body.classList.toggle("paper",style==="paper");
+  ["day","night","paper"].forEach(k=>{const b=document.getElementById("st-"+k);if(b)b.classList.toggle("on",style===k);});
+  if(typeof studyEl!=="undefined"&&studyEl)studyEl.classList.toggle("day",style!=="night");
+}
+document.getElementById("st-day").onclick=()=>{style="day";try{localStorage.setItem("vocab_style","day")}catch(e){};applyStyle();};
+document.getElementById("st-night").onclick=()=>{style="night";try{localStorage.setItem("vocab_style","night")}catch(e){};applyStyle();};
+document.getElementById("st-paper").onclick=()=>{style="paper";try{localStorage.setItem("vocab_style","paper")}catch(e){};applyStyle();};
+document.getElementById("app").addEventListener("click",e=>{
+  const el=e.target.closest("[data-say]"); if(el) say(el.dataset.say);
+});
+
+/* ---------- 学习模式：按章节分页的 PPT 翻页 ---------- */
+const PER_PAGE = 12; // 每页最多词数，放不下自动续页
+let slides=[],si=0;
+function buildSlides(){
+  slides=[];
+  for(const s of DATA){
+    for(let i=0;i<s.words.length;i+=PER_PAGE){
+      slides.push({sec:s.sec,page:Math.floor(i/PER_PAGE)+1,
+        pages:Math.ceil(s.words.length/PER_PAGE),words:s.words.slice(i,i+PER_PAGE)});
+    }
+  }
+}
+const studyEl=document.getElementById("study");
+let open=false;
+function showSlide(){
+  const sl=slides[si];
+  const title=sl.pages>1 ? `${sl.sec}（第 ${sl.page}/${sl.pages} 页）` : sl.sec;
+  document.getElementById("sPage").innerHTML =
+    `<div class="stitle">${title}<small>${sl.words.length} words</small></div>
+     <div class="sgrid">${sl.words.map(x=>`
+       <div class="scard" data-say="${x.w}">
+         <span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span><span class="tag ${LVCLS[x.lv]}" style="font-size:11px;padding:2px 8px">${LVSHORT[x.lv]}</span>
+         <div class="m">${x.pos} ${x.m}</div>
+         <div class="ex">${x.ex}</div>
+       </div>`).join("")}</div>`;
+  document.getElementById("sIdx").textContent=(si+1)+" / "+slides.length;
+  document.getElementById("sbar").style.width=((si+1)/slides.length*100)+"%";
+  document.getElementById("sPrev").disabled=si===0;
+  document.getElementById("sNext").disabled=si===slides.length-1;
+  studyEl.querySelector(".sbody").scrollTop=0;
+}
+function studyOpen(){ buildSlides(); si=0; open=true; studyEl.classList.add("on"); applyStyle(); showSlide(); }
+function studyClose(){ open=false; studyEl.classList.remove("on"); }
+function next(){ if(si<slides.length-1){ si++; showSlide(); } }
+function prev(){ if(si>0){ si--; showSlide(); } }
+document.getElementById("v-study").onclick=()=>open?studyClose():studyOpen();
+document.getElementById("sClose").onclick=studyClose;
+document.getElementById("sExit").onclick=studyClose;
+document.getElementById("sNext").onclick=next;
+document.getElementById("sPrev").onclick=prev;
+studyEl.addEventListener("click",e=>{
+  const el=e.target.closest("[data-say]"); if(el) say(el.dataset.say);
+});
+document.addEventListener("keydown",e=>{
+  if(!open) return;
+  if(e.code==="Space"||e.key==="ArrowRight"||e.key==="PageDown"){ e.preventDefault(); next(); }
+  else if(e.key==="ArrowLeft"||e.key==="PageUp"){ prev(); }
+  else if(e.key==="Escape"){ studyClose(); }
+});
+applyStyle(); syncToolbar(); render();
+</script>
+<a href="../../vocab.html" target="_self" style="position:fixed;left:14px;bottom:14px;z-index:9999;font:600 13px/1 -apple-system,system-ui,sans-serif;color:#fff;background:rgba(0,0,0,.55);padding:8px 12px;border-radius:20px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.25)">← 返回索引</a></body>
+</html>

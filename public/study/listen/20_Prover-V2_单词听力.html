@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>18_Prover-V2 单词连播 · 单词连播</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{min-height:100vh;display:flex;justify-content:center;font-family:"PingFang SC",-apple-system,sans-serif;background:#111}
+
+  /* ============ 皮肤 ============ */
+  .app{
+    --h:356;
+    --bg-a:#fcf6da; --bg-b:#f8ecb0; --bg-c:#eeda8e;
+    --card-bg:rgba(255,252,240,.35); --card-br:rgba(255,255,255,.9);
+    --disc-a:#eeda84; --disc-b:#d9bd5e;
+    --groove:rgba(150,110,30,.10); --dshadow:rgba(160,120,30,.35);
+    --arm-a:rgba(255,255,255,.95); --arm-b:rgba(255,255,255,.7);
+    --tx:#2f2416; --tx2:#6b5a35; --tx3:#8a7850;
+    --bar-bg:rgba(90,70,30,.25); --bar-fill:#2f2416;
+    --sheet-bg:rgba(255,252,240,.97); --accent:#e4574f;
+  }
+  .app[data-skin="qq"]{
+    --bg-a:hsl(356 85% 88%); --bg-b:hsl(352 70% 76%); --bg-c:hsl(348 62% 66%);
+    --card-bg:rgba(255,255,255,.22); --card-br:rgba(255,255,255,.75);
+    --disc-a:hsl(356 62% 66%); --disc-b:hsl(354 55% 58%);
+    --groove:rgba(120,30,30,.10); --dshadow:rgba(120,40,40,.45);
+    --tx:#332424; --tx2:#5a4644; --tx3:#6b5450;
+    --bar-bg:rgba(70,40,40,.25); --bar-fill:#3a2c2c;
+    --sheet-bg:rgba(255,252,250,.96);
+  }
+  .app[data-skin="nred"]{           /* 网易云 · 红 */
+    --bg-a:#fdeeed; --bg-b:#fbdcd9; --bg-c:#f6c6c1;
+    --card-bg:rgba(255,255,255,.42); --card-br:rgba(255,255,255,.9);
+    --disc-a:#e0584f; --disc-b:#c0342c;
+    --groove:rgba(150,40,30,.10); --dshadow:rgba(190,70,60,.35);
+    --tx:#3a1f1c; --tx2:#7a524e; --tx3:#9b7a76;
+    --bar-bg:rgba(120,50,40,.22); --bar-fill:#c0342c;
+    --sheet-bg:rgba(255,246,245,.97); --accent:#d33a31;
+  }
+  .app[data-skin="qqgreen"]{        /* QQ音乐 · 绿 */
+    --bg-a:#eafaf2; --bg-b:#d6f4e6; --bg-c:#bcead6;
+    --card-bg:rgba(255,255,255,.45); --card-br:rgba(255,255,255,.9);
+    --disc-a:#3fce8c; --disc-b:#22a96c;
+    --groove:rgba(20,110,70,.10); --dshadow:rgba(30,150,100,.32);
+    --tx:#123328; --tx2:#4a7a66; --tx3:#7ba191;
+    --bar-bg:rgba(30,110,80,.2); --bar-fill:#1f9a63;
+    --sheet-bg:rgba(246,255,251,.97); --accent:#31c27c;
+  }
+  .app[data-skin="kugou"]{          /* 酷狗 · 蓝 */
+    --bg-a:#e9f6fe; --bg-b:#d3edfd; --bg-c:#b6e0fa;
+    --card-bg:rgba(255,255,255,.45); --card-br:rgba(255,255,255,.9);
+    --disc-a:#4cc0f7; --disc-b:#1a86d0;
+    --groove:rgba(20,90,150,.10); --dshadow:rgba(30,120,190,.32);
+    --tx:#0f2b40; --tx2:#4a6c86; --tx3:#7a99b0;
+    --bar-bg:rgba(30,90,140,.2); --bar-fill:#1a86d0;
+    --sheet-bg:rgba(245,251,255,.97); --accent:#1a9bf0;
+  }
+  .app[data-skin="xiami"]{          /* 虾米 · 橙（白底） */
+    --bg-a:#fff6ef; --bg-b:#ffe9d8; --bg-c:#ffd7ba;
+    --card-bg:rgba(255,255,255,.5); --card-br:rgba(255,255,255,.95);
+    --disc-a:#ff8a4c; --disc-b:#e85f1f;
+    --groove:rgba(160,80,20,.10); --dshadow:rgba(220,120,50,.32);
+    --tx:#3d2415; --tx2:#8a5f42; --tx3:#a8856a;
+    --bar-bg:rgba(140,80,30,.2); --bar-fill:#e85f1f;
+    --sheet-bg:rgba(255,250,245,.97); --accent:#ff5a1f;
+  }
+  .app[data-skin="netease"]{
+    --bg-a:#3a2429; --bg-b:#241619; --bg-c:#150d10;
+    --card-bg:rgba(255,255,255,.06); --card-br:rgba(255,255,255,.16);
+    --disc-a:#1b1b1b; --disc-b:#0d0d0d;
+    --groove:rgba(255,255,255,.055); --dshadow:rgba(0,0,0,.6);
+    --tx:#f2ecec; --tx2:rgba(240,232,232,.72); --tx3:rgba(240,232,232,.5);
+    --bar-bg:rgba(255,255,255,.22); --bar-fill:#f2ecec;
+    --sheet-bg:rgba(28,20,20,.96); --accent:#ec4141;
+  }
+  .app[data-skin="vinyl"]{
+    --bg-a:#eef0f6; --bg-b:#e3e6f0; --bg-c:#d6dae8;
+    --card-bg:rgba(255,255,255,.55); --card-br:#fff;
+    --disc-a:#1c1c1c; --disc-b:#0c0c0c;
+    --groove:rgba(255,255,255,.05); --dshadow:rgba(40,50,90,.4);
+    --arm-a:rgba(255,255,255,.95); --arm-b:#c9c9d8;
+    --tx:#232333; --tx2:#5b5b76; --tx3:#7b7b95;
+    --bar-bg:rgba(40,40,80,.18); --bar-fill:#35354a;
+    --sheet-bg:rgba(252,252,255,.96); --accent:#6b6bf2;
+  }
+  .app[data-skin="gold"]{
+    --bg-a:#f7ead0; --bg-b:#efdcbb; --bg-c:#e2c795;
+    --card-bg:rgba(255,255,255,.38); --card-br:rgba(255,255,255,.8);
+    --disc-a:#4a341c; --disc-b:#2e1f0f;
+    --groove:rgba(255,235,200,.07); --dshadow:rgba(90,60,20,.45);
+    --arm-a:rgba(255,250,240,.95); --arm-b:rgba(240,225,200,.72);
+    --tx:#3a2a12; --tx2:#6b5430; --tx3:#8a7048;
+    --bar-bg:rgba(80,55,20,.22); --bar-fill:#4a3418;
+    --sheet-bg:rgba(255,250,240,.97); --accent:#b8860b;
+  }
+  .app[data-skin="sakura"]{         /* 樱花粉 */
+    --bg-a:#fdeef3; --bg-b:#f9d7e2; --bg-c:#f4c2d4;
+    --card-bg:rgba(255,255,255,.42); --card-br:rgba(255,255,255,.9);
+    --disc-a:#f08cb2; --disc-b:#e0618f;
+    --groove:rgba(160,50,90,.10); --dshadow:rgba(210,90,140,.35);
+    --tx:#3d1f2b; --tx2:#7a4f61; --tx3:#9b7486;
+    --bar-bg:rgba(140,60,95,.2); --bar-fill:#e0618f;
+    --sheet-bg:rgba(255,247,250,.97); --accent:#e8638c;
+  }
+  .app[data-skin="matcha"]{         /* 抹茶（同全站主题色） */
+    --bg-a:#f1f4ea; --bg-b:#e4ecd7; --bg-c:#d5e2c2;
+    --card-bg:rgba(255,255,255,.5); --card-br:rgba(255,255,255,.92);
+    --disc-a:#93b073; --disc-b:#66854a;
+    --groove:rgba(70,100,40,.10); --dshadow:rgba(100,130,70,.32);
+    --tx:#2c3a1e; --tx2:#5d7247; --tx3:#84976d;
+    --bar-bg:rgba(80,110,50,.2); --bar-fill:#5f7d46;
+    --sheet-bg:rgba(250,252,246,.97); --accent:#6b8e4e;
+  }
+  .app[data-skin="mint"]{           /* 薄荷 */
+    --bg-a:#eefaf7; --bg-b:#daf2ec; --bg-c:#c2e8df;
+    --card-bg:rgba(255,255,255,.48); --card-br:rgba(255,255,255,.92);
+    --disc-a:#55c7b2; --disc-b:#2ba58f;
+    --groove:rgba(20,110,95,.10); --dshadow:rgba(40,150,130,.3);
+    --tx:#12332c; --tx2:#4a7368; --tx3:#7a998f;
+    --bar-bg:rgba(30,110,95,.2); --bar-fill:#2ba58f;
+    --sheet-bg:rgba(247,253,251,.97); --accent:#2bbfa3;
+  }
+  .app[data-skin="ocean"]{          /* 海盐蓝 */
+    --bg-a:#eef5fc; --bg-b:#dcebf9; --bg-c:#c5ddf3;
+    --card-bg:rgba(255,255,255,.48); --card-br:rgba(255,255,255,.92);
+    --disc-a:#63a1dd; --disc-b:#3a6fb8;
+    --groove:rgba(30,80,150,.10); --dshadow:rgba(60,110,180,.32);
+    --tx:#122a44; --tx2:#4a6886; --tx3:#7a93ab;
+    --bar-bg:rgba(40,90,150,.2); --bar-fill:#3a6fb8;
+    --sheet-bg:rgba(247,251,255,.97); --accent:#3a7bd5;
+  }
+  .app[data-skin="grape"]{          /* 星空紫 */
+    --bg-a:#f2eefa; --bg-b:#e5dcf6; --bg-c:#d4c6ee;
+    --card-bg:rgba(255,255,255,.45); --card-br:rgba(255,255,255,.9);
+    --disc-a:#9a7fda; --disc-b:#7257bd;
+    --groove:rgba(80,50,150,.10); --dshadow:rgba(120,90,190,.32);
+    --tx:#2c2144; --tx2:#5f4f80; --tx3:#8677a3;
+    --bar-bg:rgba(90,60,160,.2); --bar-fill:#7257bd;
+    --sheet-bg:rgba(251,249,255,.97); --accent:#7c5cd6;
+  }
+  .app[data-skin="amusic"]{         /* Apple Music 红 */
+    --bg-a:#fff4f4; --bg-b:#ffe3e5; --bg-c:#ffd2d6;
+    --card-bg:rgba(255,255,255,.5); --card-br:rgba(255,255,255,.95);
+    --disc-a:#fb5c74; --disc-b:#e11d3f;
+    --groove:rgba(170,20,50,.10); --dshadow:rgba(230,50,80,.32);
+    --tx:#3d1420; --tx2:#844a58; --tx3:#a87581;
+    --bar-bg:rgba(150,30,60,.2); --bar-fill:#e11d3f;
+    --sheet-bg:rgba(255,248,248,.97); --accent:#fa233b;
+  }
+  .app[data-skin="mocha"]{          /* 摩卡棕 */
+    --bg-a:#f7f1ea; --bg-b:#eee1d3; --bg-c:#e0cdb8;
+    --card-bg:rgba(255,255,255,.45); --card-br:rgba(255,255,255,.88);
+    --disc-a:#7d5c42; --disc-b:#553a28;
+    --groove:rgba(90,60,35,.10); --dshadow:rgba(120,85,55,.35);
+    --tx:#38271a; --tx2:#6e5540; --tx3:#93795f;
+    --bar-bg:rgba(110,75,45,.2); --bar-fill:#5d4128;
+    --sheet-bg:rgba(253,250,246,.97); --accent:#8b5e3c;
+  }
+  .app[data-skin="spotify"]{        /* Spotify 黑绿 */
+    --bg-a:#1d2420; --bg-b:#121713; --bg-c:#0b0e0c;
+    --card-bg:rgba(255,255,255,.06); --card-br:rgba(255,255,255,.15);
+    --disc-a:#181d18; --disc-b:#0c0f0c;
+    --groove:rgba(255,255,255,.05); --dshadow:rgba(0,0,0,.6);
+    --tx:#f0f5f0; --tx2:rgba(235,245,235,.72); --tx3:rgba(235,245,235,.5);
+    --bar-bg:rgba(255,255,255,.2); --bar-fill:#f0f5f0;
+    --sheet-bg:rgba(18,23,19,.96); --accent:#1db954;
+  }
+  .app[data-skin="midnight"]{       /* 深夜蓝（暗色） */
+    --bg-a:#1e2740; --bg-b:#151c30; --bg-c:#0d1220;
+    --card-bg:rgba(255,255,255,.06); --card-br:rgba(255,255,255,.15);
+    --disc-a:#141a2b; --disc-b:#090c15;
+    --groove:rgba(255,255,255,.05); --dshadow:rgba(0,0,0,.6);
+    --tx:#eef2fb; --tx2:rgba(235,240,250,.72); --tx3:rgba(235,240,250,.5);
+    --bar-bg:rgba(255,255,255,.2); --bar-fill:#eef2fb;
+    --sheet-bg:rgba(18,24,40,.96); --accent:#4a9eff;
+  }
+  .app[data-skin="vinylx"]{          /* 悬浮黑胶（参照网易云图标：黑盘+大蓝标+顶部细针） */
+    --bg-a:#e9e8f0; --bg-b:#e9e8f0; --bg-c:#e2e1ec;
+    --card-bg:transparent; --card-br:transparent;
+    --disc-a:#191919; --disc-b:#0b0b0b;
+    --groove:rgba(255,255,255,.055); --dshadow:rgba(70,70,110,.28);
+    --tx:#2b2b38; --tx2:#5c5c6e; --tx3:#8b8b9c;
+    --bar-bg:rgba(60,60,90,.18); --bar-fill:#2b2b38;
+    --sheet-bg:rgba(250,250,253,.97); --accent:#5b5bd6;
+  }
+  .app[data-skin="vinylx"] .card{background:transparent;border-color:transparent;box-shadow:none}
+  .app[data-skin="vinylx"] .vinyl{box-shadow:0 0 0 2px rgba(255,255,255,.45),0 16px 36px rgba(70,70,110,.3)}
+  .app[data-skin="vinylx"] .art{inset:24%;box-shadow:none;
+    background:radial-gradient(circle at 32% 26%,#7a7ae8,#4b4bcd 62%,#3d3dbe)}
+  .app[data-skin="vinylx"] .arm{display:none}
+  .app[data-skin="vinylx"] .needle{display:block}
+  .app{
+    position:relative;width:min(430px,100vw);max-width:430px;overflow:hidden;
+    min-height:calc(100vh / var(--z,1));   /* 缩放后仍刚好铺满一屏 */
+    zoom:var(--z,1);                        /* 整体等比放大（含所有 px 尺寸） */
+    display:flex;flex-direction:column;color:var(--tx);
+    background:
+      radial-gradient(120% 60% at 85% 4%, var(--bg-a) 0%, transparent 55%),
+      radial-gradient(140% 70% at 15% 30%, var(--bg-b) 0%, transparent 60%),
+      linear-gradient(178deg,var(--bg-b) 0%,var(--bg-a) 55%,var(--bg-c) 100%);
+    transition:background .5s,color .5s;
+  }
+
+  /* 顶栏 */
+  .top{display:flex;align-items:center;gap:12px;padding:16px 20px 4px}
+  .top .pt{flex:1;min-width:0;font-size:12px;color:var(--tx2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .top .ic{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .top .ic svg{width:20px;height:20px;stroke:var(--tx2);fill:none;stroke-width:2}
+  .top .dot{stroke:var(--tx2);fill:var(--tx2)}
+  /* 收藏/星标：未点亮时一律中性灰，避免被皮肤色染成"像已收藏的红心" */
+  .top .ic.neutral svg{stroke:rgba(118,124,134,.92)}
+  .top .ic.neutral .slash{stroke:rgba(118,124,134,.92)}
+  .top .ic.neutral.on svg{stroke:var(--accent)}
+  .top .ic.on svg{stroke:var(--accent)}
+  .top .ic.on svg .fillable{fill:var(--accent)}
+  /* 「跳过/已掌握」新图标是实心路径（无描边）：中性灰 → 点亮用强调色 */
+  .top .ic svg.solid{stroke:none;fill:rgba(118,124,134,.92)}
+  .top .ic.on svg.solid{fill:var(--accent)}
+  /* 标记点亮瞬间的微动效：和收藏/星标一个手感，点到就有反馈 */
+  @keyframes mkpulse{0%{transform:scale(1)}38%{transform:scale(1.26)}100%{transform:scale(1)}}
+  .top .ic.pulse svg{animation:mkpulse .32s ease}
+  /* 斜线 = 「已划掉」标记：默认不显示，点了 ✓ 之后才划掉 */
+  .top .ic svg .slash{opacity:0;transition:opacity .2s}
+  .top .ic.on svg .slash{opacity:1}
+  .top{gap:9px}
+  .top .ic{width:30px;height:30px}
+  .top .ic svg{width:19px;height:19px}
+  .srow.col{flex-direction:column;align-items:stretch;gap:9px}
+  .seg.wrap{flex-wrap:wrap;justify-content:flex-start}
+  .clr{font-size:11.5px;color:var(--accent);cursor:pointer;font-weight:600}
+  /* 自定义链接面板 + 备份 */
+  .sheet.lks{z-index:26}
+  .lk{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--bar-bg)}
+  .lk input[type=checkbox]{flex:none;width:16px;height:16px;accent-color:var(--accent)}
+  .lk .lkn{font-size:13.5px;font-weight:600;color:var(--tx);cursor:pointer;flex:1;min-width:0;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .lk .lkn:hover{color:var(--accent)}
+  .lk .lku{font-size:10.5px;color:var(--tx3);max-width:42%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .lkrow{display:flex;gap:8px;padding:8px 0;border-bottom:1px solid var(--bar-bg);align-items:center}
+  .lkrow input{flex:1;min-width:0;padding:7px 10px;border-radius:9px;border:1px solid var(--bar-bg);
+    background:transparent;color:var(--tx);font-size:12.5px}
+  .lkrow input.nm{flex:0 0 96px}
+  .lkrow input:focus{outline:none;border-color:var(--accent)}
+  .lkrow .del{flex:none;font-size:13px;color:var(--accent);cursor:pointer;padding:4px 7px;user-select:none}
+  .lkbtns{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+  .lkbtns b{font-size:12.5px;font-weight:600;padding:8px 16px;border-radius:99px;
+    border:1px solid var(--bar-bg);color:var(--tx2);cursor:pointer}
+  .lkbtns b:hover{border-color:var(--accent);color:var(--accent)}
+  .lkbtns b.pri{border-color:var(--accent);color:var(--accent)}
+  .lkempty{padding:16px 0;color:var(--tx3);font-size:12.5px;line-height:1.8}
+  .bktip{font-size:11px;color:var(--tx3);line-height:1.6;margin-top:8px}
+  .repin{width:56px;padding:4px 6px;border-radius:8px;border:1px solid var(--bar-bg);
+    background:transparent;color:var(--tx);font-size:12px;text-align:center;font-variant-numeric:tabular-nums}
+  .repin:focus{outline:none;border-color:var(--accent)}
+
+  /* 唱片卡 */
+  .card{
+    position:relative;margin:10px 26px 0;aspect-ratio:1/1.02;border-radius:30px;
+    background:var(--card-bg);border:2px solid var(--card-br);
+    box-shadow:0 18px 44px var(--dshadow);flex:none;
+  }
+  .vinyl{
+    position:absolute;left:50%;top:50%;width:86%;aspect-ratio:1;
+    transform:translate(-50%,-50%);border-radius:50%;
+    background:
+      repeating-radial-gradient(circle at 50% 50%,var(--groove) 0 1px,transparent 1px 4px),
+      radial-gradient(circle at 50% 50%,var(--disc-a) 0 61%,var(--disc-b) 61% 100%);
+    box-shadow:0 10px 30px var(--dshadow),inset 0 0 0 1px rgba(255,255,255,.18);
+    animation:spin 14s linear infinite;animation-play-state:paused;
+  }
+  .playing .vinyl{animation-play-state:running}
+  @keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+  .vinyl::before{
+    content:"";position:absolute;inset:0;border-radius:50%;
+    background:conic-gradient(from 200deg,transparent 0 40deg,rgba(255,255,255,.22) 62deg,
+      transparent 92deg 210deg,rgba(255,255,255,.12) 235deg,transparent 268deg);
+  }
+  /* 盘心标签：跟随皮肤色系（同盘深色 + 白色高光），不再用单词色相，避免红胶紫标这种撞色 */
+  .art{
+    position:absolute;inset:27%;border-radius:50%;
+    background:
+      radial-gradient(circle at 30% 25%, rgba(255,255,255,.42), rgba(255,255,255,0) 58%),
+      var(--disc-b);
+    box-shadow:0 0 0 5px rgba(255,255,255,.22),0 4px 14px rgba(0,0,0,.28);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .art svg{width:42%;height:42%;fill:#fff;filter:drop-shadow(0 2px 5px rgba(0,0,0,.3))}
+  .art .cl{font-size:clamp(30px,8vw,46px);font-weight:800;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.3)}
+
+  /* 唱臂 */
+  .arm{position:absolute;top:-4px;right:0;width:110px;height:100%;z-index:5;pointer-events:none}
+  .arm .cap{position:absolute;top:0;right:30px;width:30px;height:16px;border-radius:9px 9px 5px 5px;background:var(--arm-a);box-shadow:0 2px 6px rgba(0,0,0,.18)}
+  .arm .pivot{position:absolute;top:12px;right:20px;width:46px;height:46px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,var(--arm-a),var(--arm-b));box-shadow:0 4px 12px rgba(0,0,0,.25)}
+  .arm .pivot::before{content:"";position:absolute;inset:13px;border-radius:50%;background:rgba(140,140,160,.35)}
+  .arm .bar{position:absolute;top:32px;right:40px;width:7px;height:70%;border-radius:4px;
+    background:linear-gradient(var(--arm-a),var(--arm-b));transform-origin:3.5px 3.5px;
+    transform:rotate(var(--arm,0deg));transition:transform .6s cubic-bezier(.34,1.2,.5,1);
+    box-shadow:0 2px 6px rgba(0,0,0,.18)}
+  .arm .bar .head{position:absolute;left:50%;bottom:-10px;width:22px;height:44px;
+    transform:translateX(-50%) rotate(12deg);border-radius:11px;
+    background:linear-gradient(var(--arm-a),var(--arm-b));box-shadow:0 3px 8px rgba(0,0,0,.22)}
+
+  /* 顶部细针（vinylx 悬浮黑胶：轴点在上，细臂弯折落盘，照网易云图标） */
+  .needle{display:none;position:absolute;left:50%;top:-2px;width:26%;
+    transform:translateX(-50%) rotate(var(--nd,-30deg));
+    transform-origin:34% 3%;                 /* 旋转轴 = 轴点圆心 */
+    z-index:6;pointer-events:none;transition:transform .7s cubic-bezier(.34,1.2,.5,1)}
+  .needle svg{width:100%;height:auto;display:block;filter:drop-shadow(0 3px 6px rgba(0,0,0,.28))}
+
+  /* 主区：左唱片 + 右信息列；PC 自动变横向矩形 */
+  .main{flex:1;display:flex;flex-direction:column;min-height:0}
+  .side{flex:1;display:flex;flex-direction:column;min-width:0;position:relative}
+  .timerChip{position:absolute;right:0;top:0;font-size:11px;color:var(--tx3);opacity:.9;
+    letter-spacing:.4px;font-variant-numeric:tabular-nums;pointer-events:none}
+  /* 当前词的来源标记（星标/收藏/已跳过）：点一下即取消，专门救误点 */
+  .mkbadge{display:flex;flex-wrap:wrap;gap:6px;margin:9px 0 0}
+  .mkbadge .mk{font-style:normal;display:flex;align-items:center;font-size:11px;line-height:1;
+    padding:5px 8px;border-radius:99px;
+    border:1px solid var(--accent);color:var(--accent);cursor:pointer;user-select:none;
+    background:transparent;transition:opacity .15s,transform .15s}
+  .mkbadge .mk svg{width:14px;height:14px;display:block}
+  .mkbadge .mk svg.fill{fill:currentColor}
+  /* 标记统计：和「词库来源」用同一套图标，不再用 ⭐❤✓ 这种混搭 */
+  #markCnt{display:flex;align-items:center;gap:13px}
+  #markCnt b{display:flex;align-items:center;gap:4px;font-size:12.5px;font-weight:600;color:var(--tx2)}
+  #markCnt b svg{width:14px;height:14px;display:block}
+  #markCnt b svg.fill{fill:currentColor}
+  #clearBox{display:flex;gap:6px}
+  #clearBox b{display:flex;align-items:center;gap:3px;padding:5px 9px;font-size:12px}
+  #clearBox b svg{width:13px;height:13px;display:block}
+  #clearBox b svg.fill{fill:currentColor}
+  #clearBox b i{font-style:normal;font-size:10px;opacity:.65}
+  .mkbadge .mk:hover{opacity:.6}
+  .mkbadge .mk:active{transform:scale(.94)}
+  .mkbadge .mk::after{content:" ✕"}
+  @media (min-width:760px){
+    /* 宽屏：定成横向矩形（16:10）并随缩放等比，别再被 100vh 拉成竖长方形 */
+    body{align-items:center}
+    .app{width:min(1280px,calc(96vw / var(--z,1)));max-width:none;zoom:var(--z,1);
+      aspect-ratio:16/10;min-height:0;max-height:calc(96vh / var(--z,1));margin:auto;padding-bottom:8px}
+    .main{flex-direction:row;align-items:center;gap:40px;padding:8px 30px 0}
+    /* 唱片按视口宽高的较小者放大：既大又不至于撑出屏幕；宽屏接近方形（1:1），宽度够、高度也够长 */
+    .main>.card{margin:0;flex:0 0 calc(clamp(460px,min(50vw,58vh),780px) / var(--z,1));aspect-ratio:1/1;align-self:center}
+    .side{align-self:stretch;justify-content:flex-start}
+    /* 单词区在「角标」与「底部控制」之间的剩余空间里垂直居中 → 整体下移到中间 */
+    .side .word{padding:0;min-height:0;text-align:center;margin-top:auto;margin-bottom:auto}
+    .side .sec{font-size:11.5px;margin-bottom:12px}
+    .side .word .big{font-size:clamp(50px,5vw,74px);text-shadow:0 2px 10px rgba(0,0,0,.06)}
+    .side .word .ipa{font-size:20px;transform:translateY(-9px)}
+    .side .word .wrow{gap:12px}
+    .side .word .mean{font-size:clamp(16px,1.5vw,21px)}
+    .side .word .ex{font-size:17px}
+    .side .wav{--wvh:28px;height:42px;gap:5px}
+    .side .slot{min-height:96px;margin-top:34px;margin-bottom:26px}
+    .side .wav i{width:5px}
+    .side .skins{margin-top:8px}   /* 由 .word 的下 auto 外边距顶到列底 */
+    /* 用 .side 前缀提权重：压过写在后面的基础规则（margin-top:auto 等） */
+    .side .prog{padding:14px 0 0}
+    .side .ctrl{margin-top:8px;padding:6px 0 0}
+    .side .ctrl svg{width:27px;height:27px}
+    .side .ctrl .ord{font-size:13px}
+    .side .play{width:72px;height:72px}
+    .side .play svg{width:29px;height:29px}
+    .top .pt{font-size:13px}
+  }
+
+  /* 波浪：恢复原来的紧凑居中款，峰值收敛（不铺满、不高） */
+  .wav{--wvh:22px;display:none;align-items:flex-end;justify-content:center;gap:4px;height:34px}
+  .wav i{width:4px;height:5px;border-radius:2px;background:var(--tx3);opacity:.5;transition:opacity .3s}
+  .playing .wav i{opacity:.85;animation:wv .8s ease-in-out infinite alternate}
+  @keyframes wv{from{height:5px}to{height:var(--wvh,22px)}}
+
+  /* 单词区 */
+  .word{padding:20px 26px 0;text-align:center;min-height:150px}
+  /* 当前词的标记反馈（已收藏/已跳过/已标星）：显示在单词正上方，不挡底部 */
+  .wordTip{font-size:13px;font-weight:600;color:var(--accent);margin:2px auto 12px;padding:6px 15px;
+    border-radius:99px;display:block;width:fit-content;line-height:1.2;
+    background:color-mix(in srgb,var(--accent) 13%,transparent);
+    border:1px solid color-mix(in srgb,var(--accent) 42%,transparent);
+    opacity:0;transform:translateY(-6px);transition:opacity .25s,transform .25s;pointer-events:none}
+  .wordTip.on{opacity:1;transform:translateY(0)}
+  /* 章节/级别/进度：左上角角标，弱化处理不抢单词（小字 + 拉开距离 + 降透明度） */
+  .side .sec{font-size:10px;color:var(--tx3);opacity:.72;margin:0 0 10px;text-align:left;letter-spacing:.3px}
+  .word .wrow{display:inline-flex;align-items:flex-end;justify-content:center;gap:9px}
+  .word .big{font-size:clamp(36px,9.5vw,50px);font-weight:800;letter-spacing:.5px;line-height:1.15;color:var(--tx);
+    font-family:var(--wfont,"PingFang SC",-apple-system,sans-serif)}
+  /* 音标：贴在单词右下角当注音，不再单独占一行 */
+  .word .ipa{font-size:15px;color:var(--tx2);white-space:nowrap;transform:translateY(-7px)}
+  /* 固定槽位：高度锁死，波浪↔释义原地切换，不产生位移 */
+  .slot{display:flex;align-items:center;justify-content:center;min-height:72px;margin-top:26px}
+  .slot .txt{width:100%}
+  /* 释义：压成一行、字号收小（过长时省略，避免撑破排版） */
+  .word .mean{font-size:16px;font-weight:700;color:var(--tx);text-align:center;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+  .word .ex{font-size:13.5px;font-style:italic;color:var(--tx3);margin-top:8px;line-height:1.5}
+  .hiddenl{filter:blur(9px);opacity:.55;transition:filter .4s,opacity .4s}
+
+  /* 皮肤切换 */
+  .skins{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:14px}
+  .skins .lb{font-size:10.5px;color:var(--tx3)}
+  .skins .sw{width:25px;height:25px;border-radius:50%;cursor:pointer;border:2px solid transparent;box-shadow:0 2px 7px rgba(0,0,0,.2);transition:transform .2s}
+  .skins .sw:hover{transform:scale(1.08)}
+  .skins .sw.on{border-color:var(--accent);transform:scale(1.14)}
+  .skins .zbtn{font-size:10.5px;color:var(--tx2);border:1px solid var(--bar-bg);border-radius:99px;padding:3px 10px;cursor:pointer;user-select:none}
+  .skins .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+
+  /* 进度：时间贴近两端（对齐官方） */
+  .prog{display:flex;align-items:center;gap:10px;padding:14px 20px 0}
+  .prog .t{flex:none;min-width:50px;font-size:10.5px;color:var(--tx2);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .prog .t.r{text-align:right}
+  .bar{position:relative;flex:1;height:4px;border-radius:2px;background:var(--bar-bg);cursor:pointer}
+  .bar .fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:2px;background:var(--bar-fill)}
+  .bar .knob{position:absolute;top:50%;left:0;width:12px;height:12px;border-radius:50%;background:var(--bar-fill);transform:translate(-50%,-50%);box-shadow:0 1px 4px rgba(0,0,0,.3)}
+
+  /* 控制：全宽分布 顺序 · 快退 · 播放 · 快进 · 列表 */
+  .ctrl{margin-top:auto;display:flex;align-items:center;justify-content:space-between;padding:10px 22px 26px}
+  .ctrl svg{width:24px;height:24px;stroke:var(--tx);fill:none;stroke-width:1.8;cursor:pointer;transition:stroke .15s}
+  .ctrl svg:hover{stroke:var(--accent)}
+  .ctrl .ord{font-size:12px;color:var(--tx2);cursor:pointer;user-select:none;min-width:36px}
+  .ctrl .ord:hover{color:var(--accent)}
+  .play{width:64px;height:64px;border-radius:50%;background:transparent;border:2.5px solid var(--tx);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .15s;box-shadow:0 8px 20px rgba(0,0,0,.12)}
+  .play:active{transform:scale(.92)}
+  .play svg{width:26px;height:26px;stroke:none;fill:var(--tx)}
+
+  /* 设置面板 */
+  .sheet{position:absolute;left:0;right:0;bottom:0;z-index:20;background:var(--sheet-bg);backdrop-filter:blur(14px);
+    border-radius:22px 22px 0 0;padding:0 22px 28px;transform:translateY(105%);
+    /* 关键：面板必须限高且可滚动，否则顶部选项会被顶出屏幕点不到 */
+    max-height:calc(100% - 12px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+    transition:transform .35s cubic-bezier(.3,1,.4,1);box-shadow:0 -10px 30px rgba(0,0,0,.2)}
+  .sheet.on{transform:translateY(0)}
+  .sheet::-webkit-scrollbar{width:6px}
+  .sheet::-webkit-scrollbar-thumb{background:var(--bar-bg);border-radius:3px}
+  .sheet h3{font-size:14px;color:var(--tx);margin-bottom:0}
+  /* 标题行吸顶：滚动时「返回播放」始终可见 */
+  .shd{display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:2;
+    background:var(--sheet-bg);padding:16px 0 12px}
+  .shb{font-size:12.5px;font-weight:600;color:var(--accent);cursor:pointer;user-select:none}
+  .shb:hover{opacity:.75}
+  .top .ic{flex:none}
+  .srow{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;
+    padding:10px 0;border-bottom:1px solid var(--bar-bg)}
+  .srow:last-of-type{border-bottom:none}
+  .srow span{font-size:13.5px;color:var(--tx);white-space:nowrap}
+  .seg{display:flex;gap:6px;flex-wrap:wrap}
+  .seg b{font-size:11.5px;font-weight:600;padding:5px 11px;border-radius:99px;cursor:pointer;
+    border:1px solid var(--bar-bg);color:var(--tx2);display:flex;align-items:center;justify-content:center}
+  .seg b svg{width:15px;height:15px;display:block}
+  .seg b.icn{padding:5px 10px;min-width:34px}
+  .seg b.off{opacity:.5;cursor:not-allowed;border-style:dashed}
+  .seg b svg.fill{fill:currentColor}
+  .seg b.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  .sback{margin-top:14px;width:100%;padding:11px;border-radius:12px;border:1px solid var(--bar-bg);
+    background:transparent;color:var(--tx);font-size:14px;font-weight:600;cursor:pointer}
+
+  .toast{position:absolute;left:50%;bottom:110px;transform:translateX(-50%) translateY(10px);
+    background:rgba(0,0,0,.78);color:#fff;font-size:12px;padding:8px 14px;border-radius:99px;
+    opacity:0;transition:.3s;pointer-events:none;z-index:30;white-space:nowrap}
+  .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div class="app" id="app" data-skin="lemon">
+
+  <div class="top">
+    <div class="ic" id="backBtn" title="返回">
+      <svg viewBox="0 0 24 24" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m11 6-6 6 6 6"/></svg>
+    </div>
+    <div class="pt" id="ptitle">DeepSeek-Prover-V2: Advancing Formal Mathematical Reasoning via Reinforcement Learning for Subgoal Decomposition · arXiv:2504.21801 · DeepSeek-AI, 2025</div>
+    <div class="ic" id="replayBtn" title="重听当前词">
+      <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 19C8 12.5 12.5 8.5 18.6 6"/><path d="M13 5.4l6.2-.1-.1 6.2"/></svg>
+    </div>
+    <div class="ic neutral" id="favBtn" title="收藏（再点取消）">
+      <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linejoin="round">
+        <path class="fillable heart" d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/>
+      </svg>
+    </div>
+    <div class="ic neutral" id="starBtn" title="标星（重点词，可只背星标）">
+      <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linejoin="round">
+        <path class="fillable star" d="m12 3.8 2.6 5.3 5.8.85-4.2 4.1 1 5.8-5.2-2.75-5.2 2.75 1-5.8-4.2-4.1 5.8-.85Z"/>
+      </svg>
+    </div>
+    <div class="ic neutral" id="okBtn" title="标为已掌握（跳过=不再朗读，再点恢复）">
+      <svg viewBox="0 0 1024 1024" class="solid">
+        <path d="M921.6 356.266667c-14.933333-8.533333-34.133333-4.266667-42.666667 12.8L829.866667 448c-51.2-157.866667-200.533333-266.666667-369.066667-266.666667-172.8 0-324.266667 115.2-373.333333 277.333334-4.266667 17.066667 4.266667 34.133333 21.333333 40.533333 17.066667 4.266667 34.133333-4.266667 40.533333-21.333333 40.533333-136.533333 166.4-232.533333 311.466667-232.533334 140.8 0 264.533333 89.6 307.2 219.733334l-81.066667-46.933334c-14.933333-8.533333-34.133333-4.266667-42.666666 10.666667-8.533333 14.933333-4.266667 34.133333 10.666666 42.666667l147.2 85.333333c4.266667 2.133333 10.666667 4.266667 17.066667 4.266667 2.133333 0 6.4 0 8.533333-2.133334 8.533333-2.133333 14.933333-8.533333 19.2-14.933333l85.333334-147.2c8.533333-12.8 4.266667-32-10.666667-40.533333zM896 757.333333H128c-17.066667 0-32 14.933333-32 32s14.933333 32 32 32h768c17.066667 0 32-14.933333 32-32s-14.933333-32-32-32z"/>
+      </svg>
+    </div>
+    <div class="ic" id="skinBtn" title="换皮肤（点一下换下一套）">
+      <svg viewBox="0 0 24 24" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8.8 3.4c0 2 1.4 3.6 3.2 3.6s3.2-1.6 3.2-3.6l6.2 2.7-1.8 4.1-2.6-1.1v10.7H6.8V9.1L4.2 10.2 2.4 6.1Z"/></svg>
+    </div>
+    <div class="ic" id="moreBtn" title="设置">
+      <svg class="dot" viewBox="0 0 24 24" stroke="none"><circle cx="12" cy="5" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="12" cy="19" r="1.9"/></svg>
+    </div>
+  </div>
+
+  <div class="main">
+  <div class="card">
+    <div class="vinyl">
+      <div class="art" id="art">
+        <svg class="wave" viewBox="0 0 24 24" fill="#fff">
+          <rect x="3.2" y="9.5"  width="2.8" height="5"  rx="1.4"/>
+          <rect x="8.2" y="6"    width="2.8" height="12" rx="1.4"/>
+          <rect x="13.2" y="3"   width="2.8" height="18" rx="1.4"/>
+          <rect x="18.2" y="7.5" width="2.8" height="9"  rx="1.4"/>
+        </svg>
+      </div>
+    </div>
+    <div class="arm">
+      <div class="cap"></div><div class="pivot"></div>
+      <div class="bar"><div class="head"></div></div>
+    </div>
+    <div class="needle">
+      <svg viewBox="0 0 160 180" fill="none">
+        <defs>
+          <linearGradient id="ndg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#d4d4e0"/><stop offset="1" stop-color="#8f8fa2"/>
+          </linearGradient>
+        </defs>
+        <!-- 轴点 -->
+        <circle cx="55" cy="6" r="7.5" fill="#c9c9d6"/>
+        <circle cx="55" cy="6" r="3.2" fill="#9c9cad"/>
+        <!-- 弯针：平滑贝塞尔，连续弧度而非两段直线 -->
+        <path d="M55 12 C 63 52, 82 92, 108 126 C 115 135, 120 144, 121 152"
+              stroke="url(#ndg)" stroke-width="4.6" stroke-linecap="round"/>
+        <!-- 针头：沿曲线切线方向的圆头短粗段，与针身融为一体、不外凸 -->
+        <path d="M120.6 149.5 L122.2 162.5" stroke="url(#ndg)" stroke-width="8.5"
+              stroke-linecap="round"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="side">
+  <div class="sec" id="wsec">准备中…</div>
+  <div class="timerChip" id="timerChip" style="display:none">⏱ 0:00</div>
+  <div class="mkbadge" id="mkBadge" style="display:none"></div>
+  <div class="word">
+    <div class="wordTip" id="wordTip"></div>
+    <div class="wrow">
+      <span class="big" id="wbig">—</span>
+      <span class="ipa" id="wipa"></span>
+    </div>
+    <!-- 波浪与释义共用同一个固定位置：未揭晓=波浪，揭晓=原地换释义，不跳动 -->
+    <div class="slot">
+      <div class="wav" id="wav"></div>
+      <div class="txt" id="wtxt">
+        <div class="mean" id="wmean"></div>
+        <div class="ex" id="wex"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="prog">
+    <span class="t" id="cur">第 0 词</span>
+    <div class="bar" id="bar"><div class="fill" id="fill"></div><div class="knob" id="knob"></div></div>
+    <span class="t r" id="dur">共 0 词</span>
+  </div>
+
+  <div class="ctrl">
+    <span class="ord" id="ordBtn">顺序</span>
+    <svg viewBox="0 0 24 24" id="prevBtn"><path d="M19 20 9 12l10-8v16Z"/><path d="M5 5v14"/></svg>
+    <div class="play" id="play">
+      <svg id="icPlay" viewBox="0 0 24 24"><path d="M8 5.3v13.4L19 12Z"/></svg>
+      <svg id="icPause" viewBox="0 0 24 24" style="display:none"><rect x="6.5" y="5" width="3.6" height="14" rx="1.2"/><rect x="13.9" y="5" width="3.6" height="14" rx="1.2"/></svg>
+    </div>
+    <svg viewBox="0 0 24 24" id="nextBtn"><path d="M5 4l10 8-10 8V4Z"/><path d="M19 5v14"/></svg>
+    <svg viewBox="0 0 24 24" id="listBtn"><path d="M4 6h16M4 12h16M4 18h12"/></svg>
+  </div>
+  </div>
+  </div>
+
+  <div class="sheet" id="sheet">
+    <div class="shd"><h3>播放设置</h3><span class="shb" id="sheetBack">← 返回播放</span></div>
+    <div class="srow"><span>发音</span><div class="seg" id="segVoice"></div></div>
+    <div class="srow"><span>单词音色</span><div class="seg" id="segEnVoice"></div></div>
+    <div class="srow"><span>中文音色</span><div class="seg" id="segZhVoice"></div></div>
+    <div class="srow"><span>单词重复</span>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="seg" id="segRepeat"></div>
+        <input id="repInput" class="repin" type="number" min="1" max="20" step="1" title="自定义次数（1–20）">
+      </div>
+    </div>
+    <div class="srow"><span>每词停顿</span><div class="seg" id="segPause"></div></div>
+    <div class="srow"><span>语速</span><div class="seg" id="segRate"></div></div>
+    <div class="srow"><span>先听后现</span><div class="seg" id="segReveal"></div></div>
+    <div class="srow"><span>朗读中文</span><div class="seg" id="segZh"></div></div>
+    <div class="srow"><span>朗读例句</span><div class="seg" id="segEx"></div></div>
+    <div class="srow"><span>界面缩放</span><div class="seg" id="segZoom"></div></div>
+    <div class="srow"><span>单词字体</span><div class="seg" id="segFont"></div></div>
+    <div class="srow"><span>定时停止</span><div class="seg" id="segTimer"></div></div>
+    <div class="srow"><span>词库来源</span><div class="seg" id="segSource"></div></div>
+    <div class="srow"><span id="markCnt"></span><div class="seg" id="clearBox" style="margin-left:auto"></div></div>
+    <div class="srow col"><span>链接与备份</span>
+      <div class="seg wrap" id="backupBox"></div>
+      <div class="bktip">清除浏览器数据（缓存/站点数据）会丢失 星标、收藏、跳过 记录和链接配置。建议先「导出备份」保存到本地；换设备或清缓存后用「导入备份」一键恢复。</div>
+    </div>
+    <div class="srow"><span>顺序</span><div class="seg" id="segOrder"></div></div>
+    <div class="srow"><span>跳过已掌握</span><div class="seg" id="segSkip"></div></div>
+    <div class="srow col"><span>词汇级别（点选，点一下关掉该级）</span><div class="seg wrap" id="lvBox"></div></div>
+    <div class="srow col"><span>范围（章节，点选）</span><div class="seg wrap" id="rangeBox"></div></div>
+    <button class="sback" id="setupBack">← 返回播放</button>
+  </div>
+
+  <!-- 链接选择面板：多个链接时勾选多开，单个直接点名称 -->
+  <div class="sheet lks" id="linkPop">
+    <div class="shd"><h3>朗读 / 讲解链接</h3><span class="shb" id="linkPopBack">← 返回</span></div>
+    <div id="linkList"></div>
+    <div class="lkbtns" id="linkPopBtns"></div>
+  </div>
+  <!-- 链接配置面板：增删改本篇的链接 -->
+  <div class="sheet lks" id="linkCfg">
+    <div class="shd"><h3>配置链接（本篇）</h3><span class="shb" id="linkCfgBack">← 返回</span></div>
+    <div id="linkRows"></div>
+    <div class="lkbtns">
+      <b id="linkAddRow">＋ 添加一行</b>
+      <b id="linkSave" class="pri">保存</b>
+    </div>
+  </div>
+  <input type="file" id="importFile" accept=".json,application/json" style="display:none">
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+const ITEMS=[{"w": "additionally", "ipa": "əˈdɪʃəˌnəli", "pos": "adv.", "m": "此外；又，加之", "ex": "Additionally, we contribute ProverBench, a benchmark dataset containing 325 formalized problems to advance neural theorem proving research, including 15 from the prestigious AIME competitions (years 24-25).", "lv": "专四", "ov": "", "sec": "Intro"}, {"w": "advancement", "ipa": "ədˈvænsmənt", "pos": "n.", "m": "进步，提升", "ex": "These advancements are largely enabled by the paradigm of inference-time scaling, most notably through natural language chain-of-thought reasoning (Jaech et al., 2024).", "lv": "六级", "ov": "", "sec": "Intro"}, {"w": "ambiguity", "ipa": "ˌæmbɪˈɡjuːəti", "pos": "n.", "m": "歧义，模糊", "ex": "These systems permit no ambiguity, implicit assumptions, or omission of details", "lv": "六级", "ov": "", "sec": "Intro"}, {"w": "classical", "ipa": "ˈklæsɪkəl", "pos": "adj.", "m": "古典的；经典的", "ex": "To harness the strengths of informal mathematical reasoning in support of formal theorem proving, a classical approach is to hierarchically decompose formal proofs based on the guidance of natural-language proof sketches.", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "closely", "ipa": "ˈkloʊsli", "pos": "adv.", "m": "紧密地，接近地", "ex": "This informal-to-formal theorem proving paradigm closely mirrors the concept of subgoals in hierarchical reinforcement learning (Barto and Mahadevan, 2003;", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "conjectural", "ipa": "kənˈdʒektʃərəl", "pos": "adj.", "m": "推测的", "ex": "leverages the decomposed subgoals to generate conjectural theorems", "lv": "考博", "ov": "", "sec": "Intro"}, {"w": "contrast", "ipa": "ˈkɑntræst", "pos": "n.；v.", "m": "对比，反差；对比", "ex": "In contrast, proof assistants such as Lean (Moura and Ullrich, 2021), Isabelle (Paulson, 1994), and Coq (Barras et al., 1999) operate on strict logical foundations, where every proof step must be explicitly constructed and …", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "decompose", "ipa": "ˌdiːkəmˈpoʊz", "pos": "v.", "m": "分解", "ex": "prompting DeepSeek-V3 to decompose complex problems into a series of subgoals", "lv": "考博", "ov": "", "sec": "Intro"}, {"w": "decomposition", "ipa": "ˌdikəmpəˈzɪʃən", "pos": "n.", "m": "分解, 腐烂", "ex": "This hierarchical decomposition aligns with human problem-solving strategies and supports modularity, reusability, and more efficient proof search (Wang et al., 2024b;", "lv": "托福", "ov": "", "sec": "Intro"}, {"w": "despite", "ipa": "dɪˈspaɪt", "pos": "prep.", "m": "不管", "ex": "Despite the success of natural language reasoning in solving competition-level mathematical problems, its application to formal theorem proving remains fundamentally challenging.", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "efficient", "ipa": "ɪˈfɪʃənt", "pos": "adj.", "m": "效率高的，有能力的", "ex": "This hierarchical decomposition aligns with human problem-solving strategies and supports modularity, reusability, and more efficient proof search (Wang et al., 2024b;", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "emergence", "ipa": "ˈimərʤəns", "pos": "n.", "m": "出现，发生", "ex": "Introduction The emergence of reasoning capabilities in large language models (LLMs) has revolutionized numerous areas of artificial intelligence, particularly in the domain of mathematical problem solving (DeepSeek-AI, 2025).", "lv": "六级", "ov": "", "sec": "Intro"}, {"w": "formalization", "ipa": "ˌfɔrmələˈzeɪʃn", "pos": "n.", "m": "形式化", "ex": "for both subgoal decomposition and formalization", "lv": "超纲", "ov": "", "sec": "Intro"}, {"w": "formally", "ipa": "ˈfɔrməli", "pos": "adv.", "m": "正式地, 形式上", "ex": "Proof Sketch To prove this formally, we can use mathematical induction.", "lv": "托福", "ov": "", "sec": "Intro"}, {"w": "fundamentally", "ipa": "ˌfʌndəˈmentli", "pos": "adv.", "m": "根本上", "ex": "its application to formal theorem proving remains fundamentally challenging", "lv": "托福", "ov": "", "sec": "Intro"}, {"w": "gap", "ipa": "gæp", "pos": "n.", "m": "差距;缝隙缺口", "ex": "Bridging the gap between informal, high-level reasoning and the syntactic rigor of formal verification systems remains a longstanding research challenge in neural theorem proving (Yang et al., 2024).", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "generalization", "ipa": "ˌʤɛnərəlɪˈzeɪʃən", "pos": "n.", "m": "一般化", "ex": "The model shows strong generalization capabilities to college-level theorem proving, solving 37.1% of ProofNet-test problems with Pass@1024 and tackling 47 out of 658 challenging PutnamBench problems.", "lv": "专八", "ov": "", "sec": "Intro"}, {"w": "harness", "ipa": "ˈhɑrnɪs", "pos": "v.", "m": "利用，驾驭", "ex": "To harness the strengths of informal mathematical reasoning", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "heuristic", "ipa": "hjʊˈrɪstɪk", "pos": "n.", "m": "启发式方法", "ex": "LLMs perform natural language reasoning in an inherently informal manner, relying on heuristics, ap-proximations, and data-driven guessing patterns that often lack the rigorous structure required by formal verification systems.", "lv": "超纲", "ov": "", "sec": "Intro"}, {"w": "hierarchical", "ipa": "ˌhaɪˈrɑrkəkəl", "pos": "adj.", "m": "分层的；等级体系的", "ex": "This informal-to-formal theorem proving paradigm closely mirrors the concept of subgoals in hierarchical reinforcement learning (Barto and Mahadevan, 2003;", "lv": "六级", "ov": "", "sec": "Intro"}, {"w": "hierarchically", "ipa": "ˌhaɪəˈrɑrkɪkli", "pos": "adv.", "m": "分层地", "ex": "to hierarchically decompose formal proofs based on the guidance", "lv": "超纲", "ov": "", "sec": "Intro"}, {"w": "hierarchy", "ipa": "ˈhaɪˌrɑrki", "pos": "n.", "m": "等级制度； 统治集团， 领导层", "ex": "Recent studies have extended this paradigm by employing multi-tiered hierarchies for structured proof generation (Wang et al., 2024a), and by leveraging reinforcement learning techniques to optimize the decomposition of complex …", "lv": "六级", "ov": "", "sec": "Intro"}, {"w": "implicit", "ipa": "ˌɪmˈplɪsət", "pos": "adj.", "m": "不言明的， 含蓄的； 内含的， 固有的； 无疑问的", "ex": "These systems permit no ambiguity, implicit assumptions, or omission of details.", "lv": "六级", "ov": "", "sec": "Intro"}, {"w": "inductive", "ipa": "ˌɪnˈdəktɪv", "pos": "adj.", "m": "诱导的， 归纳的", "ex": "intro n hn induction' hn with k hk case refl => exact base_case case step => apply inductive_step k hk exact by assumption apply final_proof exact h₀", "lv": "雅思", "ov": "", "sec": "Intro"}, {"w": "inequality", "ipa": "ˌɪnɪkˈwɑləti", "pos": "n.", "m": "不平等；不同；不平均", "ex": "Base Case: Verify the inequality for �= 4.", "lv": "专四", "ov": "", "sec": "Intro"}, {"w": "inference", "ipa": "ˈɪnfərəns", "pos": "n.", "m": "推断结果， 结论； 推论， 推理， 推断", "ex": "These advancements are largely enabled by the paradigm of inference-time scaling, most notably through natural language chain-of-thought reasoning (Jaech et al., 2024).", "lv": "六级", "ov": "", "sec": "Intro"}, {"w": "informal", "ipa": "ˌɪnˈfɔrməl", "pos": "adj.", "m": "非正式的；不拘礼节的；随便的；通俗的；日常使用的", "ex": "This informal-to-formal theorem proving paradigm closely mirrors the concept of subgoals in hierarchical reinforcement learning (Barto and Mahadevan, 2003;", "lv": "专四", "ov": "", "sec": "Intro"}, {"w": "inherently", "ipa": "ˌɪnˈhɛrəntli", "pos": "adv.", "m": "固有地， 天性地", "ex": "LLMs perform natural language reasoning in an inherently informal manner, relying on heuristics, ap-proximations, and data-driven guessing patterns that often lack the rigorous structure required by formal verification systems.", "lv": "GRE", "ov": "", "sec": "Intro"}, {"w": "integer", "ipa": "ˈɪntəʤər", "pos": "n.", "m": "[数] 整数；整体；完整的事物", "ex": "�! denotes the factorial of �, which is the product of all positive integers up to �.", "lv": "专八", "ov": "", "sec": "Intro"}, {"w": "intermediate", "ipa": "ˌɪntərˈmiːdiət", "pos": "adj.", "m": "中间的", "ex": "a subgoal is typically an intermediate proposition or lemma", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "interpretability", "ipa": "ɪnˌtɜrprətəˈbɪləti", "pos": "n.", "m": "可解释性", "ex": "improving both accuracy and interpretability", "lv": "超纲", "ov": "", "sec": "Intro"}, {"w": "largely", "ipa": "ˈlɑrʤli", "pos": "adv.", "m": "大部分；大量地", "ex": "These advancements are largely enabled by the paradigm of inference-time scaling, most notably through natural language chain-of-thought reasoning (Jaech et al., 2024).", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "longstanding", "ipa": "ˈlɔŋˌstændɪŋ", "pos": "adj.", "m": "长期存在的，由来已久的", "ex": "Bridging the gap between informal, high-level reasoning and the syntactic rigor of formal verification systems remains a longstanding research challenge in neural theorem proving (Yang et al., 2024).", "lv": "考博", "ov": "", "sec": "Intro"}, {"w": "modularity", "ipa": "ˌmɑdʒuˈlærəti", "pos": "n.", "m": "模块化", "ex": "supports modularity, reusability, and more efficient proof search", "lv": "超纲", "ov": "", "sec": "Intro"}, {"w": "multiple", "ipa": "ˈməltəpəl", "pos": "adj.", "m": "复合的；并联的", "ex": "The resulting DeepSeek-Prover-V2-671B model establishes a new state-of-the-art in neural theorem proving across multiple benchmarks.", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "neural", "ipa": "ˈnʊrəl", "pos": "adj.", "m": "神经的", "ex": "The resulting DeepSeek-Prover-V2-671B model establishes a new state-of-the-art in neural theorem proving across multiple benchmarks.", "lv": "专四", "ov": "", "sec": "Intro"}, {"w": "notably", "ipa": "ˈnoʊtəbli", "pos": "adv.", "m": "显著地，尤其", "ex": "These advancements are largely enabled by the paradigm of inference-time scaling, most notably through natural language chain-of-thought reasoning (Jaech et al., 2024).", "lv": "托福", "ov": "", "sec": "Intro"}, {"w": "numerous", "ipa": "ˈnumərəs", "pos": "adj.", "m": "为数众多的；许多", "ex": "Introduction The emergence of reasoning capabilities in large language models (LLMs) has revolutionized numerous areas of artificial intelligence, particularly in the domain of mathematical problem solving (DeepSeek-AI, 2025).", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "omission", "ipa": "oʊˈmɪʃn", "pos": "n.", "m": "省略，遗漏", "ex": "permit no ambiguity, implicit assumptions, or omission of details", "lv": "六级", "ov": "", "sec": "Intro"}, {"w": "overarching", "ipa": "ˌoʊvərˈɑrtʃɪŋ", "pos": "adj.", "m": "首要的，贯穿始终的", "ex": "to progressively achieve the overarching objective", "lv": "超纲", "ov": "", "sec": "Intro"}, {"w": "overview", "ipa": "ˈoʊvərvˌju", "pos": "n.", "m": "[图情] 综述；概观", "ex": "Figure 2 | Overview of the cold-start data collection process employed by DeepSeek-Prover-V2.", "lv": "专八", "ov": "", "sec": "Intro"}, {"w": "particularly", "ipa": "ˌpɑrˈtɪkjələrli", "pos": "adv.", "m": "特别，尤其，格外", "ex": "Introduction The emergence of reasoning capabilities in large language models (LLMs) has revolutionized numerous areas of artificial intelligence, particularly in the domain of mathematical problem solving (DeepSeek-AI, 2025).", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "prestigious", "ipa": "pərˈstiʤəs", "pos": "adj.", "m": "有声望的", "ex": "Additionally, we contribute ProverBench, a benchmark dataset containing 325 formalized problems to advance neural theorem proving research, including 15 from the prestigious AIME competitions (years 24-25).", "lv": "六级", "ov": "", "sec": "Intro"}, {"w": "progression", "ipa": "prəˈɡreʃn", "pos": "n.", "m": "递进，进程", "ex": "creating a more effective learning progression", "lv": "六级", "ov": "", "sec": "Intro"}, {"w": "progressively", "ipa": "prəˈɡresɪvli", "pos": "adv.", "m": "逐步地", "ex": "to progressively achieve the overarching objective", "lv": "托福", "ov": "", "sec": "Intro"}, {"w": "propose", "ipa": "prəˈpoʊz", "pos": "v.；v.", "m": "提议；求婚", "ex": "Jiang et al. (2023) proposed a framework, called Draft, Sketch, and Prove (DSP), that leverages a large language model to generate proof sketches in natural language, which are subsequently translated into formal proof steps.", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "proposition", "ipa": "ˌprɑpəˈzɪʃən", "pos": "n.", "m": "提议，主题", "ex": "In formal theorem proving, a subgoal is typically an intermediate proposition or lemma that contributes to the proof of a larger theorem (Zhao et al., 2023, 2024).", "lv": "六级", "ov": "", "sec": "Intro"}, {"w": "recursive", "ipa": "rɪˈkɜrsɪv", "pos": "adj.", "m": "递归的", "ex": "initialization data collected through a recursive theorem proving pipeline", "lv": "超纲", "ov": "", "sec": "Intro"}, {"w": "revolutionize", "ipa": "ˌrevəˈluːʃənaɪz", "pos": "v.", "m": "彻底变革", "ex": "has revolutionized numerous areas of artificial intelligence", "lv": "考博", "ov": "", "sec": "Intro"}, {"w": "rigor", "ipa": "ˈrɪgər", "pos": "n.", "m": "严格", "ex": "Bridging the gap between informal, high-level reasoning and the syntactic rigor of formal verification systems remains a longstanding research challenge in neural theorem proving (Yang et al., 2024).", "lv": "六级", "ov": "", "sec": "Intro"}, {"w": "rigorous", "ipa": "ˈrɪɡərəs", "pos": "adj.", "m": "严谨的", "ex": "often lack the rigorous structure required by formal verification systems", "lv": "六级", "ov": "", "sec": "Intro"}, {"w": "scale", "ipa": "skeɪl", "pos": "n.", "m": "规模，比例", "ex": "These advancements are largely enabled by the paradigm of inference-time scaling, most notably through natural language chain-of-thought reasoning (Jaech et al., 2024).", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "simultaneously", "ipa": "ˌsaɪməlˈteɪniəsli", "pos": "adv.", "m": "同步地，同时地", "ex": "We prompt DeepSeek-V3 to decompose theorems into high-level proof sketches while simultaneously formalizing these proof steps in Lean 4, resulting in a sequence of subgoals.", "lv": "专四", "ov": "", "sec": "Intro"}, {"w": "solely", "ipa": "ˈsoʊlli", "pos": "adv.", "m": "仅仅", "ex": "Rather than relying solely on a single forward pass to arrive at an answer", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "sophisticate", "ipa": "səˈfɪstəˌkeɪt", "pos": "v.；n.", "m": "弄复杂；使变得世故；曲解；久经世故的人；精通者", "ex": "DeepSeek-Prover-V2-671B successfully solves 6 of these 15 challenging AIME problems, further demonstrating its sophisticated mathematical reasoning capabilities.", "lv": "专四", "ov": "", "sec": "Intro"}, {"w": "subgoal", "ipa": "ˈsʌbɡoʊl", "pos": "n.", "m": "子目标", "ex": "decompose complex problems into a series of subgoals", "lv": "超纲", "ov": "", "sec": "Intro"}, {"w": "subsequently", "ipa": "ˈsʌbsɪkwəntli", "pos": "adv.", "m": "随后", "ex": "which are subsequently translated into formal proof steps", "lv": "专四", "ov": "", "sec": "Intro"}, {"w": "syntactic", "ipa": "sɪnˈtæktɪk", "pos": "adj.", "m": "句法的；语法的；依据造句法的", "ex": "Bridging the gap between informal, high-level reasoning and the syntactic rigor of formal verification systems remains a longstanding research challenge in neural theorem proving (Yang et al., 2024).", "lv": "专八", "ov": "", "sec": "Intro"}, {"w": "synthesize", "ipa": "ˈsɪnθəsaɪz", "pos": "v.", "m": "合成", "ex": "The proofs of resolved subgoals are synthesized into a chain-of-thought process", "lv": "六级", "ov": "", "sec": "Intro"}, {"w": "thereby", "ipa": "ˈðɛrˈbaɪ", "pos": "adv.", "m": "因此，从而，由此", "ex": "Since the subgoal decomposition is powered by a large general-purpose model, we use a smaller 7B model to handle the proof search for each subgoal, thereby reducing the associated computational burden.", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "tier", "ipa": "tir", "pos": "n.；vt.；vi.", "m": "层，排；行，列；等级；使层叠；成递升排列", "ex": "Recent studies have extended this paradigm by employing multi-tiered hierarchies for structured proof generation (Wang et al., 2024a), and by leveraging reinforcement learning techniques to optimize the decomposition of complex …", "lv": "专四", "ov": "", "sec": "Intro"}, {"w": "additional", "ipa": "əˈdɪʃənəl", "pos": "adj.", "m": "额外的", "ex": "First, we incorporate additional problems derived from autoformalization and various open-source datasets (Ying et al., 2024;", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "align", "ipa": "əˈlaɪn", "pos": "v.", "m": "使结盟；使成一行；匹配", "ex": "The overall training procedure remains largely aligned with that of DeepSeek-Prover-V1 (Xin et al., 2024a) and DeepSeek-Prover-V1.5 (Xin et al., 2024b), with only two modifications to the distribution of training problems.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "alignment", "ipa": "əˈlaɪnmənt", "pos": "n.", "m": "排成直线；结盟，联合", "ex": "In practice, enforcing this alignment enhances proof accuracy, especially on complex theorems that demand multi-step reasoning.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "analyze", "ipa": "ˈænəˌlaɪz", "pos": "v.", "m": "分析", "ex": "To prove a given formal theorem statement, we prompt DeepSeek-V3 to first analyze the mathematical problem in natural language, then decompose the proof into smaller steps, translating each step into a corresponding Lean formal …", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "append", "ipa": "əˈpɛnd", "pos": "v.；n.", "m": "附加；贴上；盖章；设置数据文件的搜索路径", "ex": "This proof is then appended to DeepSeek-V3’s chain-of-thought, which outlines the corresponding lemma decomposition, thereby producing a cohesive synthesis of informal reasoning and subsequent formalization.", "lv": "专八", "ov": "", "sec": "Method"}, {"w": "articulate", "ipa": "ɑrˈtɪkjəˌleɪt", "pos": "adj.；vt.", "m": "善于表达的， 发音清晰的； 表达得清楚有力的；明确有力地表达； 清楚地吐， 清晰地发", "ex": "High-precision Chain-of-Thought (CoT) mode: This mode systematically articulates intermediate reasoning steps, emphasizing transparency and logical progression, before constructing the final formal proofs.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "augment", "ipa": "ɔgˈmɛnt", "pos": "v.；n.", "m": "增加；增大；增加；增大", "ex": "Second, we augment the dataset with problems generated through subgoal decomposition, aiming at solving more challenging instances from the valid split of the MiniF2F benchmark (Zheng et al., 2022).", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "automatically", "ipa": "ˌɔtəˈmætɪkli", "pos": "adv.", "m": "自动地；不经思考地", "ex": "Upon the successful resolution of all decomposed steps, a complete proof of the original theorem can be automatically derived.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "binary", "ipa": "ˈbaɪnəˌri", "pos": "adj.", "m": "[数] 二进制的；二元的，二态的", "ex": "Training utilizes binary rewards, where each generated Lean proof receives a reward of 1 if verified as correct and 0 otherwise.", "lv": "专四", "ov": "", "sec": "Method"}, {"w": "boost", "ipa": "bust", "pos": "n.；v.", "m": "推动,宣扬；促使，促进", "ex": "In addition, we perform the same reinforcement learning stage used in the training of the 671B model to boost the performance of DeepSeek-Prover-V2-7B.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "broaden", "ipa": "ˈbrɔdən", "pos": "v.", "m": "放宽，变阔", "ex": "Lin et al., 2025), broadening the coverage of the training problem domains.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "capable", "ipa": "ˈkeɪpəbəl", "pos": "adj.", "m": "能干的，有能力的", "ex": "Our findings indicate that off-the-shelf models, such as DeepSeek-V3 (DeepSeek-AI, 2024), are capable of decomposing proof steps and expressing them in formal languages.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "cognitive", "ipa": "ˈkɑgnɪtɪv", "pos": "adj.", "m": "认知的", "ex": "The non-CoT components emphasize formal verification skills in the Lean theorem prover ecosystem, while the CoT examples explicitly model the cognitive process of transforming mathematical intuition into formal proof structures.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "coherent", "ipa": "koʊˈhɪrənt", "pos": "adj.", "m": "（文章、观点等）连贯的，有条理的，一致的", "ex": "In contrast, Kimina-Prover adopts a reverse workflow: it begins by collecting complete formal proofs alongside their informal counterparts, then uses general-purpose reasoning models to retrosynthesize intermediate …", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "cohesive", "ipa": "koʊˈhisɪv", "pos": "adj.", "m": "粘合性的，有结合力的", "ex": "This proof is then appended to DeepSeek-V3’s chain-of-thought, which outlines the corresponding lemma decomposition, thereby producing a cohesive synthesis of informal reasoning and subsequent formalization.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "commonly", "ipa": "ˈkɑmənli", "pos": "adv.", "m": "普通地，一般地", "ex": "The CoT mode is enhanced through a further reinforcement learning stage, following the standard training pipeline commonly used for reasoning models.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "complementary", "ipa": "ˌkɑmpləˈmɛnʧi", "pos": "adj.", "m": "补充的； 辅助的", "ex": "DeepSeek-Prover-V2 is developed through a two-stage training pipeline that establishes two complementary proof generation modes: 1.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "compose", "ipa": "kəmˈpoʊz", "pos": "v.", "m": "组成，构成；创作", "ex": "The resulting chain of thought culminates in a Lean theorem composed of a sequence of have statements, each concluded with a sorry placeholder indicating a subgoal to be solved.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "compute", "ipa": "kəmˈpjut", "pos": "v.", "m": "计算，估计，估算", "ex": "To generate denser training signals, Dong and Ma (2025) proposed a self-play approach that enriches training problem sets by generating tractable conjectures closely related to the original theorem statements, thereby enabling …", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "concise", "ipa": "kənˈsaɪs", "pos": "adj.", "m": "简明的， 简要的", "ex": "Alongside the CoT reasoning mode, we incorporate non-CoT proof data collected during expert iteration to enable a cost-efficient proving option that produces concise formal outputs with a small-size model.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "concurrent", "ipa": "kənˈkərənt", "pos": "adj.", "m": "一致的；同时的", "ex": "This cold-start dataset generation strategy differs from that of Kimina-Prover (Wang et al., 2025), a concurrent work on formal reasoning models.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "conjecture", "ipa": "kənˈʤɛkʧər", "pos": "n.；v.", "m": "推测；猜想；推测；揣摩", "ex": "To generate denser training signals, Dong and Ma (2025) proposed a self-play approach that enriches training problem sets by generating tractable conjectures closely related to the original theorem statements, thereby enabling …", "lv": "考博", "ov": "", "sec": "Method"}, {"w": "consistency", "ipa": "kənˈsɪstənsi", "pos": "n.", "m": "[计] 一致性；稠度；相容性", "ex": "To address this issue, we incorporate a consistency reward in the early steps of training, which penalizes the structural misalignment, explicitly enforcing the inclusion of all decomposed have-structured lemmas in the final …", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "consistently", "ipa": "kənˈsɪstəntli", "pos": "adv.", "m": "一贯地", "ex": "DeepSeek-Prover-V2-671B, consistently outperforms all baselines", "lv": "专四", "ov": "", "sec": "Method"}, {"w": "context", "ipa": "ˈkɑntɛkst", "pos": "n.", "m": "背景，环境", "ex": "We perform supervised fine-tuning on DeepSeek-V3-Base-671B (DeepSeek-AI, 2024) using a constant learning rate of 5e-6 within a context window of 16,384 tokens.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "coverage", "ipa": "ˈkəvərɪʤ", "pos": "n.", "m": "报道", "ex": "Lin et al., 2025), broadening the coverage of the training problem domains.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "critic", "ipa": "ˈkrɪtɪk", "pos": "n.", "m": "批评家，评论家", "ex": "Unlike PPO (Schulman et al., 2017), GRPO eliminates the need for a separate critic model by sampling a group of candidate proofs for each theorem prompt and optimizing the policy based on their relative rewards.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "culminate", "ipa": "ˈkəlmɪˌneɪt", "pos": "vi.", "m": "告终", "ex": "The resulting chain of thought culminates in a Lean theorem composed of a sequence of have statements, each concluded with a sorry placeholder indicating a subgoal to be solved.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "current", "ipa": "ˈkɑrənt", "pos": "adj.", "m": "当前的", "ex": "In each training iteration, the current best prover policy is used to generate proof attempts for those challenging problems that remain unsolved in prior iterations.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "demonstration", "ipa": "ˌdɛmənˈstreɪʃən", "pos": "n.", "m": "展示；游行", "ex": "This iterative loop ensures that the model not only learns from the initial demonstration datasets but also distills its own successful reasoning traces, progressively refining its ability to solve harder problems.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "derive", "ipa": "dəraɪv", "pos": "v.", "m": "得到，导出", "ex": "Upon the successful resolution of all decomposed steps, a complete proof of the original theorem can be automatically derived.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "directly", "ipa": "dɪˈrɛkli", "pos": "adv.", "m": "直接地；立即", "ex": "Specifically, we synthesize data by formalizing natural-language proofs directly into structured formal proof sketches.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "distill", "ipa": "dɪˈstɪl", "pos": "vt.", "m": "蒸馏， 用蒸馏法提取； 吸取， 提炼", "ex": "This iterative loop ensures that the model not only learns from the initial demonstration datasets but also distills its own successful reasoning traces, progressively refining its ability to solve harder problems.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "distillation", "ipa": "ˌdɪstəˈleɪʃən", "pos": "n.", "m": "精馏，蒸馏，净化；蒸馏法；精华，蒸馏物", "ex": "Distillation.", "lv": "专四", "ov": "", "sec": "Method"}, {"w": "distinct", "ipa": "dɪˈstɪŋkt", "pos": "adj.", "m": "明显的；有区别的", "ex": "During each iteration, we sample 256 distinct problems, generating 32 candidate proofs per theorem with a maximum sequence length of 32,768 tokens.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "diverge", "ipa": "dɪˈvərʤ", "pos": "v.", "m": "分岔；分歧", "ex": "During the training process, we observe that the structure of the generated proofs frequently diverges from the lemma decomposition provided by the chain-of-thought guidance.", "lv": "考博", "ov": "", "sec": "Method"}, {"w": "domain", "ipa": "doʊˈmeɪn", "pos": "n.", "m": "领域", "ex": "Lin et al., 2025), broadening the coverage of the training problem domains.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "ecosystem", "ipa": "ˈikoʊˌsɪstəm", "pos": "n.", "m": "生态系统", "ex": "The non-CoT components emphasize formal verification skills in the Lean theorem prover ecosystem, while the CoT examples explicitly model the cognitive process of transforming mathematical intuition into formal proof structures.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "effective", "ipa": "ˈifɛktɪv", "pos": "adj.", "m": "有效的；有影响的", "ex": "To ensure effective learning, we curate training prompts to include only problems that are sufficiently challenging yet solvable by the supervised fine-tuned model.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "efficiency", "ipa": "ɪˈfɪʃənsi", "pos": "n.", "m": "效率；功效，效能", "ex": "Shao et al., 2024) as our reinforcement learning algorithm, which has demonstrated superior effectiveness and efficiency in reasoning tasks (DeepSeek-AI, 2025).", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "eliminate", "ipa": "ɪˈlɪməˌneɪt", "pos": "v.", "m": "消除", "ex": "Unlike PPO (Schulman et al., 2017), GRPO eliminates the need for a separate critic model by sampling a group of candidate proofs for each theorem prompt and optimizing the policy based on their relative rewards.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "emphasize", "ipa": "ˈɛmfəˌsaɪz", "pos": "v.", "m": "强调", "ex": "The non-CoT components emphasize formal verification skills in the Lean theorem prover ecosystem, while the CoT examples explicitly model the cognitive process of transforming mathematical intuition into formal proof structures.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "enable", "ipa": "ɪˈneɪbəl", "pos": "v.", "m": "使能够……", "ex": "It enables the collection of hundreds of high-quality synthetic cold-start data, which serve as the foundation for training DeepSeek-Prover-V2.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "enforce", "ipa": "ɛnˈfɔrs", "pos": "v.", "m": "实施，执行；强制", "ex": "In practice, enforcing this alignment enhances proof accuracy, especially on complex theorems that demand multi-step reasoning.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "enhance", "ipa": "ɛnˈhæns", "pos": "v.", "m": "提高；加强；增加", "ex": "The CoT mode is enhanced through a further reinforcement learning stage, following the standard training pipeline commonly used for reasoning models.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "explicitly", "ipa": "ɪkˈsplɪsətli", "pos": "adv.", "m": "直接地，明确地", "ex": "The non-CoT components emphasize formal verification skills in the Lean theorem prover ecosystem, while the CoT examples explicitly model the cognitive process of transforming mathematical intuition into formal proof structures.", "lv": "GRE", "ov": "", "sec": "Method"}, {"w": "extensive", "ipa": "ɪkˈstɛnsɪv", "pos": "adj.", "m": "广阔的；广泛的", "ex": "To reduce the computational overhead of extensive proof search, we employ a smaller 7B prover model specifically optimized for processing the decomposed lemmas.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "extract", "ipa": "ˈɛkˌstrækt", "pos": "v.；n.", "m": "取出；提取；摘录", "ex": "We extract subgoal expressions from have statements to substitute them for the original goals in the given problems (see Figure 3(a)), and then incorporate the preceding subgoals as premises (see Figure 3(b)).", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "facilitate", "ipa": "fəˈsɪləˌteɪt", "pos": "v.", "m": "使便利，促进", "ex": "This construction enables subsequent subgoals to be resolved using the intermediate results of earlier steps, thereby promoting a more localized dependency structure and facilitating the development of simpler lemmas.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "feedback", "ipa": "ˈfidˌbæk", "pos": "n.", "m": "反馈", "ex": "Following the standard training objective for reasoning models (DeepSeek-AI, 2025), we use binary correct-or-incorrect feedback as the primary form of reward supervision.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "frequently", "ipa": "ˈfrikwɛntli", "pos": "adv.", "m": "时常，常常", "ex": "During the training process, we observe that the structure of the generated proofs frequently diverges from the lemma decomposition provided by the chain-of-thought guidance.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "generate", "ipa": "ˈʤɛnərˌeɪt", "pos": "v.", "m": "产生", "ex": "We generate two types of subgoal theorems, one incor-porating preceding subgoals as premises and one without, corresponding to Figure 3(b) and", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "illustrative", "ipa": "ˌɪˈləstrətɪv", "pos": "adj.", "m": "说明的；作例证的；解说的", "ex": "Figure 3 | An illustrative example of how we translate decomposed subgoals into a series of", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "implement", "ipa": "ˈɪmpləmənt", "pos": "v.", "m": "实施，执行", "ex": "In this paper, we implement a straightforward approach that leverages subgoals to expand the scope of formal statements used for model training.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "incorporate", "ipa": "ˌɪnˈkɔrpərˌeɪt", "pos": "v.", "m": "合并；体现", "ex": "Statement type (b) is used for recursive solving of complex problems, while both types (a) and (b) are incorporated into the curriculum learning process.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "incorrect", "ipa": "ˌɪnkərˈɛkt", "pos": "adj.", "m": "不正确的，错误的", "ex": "Following the standard training objective for reasoning models (DeepSeek-AI, 2025), we use binary correct-or-incorrect feedback as the primary form of reward supervision.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "instance", "ipa": "ˈɪnstəns", "pos": "n.", "m": "情况，例子", "ex": "Second, we augment the dataset with problems generated through subgoal decomposition, aiming at solving more challenging instances from the valid split of the MiniF2F benchmark (Zheng et al., 2022).", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "integrate", "ipa": "ˈɪnəˌgreɪt", "pos": "v.", "m": "成为一体， 合并", "ex": "Both types are integrated into the expert iteration stage (Polu and", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "intuition", "ipa": "ˌɪntuˈɪʃən", "pos": "n.", "m": "直觉； 由直觉获知的信息", "ex": "The non-CoT components emphasize formal verification skills in the Lean theorem prover ecosystem, while the CoT examples explicitly model the cognitive process of transforming mathematical intuition into formal proof structures.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "issue", "ipa": "ˈɪʃu", "pos": "v.；n.", "m": "发行；问题", "ex": "To address this issue, we incorporate a consistency reward in the early steps of training, which penalizes the structural misalignment, explicitly enforcing the inclusion of all decomposed have-structured lemmas in the final …", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "known", "ipa": "noʊn", "pos": "adj.；v.", "m": "已知的；知名的；大家知道的；知道（know的过去分词）", "ex": "Since general-purpose models are known to struggle with producing complete Lean proofs, we instruct DeepSeek-V3 to generate only a high-level proof sketch with the details omitted.", "lv": "专四", "ov": "", "sec": "Method"}, {"w": "lean", "ipa": "lin", "pos": "v.", "m": "倾斜，屈身；靠", "ex": "Training utilizes binary rewards, where each generated Lean proof receives a reward of 1 if verified as correct and 0 otherwise.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "leverage", "ipa": "ˈlɛvərɪʤ", "pos": "n.；v.", "m": "手段，影响力；杠杆作用；杠杆效率；利用；举债经营", "ex": "Leveraging the subgoals generated by DeepSeek-V3, we adopt a recursive solving strategy to systematically resolve each intermediate proof step.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "localize", "ipa": "ˈloʊkəˌlaɪz", "pos": "v.", "m": "集中,局部化", "ex": "This construction enables subsequent subgoals to be resolved using the intermediate results of earlier steps, thereby promoting a more localized dependency structure and facilitating the development of simpler lemmas.", "lv": "托福", "ov": "", "sec": "Method"}, {"w": "logical", "ipa": "ˈlɑʤɪkəl", "pos": "adj.", "m": "逻辑的；符合逻辑的", "ex": "High-precision Chain-of-Thought (CoT) mode: This mode systematically articulates intermediate reasoning steps, emphasizing transparency and logical progression, before constructing the final formal proofs.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "loop", "ipa": "lup", "pos": "n.", "m": "圈，环，环孔", "ex": "This iterative loop ensures that the model not only learns from the initial demonstration datasets but also distills its own successful reasoning traces, progressively refining its ability to solve harder problems.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "lower", "ipa": "loʊər", "pos": "adj.；v.", "m": "较低的；放下", "ex": "Subgoal Decomposition lemma lower_bound (a b c d s : ℝ) (h₀ : 0 < a ∧ 0 < b ∧ 0 < c ∧ 0 < d) (h₁ : s = a / (a + b + d) + b / (a + b + c) + c / (b + c + d) + d / (a + c + d)) (term1_pos : 0 < a / (a + b + d)) (term1_less1 : a / (a …", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "mathematician", "ipa": "ˌmæθəməˈtɪʃən", "pos": "n.", "m": "数学家", "ex": "Recursive Proof Search via Subgoal Decomposition Decomposing the proof of a complex theorem into a sequence of smaller lemmas that serve as stepping stones is an effective strategy commonly employed by human mathematicians.", "lv": "专四", "ov": "", "sec": "Method"}, {"w": "mechanism", "ipa": "ˈmɛkəˌnɪzəm", "pos": "n.", "m": "机制，机能", "ex": "This pipeline provides a natural and scalable mechanism for synthesizing formal reasoning data by combining high-level reasoning from language models with precise formal verification.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "mode", "ipa": "moʊd", "pos": "n.", "m": "方式，样式", "ex": "DeepSeek-Prover-V2 is developed through a two-stage training pipeline that establishes two complementary proof generation modes: 1.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "modification", "ipa": "ˌmɑdəfəˈkeɪʃən", "pos": "n.", "m": "修改", "ex": "The overall training procedure remains largely aligned with that of DeepSeek-Prover-V1 (Xin et al., 2024a) and DeepSeek-Prover-V1.5 (Xin et al., 2024b), with only two modifications to the distribution of training problems.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "objective", "ipa": "əˈbʤɛktɪv", "pos": "adj.", "m": "客观的；无偏见的", "ex": "Following the standard training objective for reasoning models (DeepSeek-AI, 2025), we use binary correct-or-incorrect feedback as the primary form of reward supervision.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "optimization", "ipa": "ɑptɪmɪˈzeɪʃən", "pos": "n.", "m": "最佳化, 最优化", "ex": "We employ Group Relative Policy Optimization (GRPO;", "lv": "托福", "ov": "", "sec": "Method"}, {"w": "optimize", "ipa": "ˈɑptɪˌmaɪz", "pos": "vt.", "m": "使最优化； 充分利用", "ex": "To reduce the computational overhead of extensive proof search, we employ a smaller 7B prover model specifically optimized for processing the decomposed lemmas.", "lv": "考博", "ov": "", "sec": "Method"}, {"w": "option", "ipa": "ˈɔpʃən", "pos": "n.", "m": "选择", "ex": "Alongside the CoT reasoning mode, we incorporate non-CoT proof data collected during expert iteration to enable a cost-efficient proving option that produces concise formal outputs with a small-size model.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "original", "ipa": "ərˈɪʤənəl", "pos": "adj.", "m": "原始的，最初的", "ex": "Upon the successful resolution of all decomposed steps, a complete proof of the original theorem can be automatically derived.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "overall", "ipa": "ˈoʊvərˌɔl", "pos": "n.；adj.", "m": "工装裤；全面的", "ex": "The overall training procedure remains largely aligned with that of DeepSeek-Prover-V1 (Xin et al., 2024a) and DeepSeek-Prover-V1.5 (Xin et al., 2024b), with only two modifications to the distribution of training problems.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "pathway", "ipa": "ˈpæθˌweɪ", "pos": "n.", "m": "路径， 途径", "ex": "Our training corpus consists of two complementary sources: (1) non-CoT data collected through expert iteration, which produces Lean codes without intermediate reasoning steps; and (2) the cold-start CoT data described in Section …", "lv": "雅思", "ov": "", "sec": "Method"}, {"w": "penalize", "ipa": "ˈpɛnəˌlaɪz", "pos": "v.", "m": "处罚；处刑；使不利", "ex": "To address this issue, we incorporate a consistency reward in the early steps of training, which penalizes the structural misalignment, explicitly enforcing the inclusion of all decomposed have-structured lemmas in the final …", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "phase", "ipa": "feɪz", "pos": "n.", "m": "阶段；方面；相位", "ex": "We extend the maximum context length of DeepSeek-Prover-V1.5-Base-7B (Xin et al., 2024b) from 4,096 to 32,768 tokens and fine-tune this extended-context model using rollout data collected during the reinforcement learning phase …", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "precede", "ipa": "prɪˈsid", "pos": "v.", "m": "先于…，领先", "ex": "We generate two types of subgoal theorems, one incor-porating preceding subgoals as premises and one without, corresponding to Figure 3(b) and", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "precision", "ipa": "priˈsɪʒən", "pos": "n.", "m": "精确，精密，精密度", "ex": "High-precision Chain-of-Thought (CoT) mode: This mode systematically articulates intermediate reasoning steps, emphasizing transparency and logical progression, before constructing the final formal proofs.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "premise", "ipa": "ˈprɛmɪs", "pos": "n.", "m": "房屋和地基， 经营场址； 前提， 假设", "ex": "We generate two types of subgoal theorems, one incor-porating preceding subgoals as premises and one without, corresponding to Figure 3(b) and", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "previous", "ipa": "ˈpriviəs", "pos": "adj.；adv.", "m": "之前的；先前地", "ex": "Several previous studies have explored this hierarchical strategy in the context of neural theorem proving, aiming to enhance proof search efficiency by leveraging the informal reasoning capabilities of modern LLMs (Jiang et al. …", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "prior", "ipa": "praɪər", "pos": "adj.", "m": "在先的；优先的", "ex": "In each training iteration, the current best prover policy is used to generate proof attempts for those challenging problems that remain unsolved in prior iterations.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "proof", "ipa": "pruf", "pos": "n.", "m": "证据；证明；校样", "ex": "Leveraging the subgoals generated by DeepSeek-V3, we adopt a recursive solving strategy to systematically resolve each intermediate proof step.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "proportion", "ipa": "prəˈpɔrʃən", "pos": "n.", "m": "比例，部分", "ex": "resulting training signals for prover models are often sparse, as a large proportion of computa-", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "refine", "ipa": "rɪˈfaɪn", "pos": "v.", "m": "改善，精炼", "ex": "This iterative loop ensures that the model not only learns from the initial demonstration datasets but also distills its own successful reasoning traces, progressively refining its ability to solve harder problems.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "reinforcement", "ipa": "ˌriɪnˈfɔrsmənt", "pos": "n.", "m": "加固；增援；援军；加强", "ex": "The CoT mode is enhanced through a further reinforcement learning stage, following the standard training pipeline commonly used for reasoning models.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "resolution", "ipa": "ˌrɛzəˈluʃən", "pos": "n.", "m": "坚决，坚定；决定", "ex": "Upon the successful resolution of all decomposed steps, a complete proof of the original theorem can be automatically derived.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "resolve", "ipa": "riˈzɑlv", "pos": "v.", "m": "解决，下决心", "ex": "We curate a subset of challenging problems that remain unsolved by the 7B prover model in an end-to-end manner, but for which all decomposed subgoals have been successfully resolved.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "reverse", "ipa": "rɪˈvərs", "pos": "—", "m": "（使）反转", "ex": "In contrast, Kimina-Prover adopts a reverse workflow: it begins by collecting complete formal proofs alongside their informal counterparts, then uses general-purpose reasoning models to retrosynthesize intermediate …", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "scope", "ipa": "skoʊp", "pos": "n.", "m": "范围", "ex": "In this paper, we implement a straightforward approach that leverages subgoals to expand the scope of formal statements used for model training.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "self", "ipa": "sɛlf", "pos": "n.；adj.；vt.；vi.", "m": "自己，自我；本质；私心；同一的；使自花授精；使近亲繁殖；自花授精", "ex": "To generate denser training signals, Dong and Ma (2025) proposed a self-play approach that enriches training problem sets by generating tractable conjectures closely related to the original theorem statements, thereby enabling …", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "sequence", "ipa": "ˈsikwəns", "pos": "n.", "m": "连续，继续；次序", "ex": "During each iteration, we sample 256 distinct problems, generating 32 candidate proofs per theorem with a maximum sequence length of 32,768 tokens.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "series", "ipa": "ˈsɪriz", "pos": "n.", "m": "连续，系列；丛书", "ex": "Figure 3 | An illustrative example of how we translate decomposed subgoals into a series of", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "sketch", "ipa": "skɛʧ", "pos": "n.", "m": "略图；速写；概略", "ex": "Specifically, we synthesize data by formalizing natural-language proofs directly into structured formal proof sketches.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "solvable", "ipa": "ˈsɑlvəbəl", "pos": "adj.", "m": "可解决的，可求解的", "ex": "To ensure effective learning, we curate training prompts to include only problems that are sufficiently challenging yet solvable by the supervised fine-tuned model.", "lv": "超纲", "ov": "", "sec": "Method"}, {"w": "span", "ipa": "ˈspænɪŋ", "pos": "v.", "m": "跨越，涵盖", "ex": "spanning both high-school competition problems and undergraduate-level mathematics", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "sparse", "ipa": "spɑrs", "pos": "adj.", "m": "稀疏的；稀少的", "ex": "resulting training signals for prover models are often sparse, as a large proportion of computa-", "lv": "专四", "ov": "", "sec": "Method"}, {"w": "specifically", "ipa": "spəˈsɪfɪkli", "pos": "adv.", "m": "特别地， 特定地； 明确地， 具体地", "ex": "To reduce the computational overhead of extensive proof search, we employ a smaller 7B prover model specifically optimized for processing the decomposed lemmas.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "strategy", "ipa": "ˈstrætəʤi", "pos": "n.", "m": "策略，战略", "ex": "Leveraging the subgoals generated by DeepSeek-V3, we adopt a recursive solving strategy to systematically resolve each intermediate proof step.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "structural", "ipa": "ˈstrəkʧərəl", "pos": "adj.", "m": "结构的，构造的", "ex": "To address this issue, we incorporate a consistency reward in the early steps of training, which penalizes the structural misalignment, explicitly enforcing the inclusion of all decomposed have-structured lemmas in the final …", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "sufficiently", "ipa": "səˈfɪʃəntli", "pos": "adv.", "m": "足够地，充分地", "ex": "To ensure effective learning, we curate training prompts to include only problems that are sufficiently challenging yet solvable by the supervised fine-tuned model.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "supervise", "ipa": "ˈsupərˌvaɪz", "pos": "v.", "m": "监督，监视", "ex": "We perform supervised fine-tuning on DeepSeek-V3-Base-671B (DeepSeek-AI, 2024) using a constant learning rate of 5e-6 within a context window of 16,384 tokens.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "supervision", "ipa": "ˌsupərˈvɪʒən", "pos": "n.", "m": "监督", "ex": "Following the standard training objective for reasoning models (DeepSeek-AI, 2025), we use binary correct-or-incorrect feedback as the primary form of reward supervision.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "synthesis", "ipa": "ˈsɪnθəsəs", "pos": "n.", "m": "综合，综合物；（化学或生物学物质的）合成；（用电子方式对声音、语音或音乐的）合成", "ex": "This proof is then appended to DeepSeek-V3’s chain-of-thought, which outlines the corresponding lemma decomposition, thereby producing a cohesive synthesis of informal reasoning and subsequent formalization.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "synthetic", "ipa": "sɪnˈθɛtɪk", "pos": "adj.", "m": "合成的，人造的", "ex": "It enables the collection of hundreds of high-quality synthetic cold-start data, which serve as the foundation for training DeepSeek-Prover-V2.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "systematically", "ipa": "ˌsɪstəˈmætɪkli", "pos": "adv.", "m": "系统地，有规则地", "ex": "Leveraging the subgoals generated by DeepSeek-V3, we adopt a recursive solving strategy to systematically resolve each intermediate proof step.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "tackle", "ipa": "ˈtækl", "pos": "v.", "m": "攻克", "ex": "tackling IMO-level mathematical problems that represent the frontier", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "theorem", "ipa": "ˈθɪrəm", "pos": "n.", "m": "定理；原理，原则", "ex": "We generate two types of subgoal theorems, one incor-porating preceding subgoals as premises and one without, corresponding to Figure 3(b) and", "lv": "考博", "ov": "", "sec": "Method"}, {"w": "token", "ipa": "ˈtoʊkən", "pos": "n.", "m": "辅币；象征", "ex": "During each iteration, we sample 256 distinct problems, generating 32 candidate proofs per theorem with a maximum sequence length of 32,768 tokens.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "tractable", "ipa": "ˈtræktəbəl", "pos": "adj.", "m": "易于管教的；易驾驭的；易处理的；驯良的", "ex": "To generate denser training signals, Dong and Ma (2025) proposed a self-play approach that enriches training problem sets by generating tractable conjectures closely related to the original theorem statements, thereby enabling …", "lv": "专八", "ov": "", "sec": "Method"}, {"w": "transparency", "ipa": "trænˈspɛrənsi", "pos": "n.", "m": "透明，透明度；幻灯片；有图案的玻璃", "ex": "High-precision Chain-of-Thought (CoT) mode: This mode systematically articulates intermediate reasoning steps, emphasizing transparency and logical progression, before constructing the final formal proofs.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "ultimate", "ipa": "ˈʌltɪmət", "pos": "adj.", "m": "终极的", "ex": "with the ultimate aim of tackling IMO-level mathematical problems", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "underlying", "ipa": "ˌəndərˈlaɪɪŋ", "pos": "adj.", "m": "潜在的，基础的", "ex": "This procedure builds on the same underlying principle as AlphaProof’s test-time reinforcement learning (DeepMind, 2024), wherein variations of a target problem are generated to enhance the model’s capability in solving …", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "utilize", "ipa": "ˈjutəˌlaɪz", "pos": "v.", "m": "利用", "ex": "Training utilizes binary rewards, where each generated Lean proof receives a reward of 1 if verified as correct and 0 otherwise.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "variation", "ipa": "ˌvɛriˈeɪʃən", "pos": "n.", "m": "变化，变动；变异", "ex": "This procedure builds on the same underlying principle as AlphaProof’s test-time reinforcement learning (DeepMind, 2024), wherein variations of a target problem are generated to enhance the model’s capability in solving …", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "verification", "ipa": "ˌvɛrəfəˈkeɪʃən", "pos": "n.", "m": "确认", "ex": "This pipeline provides a natural and scalable mechanism for synthesizing formal reasoning data by combining high-level reasoning from language models with precise formal verification.", "lv": "六级", "ov": "", "sec": "Method"}, {"w": "verify", "ipa": "ˈvɛrəˌfaɪ", "pos": "v.", "m": "证实，查证；证明", "ex": "Training utilizes binary rewards, where each generated Lean proof receives a reward of 1 if verified as correct and 0 otherwise.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "widely", "ipa": "ˈwaɪdli", "pos": "adv.", "m": "大大地", "ex": "The training procedure for the non-CoT mode of DeepSeek-Prover-V2 follows the paradigm of expert iteration (Polu and Sutskever, 2020), a widely adopted framework for developing formal theorem provers.", "lv": "四级", "ov": "", "sec": "Method"}, {"w": "abstraction", "ipa": "æbˈstrækʃən", "pos": "n.", "m": "抽象", "ex": "The deliberate inclusion of this diverse array of mathematical fields allows for a thorough assessment of model capabilities across varying levels of abstraction and reasoning styles.", "lv": "雅思", "ov": "", "sec": "Results"}, {"w": "accommodate", "ipa": "əˈkɑməˌdeɪt", "pos": "v.", "m": "适合， 提供住宿", "ex": "When computational budgets are expanded to accommodate 3200 samples, performance on the Lite subset demonstrates a marked improvement to 61.88%.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "accordingly", "ipa": "əˈkɔrdɪŋli", "pos": "adv.", "m": "因此，所以；照着", "ex": "An interesting finding is that the chain-of-thought reasoning of DeepSeek-Prover-V2-671B can effectively identify misformulations and adapt its proof strategy accordingly.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "approach", "ipa": "əˈproʊʧ", "pos": "v.；n.", "m": "靠近；接近，方法", "ex": "These results further highlight the effectiveness of the CoT reasoning approach in handling challenging, college-level mathematical problems.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "array", "ipa": "əreɪ", "pos": "v.；n.", "m": "（美观地）排列；陈列", "ex": "The deliberate inclusion of this diverse array of mathematical fields allows for a thorough assessment of model capabilities across varying levels of abstraction and reasoning styles.", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "benchmark", "ipa": "ˈbɛnʧˌmɑrk", "pos": "n.；v.", "m": "基准；标准检查程序；用基准问题测试（计算机系统等）", "ex": "The benchmark includes Olympiad-level problems covering core areas of elementary mathematics, including algebra, number theory, and induction.", "lv": "专八", "ov": "", "sec": "Results"}, {"w": "bold", "ipa": "boʊld", "pos": "adj.", "m": "大胆的；冒失的", "ex": "Problems with underlined bolded indices have been solved by DeepSeek-Prover-V2.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "breakdown", "ipa": "ˈbreɪkˌdaʊn", "pos": "n.", "m": "垮， 衰竭； 损坏， 故障； 倒塌", "ex": "Table 2 presents a detailed breakdown of the problems solved by DeepSeek-Prover-V2 on the miniF2F benchmark,", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "bug", "ipa": "bəg", "pos": "n.", "m": "虫子；臭虫", "ex": "We acknowledge the Lean community for their assistance in identifying the cause of this unexpected result, which was traced to a user interface bug in Lean 4.9.0.", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "calculus", "ipa": "ˈkælkjələs", "pos": "n.", "m": "微积分；结石", "ex": "This comprehensive benchmark covers number theory, elementary algebra, linear algebra, abstract algebra, calculus, real analysis, complex analysis, functional analysis, and probability.", "lv": "专四", "ov": "", "sec": "Results"}, {"w": "capability", "ipa": "ˌkeɪpəˈbɪləti", "pos": "n.", "m": "能力，才能", "ex": "The problems from AIME 24&25 have become a standard benchmark for evaluating the reasoning capabilities of large language models.", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "capacity", "ipa": "kəˈpæsɪti", "pos": "n.", "m": "容量；能力；能量", "ex": "This suggests that high-capacity models may internalize and externalize intermediate reasoning implicitly, even in the absence of explicit CoT prompting 3.2.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "cardinal", "ipa": "ˈkɑrdɪnəl", "pos": "adj.；n.", "m": "最重要的； 基本的；红衣主教；【数】基数", "ex": "Upon closer examination of the model’s outputs, we identified a distinctive pattern in its reasoning approach: the 7B model frequently employs Cardinal.toNat and Cardinal.natCast_inj to exploit this user-interface bug (see …", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "carefully", "ipa": "ˈkɛrfəli", "pos": "adv.", "m": "小心地", "ex": "In addition to AIME 24&25, we augment our benchmark with problems carefully selected from textbooks used in high school competitions and undergraduate-level courses to strengthen coverage in specific mathematical domains.", "lv": "专四", "ov": "", "sec": "Results"}, {"w": "claim", "ipa": "kleɪm", "pos": "v.", "m": "声称，主张；索取", "ex": "Our initial report claimed an unexpected finding that DeepSeek-Prover-V2-7B successfully solved 13 problems on PutnamBench that remained unsolved by its larger 671B counterpart.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "collaborate", "ipa": "kəˈlæbərˌeɪt", "pos": "v.", "m": "合作", "ex": "After collaborating with the benchmark maintainers and identifying two misformulated problem statements, the final result stands at 10 solved problems.", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "community", "ipa": "kəmˈjunɪti", "pos": "n.", "m": "社区；社会；公社", "ex": "We acknowledge the Lean community for their assistance in identifying the cause of this unexpected result, which was traced to a user interface bug in Lean 4.9.0.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "comparative", "ipa": "kəmˈpærətɪv", "pos": "adj.", "m": "比较的，相对的", "ex": "Table 6 presents the comparative performance analysis of various theorem provers on both FormalMATH-All and FormalMATH-Lite benchmarks.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "comparison", "ipa": "kəmˈpɛrəsən", "pos": "n.", "m": "比较，对照；比似", "ex": "In comparison, DeepSeek-Prover-V2-671B, operating under the formal proof generation setting with given correct answers, is able to construct valid formal proofs for 6 of 15 problems.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "compel", "ipa": "kəmˈpɛl", "pos": "v.", "m": "强迫", "ex": "The comparative analysis further reveals a compelling scaling pattern: as the sample budget increases from 1 to 8192, the performance gap between the 7B and 671B variants widens considerably, with the larger model demonstrating …", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "competitive", "ipa": "kəmˈpɛtɪtɪv", "pos": "adj.", "m": "竞争的， 比赛的； 好竞争的， 求胜心切的； 有竞争力的", "ex": "DeepSeek-Prover-V2-7B also exhibits competitive performance, surpassing all existing open-source theorem provers in the literature.", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "complement", "ipa": "ˈkɑmpləmənt", "pos": "v.", "m": "补充", "ex": "Complementing these findings,", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "comprise", "ipa": "kəmˈpraɪz", "pos": "v.", "m": "包含，包括；构成", "ex": "CombiBench (Liu et al., 2025) is a comprehensive benchmark comprising 100 combinatorial competition problems formalized in Lean 4, each paired with its corresponding natural-language statement.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "contest", "ipa": "ˈkɑntɛst", "pos": "n.", "m": "比赛", "ex": "Contest Problems AIME 24I P2 , P7 , P13 AIME 24II P4 , P7, P13 , P14 AIME 25I P1 , P8 , P9, P11 AIME 25II P2 , P4 , P13, P15", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "continuity", "ipa": "ˌkɑntəˈnuəti", "pos": "n.", "m": "连续， 持续", "ex": "Number theory and algebra problems test a model’s facility with discrete structures and equations, while analysis-oriented problems evaluate understanding of limits, continuity, and calculus.", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "contradiction", "ipa": "ˌkɑntrəˈdɪkʃən", "pos": "n.", "m": "矛盾，不一致；否认", "ex": "We include an example in the Appendix C where the model detects a contradiction within a misformulated statement and derives False to close the target goal through exfalso.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "core", "ipa": "kɔr", "pos": "n.", "m": "果实的心，核心", "ex": "The benchmark includes Olympiad-level problems covering core areas of elementary mathematics, including algebra, number theory, and induction.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "corpus", "ipa": "ˈkɔrpəs", "pos": "n.", "m": "[计] 语料库；文集；本金", "ex": "FormalMATH-Lite is a manageable subset of 425 problems (comprising 359 high school-level and 66 undergraduate-level problems) carefully selected from the full corpus, addressing the impracticality of evaluating on the full …", "lv": "专八", "ov": "", "sec": "Results"}, {"w": "cot", "ipa": "kɑt", "pos": "n.", "m": "简易床；小屋；轻便小床", "ex": "These results further highlight the effectiveness of the CoT reasoning approach in handling challenging, college-level mathematical problems.", "lv": "专四", "ov": "", "sec": "Results"}, {"w": "counterpart", "ipa": "ˈkaʊntərˌpɑrt", "pos": "n.", "m": "对等物", "ex": "The final result stands at 47 problems successfully solved (as shown in Table 4), which significantly outperforms its non-CoT counterpart.", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "cumbersome", "ipa": "ˈkəmbərsəm", "pos": "adj.", "m": "笨重的；累赘的；难处理的", "ex": "To ensure cleaner formal-izations, we filter out geometry, combinatorics, and counting problems whose representations in Lean are potentially cumbersome.", "lv": "考博", "ov": "", "sec": "Results"}, {"w": "declaration", "ipa": "ˌdɛklərˈeɪʃən", "pos": "n.", "m": "宣布， 宣告； 宣言， 声明； 申报", "ex": "Specifically, the apply? tactic fails to emit sorry declarations under certain corner cases.", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "deliberate", "ipa": "dɪˈlɪbərˌeɪt", "pos": "adj.", "m": "故意的", "ex": "The deliberate inclusion of this diverse array of mathematical fields allows for a thorough assessment of model capabilities across varying levels of abstraction and reasoning styles.", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "demonstrate", "ipa": "ˈdɛmənˌstreɪt", "pos": "v.", "m": "证明；展示", "ex": "When computational budgets are expanded to accommodate 3200 samples, performance on the Lite subset demonstrates a marked improvement to 61.88%.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "denote", "ipa": "dɪˈnoʊt", "pos": "v.", "m": "指示，意味着", "ex": "evaluation set consisting of 325 problems, while AIME 24&25 denotes a subset of 15 problems formalized from recent AIME competitions.", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "detail", "ipa": "ˈditeɪl", "pos": "n.", "m": "细节", "ex": "Table 2 presents a detailed breakdown of the problems solved by DeepSeek-Prover-V2 on the miniF2F benchmark,", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "detect", "ipa": "dɪˈtɛkt", "pos": "v.", "m": "觉察;检测", "ex": "We include an example in the Appendix C where the model detects a contradiction within a misformulated statement and derives False to close the target goal through exfalso.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "deviation", "ipa": "ˌdiviˈeɪʃən", "pos": "n.", "m": "背离，偏离；偏差", "ex": "𝜇± 𝜎denotes the average accuracy 𝜇and the standard deviation 𝜎.", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "discrete", "ipa": "dɪˈskrit", "pos": "adj.", "m": "分离的， 不相关联的", "ex": "Number theory and algebra problems test a model’s facility with discrete structures and equations, while analysis-oriented problems evaluate understanding of limits, continuity, and calculus.", "lv": "考博", "ov": "", "sec": "Results"}, {"w": "distinctive", "ipa": "dɪˈstɪŋktɪv", "pos": "adj.", "m": "独特的，与众不同的", "ex": "Upon closer examination of the model’s outputs, we identified a distinctive pattern in its reasoning approach: the 7B model frequently employs Cardinal.toNat and Cardinal.natCast_inj to exploit this user-interface bug (see …", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "distribution", "ipa": "ˌdɪstrəˈbjuʃən", "pos": "n.", "m": "分发，分配；分布", "ex": "These problems are divided into two equally sized subsets, denoted by miniF2F-valid and miniF2F-test, each containing 244 problems with an identical distribution across subject areas.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "drawn", "ipa": "drɔn", "pos": "adj.", "m": "憔悴的", "ex": "The remaining 310 problems are drawn from curated textbook examples and educational tutorials, contributing a diverse and pedagogically grounded collection of formalized mathematical problems.", "lv": "GRE", "ov": "", "sec": "Results"}, {"w": "educational", "ipa": "ˌɛʤəˈkeɪʃənəl", "pos": "adj.", "m": "教育的， 教育性的", "ex": "The remaining 310 problems are drawn from curated textbook examples and educational tutorials, contributing a diverse and pedagogically grounded collection of formalized mathematical problems.", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "effectively", "ipa": "ˈifɛktɪvli", "pos": "adv.", "m": "有效地", "ex": "An interesting finding is that the chain-of-thought reasoning of DeepSeek-Prover-V2-671B can effectively identify misformulations and adapt its proof strategy accordingly.", "lv": "托福", "ov": "", "sec": "Results"}, {"w": "effectiveness", "ipa": "ˈifɛktɪvnəs", "pos": "n.", "m": "效力", "ex": "These results further highlight the effectiveness of the CoT reasoning approach in handling challenging, college-level mathematical problems.", "lv": "托福", "ov": "", "sec": "Results"}, {"w": "elementary", "ipa": "ˌɛləˈmɛnʧri", "pos": "adj.", "m": "基本的；初级的", "ex": "The benchmark includes Olympiad-level problems covering core areas of elementary mathematics, including algebra, number theory, and induction.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "emit", "ipa": "ɪˈmɪt", "pos": "v.", "m": "发出，排出", "ex": "Specifically, the apply? tactic fails to emit sorry declarations under certain corner cases.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "encompass", "ipa": "ɛnˈkəmpəs", "pos": "v.", "m": "包含；包围，环绕；完成", "ex": "As a result, we formalize 310 problems that encompass a broad spectrum, ranging from elementary mathematics at the competition level to advanced topics typically encountered in undergraduate studies.", "lv": "考博", "ov": "", "sec": "Results"}, {"w": "encounter", "ipa": "ɪnˈkaʊnər", "pos": "v.；n.", "m": "遭遇，遇到；遭遇", "ex": "As a result, we formalize 310 problems that encompass a broad spectrum, ranging from elementary mathematics at the competition level to advanced topics typically encountered in undergraduate studies.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "enrich", "ipa": "ɪnˈrɪtʃ", "pos": "v.", "m": "充实，丰富", "ex": "to enrich our evaluation, including 15 selected problems", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "ensure", "ipa": "ɪnˈʃʊr", "pos": "v.", "m": "确保", "ex": "To ensure cleaner formal-izations, we filter out geometry, combinatorics, and counting problems whose representations in Lean are potentially cumbersome.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "equally", "ipa": "ˈikwəli", "pos": "adv.", "m": "同样地；相等地，平等地；公平地", "ex": "These problems are divided into two equally sized subsets, denoted by miniF2F-valid and miniF2F-test, each containing 244 problems with an identical distribution across subject areas.", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "equation", "ipa": "ɪkˈweɪʒən", "pos": "n.", "m": "方程(式)；等式", "ex": "Number theory and algebra problems test a model’s facility with discrete structures and equations, while analysis-oriented problems evaluate understanding of limits, continuity, and calculus.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "evaluation", "ipa": "ɪˌvæljuˈeɪʃən", "pos": "n.", "m": "评价，评估", "ex": "This benchmark is designed to enable more comprehensive evaluation across both high-school competition problems and undergraduate-level mathematics.", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "exceptional", "ipa": "ɪkˈsɛpʃənəl", "pos": "adj.", "m": "例外的", "ex": "The American In-vitational Mathematics Examination (AIME) is an annual mathematics competition designed to challenge and recognize talented high school students who demonstrate exceptional proficiency in mathematics.", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "exclude", "ipa": "ɪkˈsklud", "pos": "v.", "m": "排除，不包括", "ex": "We exclude problems that are incompatible with Lean 4.9.0 and evaluate the model on the remaining set of 649 problems.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "exclusively", "ipa": "ɪkˈsklusɪvli", "pos": "adv.", "m": "专门地", "ex": "We reserve the miniF2F-test set exclusively for evaluating model performance, while the miniF2F-valid problems are incorporated into curriculum learning with subgoal decomposition.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "exhibit", "ipa": "ɪgˈzɪbɪt", "pos": "v.", "m": "显示；陈列，展览", "ex": "DeepSeek-Prover-V2-7B also exhibits competitive performance, surpassing all existing open-source theorem provers in the literature.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "experimental", "ipa": "ɪkˌspɛrɪˈmɛntəl", "pos": "adj.", "m": "实验的，试验的", "ex": "All experimental results of DeepSeek-Prover-V2 are conducted with Lean 4.9.0-rc2, using the same testing environment as DeepSeek-Prover-V1.5 (Xin et al., 2024b).", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "exploit", "ipa": "ˌɛkˈsplɔɪt", "pos": "v.", "m": "开采", "ex": "Upon closer examination of the model’s outputs, we identified a distinctive pattern in its reasoning approach: the 7B model frequently employs Cardinal.toNat and Cardinal.natCast_inj to exploit this user-interface bug (see …", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "extend", "ipa": "ɪkˈstɛnd", "pos": "v.", "m": "延长；扩大；致", "ex": "These findings highlight the potential of state-of-the-art general-purpose LLMs to extend beyond natural language understanding and effectively support complex formal reasoning tasks.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "externalize", "ipa": "ikˈstə:nəlaiz", "pos": "v.", "m": "使…表面化", "ex": "This suggests that high-capacity models may internalize and externalize intermediate reasoning implicitly, even in the absence of explicit CoT prompting 3.2.", "lv": "GRE", "ov": "", "sec": "Results"}, {"w": "facility", "ipa": "fəˈsɪlɪti", "pos": "n.", "m": "设施", "ex": "Number theory and algebra problems test a model’s facility with discrete structures and equations, while analysis-oriented problems evaluate understanding of limits, continuity, and calculus.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "feature", "ipa": "ˈfiʧər", "pos": "n.", "m": "特点", "ex": "Of these, 15 are formalized from number theory and algebra questions featured in the recent AIME competitions (AIME 24 and 25), offering authentic high-school competition-level challenges.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "filter", "ipa": "ˈfɪltər", "pos": "v.；n.", "m": "过滤；滤纸", "ex": "To ensure cleaner formal-izations, we filter out geometry, combinatorics, and counting problems whose representations in Lean are potentially cumbersome.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "formalize", "ipa": "ˈfɔrməlaɪz", "pos": "v.", "m": "形式化", "ex": "a collection of 325 formalized problems, to enrich our evaluation", "lv": "托福", "ov": "", "sec": "Results"}, {"w": "functional", "ipa": "ˈfəŋkʃənəl", "pos": "adj.", "m": "功能的", "ex": "The abstract algebra and functional analysis components challenge models to reason about abstract structures and spaces, requiring sophisticated formal reasoning capabilities.", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "general-purpose", "ipa": "ˈʤɛnərəl ˈpərpəs", "pos": "adj.", "m": "通用的，一般用途的（与专用 special-purpose 相对）", "ex": "Prover-V2-671B. These findings highlight the potential of state-of-the-art general-purpose LLMs", "lv": "考博", "ov": "", "sec": "Results"}, {"w": "hack", "ipa": "hæk", "pos": "v.", "m": "黑客攻击", "ex": "Reward Hacking in Reinforcement Learning.", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "highlight", "ipa": "ˈhaɪˌlaɪt", "pos": "—", "m": "照亮；突出；强调", "ex": "These results further highlight the effectiveness of the CoT reasoning approach in handling challenging, college-level mathematical problems.", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "highly", "ipa": "ˈhaɪli", "pos": "adv.", "m": "高度地，很，非常", "ex": "The Putnam Competition is a highly prestigious annual mathematics competition for undergraduate students across the United States and Canada, encompassing a variety of college-level domains such as analysis, linear algebra …", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "identical", "ipa": "aɪˈdɛntɪkəl", "pos": "adj.", "m": "相同的", "ex": "These problems are divided into two equally sized subsets, denoted by miniF2F-valid and miniF2F-test, each containing 244 problems with an identical distribution across subject areas.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "implicitly", "ipa": "ˌɪmˈplɪsətli", "pos": "adv.", "m": "暗示地，含蓄地，隐晦地", "ex": "This suggests that high-capacity models may internalize and externalize intermediate reasoning implicitly, even in the absence of explicit CoT prompting 3.2.", "lv": "专八", "ov": "", "sec": "Results"}, {"w": "improvement", "ipa": "ˌɪmˈpruvmənt", "pos": "n.", "m": "改进，改善；改进处", "ex": "When computational budgets are expanded to accommodate 3200 samples, performance on the Lite subset demonstrates a marked improvement to 61.88%.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "inclusion", "ipa": "ˌɪnˈkluʒən", "pos": "n.", "m": "包含；内含物", "ex": "The deliberate inclusion of this diverse array of mathematical fields allows for a thorough assessment of model capabilities across varying levels of abstraction and reasoning styles.", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "incompatible", "ipa": "ˌɪnkəmˈpætəbəl", "pos": "adj.", "m": "不相容的", "ex": "After filtering out problems incompatible with Lean 4.9.0 and those containing multiple sorry placeholders, we evaluate on 77 problems from the benchmark.", "lv": "考博", "ov": "", "sec": "Results"}, {"w": "index", "ipa": "ˈɪndɛks", "pos": "n.", "m": "索引；指数；指标", "ex": "Problems with underlined bolded indices have been solved by DeepSeek-Prover-V2.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "induction", "ipa": "ˌɪnˈdəkʃən", "pos": "n.", "m": "就职；归纳推理", "ex": "The benchmark includes Olympiad-level problems covering core areas of elementary mathematics, including algebra, number theory, and induction.", "lv": "专八", "ov": "", "sec": "Results"}, {"w": "interestingly", "ipa": "ˈɪntəˌrɛstɪŋli", "pos": "adv.", "m": "有趣地", "ex": "Interestingly, within the non-CoT setting, the 671B model generates longer outputs on average compared to the 7B model.", "lv": "托福", "ov": "", "sec": "Results"}, {"w": "interface", "ipa": "ˈɪnərˌfeɪs", "pos": "n.", "m": "分界面", "ex": "We acknowledge the Lean community for their assistance in identifying the cause of this unexpected result, which was traced to a user interface bug in Lean 4.9.0.", "lv": "考研", "ov": "", "sec": "Results"}, {"w": "invoke", "ipa": "ˌɪnˈvoʊk", "pos": "v.", "m": "调用；祈求；引起；恳求", "ex": "miniF2F-valid are collected throughout the curriculum learning process, and DeepSeek-Prover-V2-671B is further invoked with Pass@8192 on the remaining problems.", "lv": "考博", "ov": "", "sec": "Results"}, {"w": "latest", "ipa": "ˈleɪtəst", "pos": "adv.；n.；adj.", "m": "最迟地；最后地；最新的事物；最新的，最近的；最迟的，最后的", "ex": "We evaluate our model on the latest release of PutnamBench, which contains 658 problems formalized in Lean 4.", "lv": "专四", "ov": "", "sec": "Results"}, {"w": "lightweight", "ipa": "ˈlaɪtˈweɪt", "pos": "n.", "m": "轻量级选手, 不能胜任者", "ex": "Remarkably, our subgoal-guided curriculum learning framework, which integrates the general-purpose model DeepSeek-V3 with a lightweight specialized 7B prover, achieves a 89.8% success rate on miniF2F-valid, nearly matching the …", "lv": "托福", "ov": "", "sec": "Results"}, {"w": "linear", "ipa": "ˈlɪniər", "pos": "adj.", "m": "线的；长度的", "ex": "This comprehensive benchmark covers number theory, elementary algebra, linear algebra, abstract algebra, calculus, real analysis, complex analysis, functional analysis, and probability.", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "linguistic", "ipa": "lɪŋgˈwɪstɪk", "pos": "adj.", "m": "语言的；语言学的", "ex": "This comparison highlights that the performance gap between informal mathematical reasoning and formal theorem proving is substantially narrowing, indicating growing alignment between linguistic understanding and formal logical …", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "longer", "ipa": "ˈlɔŋgər", "pos": "—", "m": "比较久(的)", "ex": "Interestingly, within the non-CoT setting, the 671B model generates longer outputs on average compared to the 7B model.", "lv": "托福", "ov": "", "sec": "Results"}, {"w": "mathematical", "ipa": "ˌmæθəˈmætɪkəl", "pos": "adj.", "m": "数学的，数学上的", "ex": "These results further highlight the effectiveness of the CoT reasoning approach in handling challenging, college-level mathematical problems.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "metric", "ipa": "ˈmɛtrɪk", "pos": "adj.", "m": "公制的，米制的", "ex": "DeepSeek-Prover-V2-671B demonstrates superior performance across all evaluation metrics, successfully solving 28.31% of problems in the full dataset and 56.00% of problems in the Lite subset with 32 samples.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "notable", "ipa": "ˈnoʊtəbəl", "pos": "adj.", "m": "值得注意的；著名的", "ex": "The 7B parameter variant of DeepSeek-Prover-V2 also exhibits notable effectiveness, outperforming previous baselines including Goedel-Prover-SFT (Lin et al., 2025), STP (Dong and Ma, 2025), and Kimina-Prover-Preview-Distill-7B …", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "notation", "ipa": "noʊˈteɪʃən", "pos": "n.", "m": "记号， 标记法", "ex": "The notation", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "noticeably", "ipa": "ˈnoʊtɪsəbli", "pos": "adv.", "m": "显著地，显然", "ex": "Upon closer examination of the model’s outputs, we identified a distinctive pattern in its reasoning approach: the 7B model frequently employs Cardinal.toNat and Cardinal.natCast_inj to exploit this user-interface bug (see …", "lv": "托福", "ov": "", "sec": "Results"}, {"w": "olympiad", "ipa": "oʊˈlɪmpiæd", "pos": "n.", "m": "奥林匹克竞赛（学科竞赛）", "ex": "The benchmark includes Olympiad-level problems covering core areas of elementary mathematics, including algebra, number theory, and induction.", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "orient", "ipa": "ˈɔriˌɛnt", "pos": "v.", "m": "使适应，使确定方向", "ex": "Number theory and algebra problems test a model’s facility with discrete structures and equations, while analysis-oriented problems evaluate understanding of limits, continuity, and calculus.", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "parameter", "ipa": "pərˈæmətər", "pos": "n.", "m": "参（变）数；参量", "ex": "The 7B parameter variant of DeepSeek-Prover-V2 also exhibits notable effectiveness, outperforming previous baselines including Goedel-Prover-SFT (Lin et al., 2025), STP (Dong and Ma, 2025), and Kimina-Prover-Preview-Distill-7B …", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "persistent", "ipa": "pərˈsɪstənt", "pos": "adj.", "m": "持续的，坚持的", "ex": "These results indicate that, while the prover model is primarily trained in number theory and algebra, it demonstrates promising generalization to combinatorial problems, despite their persistent difficulty.", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "potentially", "ipa": "pəˈtɛnʃəli", "pos": "adv.", "m": "潜在地", "ex": "To ensure cleaner formal-izations, we filter out geometry, combinatorics, and counting problems whose representations in Lean are potentially cumbersome.", "lv": "托福", "ov": "", "sec": "Results"}, {"w": "predominantly", "ipa": "ˌprɪˈdɑmənənˌtli", "pos": "adv.", "m": "占主导地位地", "ex": "CoT setting. Notably, despite the training data being predominantly drawn from high-school", "lv": "专四", "ov": "", "sec": "Results"}, {"w": "primarily", "ipa": "praɪˈmɛrəli", "pos": "adv.", "m": "主要地，首先", "ex": "These results indicate that, while the prover model is primarily trained in number theory and algebra, it demonstrates promising generalization to combinatorial problems, despite their persistent difficulty.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "probability", "ipa": "ˌprɑbəˈbɪləˌti", "pos": "n.", "m": "可能性；概率", "ex": "This comprehensive benchmark covers number theory, elementary algebra, linear algebra, abstract algebra, calculus, real analysis, complex analysis, functional analysis, and probability.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "proficiency", "ipa": "prəˈfɪʃənsi", "pos": "n.", "m": "熟练，精通", "ex": "The American In-vitational Mathematics Examination (AIME) is an annual mathematics competition designed to challenge and recognize talented high school students who demonstrate exceptional proficiency in mathematics.", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "prompt", "ipa": "prɑmpt", "pos": "adj.", "m": "敏捷的；v. 敦促", "ex": "This suggests that high-capacity models may internalize and externalize intermediate reasoning implicitly, even in the absence of explicit CoT prompting 3.2.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "reinforce", "ipa": "ˌriɪnˈfɔrs", "pos": "v.", "m": "加强，强化", "ex": "This reinforces the effectiveness of CoT prompting, which encourages decomposition of complex problems into intermediate steps, and further confirms that inference-time scaling holds in the domain of formal theorem proving.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "release", "ipa": "riˈlis", "pos": "v.", "m": "发布，释放", "ex": "We evaluate our model on the latest release of PutnamBench, which contains 658 problems formalized in Lean 4.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "remarkably", "ipa": "rɪˈmɑrkəbli", "pos": "adv.", "m": "非凡地；显著地", "ex": "Remarkably, our subgoal-guided curriculum learning framework, which integrates the general-purpose model DeepSeek-V3 with a lightweight specialized 7B prover, achieves a 89.8% success rate on miniF2F-valid, nearly matching the …", "lv": "托福", "ov": "", "sec": "Results"}, {"w": "representation", "ipa": "ˌrɛprəzɛnˈteɪʃən", "pos": "n.", "m": "描写；陈述；代表", "ex": "To ensure cleaner formal-izations, we filter out geometry, combinatorics, and counting problems whose representations in Lean are potentially cumbersome.", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "respective", "ipa": "rɪˈspɛktɪv", "pos": "adj.", "m": "各自的，各个的", "ex": "Without further specification, baseline evaluation results are sourced from their respective original papers.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "respectively", "ipa": "rɪˈspɛktɪvli", "pos": "adv.", "m": "各自地", "ex": "We use the Lean 4 translation of ProofNet made available by Xin et al. (2024b), which is further divided into two splits: ProofNet-valid and ProofNet-test, containing 185 and 186 problems, respectively.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "response", "ipa": "rɪˈspɑns", "pos": "n.", "m": "反应", "ex": "over 16 sampled responses, the model successfully solves 8 out of 15 problems. In comparison,", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "reveal", "ipa": "rɪˈvil", "pos": "v.", "m": "揭露，揭示", "ex": "A closer examination reveals that, although explicit reasoning is not prompted in the non-CoT mode, the larger model often inserts brief natural language comments within the proof code that resemble implicit reasoning steps (see …", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "revise", "ipa": "rɪˈvaɪz", "pos": "v.", "m": "修订", "ex": "We adopt the revised version of miniF2F released by Wang et al. (2025), and further introduce two additional revisions to miniF2F-valid and one revision to miniF2F-test (see Appendix D).", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "robust", "ipa": "roʊˈbəst", "pos": "adj.", "m": "强健的", "ex": "Prover-SFT and STP on PutnamBench are sourced from their original papers, which conducted evaluations on an earlier version of PutnamBench comprising 644 problems. level mathematics, the model exhibits strong generalization to …", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "sample", "ipa": "ˈsæmpəl", "pos": "n.", "m": "样品；实例，标本", "ex": "When computational budgets are expanded to accommodate 3200 samples, performance on the Lite subset demonstrates a marked improvement to 61.88%.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "selection", "ipa": "səˈlɛkʃən", "pos": "n.", "m": "选择，挑选", "ex": "Table 8 | Selection of AIME 24&25 problems for", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "solution", "ipa": "səˈluʃən", "pos": "n.", "m": "解决，解答，解决办法", "ex": "We evaluate DeepSeek-Prover-V2 in the with-solution setting of this benchmark, where the correct answer is embedded in the Lean statement, allowing the evaluation to focus solely on proof generation.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "solve", "ipa": "sɑlv", "pos": "v.", "m": "解决", "ex": "The final result stands at 47 problems successfully solved (as shown in Table 4), which significantly outperforms its non-CoT counterpart.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "source", "ipa": "sɔrs", "pos": "n.", "m": "来源", "ex": "Without further specification, baseline evaluation results are sourced from their respective original papers.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "specialize", "ipa": "ˈspɛʃəˌlaɪz", "pos": "v.", "m": "专业从事", "ex": "Remarkably, our subgoal-guided curriculum learning framework, which integrates the general-purpose model DeepSeek-V3 with a lightweight specialized 7B prover, achieves a 89.8% success rate on miniF2F-valid, nearly matching the …", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "specification", "ipa": "ˌspɛsɪfɪˈkeɪʃən", "pos": "n.", "m": "说明书", "ex": "Without further specification, baseline evaluation results are sourced from their respective original papers.", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "spectrum", "ipa": "ˈspɛktrəm", "pos": "n.", "m": "系列，范围；波谱", "ex": "As a result, we formalize 310 problems that encompass a broad spectrum, ranging from elementary mathematics at the competition level to advanced topics typically encountered in undergraduate studies.", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "strategic", "ipa": "strəˈtiʤɪk", "pos": "adj.", "m": "对全局有重要意义的， 关键的； 战略的", "ex": "Through strategic subgoal decomposition, the model is able to break down challenging problems into a sequence of tractable steps, serving as an effective bridge between informal reasoning and formal proof construction. #output …", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "structure", "ipa": "ˈstrəkʧər", "pos": "n.", "m": "结构", "ex": "The abstract algebra and functional analysis components challenge models to reason about abstract structures and spaces, requiring sophisticated formal reasoning capabilities.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "substantial", "ipa": "səbˈstænʃəl", "pos": "adj.", "m": "大量的", "ex": "The results, shown in Table 4, indicate a substantial improvement in the pass rate of DeepSeek-Prover-V2 when using CoT reasoning compared to the non-CoT setting.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "substantially", "ipa": "səbˈstænʃəli", "pos": "adv.", "m": "大幅地", "ex": "is substantially narrowing", "lv": "托福", "ov": "", "sec": "Results"}, {"w": "successfully", "ipa": "səkˈsɛsfəli", "pos": "adv.", "m": "成功地", "ex": "The final result stands at 47 problems successfully solved (as shown in Table 4), which significantly outperforms its non-CoT counterpart.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "summarize", "ipa": "ˈsəmərˌaɪz", "pos": "v.", "m": "概括，概述，总结", "ex": "Table 1 summarizes a comparison of state-of-the-art formal", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "surpass", "ipa": "sərˈpæs", "pos": "v.", "m": "超过", "ex": "DeepSeek-Prover-V2-7B also exhibits competitive performance, surpassing all existing open-source theorem provers in the literature.", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "tactic", "ipa": "ˈtæktɪk", "pos": "n.", "m": "(s)策略,战术", "ex": "Specifically, the apply? tactic fails to emit sorry declarations under certain corner cases.", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "tag", "ipa": "tæg", "pos": "n.", "m": "附加语；标签", "ex": "The tags CoT and non-CoT refer to two generation modes of a unified model, each guided by a different prompt.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "trace", "ipa": "treɪs", "pos": "n.", "m": "痕迹", "ex": "We acknowledge the Lean community for their assistance in identifying the cause of this unexpected result, which was traced to a user interface bug in Lean 4.9.0.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "trajectory", "ipa": "trəˈʤɛktəri", "pos": "n.", "m": "[物](射线的) 轨道, 弹道, 轨线", "ex": "The comparative analysis further reveals a compelling scaling pattern: as the sample budget increases from 1 to 8192, the performance gap between the 7B and 671B variants widens considerably, with the larger model demonstrating …", "lv": "GRE", "ov": "", "sec": "Results"}, {"w": "tutorial", "ipa": "tuˈtɔriəl", "pos": "adj.；n.", "m": "辅导的；家庭教师的，个别指导的；个别指导", "ex": "The remaining 310 problems are drawn from curated textbook examples and educational tutorials, contributing a diverse and pedagogically grounded collection of formalized mathematical problems.", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "undergraduate", "ipa": "ˌəndərˈgræʤəwət", "pos": "n.", "m": "大学在校生", "ex": "This benchmark is designed to enable more comprehensive evaluation across both high-school competition problems and undergraduate-level mathematics.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "underscore", "ipa": "ˌəndərˈskɔr", "pos": "v.", "m": "强调", "ex": "Prover-SFT and STP on PutnamBench are sourced from their original papers, which conducted evaluations on an earlier version of PutnamBench comprising 644 problems. level mathematics, the model exhibits strong generalization to …", "lv": "考博", "ov": "", "sec": "Results"}, {"w": "unexpected", "ipa": "ˌənɪkˈspɛktɪd", "pos": "adj.", "m": "想不到的，意外的", "ex": "We acknowledge the Lean community for their assistance in identifying the cause of this unexpected result, which was traced to a user interface bug in Lean 4.9.0.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "unify", "ipa": "ˈjunəˌfaɪ", "pos": "vt.", "m": "使联合， 统一； 使相同， 使一致", "ex": "The tags CoT and non-CoT refer to two generation modes of a unified model, each guided by a different prompt.", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "unprecedented", "ipa": "ənˈprɛsɪˌdɛntɪd", "pos": "adj.", "m": "史无前例的", "ex": "The experimental results demonstrate that DeepSeek-Prover-V2-671B establishes a new state-of-the-art performance on the miniF2F-test benchmark, achieving an unprecedented 82.4% accuracy with only 32 samples when leveraging the …", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "variant", "ipa": "ˈvɛriənt", "pos": "adj.；n.", "m": "不同的；多样的；变体；转化", "ex": "The test split of ProofNet is reserved exclusively for model evaluation, as variants of the ProofNet-valid problems are included in the public synthetic dataset provided by Dong and Ma (2025), which is used in our supervised …", "lv": "六级", "ov": "", "sec": "Results"}, {"w": "vary", "ipa": "ˈvɛri", "pos": "v.", "m": "变化；不同", "ex": "The deliberate inclusion of this diverse array of mathematical fields allows for a thorough assessment of model capabilities across varying levels of abstraction and reasoning styles.", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "widen", "ipa": "ˈwaɪdən", "pos": "v.；v.", "m": "加宽；变宽", "ex": "The comparative analysis further reveals a compelling scaling pattern: as the sample budget increases from 1 to 8192, the performance gap between the 7B and 671B variants widens considerably, with the larger model demonstrating …", "lv": "四级", "ov": "", "sec": "Results"}, {"w": "automate", "ipa": "ˈɔtəˌmeɪt", "pos": "v.", "m": "使自动化", "ex": "Our future work will focus on scaling this paradigm to an AlphaProof-like system with the ultimate aim of tackling IMO-level mathematical problems that represent the frontier of automated theorem proving challenges.", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "comprehensive", "ipa": "ˌkɑmprɪˈhensɪv", "pos": "adj.", "m": "全面的", "ex": "we propose a comprehensive pipeline for synthesizing cold-start reasoning data", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "efficiently", "ipa": "ɪˈfɪʃəntli", "pos": "adj.", "m": "有效地", "ex": "Our approach com-bines high-level proof sketches with formal steps, creating a sequence of manageable subgoals that can be efficiently solved using a smaller 7B model, significantly reducing computational re-quirements.", "lv": "托福", "ov": "", "sec": "Concl"}, {"w": "establish", "ipa": "ɪˈstæblɪʃ", "pos": "v.", "m": "建立", "ex": "The resulting DeepSeek-Prover-V2-671B model establishes a new state-of-the-art in neural theorem proving across multiple benchmarks.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "formal", "ipa": "ˈfɔrməl", "pos": "adj.", "m": "正式的；礼仪上的", "ex": "Conclusion In this work, we propose a comprehensive pipeline for synthesizing cold-start reasoning data to advance formal theorem proving.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "increasingly", "ipa": "ɪnˈkriːsɪŋli", "pos": "adv.", "m": "日益", "ex": "to generate increasingly difficult training tasks", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "manageable", "ipa": "ˈmænɪdʒəbl", "pos": "adj.", "m": "可控的", "ex": "creating a sequence of manageable subgoals", "lv": "专八", "ov": "", "sec": "Concl"}, {"w": "paradigm", "ipa": "ˈpærədaɪm", "pos": "n.", "m": "范式", "ex": "scaling this paradigm to an AlphaProof-like system", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "pipeline", "ipa": "ˈpaɪˌplaɪn", "pos": "n.", "m": "管道, 传递途径", "ex": "Conclusion In this work, we propose a comprehensive pipeline for synthesizing cold-start reasoning data to advance formal theorem proving.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "significant", "ipa": "sɪgˈnɪfɪkənt", "pos": "adj.", "m": "重要的", "ex": "The subsequent reinforcement learning stage substantially enhanced this connection, leading to significant improvements in formal theorem proving capabilities.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "subsequent", "ipa": "ˈsʌbsɪkwənt", "pos": "adj.", "m": "随后的", "ex": "The subsequent reinforcement learning stage substantially enhanced this connection", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "wherein", "ipa": "werˈɪn", "pos": "adv.", "m": "其中", "ex": "a recursive theorem-proving framework, wherein DeepSeek-V3 serves as a unified model", "lv": "超纲", "ov": "", "sec": "Concl"}, {"w": "actually", "ipa": "ˈæˌkʧuəli", "pos": "adv.", "m": "实际上；竟然", "ex": "But to actually prove ‘ubiquitous W (x i)‘, we need to prove ‘appears W ⟨2, _⟩‘, etc., but we can derive ‘false‘ from ‘hW’ 0‘.", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "alternatively", "ipa": "ɔlˈtərnətɪvli", "pos": "adv.", "m": "二选一地；非此即彼", "ex": "2. **Derive an Upper Bound for 𝑘**: −Use inequalities to show that 𝑘< 4, i.e., 𝑘⩽3. −Alternatively, note that for 𝑝, 𝑞, 𝑟in the given range, 𝑘⩽3 is natural, as larger 𝑘would make the right side too large.", "lv": "托福", "ov": "", "sec": "文献区"}, {"w": "applicable", "ipa": "ˈæpləkəbəl", "pos": "adj.", "m": "能应用的；适当的", "ex": "But still: −‘hW’ 0 . . .‘ is not directly applicable because ‘0 : N‘ is ‘< N‘ (as ‘N > 2 ^ n.1 ⩾1‘), but ‘Function.Periodic W 0‘ is ‘∀z : Z, W (z + 0) = W z‘, which is trivially true (‘z + 0 = z‘).", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "buggy", "ipa": "ˈbəgi", "pos": "n.；adj.", "m": "童车；双轮单座轻马车；多虫的", "ex": "Examples of the Buggy Proofs Generated by DeepSeek-Prover-V2-7B on PutnamBench Triggering the User Interface Bug of apply? import Mathlib open Nat Set /−−", "lv": "专八", "ov": "", "sec": "文献区"}, {"w": "calculation", "ipa": "ˌkælkjəˈleɪʃən", "pos": "n.", "m": "计算，计算结果", "ex": "But the precise calculation is not needed.", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "cannot", "ipa": "ˈkænɑt", "pos": "conj.", "m": "不能", "ex": "However, ‘N’ = 1‘ is possible (if ‘N > 1‘), but ‘W‘ cannot be periodic with ‘N’ = 1‘, as there are only two possible ‘W‘s (both constant), but ‘hW’‘ forbids this.", "lv": "托福", "ov": "", "sec": "文献区"}, {"w": "clarity", "ipa": "ˈklɛrɪti", "pos": "n.", "m": "清晰，清楚", "ex": "To enhance clarity, model outputs are reformulated using inline LaTeX expressions.", "lv": "六级", "ov": "", "sec": "文献区"}, {"w": "coefficient", "ipa": "ˌkoʊəˈfɪʃənt", "pos": "n.", "m": "协同因素；系数，率", "ex": "Find the number of pairs 𝑃, 𝑄of polynomials with real coefficients such that \\[ (P(X))^2 + (Q(X))^2 = X^{2n} + 1 \\] and deg 𝑃> deg 𝑄. −/theorem putnam_2007_b4 (n : N) (npos : n > 0) :", "lv": "考博", "ov": "", "sec": "文献区"}, {"w": "con", "ipa": "kɑn", "pos": "n.；v.；adv.；adj.；prep.", "m": "反对票；反对论；精读；默记；反面地；欺诈的；以…", "ex": "appears W ⟨U.1 + 1, Fin.snoc U.2 0⟩∧ appears W ⟨U.1 + 1, Fin.snoc U.2 1⟩∧ appears W ⟨U.1 + 1, Fin.cons 0 U.2⟩∧ appears W ⟨U.1 + 1, Fin.cons 1 U.2⟩ /-- Let 𝑛be a positive integer and let 𝑊= . . . 𝑥−1𝑥0𝑥1𝑥2 . . . be an infinite …", "lv": "专八", "ov": "", "sec": "文献区"}, {"w": "deduction", "ipa": "dɪˈdəkʃən", "pos": "n.", "m": "扣款", "ex": "In Automated Deduction–CADE 28: 28th International Conference on Automated Deduction, Virtual Event, July 12–15, 2021, Proceedings 28, pages 625–635.", "lv": "六级", "ov": "", "sec": "文献区"}, {"w": "define", "ipa": "dɪˈfaɪn", "pos": "v.", "m": "下定义，确定", "ex": "But we must ensure ‘x‘ is defined and uses the correct type. ### Step−by−Step Abstract Plan 1.", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "definition", "ipa": "ˌdɛfəˈnɪʃən", "pos": "n.", "m": "定义", "ex": "The definitions:", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "dominate", "ipa": "ˈdɑməˌneɪt", "pos": "vi.；vt.", "m": "拥有优势；在…中占首要地位；支配，统治，控制；耸立于，俯视", "ex": "For 𝑝⩾4, the term (𝑝−2)(𝑞−2)(𝑟−2) dominates 2𝑝+ 2𝑞+ 2𝑟−7, so no solutions will exist.", "lv": "六级", "ov": "", "sec": "文献区"}, {"w": "dual", "ipa": "duəl", "pos": "adj.", "m": "双的， 两重的", "ex": "Lyra: Orchestrating dual correction in automated theorem proving.", "lv": "六级", "ov": "", "sec": "文献区"}, {"w": "eleventh", "ipa": "ˈilɛvənθ", "pos": "num.", "m": "第十一(个)", "ex": "In The Eleventh International Conference on Learning Representations, 2023.", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "embed", "ipa": "ɪmˈbɛd", "pos": "vt.", "m": "把…嵌入， 扎牢； 使深留脑中", "ex": "Since we have ‘False‘, construct any trivial ‘x‘ (e.g., constant embedding to ‘⟨1, fun _ => 0⟩‘).", "lv": "六级", "ov": "", "sec": "文献区"}, {"w": "enigma", "ipa": "ɪˈnɪgmə", "pos": "n.", "m": "谜，不可思议的东西", "ex": "Decomposing the enigma: Subgoal-based demonstration learning for formal theorem proving. arXiv preprint arXiv:2305.16366, 2023.", "lv": "考博", "ov": "", "sec": "文献区"}, {"w": "factor", "ipa": "ˈfæktər", "pos": "n.", "m": "因素；因子，系数", "ex": "Set 𝑝= 4: 4𝑞𝑟−1 = 3(3)(𝑞−1)(𝑟−1) 4𝑞𝑟−1 = 9𝑞𝑟−9𝑞−9𝑟+ 9 −5𝑞𝑟+ 9𝑞+ 9𝑟−10 = 0 Multiply by 5: −25𝑞𝑟+ 45𝑞+ 45𝑟−50 = 0 Factor: (5𝑞−9)(5𝑟−9) = 31 Since 𝑞⩾5, 𝑟⩾6, (5𝑞−9) ⩾16, (5𝑟−9) ⩾21, so left side is ⩾16 · 21 = 336 > 31.", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "fin", "ipa": "fɪn", "pos": "n.", "m": "鱼鳍；鳍状物；尾翅；散热片", "ex": "The goal is to find an injective function from ‘Fin n‘ to ubiquitous finite nonempty words in ‘W‘", "lv": "考研", "ov": "", "sec": "文献区"}, {"w": "finite", "ipa": "ˈfaɪˌnaɪt", "pos": "adj.", "m": "有限的；有尽的", "ex": "A finite nonempty word 𝑈is said to appear in 𝑊if there exist indices 𝑘⩽ℓsuch that 𝑈= 𝑥𝑘𝑥𝑘+1 . . . 𝑥ℓ.", "lv": "六级", "ov": "", "sec": "文献区"}, {"w": "generic", "ipa": "ʤəˈnɛrɪk", "pos": "adj.", "m": "【生物】 属的， 类的； 一般的， 普通的", "ex": "Isabelle a Generic Theorem Prover.", "lv": "专八", "ov": "", "sec": "文献区"}, {"w": "hence", "ipa": "hɛns", "pos": "adv.", "m": "因此，所以；今后", "ex": "But ‘hW’ 0 (by linarith)‘ states ‘¬Function.Periodic W 0‘, which is false. **Conclusion**: The assumptions in the Lean problem are contradictory because: 1. ‘N > 2 ^ n.1 ⩾1‘ (‘n : N+‘ so ‘n.1 ⩾1‘), hence ‘N ⩾2‘ (as ‘N : N‘ and ‘2 …", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "hypothesis", "ipa": "haɪˈpɑθəsəs", "pos": "n.", "m": "假设，假说", "ex": "Thus, the initial step is to derive ‘false‘ from the hypotheses. Then, we can use ‘false.elim‘ to", "lv": "六级", "ov": "", "sec": "文献区"}, {"w": "identity", "ipa": "aɪˈdɛntəˌti", "pos": "n.", "m": "身份", "ex": "−−Use the quadratic equation to solve for the sum of cosines have h11 : Real.cos (Real.pi / 7) = Real.cos (Real.pi / 7) := rfl have h12 : 8 * Real.cos (Real.pi / 7) ^ 3 −4 * Real.cos (Real.pi / 7) ^ 2 −4 * Real.cos (Real.pi / 7) …", "lv": "六级", "ov": "", "sec": "文献区"}, {"w": "imply", "ipa": "ˌɪmˈplaɪ", "pos": "v.", "m": "意味；暗示", "ex": "Wait, ‘n : N+‘ is a positive integer (‘n.1 ⩾1‘), so: −‘n.1 ⩾1‘ implies ‘2 ^ n.1 ⩾2 ^ 1 = 2‘, so ‘N > 2‘ and ‘N ⩾3‘.", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "infinite", "ipa": "ˈɪnfənət", "pos": "adj.", "m": "无限的", "ex": "appears W ⟨U.1 + 1, Fin.snoc U.2 0⟩∧ appears W ⟨U.1 + 1, Fin.snoc U.2 1⟩∧ appears W ⟨U.1 + 1, Fin.cons 0 U.2⟩∧ appears W ⟨U.1 + 1, Fin.cons 1 U.2⟩ /-- Let 𝑛be a positive integer and let 𝑊= . . . 𝑥−1𝑥0𝑥1𝑥2 . . . be an infinite …", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "input", "ipa": "ˈɪnˌpʊt", "pos": "n.", "m": "输入；投入的资金", "ex": "Input: Complete the following Lean 4 code: ‘‘‘lean4 import Mathlib", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "intelligent", "ipa": "ˌɪnˈtɛləʤənt", "pos": "adj.", "m": "智能的", "ex": "Intelligent problem-solving as integrated hierarchical reinforcement learning.", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "internship", "ipa": "ˈɪntərnˌʃɪp", "pos": "n.", "m": "实习生身份； 实习医师期", "ex": "†Work done during internship at DeepSeek-AI.", "lv": "考博", "ov": "", "sec": "文献区"}, {"w": "invalid", "ipa": "ˌɪnˈvæləd", "pos": "adj.", "m": "无效的", "ex": "The correct equation is: 2𝑞𝑟−1 = 3(1)(𝑞−1)(𝑟−1) = 3(𝑞𝑟−𝑞−𝑟+ 1) Thus: 2𝑞𝑟−1 = 3𝑞𝑟−3𝑞−3𝑟+ 3 −𝑞𝑟+ 3𝑞+ 3𝑟−4 = 0 Multiply by −1: 𝑞𝑟−3𝑞−3𝑟+ 4 = 0 Add 5: 𝑞𝑟−3𝑞−3𝑟+ 9 = 5 Factor: (𝑞−3)(𝑟−3) = 5 Since 𝑞⩾3, 𝑟⩾4, possible pairs are: −𝑞−3 = …", "lv": "六级", "ov": "", "sec": "文献区"}, {"w": "large-scale", "ipa": "ˈlɑrʤˌskeɪl", "pos": "adj.", "m": "大规模的， 大范围的", "ex": "Prover: Advancing theorem proving in llms through large-scale synthetic data. arXiv preprint", "lv": "雅思", "ov": "", "sec": "文献区"}, {"w": "manual", "ipa": "ˈmænjuəl", "pos": "adj.；n.", "m": "体力的；手册", "ex": "The Coq proof assistant reference manual.", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "matrix", "ipa": "ˈmeɪtrɪks", "pos": "n.", "m": "[数] 矩阵；模型；[生物][地质] 基质；母体；子宫；[地质] 脉石", "ex": "−/theorem putnam_2005_a4 (n : N) (H : Matrix (Fin n) (Fin n) R) (a b : N) (S : Matrix (Fin a) (Fin b) R) (npos : n ⩾1) (Hentries : ∀i j : Fin n, H i j = 1 ∨H i j = −1) (Hortho : H.HasOrthogonalRows) (hab : 1 ⩽a ∧a ⩽n ∧1 ⩽b ∧b ⩽n)", "lv": "考博", "ov": "", "sec": "文献区"}, {"w": "minimal", "ipa": "ˈmɪnəməl", "pos": "adj.", "m": "最低的，最小限度的", "ex": "Suppose that the minimal period 𝑁of 𝑊is greater than 2𝑛.", "lv": "六级", "ov": "", "sec": "文献区"}, {"w": "monotone", "ipa": "ˈmɑnəˌtoʊn", "pos": "n.；adj.；vt.", "m": "单调；单音调；单调的；单调地读", "ex": "Then ‘2 ^ n.1 ⩾2 ^ 1 = 2‘ (since ‘n.1 ⩾1‘ and ‘2 ^ (·)‘ is monotone).", "lv": "专八", "ov": "", "sec": "文献区"}, {"w": "mutually", "ipa": "mˈjuʧuəli", "pos": "adv.", "m": "互相地", "ex": "Let 𝐻be an 𝑛× 𝑛matrix all of whose entries are ±1 and whose rows are mutually orthogonal.", "lv": "托福", "ov": "", "sec": "文献区"}, {"w": "necessarily", "ipa": "ˌnɛsəˈsɛrəli", "pos": "adv.", "m": "必然，必定", "ex": "Since ‘N ⩾1‘ (as ‘N > 2 ^ n.1 ⩾1‘), ‘N’ = 0 < N‘. −‘Function.Periodic W 0‘ means ‘∀z, W (z + 0) = W z‘, i.e., ‘∀z, W z = W z‘, which is always true. −But ‘hW’ 0 (by linarith)‘ gives ‘¬Function.Periodic W 0‘, i.e., false. −So, the …", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "norm", "ipa": "nɔrm", "pos": "n.", "m": "标准，规范；平均数", "ex": "have h_false : False := by have h1 : 0 < N := by have h2 : 2 ^ n.1 ⩾2 ^ 1 := by apply Nat.pow_le_pow_of_le_right · norm_num · have h3 : n.1 ⩾1 := by exact Nat.one_le_of_lt n.2 linarith have h3 : N > 2 ^ n.1 := hN have h4 : N > 0 …", "lv": "六级", "ov": "", "sec": "文献区"}, {"w": "observation", "ipa": "ˌɑbzərˈveɪʃən", "pos": "n.", "m": "注意；观察；观察力", "ex": "#### Observations and Strategy:", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "odd", "ipa": "ɑd", "pos": "adj.", "m": "奇数的；单只的", "ex": "𝑘=0 (2𝑘+ 1) = 𝑛2.−/theorem induction_sum_odd (n : N) : (Í k in Finset.range n, 2 * k) + 1 = n ^ 2 := by", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "omega", "ipa": "oʊˈmɛgə", "pos": "n.", "m": "最后；终了；希腊字母的最后一个字Ω", "ex": "interval_cases ((q : Z) −3).natAbs <;> norm_num at h39 ⊢<;> omega", "lv": "专八", "ov": "", "sec": "文献区"}, {"w": "orchestrate", "ipa": "ˈɔrkɪˌstreɪt", "pos": "v.", "m": "把…编成管弦乐曲；（美）精心安排；把…协调地结合起来", "ex": "Lyra: Orchestrating dual correction in automated theorem proving.", "lv": "专八", "ov": "", "sec": "文献区"}, {"w": "periodic", "ipa": "ˌpɪriˈɑdɪk", "pos": "adj.", "m": "周期的；一定时期的", "ex": "But ‘hW’ 0 h‘ (where ‘h : 0 < N‘ is ‘Nat.lt_of_succ_le (by . . .)‘), gives ‘¬Function.Periodic W 0‘, which is false, so ‘false‘ follows.", "lv": "六级", "ov": "", "sec": "文献区"}, {"w": "precisely", "ipa": "prɪˈsaɪsli", "pos": "adv.", "m": "正好", "ex": "Contradiction! −More precisely, take ‘N’ = 0‘.", "lv": "六级", "ov": "", "sec": "文献区"}, {"w": "proceeding", "ipa": "prəˈsidɪŋ", "pos": "n.", "m": "程序，行动，事项", "ex": "In Automated Deduction–CADE 28: 28th International Conference on Automated Deduction, Virtual Event, July 12–15, 2021, Proceedings 28, pages 625–635.", "lv": "考研", "ov": "", "sec": "文献区"}, {"w": "prod", "ipa": "prɑd", "pos": "n.；v.", "m": "刺针；刺棒；签子；刺，戳；刺激", "ex": "𝑘=1(1 + 1/𝑘3) ⩽3 −1/𝑛.−/theorem induction_prod1p1onk3le3m1onn (n : N) (h0 : 0 < n) :", "lv": "考博", "ov": "", "sec": "文献区"}, {"w": "prop", "ipa": "prɑp", "pos": "n.；v.", "m": "支柱，支撑物；支持者；道具；（橄榄球中的）支柱前锋；支撑，支持，维持；使倚靠在某物上", "ex": "def ubiquitous (W : Z →Fin 2) (U : Σ n, Fin n →Fin 2) : Prop :=", "lv": "六级", "ov": "", "sec": "文献区"}, {"w": "quadratic", "ipa": "kwɑˈdrætɪk", "pos": "adj.；n.", "m": "[数] 二次的；二次方程式", "ex": "−−Use the quadratic equation to solve for the sum of cosines have h11 : Real.cos (Real.pi / 7) = Real.cos (Real.pi / 7) := rfl have h12 : 8 * Real.cos (Real.pi / 7) ^ 3 −4 * Real.cos (Real.pi / 7) ^ 2 −4 * Real.cos (Real.pi / 7) …", "lv": "专八", "ov": "", "sec": "文献区"}, {"w": "ratio", "ipa": "ˈreɪʃiˌoʊ", "pos": "n.", "m": "比，比率", "ex": "theorem proving, reaching 88.9% pass ratio on the MiniF2F-test and solving 47 out of 658", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "rewrite", "ipa": "ˈriˌraɪt", "pos": "v.；n.", "m": "改写；重写；重写或改写的文稿；改写的作品", "ex": "Similarly, for larger 𝑝⩾4, no solutions exist, because the term 𝑝𝑞𝑟dominates. #### Step 4: Conclusion The only triples (𝑝, 𝑞, 𝑟) satisfying all conditions are (2, 4, 8) and (3, 5, 15). ### Step−by−Step Abstract Plan 1. …", "lv": "专四", "ov": "", "sec": "文献区"}, {"w": "sentry", "ipa": "ˈsɛntri", "pos": "n.；vi.；vt.", "m": "哨兵；岗哨；放哨；设岗哨", "ex": "(Sentries : ∀(i : Fin a) (j : Fin b), S i j = 1)", "lv": "专八", "ov": "", "sec": "文献区"}, {"w": "separately", "ipa": "ˈsɛpərətli", "pos": "adv.", "m": "分别地，另行", "ex": "−−We need to handle each case of k separately", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "shift", "ipa": "ʃɪft", "pos": "v.；n.", "m": "替换，转移；转换", "ex": "4. **Using Periodicity**: −Since ‘W‘ is periodic with period ‘N‘, we can shift ‘k‘ by multiples of ‘N‘ to get the same word. −For any ‘m : N+‘, the constant word ‘(m, fun _ => a)‘ appears in ‘W‘ if ‘W‘ has ‘a‘ anywhere (‘k‘ can …", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "similarly", "ipa": "ˈsɪmələrli", "pos": "adv.", "m": "类似地，相似地", "ex": "Similarly, set 𝑝= 3: 3𝑞𝑟−1 = 2(2)(𝑞−1)(𝑟−1) 3𝑞𝑟−1 = 4(𝑞𝑟−𝑞−𝑟+ 1) 3𝑞𝑟−1 = 4𝑞𝑟−4𝑞−4𝑟+ 4 −𝑞𝑟+ 4𝑞+ 4𝑟−5 = 0 𝑞𝑟−4𝑞−4𝑟+ 5 = 0 Add 11: 𝑞𝑟−4𝑞−4𝑟+ 16 = 11 Factor: (𝑞−4)(𝑟−4) = 11 Since 𝑞> 𝑝= 3, 𝑞⩾4, and 𝑟> 𝑞, possible factorings are: −𝑞−4 …", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "sin", "ipa": "sɪn", "pos": "vi.；n.", "m": "犯戒律， 犯过失；罪，罪孽", "ex": "Real.sin_le_one (3 * (Real.pi / 7)), Real.cos_le_one (Real.pi / 7), Real.cos_le_one (2 * (Real.pi /", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "singleton", "ipa": "ˈsɪŋgəltən", "pos": "n.", "m": "一个, 独身", "ex": "→Fin 2‘ is a singleton), but ‘n = 0‘ gives ‘(x i).1 ≠0‘ is false (‘(x i).1 = 0‘).", "lv": "托福", "ov": "", "sec": "文献区"}, {"w": "slightly", "ipa": "sˈlaɪtli", "pos": "adv.", "m": "轻微地", "ex": "However, the Lean problem is slightly different:", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "subtract", "ipa": "səbˈtrækt", "pos": "v.", "m": "减，减去，去掉", "ex": "It is easier to write: (𝑝−2)(𝑞−2)(𝑟−2) = 𝑝𝑞𝑟−2𝑝𝑞−2𝑝𝑟−2𝑞𝑟+ 4𝑝+ 4𝑞+ 4𝑟−8 Then: 𝑝𝑞𝑟−2𝑝𝑞−2𝑝𝑟−2𝑞𝑟+ 2𝑝+ 2𝑞+ 2𝑟−1 = 0 Subtract: (𝑝−2)(𝑞−2)(𝑟−2) −(𝑝𝑞𝑟−2𝑝𝑞−2𝑝𝑟−2𝑞𝑟+ 2𝑝+ 2𝑞+ 2𝑟−1) = 2𝑝+ 2𝑞+ 2𝑟−7 But from above: (𝑝−2)(𝑞−2)(𝑟−2) = 2𝑝+ 2𝑞+ …", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "sum", "ipa": "səm", "pos": "n.；v.", "m": "总数；金额；共计", "ex": "−−Use the quadratic equation to solve for the sum of cosines have h11 : Real.cos (Real.pi / 7) = Real.cos (Real.pi / 7) := rfl have h12 : 8 * Real.cos (Real.pi / 7) ^ 3 −4 * Real.cos (Real.pi / 7) ^ 2 −4 * Real.cos (Real.pi / 7) …", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "tang", "ipa": "tɑŋ", "pos": "v.", "m": "有浓味 n特殊气味", "ex": "H. Wang, H. Xin, Z. Liu, W. Li, Y. Huang, J. Lu, Y. Zhicheng, J. Tang, J. Yin, Z. Li, et al. Proving theorems recursively. In The Thirty-eighth Annual Conference on Neural Information", "lv": "托福", "ov": "", "sec": "文献区"}, {"w": "tighten", "ipa": "ˈtaɪtən", "pos": "adj.", "m": "紧的，紧缩的", "ex": "However, we can tighten this further.", "lv": "六级", "ov": "", "sec": "文献区"}, {"w": "transaction", "ipa": "trænˈzækʃən", "pos": "n.", "m": "交易，业务，事务", "ex": "Transactions on Machine Learning Research, 2024.", "lv": "六级", "ov": "", "sec": "文献区"}, {"w": "trigger", "ipa": "ˈtrɪgər", "pos": "v.", "m": "引发，引起", "ex": "Examples of the Buggy Proofs Generated by DeepSeek-Prover-V2-7B on PutnamBench Triggering the User Interface Bug of apply? import Mathlib open Nat Set /−−", "lv": "六级", "ov": "", "sec": "文献区"}, {"w": "triple", "ipa": "ˈtrɪpəl", "pos": "adj.；v.", "m": "三部分的，三方的；三倍的，三重的；增至三倍", "ex": "Similarly, for larger 𝑝⩾4, no solutions exist, because the term 𝑝𝑞𝑟dominates. #### Step 4: Conclusion The only triples (𝑝, 𝑞, 𝑟) satisfying all conditions are (2, 4, 8) and (3, 5, 15). ### Step−by−Step Abstract Plan 1. …", "lv": "六级", "ov": "", "sec": "文献区"}, {"w": "trivial", "ipa": "ˈtrɪviəl", "pos": "adj.", "m": "琐碎的；平常的", "ex": "Since we have ‘False‘, construct any trivial ‘x‘ (e.g., constant embedding to ‘⟨1, fun _ => 0⟩‘).", "lv": "六级", "ov": "", "sec": "文献区"}, {"w": "ubiquitous", "ipa": "juˈbɪkwɪtəs", "pos": "adj.", "m": "无处无在的，普遍的", "ex": "But to actually prove ‘ubiquitous W (x i)‘, we need to prove ‘appears W ⟨2, _⟩‘, etc., but we can derive ‘false‘ from ‘hW’ 0‘.", "lv": "考博", "ov": "", "sec": "文献区"}, {"w": "virtual", "ipa": "ˈvərʧuəl", "pos": "adj.", "m": "虚拟的", "ex": "In Automated Deduction–CADE 28: 28th International Conference on Automated Deduction, Virtual Event, July 12–15, 2021, Proceedings 28, pages 625–635.", "lv": "六级", "ov": "", "sec": "文献区"}, {"w": "workbook", "ipa": "ˈwə:kbuk", "pos": "n.", "m": "工作手册；练习簿", "ex": "Lean workbook: A large-scale lean problem set formalized from natural language math problems.", "lv": "专四", "ov": "", "sec": "文献区"}, {"w": "yield", "ipa": "jild", "pos": "v.；n.", "m": "屈服，产出；产量", "ex": "Wait, we found that 𝑘= 2 yields only (3, 5, 15).", "lv": "四级", "ov": "", "sec": "文献区"}];
+const AUDIO={};      /* 预生成的微软语音清单：{w:{单词:路径},m:{释义:路径}}；空则全部走在线 TTS */
+const SKINS=[
+  {id:"lemon",n:"柠檬黄",p:"linear-gradient(135deg,#fbf3cd,#e3c878)"},
+  {id:"qq",n:"蜜桃粉",p:"linear-gradient(135deg,#f9b8bb,#ef8f92)"},
+  {id:"nred",n:"网易云红",p:"linear-gradient(135deg,#fbdcd9,#c0342c)"},
+  {id:"qqgreen",n:"QQ绿",p:"linear-gradient(135deg,#d6f4e6,#22a96c)"},
+  {id:"kugou",n:"酷狗蓝",p:"linear-gradient(135deg,#d3edfd,#1a86d0)"},
+  {id:"xiami",n:"虾米橙",p:"linear-gradient(135deg,#ffe9d8,#e85f1f)"},
+  {id:"netease",n:"网易云黑",p:"linear-gradient(135deg,#3a2429,#150d10)"},
+  {id:"vinyl",n:"黑胶原色",p:"linear-gradient(135deg,#e6e9f2,#161616)"},
+  {id:"gold",n:"香槟金",p:"linear-gradient(135deg,#f2dfbd,#3a2a14)"},
+  {id:"sakura",n:"樱花粉",p:"linear-gradient(135deg,#fdeef3,#f2b9cd)"},
+  {id:"matcha",n:"抹茶",p:"linear-gradient(135deg,#eef3e6,#a9c489)"},
+  {id:"mint",n:"薄荷",p:"linear-gradient(135deg,#eefaf7,#8fd8c8)"},
+  {id:"ocean",n:"海盐蓝",p:"linear-gradient(135deg,#eef5fc,#7fb3e6)"},
+  {id:"grape",n:"星空紫",p:"linear-gradient(135deg,#f2eefa,#b39ade)"},
+  {id:"amusic",n:"Apple红",p:"linear-gradient(135deg,#fff4f4,#fa5c74)"},
+  {id:"mocha",n:"摩卡",p:"linear-gradient(135deg,#f7f1ea,#b08d6d)"},
+  {id:"spotify",n:"Spotify",p:"linear-gradient(135deg,#1d2420,#1db954)"},
+  {id:"midnight",n:"深夜蓝",p:"linear-gradient(135deg,#1e2740,#4a9eff)"},
+  {id:"vinylx",n:"悬浮黑胶",p:"radial-gradient(circle at 50% 50%,#5b5bd6 0 30%,#17171a 31%)"}
+];
+const $=id=>document.getElementById(id);
+const app=$("app");
+let S={voice:"us",pause:2000,reveal:true,zh:true,ex:true,order:"seq",skipOn:true,font:"sans",repeat:1,source:"all",timer:0,rate:1,enVoice:"",zhVoice:""};
+try{const c=JSON.parse(localStorage.getItem("listen_qq_cfg")||"{}");Object.assign(S,c)}catch(e){}
+const save=()=>{try{localStorage.setItem("listen_qq_cfg",JSON.stringify(S))}catch(e){}};
+
+/* 收藏 / 已掌握 / 章节范围（跨页面共享） */
+const rd=(k)=>{try{return new Set(JSON.parse(localStorage.getItem(k)||"[]"))}catch(e){return new Set()}};
+const wr=(k,s)=>{try{localStorage.setItem(k,JSON.stringify([...s]))}catch(e){}};
+let stars=rd("listen_qq_star"), favs=rd("listen_qq_fav"), skips=rd("listen_qq_skip");
+const SECS=[...new Set(ITEMS.map(i=>i.sec))];
+let range={};
+try{const r=JSON.parse(localStorage.getItem("listen_qq_range")||"null");if(r)range=r}catch(e){}
+SECS.forEach(s=>{if(!(s in range))range[s]=true});
+/* 词汇级别筛选（老版功能，之前搬新模板时漏掉了）：默认全开，点一下关掉该级 */
+const LVORDER=["四级","六级","考研","专四","考博","专八","雅思","托福","GRE","超纲"];
+const LVS=LVORDER.filter(k=>ITEMS.some(i=>i.lv===k||i.ov===k));
+let lvOff=new Set();
+try{const s=JSON.parse(localStorage.getItem("listen_qq_lvoff")||"[]");if(Array.isArray(s))lvOff=new Set(s)}catch(e){}
+
+let queue=[], qi=0, playing=false, timer=null, audio=null;
+let autoplayBlocked=false;   /* 只有浏览器明确拒绝播放（NotAllowedError）才置位 */
+let pendingRebuild=false;    /* 播放中改了标记：等当前词念完再重建队列，绝不中途掐断 */
+
+function buildQueue(){
+  let list=ITEMS.filter(i=>range[i.sec]!==false);
+  /* 词汇级别筛选（四级/六级/考研/考博/雅思托福/GRE） */
+  if(lvOff&&lvOff.size) list=list.filter(i=>!lvOff.has(i.lv)&&!(i.ov&&lvOff.has(i.ov)));
+  if(S.source==="star")      list=list.filter(i=>stars.has(i.w));    /* 只背星标词 */
+  else if(S.source==="fav")  list=list.filter(i=>favs.has(i.w));     /* 只读收藏词 */
+  else if(S.source==="skip") list=list.filter(i=>skips.has(i.w));    /* 仅跳过：回看被跳过的，方便取消 */
+  else if(S.source==="new")  list=list.filter(i=>!skips.has(i.w));   /* 仅新词：只读还没标已掌握的 */
+  else if(S.skipOn)          list=list.filter(i=>!skips.has(i.w));   /* 全部：按开关跳过已划掉的 */
+  /* 专背模式不再二次排除已跳过的：否则「星标+已跳过」的词根本读不到，没法取消误点 */
+  if(S.order==="rand"){for(let i=list.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[list[i],list[j]]=[list[j],list[i]]}}
+  queue=list;
+  if(qi>=queue.length)qi=0;
+}
+function rebuild(keep){
+  const cur=queue[qi];
+  buildQueue();
+  if(keep&&cur){const k=queue.findIndex(x=>x.w===cur.w);qi=k>=0?k:0}
+  pendingRebuild=false;                       /* 这里已经重建过了，撤掉待办的延迟重建 */
+}
+/* 延迟重建：等到"当前这个词念完"再生效（给 pendingRebuild 用） */
+function rebuildKeepPos(){
+  const oldLen=queue.length, oldQi=qi, cur=queue[qi], key=cur?cur.w:null;
+  buildQueue();
+  if(!queue.length){qi=0;return}
+  if(!key){if(qi>=queue.length)qi=0;return}
+  const k=queue.findIndex(x=>x.w===key);
+  if(k>=0){qi=k;return}                       /* 当前词还在队列里：原地不动 */
+  /* 当前词已被排除（刚标了跳过 / 取消了星标）：把指针放到"下一个该读的词"的前一位，
+     goNext 再 +1，正好接到原位置上的那个词——不会漏读，也不会重读 */
+  qi = (oldQi>=oldLen-1) ? -1 : Math.min(oldQi,queue.length-1)-1;
+}
+function updateBtns(){
+  const w=queue[qi];
+  $("favBtn").classList.toggle("on",!!(w&&favs.has(w.w)));
+  $("starBtn").classList.toggle("on",!!(w&&stars.has(w.w)));
+  $("okBtn").classList.toggle("on",!!(w&&skips.has(w.w)));
+}
+function updateCounts(){
+  /* 跳过计数在上方「词库来源」行的 ⭐❤✓ 里已有，这里不再重复显示「已跳过 N 词」 */
+  $("markCnt").innerHTML="<b>"+IC.star+stars.size+"</b><b>"+IC.heart+favs.size+"</b><b>"+IC.skip+skips.size+"</b>";
+}
+/* 当前词的标记：只显示「跳过」（星标/收藏看顶栏图标即可，不重复占地方） */
+function renderMarks(w){
+  const box=$("mkBadge"); if(!box)return;
+  /* 已跳过不再浮出徽标：跳过时本就有 toast「已跳过」提示 + 顶栏 ✓ 按钮的状态，
+     这里去掉重复提醒（原先的「跳过✕」胶囊）。 */
+  box.style.display="none";
+}
+$("mkBadge").onclick=e=>{
+  const el=e.target.closest("[data-cancel]"); if(!el)return;
+  const w=queue[qi]; if(!w)return;
+  const k=el.dataset.cancel;
+  if(k==="star"){stars.delete(w.w);wr("listen_qq_star",stars);wordTip("已取消星标「"+w.w+"」")}
+  else if(k==="fav"){favs.delete(w.w);wr("listen_qq_fav",favs);wordTip("已取消收藏「"+w.w+"」")}
+  else if(k==="skip"){skips.delete(w.w);wr("listen_qq_skip",skips);wordTip("已恢复朗读「"+w.w+"」")}
+  afterMark();
+};
+/* 标记后收尾：正在朗读时不打断——当前词照常念完，队列等这个词结束时才重建。
+   （以前是立刻重建+重播，等于一点 ✓ 这个词就被掐掉，这次白学了） */
+function afterMark(){
+  updateBtns(); updateCounts(); renderMarks(queue[qi]);
+  if(playing){ pendingRebuild=true; return }
+  rebuild(true);
+  if(!queue.length){ clearT(); stopAudio(); setPlaying(false); emptyHint(); return }
+  render(queue[qi],true);
+}
+function renderRange(){
+  const box=$("rangeBox"); box.innerHTML="";
+  SECS.forEach(s=>{
+    const c=document.createElement("b");
+    c.textContent=s+" "+ITEMS.filter(i=>i.sec===s).length;
+    c.className=range[s]?"on":"";
+    c.onclick=()=>{
+      range[s]=!range[s];
+      try{localStorage.setItem("listen_qq_range",JSON.stringify(range))}catch(e){}
+      renderRange(); rebuild(true); updateArm();
+      if(!playing&&queue[qi])render(queue[qi],true);
+    };
+    box.appendChild(c);
+  });
+}
+/* 词汇级别：点一下关掉该级（再点开回来），和「范围」同一套交互 */
+function renderLv(){
+  const box=$("lvBox"); if(!box)return;
+  const row=box.closest(".srow");
+  if(!LVS.length){ if(row)row.style.display="none"; return }
+  box.innerHTML="";
+  LVS.forEach(k=>{
+    const c=document.createElement("b");
+    c.textContent=k+" "+ITEMS.filter(i=>i.lv===k||i.ov===k).length;
+    c.className=lvOff.has(k)?"":"on";
+    c.title="点一下"+(lvOff.has(k)?"恢复":"关掉")+"朗读「"+k+"」的词";
+    c.onclick=()=>{
+      if(lvOff.has(k))lvOff.delete(k); else lvOff.add(k);
+      try{localStorage.setItem("listen_qq_lvoff",JSON.stringify([...lvOff]))}catch(e){}
+      renderLv(); rebuild(true); updateArm(); updateCounts();
+      if(!queue.length){ clearT(); stopAudio(); setPlaying(false); emptyHint(); return }
+      if(!playing&&queue[qi])render(queue[qi],true);
+    };
+    box.appendChild(c);
+  });
+}
+
+// 皮肤：右上角 👕 点一下按顺序循环，不需要挑颜色
+let skinIdx=0;
+function applySkin(id,announce){
+  const i=SKINS.findIndex(s=>s.id===id);
+  skinIdx=i<0?0:i;
+  app.dataset.skin=SKINS[skinIdx].id;
+  try{localStorage.setItem("listen_qq_skin",SKINS[skinIdx].id)}catch(e){}
+  updateArm();
+  if(announce)toast("皮肤： "+SKINS[skinIdx].n);
+}
+$("skinBtn").onclick=()=>{ skinIdx=(skinIdx+1)%SKINS.length; applySkin(SKINS[skinIdx].id,true); };
+try{const sv=localStorage.getItem("listen_qq_skin"); if(sv)applySkin(sv,false)}catch(e){}
+
+// 设置段
+/* 小图标库：星标 / 收藏 / 跳过（用户提供）/ 加号（新词）/ 全部 */
+const IC={
+  star:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="m12 3.8 2.6 5.3 5.8.85-4.2 4.1 1 5.8-5.2-2.75-5.2 2.75 1-5.8-4.2-4.1 5.8-.85Z"/></svg>',
+  heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg>',
+  skip:'<svg class="fill" viewBox="0 0 1024 1024"><path d="M921.6 356.266667c-14.933333-8.533333-34.133333-4.266667-42.666667 12.8L829.866667 448c-51.2-157.866667-200.533333-266.666667-369.066667-266.666667-172.8 0-324.266667 115.2-373.333333 277.333334-4.266667 17.066667 4.266667 34.133333 21.333333 40.533333 17.066667 4.266667 34.133333-4.266667 40.533333-21.333333 40.533333-136.533333 166.4-232.533333 311.466667-232.533334 140.8 0 264.533333 89.6 307.2 219.733334l-81.066667-46.933334c-14.933333-8.533333-34.133333-4.266667-42.666666 10.666667-8.533333 14.933333-4.266667 34.133333 10.666666 42.666667l147.2 85.333333c4.266667 2.133333 10.666667 4.266667 17.066667 4.266667 2.133333 0 6.4 0 8.533333-2.133334 8.533333-2.133333 14.933333-8.533333 19.2-14.933333l85.333334-147.2c8.533333-12.8 4.266667-32-10.666667-40.533333zM896 757.333333H128c-17.066667 0-32 14.933333-32 32s14.933333 32 32 32h768c17.066667 0 32-14.933333 32-32s-14.933333-32-32-32z"/></svg>',
+  news:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.5 13.6 9.4l4.9 1.6-4.9 1.6L12 17.5l-1.6-4.9-4.9-1.6 4.9-1.6Z"/></svg>',
+  all:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4.5 4.5L19 7"/></svg>'
+};
+function seg(box,opts,get,set,after){
+  box.innerHTML="";
+  opts.forEach(o=>{
+    const b=document.createElement("b");
+    if(o.svg){ b.innerHTML=o.svg; b.className="icn" } else { b.textContent=o.t }
+    b.dataset.v=o.v;
+    if(o.tip) b.title=o.tip;
+    if(get()===o.v) b.classList.add("on");
+    b.onclick=()=>{set(o.v);box.querySelectorAll("b").forEach(x=>x.classList.remove("on"));b.classList.add("on");save();after&&after(o.v)};
+    box.appendChild(b);
+  });
+}
+/* 设置改完立刻生效：播放中重播当前词，暂停中按新设置重绘 —— 否则改了像没改 */
+function refreshCurrent(msg){
+  if(msg)toast(msg);
+  if(!queue[qi])return;
+  if(playing)playCurrent();
+  else render(queue[qi],true);
+}
+seg($("segVoice"),[{t:"美音",v:"us"},{t:"英音",v:"uk"}],()=>S.voice,v=>S.voice=v,
+  ()=>refreshCurrent("发音： "+(S.voice==="uk"?"英音":"美音")));
+seg($("segPause"),[{t:"2s",v:2000},{t:"4s",v:4000},{t:"6s",v:6000}],()=>S.pause,v=>S.pause=v,
+  ()=>refreshCurrent("每词停顿： "+(S.pause/1000)+" 秒"));
+/* 语速：直接改 audio.playbackRate（对有道/百度/系统语音都生效，不改音调） */
+seg($("segRate"),[{t:"0.75x",v:.75},{t:"1x",v:1},{t:"1.25x",v:1.25},{t:"1.5x",v:1.5}],()=>+S.rate||1,v=>S.rate=v,
+  ()=>refreshCurrent("语速： "+S.rate+"x"));
+/* 单词重复次数：1/3/5 快捷 + 右侧输入框自定义（1–20） */
+function setRepeat(v,persist){
+  v=Math.max(1,Math.min(20,Math.round(+v||1)));
+  S.repeat=v; $("repInput").value=v;
+  $("segRepeat").querySelectorAll("b").forEach(b=>b.classList.toggle("on",+b.dataset.v===v));
+  if(persist)save();
+}
+seg($("segRepeat"),[{t:"1次",v:1},{t:"3次",v:3},{t:"5次",v:5}],()=>S.repeat,v=>S.repeat=v,
+  ()=>{setRepeat(S.repeat,false);refreshCurrent("单词重复： "+S.repeat+" 次")});
+$("repInput").addEventListener("change",()=>{setRepeat($("repInput").value,true);refreshCurrent("单词重复： "+S.repeat+" 次")});
+$("repInput").addEventListener("keydown",e=>{if(e.key==="Enter")e.target.blur()});
+setRepeat(S.repeat||1,false);
+seg($("segReveal"),[{t:"开",v:true},{t:"关",v:false}],()=>S.reveal,v=>S.reveal=v,
+  ()=>refreshCurrent("先听后现： "+(S.reveal?"开":"关")));
+seg($("segZh"),[{t:"开",v:true},{t:"关",v:false}],()=>S.zh,v=>S.zh=v,
+  ()=>refreshCurrent("朗读中文： "+(S.zh?"开":"关")));
+/* 朗读例句：沿用老版方案 = 百度在线合成（lan=en，spd=5，source=web）。
+   本篇若预生成了例句音频则用本地微软音，没有就走百度在线 */
+seg($("segEx"),[{t:"开",v:true},{t:"关",v:false}],()=>S.ex,v=>S.ex=v,
+  ()=>refreshCurrent("朗读例句： "+(S.ex?"开":"关")));
+// 单词字体：选项本身就用自己的字体渲染，所见即所得
+const FONTS=[
+  {v:"sans",    t:"黑体", f:'"PingFang SC",-apple-system,"Helvetica Neue",sans-serif'},
+  {v:"serif",   t:"宋体", f:'"Songti SC","SimSun",Georgia,serif'},
+  {v:"round",   t:"圆体", f:'"Yuanti SC","Hiragino Sans GB","PingFang SC",sans-serif'},
+  {v:"kai",     t:"楷体", f:'"Kaiti SC","STKaiti","楷体",serif'},
+  {v:"mono",    t:"等宽", f:'"SF Mono",Menlo,Consolas,monospace'},
+  {v:"xingkai", t:"行楷", f:'"Xingkai SC","STXingkai","Snell Roundhand",cursive'},
+  {v:"weibei",  t:"魏碑", f:'"Weibei SC","STWeibei","Kaiti SC",serif'},
+  {v:"wawati",  t:"娃娃", f:'"Wawati SC","STWawati","Comic Sans MS",cursive'},
+  {v:"lanting", t:"兰亭", f:'"Lantinghei SC","FZLanTingHei-S-GB","PingFang SC",sans-serif'},
+  {v:"futura",  t:"几何", f:'Futura,"Avenir Next","Century Gothic",sans-serif'},
+  {v:"georgia", t:"书卷", f:'Georgia,"Times New Roman","Songti SC",serif'},
+  {v:"rounded", t:"圆润", f:'"Arial Rounded MT Bold","Hiragino Maru Gothic ProN","Yuanti SC",sans-serif'},
+  {v:"marker",  t:"手写", f:'"Marker Felt","Chalkboard SE","Comic Sans MS",cursive'}
+];
+function applyFont(v){
+  const f=FONTS.find(x=>x.v===v)||FONTS[0];
+  app.style.setProperty("--wfont",f.f);
+}
+seg($("segFont"),FONTS.map(x=>({t:x.t,v:x.v})),()=>S.font,v=>{S.font=v;applyFont(v);save()});
+$("segFont").querySelectorAll("b").forEach((b,i)=>{b.style.fontFamily=FONTS[i].f;b.style.fontSize="13px"});
+applyFont(S.font);
+
+/* 定时停止：到点自动停（最长 60 分钟），词区右上角显示倒计时 */
+let timerLeft=0, timerInt=null;
+function renderTimer(){
+  const m=Math.floor(timerLeft/60), s=timerLeft%60;
+  $("timerChip").textContent="⏱ "+m+":"+String(s).padStart(2,"0");
+}
+function stopTimer(fired){
+  if(timerInt){clearInterval(timerInt);timerInt=null}
+  timerLeft=0; $("timerChip").style.display="none";
+  if(fired){ clearT(); stopAudio(); setPlaying(false); toast("⏱ 定时时间到，已停止播放") }
+}
+function startTimer(min){
+  stopTimer(false);
+  if(!min)return;
+  timerLeft=Math.round(min*60);
+  $("timerChip").style.display=""; renderTimer();
+  timerInt=setInterval(()=>{
+    timerLeft--;
+    if(timerLeft<=0){ stopTimer(true); return }
+    renderTimer();
+  },1000);
+}
+seg($("segTimer"),[{t:"关",v:0},{t:"5分",v:5},{t:"10分",v:10},{t:"20分",v:20},{t:"30分",v:30},{t:"60分",v:60}],
+  ()=>S.timer,v=>S.timer=v,m=>{ startTimer(m); if(m)toast("⏱ "+m+" 分钟后自动停止") });
+if(S.timer>0)startTimer(S.timer);
+
+/* 词库来源：全部 / 只背星标 / 只读收藏 */
+function applySource(){
+  qi=0; rebuild(false); updateArm(); updateCounts();
+  if(!queue.length){ clearT(); stopAudio(); setPlaying(false); emptyHint(); return }
+  if(playing)playCurrent(); else render(queue[qi],true);
+}
+/* 词库来源：纯图标（全部 / 星标 / 收藏 / 跳过 / 新词），鼠标悬停有说明 */
+seg($("segSource"),[
+  {v:"all", svg:IC.all,  tip:"全部词"},
+  {v:"star",svg:IC.star, tip:"只看星标词"},
+  {v:"fav", svg:IC.heart,tip:"只看收藏词"},
+  {v:"skip",svg:IC.skip, tip:"只看已跳过的词（点标记可取消）"},
+  {v:"new", svg:IC.news, tip:"只看还没跳过的词"}
+],()=>S.source,v=>S.source=v,applySource);
+
+seg($("segOrder"),[{t:"顺序",v:"seq"},{t:"随机",v:"rand"}],()=>S.order,v=>S.order=v,
+  ()=>{rebuild(true);updateArm();if(!playing&&queue[qi])render(queue[qi],true)});
+seg($("segSkip"),[{t:"开",v:true},{t:"关",v:false}],()=>S.skipOn,v=>S.skipOn=v,
+  ()=>{rebuild(true);updateArm()});
+renderRange(); renderLv(); updateCounts();
+
+$("favBtn").onclick=()=>{
+  const w=queue[qi]; if(!w){toast("先进入一个词再收藏");return}
+  if(favs.has(w.w)){favs.delete(w.w);wordTip("已取消收藏「"+w.w+"」")}else{favs.add(w.w);wordTip("已收藏「"+w.w+"」")}
+  wr("listen_qq_fav",favs); afterMark();
+};
+$("starBtn").onclick=()=>{
+  const w=queue[qi]; if(!w){toast("先进入一个词再标星");return}
+  if(stars.has(w.w)){stars.delete(w.w);wordTip("已取消星标「"+w.w+"」")}else{stars.add(w.w);wordTip("已标星「"+w.w+"」，可只背星标")}
+  wr("listen_qq_star",stars); afterMark();
+};
+$("okBtn").onclick=()=>{
+  const w=queue[qi]; if(!w){toast("先进入一个词再标记");return}
+  if(skips.has(w.w)){skips.delete(w.w);wordTip("已恢复朗读「"+w.w+"」")}
+  else{skips.add(w.w);wordTip("已跳过「"+w.w+"」");pulse("okBtn")}
+  wr("listen_qq_skip",skips); afterMark();
+};
+/* 清空按钮：图标+✕（不写汉字，和「词库来源」一致），每次点击都必须有反馈 */
+$("clearBox").innerHTML=[["star",IC.star,"清空所有星标"],["fav",IC.heart,"清空所有收藏"],["skip",IC.skip,"清空所有跳过（恢复朗读）"]]
+  .map(x=>'<b data-clr="'+x[0]+'" title="'+x[2]+'">'+x[1]+'<i>✕</i></b>').join("");
+$("clearBox").onclick=e=>{
+  const b=e.target.closest("[data-clr]"); if(!b)return;
+  const k=b.dataset.clr;
+  const set = k==="star"?stars : k==="fav"?favs : skips;
+  const key = k==="star"?"listen_qq_star" : k==="fav"?"listen_qq_fav" : "listen_qq_skip";
+  const name= k==="star"?"星标" : k==="fav"?"收藏" : "跳过";
+  const n=set.size;
+  if(!n){ toast("本来就没有"+name+"的词"); return }
+  set.clear(); wr(key,set); afterMark(); toast("已清空 "+n+" 个"+name+"词");
+};
+const _cs=$("clearStar"); if(_cs)_cs.onclick=()=>{stars.clear();wr("listen_qq_star",stars);afterMark();toast("已清空星标")};
+/* ===== 自定义链接（朗读/讲解）：按篇独立存，多链接可勾选多开 ===== */
+const PKEY=(document.title||"").replace(/\s*·\s*单词连播\s*$/,"").trim();
+const LKEY="listen_qq_links";
+const rdLinks=()=>{try{const L=JSON.parse(localStorage.getItem(LKEY)||"{}");return Array.isArray(L[PKEY])?L[PKEY]:[]}catch(e){return []}};
+const wrLinks=arr=>{try{const L=JSON.parse(localStorage.getItem(LKEY)||"{}");L[PKEY]=arr;localStorage.setItem(LKEY,JSON.stringify(L))}catch(e){}};
+let LINKS=rdLinks();
+const linkHost=u=>{try{return new URL(u).hostname.replace(/^www\./,"")}catch(e){return u}};
+const esc=s=>String(s==null?"":s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
+
+function renderLinkPop(){
+  const box=$("linkList"),btns=$("linkPopBtns");
+  if(!LINKS.length){
+    box.innerHTML='<div class="lkempty">本篇还没有配置链接。<br>点下方「配置链接」，把朗读音频或讲解视频的网址加进来（B站 / YouTube / 网页等），可以加多个。</div>';
+    btns.innerHTML='<b id="lpCfg" class="pri">配置链接</b>';
+    $("lpCfg").onclick=openLinkCfg;
+    return;
+  }
+  const multi=LINKS.length>1;
+  box.innerHTML=LINKS.map((l,i)=>'<div class="lk">'
+    +'<input type="checkbox" data-i="'+i+'"'+(multi?"":" checked")+' title="勾选后可批量打开">'
+    +'<span class="lkn" data-open="'+i+'" title="'+esc(l.url)+'">'+esc(l.n||("链接"+(i+1)))+'</span>'
+    +'<span class="lku">'+esc(linkHost(l.url))+'</span></div>').join("");
+  btns.innerHTML=(multi?'<b id="lpOpenSel" class="pri">打开所选</b>':"")
+    +'<b id="lpOpenAll">全部打开</b><b id="lpCfg">配置链接</b>';
+  box.querySelectorAll(".lkn").forEach(el=>el.onclick=()=>window.open(LINKS[+el.dataset.open].url,"_blank","noopener"));
+  const openMany=ls=>{if(!ls.length){toast("先勾选要打开的链接");return}
+    ls.forEach(l=>window.open(l.url,"_blank","noopener"));toast("已打开 "+ls.length+" 个（若被拦截请允许弹出窗口）")};
+  if(multi)$("lpOpenSel").onclick=()=>openMany([...box.querySelectorAll("input:checked")].map(c=>LINKS[+c.dataset.i]));
+  $("lpOpenAll").onclick=()=>openMany(LINKS);
+  $("lpCfg").onclick=openLinkCfg;
+}
+function openLinkCfg(){
+  $("linkPop").classList.remove("on");
+  const box=$("linkRows");
+  const row=l=>'<div class="lkrow">'
+    +'<input class="nm" placeholder="名称" value="'+esc(l.n)+'">'
+    +'<input class="ul" placeholder="https:// 网址" value="'+esc(l.url)+'">'
+    +'<span class="del" title="删除此行">✕</span></div>';
+  box.innerHTML=(LINKS.length?LINKS:[{}]).map(row).join("");
+  const bindDel=()=>box.querySelectorAll(".del").forEach(d=>d.onclick=()=>d.closest(".lkrow").remove());
+  bindDel();
+  $("linkAddRow").onclick=()=>{box.insertAdjacentHTML("beforeend",row({}));bindDel();box.lastElementChild.querySelector(".nm").focus()};
+  $("linkCfg").classList.add("on");
+}
+$("linkSave").onclick=()=>{
+  const out=[];
+  $("linkRows").querySelectorAll(".lkrow").forEach(r=>{
+    const n=r.querySelector(".nm").value.trim(), raw=r.querySelector(".ul").value.trim();
+    if(!raw)return;
+    out.push({n:n||("链接"+(out.length+1)), url:/^[a-z][a-z0-9+.-]*:\/\//i.test(raw)?raw:"https://"+raw});
+  });
+  LINKS=out; wrLinks(out);
+  $("linkCfg").classList.remove("on");
+  toast("已保存 "+out.length+" 个链接");
+};
+$("linkCfgBack").onclick=()=>{$("linkCfg").classList.remove("on");renderLinkPop();$("linkPop").classList.add("on")};
+$("linkPopBack").onclick=()=>$("linkPop").classList.remove("on");
+
+/* ===== 备份与恢复：链接 + 星标/收藏/跳过 + 设置 一并导出/导入（清缓存不怕丢）===== */
+$("backupBox").innerHTML='<b data-bk="cfg">配置链接</b><b data-bk="out">导出备份</b><b data-bk="in">导入备份</b>';
+$("backupBox").onclick=e=>{
+  const b=e.target.closest("[data-bk]");if(!b)return;
+  if(b.dataset.bk==="cfg")openLinkCfg();
+  else if(b.dataset.bk==="out")doExport();
+  else $("importFile").click();
+};
+function doExport(){
+  let links={};try{links=JSON.parse(localStorage.getItem(LKEY)||"{}")}catch(e){}
+  const data={app:"listen_qq_backup",v:1,time:new Date().toISOString(),paper:PKEY,
+    links,stars:[...stars],favs:[...favs],skips:[...skips],cfg:S,range};
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,1)],{type:"application/json"}));
+  a.download="听力记录备份_"+new Date().toISOString().slice(0,10)+".json";
+  a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+  toast("已导出 ⭐"+stars.size+" ❤"+favs.size+" ✓"+skips.size+" + 链接配置");
+}
+$("importFile").onchange=e=>{
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{
+    try{
+      const d=JSON.parse(r.result);
+      if(d.app!=="listen_qq_backup")throw new Error("这不是本播放器的备份文件");
+      let links={};try{links=JSON.parse(localStorage.getItem(LKEY)||"{}")}catch(_){}
+      Object.keys(d.links||{}).forEach(k=>{                        /* 链接按篇合并，同网址不重复 */
+        const cur=new Set((links[k]||[]).map(l=>l.url));
+        (d.links[k]||[]).forEach(l=>{if(l&&l.url&&!cur.has(l.url)){(links[k]=links[k]||[]).push(l);cur.add(l.url)}});
+      });
+      try{localStorage.setItem(LKEY,JSON.stringify(links))}catch(_){}
+      (d.stars||[]).forEach(w=>stars.add(w));                      /* 标记取并集，绝不覆盖已有 */
+      (d.favs||[]).forEach(w=>favs.add(w));
+      (d.skips||[]).forEach(w=>skips.add(w));
+      wr("listen_qq_star",stars);wr("listen_qq_fav",favs);wr("listen_qq_skip",skips);
+      if(d.cfg){Object.assign(S,d.cfg);save()}
+      if(d.range){range=d.range;try{localStorage.setItem("listen_qq_range",JSON.stringify(range))}catch(_){}}
+      LINKS=rdLinks();updateCounts();afterMark();
+      toast("导入成功 ⭐"+(d.stars||[]).length+" ❤"+(d.favs||[]).length+" ✓"+(d.skips||[]).length+"，即将刷新");
+      setTimeout(()=>location.reload(),1200);
+    }catch(err){toast("导入失败："+err.message)}
+    e.target.value="";
+  };
+  r.readAsText(f);
+};
+
+/* 弯箭头：沿用旧设计语义 = 重听当前词（不想启用时删掉这三行即可） */
+$("replayBtn").onclick=()=>{
+  if(!queue[qi])return;
+  if(!playing)setPlaying(true);
+  playCurrent(); toast("重听当前词");
+};
+
+// 颜色/封面
+function hue(w){let h=7;for(const c of w)h=(h*31+c.charCodeAt(0))%360;return h}
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("on"),1600)}
+/* 当前词的标记反馈（已收藏/已跳过/已标星）：显示在单词正上方 */
+function wordTip(m){const t=$("wordTip");if(!t)return;t.textContent=m;t.classList.add("on");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("on"),1300)}
+/* 标记点亮：图标动一下，短促、不挡视线（和收藏/星标同一手感） */
+function pulse(id){const el=$(id);if(!el)return;el.classList.remove("pulse");void el.offsetWidth;el.classList.add("pulse");setTimeout(()=>el.classList.remove("pulse"),360)}
+
+// 唱臂：静止垂直在盘右 → 播放落到盘面 → 随队列进度内移
+const armBar=document.querySelector(".arm .bar");
+const needle=document.querySelector(".needle");
+const ARM_REST=0, ARM_START=16, ARM_END=24;
+function updateArm(){
+  const p=queue.length>1?Math.min(1,qi/(queue.length-1)):0;
+  if(app.dataset.skin==="vinylx"){          /* 顶部细针：播放落盘（如图），暂停抬起 */
+    needle.style.setProperty("--nd",(playing?6*p:-30).toFixed(2)+"deg");
+    return;
+  }
+  const a=playing?ARM_START+(ARM_END-ARM_START)*p:ARM_REST;
+  armBar.style.setProperty("--arm",a.toFixed(2)+"deg");
+}
+
+function render(w,reveal){
+  app.style.setProperty("--h",hue(w.w));
+  updateBtns();                                      /* 顶栏 ❤/★/✓ 跟随当前词（原先切词不刷新，显示的是上一个词的状态） */
+  renderMarks(w);                                    /* 跳过标记（仅被跳过的词显示） */
+  $("art").style.opacity=(S.reveal&&!reveal)?.42:1;   /* 先听后现：未揭晓时封面变暗 */
+  $("wsec").textContent=w.sec+" · 第 "+(qi+1)+"/"+queue.length+" 词";
+  $("wbig").textContent=w.w;
+  const ipaRaw=(w.ipa||"").trim().replace(/^[/\[]+|[/\]]+$/g,"");   /* 去掉可能已有的斜线/方括号 */
+  $("wipa").textContent=ipaRaw?"/"+ipaRaw+"/":"";                    /* 统一包成 /.../ */
+  $("wmean").textContent=(w.pos?w.pos+" ":"")+w.m;
+  $("wex").textContent=w.ex?"“"+w.ex+"”":"";
+  const hid=S.reveal&&!reveal;
+  /* 同一个槽位内原地切换：未揭晓=波浪（正在听），揭晓=释义；高度不变，绝不跳动 */
+  $("wav").style.display=hid?"flex":"none";
+  $("wtxt").style.display=hid?"none":"";
+  $("cur").textContent="第 "+(qi+1)+" 词";
+  $("dur").textContent="共 "+queue.length+" 词";
+  const pct=queue.length?qi/queue.length*100:0;
+  $("fill").style.width=pct+"%"; $("knob").style.left=pct+"%";
+  updateBtns();
+}
+
+/* 音源（全部实测过）：
+   · 单词 → 有道词典音（只有一个英文词时可靠）
+   · 中文/例句 → 百度 gettts，必须带 spd + **source=web**，否则返回错误页（200 但播不出）
+   · 每个都带兜底 + 开播看门狗，最后一层用系统语音 */
+/* ===== 本地微软语音：按音色取音频，缺失自动回退其它音色 → 再回退在线 TTS ===== */
+const VNAME={
+  "en-US-BrianNeural":"Brian","en-US-AndrewNeural":"Andrew","en-US-GuyNeural":"Guy",
+  "en-US-AriaNeural":"Aria","en-US-JennyNeural":"Jenny","en-US-AvaNeural":"Ava",
+  "en-US-EmmaNeural":"Emma","en-US-ChristopherNeural":"Christopher","en-US-EricNeural":"Eric",
+  "en-US-RogerNeural":"Roger","en-US-SteffanNeural":"Steffan","en-US-AnaNeural":"Ana",
+  "en-US-MichelleNeural":"Michelle","en-GB-SoniaNeural":"Sonia","en-GB-RyanNeural":"Ryan",
+  "en-GB-LibbyNeural":"Libby","en-GB-ThomasNeural":"Thomas","en-GB-MaisieNeural":"Maisie",
+  "zh-CN-YunyangNeural":"云扬","zh-CN-YunjianNeural":"云健","zh-CN-YunxiNeural":"云希",
+  "zh-CN-XiaoxiaoNeural":"晓晓","zh-CN-XiaoyiNeural":"晓伊","zh-CN-YunxiaNeural":"云夏",
+  "zh-CN-liaoning-XiaobeiNeural":"晓北","zh-CN-shaanxi-XiaoniNeural":"晓妮"
+};
+const voiceLabel=id=>VNAME[id]||String(id).replace(/Neural$/,"").split("-").pop();
+/* 本篇已生成哪些音色：w/e = 英文音色，m = 中文音色 */
+function audioVoices(kind){ try{ return AUDIO?Object.keys(AUDIO).filter(v=>AUDIO[v]&&AUDIO[v][kind]):[] }catch(e){ return [] } }
+function localAudio(t,kind){
+  try{
+    if(!AUDIO)return "";
+    const map = kind==="word"?"w" : kind==="zh"?"m" : kind==="sent"?"e" : null;
+    if(!map)return "";
+    const key = kind==="word" ? String(t).toLowerCase()
+              : kind==="zh"   ? String(t).replace(/^[a-z]+\.\s*/i,"")
+              : String(t);
+    const all = audioVoices(map);
+    const want = kind==="zh" ? S.zhVoice : S.enVoice;
+    const order = (want&&all.indexOf(want)>=0) ? [want].concat(all.filter(v=>v!==want)) : all;
+    for(let i=0;i<order.length;i++){
+      const m=AUDIO[order[i]]&&AUDIO[order[i]][map];
+      if(m&&m[key])return m[key];
+    }
+  }catch(e){}
+  return "";
+}
+/* 中文朗读文本：去掉词性前缀 + 去掉括号里的英文注释。
+   否则中文音色会把括号里的英文也念出来，中英混读听着就是"机器音" */
+function zhText(w){
+  return String((w&&w.m)||"")
+    .replace(/^[a-z]+\.\s*/i,"")
+    .replace(/[（(][^）)]*[A-Za-z][^）)]*[）)]/g,"")
+    .replace(/\s+/g," ").trim();
+}
+function ttsURL(t,kind){
+  const e=encodeURIComponent(t);
+  const yd="https://dict.youdao.com/dictvoice?type="+(S.voice==="uk"?0:1)+"&audio="+e;
+  const bd=lan=>"https://fanyi.baidu.com/gettts?lan="+lan+"&spd=5&source=web&text="+e;   /* 老版参数：spd=5 */
+  const L=localAudio(t,kind); if(L)return L;
+  if(kind==="zh")return bd("zh");
+  if(kind==="sent")return bd("en");
+  return yd;
+}
+function ttsURLs(t,kind){
+  const e=encodeURIComponent(t);
+  const yd="https://dict.youdao.com/dictvoice?type="+(S.voice==="uk"?0:1)+"&audio="+e;
+  const bd=lan=>"https://fanyi.baidu.com/gettts?lan="+lan+"&spd=5&source=web&text="+e;   /* 老版参数：spd=5 */
+  const urls=[];
+  const L=localAudio(t,kind); if(L)urls.push(L);   /* 1) 微软预生成音频（有就用） */
+  if(kind==="zh")urls.push(bd("zh"));
+  else if(kind==="sent")urls.push(bd("en"));
+  else urls.push(yd,bd("en"));                     /* 单词：有道 → 百度 */
+  return urls;
+}
+
+/* ===== 音色选择器：只列本篇已生成的音色（在设置里切换，立即重播当前词）===== */
+(function voiceRows(){
+  const en=audioVoices("w"), zh=audioVoices("m");
+  const rowOf=id=>{const e=$(id); return e?e.closest(".srow"):null};
+  const rEn=rowOf("segEnVoice"), rZh=rowOf("segZhVoice");
+  if(en.length){
+    if(!S.enVoice||en.indexOf(S.enVoice)<0)S.enVoice=(en.find(v=>/brian/i.test(v))||en[0]);
+    seg($("segEnVoice"),en.map(v=>({t:voiceLabel(v),v})),()=>S.enVoice,v=>{S.enVoice=v},
+        ()=>refreshCurrent("单词音色： "+voiceLabel(S.enVoice)));
+    const vr=$("segVoice")&&$("segVoice").closest(".srow"); if(vr)vr.style.display="none";  /* 有微软音后，美音/英音已无意义 */
+  }else if(rEn){ rEn.style.display="none" }
+  if(zh.length){
+    if(!S.zhVoice||zh.indexOf(S.zhVoice)<0)S.zhVoice=(zh.find(v=>/yunyang/i.test(v))||zh[0]);
+    seg($("segZhVoice"),zh.map(v=>({t:voiceLabel(v),v})),()=>S.zhVoice,v=>{S.zhVoice=v},
+        ()=>refreshCurrent("中文音色： "+voiceLabel(S.zhVoice)));
+  }else if(rZh){ rZh.style.display="none" }
+})();
+let failStreak=0;   /* 连续失败计数：防止音源全挂时疯狂空转刷完词表 */
+/* 系统语音兜底：在线音源都不可用时，用浏览器自带语音朗读，保证有声音 */
+function speakLocal(text,lang,cb){
+  try{
+    if(!window.speechSynthesis){ cb&&cb(false); return }
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang=lang; u.rate=Math.max(.5,Math.min(2,(+S.rate||1)*.95));   /* 系统语音也跟着语速 */
+    let done=false; const fin=ok=>{ if(done)return; done=true; cb&&cb(ok) };
+    u.onend=()=>fin(true); u.onerror=()=>fin(false);
+    speechSynthesis.cancel(); speechSynthesis.speak(u);
+    setTimeout(()=>fin(true),Math.min(12000,1200+String(text).length*90));  /* 无 onend 时按字长估算收尾 */
+  }catch(e){ cb&&cb(false) }
+}
+function say(text,kind,cb){
+  const urls=ttsURLs(text,kind);
+  const t0=Date.now();
+  let i=0, done=false, local=false;
+  const finish=ok=>{
+    if(done)return; done=true;
+    failStreak=ok?0:failStreak+1;
+    if(!ok&&failStreak>=3){                 /* 连续 3 次完全没声：停下来告诉用户，别静默刷词 */
+      clearT(); stopAudio(); setPlaying(false);
+      toast("⚠️ 朗读音源暂时不可用，已暂停。检查网络后点 ▶ 继续");
+      return;
+    }
+    const wait=Math.max(0,700-(Date.now()-t0));   /* 最短停留 0.7s，杜绝秒刷 */
+    setTimeout(()=>cb&&cb(ok),wait);
+  };
+  const tryNext=()=>{
+    if(done)return;
+    if(i>=urls.length){                            /* 在线音源都不行 → 系统语音兜底 */
+      if(local)return;                             /* 防重入：重复调用会把上一句 cancel 掉，等于没声 */
+      local=true;
+      speakLocal(text, kind==="zh"?"zh-CN":"en-US", finish);
+      return;
+    }
+    stopAudio();
+    const a=new Audio(urls[i++]);
+    audio=a;
+    try{a.playbackRate=+S.rate||1}catch(e){}      /* 语速（preservesPitch 默认开，不改音调） */
+    let started=false;
+    a.addEventListener("playing",()=>{ started=true });
+    a.addEventListener("ended",()=>{ if(started)finish(true); else tryNext() });
+    a.addEventListener("error",()=>{ if(!started)tryNext(); else finish(true) });
+    a.play().catch(err=>{
+      if(err&&err.name==="NotAllowedError"){ autoplayBlocked=true; finish(false) }
+      else tryNext();
+    });
+    setTimeout(()=>{ if(!started&&!done)tryNext() },2500);   /* 2.5s 没出声 → 换下一个音源 */
+    setTimeout(()=>{ if(!done)finish(!!started) },15000);
+  };
+  tryNext();
+}
+function stopAudio(){try{if(audio){audio.pause();audio=null}}catch(e){}}
+function clearT(){if(timer){clearTimeout(timer);timer=null}}
+
+/* 池子为空（比如「只背星标」但一个都没标）时的提示 */
+function emptyHint(){
+  const src=S.source;
+  $("wsec").textContent="";
+  $("wbig").textContent="—";
+  $("wipa").textContent="";
+  $("wmean").textContent = src==="star"?"还没有 ⭐ 星标词"
+    : src==="fav"?"还没有 ❤ 收藏词"
+    : src==="skip"?"还没有 ✓ 跳过的词"
+    : "这里还没有可读的词";
+  $("wex").textContent = src==="skip"?"在词上点「✓ 跳过」标记后，这里能集中回看并一键取消"
+    : "点右上角 "+(src==="fav"?"❤":"☆")+" 标记后，这里会自动连播";
+  renderMarks(null);
+  $("wav").style.display="none";
+  $("wtxt").style.display="";
+  $("art").style.opacity=1;
+  $("cur").textContent="第 0 词"; $("dur").textContent="共 0 词";
+  $("fill").style.width="0%"; $("knob").style.left="0%";
+}
+
+/* 播放代际：每次 playCurrent 换代，上一代残留的延时/回执一律作废。
+   否则旧链的 420/450ms 延时会插进新链 → 开关关了还在读、中文被顶掉、读串词 */
+let gen=0;
+function playCurrent(){
+  const g=++gen;
+  clearT();stopAudio();
+  const w=queue[qi]; if(!w)return;
+  const live=fn=>(...a)=>{ if(g!==gen)return; return fn(...a) };
+  render(w,!(S.reveal));
+  updateArm();
+  if(!playing)return;
+  const goNext=live(()=>{
+    if(S.reveal)render(w,true);
+    timer=setTimeout(live(()=>{
+      if(pendingRebuild){pendingRebuild=false;rebuildKeepPos()}   /* 这个词念完了，标记此刻才生效 */
+      qi=(qi+1+queue.length)%queue.length;playCurrent();
+    }),S.pause);
+  });
+  /* 例句：有本地微软音频就播本地，没有就走百度在线（老版方案） */
+  const afterEx=live(()=>{ if(S.ex){say(w.ex,"sent",live(()=>goNext()))} else goNext(); });
+  const afterZh=live(()=>{
+    if(S.zh){ timer=setTimeout(live(()=>say(zhText(w),"zh",afterEx)),450) }
+    else afterEx();
+  });
+  /* 单词可重复朗读 N 次（默认 1），全部读完再走中文/例句 */
+  let left=Math.max(1,Math.min(20,Math.round(+S.repeat||1)));
+  const again=live(()=>{
+    left--;
+    if(left>0){ timer=setTimeout(live(()=>say(w.w,"word",again)),420) }
+    else afterZh();
+  });
+  say(w.w,"word",again);
+}
+
+function setPlaying(on){
+  playing=on; app.classList.toggle("playing",on);
+  $("icPlay").style.display=on?"none":""; $("icPause").style.display=on?"":"none";
+  updateArm();
+}
+$("play").onclick=()=>{ setPlaying(!playing); if(playing)playCurrent(); else {clearT();stopAudio();} };
+/* 上一词/下一词：抽成函数——它们是 <svg>，没有 .click()，键盘里点会直接抛异常 */
+function prevWord(){if(!queue.length)return;if(pendingRebuild){pendingRebuild=false;rebuildKeepPos()}
+  qi=(qi-1+queue.length)%queue.length;if(playing)playCurrent();else render(queue[qi],true)}
+function nextWord(){if(!queue.length)return;if(pendingRebuild){pendingRebuild=false;rebuildKeepPos()}
+  qi=(qi+1)%queue.length;if(playing)playCurrent();else render(queue[qi],true)}
+$("prevBtn").onclick=prevWord;
+$("nextBtn").onclick=nextWord;
+$("moreBtn").onclick=()=>$("sheet").classList.add("on");
+$("listBtn").onclick=()=>$("sheet").classList.add("on");
+$("sheetBack").onclick=()=>{$("sheet").classList.remove("on");if(!playing){setPlaying(true);playCurrent()}};
+$("backBtn").onclick=()=>{
+  if(history.length>1)history.back();          // 从站点点进来的：退回上一页
+  else location.href="../../listen.html";          // 直接打开的：回听力索引
+};
+$("ordBtn").textContent=S.order==="rand"?"随机":"顺序";
+$("ordBtn").onclick=()=>{
+  S.order=S.order==="seq"?"rand":"seq"; save();
+  $("ordBtn").textContent=S.order==="rand"?"随机":"顺序";
+  rebuild(true); updateArm();
+  toast(S.order==="rand"?"随机播放":"顺序播放");
+  if(playing)playCurrent(); else if(queue[qi])render(queue[qi],true);
+};
+$("setupBack").onclick=()=>{$("sheet").classList.remove("on");if(!playing){setPlaying(true);playCurrent()}};
+$("bar").onclick=e=>{
+  if(!queue.length)return;
+  const r=$("bar").getBoundingClientRect();
+  qi=Math.min(queue.length-1,Math.max(0,Math.floor((e.clientX-r.left)/r.width*queue.length)));
+  if(playing)playCurrent(); else render(queue[qi],true);
+};
+document.addEventListener("keydown",e=>{
+  if(e.code==="Space"){e.preventDefault();$("play").click()}
+  else if(e.key==="ArrowRight")nextWord();
+  else if(e.key==="ArrowLeft")prevWord();
+  else if(e.key==="Escape"){$("linkCfg").classList.remove("on");$("linkPop").classList.remove("on");$("sheet").classList.remove("on")}
+});
+
+// 释义/例句位置的律动波浪：恢复原来的固定 26 根、紧凑居中
+(function(){
+  const box=$("wav");
+  for(let i=0;i<26;i++){
+    const b=document.createElement("i");
+    b.style.animationDuration=(0.55+Math.random()*0.55).toFixed(2)+"s";
+    b.style.animationDelay=(-Math.random()*0.9).toFixed(2)+"s";
+    box.appendChild(b);
+  }
+})();
+
+// 界面缩放：设置面板里切档（窄屏才生效；宽屏走双栏，固定 1x）
+const ZOOMS=[1,1.25,1.5,2];
+function setZ(z,persist){
+  app.style.setProperty("--z",z);
+  const zs=$("segZoom");
+  if(zs)zs.querySelectorAll("b").forEach(b=>b.classList.toggle("on",+b.dataset.v===+z));
+  if(persist){try{localStorage.setItem("listen_qq_zoom",z)}catch(e){}}
+}
+seg($("segZoom"),ZOOMS.map(z=>({t:z+"x",v:z})),()=>+(localStorage.getItem("listen_qq_zoom")||1),v=>setZ(v,true));
+function measureDesign(){
+  const prev=app.style.minHeight; app.style.minHeight="0px";
+  const h=app.scrollHeight; app.style.minHeight=prev; return h;
+}
+addEventListener("resize",()=>{
+  if(innerWidth<760 && !localStorage.getItem("listen_qq_zoom")) initZoom();
+});
+function initZoom(){
+  const saved=+(localStorage.getItem("listen_qq_zoom")||0);
+  /* 用户手动选过档位：任何屏幕都尊重，别再被自动逻辑覆盖 */
+  if(saved&&ZOOMS.indexOf(saved)>=0){ setZ(saved,false); return }
+  if(innerWidth>=760){ setZ(1,false); return }      // 宽屏默认 1x（双栏本来就够大）
+  app.style.setProperty("--z","1");
+  const dh=Math.max(measureDesign(),640);
+  const fit=Math.min(2,(innerWidth-20)/430,(innerHeight-20)/dh);
+  const ok=ZOOMS.filter(v=>v<=fit+1e-6);
+  setZ(ok.length?ok[ok.length-1]:1,false);
+}
+initZoom();
+
+// 进入即播放；被浏览器拦截则停在 ▶ 等点击
+(function autoStart(){
+  buildQueue();
+  if(!queue.length){ emptyHint(); return }
+  setPlaying(true); playCurrent();
+  let heard=false; const mark=()=>{heard=true};
+  const iv=setInterval(()=>{if(audio){audio.addEventListener("playing",mark);audio.addEventListener("timeupdate",mark)}},250);
+  setTimeout(()=>{
+    clearInterval(iv);
+    if(heard)return;                        /* 真的出声了：正常播放 */
+    if(!autoplayBlocked)return;             /* 没出声但不是被拦（网络慢/无音频设备）：不干预，别误暂停 */
+    clearT();stopAudio();setPlaying(false);qi=0;render(queue[0],true);
+    toast("浏览器拦截了自动播放，点 ▶ 开始");
+  },3000);
+})();
+</script>
+</body>
+</html>

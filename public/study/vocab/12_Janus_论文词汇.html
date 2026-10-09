@@ -1,0 +1,4207 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Janus 论文核心词汇</title>
+<style>
+:root{--c4:#3b82f6;--c6:#8b5cf6;--ckaon:#f59e0b;--cphd:#ef4444;--ct:#0d9488;--cg:#d946ef;--cm4:#0ea5e9;--cm8:#f43f5e;--cy:#10b981;--csuper:#facc15}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;transition:background .3s,color .3s}
+.tag{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:4px;color:#fff;vertical-align:2px;margin-left:6px;font-style:normal;flex:none;white-space:nowrap}
+.tag.t4{background:var(--c4)}.tag.t6{background:var(--c6)}.tag.tk{background:var(--ckaon)}.tag.tp{background:var(--cphd)}.tag.tm4{background:var(--cm4)}.tag.tm8{background:var(--cm8)}
+.tag.tt{background:var(--ct)}.tag.tg{background:var(--cg)}.tag.ty{background:var(--cy)}.tag.tsuper{background:var(--csuper);color:#3a2f00}
+.ipa{font-family:"SF Mono",Menlo,monospace;font-size:.82em;font-weight:400;opacity:.62;margin-left:6px}
+
+
+/* 论文原标题小字 */
+.ptitle{font-size:12.5px;letter-spacing:.3px;margin-top:6px}
+.ptitle i{font-family:Georgia,serif}
+.theme-mag .ptitle{color:#999;text-transform:none}
+.theme-dark .ptitle{color:#6e7681}
+.theme-paper .ptitle{color:#a09578}
+.theme-fresh .ptitle{color:#9ca3af}
+body.lv-mode .ptitle{color:#7d8590}
+
+/* 预览工具条 */
+.toolbar{position:fixed;right:16px;bottom:16px;z-index:99;display:flex;flex-direction:column;gap:8px;background:rgba(20,22,30,.88);padding:12px;border-radius:14px;backdrop-filter:blur(8px);box-shadow:0 6px 24px rgba(0,0,0,.35)}
+.toolbar .row{display:flex;gap:6px}
+.toolbar button{border:none;cursor:pointer;padding:7px 12px;border-radius:8px;font-size:12.5px;background:#3a3f4d;color:#cbd2e0;transition:.15s}
+.toolbar button:hover{background:#4a5164}
+.toolbar button.on{background:#fff;color:#111;font-weight:600}
+.toolbar .lbl{font-size:10px;color:#8a93a6;text-align:left;margin:2px 0 -2px 2px}
+
+/* ---------- A 纸质阅读 ---------- */
+body.theme-paper{background:#faf6ee;color:#2c2a25}
+.theme-paper .wrap{max-width:880px;margin:0 auto;padding:56px 24px 140px}
+.theme-paper .hero h1{font-family:Georgia,"Songti SC",serif;font-size:34px}
+.theme-paper .hero p{color:#8a8272;margin:10px 0 42px;font-size:14px}
+.theme-paper .sec{margin-bottom:44px}
+.theme-paper .sec>h2{font-family:Georgia,"Songti SC",serif;font-size:20px;padding-left:14px;border-left:4px solid #b08d4f;margin-bottom:18px}
+.theme-paper .word{display:flex;gap:14px;padding:14px 16px;border-bottom:1px dashed #ddd2bc;align-items:baseline}
+.theme-paper .word:hover{background:#f3ecdc}
+.theme-paper .w{font-family:Georgia,serif;font-size:19px;font-weight:700;min-width:250px}
+.theme-paper .pos{color:#a09578;font-size:13px;margin-right:6px}
+.theme-paper .m{color:#4a463c;font-size:15px}
+.theme-paper .ex{margin-left:auto;max-width:270px;font-size:12.5px;color:#9a8f76;font-style:italic;text-align:right}
+.theme-paper .from{display:block;font-size:11px;color:#b3a888;font-style:normal;margin-top:3px}
+
+/* ---------- B 暗色科技 ---------- */
+body.theme-dark{background:#0d1117;color:#e6edf3}
+.theme-dark .wrap{max-width:1000px;margin:0 auto;padding:56px 24px 140px}
+.theme-dark .hero h1{font-family:"SF Mono",Menlo,monospace;font-size:26px}
+.theme-dark .hero h1::before{content:"$ ";color:#3fb950}
+.theme-dark .hero p{color:#7d8590;margin:10px 0 40px;font-size:14px;font-family:Menlo,monospace}
+.theme-dark .sec>h2{font-size:15px;font-family:Menlo,monospace;color:#58a6ff;padding:10px 16px;background:#161b22;border:1px solid #30363d;border-radius:8px 8px 0 0;margin-bottom:-1px}
+.theme-dark .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;padding:20px;background:#161b22;border:1px solid #30363d;border-radius:0 0 8px 8px}
+.theme-dark .card{background:#0d1117;border:1px solid #30363d;border-left:4px solid #58a6ff;border-radius:6px;padding:15px 17px;transition:.2s;cursor:pointer;font-family:Menlo,monospace}
+.theme-dark .card:hover{border-color:#58a6ff;box-shadow:0 0 14px rgba(88,166,255,.25);transform:translateY(-2px)}
+.theme-dark .w{font-family:Menlo,monospace;font-size:17px;color:#79c0ff}
+.theme-dark .ipa{color:#7ee787;opacity:.9}
+.theme-dark .m{color:#8b949e;font-size:13.5px;margin-top:7px;line-height:1.55}
+.theme-dark .ex{font-size:12px;color:#6e7681;margin-top:8px;border-top:1px solid #21262d;padding-top:8px;font-style:italic}
+.theme-dark .from{color:#484f58;font-size:11px;margin-top:4px}
+
+/* ---------- C 清新卡片 ---------- */
+body.theme-fresh{background:linear-gradient(160deg,#eef4ff 0%,#f6f0ff 50%,#fff7ec 100%);color:#1f2430}
+.theme-fresh .wrap{max-width:1020px;margin:0 auto;padding:56px 24px 140px}
+.theme-fresh .hero h1{font-size:32px;font-weight:800;background:linear-gradient(90deg,#3b82f6,#8b5cf6,#f59e0b);-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block}
+.theme-fresh .hero p{color:#6b7280;margin:10px 0 40px;font-size:14px}
+.theme-fresh .sec>h2{font-size:19px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.theme-fresh .sec>h2 .n{width:30px;height:30px;border-radius:10px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.08);display:inline-flex;align-items:center;justify-content:center;font-size:13px}
+.theme-fresh .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+.theme-fresh .card{background:rgba(255,255,255,.82);backdrop-filter:blur(6px);border-radius:18px;padding:17px 19px 15px;box-shadow:0 3px 14px rgba(80,80,140,.09);transition:.2s;cursor:pointer;border-top:5px solid #dbe3f5}
+.theme-fresh .card.lv四级{border-top-color:#3b82f6}.theme-fresh .card.lv六级{border-top-color:#8b5cf6}
+.theme-fresh .card.lv考研{border-top-color:#f59e0b}.theme-fresh .card.lv考博{border-top-color:#ef4444}
+.theme-fresh .card.lv专四{border-top-color:#0ea5e9}.theme-fresh .card.lv专八{border-top-color:#f43f5e}
+.theme-fresh .card.lv雅思{border-top-color:#10b981}.theme-fresh .card.lv托福{border-top-color:#0d9488}
+.theme-fresh .card.lvGRE{border-top-color:#d946ef}.theme-fresh .card.lv超纲{border-top-color:#facc15}
+.theme-fresh .card .w{display:inline-block;background:#f3f5fb;border-radius:8px;padding:2px 10px}
+.theme-fresh .card:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(80,80,140,.16)}
+.theme-fresh .w{font-size:18px;font-weight:700}
+.theme-fresh .m{color:#4b5563;font-size:14px;margin-top:6px;line-height:1.55}
+.theme-fresh .ex{color:#9ca3af;font-size:12.5px;margin-top:8px}
+.theme-fresh .from{color:#b6bcc9;font-size:11.5px;margin-top:4px}
+
+/* ---------- D 杂志表格（宽松版） ---------- */
+body.theme-mag{background:#fff;color:#111}
+.theme-mag .wrap{max-width:960px;margin:0 auto;padding:52px 28px 140px}
+.theme-mag .hero{border-bottom:3px solid #111;padding-bottom:16px;margin-bottom:10px}
+.theme-mag .hero h1{font-family:"Songti SC",Georgia,serif;font-size:38px;font-weight:900}
+.theme-mag .hero p{color:#888;font-size:13.5px;margin-top:8px}
+.theme-mag .sec>h2{font-size:14px;letter-spacing:3px;text-transform:uppercase;color:#c2410c;margin:44px 0 8px;border-bottom:1px solid #e5e5e5;padding-bottom:8px}
+.theme-mag table{width:100%;border-collapse:collapse}
+.theme-mag td{padding:16px 12px;border-bottom:1px solid #f0f0f0;font-size:15.5px;line-height:1.65;vertical-align:top}
+.theme-mag tr:hover td{background:#fff8f3}
+.theme-mag .w{font-weight:700;font-size:17px;width:300px}
+.theme-mag .lv{width:60px}
+.theme-mag .lv b{font-size:11.5px;padding:3px 0;display:block;text-align:center;border-radius:3px;color:#fff;font-weight:600}
+.theme-mag .m{color:#3d3d3d}
+.theme-mag .ex{color:#9a9a9a;font-size:13px;font-style:italic}
+.theme-mag .from{display:block;color:#c9c9c9;font-size:11.5px;font-style:normal;margin-top:4px}
+
+/* ---------- 按级别：学习模式同款暗色大页 ---------- */
+body.lv-mode{background:#0b0e13 !important}
+body.lv-mode .hero h1,body.lv-mode .hero p{color:#e8ecf3}
+body.lv-mode .hero p{color:#7d8590}
+.lvslide{background:#101318;color:#e8ecf3;border-radius:20px;padding:26px 32px 22px;margin-bottom:26px;border-top:6px solid var(--c4)}
+.lvslide.l6{border-top-color:var(--c6)}.lvslide.lk{border-top-color:var(--ckaon)}.lvslide.lp{border-top-color:var(--cphd)}
+.lvslide.lt{border-top-color:var(--ct)}.lvslide.lg{border-top-color:var(--cg)}.lvslide.lm4{border-top-color:var(--cm4)}.lvslide.lm8{border-top-color:var(--cm8)}.lvslide.ly{border-top-color:var(--cy)}.lvslide.lsuper{border-top-color:var(--csuper)}
+.lvslide .ltitle{font-size:26px;font-weight:800;font-family:Georgia,serif;display:flex;align-items:baseline;gap:14px}
+.lvslide .ltitle small{font-size:14px;color:#7d8590;font-family:Menlo,monospace;font-weight:400}
+.lvslide .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;padding:20px 0 8px}
+.lvslide .lcard{background:#171c26;border:1px solid #2b3342;border-radius:14px;padding:15px 17px;cursor:pointer;transition:.15s}
+.lvslide .lcard:hover{border-color:#79c0ff;transform:translateY(-2px)}
+.lvslide .lcard .w{font-size:19px;font-weight:700;font-family:Georgia,serif}
+.lvslide .lcard .ipa{font-family:Menlo,monospace;font-size:13px;color:#7ee787;margin-left:8px}
+.lvslide .lcard .m{color:#aeb6c4;font-size:14px;margin-top:7px;line-height:1.55}
+.lvslide .lcard .ex{color:#646d7d;font-size:12px;font-style:italic;margin-top:7px}
+.lvslide .lcard .from{color:#4d5563;font-size:11px;margin-top:6px}
+
+
+/* ---------- 白天 / 夜晚 ---------- */
+body.lv-mode:not(.night){background:#eef1f6 !important}
+body.lv-mode:not(.night) .hero h1{color:#1f2430}
+body.lv-mode:not(.night) .hero p{color:#6b7280}
+body.lv-mode:not(.night) .lvslide{background:#fff;color:#1f2430;box-shadow:0 4px 18px rgba(80,80,140,.10)}
+body.lv-mode:not(.night) .lvslide .lcard{background:#f7f9fd;border-color:#e4e9f3}
+body.lv-mode:not(.night) .lvslide .lcard:hover{border-color:#3b82f6}
+body.lv-mode:not(.night) .lvslide .lcard .m{color:#4b5563}
+body.lv-mode:not(.night) .lvslide .lcard .ex{color:#98a0ae}
+body.lv-mode:not(.night) .lvslide .lcard .from{color:#b3bac6}
+body.lv-mode:not(.night) .lvslide .lcard .ipa{color:#0a7d33}
+body.night.theme-mag{background:#0d1117;color:#e6edf3}
+body.night.theme-mag .hero{border-bottom-color:#e6edf3}
+body.night.theme-mag .hero p{color:#8b949e}
+body.night.theme-mag .sec>h2{color:#fbbf24;border-bottom-color:#30363d}
+body.night.theme-mag td{border-bottom-color:#1c2230}
+body.night.theme-mag tr:hover td{background:#161b22}
+body.night.theme-mag .m{color:#c9d1d9}
+body.night.theme-mag .ex{color:#8b949e}
+body.night.theme-mag .from{color:#57606a}
+body.night.theme-mag .w{color:#e6edf3}
+body.night.theme-mag .ptitle{color:#8b949e}
+body.night.theme-mag .ipa{opacity:.55}
+#study.day{background:#f5f7fa;color:#1f2430}
+#study.day .scard{background:#fff;border-color:#e4e9f3}
+#study.day .scard .m{color:#4b5563}
+#study.day .scard .ex{color:#98a0ae}
+#study.day .scard:hover{border-color:#3b82f6}
+#study.day .sfoot{color:#98a0ae;border-top-color:#e6e9f0}
+#study.day .snav button,#study.day #sClose{background:#fff;color:#1f2430;border-color:#d7dce6}
+#study.day .sfoot kbd{background:#e8ecf3;color:#1f2430}
+
+/* ---------- 学习模式（PPT 按章节翻页） ---------- */
+#study{position:fixed;inset:0;z-index:200;display:none;background:#101318;color:#e8ecf3;flex-direction:column}
+#study.on{display:flex}
+#study .sprog{height:4px;background:#262c38}
+#study .sprog i{display:block;height:100%;background:linear-gradient(90deg,#58a6ff,#8b5cf6);width:0;transition:width .25s}
+#study .sbody{flex:1;overflow:auto;padding:20px 40px}
+#study .stitle{font-size:24px;font-weight:800;font-family:Georgia,serif;padding:6px 4px 2px}
+#study .stitle small{color:#5b6472;font-size:14px;font-family:Menlo,monospace;font-weight:400;margin-left:12px}
+#study .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;padding:16px 2px 30px}
+#study .scard{background:#171c26;border:1px solid #2b3342;border-radius:14px;padding:16px 18px;cursor:pointer;transition:.15s}
+#study .scard:hover{border-color:#58a6ff;transform:translateY(-2px)}
+#study .scard .w{font-size:22px;font-weight:700;font-family:Georgia,serif}
+#study .scard .ipa{color:#7ee787;font-size:14px;margin-left:8px}
+#study .scard .m{color:#aeb6c4;font-size:14.5px;margin-top:8px;line-height:1.55}
+#study .scard .ex{color:#646d7d;font-size:12px;font-style:italic;margin-top:6px}
+#study .sfoot{display:flex;justify-content:space-between;align-items:center;padding:14px 28px;color:#5b6472;font-size:13px;border-top:1px solid #1d232e}
+#study .sfoot kbd{background:#262c38;border-radius:5px;padding:2px 8px;margin:0 2px;font-family:Menlo,monospace;font-size:12px}
+#study .snav{display:flex;gap:10px;align-items:center}
+#study .snav button{border:1px solid #333b4a;background:#1a2029;color:#cbd2e0;border-radius:8px;padding:8px 18px;cursor:pointer;font-size:14px}
+#study .snav button:hover{border-color:#58a6ff}
+#study .snav button:disabled{opacity:.35;cursor:default}
+
+
+
+/* —— 样式·暖白（暖白纸底） —— */
+
+body.theme-mag.paper{background:#f4f2ea!important;color:#23211c!important}
+body.theme-mag.paper .hero{border-bottom-color:#23211c}
+body.theme-mag.paper .hero h1{color:#1c1a12}
+body.theme-mag.paper .hero p{color:#6b6a5c}
+body.theme-mag.paper .ptitle{color:#8a8878}
+body.theme-mag.paper .sec>h2{color:#5f7a3f;border-bottom-color:#ddd8ca}
+body.theme-mag.paper td{border-bottom-color:#e6e1d3}
+body.theme-mag.paper tr:hover td{background:#ece7da}
+body.theme-mag.paper .m{color:#33312a}
+body.theme-mag.paper .ex{color:#8a8878}
+body.theme-mag.paper .from{color:#b3b0a0}
+body.theme-mag.paper .ipa{color:#6b6a5c}
+.theme-mag .hwband{padding:0 3px;font-weight:700}
+body.theme-mag.paper .hwband{background:linear-gradient(transparent 16%,#cdddb8 16%,#cdddb8 84%,transparent 84%);color:#1c1a12}
+
+
+</style>
+</head>
+<body class="theme-mag">
+<div class="wrap">
+  <div class="hero">
+    <h1>Janus 论文核心词汇</h1>
+    <div class="ptitle"><i>Janus: Decoupling Visual Encoding for Unified Multimodal Understanding and Generation · arXiv:2410.13848 · DeepSeek-AI, 2024</i></div>
+    <p>全量口径重做 · 6 节 463 词 · 十一档 + 超纲（2026-10-08）</p>
+  </div>
+  <div id="app"></div>
+</div>
+
+<div class="toolbar">
+  <div class="lbl">视图</div>
+  <div class="row">
+    <button id="v-sec" class="on">按章节</button>
+    <button id="v-lv">按级别综合</button>
+    <button id="v-study">▶ 学习模式</button>
+  </div>
+  <div class="lbl">样式</div>
+  <div class="row">
+    <button id="st-day" class="on">☀ 白天</button>
+    <button id="st-night">🌙 夜晚</button>
+    <button id="st-paper">暖白</button>
+  </div>
+  <div class="lbl">朗读声音 · 多引擎</div>
+  <div class="row"><select id="voiceSel" style="flex:1;border:none;border-radius:8px;padding:7px 8px;background:#3a3f4d;color:#cbd2e0;font-size:12.5px;outline:none"></select><span id="srcState" style="align-self:center;font-size:10.5px;color:#8a93a6;min-width:34px;text-align:center"></span></div>
+</div>
+
+<div id="study">
+  <div class="sprog"><i id="sbar"></i></div>
+  <button id="sClose" title="退出学习模式 (Esc)" style="position:absolute;top:14px;right:18px;z-index:5;border:1px solid #333b4a;background:#1a2029;color:#cbd2e0;border-radius:8px;width:34px;height:34px;font-size:16px;cursor:pointer">✕</button>
+  <div class="sbody"><div id="sPage"></div></div>
+  <div class="sfoot">
+    <span><kbd>空格</kbd>/<kbd>→</kbd> 下一页 &nbsp; <kbd>←</kbd> 上一页 &nbsp; 点单词发音 &nbsp; <kbd>Esc</kbd> 退出</span>
+    <div class="snav">
+      <span id="sIdx">0 / 0</span>
+      <button id="sPrev">← 上一页</button>
+      <button id="sNext">下一页 →</button>
+      <button id="sExit" style="border-color:#5b3a3a">退出</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// lv: 4=四级 6=六级 k=考研 p=考博；ipa 为美式音标
+const DATA = [
+ {
+  "sec": "1. Introduction · 引言",
+  "short": "Intro",
+  "icon": "1",
+  "words": [
+   {
+    "w": "accommodate",
+    "ipa": "əˈkɑmədeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "容纳，适应",
+    "ex": "it is possible for Janus to accommodate additional input types"
+   },
+   {
+    "w": "advancement",
+    "ipa": "ədˈvænsmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "进步，提升",
+    "ex": "Introduction In recent years, multimodal large models have made significant advancements in both understanding and generation domains [20, 51]."
+   },
+   {
+    "w": "alleviate",
+    "ipa": "əˈliːvieɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "缓解",
+    "ex": "The decoupling not only alleviates the conflict between the visual encoder's roles"
+   },
+   {
+    "w": "audio",
+    "ipa": "ˈɑdiˌoʊ",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "听觉的， 声音的",
+    "ex": "Moreover, it is possible for Janus to accommodate additional input types in the future, such as point clouds, EEG signals, or audio data, where independent encoders can extract features and then use a unified transformer to …"
+   },
+   {
+    "w": "cannot",
+    "ipa": "ˈkænɑt",
+    "pos": "conj.",
+    "lv": "托福",
+    "m": "不能",
+    "ex": "However, strictly speaking, this approach cannot be considered a truly unified model, because the visual generation functionality is handled by the external diffusion model, while the multimodal LLM itself lacks the capability to …"
+   },
+   {
+    "w": "capable",
+    "ipa": "ˈkeɪpəbəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "能干的，有能力的",
+    "ex": "The representation in this context necessitates a low-dimensional encoding that is capable of fine-grained spatial structure and textural detail expression."
+   },
+   {
+    "w": "coexistence",
+    "ipa": "ˌkoʊɪɡˈzɪstəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "共存",
+    "ex": "the coexistence of contradictory forces by having two faces"
+   },
+   {
+    "w": "comparable",
+    "ipa": "ˈkɑmprəbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "可比较的； 类似的； 比得上的",
+    "ex": "More recently, some works have explored autoregressive methods for vision generation [73, 79], achieving performance comparable to diffusion models."
+   },
+   {
+    "w": "consequently",
+    "ipa": "ˈkɑnsəkˌwɛntli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "结果",
+    "ex": "Consequently, existing unified models for multimodal understanding and generation often compromise on multimodal understanding performance, falling markedly short of the state-of-the-arts multimodal understanding models."
+   },
+   {
+    "w": "consistency",
+    "ipa": "kənˈsɪstənsi",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "[计] 一致性；稠度；相容性",
+    "ex": "By contrast, in visual generation tasks, the main focus is on generating local details and maintaining global consistency in the image."
+   },
+   {
+    "w": "contrast",
+    "ipa": "ˈkɑntræst",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "对比，反差；对比",
+    "ex": "By contrast, in visual generation tasks, the main focus is on generating local details and maintaining global consistency in the image."
+   },
+   {
+    "w": "decouple",
+    "ipa": "diːˈkʌpl",
+    "pos": "v.",
+    "lv": "雅思",
+    "m": "解耦，分离",
+    "g": "g",
+    "ex": "we decouple visual encoding into separate pathways"
+   },
+   {
+    "w": "detail",
+    "ipa": "ˈditeɪl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "细节",
+    "ex": "By contrast, in visual generation tasks, the main focus is on generating local details and maintaining global consistency in the image."
+   },
+   {
+    "w": "dimensional",
+    "ipa": "dɪˈmɛnʃənəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "空间的；尺寸的",
+    "ex": "Therefore, the granularity of the vision encoder’s representation tends to mainly focus on high-dimensional semantic representation."
+   },
+   {
+    "w": "domain",
+    "ipa": "doʊˈmeɪn",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "领域",
+    "ex": "Introduction In recent years, multimodal large models have made significant advancements in both understanding and generation domains [20, 51]."
+   },
+   {
+    "w": "dual",
+    "ipa": "duəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "双的， 两重的",
+    "ex": "Janus’s dual nature, resolving this tension within a unified architecture."
+   },
+   {
+    "w": "duality",
+    "ipa": "duˈæləti",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "二元性",
+    "ex": "Janus is the god of duality and transitions"
+   },
+   {
+    "w": "eliminate",
+    "ipa": "ɪˈlɪmɪneɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "消除",
+    "ex": "eliminates the need to make trade-offs between two tasks"
+   },
+   {
+    "w": "emergent",
+    "ipa": "ɪˈmɜrdʒənt",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "涌现的",
+    "ex": "unlocks potential emergent abilities"
+   },
+   {
+    "w": "encode",
+    "ipa": "ɛnˈkoʊd",
+    "pos": "vt.",
+    "lv": "考博",
+    "m": "把译成电码， 把…编码",
+    "ex": "To solve this problem, we propose Janus1, a unified multimodal framework that decouples visual encoding for multimodal understanding and generation."
+   },
+   {
+    "w": "extensibility",
+    "ipa": "ɪkˌstensəˈbɪləti",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "可扩展性",
+    "ex": "the high flexibility and extensibility of Janus"
+   },
+   {
+    "w": "extract",
+    "ipa": "ˈɛkˌstrækt",
+    "pos": "v.；n.",
+    "lv": "六级",
+    "m": "取出；提取；摘录",
+    "ex": "The output of understanding task not only involves extracting information from images but also involves complex semantic reasoning."
+   },
+   {
+    "w": "flexibility",
+    "ipa": "ˌfleksəˈbɪləti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "灵活性",
+    "ex": "but also enhances the framework's flexibility"
+   },
+   {
+    "w": "generalist",
+    "ipa": "ˈʤɛnərəlɪst",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "多面手,通才",
+    "ex": "To build more powerful and generalist multimodal models, researchers have sought to combine multimodal understanding and generation tasks [75, 77, 94]."
+   },
+   {
+    "w": "generate",
+    "ipa": "ˈʤɛnərˌeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "产生",
+    "ex": "For example, Emu [75] uses the output of the LLM as a condition for a pretrained diffusion model, and then relies on the diffusion model to generate images."
+   },
+   {
+    "w": "global",
+    "ipa": "ˈgloʊbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "全球的， 全世界的； 总的， 完整的",
+    "ex": "By contrast, in visual generation tasks, the main focus is on generating local details and maintaining global consistency in the image."
+   },
+   {
+    "w": "granular",
+    "ipa": "ˈgrænjələr",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "颗粒的；粒状的",
+    "ex": "The proposed method offers two main benefits: (1) Janus alleviates the conflict stemming from the different granular needs of multimodal understanding and generation and eliminates the need to make trade-offs between two tasks …"
+   },
+   {
+    "w": "granularity",
+    "ipa": "ˌɡrænjuˈlærəti",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "粒度",
+    "ex": "the differing levels of information granularity required by multimodal understanding"
+   },
+   {
+    "w": "highlight",
+    "ipa": "ˈhaɪlaɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "强调，突出",
+    "ex": "we are the first to highlight the importance of decoupling visual encoding"
+   },
+   {
+    "w": "instance",
+    "ipa": "ˈɪnstəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "情况，例子",
+    "ex": "For instance, some studies have attempted to connect multimodal understanding models with pretrained diffusion models [27, 28, 75]."
+   },
+   {
+    "w": "involve",
+    "ipa": "ˌɪnˈvɑlv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "卷入，包含",
+    "ex": "The output of understanding task not only involves extracting information from images but also involves complex semantic reasoning."
+   },
+   {
+    "w": "issue",
+    "ipa": "ˈɪʃu",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "发行；问题",
+    "ex": "We explore this issue further in the ablation study."
+   },
+   {
+    "w": "mainly",
+    "ipa": "ˈmeɪnli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "主要地，大体上",
+    "ex": "Therefore, the granularity of the vision encoder’s representation tends to mainly focus on high-dimensional semantic representation."
+   },
+   {
+    "w": "maintain",
+    "ipa": "meɪnˈteɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "维持，主张",
+    "ex": "By contrast, in visual generation tasks, the main focus is on generating local details and maintaining global consistency in the image."
+   },
+   {
+    "w": "markedly",
+    "ipa": "ˈmɑrkɪdli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "显著地",
+    "ex": "Consequently, existing unified models for multimodal understanding and generation often compromise on multimodal understanding performance, falling markedly short of the state-of-the-arts multimodal understanding models."
+   },
+   {
+    "w": "mythology",
+    "ipa": "məˈθɑləˌʤi",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "神话学",
+    "ex": "After decoupling, both the understanding and generation tasks can adopt state-of-the-art encoding 1In Roman mythology, Janus is the god of duality and transitions, symbolizing the coexistence of contradictory forces by having two …"
+   },
+   {
+    "w": "necessitate",
+    "ipa": "nəˈsɛsəˌteɪt",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "成为必要， 需要",
+    "ex": "The representation in this context necessitates a low-dimensional encoding that is capable of fine-grained spatial structure and textural detail expression."
+   },
+   {
+    "w": "notable",
+    "ipa": "ˈnoʊtəbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "值得注意的；著名的",
+    "ex": "In the field of visual generation, diffusion-based approaches [9, 20, 20, 67] have seen notable success."
+   },
+   {
+    "w": "notably",
+    "ipa": "ˈnoʊtəbli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "尤其，值得注意的是",
+    "ex": "Notably, Janus even outperforms some task-specific models"
+   },
+   {
+    "w": "parameter",
+    "ipa": "pərˈæmətər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "参（变）数；参量",
+    "ex": "Notably, Janus even outperforms some task-specific models which have significantly more parameters (Figure 1)."
+   },
+   {
+    "w": "pathway",
+    "ipa": "ˈpæθˌweɪ",
+    "pos": "n.",
+    "lv": "雅思",
+    "m": "路径， 途径",
+    "ex": "Specifically, we introduce two independent visual encoding pathways: one for multimodal understanding and one for multimodal generation, unified by the same transformer architecture."
+   },
+   {
+    "w": "recently",
+    "ipa": "ˈrisəntli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "最近，新近",
+    "ex": "More recently, some works have explored autoregressive methods for vision generation [73, 79], achieving performance comparable to diffusion models."
+   },
+   {
+    "w": "redundancy",
+    "ipa": "rɪˈdʌndənsi",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "冗余",
+    "g": "g",
+    "ex": "reduces model redundancy"
+   },
+   {
+    "w": "researcher",
+    "ipa": "ˈrisərʧər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "研究员",
+    "ex": "To build more powerful and generalist multimodal models, researchers have sought to combine multimodal understanding and generation tasks [75, 77, 94]."
+   },
+   {
+    "w": "resolve",
+    "ipa": "rɪˈzɑlv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "化解，解决",
+    "ex": "resolving this tension within a unified architecture"
+   },
+   {
+    "w": "significant",
+    "ipa": "sɪgˈnɪfɪkənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "重要的",
+    "ex": "Introduction In recent years, multimodal large models have made significant advancements in both understanding and generation domains [20, 51]."
+   },
+   {
+    "w": "solve",
+    "ipa": "sɑlv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "解决",
+    "ex": "To solve this problem, we propose Janus1, a unified multimodal framework that decouples visual encoding for multimodal understanding and generation."
+   },
+   {
+    "w": "spatial",
+    "ipa": "ˈspeɪʃəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "空间的，占据空间的",
+    "ex": "The representation in this context necessitates a low-dimensional encoding that is capable of fine-grained spatial structure and textural detail expression."
+   },
+   {
+    "w": "specialize",
+    "ipa": "ˈspɛʃəˌlaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "专业从事",
+    "ex": "requires concrete, detailed information. By decoupling these processes into specialized encoders, our system mirrors"
+   },
+   {
+    "w": "stem",
+    "ipa": "stɛm",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "源于",
+    "ex": "alleviates the conflict stemming from the different granular needs"
+   },
+   {
+    "w": "strictly",
+    "ipa": "ˈstrɪktli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "严格地",
+    "ex": "However, strictly speaking, this approach cannot be considered a truly unified model, because the visual generation functionality is handled by the external diffusion model, while the multimodal LLM itself lacks the capability to …"
+   },
+   {
+    "w": "structure",
+    "ipa": "ˈstrəkʧər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "结构",
+    "ex": "The representation in this context necessitates a low-dimensional encoding that is capable of fine-grained spatial structure and textural detail expression."
+   },
+   {
+    "w": "suboptimal",
+    "ipa": "ˌsʌbˈɑptɪməl",
+    "pos": "adj.",
+    "lv": "超纲",
+    "m": "欠佳的",
+    "ex": "this approach can lead to suboptimal performance"
+   },
+   {
+    "w": "surpass",
+    "ipa": "sərˈpæs",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "超过",
+    "ex": "Janus surpasses existing unified models with comparable parameter sizes"
+   },
+   {
+    "w": "textural",
+    "ipa": "ˈtekstʃərəl",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "组织的,结构的",
+    "ex": "The representation in this context necessitates a low-dimensional encoding that is capable of fine-grained spatial structure and textural detail expression."
+   },
+   {
+    "w": "transition",
+    "ipa": "trænˈzɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "过渡",
+    "ex": "After decoupling, both the understanding and generation tasks can adopt state-of-the-art encoding 1In Roman mythology, Janus is the god of duality and transitions, symbolizing the coexistence of contradictory forces by having two …"
+   },
+   {
+    "w": "unify",
+    "ipa": "ˈjuːnɪfaɪ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "统一",
+    "ex": "an autoregressive framework that unifies multimodal understanding and generation"
+   },
+   {
+    "w": "unlock",
+    "ipa": "ənˈlɑk",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "开…的锁；开启",
+    "ex": "derstanding and generation tasks, which improves instruction-following for visual generation, unlocks potential emergent abilities, and reduces model redundancy."
+   }
+  ]
+ },
+ {
+  "sec": "2. Related Work · 相关工作",
+  "short": "Related",
+  "icon": "2",
+  "words": [
+   {
+    "w": "abbreviation",
+    "ipa": "əˌbriviˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "节略，缩写，缩短",
+    "ex": "Encoder” are abbreviations for “Understanding Encoder” and “Generation Encoder”, respectively."
+   },
+   {
+    "w": "auto",
+    "ipa": "ˈɔtoʊ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "(口语)汽车",
+    "ex": "Auto-Regressive Transformer"
+   },
+   {
+    "w": "complement",
+    "ipa": "ˈkɑmpləmənt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "补充",
+    "ex": "Concurrently, continuous diffusion models have showcased impressive capabilities in visual generation [33, 67, 71], complementing discrete methods by approaching generation through a probabilistic lens."
+   },
+   {
+    "w": "concurrently",
+    "ipa": "kənˈkɜrəntli",
+    "pos": "adv.",
+    "lv": "超纲",
+    "m": "与此同时",
+    "ex": "Concurrently, continuous diffusion models have showcased impressive capabilities"
+   },
+   {
+    "w": "constrain",
+    "ipa": "kənˈstreɪn",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "限制",
+    "ex": "Moreover, the generative ability of the entire system is often constrained by the external diffusion model, making its performance inferior to directly using the diffusion model on its own [27, 75]."
+   },
+   {
+    "w": "directly",
+    "ipa": "dɪˈrɛkli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "直接地；立即",
+    "ex": "Moreover, the generative ability of the entire system is often constrained by the external diffusion model, making its performance inferior to directly using the diffusion model on its own [27, 75]."
+   },
+   {
+    "w": "discrete",
+    "ipa": "dɪˈskriːt",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "离散的",
+    "ex": "predict sequences of discrete visual tokens"
+   },
+   {
+    "w": "evolve",
+    "ipa": "ɪˈvɑlvɪŋ",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "不断发展的",
+    "ex": "a rapidly evolving field that combines concepts from natural language processing"
+   },
+   {
+    "w": "explicitly",
+    "ipa": "ɪkˈsplɪsətli",
+    "pos": "adv.",
+    "lv": "GRE",
+    "m": "直接地，明确地",
+    "ex": "In contrast, our Janus can explicitly decouple the visual representations for understanding and generation, recognizing that different tasks may require varying levels of information."
+   },
+   {
+    "w": "extend",
+    "ipa": "ɪkˈstɛnd",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "延长；扩大；致",
+    "ex": "Recent advancements have explored extending MLLMs with pretrained diffusion models to facilitate image generation [27, 29, 36, 75, 76]."
+   },
+   {
+    "w": "external",
+    "ipa": "ɪkˈstərnəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "外部的，外面的",
+    "ex": "Moreover, the generative ability of the entire system is often constrained by the external diffusion model, making its performance inferior to directly using the diffusion model on its own [27, 75]."
+   },
+   {
+    "w": "facilitate",
+    "ipa": "fəˈsɪləˌteɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使便利，促进",
+    "ex": "Recent advancements have explored extending MLLMs with pretrained diffusion models to facilitate image generation [27, 29, 36, 75, 76]."
+   },
+   {
+    "w": "impressive",
+    "ipa": "ɪmˈpresɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "了不起的",
+    "ex": "continuous diffusion models have showcased impressive capabilities"
+   },
+   {
+    "w": "inferior",
+    "ipa": "ˌɪnˈfɪriər",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "下等的；劣等的",
+    "ex": "Moreover, the generative ability of the entire system is often constrained by the external diffusion model, making its performance inferior to directly using the diffusion model on its own [27, 75]."
+   },
+   {
+    "w": "lens",
+    "ipa": "lɛnz",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "透镜，镜片；镜头",
+    "ex": "Concurrently, continuous diffusion models have showcased impressive capabilities in visual generation [33, 67, 71], complementing discrete methods by approaching generation through a probabilistic lens."
+   },
+   {
+    "w": "leverage",
+    "ipa": "ˈlɛvərɪʤ",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "手段，影响力；杠杆作用；杠杆效率；利用；举债经营",
+    "ex": "By leveraging pretrained LLMs, MLLMs [1, 2, 12, 51, 55, 82, 95] demonstrate a robust ability to understand and process multimodal information."
+   },
+   {
+    "w": "moreover",
+    "ipa": "mɔˈroʊvər",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "再者，加之，此外",
+    "ex": "Moreover, the generative ability of the entire system is often constrained by the external diffusion model, making its performance inferior to directly using the diffusion model on its own [27, 75]."
+   },
+   {
+    "w": "rapidly",
+    "ipa": "ˈræpədli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "迅速地；很快地；立即",
+    "ex": "Visual Generation Visual generation is a rapidly evolving field that combines concepts from natural language processing with advancements in transformer architectures."
+   },
+   {
+    "w": "regressive",
+    "ipa": "rəˈgrɛsɪv",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "回归的；后退的；退化的",
+    "ex": "Auto-Regressive Transformer"
+   },
+   {
+    "w": "respectively",
+    "ipa": "rɪˈspɛktɪvli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "各自地",
+    "ex": "Encoder” are abbreviations for “Understanding Encoder” and “Generation Encoder”, respectively."
+   },
+   {
+    "w": "robust",
+    "ipa": "roʊˈbəst",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "强健的",
+    "ex": "By leveraging pretrained LLMs, MLLMs [1, 2, 12, 51, 55, 82, 95] demonstrate a robust ability to understand and process multimodal information."
+   },
+   {
+    "w": "showcase",
+    "ipa": "ˈʃoʊkeɪs",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "展示",
+    "ex": "continuous diffusion models have showcased impressive capabilities in visual generation"
+   },
+   {
+    "w": "synthesis",
+    "ipa": "ˈsɪnθəsɪs",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "合成",
+    "ex": "predicting masked sections of visual inputs to improve synthesis efficiency"
+   },
+   {
+    "w": "tokenize",
+    "ipa": "ˈtoʊkənaɪz",
+    "pos": "v.",
+    "lv": "超纲",
+    "m": "词元化",
+    "ex": "These models tokenize visual data and employ a prediction approach"
+   },
+   {
+    "w": "transformer",
+    "ipa": "trænsˈfɔrmər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "变压器，转换器",
+    "ex": "Visual Generation Visual generation is a rapidly evolving field that combines concepts from natural language processing with advancements in transformer architectures."
+   },
+   {
+    "w": "utilization",
+    "ipa": "ˌjutələˈzeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "利用",
+    "ex": "These methods fall under the category of tool utilization, where diffusion models are used to generate images based on the conditions output by the MLLM, while the MLLM itself does not have the ability to directly perform visual …"
+   },
+   {
+    "w": "vary",
+    "ipa": "ˈvɛri",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "变化；不同",
+    "ex": "In contrast, our Janus can explicitly decouple the visual representations for understanding and generation, recognizing that different tasks may require varying levels of information."
+   }
+  ]
+ },
+ {
+  "sec": "3. Approach · 方法",
+  "short": "Method",
+  "icon": "3",
+  "words": [
+   {
+    "w": "assign",
+    "ipa": "əˈsaɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "分配，指定",
+    "ex": "we have not assigned different loss weights to different tasks"
+   },
+   {
+    "w": "blend",
+    "ipa": "blɛnd",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "混合",
+    "ex": "we use a blend of pure text dialogue data, multimodal understanding data"
+   },
+   {
+    "w": "capability",
+    "ipa": "ˌkeɪpəˈbɪləti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "能力，才能",
+    "ex": "During this stage, we fine-tune the pretrained model with instruction tuning data to enhance its instruction-following and dialogue capabilities."
+   },
+   {
+    "w": "combination",
+    "ipa": "ˌkɑmbəˈneɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "联合，结合",
+    "ex": "Visual Generation. (1) For visual generation, finer-grained encoders can be chosen in order to preserve more image details after encoding, such as MoVQGan [93]. (2) Loss functions specifically designed for visual generation can …"
+   },
+   {
+    "w": "compress",
+    "ipa": "ˈkɑmprɛs",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "压紧，压缩",
+    "ex": "Tokens can be further compressed to save computational cost, for instance, using pixel shuffle operation [12]."
+   },
+   {
+    "w": "compute",
+    "ipa": "kəmˈpjut",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "计算，估计，估算",
+    "ex": "For visual generation tasks, we compute the loss only on the image sequence."
+   },
+   {
+    "w": "concatenate",
+    "ipa": "kənˈkætəˌneɪt",
+    "pos": "v.",
+    "lv": "GRE",
+    "m": "连接",
+    "ex": "We then concatenate these feature sequences to form a multimodal feature sequence, which is subsequently fed into the LLM for processing."
+   },
+   {
+    "w": "conceptual",
+    "ipa": "kənˈseptʃuəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "概念上的",
+    "ex": "to create a conceptual connection between visual and linguistic elements"
+   },
+   {
+    "w": "conditional",
+    "ipa": "kənˈdɪʃənəl",
+    "pos": "adj.；n.",
+    "lv": "六级",
+    "m": "有条件的；假定的；条件句；条件语",
+    "ex": "Specifically, for each token, the logit 𝑙𝑔is calculated as: 𝑙𝑔= 𝑙𝑢+ 𝑠(𝑙𝑐−𝑙𝑢), where 𝑙𝑐is the conditional logit, 𝑙𝑢is the unconditional logit, and 𝑠is the scale for the classifier-free guidance."
+   },
+   {
+    "w": "convert",
+    "ipa": "ˈkɑnvərt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使转变；使改变",
+    "ex": "Specifically, for text understanding, we use the built-in tokenizer of the LLM to convert the text into discrete IDs and obtain the feature representations corresponding to each ID."
+   },
+   {
+    "w": "corpus",
+    "ipa": "ˈkɔrpəs",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "[计] 语料库；文集；本金",
+    "ex": "In this stage, we perform unified pretraining with multimodal corpus to enable Janus to learn both multimodal understanding and generation."
+   },
+   {
+    "w": "default",
+    "ipa": "dɪˈfɔlt",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "不履行义务；不履行义务",
+    "ex": "The default number of 𝑠is 5 for the following evaluation."
+   },
+   {
+    "w": "don",
+    "ipa": "dɑn",
+    "pos": "n.；v.",
+    "lv": "专四",
+    "m": "先生，阁下；指导教师，大学教师；穿上",
+    "ex": "To ensure Janus’s proficiency in both multimodal understanding and generation, we don’t fine-tune separate models for a certain task."
+   },
+   {
+    "w": "element",
+    "ipa": "ˈɛləmənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "元素，要素",
+    "ex": "The main goal of this stage is to create a conceptual connection between visual and linguistic elements within the embedding space, enabling the LLM to understand the entities shown in images and have preliminary visual …"
+   },
+   {
+    "w": "embed",
+    "ipa": "ɪmˈbɛd",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "把…嵌入， 扎牢； 使深留脑中",
+    "ex": "This allows the model to scale to any resolution, without performing positional embedding interpolation for ViTs."
+   },
+   {
+    "w": "enable",
+    "ipa": "ɪˈneɪbəl",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使能够……",
+    "ex": "In this stage, we perform unified pretraining with multimodal corpus to enable Janus to learn both multimodal understanding and generation."
+   },
+   {
+    "w": "enhance",
+    "ipa": "ɛnˈhæns",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "提高；加强；增加",
+    "ex": "During this stage, we fine-tune the pretrained model with instruction tuning data to enhance its instruction-following and dialogue capabilities."
+   },
+   {
+    "w": "ensure",
+    "ipa": "ɪnˈʃʊr",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "确保",
+    "ex": "To ensure Janus’s proficiency in both multimodal understanding and generation, we don’t fine-tune separate models for a certain task."
+   },
+   {
+    "w": "entity",
+    "ipa": "ˈɛntɪti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "实体， 独立存在体， 实际存在物",
+    "ex": "The main goal of this stage is to create a conceptual connection between visual and linguistic elements within the embedding space, enabling the LLM to understand the entities shown in images and have preliminary visual …"
+   },
+   {
+    "w": "flatten",
+    "ipa": "ˈflætən",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "把…弄平；击倒",
+    "ex": "After the ID sequence is flattened into 1-D, we use a generation adaptor to map the codebook embeddings corresponding to each ID into the input space of the LLM."
+   },
+   {
+    "w": "frozen",
+    "ipa": "ˈfroʊzən",
+    "pos": "adj.；v.",
+    "lv": "专四",
+    "m": "冻结的；冷酷的；结冰（freeze的过去分词）；凝固；变得刻板",
+    "ex": "We keep the visual encoders and the LLM frozen during this stage, allowing only the trainable parameters within the understanding adaptor, generation adaptor and image head to be updated."
+   },
+   {
+    "w": "grid",
+    "ipa": "grɪd",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "输电网",
+    "ex": "These features are flattened from a 2-D grid into a 1-D sequence, and an understanding adaptor is used to map these image features into the input space of the LLM."
+   },
+   {
+    "w": "illustrate",
+    "ipa": "ˈɪləˌstreɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "说明,阐明",
+    "ex": "Training Procedure The training of Janus is divided into three stages, as illustrated in Figure 3."
+   },
+   {
+    "w": "inference",
+    "ipa": "ˈɪnfərəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "推断结果， 结论； 推论， 推理， 推断",
+    "ex": "Inference During inference, our model adopts a next-token prediction approach."
+   },
+   {
+    "w": "interpolation",
+    "ipa": "ɪn,tɚpəˈleʃən",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "篡改, 添写, 插补",
+    "ex": "This allows the model to scale to any resolution, without performing positional embedding interpolation for ViTs."
+   },
+   {
+    "w": "linguistic",
+    "ipa": "lɪŋgˈwɪstɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "语言的；语言学的",
+    "ex": "The main goal of this stage is to create a conceptual connection between visual and linguistic elements within the embedding space, enabling the LLM to understand the entities shown in images and have preliminary visual …"
+   },
+   {
+    "w": "log",
+    "ipa": "lɔg",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "原木，木料",
+    "ex": "Training Objective Janus is an autoregressive model, and we simply adopt the cross-entropy loss during training: L = − ∑︁ 𝑖=1 log 𝑃𝜃(𝑥𝑖|𝑥<𝑖) (1) Here, 𝑃(· | ·) indicates the conditional probability modeled by the weights 𝜃of …"
+   },
+   {
+    "w": "module",
+    "ipa": "ˈmɑʤul",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "模块；组件",
+    "ex": "symbols in the diagram to indicate the module updates/does not update its parameters. attention masks."
+   },
+   {
+    "w": "objective",
+    "ipa": "əˈbʤɛktɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "客观的；无偏见的",
+    "ex": "Training Objective Janus is an autoregressive model, and we simply adopt the cross-entropy loss during training: L = − ∑︁ 𝑖=1 log 𝑃𝜃(𝑥𝑖|𝑥<𝑖) (1) Here, 𝑃(· | ·) indicates the conditional probability modeled by the weights 𝜃of …"
+   },
+   {
+    "w": "preliminary",
+    "ipa": "prɪˈlɪmɪneri",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "初步的",
+    "ex": "have preliminary visual generation ability"
+   },
+   {
+    "w": "prior",
+    "ipa": "praɪər",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "在先的；优先的",
+    "ex": "For image generation, we utilize classifier-free guidance (CFG) 2, similar to prior works [8, 26, 73]."
+   },
+   {
+    "w": "proficiency",
+    "ipa": "prəˈfɪʃnsi",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "熟练",
+    "ex": "To ensure Janus's proficiency in both multimodal understanding and generation"
+   },
+   {
+    "w": "resolution",
+    "ipa": "ˌrɛzəˈluʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "坚决，坚定；决定",
+    "ex": "This allows the model to scale to any resolution, without performing positional embedding interpolation for ViTs."
+   },
+   {
+    "w": "scale",
+    "ipa": "skeɪl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "规模，比例",
+    "ex": "This allows the model to scale to any resolution, without performing positional embedding interpolation for ViTs."
+   },
+   {
+    "w": "scenario",
+    "ipa": "sɪˈnɛrioʊ",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "情境 “；剧本",
+    "ex": "Instead, we use a blend of pure text dialogue data, multimodal understanding data and visual generation data, ensuring versatility across various scenarios."
+   },
+   {
+    "w": "sequence",
+    "ipa": "ˈsikwəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "连续，继续；次序",
+    "ex": "We then concatenate these feature sequences to form a multimodal feature sequence, which is subsequently fed into the LLM for processing."
+   },
+   {
+    "w": "sequentially",
+    "ipa": "ˈsiːkwenʃəli",
+    "pos": "adv.",
+    "lv": "超纲",
+    "m": "顺序地",
+    "ex": "sampling tokens sequentially from the predicted distribution"
+   },
+   {
+    "w": "shuffle",
+    "ipa": "ˈʃəfəl",
+    "pos": "v.",
+    "lv": "专八",
+    "m": "拖着脚走；洗牌",
+    "ex": "Tokens can be further compressed to save computational cost, for instance, using pixel shuffle operation [12]."
+   },
+   {
+    "w": "simply",
+    "ipa": "ˈsɪmpli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "简单地；朴素地",
+    "ex": "Training Objective Janus is an autoregressive model, and we simply adopt the cross-entropy loss during training: L = − ∑︁ 𝑖=1 log 𝑃𝜃(𝑥𝑖|𝑥<𝑖) (1) Here, 𝑃(· | ·) indicates the conditional probability modeled by the weights 𝜃of …"
+   },
+   {
+    "w": "snowflake",
+    "ipa": "sˈnoʊˌfleɪk",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "雪花",
+    "ex": "We use flame symbols/snowflake"
+   },
+   {
+    "w": "specially",
+    "ipa": "ˈspɛʃəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "特意地；专门地",
+    "ex": "entire model adheres to an autoregressive framework without the need for specially designed"
+   },
+   {
+    "w": "subsequently",
+    "ipa": "ˈsʌbsɪkwəntli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "随后",
+    "ex": "Subsequently, we enhance the model's open-domain visual generation capability"
+   },
+   {
+    "w": "tactile",
+    "ipa": "ˈtækˌtaɪl",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "触觉的； 有触觉的； 可感触的",
+    "ex": "The straightforward architecture of Janus allows for easy integration with additional encoders, accommodating various modalities such as 3D point cloud [53], tactile [88], and EEG [4]."
+   },
+   {
+    "w": "token",
+    "ipa": "ˈtoʊkən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "辅币；象征",
+    "ex": "For pure text understanding and multimodal understanding, we follow the standard practice of sampling tokens sequentially from the predicted distribution."
+   },
+   {
+    "w": "unfreeze",
+    "ipa": "ˌʌnˈfriːz",
+    "pos": "v.",
+    "lv": "超纲",
+    "m": "解冻",
+    "ex": "We unfreeze the LLM and utilize all types of training data"
+   },
+   {
+    "w": "utilize",
+    "ipa": "ˈjutəˌlaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "利用",
+    "ex": "We unfreeze the LLM and utilize all types of training data: pure text data, multimodal understanding data, and visual generation data."
+   },
+   {
+    "w": "versatility",
+    "ipa": "ˌvɜrsəˈtɪləti",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "多面性",
+    "ex": "ensuring versatility across various scenarios"
+   }
+  ]
+ },
+ {
+  "sec": "4. Experiments · 实验",
+  "short": "Exp",
+  "icon": "4",
+  "words": [
+   {
+    "w": "accord",
+    "ipa": "əˈkɔrd",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使一致；给予",
+    "ex": "We mix all data types according to the specified ratios in a single training step."
+   },
+   {
+    "w": "actually",
+    "ipa": "ˈæˌkʧuəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "实际上；竟然",
+    "ex": "The use of the phrase \"I'm not arguing, I'm just explaining why I'm right\" is a common tactic used by people who are trying to avoid an argument but are actually engaging in one."
+   },
+   {
+    "w": "additionally",
+    "ipa": "əˈdɪʃəˌnəli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "此外；又，加之",
+    "ex": "Additionally, Chameleon fails to identify objects in the meme, while Show-o misinterprets the dog’s color."
+   },
+   {
+    "w": "adorn",
+    "ipa": "əˈdɔrn",
+    "pos": "v.；n.",
+    "lv": "考博",
+    "m": "装饰；使生色；(Adorn)人名；(泰)阿隆",
+    "ex": "The background is a celestial tapestry, adorned with stars and symbolic motifs of time and passage."
+   },
+   {
+    "w": "aesthetic",
+    "ipa": "ɛsˈθɛtɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "美学的， 审美的； 悦目的， 雅致的",
+    "ex": "For images from [38, 70], we filter based on aesthetic scores and image sizes, resulting in 20% remaining."
+   },
+   {
+    "w": "alien",
+    "ipa": "ˈeɪliən",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "陌生的",
+    "ex": "A brave dog wearing a futuristic space suit, exploring an alien planet amidst swirling dunes of stardust and meteor showers."
+   },
+   {
+    "w": "amidst",
+    "ipa": "əˈmɪdst",
+    "pos": "prep.",
+    "lv": "六级",
+    "m": "在…当中",
+    "ex": "A brave dog wearing a futuristic space suit, exploring an alien planet amidst swirling dunes of stardust and meteor showers."
+   },
+   {
+    "w": "approach",
+    "ipa": "əˈproʊʧ",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "靠近；接近，方法",
+    "ex": "This approach helps the model first learn basic pixel dependencies before progressing to more complex scene understanding, as suggested by [9]."
+   },
+   {
+    "w": "argumentative",
+    "ipa": "ˌɑrgjəˈmɛntətɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "好辩的；辩论的；争辩的",
+    "ex": "Chameleon: The meme is a visual representation of a conversation between two people, with the top panel featuring the text \"I'm not arguing, I'm just explaining why I'm right\" and the bottom panel featuring the text \"No, you're …"
+   },
+   {
+    "w": "artwork",
+    "ipa": "ˈɑrtˌwərk",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "艺术品,美术品",
+    "ex": "The artwork is rich in contrasting colors, with the left side dominated by cold blues and silvers, symbolizing winter and reflection, and the right side awash with warm golds and reds, representing spring and renewal."
+   },
+   {
+    "w": "attribute",
+    "ipa": "əˈtrɪˌbjut",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "归因于",
+    "ex": "This can be attributed to Janus decoupling the visual encoding for multimodal understanding and generation, mitigating the conflict between these two tasks."
+   },
+   {
+    "w": "awash",
+    "ipa": "əˈwɑʃ",
+    "pos": "adj./prep.",
+    "lv": "超纲",
+    "m": "大量充斥的，淹没的（be awash in 被…淹没/充斥）",
+    "ex": "The artwork is rich in contrasting colors, with the left side dominated by cold blues and silvers, symbolizing winter and reflection, and the right side awash with warm golds and reds, representing spring and renewal."
+   },
+   {
+    "w": "benchmark",
+    "ipa": "ˈbɛnʧˌmɑrk",
+    "pos": "n.；v.",
+    "lv": "专八",
+    "m": "基准；标准检查程序；用基准问题测试（计算机系统等）",
+    "ex": "We begin by detailing our experimental setup, which includes the model architecture, training datasets, and evaluation benchmarks."
+   },
+   {
+    "w": "capture",
+    "ipa": "ˈkæpʧər",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "捕获，俘获；夺得",
+    "ex": "Janus accurately interprets the text caption and captures the emotion conveyed in the meme."
+   },
+   {
+    "w": "carefully",
+    "ipa": "ˈkɛrfəli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "小心地",
+    "ex": "Ablation Studies We carefully design ablation studies to verify the effectiveness of Janus’s design concept."
+   },
+   {
+    "w": "celestial",
+    "ipa": "səˈlɛsʧəl",
+    "pos": "adj.；n.",
+    "lv": "考博",
+    "m": "天上的，天空的；神仙，天堂里的居民",
+    "ex": "The background is a celestial tapestry, adorned with stars and symbolic motifs of time and passage."
+   },
+   {
+    "w": "chameleon",
+    "ipa": "kəˈmiliən",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "变色龙",
+    "ex": "Figure 5 showcases the qualitative results of Janus’s multimodal understanding ability, compared with Chameleon [77] and Show-o [86]."
+   },
+   {
+    "w": "claim",
+    "ipa": "kleɪm",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "声称，主张；索取",
+    "ex": "The meme is poking fun at this tactic by showing the person's actions and words as being in direct contradiction to their claim."
+   },
+   {
+    "w": "cluster",
+    "ipa": "ˈkləstər",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "串，束，簇；群，组；群聚；聚集",
+    "ex": "The whole training process took 7 days on a cluster of 16 nodes, each equipped with 8 Nvidia A100 (40GB) GPUs."
+   },
+   {
+    "w": "coherent",
+    "ipa": "koʊˈhɪrənt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "（文章、观点等）连贯的，有条理的，一致的",
+    "ex": "First, the semantic tokenizer produces discrete IDs that are more semantically coherent, providing more reasonable prediction targets for the LLM."
+   },
+   {
+    "w": "comparison",
+    "ipa": "kəmˈpɛrəsən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比较，对照；比似",
+    "ex": "Figure 4 provides qualitative comparisons between our model, diffusion-based models like SDXL [62], and the autoregressive model LlamaGen [73]."
+   },
+   {
+    "w": "competitive",
+    "ipa": "kəmˈpɛtɪtɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "竞争的， 比赛的； 好竞争的， 求胜心切的； 有竞争力的",
+    "ex": "When compared to models with significantly larger sizes, Janus remains highly competitive."
+   },
+   {
+    "w": "compositional",
+    "ipa": "ˌkɑmpəˈzɪʃənəl",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "合成的,组成的",
+    "ex": "SEED-X† [29] 17B 0.97 0.58 0.26 0.80 0.19 0.14 0.49 Show-o [86] 1.3B 0.95 0.52 0.49 0.82 0.11 0.28 0.53 LWM [52] 7B 0.93 0.41 0.46 0.79 0.09 0.15 0.47 Chameleon [77] 34B - - - - - - 0.39 Janus (Ours) 1.3B 0.97 0.68 0.30 0.84 0.46 …"
+   },
+   {
+    "w": "comprehensive",
+    "ipa": "ˌkɑmpriˈhɛnsɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "综合的，全面的",
+    "ex": "GenEval is a challenging benchmark for image-to-text generation, designed to reflect the comprehensive generative"
+   },
+   {
+    "w": "considerable",
+    "ipa": "kənˈsɪdərəbəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "相当大(或多)的",
+    "ex": "on screen. modal understanding, although there is still a considerable gap compared to our method."
+   },
+   {
+    "w": "contemplative",
+    "ipa": "kənˈtɛmplətɪv",
+    "pos": "adj.；n.",
+    "lv": "六级",
+    "m": "沉思的；沉思者",
+    "ex": "One face appears aged, with deep-set wrinkles and a wise, contemplative expression, while the other face is youthful, exuding vigor and curiosity."
+   },
+   {
+    "w": "contradiction",
+    "ipa": "ˌkɑntrəˈdɪkʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "矛盾，不一致；否认",
+    "ex": "The meme is poking fun at this tactic by showing the person's actions and words as being in direct contradiction to their claim."
+   },
+   {
+    "w": "crystal",
+    "ipa": "ˈkrɪstəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "水晶，结晶体；晶粒",
+    "ex": "A wise old owl with golden plumage perched on a luminous crystal tree in a magical forest."
+   },
+   {
+    "w": "curiosity",
+    "ipa": "ˌkjʊriˈɑsəti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "好奇心",
+    "ex": "One face appears aged, with deep-set wrinkles and a wise, contemplative expression, while the other face is youthful, exuding vigor and curiosity."
+   },
+   {
+    "w": "curl",
+    "ipa": "kərl",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "卷毛；螺旋；卷曲",
+    "ex": "His hair is styled in flowing curls, framing both faces with a sense of divine symmetry."
+   },
+   {
+    "w": "demonstrate",
+    "ipa": "ˈdɛmənˌstreɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "证明；展示",
+    "ex": "This demonstrates that the images generated by Janus have good quality and highlights its potential in visual generation."
+   },
+   {
+    "w": "denote",
+    "ipa": "dɪˈnoʊt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "指示，意味着",
+    "ex": "Tokenizer” denote “understanding”, “generation” and “semantic tokenizer”, respectively."
+   },
+   {
+    "w": "depiction",
+    "ipa": "dɪˈpɪkʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "描写, 叙述",
+    "ex": "Show-o: The meaning of the meme from the top panel to the bottom is that it is a humorous and lighthearted depiction of a man wearing a yellow hat and a red jacket, with the caption \"I'm not a fan of the sun.\" This suggests that …"
+   },
+   {
+    "w": "dietary",
+    "ipa": "ˈdaɪəˌtɛri",
+    "pos": "n.；adj.",
+    "lv": "六级",
+    "m": "规定的食物；饮食的规定；食谱；饮食的，饭食的，规定食物的",
+    "ex": "The image is a humorous take on the challenges of being a vegan in a non-vegan environment, where one's friends or family may not share their dietary preferences."
+   },
+   {
+    "w": "diffusion",
+    "ipa": "dɪfˈjuʒən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "传播，散布",
+    "ex": "Figure 4 provides qualitative comparisons between our model, diffusion-based models like SDXL [62], and the autoregressive model LlamaGen [73]."
+   },
+   {
+    "w": "distill",
+    "ipa": "dɪˈstɪl",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "蒸馏， 用蒸馏法提取； 吸取， 提炼",
+    "ex": "We adopt SigLIP to distill an enhanced semantic tokenizer 3 that can extract high-level semantic information from images while also have the ability to convert images into discrete IDs, which is similar to that in [85]."
+   },
+   {
+    "w": "divine",
+    "ipa": "dɪˈvaɪn",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "神圣的",
+    "ex": "His hair is styled in flowing curls, framing both faces with a sense of divine symmetry."
+   },
+   {
+    "w": "dominate",
+    "ipa": "ˈdɑməˌneɪt",
+    "pos": "vi.；vt.",
+    "lv": "六级",
+    "m": "拥有优势；在…中占首要地位；支配，统治，控制；耸立于，俯视",
+    "ex": "The artwork is rich in contrasting colors, with the left side dominated by cold blues and silvers, symbolizing winter and reflection, and the right side awash with warm golds and reds, representing spring and renewal."
+   },
+   {
+    "w": "dune",
+    "ipa": "dun",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "（由风吹积而成的）沙丘",
+    "ex": "A brave dog wearing a futuristic space suit, exploring an alien planet amidst swirling dunes of stardust and meteor showers."
+   },
+   {
+    "w": "effective",
+    "ipa": "ˈifɛktɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "有效的；有影响的",
+    "ex": "Considering that the VQ tokenizer in Exp-A might be weak in extract semantic information, making it less effective for multimodal understanding, we also construct a stronger baseline Exp-B."
+   },
+   {
+    "w": "effectiveness",
+    "ipa": "ɪˈfektɪvnəs",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "有效性",
+    "ex": "Extensive experiments have demonstrated the effectiveness and leading performance"
+   },
+   {
+    "w": "efficacy",
+    "ipa": "ˈɛfɪˌkæsi",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "功效，效力",
+    "ex": "MSCOCO-30K and MJHQ-30K employ the Fréchet Inception Distance (FID) metric on generated images compared to 30K high-quality images, which indicates the overall efficacy of image generation."
+   },
+   {
+    "w": "efficiency",
+    "ipa": "ɪˈfɪʃənsi",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "效率；功效，效能",
+    "ex": "We use sequence packing during training to improve training efficiency."
+   },
+   {
+    "w": "efficient",
+    "ipa": "ɪˈfɪʃənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "效率高的，有能力的",
+    "ex": "Our Janus is trained and evaluated using HAI-LLM [32], which is a lightweight and efficient distributed training framework built on top of PyTorch."
+   },
+   {
+    "w": "emerald",
+    "ipa": "ˈɛmərrəld",
+    "pos": "n.；adj.",
+    "lv": "专四",
+    "m": "绿宝石；[宝] 祖母绿；翠绿色；翠绿色的",
+    "ex": "Radiant fireflies swirl around while ethereal mist rolls through the trees, illuminated by swirls of iridescent moonlight and glistening emerald leaves."
+   },
+   {
+    "w": "emotion",
+    "ipa": "ˈiˌmoʊʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "情感，感情；激动",
+    "ex": "Janus accurately interprets the text caption and captures the emotion conveyed in the meme."
+   },
+   {
+    "w": "emphasize",
+    "ipa": "ˈɛmfəˌsaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "强调",
+    "ex": "We emphasize the key-points in the response."
+   },
+   {
+    "w": "engage",
+    "ipa": "ɪnˈgeɪʤ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "忙于，从事；吸引",
+    "ex": "The use of the phrase \"I'm not arguing, I'm just explaining why I'm right\" is a common tactic used by people who are trying to avoid an argument but are actually engaging in one."
+   },
+   {
+    "w": "entertain",
+    "ipa": "ˌɛnərˈteɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使欢乐；招待",
+    "ex": "The meme is likely meant to be humorous and entertaining, as it combines a serious subject with a lighthearted and playful approach User: Explain this meme."
+   },
+   {
+    "w": "equipped",
+    "ipa": "ɪkˈwɪpt",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "装备；预备（equip的过去分词）；整装",
+    "ex": "The whole training process took 7 days on a cluster of 16 nodes, each equipped with 8 Nvidia A100 (40GB) GPUs."
+   },
+   {
+    "w": "ethereal",
+    "ipa": "ɪˈθɪriəl",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "优雅的；轻飘的；缥缈的；超凡的",
+    "ex": "Radiant fireflies swirl around while ethereal mist rolls through the trees, illuminated by swirls of iridescent moonlight and glistening emerald leaves."
+   },
+   {
+    "w": "evaluation",
+    "ipa": "ɪˌvæljuˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "评价，评估",
+    "ex": "We begin by detailing our experimental setup, which includes the model architecture, training datasets, and evaluation benchmarks."
+   },
+   {
+    "w": "exclude",
+    "ipa": "ɪkˈsklud",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "排除，不包括",
+    "ex": "For pure generation, we exclude the understanding data."
+   },
+   {
+    "w": "experimental",
+    "ipa": "ɪkˌspɛrɪˈmɛntəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "实验的，试验的",
+    "ex": "We begin by detailing our experimental setup, which includes the model architecture, training datasets, and evaluation benchmarks."
+   },
+   {
+    "w": "extensive",
+    "ipa": "ɪkˈstensɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "广泛的",
+    "ex": "Extensive experiments have demonstrated the effectiveness and leading performance"
+   },
+   {
+    "w": "exude",
+    "ipa": "ɪgˈzud",
+    "pos": "v.",
+    "lv": "专八",
+    "m": "散发；流出；使渗出",
+    "ex": "One face appears aged, with deep-set wrinkles and a wise, contemplative expression, while the other face is youthful, exuding vigor and curiosity."
+   },
+   {
+    "w": "factor",
+    "ipa": "ˈfæktər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "因素；因子，系数",
+    "ex": "The generation encoder has a codebook of size 16, 384 and downsamples images by a factor of 16."
+   },
+   {
+    "w": "filter",
+    "ipa": "ˈfɪltər",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "过滤；滤纸",
+    "ex": "For images from [38, 70], we filter based on aesthetic scores and image sizes, resulting in 20% remaining."
+   },
+   {
+    "w": "firefly",
+    "ipa": "ˈfaɪərˌflaɪ",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "萤火虫",
+    "ex": "Radiant fireflies swirl around while ethereal mist rolls through the trees, illuminated by swirls of iridescent moonlight and glistening emerald leaves."
+   },
+   {
+    "w": "formation",
+    "ipa": "fɔrˈmeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "形成；构成；形成物",
+    "ex": "The landscape is dotted with glowing crystal formations and ethereal terraforms, creating a surreal environment in which swirling vortexes in the sky depict the endless dance of distant galaxies."
+   },
+   {
+    "w": "frame",
+    "ipa": "freɪm",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "框架",
+    "ex": "His hair is styled in flowing curls, framing both faces with a sense of divine symmetry."
+   },
+   {
+    "w": "futuristic",
+    "ipa": "fˌjuʧərˈɪstɪk",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "未来派的；未来主义的",
+    "ex": "A brave dog wearing a futuristic space suit, exploring an alien planet amidst swirling dunes of stardust and meteor showers."
+   },
+   {
+    "w": "galaxy",
+    "ipa": "ˈgæləksi",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "星系； 银河系， 银河； 一群",
+    "ex": "The landscape is dotted with glowing crystal formations and ethereal terraforms, creating a surreal environment in which swirling vortexes in the sky depict the endless dance of distant galaxies."
+   },
+   {
+    "w": "gap",
+    "ipa": "gæp",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "差距;缝隙缺口",
+    "ex": "However, there is a significant gap on understanding benchmarks between Exp-A and our model (Exp-D). (2) When comparing Exp-B to Exp-A, the results show a clear improvement in multi- 3The semantic tokenizer is only used in the …"
+   },
+   {
+    "w": "generative",
+    "ipa": "ˈʤɛnərətɪv",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "生产的，有生产力的",
+    "ex": "This demonstrates that our model, Janus, is capable of incorporating strong generative abilities while minimally affecting multimodal understanding performance."
+   },
+   {
+    "w": "genuinely",
+    "ipa": "ˈʤɛnjuˌaɪnli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "真正地, 由衷地",
+    "ex": "The meme is a play on the idea that the man in the top panel might be confused or surprised by the idea of winning a Nobel Prize in Physics, while the man in the bottom panel seems to be genuinely happy about it."
+   },
+   {
+    "w": "glide",
+    "ipa": "glaɪd",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "滑动；消逝；滑行",
+    "ex": "Only DALL·E [65] 12B 27.50 - GLIDE [59] 5B 12.24 - LDM [67] 1.4B 12.64 - DALL·E 2 [66] 6.5B 10.39 - SDv1.5 [67] 0.9B 9.62 - GigaGAN [37] 0.9B 9.09 - PixArt-𝛼[9] 0.6B 7.32 - Imagen [68] 34B 7.27 - RAPHAEL [87] 3B 6.61 - Und. and …"
+   },
+   {
+    "w": "glisten",
+    "ipa": "ˈglɪsən",
+    "pos": "v.；n.",
+    "lv": "专四",
+    "m": "闪光，闪亮；闪光，闪耀",
+    "ex": "Radiant fireflies swirl around while ethereal mist rolls through the trees, illuminated by swirls of iridescent moonlight and glistening emerald leaves."
+   },
+   {
+    "w": "glow",
+    "ipa": "gloʊ",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "白热光；发白热光",
+    "ex": "The landscape is dotted with glowing crystal formations and ethereal terraforms, creating a surreal environment in which swirling vortexes in the sky depict the endless dance of distant galaxies."
+   },
+   {
+    "w": "highly",
+    "ipa": "ˈhaɪli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "高度地，很，非常",
+    "ex": "When compared to models with significantly larger sizes, Janus remains highly competitive."
+   },
+   {
+    "w": "hypothesize",
+    "ipa": "haɪˈpɑθəˌsaɪz",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "假设,猜测",
+    "ex": "We hypothesize two possible reasons for this."
+   },
+   {
+    "w": "illuminate",
+    "ipa": "ˌɪˈlumɪnɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "阐释，阐明",
+    "ex": "Radiant fireflies swirl around while ethereal mist rolls through the trees, illuminated by swirls of iridescent moonlight and glistening emerald leaves."
+   },
+   {
+    "w": "image",
+    "ipa": "ˈɪmɪʤ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "形象，声誉，印象",
+    "ex": "ImageNet samples [18] are presented only during the first 120K training steps, while images from other datasets appear in the later 60K steps."
+   },
+   {
+    "w": "impact",
+    "ipa": "ˌɪmˈpækt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "影响",
+    "ex": "Second, we investigate the impact of unified training on individual tasks like multimodal understanding or visual generation."
+   },
+   {
+    "w": "implementation",
+    "ipa": "ˌɪmpləmɛnˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "实现，履行",
+    "ex": "Implementation Details In our experiments, we utilize DeepSeek-LLM (1.3B) [5] with a maximum supported sequence length of 4096 as the base language model."
+   },
+   {
+    "w": "inception",
+    "ipa": "ˌɪnˈsɛpʃən",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "起初；获得学位",
+    "ex": "MSCOCO-30K and MJHQ-30K employ the Fréchet Inception Distance (FID) metric on generated images compared to 30K high-quality images, which indicates the overall efficacy of image generation."
+   },
+   {
+    "w": "individual",
+    "ipa": "ˌɪndəˈvɪʤəwəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "个人",
+    "ex": "Second, we investigate the impact of unified training on individual tasks like multimodal understanding or visual generation."
+   },
+   {
+    "w": "interpret",
+    "ipa": "ˌɪnˈtərprət",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "解释",
+    "ex": "Janus accurately interprets the text caption and captures the emotion conveyed in the meme."
+   },
+   {
+    "w": "investigate",
+    "ipa": "ˌɪnˈvɛstəˌgeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "调查",
+    "ex": "Second, we investigate the impact of unified training on individual tasks like multimodal understanding or visual generation."
+   },
+   {
+    "w": "iridescent",
+    "ipa": "ˌɪrəˈdɛsənt",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "闪光的，现晕光的",
+    "ex": "Radiant fireflies swirl around while ethereal mist rolls through the trees, illuminated by swirls of iridescent moonlight and glistening emerald leaves."
+   },
+   {
+    "w": "irony",
+    "ipa": "ˈaɪrəni",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "讽刺",
+    "ex": "Chameleon: The meme is a visual representation of a conversation between two people, with the top panel featuring the text \"I'm not arguing, I'm just explaining why I'm right\" and the bottom panel featuring the text \"No, you're …"
+   },
+   {
+    "w": "known",
+    "ipa": "noʊn",
+    "pos": "adj.；v.",
+    "lv": "专四",
+    "m": "已知的；知名的；大家知道的；知道（know的过去分词）",
+    "ex": "As shown in Table 4, Janus achieves FIDs of 8.53 and 10.10 on the COCO-30K and MJHQ-30K benchmarks, respectively, surpassing unified models Show-o and LWM, and demonstrating competitive performance compared to some well-known …"
+   },
+   {
+    "w": "landscape",
+    "ipa": "ˈlænˌskeɪp",
+    "pos": "n.；vt.",
+    "lv": "六级",
+    "m": "风景，景色；风景画；全景；美化…的景观",
+    "ex": "The landscape is dotted with glowing crystal formations and ethereal terraforms, creating a surreal environment in which swirling vortexes in the sky depict the endless dance of distant galaxies."
+   },
+   {
+    "w": "lastly",
+    "ipa": "ˈlæstli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "最后，终于",
+    "ex": "Lastly, we provide some qualitative results."
+   },
+   {
+    "w": "lighthearted",
+    "ipa": "ˈlaɪˌthɑrtɪd",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "无忧无虑的； 愉快的",
+    "ex": "The meme is likely meant to be humorous and entertaining, as it combines a serious subject with a lighthearted and playful approach User: Explain this meme."
+   },
+   {
+    "w": "lightweight",
+    "ipa": "ˈlaɪtˈweɪt",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "轻量级选手, 不能胜任者",
+    "ex": "Our Janus is trained and evaluated using HAI-LLM [32], which is a lightweight and efficient distributed training framework built on top of PyTorch."
+   },
+   {
+    "w": "luminous",
+    "ipa": "ˈlumənəs",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "发光的；夜明的",
+    "ex": "A wise old owl with golden plumage perched on a luminous crystal tree in a magical forest."
+   },
+   {
+    "w": "magical",
+    "ipa": "ˈmæʤɪkəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "魔术的；有魔力的",
+    "ex": "A wise old owl with golden plumage perched on a luminous crystal tree in a magical forest."
+   },
+   {
+    "w": "meant",
+    "ipa": "mɛnt",
+    "pos": "v.",
+    "lv": "专八",
+    "m": "意味；打算（mean的过去式和过去分词）；表示…的意思",
+    "ex": "The meme is likely meant to be humorous and entertaining, as it combines a serious subject with a lighthearted and playful approach User: Explain this meme."
+   },
+   {
+    "w": "metaphor",
+    "ipa": "ˈmɛtəfɔr",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "隐喻，暗喻",
+    "ex": "Show-o: The meaning of the meme from the top panel to the bottom is that it is a humorous and lighthearted depiction of a man wearing a yellow hat and a red jacket, with the caption \"I'm not a fan of the sun.\" This suggests that …"
+   },
+   {
+    "w": "meteor",
+    "ipa": "ˈmitiər",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "流星；[气象] 大气现象",
+    "ex": "A brave dog wearing a futuristic space suit, exploring an alien planet amidst swirling dunes of stardust and meteor showers."
+   },
+   {
+    "w": "metric",
+    "ipa": "ˈmɛtrɪk",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "公制的，米制的",
+    "ex": "MSCOCO-30K and MJHQ-30K employ the Fréchet Inception Distance (FID) metric on generated images compared to 30K high-quality images, which indicates the overall efficacy of image generation."
+   },
+   {
+    "w": "misinterpret",
+    "ipa": "mɪsɪnˈtərprət",
+    "pos": "v.",
+    "lv": "托福",
+    "m": "误解",
+    "ex": "Additionally, Chameleon fails to identify objects in the meme, while Show-o misinterprets the dog’s color."
+   },
+   {
+    "w": "mitigate",
+    "ipa": "ˈmɪtəˌgeɪt",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "使缓和，使减轻",
+    "ex": "This can be attributed to Janus decoupling the visual encoding for multimodal understanding and generation, mitigating the conflict between these two tasks."
+   },
+   {
+    "w": "modal",
+    "ipa": "ˈmoʊdəl",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "模态的, 形态上的",
+    "ex": "on screen. modal understanding, although there is still a considerable gap compared to our method."
+   },
+   {
+    "w": "moonlight",
+    "ipa": "ˈmunˌlaɪt",
+    "pos": "adj.；n.；v.",
+    "lv": "专四",
+    "m": "月夜的；有月光的；月光；兼职，夜袭",
+    "ex": "Radiant fireflies swirl around while ethereal mist rolls through the trees, illuminated by swirls of iridescent moonlight and glistening emerald leaves."
+   },
+   {
+    "w": "motif",
+    "ipa": "moʊˈtif",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "主题；动机；主旨；图形；意念",
+    "ex": "The background is a celestial tapestry, adorned with stars and symbolic motifs of time and passage."
+   },
+   {
+    "w": "neural",
+    "ipa": "ˈnʊrəl",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "神经的",
+    "ex": "Janus (Ours): The meme is comparing two different types of neural networks used in machine learning."
+   },
+   {
+    "w": "node",
+    "ipa": "noʊd",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "节点；瘤；[数] 叉点",
+    "ex": "The whole training process took 7 days on a cluster of 16 nodes, each equipped with 8 Nvidia A100 (40GB) GPUs."
+   },
+   {
+    "w": "omit",
+    "ipa": "oʊˈmɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "省略，省去；遗漏",
+    "ex": "For pure understanding, we omit visual generation data."
+   },
+   {
+    "w": "overall",
+    "ipa": "ˈoʊvərˌɔl",
+    "pos": "n.；adj.",
+    "lv": "四级",
+    "m": "工装裤；全面的",
+    "ex": "MSCOCO-30K and MJHQ-30K employ the Fréchet Inception Distance (FID) metric on generated images compared to 30K high-quality images, which indicates the overall efficacy of image generation."
+   },
+   {
+    "w": "owl",
+    "ipa": "aʊl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "猫头鹰，枭",
+    "ex": "A wise old owl with golden plumage perched on a luminous crystal tree in a magical forest."
+   },
+   {
+    "w": "pad",
+    "ipa": "pæd",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "垫；本子；填塞",
+    "ex": "resize the long side of the image and pad the short side with the background color (RGB: 127, 127, 127) to reach 384."
+   },
+   {
+    "w": "panel",
+    "ipa": "ˈpænəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "专门小组；面，板",
+    "ex": "User: What is the meaning of this meme from the top panel to the bottom?"
+   },
+   {
+    "w": "perch",
+    "ipa": "pərʧ",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "（禽鸟的）栖木",
+    "ex": "A wise old owl with golden plumage perched on a luminous crystal tree in a magical forest."
+   },
+   {
+    "w": "playful",
+    "ipa": "ˈpleɪfəl",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "开玩笑的；幽默的；爱嬉戏的",
+    "ex": "The meme is likely meant to be humorous and entertaining, as it combines a serious subject with a lighthearted and playful approach User: Explain this meme."
+   },
+   {
+    "w": "plumage",
+    "ipa": "ˈplumɪʤ",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "鸟类羽毛",
+    "ex": "A wise old owl with golden plumage perched on a luminous crystal tree in a magical forest."
+   },
+   {
+    "w": "poke",
+    "ipa": "poʊk",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "戳，刺；伸（头等）",
+    "ex": "The meme is poking fun at this tactic by showing the person's actions and words as being in direct contradiction to their claim."
+   },
+   {
+    "w": "pope",
+    "ipa": "poʊp",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "（罗马天主教的）教皇",
+    "ex": "For instance, Janus outperforms LLaVA-v1.5 (7B) on several datasets, including POPE, MMbench, SEED Bench, and MM-Vet."
+   },
+   {
+    "w": "portrait",
+    "ipa": "ˈpɔrtrət",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "消像，画像",
+    "ex": "A detailed portrait of the Roman god Janus, featuring his two faces looking in opposite directions."
+   },
+   {
+    "w": "prediction",
+    "ipa": "priˈdɪkʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "预言，预告；预报",
+    "ex": "First, the semantic tokenizer produces discrete IDs that are more semantically coherent, providing more reasonable prediction targets for the LLM."
+   },
+   {
+    "w": "previous",
+    "ipa": "ˈpriviəs",
+    "pos": "adj.；adv.",
+    "lv": "四级",
+    "m": "之前的；先前地",
+    "ex": "Following previous work [77], we select a VQ tokenizer [73] to encode images for both multimodal understanding and generation tasks, serving as the baseline (Exp-A)."
+   },
+   {
+    "w": "probability",
+    "ipa": "ˌprɑbəˈbɪləˌti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "可能性；概率",
+    "ex": "During training, we randomly use only the first sentence of a caption with a 25% probability to"
+   },
+   {
+    "w": "qualitative",
+    "ipa": "kˈwɑləˌteɪtɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "质的；定性的",
+    "ex": "Figure 4 provides qualitative comparisons between our model, diffusion-based models like SDXL [62], and the autoregressive model LlamaGen [73]."
+   },
+   {
+    "w": "radiant",
+    "ipa": "ˈreɪˌdiənt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "容光焕发的；灿烂的",
+    "ex": "Radiant fireflies swirl around while ethereal mist rolls through the trees, illuminated by swirls of iridescent moonlight and glistening emerald leaves."
+   },
+   {
+    "w": "radiate",
+    "ipa": "ˈreɪdiˌeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "发出， 辐射； 流露， 显示",
+    "ex": "Janus (Ours) A close-up high-contrast photo of Sydney Opera House sitting next to Eiffel tower, under a blue night sky of roiling energy, exploding yellow stars, and radiating swirls of blue."
+   },
+   {
+    "w": "randomly",
+    "ipa": "ˈrændəmli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "随机地",
+    "ex": "During training, we randomly use only the first sentence of a caption with a 25% probability to"
+   },
+   {
+    "w": "ratio",
+    "ipa": "ˈreɪʃiˌoʊ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比，比率",
+    "ex": "We mix all data types according to the specified ratios in a single training step."
+   },
+   {
+    "w": "realm",
+    "ipa": "rɛlm",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "王国，国土；领域",
+    "ex": "This indicates the potential of the unified model in the realm of visual generation."
+   },
+   {
+    "w": "renewal",
+    "ipa": "rɪˈnuəl",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "更新，恢复；复兴；补充；革新；续借；重申",
+    "ex": "The artwork is rich in contrasting colors, with the left side dominated by cold blues and silvers, symbolizing winter and reflection, and the right side awash with warm golds and reds, representing spring and renewal."
+   },
+   {
+    "w": "roil",
+    "ipa": "rɔɪl",
+    "pos": "v.",
+    "lv": "GRE",
+    "m": "煽动, 激怒",
+    "ex": "Janus (Ours) A close-up high-contrast photo of Sydney Opera House sitting next to Eiffel tower, under a blue night sky of roiling energy, exploding yellow stars, and radiating swirls of blue."
+   },
+   {
+    "w": "roman",
+    "ipa": "ˈroʊmən",
+    "pos": "n.；adj.",
+    "lv": "四级",
+    "m": "古罗马人；罗马的",
+    "ex": "A detailed portrait of the Roman god Janus, featuring his two faces looking in opposite directions."
+   },
+   {
+    "w": "sample",
+    "ipa": "ˈsæmpəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "样品；实例，标本",
+    "ex": "ImageNet samples [18] are presented only during the first 120K training steps, while images from other datasets appear in the later 60K steps."
+   },
+   {
+    "w": "satisfactory",
+    "ipa": "ˌsætɪsˈfæktəri",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "令人满意的，良好的",
+    "ex": "Impact of Decoupling Visual Encoding. (1) From the results of Exp-A, we find the model achieves satisfactory performance on visual generation benchmark (8.72 FID on COCO)."
+   },
+   {
+    "w": "seemingly",
+    "ipa": "ˈsimɪŋli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "表面上看",
+    "ex": "Both dogs are looking at the camera, seemingly posing for a picture."
+   },
+   {
+    "w": "series",
+    "ipa": "ˈsɪriz",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "连续，系列；丛书",
+    "ex": "Experiments In this section, we present a series of comprehensive experiments designed to assess the performance of our method across a range of visual understanding and generation tasks."
+   },
+   {
+    "w": "setup",
+    "ipa": "ˈsɛˌtəp",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "装备, 安装,计划",
+    "ex": "We begin by detailing our experimental setup, which includes the model architecture, training datasets, and evaluation benchmarks."
+   },
+   {
+    "w": "similarly",
+    "ipa": "ˈsɪmələrli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "类似地，相似地",
+    "ex": "Similarly, unified training and pure generation training go through the same steps for the visual generation part."
+   },
+   {
+    "w": "simplicity",
+    "ipa": "sɪmˈplɪsɪti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "简单",
+    "ex": "For simplicity, we use the ordinary VQ tokenizer [73] in the main experiment."
+   },
+   {
+    "w": "slightly",
+    "ipa": "sˈlaɪtli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "轻微地",
+    "ex": "The brown dog is slightly larger than the white dog."
+   },
+   {
+    "w": "solely",
+    "ipa": "ˈsoʊəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "单独地，唯一地",
+    "ex": "Experimental results show that the performance of unified training is comparable to that of training solely for understanding or solely for visual generation."
+   },
+   {
+    "w": "source",
+    "ipa": "sɔrs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "来源",
+    "ex": "Among them, we employ open-source multimodal model to re-caption images in [17, 40]."
+   },
+   {
+    "w": "specify",
+    "ipa": "ˈspɛsəˌfaɪ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "指定，具体说明",
+    "ex": "We mix all data types according to the specified ratios in a single training step."
+   },
+   {
+    "w": "surreal",
+    "ipa": "sərˈil",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "超现实主义的；离奇的；不真实的",
+    "ex": "The landscape is dotted with glowing crystal formations and ethereal terraforms, creating a surreal environment in which swirling vortexes in the sky depict the endless dance of distant galaxies."
+   },
+   {
+    "w": "swirl",
+    "ipa": "swərl",
+    "pos": "n.；v.",
+    "lv": "专八",
+    "m": "漩涡；打旋；涡状形；盘绕；打旋；眩晕；大口喝酒",
+    "ex": "A brave dog wearing a futuristic space suit, exploring an alien planet amidst swirling dunes of stardust and meteor showers."
+   },
+   {
+    "w": "symbolic",
+    "ipa": "sɪmˈbɑlɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "符号的； 象征性的",
+    "ex": "The background is a celestial tapestry, adorned with stars and symbolic motifs of time and passage."
+   },
+   {
+    "w": "symbolize",
+    "ipa": "ˈsɪmbəˌlaɪz",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "象征",
+    "ex": "The artwork is rich in contrasting colors, with the left side dominated by cold blues and silvers, symbolizing winter and reflection, and the right side awash with warm golds and reds, representing spring and renewal."
+   },
+   {
+    "w": "symmetry",
+    "ipa": "ˈsɪmətri",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "对称（性），匀称",
+    "ex": "His hair is styled in flowing curls, framing both faces with a sense of divine symmetry."
+   },
+   {
+    "w": "tactic",
+    "ipa": "ˈtæktɪk",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "(s)策略,战术",
+    "ex": "The meme is poking fun at this tactic by showing the person's actions and words as being in direct contradiction to their claim."
+   },
+   {
+    "w": "tapestry",
+    "ipa": "ˈtæpəstri",
+    "pos": "n.；vt.",
+    "lv": "专四",
+    "m": "织锦；挂毯；绣帷；用挂毯装饰",
+    "ex": "The background is a celestial tapestry, adorned with stars and symbolic motifs of time and passage."
+   },
+   {
+    "w": "ultimately",
+    "ipa": "ˈəltəmətli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "最后，最终",
+    "ex": "This indicates that the visual encoder in Exp-B made trade-offs between multimodal understanding and generation, ultimately sacrificing its multimodal understanding capability."
+   },
+   {
+    "w": "validate",
+    "ipa": "ˈvælədeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "证实，验证；确认；使生效",
+    "ex": "First, we design experiments to validate the importance and benefits of decoupling visual encoding."
+   },
+   {
+    "w": "vegan",
+    "ipa": "ˈvɛgən",
+    "pos": "n./adj.",
+    "lv": "考博",
+    "m": "素食主义者（的）；纯素的",
+    "ex": "The image is a humorous take on the challenges of being a vegan in a non-vegan environment, where one's friends or family may not share their dietary preferences."
+   },
+   {
+    "w": "verify",
+    "ipa": "ˈvɛrəˌfaɪ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "证实，查证；证明",
+    "ex": "Ablation Studies We carefully design ablation studies to verify the effectiveness of Janus’s design concept."
+   },
+   {
+    "w": "vet",
+    "ipa": "vɛt",
+    "pos": "v.；n.",
+    "lv": "专四",
+    "m": "审查；诊疗；兽医",
+    "ex": "For instance, Janus outperforms LLaVA-v1.5 (7B) on several datasets, including POPE, MMbench, SEED Bench, and MM-Vet."
+   },
+   {
+    "w": "vigor",
+    "ipa": "ˈvɪgər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "精力, 活力",
+    "ex": "One face appears aged, with deep-set wrinkles and a wise, contemplative expression, while the other face is youthful, exuding vigor and curiosity."
+   },
+   {
+    "w": "vortex",
+    "ipa": "ˈvɔrtɛks",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "[航][流] 涡流；漩涡；（动乱，争论等的）中心；旋风",
+    "ex": "The landscape is dotted with glowing crystal formations and ethereal terraforms, creating a surreal environment in which swirling vortexes in the sky depict the endless dance of distant galaxies."
+   },
+   {
+    "w": "widely",
+    "ipa": "ˈwaɪdli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "大大地",
+    "ex": "To assess multimodal understanding capabilities, we evaluate our model on widely recognized image-based vision-language benchmarks, which include VQAv2 [31], GQA [35], POPE [48], MME [25], SEED [42], MMB [54], MM-Vet [90], and …"
+   },
+   {
+    "w": "wit",
+    "ipa": "wɪt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "智力，才智，智能",
+    "ex": "We use Wiki-How [39] and WIT [72] dataset. (3) Image caption data."
+   },
+   {
+    "w": "youthful",
+    "ipa": "ˈjuθfəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "年轻的；早期的",
+    "ex": "One face appears aged, with deep-set wrinkles and a wise, contemplative expression, while the other face is youthful, exuding vigor and curiosity."
+   }
+  ]
+ },
+ {
+  "sec": "5. Conclusion · 结论",
+  "short": "Concl",
+  "icon": "5",
+  "words": [
+   {
+    "w": "additional",
+    "ipa": "əˈdɪʃənəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "额外的",
+    "ex": "In addition to the original CNN pixel decoder, we add an additional semantic decoder branch after Vector Quantization, as shown in Figure 6 (a)."
+   },
+   {
+    "w": "adhere",
+    "ipa": "əˈdhɪr",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "粘附；追随；坚持",
+    "ex": "It is evident that Janus is capable of producing high-quality images that adhere closely to the given prompts."
+   },
+   {
+    "w": "adorable",
+    "ipa": "əˈdɔrəbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "可崇拜的, 可爱的",
+    "ex": "Tiny cute adorable fluffy baby raccoon with knitted blue scarf leaning at a table in a medieval pub holding a coffee cup, anthropomorphic, Jean-Baptiste Monge, soft cinematic lighting, 8k, intricate details, portrait, Pixar style …"
+   },
+   {
+    "w": "afar",
+    "ipa": "əˈfɑr",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "遥远地",
+    "ex": "lake afar, clear blue sky, highly detailed, golden hour,"
+   },
+   {
+    "w": "alpine",
+    "ipa": "ˈælˌpaɪn",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "高山的, 阿尔卑斯山的",
+    "ex": "Au premier plan, de grands arbres à feuilles persistantes saupoudrés de neige ajoutent de la profondeur à cette scène alpine à couper le souffle."
+   },
+   {
+    "w": "architectural",
+    "ipa": "ˌɑrkəˈtɛkʧərəl",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "建筑上的； 建筑学的",
+    "ex": "Tiny cute adorable fluffy baby raccoon with knitted blue scarf leaning at a table in a medieval pub holding a coffee cup, anthropomorphic, Jean-Baptiste Monge, soft cinematic lighting, 8k, intricate details, portrait, Pixar style …"
+   },
+   {
+    "w": "armor",
+    "ipa": "ˈɑrmər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "盔甲， 装甲； 保护物",
+    "ex": "the armor, symmetrical body, hyperrealistic, intricate"
+   },
+   {
+    "w": "aura",
+    "ipa": "ˈɔrə",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "气氛",
+    "ex": "UHD dtm HDR 8k Beautiful surreal symbolism the mesmerizing vision of a Cleopatra Queen of Egypt , full body , mesmerizing brown eyes, black hair and ethereal features, radiating celestial aura, super high definition, true …"
+   },
+   {
+    "w": "batch",
+    "ipa": "bæʧ",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "一批， 一组， 一群； 一批生产量",
+    "ex": "We use a constant learning rate of 1𝑒−4 and a batch size of 128."
+   },
+   {
+    "w": "billow",
+    "ipa": "ˈbɪloʊ",
+    "pos": "n.；v.",
+    "lv": "专八",
+    "m": "巨浪；翻腾",
+    "ex": "spun silk, clouds, ghost, glowing jellyfish, billowing"
+   },
+   {
+    "w": "bouquet",
+    "ipa": "buˈkeɪ",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "花束；酒香",
+    "ex": "Dramatic scene, photorealistic, hyperrealistic, raytracing reflections, 8k hd, intrincate detail in the style of Frank Lloyde Wright Real photo of a cup of hot steaming coffee and a brass vase with a large bouquet of spring …"
+   },
+   {
+    "w": "brass",
+    "ipa": "bræs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "黄铜；黄铜器",
+    "ex": "Dramatic scene, photorealistic, hyperrealistic, raytracing reflections, 8k hd, intrincate detail in the style of Frank Lloyde Wright Real photo of a cup of hot steaming coffee and a brass vase with a large bouquet of spring …"
+   },
+   {
+    "w": "breathtaking",
+    "ipa": "ˈbrɛθˌteɪkɪŋ",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "惊人的；惊险的；令人激动的",
+    "ex": "Tall, snow-dusted 🌲 in the foreground add depth to the breathtaking alpine scene. 澄み切った青空の下、太陽に 照らされた山頂が輝く雪山の リアルな写真。前景の雪に覆 われた背の高い常緑樹が、息 をのむようなアルプスの風景 に深みを与えている。"
+   },
+   {
+    "w": "caribbean",
+    "ipa": "ˌkɛrɪˈbiən",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "加勒比海",
+    "ex": "Caribbean background + outdoors + Ocean, painted"
+   },
+   {
+    "w": "causal",
+    "ipa": "ˈkɔzəl",
+    "pos": "adj.；n.",
+    "lv": "考博",
+    "m": "因果关系的；有原因的；表示原因的连词",
+    "ex": "For the semantic decoder, we use a causal attention mask to facilitate next token prediction when integrating it with an LLM."
+   },
+   {
+    "w": "cavity",
+    "ipa": "ˈkævəti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "洞，穴，空腔",
+    "ex": "Tiny cute adorable fluffy baby raccoon with knitted blue scarf leaning at a table in a medieval pub holding a coffee cup, anthropomorphic, Jean-Baptiste Monge, soft cinematic lighting, 8k, intricate details, portrait, Pixar style …"
+   },
+   {
+    "w": "chubby",
+    "ipa": "ˈʧəbi",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "圆胖的，丰满的",
+    "ex": "a cute fluffy chubby marmot sunbathing on a pile of"
+   },
+   {
+    "w": "clip",
+    "ipa": "klɪp",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "剪；剪辑报刊",
+    "ex": "The CLIP model is a type of pre-training algorithm that combines the power of language and vision to learn a unified representation of the world."
+   },
+   {
+    "w": "closely",
+    "ipa": "ˈkloʊsli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "紧密地，接近地",
+    "ex": "It is evident that Janus is capable of producing high-quality images that adhere closely to the given prompts."
+   },
+   {
+    "w": "composite",
+    "ipa": "kəmˈpɑzət",
+    "pos": "adj.；n.",
+    "lv": "六级",
+    "m": "合成的；合成物",
+    "ex": "UHD dtm HDR 8k Beautiful surreal symbolism the mesmerizing vision of a Cleopatra Queen of Egypt , full body , mesmerizing brown eyes, black hair and ethereal features, radiating celestial aura, super high definition, true …"
+   },
+   {
+    "w": "context",
+    "ipa": "ˈkɑntɛkst",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "背景，环境",
+    "ex": "capability and can handle inputs from various contexts, such as scientific charts, artwork images, LaTeX formula images, and more."
+   },
+   {
+    "w": "continuous",
+    "ipa": "kənˈtɪnjuəs",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "连续不断的，持续的",
+    "ex": "The semantic decoder outputs continuous features with high-level semantics, which are passed through an adaptor and then used as input for the LLM."
+   },
+   {
+    "w": "core",
+    "ipa": "kɔr",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "果实的心，核心",
+    "ex": "The core idea of Janus is to decouple visual encoding for multimodal understanding and generation, which could alleviate the conflict arising from the differing demands that understanding and generation place on the visual …"
+   },
+   {
+    "w": "costume",
+    "ipa": "ˈkɑstum",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "服装",
+    "ex": "goddess babe, red hair, intricate ornate costume,"
+   },
+   {
+    "w": "curvaceous",
+    "ipa": "kɝˈveʃəs",
+    "pos": "adj.",
+    "lv": "GRE",
+    "m": "曲线美的, 肉体美的",
+    "ex": "Portrait of a beautiful, curvaceous, Pirate princess"
+   },
+   {
+    "w": "cybernetics",
+    "ipa": "saɪbɚˈnetɪks",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "控制论",
+    "ex": "Tiny cute adorable fluffy baby raccoon with knitted blue scarf leaning at a table in a medieval pub holding a coffee cup, anthropomorphic, Jean-Baptiste Monge, soft cinematic lighting, 8k, intricate details, portrait, Pixar style …"
+   },
+   {
+    "w": "definition",
+    "ipa": "ˌdɛfəˈnɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "定义",
+    "ex": "UHD dtm HDR 8k Beautiful surreal symbolism the mesmerizing vision of a Cleopatra Queen of Egypt , full body , mesmerizing brown eyes, black hair and ethereal features, radiating celestial aura, super high definition, true …"
+   },
+   {
+    "w": "depict",
+    "ipa": "dɪˈpɪkt",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "描绘， 描述",
+    "ex": "A _ { n } = a_ 0 \\left[ 1 + \\frac{3}{4} \\sum_{ k=1}^{n} \\left( \\frac{4}{9} \\right)^k \\right] Response Prompt What algorithm does the image depict?"
+   },
+   {
+    "w": "despite",
+    "ipa": "dɪˈspaɪt",
+    "pos": "prep.",
+    "lv": "四级",
+    "m": "不管",
+    "ex": "We are pleasantly surprised to find that, despite our training data consisting solely of English text-to-image data, Janus can still process text-to-image tasks in other languages."
+   },
+   {
+    "w": "distribution",
+    "ipa": "ˌdɪstrəˈbjuʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "分发，分配；分布",
+    "ex": "Response The image you've provided is a pie chart that represents the distribution of different types of animals based on their frequency."
+   },
+   {
+    "w": "dramatic",
+    "ipa": "drəˈmætɪk",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "引人注目的，戏剧的",
+    "ex": "Dramatic scene, photorealistic, hyperrealistic, raytracing reflections, 8k hd, intrincate detail in the style of Frank Lloyde Wright Real photo of a cup of hot steaming coffee and a brass vase with a large bouquet of spring …"
+   },
+   {
+    "w": "easily",
+    "ipa": "ˈizəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "容易地；舒适的",
+    "ex": "In addition to having significant potential for improvement in both multimodal understanding and generation, Janus is also easily extendable to incorporate more input modalities."
+   },
+   {
+    "w": "embroidery",
+    "ipa": "ɛmˈbrɔɪdəri",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "绣花，刺绣；绣制品",
+    "ex": "floral embroidery, snakeskin, dramatic lighting"
+   },
+   {
+    "w": "engine",
+    "ipa": "ˈɪnʤən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "引擎，发动机",
+    "ex": "Tiny cute adorable fluffy baby raccoon with knitted blue scarf leaning at a table in a medieval pub holding a coffee cup, anthropomorphic, Jean-Baptiste Monge, soft cinematic lighting, 8k, intricate details, portrait, Pixar style …"
+   },
+   {
+    "w": "epic",
+    "ipa": "ˈɛpɪk",
+    "pos": "adj.；n.",
+    "lv": "六级",
+    "m": "史诗的，叙事诗的；史诗；叙事诗；史诗般的作品",
+    "ex": "epic 3d portrait of white King Kong wearing mech"
+   },
+   {
+    "w": "epoch",
+    "ipa": "ˈɛpək",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "（新）时代；历元",
+    "ex": "In the first stage, we train the model on the ImageNet-1k [18] dataset for 40 epochs."
+   },
+   {
+    "w": "exhibit",
+    "ipa": "ɪgˈzɪbɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "显示；陈列，展览",
+    "ex": "are shown in Figure 9. Janus exhibits impressive comprehension abilities when handling inputs"
+   },
+   {
+    "w": "exposure",
+    "ipa": "ɪkˈspoʊʒər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "暴露；揭露",
+    "ex": "UHD dtm HDR 8k Beautiful surreal symbolism the mesmerizing vision of a Cleopatra Queen of Egypt , full body , mesmerizing brown eyes, black hair and ethereal features, radiating celestial aura, super high definition, true …"
+   },
+   {
+    "w": "extendable",
+    "ipa": "ˌɛkˈstɛndəbəl",
+    "pos": "adj.",
+    "lv": "雅思",
+    "m": "可延伸的， 可展开的， 可扩张的",
+    "ex": "In addition to having significant potential for improvement in both multimodal understanding and generation, Janus is also easily extendable to incorporate more input modalities."
+   },
+   {
+    "w": "extensible",
+    "ipa": "ɪkˈstensəbl",
+    "pos": "adj.",
+    "lv": "超纲",
+    "m": "可扩展的",
+    "ex": "a simple, unified and extensible multimodal understanding and generation model"
+   },
+   {
+    "w": "fashion",
+    "ipa": "ˈfæʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "样子，方式；风尚",
+    "ex": "Tiny cute adorable fluffy baby raccoon with knitted blue scarf leaning at a table in a medieval pub holding a coffee cup, anthropomorphic, Jean-Baptiste Monge, soft cinematic lighting, 8k, intricate details, portrait, Pixar style …"
+   },
+   {
+    "w": "feature",
+    "ipa": "ˈfiʧər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "特点",
+    "ex": "The semantic decoder outputs continuous features with high-level semantics, which are passed through an adaptor and then used as input for the LLM."
+   },
+   {
+    "w": "finally",
+    "ipa": "ˈfaɪnəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "最后；不可更改的",
+    "ex": "Finally, the pixel decoder converts these discrete IDs into RGB values."
+   },
+   {
+    "w": "floral",
+    "ipa": "ˈflɔrəl",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "花的；植物的，植物群的；花似的",
+    "ex": "floral embroidery, snakeskin, dramatic lighting"
+   },
+   {
+    "w": "fluffy",
+    "ipa": "ˈfləfi",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "绒毛似的, 蓬松的",
+    "ex": "Tiny cute adorable fluffy baby raccoon with knitted blue scarf leaning at a table in a medieval pub holding a coffee cup, anthropomorphic, Jean-Baptiste Monge, soft cinematic lighting, 8k, intricate details, portrait, Pixar style …"
+   },
+   {
+    "w": "foreground",
+    "ipa": "ˈfɔrˌgraʊnd",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "前景；最显著的位置",
+    "ex": "Tall, snow-dusted 🌲 in the foreground add depth to the breathtaking alpine scene. 澄み切った青空の下、太陽に 照らされた山頂が輝く雪山の リアルな写真。前景の雪に覆 われた背の高い常緑樹が、息 をのむようなアルプスの風景 に深みを与えている。"
+   },
+   {
+    "w": "formula",
+    "ipa": "ˈfɔrmjələ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "公式，式",
+    "ex": "Prompt Generate the latex code of this formula."
+   },
+   {
+    "w": "frank",
+    "ipa": "fræŋk",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "坦白的，直率的",
+    "ex": "Dramatic scene, photorealistic, hyperrealistic, raytracing reflections, 8k hd, intrincate detail in the style of Frank Lloyde Wright Real photo of a cup of hot steaming coffee and a brass vase with a large bouquet of spring …"
+   },
+   {
+    "w": "frequency",
+    "ipa": "ˈfrikwənsi",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "屡次；次数；频率",
+    "ex": "Response The image you've provided is a pie chart that represents the distribution of different types of animals based on their frequency."
+   },
+   {
+    "w": "ghost",
+    "ipa": "goʊst",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "鬼，灵魂；鬼魂",
+    "ex": "spun silk, clouds, ghost, glowing jellyfish, billowing"
+   },
+   {
+    "w": "gild",
+    "ipa": "gɪld",
+    "pos": "v.；n.",
+    "lv": "专四",
+    "m": "镀金；虚饰；供给钱；(Gild)人名；(俄)希尔德",
+    "ex": "shoujo manga, pre-raphaelite, k-pop, gilded, pearl,"
+   },
+   {
+    "w": "glacier",
+    "ipa": "ˈgleɪʃər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "冰河， 冰川",
+    "ex": "rocks, snow mountains background, turquoise glacier"
+   },
+   {
+    "w": "goddess",
+    "ipa": "ˈgɑdəs",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "女神",
+    "ex": "goddess babe, red hair, intricate ornate costume,"
+   },
+   {
+    "w": "gossamer",
+    "ipa": "ˈgɑsəmər",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "蛛丝，薄纱 a轻而薄的",
+    "ex": "gossamer cloth, Alexander McQueen, handmade lace,"
+   },
+   {
+    "w": "grime",
+    "ipa": "graɪm",
+    "pos": "n.；v.",
+    "lv": "专四",
+    "m": "尘垢；污点；煤尘；使污秽；使…弄脏",
+    "ex": "grimes, flowing cool colored hair, marbled, iridescent,"
+   },
+   {
+    "w": "handmade",
+    "ipa": "ˈhænˈmeɪd",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "手工的",
+    "ex": "gossamer cloth, Alexander McQueen, handmade lace,"
+   },
+   {
+    "w": "hidden",
+    "ipa": "ˈhɪdən",
+    "pos": "adj.；v.；n.",
+    "lv": "专四",
+    "m": "隐藏的；隐藏，躲藏（hide的过去分词）；(Hidden)人名；(英)希登",
+    "ex": "The semantic decoder is a 12-layer ViT [22], with 12 attention heads and a hidden dimension of 768."
+   },
+   {
+    "w": "hog",
+    "ipa": "hɑg",
+    "pos": "n.；v.",
+    "lv": "专四",
+    "m": "猪，象猪般的人；贪婪者；使拱起",
+    "ex": "Here's the code to generate the pie chart: ```python import matplotlib.pyplot as plt # Data animals = [ {\"name\": \"Hogs\", \"frequency\": 30.0}, {\"name\": \"Frog\", \"frequency\": 15.0}, {\"name\": \"Logs\", \"frequency\": 10.0}, {\"name\" …"
+   },
+   {
+    "w": "holographic",
+    "ipa": "ˌhɔloʊˈgræfɪk",
+    "pos": "adj.",
+    "lv": "超纲",
+    "m": "全息（图）的，全息摄影的",
+    "ex": "super advanced technology, holographic"
+   },
+   {
+    "w": "improvement",
+    "ipa": "ˌɪmˈpruvmənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "改进，改善；改进处",
+    "ex": "In addition to having significant potential for improvement in both multimodal understanding and generation, Janus is also easily extendable to incorporate more input modalities."
+   },
+   {
+    "w": "incorporate",
+    "ipa": "ɪnˈkɔrpəreɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "纳入",
+    "ex": "easily extendable to incorporate more input modalities"
+   },
+   {
+    "w": "inherent",
+    "ipa": "ˌɪnˈhɛrənt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "固有的",
+    "ex": "We attribute this multilingual ability to the original large language model’s inherent traits."
+   },
+   {
+    "w": "initially",
+    "ipa": "ˌɪˈnɪʃəli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "最初，起初",
+    "ex": "The LLM initially translates various languages into a unified semantic space, allowing Janus to perform text-to-image tasks naturally without additional training."
+   },
+   {
+    "w": "input",
+    "ipa": "ˈɪnˌpʊt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "输入；投入的资金",
+    "ex": "The semantic decoder outputs continuous features with high-level semantics, which are passed through an adaptor and then used as input for the LLM."
+   },
+   {
+    "w": "inspiration",
+    "ipa": "ˌɪnspərˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "灵感",
+    "ex": "The above advantages suggest that Janus may serve as an inspiration for the development of the next generation of multimodal general-purpose models."
+   },
+   {
+    "w": "integrate",
+    "ipa": "ˈɪnəˌgreɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "成为一体， 合并",
+    "ex": "For the semantic decoder, we use a causal attention mask to facilitate next token prediction when integrating it with an LLM."
+   },
+   {
+    "w": "integration",
+    "ipa": "ˌɪnəˈgreɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "综合",
+    "ex": "Integrating with LLM We present the integration of the semantic tokenizer and the LLM in Figure 6 (b)."
+   },
+   {
+    "w": "intricate",
+    "ipa": "ˈɪntrəkət",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "错综复杂的， 复杂精细的",
+    "ex": "Tiny cute adorable fluffy baby raccoon with knitted blue scarf leaning at a table in a medieval pub holding a coffee cup, anthropomorphic, Jean-Baptiste Monge, soft cinematic lighting, 8k, intricate details, portrait, Pixar style …"
+   },
+   {
+    "w": "jean",
+    "ipa": "ʤin",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "斜纹布；牛仔裤",
+    "ex": "Tiny cute adorable fluffy baby raccoon with knitted blue scarf leaning at a table in a medieval pub holding a coffee cup, anthropomorphic, Jean-Baptiste Monge, soft cinematic lighting, 8k, intricate details, portrait, Pixar style …"
+   },
+   {
+    "w": "jellyfish",
+    "ipa": "ˈʤɛliˌfɪʃ",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "水母；[无脊椎] 海蜇；软弱无能的人",
+    "ex": "spun silk, clouds, ghost, glowing jellyfish, billowing"
+   },
+   {
+    "w": "knot",
+    "ipa": "nɑt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "(绳的)结，(树的)节",
+    "ex": "Dramatic scene, photorealistic, hyperrealistic, raytracing reflections, 8k hd, intrincate detail in the style of Frank Lloyde Wright Real photo of a cup of hot steaming coffee and a brass vase with a large bouquet of spring …"
+   },
+   {
+    "w": "label",
+    "ipa": "ˈleɪbəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "标签；标记，符号",
+    "ex": "Here's the code to generate the pie chart: ```python import matplotlib.pyplot as plt # Data animals = [ {\"name\": \"Hogs\", \"frequency\": 30.0}, {\"name\": \"Frog\", \"frequency\": 15.0}, {\"name\": \"Logs\", \"frequency\": 10.0}, {\"name\" …"
+   },
+   {
+    "w": "lace",
+    "ipa": "leɪs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "鞋带，系带；花边",
+    "ex": "gossamer cloth, Alexander McQueen, handmade lace,"
+   },
+   {
+    "w": "layer",
+    "ipa": "leɪər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "层，层次；铺设者",
+    "ex": "The semantic decoder is a 12-layer ViT [22], with 12 attention heads and a hidden dimension of 768."
+   },
+   {
+    "w": "lean",
+    "ipa": "lin",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "倾斜，屈身；靠",
+    "ex": "Tiny cute adorable fluffy baby raccoon with knitted blue scarf leaning at a table in a medieval pub holding a coffee cup, anthropomorphic, Jean-Baptiste Monge, soft cinematic lighting, 8k, intricate details, portrait, Pixar style …"
+   },
+   {
+    "w": "lifelike",
+    "ipa": "ˈlaɪˌflaɪk",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "栩栩如生的,逼真的",
+    "ex": "UHD dtm HDR 8k Beautiful surreal symbolism the mesmerizing vision of a Cleopatra Queen of Egypt , full body , mesmerizing brown eyes, black hair and ethereal features, radiating celestial aura, super high definition, true …"
+   },
+   {
+    "w": "marmot",
+    "ipa": "ˈmɑrmət",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "土拨鼠，旱獭",
+    "ex": "a cute fluffy chubby marmot sunbathing on a pile of"
+   },
+   {
+    "w": "maximize",
+    "ipa": "ˈmæksəˌmaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "取最大值, 最佳化",
+    "ex": "Specifically, we maximize the cosine similarity between the semantic feature predicted by the semantic decoder and the SigLIP output."
+   },
+   {
+    "w": "mechanism",
+    "ipa": "ˈmɛkəˌnɪzəm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "机制，机能",
+    "ex": "display, intricate mechanism."
+   },
+   {
+    "w": "medieval",
+    "ipa": "mɪˈdjivəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "中世纪的； 中古的",
+    "ex": "Tiny cute adorable fluffy baby raccoon with knitted blue scarf leaning at a table in a medieval pub holding a coffee cup, anthropomorphic, Jean-Baptiste Monge, soft cinematic lighting, 8k, intricate details, portrait, Pixar style …"
+   },
+   {
+    "w": "mesmerize",
+    "ipa": "ˈmɛzmərˌaɪz",
+    "pos": "v.",
+    "lv": "托福",
+    "m": "施催眠术",
+    "ex": "UHD dtm HDR 8k Beautiful surreal symbolism the mesmerizing vision of a Cleopatra Queen of Egypt , full body , mesmerizing brown eyes, black hair and ethereal features, radiating celestial aura, super high definition, true …"
+   },
+   {
+    "w": "naturally",
+    "ipa": "ˈnæʧərəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "自然地；天然地",
+    "ex": "The LLM initially translates various languages into a unified semantic space, allowing Janus to perform text-to-image tasks naturally without additional training."
+   },
+   {
+    "w": "oak",
+    "ipa": "oʊk",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "栎属植物；栎木",
+    "ex": "Dramatic scene, photorealistic, hyperrealistic, raytracing reflections, 8k hd, intrincate detail in the style of Frank Lloyde Wright Real photo of a cup of hot steaming coffee and a brass vase with a large bouquet of spring …"
+   },
+   {
+    "w": "organic",
+    "ipa": "ɔrˈgænɪk",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "有机体的；器官的",
+    "ex": "Tiny cute adorable fluffy baby raccoon with knitted blue scarf leaning at a table in a medieval pub holding a coffee cup, anthropomorphic, Jean-Baptiste Monge, soft cinematic lighting, 8k, intricate details, portrait, Pixar style …"
+   },
+   {
+    "w": "original",
+    "ipa": "ərˈɪʤənəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "原始的，最初的",
+    "ex": "In addition to the original CNN pixel decoder, we add an additional semantic decoder branch after Vector Quantization, as shown in Figure 6 (a)."
+   },
+   {
+    "w": "ornate",
+    "ipa": "ɔrˈneɪt",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "华丽的；装饰的；（文体）绚丽的",
+    "ex": "armor made of black crystals, golden ornate around"
+   },
+   {
+    "w": "par",
+    "ipa": "pɑr",
+    "pos": "n.；adj.",
+    "lv": "专八",
+    "m": "标准；票面价值；平均数量；标准的；票面的",
+    "ex": "LlamaGen Janus (Ours) A realistic photo of snowy mountains with sunlit peaks glistening under a clear blue sky 这是一张雪山写实照片，阳 光照耀下的山峰在晴朗的蓝 天下熠熠生辉。前景中高大 的常青树被白雪覆盖，为这 令人惊叹的高山景色增添了 深度。 Une photo réaliste de montagnes enneigées dont …"
+   },
+   {
+    "w": "patch",
+    "ipa": "pæʧ",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "补钉；碎片；补缀",
+    "ex": "On the other hand, we use SigLIP-Large-Patch16-384 as the teacher to supervise the semantic feature reconstruction results by the semantic decoder."
+   },
+   {
+    "w": "pavilion",
+    "ipa": "pəˈvɪljən",
+    "pos": "n.；vt.",
+    "lv": "专四",
+    "m": "阁；亭子；大帐篷；展示馆；搭帐篷；置…于亭中；笼罩",
+    "ex": "Tiny cute adorable fluffy baby raccoon with knitted blue scarf leaning at a table in a medieval pub holding a coffee cup, anthropomorphic, Jean-Baptiste Monge, soft cinematic lighting, 8k, intricate details, portrait, Pixar style …"
+   },
+   {
+    "w": "peak",
+    "ipa": "pik",
+    "pos": "n.；adj.",
+    "lv": "四级",
+    "m": "山顶，巅；最高的",
+    "ex": "LlamaGen Janus (Ours) A realistic photo of snowy mountains with sunlit peaks glistening under a clear blue sky 这是一张雪山写实照片，阳 光照耀下的山峰在晴朗的蓝 天下熠熠生辉。前景中高大 的常青树被白雪覆盖，为这 令人惊叹的高山景色增添了 深度。 Une photo réaliste de montagnes enneigées dont …"
+   },
+   {
+    "w": "pearl",
+    "ipa": "pərl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "珍珠； 珠状物； 珍品",
+    "ex": "shoujo manga, pre-raphaelite, k-pop, gilded, pearl,"
+   },
+   {
+    "w": "photography",
+    "ipa": "fəˈtɑgrəfi",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "摄影术",
+    "ex": "UHD dtm HDR 8k Beautiful surreal symbolism the mesmerizing vision of a Cleopatra Queen of Egypt , full body , mesmerizing brown eyes, black hair and ethereal features, radiating celestial aura, super high definition, true …"
+   },
+   {
+    "w": "pirate",
+    "ipa": "ˈpaɪrət",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "海盗",
+    "ex": "Portrait of a beautiful, curvaceous, Pirate princess"
+   },
+   {
+    "w": "pleasantly",
+    "ipa": "ˈplɛzəntli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "令人愉快地；舒适地",
+    "ex": "We are pleasantly surprised to find that, despite our training data consisting solely of English text-to-image data, Janus can still process text-to-image tasks in other languages."
+   },
+   {
+    "w": "pose",
+    "ipa": "poʊz",
+    "pos": "v.；n.",
+    "lv": "六级",
+    "m": "摆姿势，装腔作势；姿势",
+    "ex": "The dog is depicted in the same pose as the Mona Lisa, but with a different expression and a different background."
+   },
+   {
+    "w": "princess",
+    "ipa": "ˈprɪnsɛs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "公主，王妃",
+    "ex": "A stunning princess from kabul in red, white traditional clothing, blue eyes, brown hair."
+   },
+   {
+    "w": "professional",
+    "ipa": "prəˈfɛʃənəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "专业的",
+    "ex": "UHD dtm HDR 8k Beautiful surreal symbolism the mesmerizing vision of a Cleopatra Queen of Egypt , full body , mesmerizing brown eyes, black hair and ethereal features, radiating celestial aura, super high definition, true …"
+   },
+   {
+    "w": "prompt",
+    "ipa": "prɑmpt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "敏捷的；v. 敦促",
+    "ex": "A _ { n } = a_ 0 \\left[ 1 + \\frac{3}{4} \\sum_{ k=1}^{n} \\left( \\frac{4}{9} \\right)^k \\right] Response Prompt What algorithm does the image depict?"
+   },
+   {
+    "w": "propose",
+    "ipa": "prəˈpoʊz",
+    "pos": "v.；v.",
+    "lv": "四级",
+    "m": "提议；求婚",
+    "ex": "We build the semantic tokenizer based on the tokenizer architecture proposed in [73], which has a downsample rate of 16."
+   },
+   {
+    "w": "python",
+    "ipa": "ˈpaɪθɑn",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "巨蟒；大蟒",
+    "ex": "Here's the code to generate the pie chart: ```python import matplotlib.pyplot as plt # Data animals = [ {\"name\": \"Hogs\", \"frequency\": 30.0}, {\"name\": \"Frog\", \"frequency\": 15.0}, {\"name\": \"Logs\", \"frequency\": 10.0}, {\"name\" …"
+   },
+   {
+    "w": "raccoon",
+    "ipa": "ræˈkun",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "<美>[动]浣熊",
+    "ex": "Tiny cute adorable fluffy baby raccoon with knitted blue scarf leaning at a table in a medieval pub holding a coffee cup, anthropomorphic, Jean-Baptiste Monge, soft cinematic lighting, 8k, intricate details, portrait, Pixar style …"
+   },
+   {
+    "w": "realistic",
+    "ipa": "ˌriəˈlɪstɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "现实的，实际的",
+    "ex": "A realistic photo of ❄⛰ with ☀under a clear blue sky."
+   },
+   {
+    "w": "reconstruction",
+    "ipa": "ˌrikənˈstrəkʃən",
+    "pos": "n.",
+    "lv": "雅思",
+    "m": "重建； 再现",
+    "ex": "On the other hand, we use SigLIP-Large-Patch16-384 as the teacher to supervise the semantic feature reconstruction results by the semantic decoder."
+   },
+   {
+    "w": "reflection",
+    "ipa": "rɪˈflɛkʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "反射；映象；反映",
+    "ex": "Dramatic scene, photorealistic, hyperrealistic, raytracing reflections, 8k hd, intrincate detail in the style of Frank Lloyde Wright Real photo of a cup of hot steaming coffee and a brass vase with a large bouquet of spring …"
+   },
+   {
+    "w": "render",
+    "ipa": "ˈrɛndər",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "给予",
+    "ex": "natural light, octane render, unreal engine"
+   },
+   {
+    "w": "representation",
+    "ipa": "ˌrɛprəzɛnˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "描写；陈述；代表",
+    "ex": "The CLIP model is a type of pre-training algorithm that combines the power of language and vision to learn a unified representation of the world."
+   },
+   {
+    "w": "response",
+    "ipa": "rɪˈspɑns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "反应",
+    "ex": "Response The image you've provided is a pie chart that represents the distribution of different types of animals based on their frequency."
+   },
+   {
+    "w": "rim",
+    "ipa": "rɪm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "边；边缘，（眼镜）框",
+    "ex": "cinematic rim lighting, Unreal Engine 5, 8K"
+   },
+   {
+    "w": "segment",
+    "ipa": "ˌsɛgˈmɛnt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "部分， 片段； 瓣",
+    "ex": "The chart is divided into four segments, each representing a different type of animal and its corresponding percentage."
+   },
+   {
+    "w": "semantic",
+    "ipa": "sɪˈmæntɪk",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "语义的；语义学的（等于semantical）",
+    "ex": "In addition to the original CNN pixel decoder, we add an additional semantic decoder branch after Vector Quantization, as shown in Figure 6 (a)."
+   },
+   {
+    "w": "shiny",
+    "ipa": "ˈʃaɪni",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "发亮的",
+    "ex": "details, shiny, cinematic, unreal engine, artstation,"
+   },
+   {
+    "w": "shutter",
+    "ipa": "ˈʃətər",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "百叶窗；（相机）快门",
+    "ex": "Dramatic scene, photorealistic, hyperrealistic, raytracing reflections, 8k hd, intrincate detail in the style of Frank Lloyde Wright Real photo of a cup of hot steaming coffee and a brass vase with a large bouquet of spring …"
+   },
+   {
+    "w": "similarity",
+    "ipa": "ˌsɪməˈlɛrəti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "类似，相似；类似点",
+    "ex": "Specifically, we maximize the cosine similarity between the semantic feature predicted by the semantic decoder and the SigLIP output."
+   },
+   {
+    "w": "snakeskin",
+    "ipa": "ˈsneɪkskɪn",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "蛇皮",
+    "ex": "floral embroidery, snakeskin, dramatic lighting"
+   },
+   {
+    "w": "specifically",
+    "ipa": "spəˈsɪfɪkli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "特别地， 特定地； 明确地， 具体地",
+    "ex": "Specifically, we maximize the cosine similarity between the semantic feature predicted by the semantic decoder and the SigLIP output."
+   },
+   {
+    "w": "spun",
+    "ipa": "spən",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "拉成丝的",
+    "ex": "spun silk, clouds, ghost, glowing jellyfish, billowing"
+   },
+   {
+    "w": "stun",
+    "ipa": "stən",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "使震惊， 使目瞪口呆； 把…打昏， 使昏迷",
+    "ex": "A stunning princess from kabul in red, white traditional clothing, blue eyes, brown hair."
+   },
+   {
+    "w": "sum",
+    "ipa": "səm",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "总数；金额；共计",
+    "ex": "A _ { n } = a_ 0 \\left[ 1 + \\frac{3}{4} \\sum_{ k=1}^{n} \\left( \\frac{4}{9} \\right)^k \\right] Response Prompt What algorithm does the image depict?"
+   },
+   {
+    "w": "sunbath",
+    "ipa": "ˈsənˌbæθ",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "日光浴；太阳灯浴",
+    "ex": "a cute fluffy chubby marmot sunbathing on a pile of"
+   },
+   {
+    "w": "sunlit",
+    "ipa": "ˈsənˌlɪt",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "被日光照射了的, 阳光照射的",
+    "ex": "LlamaGen Janus (Ours) A realistic photo of snowy mountains with sunlit peaks glistening under a clear blue sky 这是一张雪山写实照片，阳 光照耀下的山峰在晴朗的蓝 天下熠熠生辉。前景中高大 的常青树被白雪覆盖，为这 令人惊叹的高山景色增添了 深度。 Une photo réaliste de montagnes enneigées dont …"
+   },
+   {
+    "w": "supervise",
+    "ipa": "ˈsupərˌvaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "监督，监视",
+    "ex": "On the other hand, we use SigLIP-Large-Patch16-384 as the teacher to supervise the semantic feature reconstruction results by the semantic decoder."
+   },
+   {
+    "w": "symbolism",
+    "ipa": "ˈsɪmbəˌlɪzəm",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "象征，象征主义；符号论；记号",
+    "ex": "UHD dtm HDR 8k Beautiful surreal symbolism the mesmerizing vision of a Cleopatra Queen of Egypt , full body , mesmerizing brown eyes, black hair and ethereal features, radiating celestial aura, super high definition, true …"
+   },
+   {
+    "w": "symmetrical",
+    "ipa": "səˈmɛtrɪkəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "对称的，匀称的",
+    "ex": "the armor, symmetrical body, hyperrealistic, intricate"
+   },
+   {
+    "w": "trait",
+    "ipa": "treɪt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "性格",
+    "ex": "We attribute this multilingual ability to the original large language model’s inherent traits."
+   },
+   {
+    "w": "turquoise",
+    "ipa": "ˈtərkwɔɪz",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "[矿]绿宝石, 绿松石色, 青绿色",
+    "ex": "rocks, snow mountains background, turquoise glacier"
+   },
+   {
+    "w": "ultimate",
+    "ipa": "ˈəltəmət",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "最后的，最终的",
+    "ex": "The ultimate wrist watch watch time machine ,"
+   },
+   {
+    "w": "unreal",
+    "ipa": "ənˈril",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "不真实的；假的；幻想的；虚构的",
+    "ex": "Tiny cute adorable fluffy baby raccoon with knitted blue scarf leaning at a table in a medieval pub holding a coffee cup, anthropomorphic, Jean-Baptiste Monge, soft cinematic lighting, 8k, intricate details, portrait, Pixar style …"
+   },
+   {
+    "w": "usage",
+    "ipa": "ˈjusɪʤ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "使用，对待；惯用法",
+    "ex": "Figure 6 | Architecture and usage of the semantic tokenizer. (a) Architecture used during"
+   },
+   {
+    "w": "vector",
+    "ipa": "ˈvɛktər",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "矢量；飞机航线",
+    "ex": "In addition to the original CNN pixel decoder, we add an additional semantic decoder branch after Vector Quantization, as shown in Figure 6 (a)."
+   },
+   {
+    "w": "vision",
+    "ipa": "ˈvɪʒən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "视；想象力；梦幻",
+    "ex": "The CLIP model is a type of pre-training algorithm that combines the power of language and vision to learn a unified representation of the world."
+   }
+  ]
+ },
+ {
+  "sec": "References · 参考文献区用词（正文未出现）",
+  "short": "文献区",
+  "icon": "R",
+  "words": [
+   {
+    "w": "align",
+    "ipa": "əˈlaɪn",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使结盟；使成一行；匹配",
+    "ex": "Internvl: Scaling up vision foundation models and aligning for generic visual-linguistic tasks."
+   },
+   {
+    "w": "alignment",
+    "ipa": "əˈlaɪnmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "排成直线；结盟，联合",
+    "ex": "Geneval: An object-focused framework for evaluating text-to-image alignment."
+   },
+   {
+    "w": "app",
+    "ipa": "æp",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "应用程序，App",
+    "ex": "Screenqa: Large-scale question-answer pairs over mobile app screenshots. arXiv preprint arXiv:2209.08199, 2022. [35] D."
+   },
+   {
+    "w": "centric",
+    "ipa": "ˈsɛntrɪk",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "以…为中心的",
+    "ex": "Visionllm: Large language model is also an open-ended decoder for vision-centric tasks."
+   },
+   {
+    "w": "classification",
+    "ipa": "ˌklæsəfəˈkeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "分类，级别",
+    "ex": "The open images dataset v4: Unified image classification, object detection, and visual relationship detection at scale."
+   },
+   {
+    "w": "creation",
+    "ipa": "kriˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "创造， 创建； 创造的作品， 产物； 宇宙， 天地万物",
+    "ex": "Dreamllm: Synergistic multimodal comprehension and creation. arXiv preprint arXiv:2309.11499, 2023. [22] A."
+   },
+   {
+    "w": "dense",
+    "ipa": "dɛns",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "密集的；浓厚的",
+    "ex": "From pixels to prose: A large dataset of dense image captions. arXiv preprint arXiv:2406.10328, 2024. [71] J."
+   },
+   {
+    "w": "detection",
+    "ipa": "dɪˈtɛkʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "侦查；察觉",
+    "ex": "The open images dataset v4: Unified image classification, object detection, and visual relationship detection at scale."
+   },
+   {
+    "w": "device",
+    "ipa": "dɪˈvaɪs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "装置，设备",
+    "ex": "Mobilevlm: A fast, reproducible and strong vision language assistant for mobile devices."
+   },
+   {
+    "w": "diffuse",
+    "ipa": "dɪfˈjuz",
+    "pos": "v.；adj.",
+    "lv": "六级",
+    "m": "扩散， 弥漫； 传播， 散布；冗长的， 漫无边际的； 四散的， 弥漫的",
+    "ex": "Transfusion: Predict the next token and diffuse images with one multi-modal model. arXiv preprint arXiv:2408.11039, 2024. [95] D."
+   },
+   {
+    "w": "discipline",
+    "ipa": "ˈdɪsəplən",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "纪律；训练；训练",
+    "ex": "Mmmu: A massive multi-discipline multimodal understanding and reasoning benchmark for expert agi."
+   },
+   {
+    "w": "echo",
+    "ipa": "ˈɛkoʊ",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "回声，反响；重复",
+    "ex": "An image is worth 16x16 words: Transformers for image recognition at scale. arXiv preprint arXiv:2010.11929, 2020. [23] Echo840."
+   },
+   {
+    "w": "edit",
+    "ipa": "ˈɛdət",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "剪辑，编辑",
+    "ex": "Glide: Towards photorealistic image generation and editing with text-guided diffusion models. arXiv preprint arXiv:2112.10741, 2021. [60] J."
+   },
+   {
+    "w": "elevate",
+    "ipa": "ˈɛləˌveɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "提升，举起；使高兴",
+    "ex": "Making the v in vqa matter: Elevating the role of image understanding in visual question answering."
+   },
+   {
+    "w": "exceed",
+    "ipa": "ɪkˈsid",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "超过，胜过；超出",
+    "ex": "and matches or exceeds the performance of task-specific models. The simplicity, high flexibility,"
+   },
+   {
+    "w": "fidelity",
+    "ipa": "ˌfaɪˈdɛləti",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "保真度；忠诚；精确；尽责",
+    "ex": "Movq: Modulating quantized vectors for high-fidelity image generation."
+   },
+   {
+    "w": "flyer",
+    "ipa": "flaɪər",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "传单；飞鸟；飞行物；飞跳；孤注一掷",
+    "ex": "In Proceedings of the IEEE conference on computer vision and pattern recognition, pages 6904–6913, 2017. [32] High-flyer."
+   },
+   {
+    "w": "fusion",
+    "ipa": "fˈjuʒən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "联合， 合并； 核聚变",
+    "ex": "Chameleon: Mixed-modal early-fusion foundation models. arXiv preprint arXiv:2405.09818, 2024. [78] G."
+   },
+   {
+    "w": "general-purpose",
+    "ipa": "ˈʤɛnərəl ˈpərpəs",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "通用的，一般用途的（与专用 special-purpose 相对）",
+    "ex": "Towards general-purpose vision-language models with instruction tuning, 2023."
+   },
+   {
+    "w": "generic",
+    "ipa": "ʤəˈnɛrɪk",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "【生物】 属的， 类的； 一般的， 普通的",
+    "ex": "Internvl: Scaling up vision foundation models and aligning for generic visual-linguistic tasks."
+   },
+   {
+    "w": "hallucination",
+    "ipa": "həˌlusəˈneɪʃən",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "幻觉，幻想",
+    "ex": "Evaluating object hallucination in large vision-language models. arXiv preprint arXiv:2305.10355, 2023. [49] Z."
+   },
+   {
+    "w": "hierarchical",
+    "ipa": "ˌhaɪˈrɑrkəkəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "分层的；等级体系的",
+    "ex": "Imagenet: A large-scale hierarchical image database."
+   },
+   {
+    "w": "implicit",
+    "ipa": "ˌɪmˈplɪsət",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "不言明的， 含蓄的； 内含的， 固有的； 无疑问的",
+    "ex": "Denoising diffusion implicit models. arXiv preprint arXiv:2010.02502, 2020. [72] K."
+   },
+   {
+    "w": "insight",
+    "ipa": "ˈɪnˌsaɪt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "洞察力，洞悉",
+    "ex": "5: Three insights towards enhancing aesthetic quality in text-to-image generation. arXiv preprint arXiv:2402.17245, 2024. [45] L."
+   },
+   {
+    "w": "large-scale",
+    "ipa": "ˈlɑrʤˌskeɪl",
+    "pos": "adj.",
+    "lv": "雅思",
+    "m": "大规模的， 大范围的",
+    "ex": "[18] J. Deng, W. Dong, R. Socher, L.-J. Li, K. Li, and L. Fei-Fei. Imagenet: A large-scale hierarchical image database. In 2009 IEEE conference on computer vision and pattern recognition,"
+   },
+   {
+    "w": "latent",
+    "ipa": "ˈleɪtənt",
+    "pos": "adj.",
+    "lv": "考研",
+    "m": "存在但看不见的",
+    "ex": "High-resolution image synthesis with latent diffusion models."
+   },
+   {
+    "w": "learner",
+    "ipa": "ˈlərnər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "学习者, 初学者",
+    "ex": "Generative multimodal models are in-context learners."
+   },
+   {
+    "w": "lope",
+    "ipa": "loʊp",
+    "pos": "vi.；n.",
+    "lv": "托福",
+    "m": "轻松地大步跑；轻快的步伐",
+    "ex": "Gon-tijo Lopes, B."
+   },
+   {
+    "w": "massive",
+    "ipa": "ˈmæsɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "巨大的 大量的",
+    "ex": "Mmmu: A massive multi-discipline multimodal understanding and reasoning benchmark for expert agi."
+   },
+   {
+    "w": "megalith",
+    "ipa": "ˈmɛɡəlɪθ",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "[考古](古建筑用的)巨石",
+    "ex": "Megalith-huggingface. https://huggingface.co/datasets/madebyol lin/megalith-10m, 2024. [58] mehdidc."
+   },
+   {
+    "w": "merge",
+    "ipa": "mərʤ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "合并",
+    "ex": "Densefusion-1m: Merging vision experts for comprehensive multimodal perception. arXiv preprint arXiv:2407.08303, 2024. [48] Y."
+   },
+   {
+    "w": "modulate",
+    "ipa": "ˈmɔʤuleɪt",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "调整，调节（声音）",
+    "ex": "Movq: Modulating quantized vectors for high-fidelity image generation."
+   },
+   {
+    "w": "muse",
+    "ipa": "mjuz",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "沉思，默想，冥想",
+    "ex": "Muse: Text-to-image generation via masked generative transformers. arXiv preprint arXiv:2301.00704, 2023. [9] J."
+   },
+   {
+    "w": "opus",
+    "ipa": "ˈoʊpəs",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "作品",
+    "ex": "The claude 3 model family: Opus, sonnet, haiku. https://www.anthropic. com, 2024. [3] J."
+   },
+   {
+    "w": "particularly",
+    "ipa": "ˌpɑrˈtɪkjələrli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "特别，尤其，格外",
+    "ex": "particularly in multimodal understanding. To address this issue, we decouple visual encoding"
+   },
+   {
+    "w": "perception",
+    "ipa": "pərˈsɛpʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "感知",
+    "ex": "Densefusion-1m: Merging vision experts for comprehensive multimodal perception. arXiv preprint arXiv:2407.08303, 2024. [48] Y."
+   },
+   {
+    "w": "phd",
+    "ipa": "ˈpiˌeɪʧˈdi",
+    "pos": "—",
+    "lv": "专四",
+    "m": "博士学位；哲学博士学位（Doctor of Philosophy）",
+    "ex": "Mmsci: A multimodal multi-discipline dataset for phd-level scientific comprehension. arXiv preprint arXiv:2407.04903, 2024. [50] H."
+   },
+   {
+    "w": "proceeding",
+    "ipa": "prəˈsidɪŋ",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "程序，行动，事项",
+    "ex": "In Proceedings of the 44th international ACM SIGIR conference on research and development in information retrieval, pages 2443–2449, 2021. [73] P."
+   },
+   {
+    "w": "prose",
+    "ipa": "proʊz",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "散文",
+    "ex": "From pixels to prose: A large dataset of dense image captions. arXiv preprint arXiv:2406.10328, 2024. [71] J."
+   },
+   {
+    "w": "recognition",
+    "ipa": "ˌrɛkɪgˈnɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "认出，识别；承认",
+    "ex": "In Proceedings of the IEEE conference on computer vision and pattern recognition, pages 6904–6913, 2017. [32] High-flyer."
+   },
+   {
+    "w": "reproduction",
+    "ipa": "ˌriprəˈdəkʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "繁殖",
+    "ex": "Introducing idefics: An open reproduction of state-of-the-art visual language model, 2023."
+   },
+   {
+    "w": "retrieval",
+    "ipa": "rɪˈtrivəl",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "检索；恢复；取回；拯救",
+    "ex": "In Proceedings of the 44th international ACM SIGIR conference on research and development in information retrieval, pages 2443–2449, 2021. [73] P."
+   },
+   {
+    "w": "server",
+    "ipa": "ˈsərvər",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "服务器",
+    "ex": "Microsoft coco captions: Data collection and evaluation server. arXiv preprint arXiv:1504.00325, 2015. [12] Z."
+   },
+   {
+    "w": "sigmoid",
+    "ipa": "ˈsɪɡmɔɪd",
+    "pos": "adj./n.",
+    "lv": "考博",
+    "m": "S 形的；sigmoid function 逻辑斯谛/乙状函数",
+    "ex": "Sigmoid loss for language image pretraining."
+   },
+   {
+    "w": "sonnet",
+    "ipa": "ˈsɑnɪt",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "十四行诗；商籁诗",
+    "ex": "The claude 3 model family: Opus, sonnet, haiku. https://www.anthropic. com, 2024. [3] J."
+   },
+   {
+    "w": "summarization",
+    "ipa": "ˌsʌmərɪˈzeʃən",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "摘要, 概要",
+    "ex": "Wikihow: A large scale text summarization dataset. arXiv preprint arXiv:1810.09305, 2018. [40] A."
+   },
+   {
+    "w": "synthetic",
+    "ipa": "sɪnˈθɛtɪk",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "合成的，人造的",
+    "ex": "Dalle3-high-quality-captions. https://huggingface.co/datasets/Pr oGamerGov/synthetic-dataset-1m-dalle3-high-quality-captions, 2024. [64] A."
+   },
+   {
+    "w": "tame",
+    "ipa": "teɪm",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "驯服的；顺从的",
+    "ex": "Taming transformers for high-resolution image synthesis."
+   },
+   {
+    "w": "transfer",
+    "ipa": "ˈtrænsfər",
+    "pos": "—",
+    "lv": "四级",
+    "m": "转换，调换",
+    "ex": "Llava-onevision: Easy visual task transfer. arXiv preprint arXiv:2408.03326, 2024. [44] D."
+   },
+   {
+    "w": "versatile",
+    "ipa": "ˈvərsətəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "多方面的；通用的",
+    "ex": "Qwen-vl: A frontier large vision-language model with versatile abilities. arXiv preprint arXiv:2308.12966, 2023. [4] Y."
+   },
+   {
+    "w": "volume",
+    "ipa": "ˈvɑljum",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "卷，册；容积；音量",
+    "ex": "In Proceedings of the AAAI conference on artificial intelligence, volume 33, pages 8876–8884, 2019. [70] V."
+   }
+  ]
+ }
+];
+// lv 一律写中文档名（十一档平级，2026-09-30 定案；旧短码由 build 脚本自动翻译）
+const LVCLS={"四级":"t4","六级":"t6","考研":"tk","考博":"tp","专四":"tm4","专八":"tm8","雅思":"ty","托福":"tt","GRE":"tg","超纲":"tsuper"};
+const LVNAME={"四级":"四级","六级":"六级","考研":"考研","考博":"考博","专四":"专业四级","专八":"专业八级","雅思":"雅思","托福":"托福","GRE":"GRE","超纲":"超纲（大纲未收）"};
+const LVSHORT={"四级":"4","六级":"6","考研":"考研","考博":"考博","专四":"专四","专八":"专八","雅思":"雅思","托福":"托福","GRE":"GRE","超纲":"★超纲"};
+const LVORDER=["四级","六级","考研","考博","专四","专八","雅思","托福","GRE","超纲"];
+
+let mode="sec";
+let theme="theme-mag"; // 章节视图固定杂志风；按级别视图固定暗色大页
+
+function cardHTML(x,sec){
+  const from = mode==="lv" ? `<div class="from">出自 ${sec}</div>` : "";
+  if(theme==="theme-paper"){
+    return `<div class="word"><span class="w">${x.w}<span class="ipa">/${x.ipa}/</span><i class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</i></span>
+      <span><span class="pos">${x.pos}</span><span class="m">${x.m}</span>${from}</span>
+      <span class="ex">${x.ex}</span></div>`;
+  }
+  if(theme==="theme-mag") return "";
+  return `<div class="card lv${x.lv}" data-say="${x.w}"><span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span><span class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</span>
+    <div class="m">${x.pos} ${x.m}</div><div class="ex">${x.ex}</div>${from}</div>`;
+}
+function magRow(x,sec){
+  return `<tr data-say="${x.w}"><td class="w"><span class="hwband">${x.w}</span><span class="ipa">/${x.ipa}/</span></td>
+    <td class="lv"><b class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</b></td>
+    <td class="m">${x.pos} ${x.m}${mode==="lv"?`<span class="from">出自 ${sec}</span>`:""}</td>
+    <td class="ex">${x.ex}</td></tr>`;
+}
+function groupHTML(title,icon,inner){
+  if(theme==="theme-mag") return `<div class="sec"><h2>${title}</h2><table>${inner}</table></div>`;
+  if(theme==="theme-dark"||theme==="theme-fresh")
+    return `<div class="sec"><h2>${theme==="theme-dark"?"":"<span class='n'>"+icon+"</span>"}${title}</h2><div class="grid">${inner}</div></div>`;
+  return `<div class="sec"><h2>${title}</h2>${inner}</div>`;
+}
+
+function render(){
+  document.body.classList.toggle("lv-mode",mode==="lv");
+  // 注意：必须用 classList.add，不能整体赋值 className —— 否则会抹掉 body.night，
+  // 而夜晚章节视图依赖 body.night.theme-mag 这条 CSS，抹掉后点「按章节」会静默退回白天。
+  if(mode==="sec")document.body.classList.add("theme-mag");
+  const app=document.getElementById("app");
+  let html="";
+  if(mode==="sec"){
+    for(const s of DATA){
+      html += theme==="theme-mag"
+        ? groupHTML(s.sec,s.icon,s.words.map(x=>magRow(x,s.short)).join(""))
+        : groupHTML(s.sec,s.icon,s.words.map(x=>cardHTML(x,s.short)).join(""));
+    }
+  }else{
+    // 学习模式同款暗色大页：每个级别一块
+    const dot={"四级":"var(--c4)","六级":"var(--c6)","考研":"var(--ckaon)","考博":"var(--cphd)","专四":"var(--cm4)","专八":"var(--cm8)","雅思":"var(--cy)","托福":"var(--ct)","GRE":"var(--cg)","超纲":"var(--csuper)"};
+    html=LVORDER.map(lv=>{
+      const items=[];
+      DATA.forEach(s=>s.words.forEach(x=>{if(x.lv===lv)items.push([x,s.short])}));   // ov 已废除（2026-09-30）
+      if(!items.length)return"";   // 本词表里没有这一档 → 不出空面板
+      items.sort((a,b)=>a[0].w.localeCompare(b[0].w));
+      const cls={"六级":"l6","考研":"lk","考博":"lp","专四":"lm4","专八":"lm8","雅思":"ly","托福":"lt","GRE":"lg","超纲":"lsuper"}[lv]||"";
+      return `<div class="lvslide ${cls}">
+        <div class="ltitle"><span style="color:${dot[lv]}">${LVNAME[lv]}</span>词汇<small>${items.length} words · 按字母排序 · 悬停看原文例句 · 点击发音</small></div>
+        <div class="sgrid">${items.map(([x,sec])=>`
+          <div class="lcard" data-say="${x.w}">
+            <span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span>
+            <div class="m">${x.pos} ${x.m}</div>
+            <div class="ex">${x.ex}</div>
+            <div class="from">出自 ${sec}</div>
+          </div>`).join("")}</div></div>`;
+    }).join("");
+  }
+  app.innerHTML=html;
+}
+function syncToolbar(){
+  document.getElementById("v-sec").classList.toggle("on",mode==="sec");
+  document.getElementById("v-lv").classList.toggle("on",mode==="lv");
+}
+document.getElementById("v-sec").onclick=()=>{mode="sec";theme="theme-mag";syncToolbar();render();};
+document.getElementById("v-lv").onclick=()=>{mode="lv";syncToolbar();render();};
+
+// 朗读：多引擎在线 TTS 自动降级（有道 / Polly / 百度 / 谷歌），可按下拉切换主音色
+// 合并自 .agents 有道源版 与 workbuddy Polly 源版 —— 单文件同时支持两套引擎
+const VOICE_MAP={
+  yd1:{src:"yd",label:"美式 · 有道（推荐）"},
+  yd0:{src:"yd",label:"英式 · 有道"},
+  Brian:{src:"se",label:"Brian · 英式男声"},
+  Amy:{src:"se",label:"Amy · 英式女声"},
+  Matthew:{src:"se",label:"Matthew · 美式男声"},
+  Joanna:{src:"se",label:"Joanna · 美式女声"},
+  Salli:{src:"se",label:"Salli · 美式女声"},
+  Ivy:{src:"se",label:"Ivy · 美式童声"},
+  bd:{src:"bd",label:"百度翻译 · 女声"},
+  gg:{src:"gg",label:"谷歌翻译"},
+  mute:{src:"mute",label:"🔇 不朗读"}
+};
+const VOICE_ORDER=["yd1","yd0","Brian","Amy","Matthew","Joanna","Salli","Ivy","bd","gg","mute"];
+let ONLINE="yd1"; // 默认有道 · 美音（保留 .agents 版行为）
+try{const sv=localStorage.getItem("vocab_voice");if(sv&&VOICE_MAP[sv])ONLINE=sv;}catch(e){}
+const ENG=["yd","se","bd","gg"];               // 全部可选引擎
+const ENG_NAME={yd:"有道",se:"Polly",bd:"百度",gg:"谷歌"};
+const POLLY_VOICES={Brian:1,Amy:1,Matthew:1,Joanna:1,Salli:1,Ivy:1};
+let SRC_ORDER=ENG.slice(),srcIdx=0;           // 降级顺序：按所选音色的主引擎优先
+function applyVoiceOrder(){
+  const want=VOICE_MAP[ONLINE].src;
+  const i=ENG.indexOf(want);
+  SRC_ORDER=i<0?ENG.slice():ENG.slice(i).concat(ENG.slice(0,i));
+}
+applyVoiceOrder();
+let audio=null;
+function ttsURL(src,t){
+  const q=encodeURIComponent(t);
+  if(src==="yd")return `https://dict.youdao.com/dictvoice?type=${ONLINE==="yd0"?"0":"1"}&audio=${q}`;
+  if(src==="se")return `https://api.streamelements.com/kappa/v2/speech?voice=${POLLY_VOICES[ONLINE]?ONLINE:"Brian"}&text=${q}`;
+  if(src==="bd")return `https://fanyi.baidu.com/gettts?lan=en&text=${q}&spd=5&source=web`;
+  return `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q=${q}`;
+}
+function fillVoiceSel(){
+  const sel=document.getElementById("voiceSel");if(!sel)return;
+  sel.innerHTML=VOICE_ORDER.map(v=>`<option value="${v}" ${ONLINE===v?"selected":""}>${VOICE_MAP[v].label}</option>`).join("");
+  const st=document.getElementById("srcState");
+  if(st)st.textContent=ENG_NAME[SRC_ORDER[srcIdx]]||"";
+}
+fillVoiceSel();
+let saying=0; // 防并发
+function say(t){
+  if(ONLINE==="mute"){try{if(audio){audio.pause();audio=null}}catch(e){}return}
+  const my=++saying;
+  trySrc(0,t,my);
+}
+function trySrc(i,t,my){
+  if(my!==saying)return;
+  if(i>=SRC_ORDER.length){const st=document.getElementById("srcState");if(st)st.textContent="无可用源";return}
+  const src=SRC_ORDER[i];
+  const st=document.getElementById("srcState");
+  if(st)st.textContent="尝试 "+ENG_NAME[src];
+  try{if(audio){audio.pause();audio=null}}catch(e){}
+  const a=new Audio(ttsURL(src,t));
+  let ok=false,advanced=false;
+  const advance=()=>{ if(!ok&&!advanced&&my===saying){advanced=true;trySrc(i+1,t,my);} };
+  a.addEventListener("playing",()=>{ok=true;
+    if(srcIdx!==i){srcIdx=i;fillVoiceSel();} // 记住能用的源
+  });
+  a.addEventListener("error",advance);
+  audio=a;
+  a.play().catch(advance);
+  setTimeout(()=>{ if(!ok&&my===saying&&a.paused)advance(); },2500);
+}
+document.getElementById("voiceSel").addEventListener("change",e=>{
+  ONLINE=e.target.value; applyVoiceOrder(); srcIdx=0; // 换音色重新从头试源
+  try{localStorage.setItem("vocab_voice",ONLINE);}catch(e){}
+  if(ONLINE!=="mute") say("Hello, let us learn new words together.");
+});
+/* ---- 白天 / 夜晚 ---- */
+let style="day";
+try{const s=localStorage.getItem("vocab_style");if(["day","night","paper"].indexOf(s)>=0)style=s;}catch(e){}
+function applyStyle(){
+  document.body.classList.toggle("night",style==="night");
+  document.body.classList.toggle("paper",style==="paper");
+  ["day","night","paper"].forEach(k=>{const b=document.getElementById("st-"+k);if(b)b.classList.toggle("on",style===k);});
+  if(typeof studyEl!=="undefined"&&studyEl)studyEl.classList.toggle("day",style!=="night");
+}
+document.getElementById("st-day").onclick=()=>{style="day";try{localStorage.setItem("vocab_style","day")}catch(e){};applyStyle();};
+document.getElementById("st-night").onclick=()=>{style="night";try{localStorage.setItem("vocab_style","night")}catch(e){};applyStyle();};
+document.getElementById("st-paper").onclick=()=>{style="paper";try{localStorage.setItem("vocab_style","paper")}catch(e){};applyStyle();};
+document.getElementById("app").addEventListener("click",e=>{
+  const el=e.target.closest("[data-say]"); if(el) say(el.dataset.say);
+});
+
+/* ---------- 学习模式：按章节分页的 PPT 翻页 ---------- */
+const PER_PAGE = 12; // 每页最多词数，放不下自动续页
+let slides=[],si=0;
+function buildSlides(){
+  slides=[];
+  for(const s of DATA){
+    for(let i=0;i<s.words.length;i+=PER_PAGE){
+      slides.push({sec:s.sec,page:Math.floor(i/PER_PAGE)+1,
+        pages:Math.ceil(s.words.length/PER_PAGE),words:s.words.slice(i,i+PER_PAGE)});
+    }
+  }
+}
+const studyEl=document.getElementById("study");
+let open=false;
+function showSlide(){
+  const sl=slides[si];
+  const title=sl.pages>1 ? `${sl.sec}（第 ${sl.page}/${sl.pages} 页）` : sl.sec;
+  document.getElementById("sPage").innerHTML =
+    `<div class="stitle">${title}<small>${sl.words.length} words</small></div>
+     <div class="sgrid">${sl.words.map(x=>`
+       <div class="scard" data-say="${x.w}">
+         <span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span><span class="tag ${LVCLS[x.lv]}" style="font-size:11px;padding:2px 8px">${LVSHORT[x.lv]}</span>
+         <div class="m">${x.pos} ${x.m}</div>
+         <div class="ex">${x.ex}</div>
+       </div>`).join("")}</div>`;
+  document.getElementById("sIdx").textContent=(si+1)+" / "+slides.length;
+  document.getElementById("sbar").style.width=((si+1)/slides.length*100)+"%";
+  document.getElementById("sPrev").disabled=si===0;
+  document.getElementById("sNext").disabled=si===slides.length-1;
+  studyEl.querySelector(".sbody").scrollTop=0;
+}
+function studyOpen(){ buildSlides(); si=0; open=true; studyEl.classList.add("on"); applyStyle(); showSlide(); }
+function studyClose(){ open=false; studyEl.classList.remove("on"); }
+function next(){ if(si<slides.length-1){ si++; showSlide(); } }
+function prev(){ if(si>0){ si--; showSlide(); } }
+document.getElementById("v-study").onclick=()=>open?studyClose():studyOpen();
+document.getElementById("sClose").onclick=studyClose;
+document.getElementById("sExit").onclick=studyClose;
+document.getElementById("sNext").onclick=next;
+document.getElementById("sPrev").onclick=prev;
+studyEl.addEventListener("click",e=>{
+  const el=e.target.closest("[data-say]"); if(el) say(el.dataset.say);
+});
+document.addEventListener("keydown",e=>{
+  if(!open) return;
+  if(e.code==="Space"||e.key==="ArrowRight"||e.key==="PageDown"){ e.preventDefault(); next(); }
+  else if(e.key==="ArrowLeft"||e.key==="PageUp"){ prev(); }
+  else if(e.key==="Escape"){ studyClose(); }
+});
+applyStyle(); syncToolbar(); render();
+</script>
+<a href="../../vocab.html" target="_self" style="position:fixed;left:14px;bottom:14px;z-index:9999;font:600 13px/1 -apple-system,system-ui,sans-serif;color:#fff;background:rgba(0,0,0,.55);padding:8px 12px;border-radius:20px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.25)">← 返回索引</a></body>
+</html>

@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>20_DeepSeek-OCR 单词连播 · 单词连播</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{min-height:100vh;display:flex;justify-content:center;font-family:"PingFang SC",-apple-system,sans-serif;background:#111}
+
+  /* ============ 皮肤 ============ */
+  .app{
+    --h:356;
+    --bg-a:#fcf6da; --bg-b:#f8ecb0; --bg-c:#eeda8e;
+    --card-bg:rgba(255,252,240,.35); --card-br:rgba(255,255,255,.9);
+    --disc-a:#eeda84; --disc-b:#d9bd5e;
+    --groove:rgba(150,110,30,.10); --dshadow:rgba(160,120,30,.35);
+    --arm-a:rgba(255,255,255,.95); --arm-b:rgba(255,255,255,.7);
+    --tx:#2f2416; --tx2:#6b5a35; --tx3:#8a7850;
+    --bar-bg:rgba(90,70,30,.25); --bar-fill:#2f2416;
+    --sheet-bg:rgba(255,252,240,.97); --accent:#e4574f;
+  }
+  .app[data-skin="qq"]{
+    --bg-a:hsl(356 85% 88%); --bg-b:hsl(352 70% 76%); --bg-c:hsl(348 62% 66%);
+    --card-bg:rgba(255,255,255,.22); --card-br:rgba(255,255,255,.75);
+    --disc-a:hsl(356 62% 66%); --disc-b:hsl(354 55% 58%);
+    --groove:rgba(120,30,30,.10); --dshadow:rgba(120,40,40,.45);
+    --tx:#332424; --tx2:#5a4644; --tx3:#6b5450;
+    --bar-bg:rgba(70,40,40,.25); --bar-fill:#3a2c2c;
+    --sheet-bg:rgba(255,252,250,.96);
+  }
+  .app[data-skin="nred"]{           /* 网易云 · 红 */
+    --bg-a:#fdeeed; --bg-b:#fbdcd9; --bg-c:#f6c6c1;
+    --card-bg:rgba(255,255,255,.42); --card-br:rgba(255,255,255,.9);
+    --disc-a:#e0584f; --disc-b:#c0342c;
+    --groove:rgba(150,40,30,.10); --dshadow:rgba(190,70,60,.35);
+    --tx:#3a1f1c; --tx2:#7a524e; --tx3:#9b7a76;
+    --bar-bg:rgba(120,50,40,.22); --bar-fill:#c0342c;
+    --sheet-bg:rgba(255,246,245,.97); --accent:#d33a31;
+  }
+  .app[data-skin="qqgreen"]{        /* QQ音乐 · 绿 */
+    --bg-a:#eafaf2; --bg-b:#d6f4e6; --bg-c:#bcead6;
+    --card-bg:rgba(255,255,255,.45); --card-br:rgba(255,255,255,.9);
+    --disc-a:#3fce8c; --disc-b:#22a96c;
+    --groove:rgba(20,110,70,.10); --dshadow:rgba(30,150,100,.32);
+    --tx:#123328; --tx2:#4a7a66; --tx3:#7ba191;
+    --bar-bg:rgba(30,110,80,.2); --bar-fill:#1f9a63;
+    --sheet-bg:rgba(246,255,251,.97); --accent:#31c27c;
+  }
+  .app[data-skin="kugou"]{          /* 酷狗 · 蓝 */
+    --bg-a:#e9f6fe; --bg-b:#d3edfd; --bg-c:#b6e0fa;
+    --card-bg:rgba(255,255,255,.45); --card-br:rgba(255,255,255,.9);
+    --disc-a:#4cc0f7; --disc-b:#1a86d0;
+    --groove:rgba(20,90,150,.10); --dshadow:rgba(30,120,190,.32);
+    --tx:#0f2b40; --tx2:#4a6c86; --tx3:#7a99b0;
+    --bar-bg:rgba(30,90,140,.2); --bar-fill:#1a86d0;
+    --sheet-bg:rgba(245,251,255,.97); --accent:#1a9bf0;
+  }
+  .app[data-skin="xiami"]{          /* 虾米 · 橙（白底） */
+    --bg-a:#fff6ef; --bg-b:#ffe9d8; --bg-c:#ffd7ba;
+    --card-bg:rgba(255,255,255,.5); --card-br:rgba(255,255,255,.95);
+    --disc-a:#ff8a4c; --disc-b:#e85f1f;
+    --groove:rgba(160,80,20,.10); --dshadow:rgba(220,120,50,.32);
+    --tx:#3d2415; --tx2:#8a5f42; --tx3:#a8856a;
+    --bar-bg:rgba(140,80,30,.2); --bar-fill:#e85f1f;
+    --sheet-bg:rgba(255,250,245,.97); --accent:#ff5a1f;
+  }
+  .app[data-skin="netease"]{
+    --bg-a:#3a2429; --bg-b:#241619; --bg-c:#150d10;
+    --card-bg:rgba(255,255,255,.06); --card-br:rgba(255,255,255,.16);
+    --disc-a:#1b1b1b; --disc-b:#0d0d0d;
+    --groove:rgba(255,255,255,.055); --dshadow:rgba(0,0,0,.6);
+    --tx:#f2ecec; --tx2:rgba(240,232,232,.72); --tx3:rgba(240,232,232,.5);
+    --bar-bg:rgba(255,255,255,.22); --bar-fill:#f2ecec;
+    --sheet-bg:rgba(28,20,20,.96); --accent:#ec4141;
+  }
+  .app[data-skin="vinyl"]{
+    --bg-a:#eef0f6; --bg-b:#e3e6f0; --bg-c:#d6dae8;
+    --card-bg:rgba(255,255,255,.55); --card-br:#fff;
+    --disc-a:#1c1c1c; --disc-b:#0c0c0c;
+    --groove:rgba(255,255,255,.05); --dshadow:rgba(40,50,90,.4);
+    --arm-a:rgba(255,255,255,.95); --arm-b:#c9c9d8;
+    --tx:#232333; --tx2:#5b5b76; --tx3:#7b7b95;
+    --bar-bg:rgba(40,40,80,.18); --bar-fill:#35354a;
+    --sheet-bg:rgba(252,252,255,.96); --accent:#6b6bf2;
+  }
+  .app[data-skin="gold"]{
+    --bg-a:#f7ead0; --bg-b:#efdcbb; --bg-c:#e2c795;
+    --card-bg:rgba(255,255,255,.38); --card-br:rgba(255,255,255,.8);
+    --disc-a:#4a341c; --disc-b:#2e1f0f;
+    --groove:rgba(255,235,200,.07); --dshadow:rgba(90,60,20,.45);
+    --arm-a:rgba(255,250,240,.95); --arm-b:rgba(240,225,200,.72);
+    --tx:#3a2a12; --tx2:#6b5430; --tx3:#8a7048;
+    --bar-bg:rgba(80,55,20,.22); --bar-fill:#4a3418;
+    --sheet-bg:rgba(255,250,240,.97); --accent:#b8860b;
+  }
+  .app[data-skin="sakura"]{         /* 樱花粉 */
+    --bg-a:#fdeef3; --bg-b:#f9d7e2; --bg-c:#f4c2d4;
+    --card-bg:rgba(255,255,255,.42); --card-br:rgba(255,255,255,.9);
+    --disc-a:#f08cb2; --disc-b:#e0618f;
+    --groove:rgba(160,50,90,.10); --dshadow:rgba(210,90,140,.35);
+    --tx:#3d1f2b; --tx2:#7a4f61; --tx3:#9b7486;
+    --bar-bg:rgba(140,60,95,.2); --bar-fill:#e0618f;
+    --sheet-bg:rgba(255,247,250,.97); --accent:#e8638c;
+  }
+  .app[data-skin="matcha"]{         /* 抹茶（同全站主题色） */
+    --bg-a:#f1f4ea; --bg-b:#e4ecd7; --bg-c:#d5e2c2;
+    --card-bg:rgba(255,255,255,.5); --card-br:rgba(255,255,255,.92);
+    --disc-a:#93b073; --disc-b:#66854a;
+    --groove:rgba(70,100,40,.10); --dshadow:rgba(100,130,70,.32);
+    --tx:#2c3a1e; --tx2:#5d7247; --tx3:#84976d;
+    --bar-bg:rgba(80,110,50,.2); --bar-fill:#5f7d46;
+    --sheet-bg:rgba(250,252,246,.97); --accent:#6b8e4e;
+  }
+  .app[data-skin="mint"]{           /* 薄荷 */
+    --bg-a:#eefaf7; --bg-b:#daf2ec; --bg-c:#c2e8df;
+    --card-bg:rgba(255,255,255,.48); --card-br:rgba(255,255,255,.92);
+    --disc-a:#55c7b2; --disc-b:#2ba58f;
+    --groove:rgba(20,110,95,.10); --dshadow:rgba(40,150,130,.3);
+    --tx:#12332c; --tx2:#4a7368; --tx3:#7a998f;
+    --bar-bg:rgba(30,110,95,.2); --bar-fill:#2ba58f;
+    --sheet-bg:rgba(247,253,251,.97); --accent:#2bbfa3;
+  }
+  .app[data-skin="ocean"]{          /* 海盐蓝 */
+    --bg-a:#eef5fc; --bg-b:#dcebf9; --bg-c:#c5ddf3;
+    --card-bg:rgba(255,255,255,.48); --card-br:rgba(255,255,255,.92);
+    --disc-a:#63a1dd; --disc-b:#3a6fb8;
+    --groove:rgba(30,80,150,.10); --dshadow:rgba(60,110,180,.32);
+    --tx:#122a44; --tx2:#4a6886; --tx3:#7a93ab;
+    --bar-bg:rgba(40,90,150,.2); --bar-fill:#3a6fb8;
+    --sheet-bg:rgba(247,251,255,.97); --accent:#3a7bd5;
+  }
+  .app[data-skin="grape"]{          /* 星空紫 */
+    --bg-a:#f2eefa; --bg-b:#e5dcf6; --bg-c:#d4c6ee;
+    --card-bg:rgba(255,255,255,.45); --card-br:rgba(255,255,255,.9);
+    --disc-a:#9a7fda; --disc-b:#7257bd;
+    --groove:rgba(80,50,150,.10); --dshadow:rgba(120,90,190,.32);
+    --tx:#2c2144; --tx2:#5f4f80; --tx3:#8677a3;
+    --bar-bg:rgba(90,60,160,.2); --bar-fill:#7257bd;
+    --sheet-bg:rgba(251,249,255,.97); --accent:#7c5cd6;
+  }
+  .app[data-skin="amusic"]{         /* Apple Music 红 */
+    --bg-a:#fff4f4; --bg-b:#ffe3e5; --bg-c:#ffd2d6;
+    --card-bg:rgba(255,255,255,.5); --card-br:rgba(255,255,255,.95);
+    --disc-a:#fb5c74; --disc-b:#e11d3f;
+    --groove:rgba(170,20,50,.10); --dshadow:rgba(230,50,80,.32);
+    --tx:#3d1420; --tx2:#844a58; --tx3:#a87581;
+    --bar-bg:rgba(150,30,60,.2); --bar-fill:#e11d3f;
+    --sheet-bg:rgba(255,248,248,.97); --accent:#fa233b;
+  }
+  .app[data-skin="mocha"]{          /* 摩卡棕 */
+    --bg-a:#f7f1ea; --bg-b:#eee1d3; --bg-c:#e0cdb8;
+    --card-bg:rgba(255,255,255,.45); --card-br:rgba(255,255,255,.88);
+    --disc-a:#7d5c42; --disc-b:#553a28;
+    --groove:rgba(90,60,35,.10); --dshadow:rgba(120,85,55,.35);
+    --tx:#38271a; --tx2:#6e5540; --tx3:#93795f;
+    --bar-bg:rgba(110,75,45,.2); --bar-fill:#5d4128;
+    --sheet-bg:rgba(253,250,246,.97); --accent:#8b5e3c;
+  }
+  .app[data-skin="spotify"]{        /* Spotify 黑绿 */
+    --bg-a:#1d2420; --bg-b:#121713; --bg-c:#0b0e0c;
+    --card-bg:rgba(255,255,255,.06); --card-br:rgba(255,255,255,.15);
+    --disc-a:#181d18; --disc-b:#0c0f0c;
+    --groove:rgba(255,255,255,.05); --dshadow:rgba(0,0,0,.6);
+    --tx:#f0f5f0; --tx2:rgba(235,245,235,.72); --tx3:rgba(235,245,235,.5);
+    --bar-bg:rgba(255,255,255,.2); --bar-fill:#f0f5f0;
+    --sheet-bg:rgba(18,23,19,.96); --accent:#1db954;
+  }
+  .app[data-skin="midnight"]{       /* 深夜蓝（暗色） */
+    --bg-a:#1e2740; --bg-b:#151c30; --bg-c:#0d1220;
+    --card-bg:rgba(255,255,255,.06); --card-br:rgba(255,255,255,.15);
+    --disc-a:#141a2b; --disc-b:#090c15;
+    --groove:rgba(255,255,255,.05); --dshadow:rgba(0,0,0,.6);
+    --tx:#eef2fb; --tx2:rgba(235,240,250,.72); --tx3:rgba(235,240,250,.5);
+    --bar-bg:rgba(255,255,255,.2); --bar-fill:#eef2fb;
+    --sheet-bg:rgba(18,24,40,.96); --accent:#4a9eff;
+  }
+  .app[data-skin="vinylx"]{          /* 悬浮黑胶（参照网易云图标：黑盘+大蓝标+顶部细针） */
+    --bg-a:#e9e8f0; --bg-b:#e9e8f0; --bg-c:#e2e1ec;
+    --card-bg:transparent; --card-br:transparent;
+    --disc-a:#191919; --disc-b:#0b0b0b;
+    --groove:rgba(255,255,255,.055); --dshadow:rgba(70,70,110,.28);
+    --tx:#2b2b38; --tx2:#5c5c6e; --tx3:#8b8b9c;
+    --bar-bg:rgba(60,60,90,.18); --bar-fill:#2b2b38;
+    --sheet-bg:rgba(250,250,253,.97); --accent:#5b5bd6;
+  }
+  .app[data-skin="vinylx"] .card{background:transparent;border-color:transparent;box-shadow:none}
+  .app[data-skin="vinylx"] .vinyl{box-shadow:0 0 0 2px rgba(255,255,255,.45),0 16px 36px rgba(70,70,110,.3)}
+  .app[data-skin="vinylx"] .art{inset:24%;box-shadow:none;
+    background:radial-gradient(circle at 32% 26%,#7a7ae8,#4b4bcd 62%,#3d3dbe)}
+  .app[data-skin="vinylx"] .arm{display:none}
+  .app[data-skin="vinylx"] .needle{display:block}
+  .app{
+    position:relative;width:min(430px,100vw);max-width:430px;overflow:hidden;
+    min-height:calc(100vh / var(--z,1));   /* 缩放后仍刚好铺满一屏 */
+    zoom:var(--z,1);                        /* 整体等比放大（含所有 px 尺寸） */
+    display:flex;flex-direction:column;color:var(--tx);
+    background:
+      radial-gradient(120% 60% at 85% 4%, var(--bg-a) 0%, transparent 55%),
+      radial-gradient(140% 70% at 15% 30%, var(--bg-b) 0%, transparent 60%),
+      linear-gradient(178deg,var(--bg-b) 0%,var(--bg-a) 55%,var(--bg-c) 100%);
+    transition:background .5s,color .5s;
+  }
+
+  /* 顶栏 */
+  .top{display:flex;align-items:center;gap:12px;padding:16px 20px 4px}
+  .top .pt{flex:1;min-width:0;font-size:12px;color:var(--tx2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .top .ic{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .top .ic svg{width:20px;height:20px;stroke:var(--tx2);fill:none;stroke-width:2}
+  .top .dot{stroke:var(--tx2);fill:var(--tx2)}
+  /* 收藏/星标：未点亮时一律中性灰，避免被皮肤色染成"像已收藏的红心" */
+  .top .ic.neutral svg{stroke:rgba(118,124,134,.92)}
+  .top .ic.neutral .slash{stroke:rgba(118,124,134,.92)}
+  .top .ic.neutral.on svg{stroke:var(--accent)}
+  .top .ic.on svg{stroke:var(--accent)}
+  .top .ic.on svg .fillable{fill:var(--accent)}
+  /* 「跳过/已掌握」新图标是实心路径（无描边）：中性灰 → 点亮用强调色 */
+  .top .ic svg.solid{stroke:none;fill:rgba(118,124,134,.92)}
+  .top .ic.on svg.solid{fill:var(--accent)}
+  /* 标记点亮瞬间的微动效：和收藏/星标一个手感，点到就有反馈 */
+  @keyframes mkpulse{0%{transform:scale(1)}38%{transform:scale(1.26)}100%{transform:scale(1)}}
+  .top .ic.pulse svg{animation:mkpulse .32s ease}
+  /* 斜线 = 「已划掉」标记：默认不显示，点了 ✓ 之后才划掉 */
+  .top .ic svg .slash{opacity:0;transition:opacity .2s}
+  .top .ic.on svg .slash{opacity:1}
+  .top{gap:9px}
+  .top .ic{width:30px;height:30px}
+  .top .ic svg{width:19px;height:19px}
+  .srow.col{flex-direction:column;align-items:stretch;gap:9px}
+  .seg.wrap{flex-wrap:wrap;justify-content:flex-start}
+  .clr{font-size:11.5px;color:var(--accent);cursor:pointer;font-weight:600}
+  /* 自定义链接面板 + 备份 */
+  .sheet.lks{z-index:26}
+  .lk{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--bar-bg)}
+  .lk input[type=checkbox]{flex:none;width:16px;height:16px;accent-color:var(--accent)}
+  .lk .lkn{font-size:13.5px;font-weight:600;color:var(--tx);cursor:pointer;flex:1;min-width:0;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .lk .lkn:hover{color:var(--accent)}
+  .lk .lku{font-size:10.5px;color:var(--tx3);max-width:42%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .lkrow{display:flex;gap:8px;padding:8px 0;border-bottom:1px solid var(--bar-bg);align-items:center}
+  .lkrow input{flex:1;min-width:0;padding:7px 10px;border-radius:9px;border:1px solid var(--bar-bg);
+    background:transparent;color:var(--tx);font-size:12.5px}
+  .lkrow input.nm{flex:0 0 96px}
+  .lkrow input:focus{outline:none;border-color:var(--accent)}
+  .lkrow .del{flex:none;font-size:13px;color:var(--accent);cursor:pointer;padding:4px 7px;user-select:none}
+  .lkbtns{display:flex;gap:10px;margin-top:14px;flex-wrap:wrap}
+  .lkbtns b{font-size:12.5px;font-weight:600;padding:8px 16px;border-radius:99px;
+    border:1px solid var(--bar-bg);color:var(--tx2);cursor:pointer}
+  .lkbtns b:hover{border-color:var(--accent);color:var(--accent)}
+  .lkbtns b.pri{border-color:var(--accent);color:var(--accent)}
+  .lkempty{padding:16px 0;color:var(--tx3);font-size:12.5px;line-height:1.8}
+  .bktip{font-size:11px;color:var(--tx3);line-height:1.6;margin-top:8px}
+  .repin{width:56px;padding:4px 6px;border-radius:8px;border:1px solid var(--bar-bg);
+    background:transparent;color:var(--tx);font-size:12px;text-align:center;font-variant-numeric:tabular-nums}
+  .repin:focus{outline:none;border-color:var(--accent)}
+
+  /* 唱片卡 */
+  .card{
+    position:relative;margin:10px 26px 0;aspect-ratio:1/1.02;border-radius:30px;
+    background:var(--card-bg);border:2px solid var(--card-br);
+    box-shadow:0 18px 44px var(--dshadow);flex:none;
+  }
+  .vinyl{
+    position:absolute;left:50%;top:50%;width:86%;aspect-ratio:1;
+    transform:translate(-50%,-50%);border-radius:50%;
+    background:
+      repeating-radial-gradient(circle at 50% 50%,var(--groove) 0 1px,transparent 1px 4px),
+      radial-gradient(circle at 50% 50%,var(--disc-a) 0 61%,var(--disc-b) 61% 100%);
+    box-shadow:0 10px 30px var(--dshadow),inset 0 0 0 1px rgba(255,255,255,.18);
+    animation:spin 14s linear infinite;animation-play-state:paused;
+  }
+  .playing .vinyl{animation-play-state:running}
+  @keyframes spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+  .vinyl::before{
+    content:"";position:absolute;inset:0;border-radius:50%;
+    background:conic-gradient(from 200deg,transparent 0 40deg,rgba(255,255,255,.22) 62deg,
+      transparent 92deg 210deg,rgba(255,255,255,.12) 235deg,transparent 268deg);
+  }
+  /* 盘心标签：跟随皮肤色系（同盘深色 + 白色高光），不再用单词色相，避免红胶紫标这种撞色 */
+  .art{
+    position:absolute;inset:27%;border-radius:50%;
+    background:
+      radial-gradient(circle at 30% 25%, rgba(255,255,255,.42), rgba(255,255,255,0) 58%),
+      var(--disc-b);
+    box-shadow:0 0 0 5px rgba(255,255,255,.22),0 4px 14px rgba(0,0,0,.28);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .art svg{width:42%;height:42%;fill:#fff;filter:drop-shadow(0 2px 5px rgba(0,0,0,.3))}
+  .art .cl{font-size:clamp(30px,8vw,46px);font-weight:800;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.3)}
+
+  /* 唱臂 */
+  .arm{position:absolute;top:-4px;right:0;width:110px;height:100%;z-index:5;pointer-events:none}
+  .arm .cap{position:absolute;top:0;right:30px;width:30px;height:16px;border-radius:9px 9px 5px 5px;background:var(--arm-a);box-shadow:0 2px 6px rgba(0,0,0,.18)}
+  .arm .pivot{position:absolute;top:12px;right:20px;width:46px;height:46px;border-radius:50%;
+    background:radial-gradient(circle at 35% 30%,var(--arm-a),var(--arm-b));box-shadow:0 4px 12px rgba(0,0,0,.25)}
+  .arm .pivot::before{content:"";position:absolute;inset:13px;border-radius:50%;background:rgba(140,140,160,.35)}
+  .arm .bar{position:absolute;top:32px;right:40px;width:7px;height:70%;border-radius:4px;
+    background:linear-gradient(var(--arm-a),var(--arm-b));transform-origin:3.5px 3.5px;
+    transform:rotate(var(--arm,0deg));transition:transform .6s cubic-bezier(.34,1.2,.5,1);
+    box-shadow:0 2px 6px rgba(0,0,0,.18)}
+  .arm .bar .head{position:absolute;left:50%;bottom:-10px;width:22px;height:44px;
+    transform:translateX(-50%) rotate(12deg);border-radius:11px;
+    background:linear-gradient(var(--arm-a),var(--arm-b));box-shadow:0 3px 8px rgba(0,0,0,.22)}
+
+  /* 顶部细针（vinylx 悬浮黑胶：轴点在上，细臂弯折落盘，照网易云图标） */
+  .needle{display:none;position:absolute;left:50%;top:-2px;width:26%;
+    transform:translateX(-50%) rotate(var(--nd,-30deg));
+    transform-origin:34% 3%;                 /* 旋转轴 = 轴点圆心 */
+    z-index:6;pointer-events:none;transition:transform .7s cubic-bezier(.34,1.2,.5,1)}
+  .needle svg{width:100%;height:auto;display:block;filter:drop-shadow(0 3px 6px rgba(0,0,0,.28))}
+
+  /* 主区：左唱片 + 右信息列；PC 自动变横向矩形 */
+  .main{flex:1;display:flex;flex-direction:column;min-height:0}
+  .side{flex:1;display:flex;flex-direction:column;min-width:0;position:relative}
+  .timerChip{position:absolute;right:0;top:0;font-size:11px;color:var(--tx3);opacity:.9;
+    letter-spacing:.4px;font-variant-numeric:tabular-nums;pointer-events:none}
+  /* 当前词的来源标记（星标/收藏/已跳过）：点一下即取消，专门救误点 */
+  .mkbadge{display:flex;flex-wrap:wrap;gap:6px;margin:9px 0 0}
+  .mkbadge .mk{font-style:normal;display:flex;align-items:center;font-size:11px;line-height:1;
+    padding:5px 8px;border-radius:99px;
+    border:1px solid var(--accent);color:var(--accent);cursor:pointer;user-select:none;
+    background:transparent;transition:opacity .15s,transform .15s}
+  .mkbadge .mk svg{width:14px;height:14px;display:block}
+  .mkbadge .mk svg.fill{fill:currentColor}
+  /* 标记统计：和「词库来源」用同一套图标，不再用 ⭐❤✓ 这种混搭 */
+  #markCnt{display:flex;align-items:center;gap:13px}
+  #markCnt b{display:flex;align-items:center;gap:4px;font-size:12.5px;font-weight:600;color:var(--tx2)}
+  #markCnt b svg{width:14px;height:14px;display:block}
+  #markCnt b svg.fill{fill:currentColor}
+  #clearBox{display:flex;gap:6px}
+  #clearBox b{display:flex;align-items:center;gap:3px;padding:5px 9px;font-size:12px}
+  #clearBox b svg{width:13px;height:13px;display:block}
+  #clearBox b svg.fill{fill:currentColor}
+  #clearBox b i{font-style:normal;font-size:10px;opacity:.65}
+  .mkbadge .mk:hover{opacity:.6}
+  .mkbadge .mk:active{transform:scale(.94)}
+  .mkbadge .mk::after{content:" ✕"}
+  @media (min-width:760px){
+    /* 宽屏：定成横向矩形（16:10）并随缩放等比，别再被 100vh 拉成竖长方形 */
+    body{align-items:center}
+    .app{width:min(1280px,calc(96vw / var(--z,1)));max-width:none;zoom:var(--z,1);
+      aspect-ratio:16/10;min-height:0;max-height:calc(96vh / var(--z,1));margin:auto;padding-bottom:8px}
+    .main{flex-direction:row;align-items:center;gap:40px;padding:8px 30px 0}
+    /* 唱片按视口宽高的较小者放大：既大又不至于撑出屏幕；宽屏接近方形（1:1），宽度够、高度也够长 */
+    .main>.card{margin:0;flex:0 0 calc(clamp(460px,min(50vw,58vh),780px) / var(--z,1));aspect-ratio:1/1;align-self:center}
+    .side{align-self:stretch;justify-content:flex-start}
+    /* 单词区在「角标」与「底部控制」之间的剩余空间里垂直居中 → 整体下移到中间 */
+    .side .word{padding:0;min-height:0;text-align:center;margin-top:auto;margin-bottom:auto}
+    .side .sec{font-size:11.5px;margin-bottom:12px}
+    .side .word .big{font-size:clamp(50px,5vw,74px);text-shadow:0 2px 10px rgba(0,0,0,.06)}
+    .side .word .ipa{font-size:20px;transform:translateY(-9px)}
+    .side .word .wrow{gap:12px}
+    .side .word .mean{font-size:clamp(16px,1.5vw,21px)}
+    .side .word .ex{font-size:17px}
+    .side .wav{--wvh:28px;height:42px;gap:5px}
+    .side .slot{min-height:96px;margin-top:34px;margin-bottom:26px}
+    .side .wav i{width:5px}
+    .side .skins{margin-top:8px}   /* 由 .word 的下 auto 外边距顶到列底 */
+    /* 用 .side 前缀提权重：压过写在后面的基础规则（margin-top:auto 等） */
+    .side .prog{padding:14px 0 0}
+    .side .ctrl{margin-top:8px;padding:6px 0 0}
+    .side .ctrl svg{width:27px;height:27px}
+    .side .ctrl .ord{font-size:13px}
+    .side .play{width:72px;height:72px}
+    .side .play svg{width:29px;height:29px}
+    .top .pt{font-size:13px}
+  }
+
+  /* 波浪：恢复原来的紧凑居中款，峰值收敛（不铺满、不高） */
+  .wav{--wvh:22px;display:none;align-items:flex-end;justify-content:center;gap:4px;height:34px}
+  .wav i{width:4px;height:5px;border-radius:2px;background:var(--tx3);opacity:.5;transition:opacity .3s}
+  .playing .wav i{opacity:.85;animation:wv .8s ease-in-out infinite alternate}
+  @keyframes wv{from{height:5px}to{height:var(--wvh,22px)}}
+
+  /* 单词区 */
+  .word{padding:20px 26px 0;text-align:center;min-height:150px}
+  /* 当前词的标记反馈（已收藏/已跳过/已标星）：显示在单词正上方，不挡底部 */
+  .wordTip{font-size:13px;font-weight:600;color:var(--accent);margin:2px auto 12px;padding:6px 15px;
+    border-radius:99px;display:block;width:fit-content;line-height:1.2;
+    background:color-mix(in srgb,var(--accent) 13%,transparent);
+    border:1px solid color-mix(in srgb,var(--accent) 42%,transparent);
+    opacity:0;transform:translateY(-6px);transition:opacity .25s,transform .25s;pointer-events:none}
+  .wordTip.on{opacity:1;transform:translateY(0)}
+  /* 章节/级别/进度：左上角角标，弱化处理不抢单词（小字 + 拉开距离 + 降透明度） */
+  .side .sec{font-size:10px;color:var(--tx3);opacity:.72;margin:0 0 10px;text-align:left;letter-spacing:.3px}
+  .word .wrow{display:inline-flex;align-items:flex-end;justify-content:center;gap:9px}
+  .word .big{font-size:clamp(36px,9.5vw,50px);font-weight:800;letter-spacing:.5px;line-height:1.15;color:var(--tx);
+    font-family:var(--wfont,"PingFang SC",-apple-system,sans-serif)}
+  /* 音标：贴在单词右下角当注音，不再单独占一行 */
+  .word .ipa{font-size:15px;color:var(--tx2);white-space:nowrap;transform:translateY(-7px)}
+  /* 固定槽位：高度锁死，波浪↔释义原地切换，不产生位移 */
+  .slot{display:flex;align-items:center;justify-content:center;min-height:72px;margin-top:26px}
+  .slot .txt{width:100%}
+  /* 释义：压成一行、字号收小（过长时省略，避免撑破排版） */
+  .word .mean{font-size:16px;font-weight:700;color:var(--tx);text-align:center;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+  .word .ex{font-size:13.5px;font-style:italic;color:var(--tx3);margin-top:8px;line-height:1.5}
+  .hiddenl{filter:blur(9px);opacity:.55;transition:filter .4s,opacity .4s}
+
+  /* 皮肤切换 */
+  .skins{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:14px}
+  .skins .lb{font-size:10.5px;color:var(--tx3)}
+  .skins .sw{width:25px;height:25px;border-radius:50%;cursor:pointer;border:2px solid transparent;box-shadow:0 2px 7px rgba(0,0,0,.2);transition:transform .2s}
+  .skins .sw:hover{transform:scale(1.08)}
+  .skins .sw.on{border-color:var(--accent);transform:scale(1.14)}
+  .skins .zbtn{font-size:10.5px;color:var(--tx2);border:1px solid var(--bar-bg);border-radius:99px;padding:3px 10px;cursor:pointer;user-select:none}
+  .skins .zbtn:hover{color:var(--accent);border-color:var(--accent)}
+
+  /* 进度：时间贴近两端（对齐官方） */
+  .prog{display:flex;align-items:center;gap:10px;padding:14px 20px 0}
+  .prog .t{flex:none;min-width:50px;font-size:10.5px;color:var(--tx2);font-variant-numeric:tabular-nums;white-space:nowrap}
+  .prog .t.r{text-align:right}
+  .bar{position:relative;flex:1;height:4px;border-radius:2px;background:var(--bar-bg);cursor:pointer}
+  .bar .fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:2px;background:var(--bar-fill)}
+  .bar .knob{position:absolute;top:50%;left:0;width:12px;height:12px;border-radius:50%;background:var(--bar-fill);transform:translate(-50%,-50%);box-shadow:0 1px 4px rgba(0,0,0,.3)}
+
+  /* 控制：全宽分布 顺序 · 快退 · 播放 · 快进 · 列表 */
+  .ctrl{margin-top:auto;display:flex;align-items:center;justify-content:space-between;padding:10px 22px 26px}
+  .ctrl svg{width:24px;height:24px;stroke:var(--tx);fill:none;stroke-width:1.8;cursor:pointer;transition:stroke .15s}
+  .ctrl svg:hover{stroke:var(--accent)}
+  .ctrl .ord{font-size:12px;color:var(--tx2);cursor:pointer;user-select:none;min-width:36px}
+  .ctrl .ord:hover{color:var(--accent)}
+  .play{width:64px;height:64px;border-radius:50%;background:transparent;border:2.5px solid var(--tx);
+    display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .15s;box-shadow:0 8px 20px rgba(0,0,0,.12)}
+  .play:active{transform:scale(.92)}
+  .play svg{width:26px;height:26px;stroke:none;fill:var(--tx)}
+
+  /* 设置面板 */
+  .sheet{position:absolute;left:0;right:0;bottom:0;z-index:20;background:var(--sheet-bg);backdrop-filter:blur(14px);
+    border-radius:22px 22px 0 0;padding:0 22px 28px;transform:translateY(105%);
+    /* 关键：面板必须限高且可滚动，否则顶部选项会被顶出屏幕点不到 */
+    max-height:calc(100% - 12px);overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;
+    transition:transform .35s cubic-bezier(.3,1,.4,1);box-shadow:0 -10px 30px rgba(0,0,0,.2)}
+  .sheet.on{transform:translateY(0)}
+  .sheet::-webkit-scrollbar{width:6px}
+  .sheet::-webkit-scrollbar-thumb{background:var(--bar-bg);border-radius:3px}
+  .sheet h3{font-size:14px;color:var(--tx);margin-bottom:0}
+  /* 标题行吸顶：滚动时「返回播放」始终可见 */
+  .shd{display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:2;
+    background:var(--sheet-bg);padding:16px 0 12px}
+  .shb{font-size:12.5px;font-weight:600;color:var(--accent);cursor:pointer;user-select:none}
+  .shb:hover{opacity:.75}
+  .top .ic{flex:none}
+  .srow{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;
+    padding:10px 0;border-bottom:1px solid var(--bar-bg)}
+  .srow:last-of-type{border-bottom:none}
+  .srow span{font-size:13.5px;color:var(--tx);white-space:nowrap}
+  .seg{display:flex;gap:6px;flex-wrap:wrap}
+  .seg b{font-size:11.5px;font-weight:600;padding:5px 11px;border-radius:99px;cursor:pointer;
+    border:1px solid var(--bar-bg);color:var(--tx2);display:flex;align-items:center;justify-content:center}
+  .seg b svg{width:15px;height:15px;display:block}
+  .seg b.icn{padding:5px 10px;min-width:34px}
+  .seg b.off{opacity:.5;cursor:not-allowed;border-style:dashed}
+  .seg b svg.fill{fill:currentColor}
+  .seg b.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  .sback{margin-top:14px;width:100%;padding:11px;border-radius:12px;border:1px solid var(--bar-bg);
+    background:transparent;color:var(--tx);font-size:14px;font-weight:600;cursor:pointer}
+
+  .toast{position:absolute;left:50%;bottom:110px;transform:translateX(-50%) translateY(10px);
+    background:rgba(0,0,0,.78);color:#fff;font-size:12px;padding:8px 14px;border-radius:99px;
+    opacity:0;transition:.3s;pointer-events:none;z-index:30;white-space:nowrap}
+  .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div class="app" id="app" data-skin="lemon">
+
+  <div class="top">
+    <div class="ic" id="backBtn" title="返回">
+      <svg viewBox="0 0 24 24" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m11 6-6 6 6 6"/></svg>
+    </div>
+    <div class="pt" id="ptitle">DeepSeek-OCR: Contexts Optical Compression · arXiv:2510.18234 · DeepSeek-AI, 2025</div>
+    <div class="ic" id="replayBtn" title="重听当前词">
+      <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 19C8 12.5 12.5 8.5 18.6 6"/><path d="M13 5.4l6.2-.1-.1 6.2"/></svg>
+    </div>
+    <div class="ic neutral" id="favBtn" title="收藏（再点取消）">
+      <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linejoin="round">
+        <path class="fillable heart" d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/>
+      </svg>
+    </div>
+    <div class="ic neutral" id="starBtn" title="标星（重点词，可只背星标）">
+      <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linejoin="round">
+        <path class="fillable star" d="m12 3.8 2.6 5.3 5.8.85-4.2 4.1 1 5.8-5.2-2.75-5.2 2.75 1-5.8-4.2-4.1 5.8-.85Z"/>
+      </svg>
+    </div>
+    <div class="ic neutral" id="okBtn" title="标为已掌握（跳过=不再朗读，再点恢复）">
+      <svg viewBox="0 0 1024 1024" class="solid">
+        <path d="M921.6 356.266667c-14.933333-8.533333-34.133333-4.266667-42.666667 12.8L829.866667 448c-51.2-157.866667-200.533333-266.666667-369.066667-266.666667-172.8 0-324.266667 115.2-373.333333 277.333334-4.266667 17.066667 4.266667 34.133333 21.333333 40.533333 17.066667 4.266667 34.133333-4.266667 40.533333-21.333333 40.533333-136.533333 166.4-232.533333 311.466667-232.533334 140.8 0 264.533333 89.6 307.2 219.733334l-81.066667-46.933334c-14.933333-8.533333-34.133333-4.266667-42.666666 10.666667-8.533333 14.933333-4.266667 34.133333 10.666666 42.666667l147.2 85.333333c4.266667 2.133333 10.666667 4.266667 17.066667 4.266667 2.133333 0 6.4 0 8.533333-2.133334 8.533333-2.133333 14.933333-8.533333 19.2-14.933333l85.333334-147.2c8.533333-12.8 4.266667-32-10.666667-40.533333zM896 757.333333H128c-17.066667 0-32 14.933333-32 32s14.933333 32 32 32h768c17.066667 0 32-14.933333 32-32s-14.933333-32-32-32z"/>
+      </svg>
+    </div>
+    <div class="ic" id="skinBtn" title="换皮肤（点一下换下一套）">
+      <svg viewBox="0 0 24 24" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M8.8 3.4c0 2 1.4 3.6 3.2 3.6s3.2-1.6 3.2-3.6l6.2 2.7-1.8 4.1-2.6-1.1v10.7H6.8V9.1L4.2 10.2 2.4 6.1Z"/></svg>
+    </div>
+    <div class="ic" id="moreBtn" title="设置">
+      <svg class="dot" viewBox="0 0 24 24" stroke="none"><circle cx="12" cy="5" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="12" cy="19" r="1.9"/></svg>
+    </div>
+  </div>
+
+  <div class="main">
+  <div class="card">
+    <div class="vinyl">
+      <div class="art" id="art">
+        <svg class="wave" viewBox="0 0 24 24" fill="#fff">
+          <rect x="3.2" y="9.5"  width="2.8" height="5"  rx="1.4"/>
+          <rect x="8.2" y="6"    width="2.8" height="12" rx="1.4"/>
+          <rect x="13.2" y="3"   width="2.8" height="18" rx="1.4"/>
+          <rect x="18.2" y="7.5" width="2.8" height="9"  rx="1.4"/>
+        </svg>
+      </div>
+    </div>
+    <div class="arm">
+      <div class="cap"></div><div class="pivot"></div>
+      <div class="bar"><div class="head"></div></div>
+    </div>
+    <div class="needle">
+      <svg viewBox="0 0 160 180" fill="none">
+        <defs>
+          <linearGradient id="ndg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#d4d4e0"/><stop offset="1" stop-color="#8f8fa2"/>
+          </linearGradient>
+        </defs>
+        <!-- 轴点 -->
+        <circle cx="55" cy="6" r="7.5" fill="#c9c9d6"/>
+        <circle cx="55" cy="6" r="3.2" fill="#9c9cad"/>
+        <!-- 弯针：平滑贝塞尔，连续弧度而非两段直线 -->
+        <path d="M55 12 C 63 52, 82 92, 108 126 C 115 135, 120 144, 121 152"
+              stroke="url(#ndg)" stroke-width="4.6" stroke-linecap="round"/>
+        <!-- 针头：沿曲线切线方向的圆头短粗段，与针身融为一体、不外凸 -->
+        <path d="M120.6 149.5 L122.2 162.5" stroke="url(#ndg)" stroke-width="8.5"
+              stroke-linecap="round"/>
+      </svg>
+    </div>
+  </div>
+
+  <div class="side">
+  <div class="sec" id="wsec">准备中…</div>
+  <div class="timerChip" id="timerChip" style="display:none">⏱ 0:00</div>
+  <div class="mkbadge" id="mkBadge" style="display:none"></div>
+  <div class="word">
+    <div class="wordTip" id="wordTip"></div>
+    <div class="wrow">
+      <span class="big" id="wbig">—</span>
+      <span class="ipa" id="wipa"></span>
+    </div>
+    <!-- 波浪与释义共用同一个固定位置：未揭晓=波浪，揭晓=原地换释义，不跳动 -->
+    <div class="slot">
+      <div class="wav" id="wav"></div>
+      <div class="txt" id="wtxt">
+        <div class="mean" id="wmean"></div>
+        <div class="ex" id="wex"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="prog">
+    <span class="t" id="cur">第 0 词</span>
+    <div class="bar" id="bar"><div class="fill" id="fill"></div><div class="knob" id="knob"></div></div>
+    <span class="t r" id="dur">共 0 词</span>
+  </div>
+
+  <div class="ctrl">
+    <span class="ord" id="ordBtn">顺序</span>
+    <svg viewBox="0 0 24 24" id="prevBtn"><path d="M19 20 9 12l10-8v16Z"/><path d="M5 5v14"/></svg>
+    <div class="play" id="play">
+      <svg id="icPlay" viewBox="0 0 24 24"><path d="M8 5.3v13.4L19 12Z"/></svg>
+      <svg id="icPause" viewBox="0 0 24 24" style="display:none"><rect x="6.5" y="5" width="3.6" height="14" rx="1.2"/><rect x="13.9" y="5" width="3.6" height="14" rx="1.2"/></svg>
+    </div>
+    <svg viewBox="0 0 24 24" id="nextBtn"><path d="M5 4l10 8-10 8V4Z"/><path d="M19 5v14"/></svg>
+    <svg viewBox="0 0 24 24" id="listBtn"><path d="M4 6h16M4 12h16M4 18h12"/></svg>
+  </div>
+  </div>
+  </div>
+
+  <div class="sheet" id="sheet">
+    <div class="shd"><h3>播放设置</h3><span class="shb" id="sheetBack">← 返回播放</span></div>
+    <div class="srow"><span>发音</span><div class="seg" id="segVoice"></div></div>
+    <div class="srow"><span>单词音色</span><div class="seg" id="segEnVoice"></div></div>
+    <div class="srow"><span>中文音色</span><div class="seg" id="segZhVoice"></div></div>
+    <div class="srow"><span>单词重复</span>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="seg" id="segRepeat"></div>
+        <input id="repInput" class="repin" type="number" min="1" max="20" step="1" title="自定义次数（1–20）">
+      </div>
+    </div>
+    <div class="srow"><span>每词停顿</span><div class="seg" id="segPause"></div></div>
+    <div class="srow"><span>语速</span><div class="seg" id="segRate"></div></div>
+    <div class="srow"><span>先听后现</span><div class="seg" id="segReveal"></div></div>
+    <div class="srow"><span>朗读中文</span><div class="seg" id="segZh"></div></div>
+    <div class="srow"><span>朗读例句</span><div class="seg" id="segEx"></div></div>
+    <div class="srow"><span>界面缩放</span><div class="seg" id="segZoom"></div></div>
+    <div class="srow"><span>单词字体</span><div class="seg" id="segFont"></div></div>
+    <div class="srow"><span>定时停止</span><div class="seg" id="segTimer"></div></div>
+    <div class="srow"><span>词库来源</span><div class="seg" id="segSource"></div></div>
+    <div class="srow"><span id="markCnt"></span><div class="seg" id="clearBox" style="margin-left:auto"></div></div>
+    <div class="srow col"><span>链接与备份</span>
+      <div class="seg wrap" id="backupBox"></div>
+      <div class="bktip">清除浏览器数据（缓存/站点数据）会丢失 星标、收藏、跳过 记录和链接配置。建议先「导出备份」保存到本地；换设备或清缓存后用「导入备份」一键恢复。</div>
+    </div>
+    <div class="srow"><span>顺序</span><div class="seg" id="segOrder"></div></div>
+    <div class="srow"><span>跳过已掌握</span><div class="seg" id="segSkip"></div></div>
+    <div class="srow col"><span>词汇级别（点选，点一下关掉该级）</span><div class="seg wrap" id="lvBox"></div></div>
+    <div class="srow col"><span>范围（章节，点选）</span><div class="seg wrap" id="rangeBox"></div></div>
+    <button class="sback" id="setupBack">← 返回播放</button>
+  </div>
+
+  <!-- 链接选择面板：多个链接时勾选多开，单个直接点名称 -->
+  <div class="sheet lks" id="linkPop">
+    <div class="shd"><h3>朗读 / 讲解链接</h3><span class="shb" id="linkPopBack">← 返回</span></div>
+    <div id="linkList"></div>
+    <div class="lkbtns" id="linkPopBtns"></div>
+  </div>
+  <!-- 链接配置面板：增删改本篇的链接 -->
+  <div class="sheet lks" id="linkCfg">
+    <div class="shd"><h3>配置链接（本篇）</h3><span class="shb" id="linkCfgBack">← 返回</span></div>
+    <div id="linkRows"></div>
+    <div class="lkbtns">
+      <b id="linkAddRow">＋ 添加一行</b>
+      <b id="linkSave" class="pri">保存</b>
+    </div>
+  </div>
+  <input type="file" id="importFile" accept=".json,application/json" style="display:none">
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+const ITEMS=[{"w": "accordingly", "ipa": "əˈkɔrdɪŋli", "pos": "adv.", "m": "因此，据此", "ex": "Accordingly, we present DeepSeek-OCR", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "allocation", "ipa": "ˌæləˈkeɪʃən", "pos": "n.", "m": "分配，配置；安置", "ex": "Our quantitative analysis provides empirical guidelines for VLM token allocation optimization, while the proposed DeepEncoder architecture showcases practical feasibility with real-world deployment capabilities.", "lv": "六级", "ov": "", "sec": "Intro"}, {"w": "compact", "ipa": "kəmˈpækt", "pos": "adj.", "m": "紧凑的", "ex": "compact language models can effectively learn to decode compressed visual representations", "lv": "六级", "ov": "", "sec": "Intro"}, {"w": "comprehensive", "ipa": "ˌkɑmprɪˈhensɪv", "pos": "adj.", "m": "全面的", "ex": "we provide comprehensive quantitative analysis of vision-text token compression ratios", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "compression", "ipa": "kəmˈprɛʃən", "pos": "n.", "m": "压缩，压紧，浓缩", "ex": "Our work makes three primary contributions: First, we provide comprehensive quantitative analysis of vision-text token compression", "lv": "六级", "ov": "", "sec": "Intro"}, {"w": "compressor", "ipa": "kəmˈpresər", "pos": "n.", "m": "压缩器", "ex": "This design ensures that the window attention component processes a large number of vision tokens, while the compressor reduces vision tokens before they enter the dense global attention component, achieving effective memory and …", "lv": "专四", "ov": "", "sec": "Intro"}, {"w": "deficiency", "ipa": "dɪˈfɪʃənsi", "pos": "n.", "m": "缺乏；不足", "ex": "used in current open-source VLMs, all of which suffer from their respective deficiencies.", "lv": "六级", "ov": "", "sec": "Intro"}, {"w": "demonstrate", "ipa": "ˈdemənstreɪt", "pos": "v.", "m": "证明", "ex": "The results demonstrate that compact language models can effectively learn", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "deployment", "ipa": "dɪˈplɔɪmənt", "pos": "n.", "m": "部署", "ex": "Our quantitative analysis provides empirical guidelines for VLM token allocation optimization, while the proposed DeepEncoder architecture showcases practical feasibility with real-world deployment capabilities.", "lv": "六级", "ov": "", "sec": "Intro"}, {"w": "effective", "ipa": "ˈifɛktɪv", "pos": "adj.", "m": "有效的；有影响的", "ex": "This design ensures that the window attention component processes a large number of vision tokens, while the compressor reduces vision tokens before they enter the dense global attention component, achieving effective memory and …", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "efficient", "ipa": "ɪˈfɪʃənt", "pos": "adj.", "m": "效率高的，有能力的", "ex": "Accordingly, we present DeepSeek-OCR, a VLM designed as a preliminary proof-of-concept for efficient vision-text compression.", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "empirical", "ipa": "ˌɛmˈpɪrɪkəl", "pos": "adj.", "m": "经验主义的", "ex": "Our quantitative analysis provides empirical guidelines for VLM token allocation optimization, while the proposed DeepEncoder architecture showcases practical feasibility with real-world deployment capabilities.", "lv": "六级", "ov": "", "sec": "Intro"}, {"w": "enhance", "ipa": "ɛnˈhæns", "pos": "v.", "m": "提高；加强；增加", "ex": "Additionally, we equip the model with capabilities for parsing charts, chemical formulas, simple geometric figures, and natural images to enhance its practical utility further.", "lv": "六级", "ov": "", "sec": "Intro"}, {"w": "ensure", "ipa": "ɪnˈʃʊr", "pos": "v.", "m": "确保", "ex": "This design ensures that the window attention component processes a large number", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "equivalent", "ipa": "ɪˈkwɪvələnt", "pos": "adj.", "m": "等价的", "ex": "fewer tokens than the equivalent digital text", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "establish", "ipa": "ɪˈstæblɪʃ", "pos": "v.", "m": "建立，创办，设立", "ex": "OCR tasks, as an intermediate modality bridging vision and language, provide an ideal testbed for this vision-text compression paradigm, as they establish a natural compression-decompression mapping between visual and textual …", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "excel", "ipa": "ɪkˈsɛl", "pos": "v.", "m": "胜过，杰出", "ex": "This insight motivates us to reexamine vision-language models (VLMs) from an LLM-centric perspective, focusing on how vision encoders can enhance LLMs’ efficiency in processing textual information rather than basic VQA [12, 16 …", "lv": "六级", "ov": "", "sec": "Intro"}, {"w": "exploration", "ipa": "ˌɛksplərˈeɪʃən", "pos": "n.", "m": "考察；勘探；探查", "ex": "In summary, this work presents a preliminary exploration of using visual modality as an efficient compression medium for textual information processing in LLMs.", "lv": "六级", "ov": "", "sec": "Intro"}, {"w": "generate", "ipa": "ˈʤɛnərˌeɪt", "pos": "v.", "m": "产生", "ex": "In production, DeepSeek-OCR can generate 33 million pages of data per day for LLMs or VLMs using 20 nodes (each with 8 A100-40G GPUs).", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "guideline", "ipa": "ˈgaɪˌdlaɪn", "pos": "n.", "m": "指导原则", "ex": "Our quantitative analysis provides empirical guidelines for VLM token allocation optimization, while the proposed DeepEncoder architecture showcases practical feasibility with real-world deployment capabilities.", "lv": "六级", "ov": "", "sec": "Intro"}, {"w": "ideal", "ipa": "aɪˈdiːl", "pos": "adj.", "m": "理想的", "ex": "provide an ideal testbed for this vision-text compression paradigm", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "insight", "ipa": "ˈɪnsaɪt", "pos": "n.", "m": "洞见", "ex": "This insight motivates us to reexamine vision-language models", "lv": "六级", "ov": "", "sec": "Intro"}, {"w": "intermediate", "ipa": "ˌɪntərˈmiːdiət", "pos": "adj.", "m": "中间的", "ex": "OCR tasks, as an intermediate modality bridging vision and language", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "maintain", "ipa": "meɪnˈteɪn", "pos": "v.", "m": "保持", "ex": "a novel architecture that maintains low activation memory", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "minimal", "ipa": "ˈmɪnɪməl", "pos": "adj.", "m": "极少的", "ex": "minimal vision tokens even with high-resolution inputs", "lv": "六级", "ov": "", "sec": "Intro"}, {"w": "motivate", "ipa": "ˈmoʊtɪveɪt", "pos": "v.", "m": "促使", "ex": "This insight motivates us to reexamine vision-language models", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "node", "ipa": "noʊd", "pos": "n.", "m": "节点；瘤；[数] 叉点", "ex": "In production, DeepSeek-OCR can generate 33 million pages of data per day for LLMs or VLMs using 20 nodes (each with 8 A100-40G GPUs).", "lv": "考博", "ov": "", "sec": "Intro"}, {"w": "overly", "ipa": "ˈoʊvərli", "pos": "adv.；n.", "m": "过度地；极度地；(Overly)人名；(英)奥弗利", "ex": "[×] overly small patches", "lv": "专八", "ov": "", "sec": "Intro"}, {"w": "paradigm", "ipa": "ˈpærədaɪm", "pos": "n.", "m": "范式", "ex": "an ideal testbed for this vision-text compression paradigm", "lv": "六级", "ov": "", "sec": "Intro"}, {"w": "precision", "ipa": "prɪˈsɪʒn", "pos": "n.", "m": "精度", "ex": "OCR decoding precision at", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "preliminary", "ipa": "prɪˈlɪmɪneri", "pos": "adj.", "m": "初步的", "ex": "designed as a preliminary proof-of-concept for efficient vision-text compression", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "proof", "ipa": "pruf", "pos": "n.", "m": "证据；证明；校样", "ex": "Accordingly, we present DeepSeek-OCR, a VLM designed as a preliminary proof-of-concept for efficient vision-text compression.", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "propose", "ipa": "prəˈpoʊz", "pos": "v.；v.", "m": "提议；求婚", "ex": "Our quantitative analysis provides empirical guidelines for VLM token allocation optimization, while the proposed DeepEncoder architecture showcases practical feasibility with real-world deployment capabilities.", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "quadratic", "ipa": "kwɑˈdrætɪk", "pos": "adj.；n.", "m": "[数] 二次的；二次方程式", "ex": "Introduction Current Large Language Models (LLMs) face significant computational challenges when processing long textual content due to quadratic scaling with sequence length.", "lv": "专八", "ov": "", "sec": "Intro"}, {"w": "quantitative", "ipa": "ˈkwɑntɪteɪtɪv", "pos": "adj.", "m": "定量的", "ex": "while offering quantitative evaluation metrics", "lv": "六级", "ov": "", "sec": "Intro"}, {"w": "readily", "ipa": "ˈredɪli", "pos": "adv.", "m": "轻易地", "ex": "larger LLMs could readily acquire similar capabilities", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "reduction", "ipa": "rɪˈdəkʃən", "pos": "n.", "m": "减少，减小，缩减", "ex": "Through DeepSeek-OCR, we demonstrate that vision-text compression can achieve significant token reduction", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "reexamine", "ipa": "ˌriːɪɡˈzæmɪn", "pos": "v.", "m": "重新审视", "ex": "This insight motivates us to reexamine vision-language models (VLMs)", "lv": "超纲", "ov": "", "sec": "Intro"}, {"w": "respective", "ipa": "rɪˈspɛktɪv", "pos": "adj.", "m": "各自的，各个的", "ex": "used in current open-source VLMs, all of which suffer from their respective deficiencies.", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "sequence", "ipa": "ˈsikwəns", "pos": "n.", "m": "连续，继续；次序", "ex": "Introduction Current Large Language Models (LLMs) face significant computational challenges when processing long textual content due to quadratic scaling with sequence length.", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "serially", "ipa": "ˈsɪriəli", "pos": "adv.", "m": "串行地", "ex": "It serially connects window attention and global attention encoder components", "lv": "超纲", "ov": "", "sec": "Intro"}, {"w": "showcase", "ipa": "ˈʃoʊˌkeɪs", "pos": "n.；vt.", "m": "陈列橱，[家具] 陈列柜；显示优点的东西；使展现；在玻璃橱窗陈列", "ex": "Our quantitative analysis provides empirical guidelines for VLM token allocation optimization, while the proposed DeepEncoder architecture showcases practical feasibility with real-world deployment capabilities.", "lv": "六级", "ov": "", "sec": "Intro"}, {"w": "solution", "ipa": "səˈluʃən", "pos": "n.", "m": "解决，解答，解决办法", "ex": "We explore a potential solution: leveraging visual modality as an efficient compression medium for textual information.", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "substantially", "ipa": "səbˈstænʃəli", "pos": "adv.", "m": "大幅地", "ex": "represent rich information using substantially fewer tokens", "lv": "托福", "ov": "", "sec": "Intro"}, {"w": "textual", "ipa": "ˈtɛksˌʧuəl", "pos": "adj.", "m": "本文的；按原文的", "ex": "In summary, this work presents a preliminary exploration of using visual modality as an efficient compression medium for textual information processing in LLMs.", "lv": "专八", "ov": "", "sec": "Intro"}, {"w": "utility", "ipa": "juˈtɪləti", "pos": "n.", "m": "使用，公共设施", "ex": "Additionally, we equip the model with capabilities for parsing charts, chemical formulas, simple geometric figures, and natural images to enhance its practical utility further.", "lv": "四级", "ov": "", "sec": "Intro"}, {"w": "activation", "ipa": "ˌæktɪˈveɪʃn", "pos": "n.", "m": "激活", "ex": "maintains low activation memory and minimal vision tokens", "lv": "超纲", "ov": "", "sec": "Encoder"}, {"w": "adaptive", "ipa": "əˈdæptɪv", "pos": "adj.", "m": "适合的, 适应的", "ex": "The third type is adaptive resolution encoding represented by Qwen2-VL [35], which adopts the NaViT [10] paradigm to directly process full images through patch-based segmentation without tile parallelization.", "lv": "六级", "ov": "", "sec": "Encoder"}, {"w": "advancement", "ipa": "ədˈvænsmənt", "pos": "n.", "m": "进步，提升", "ex": "With the advancement of VLMs, a large number of end-to-end OCR models have emerged, fundamentally transforming the traditional pipeline architecture (which required separate detection and recognition expert models) by simplifying …", "lv": "六级", "ov": "", "sec": "Encoder"}, {"w": "approach", "ipa": "əˈproʊʧ", "pos": "v.；n.", "m": "靠近；接近，方法", "ex": "Although capable of handling extremely high resolutions, this approach has notable limitations due to its", "lv": "四级", "ov": "", "sec": "Encoder"}, {"w": "clip", "ipa": "klɪp", "pos": "v.", "m": "剪；剪辑报刊", "ex": "DeepEncoder is the core of DeepSeek-OCR, comprising three components: a SAM [17] for perception dominated by window attention, a CLIP [29] for", "lv": "六级", "ov": "", "sec": "Encoder"}, {"w": "complicate", "ipa": "ˈkɑmpləˌkeɪt", "pos": "vt.", "m": "使复杂；使陷入", "ex": "While offering controllable parameters and activation memory, this approach suffers from significant drawbacks: it requires dual image preprocessing that complicates deployment and makes encoder pipeline parallelism challenging …", "lv": "四级", "ov": "", "sec": "Encoder"}, {"w": "compress", "ipa": "kəmˈpres", "pos": "v.", "m": "压缩", "ex": "the compressor reduces vision tokens before they enter the dense global attention", "lv": "四级", "ov": "", "sec": "Encoder"}, {"w": "comprise", "ipa": "kəmˈpraɪz", "pos": "v.", "m": "包含，包括；构成", "ex": "DeepEncoder is the core of DeepSeek-OCR, comprising three components: a SAM [17] for perception dominated by window attention, a CLIP [29] for", "lv": "四级", "ov": "", "sec": "Encoder"}, {"w": "computation", "ipa": "ˌkɑmpjəˈteɪʃən", "pos": "n.", "m": "计算, 估计", "ex": "The second type is tile-based method exemplified by InternVL2.0 [8], which processes images by dividing them into small tiles for parallel computation, reducing activation memory under high-resolution settings.", "lv": "六级", "ov": "", "sec": "Encoder"}, {"w": "controllable", "ipa": "kənˈtroʊləbəl", "pos": "adj.", "m": "可管理的, 可控制的", "ex": "While offering controllable parameters and activation memory, this approach suffers from significant drawbacks: it requires dual image preprocessing that complicates deployment and makes encoder pipeline parallelism challenging …", "lv": "托福", "ov": "", "sec": "Encoder"}, {"w": "core", "ipa": "kɔr", "pos": "n.", "m": "果实的心，核心", "ex": "DeepEncoder is the core of DeepSeek-OCR, comprising three components: a SAM [17] for perception dominated by window attention, a CLIP [29] for", "lv": "四级", "ov": "", "sec": "Encoder"}, {"w": "current", "ipa": "ˈkɑrənt", "pos": "adj.", "m": "当前的", "ex": "Typical Vision Encoders in VLMs Current open-source VLMs employ three main types of vision encoders, as illustrated in Figure 2.", "lv": "四级", "ov": "", "sec": "Encoder"}, {"w": "dense", "ipa": "dɛns", "pos": "adj.", "m": "稠密的", "ex": "before they enter the dense global attention component", "lv": "四级", "ov": "", "sec": "Encoder"}, {"w": "derivative", "ipa": "dərˈɪvɪtɪv", "pos": "n.；adj.", "m": "[化学] 衍生物，派生物；导数；派生的；引出的", "ex": "Additionally, general vision models such as Qwen-VL series [35], InternVL series [8], and many their derivatives continuously enhance their document OCR capabilities to explore dense visual perception boundaries.", "lv": "六级", "ov": "", "sec": "Encoder"}, {"w": "domain", "ipa": "doʊˈmeɪn", "pos": "n.", "m": "领域", "ex": "End-to-end OCR Models OCR, particularly document parsing task, has been a highly active topic in the image-to-text domain.", "lv": "六级", "ov": "", "sec": "Encoder"}, {"w": "dominate", "ipa": "ˈdɑməˌneɪt", "pos": "vi.；vt.", "m": "拥有优势；在…中占首要地位；支配，统治，控制；耸立于，俯视", "ex": "DeepEncoder is the core of DeepSeek-OCR, comprising three components: a SAM [17] for perception dominated by window attention, a CLIP [29] for", "lv": "六级", "ov": "", "sec": "Encoder"}, {"w": "dual", "ipa": "duəl", "pos": "adj.", "m": "双的， 两重的", "ex": "The first type is a dual-tower architecture represented by Vary [36], which utilizes parallel SAM [17] encoder to increase visual vocabulary parameters for high-resolution image processing.", "lv": "六级", "ov": "", "sec": "Encoder"}, {"w": "emerge", "ipa": "ˈimərʤ", "pos": "v.", "m": "出现", "ex": "With the advancement of VLMs, a large number of end-to-end OCR models have emerged, fundamentally transforming the traditional pipeline architecture (which required separate detection and recognition expert models) by simplifying …", "lv": "四级", "ov": "", "sec": "Encoder"}, {"w": "excessively", "ipa": "ɪkˈsɛsɪvli", "pos": "adv.", "m": "过分，极端地", "ex": "typically low native encoder resolution (below 512×512), causing large images to be excessively", "lv": "专四", "ov": "", "sec": "Encoder"}, {"w": "exemplify", "ipa": "ɪgˈzɛmpləˌfaɪ", "pos": "v.", "m": "举例证明（解释）", "ex": "The second type is tile-based method exemplified by InternVL2.0 [8], which processes images by dividing them into small tiles for parallel computation, reducing activation memory under high-resolution settings.", "lv": "六级", "ov": "", "sec": "Encoder"}, {"w": "flexibly", "ipa": "ˈflɛksəbli", "pos": "adv.", "m": "灵活地；易曲地；柔软地；有弹性地", "ex": "While this encoder can handle diverse resolutions flexibly, it faces substantial challenges with large images due to massive activation memory consumption that can cause GPU memory overflow, and sequence packing requires …", "lv": "专四", "ov": "", "sec": "Encoder"}, {"w": "fundamentally", "ipa": "ˌfəndəˈmɛnəli", "pos": "adv.", "m": "根本上", "ex": "With the advancement of VLMs, a large number of end-to-end OCR models have emerged, fundamentally transforming the traditional pipeline architecture (which required separate detection and recognition expert models) by simplifying …", "lv": "托福", "ov": "", "sec": "Encoder"}, {"w": "highlight", "ipa": "ˈhaɪˌlaɪt", "pos": "—", "m": "照亮；突出；强调", "ex": "GOT-OCR2.0 [38] expands the scope of OCR2.0 to include more synthetic image parsing tasks and designs an OCR model with performance-efficiency trade-offs, further highlighting the potential of end-to-end OCR researches.", "lv": "六级", "ov": "", "sec": "Encoder"}, {"w": "illustrate", "ipa": "ˈɪləˌstreɪt", "pos": "v.", "m": "说明,阐明", "ex": "Typical Vision Encoders in VLMs Current open-source VLMs employ three main types of vision encoders, as illustrated in Figure 2.", "lv": "四级", "ov": "", "sec": "Encoder"}, {"w": "limitation", "ipa": "ˌlɪmɪˈteɪʃən", "pos": "n.", "m": "限制；限度，局限", "ex": "Although capable of handling extremely high resolutions, this approach has notable limitations due to its", "lv": "四级", "ov": "", "sec": "Encoder"}, {"w": "massive", "ipa": "ˈmæsɪv", "pos": "adj.", "m": "巨大的 大量的", "ex": "While this encoder can handle diverse resolutions flexibly, it faces substantial challenges with large images due to massive activation memory consumption that can cause GPU memory overflow, and sequence packing requires …", "lv": "六级", "ov": "", "sec": "Encoder"}, {"w": "notable", "ipa": "ˈnoʊtəbəl", "pos": "adj.", "m": "值得注意的；著名的", "ex": "Although capable of handling extremely high resolutions, this approach has notable limitations due to its", "lv": "六级", "ov": "", "sec": "Encoder"}, {"w": "numerous", "ipa": "ˈnumərəs", "pos": "adj.", "m": "为数众多的；许多", "ex": "fragmented and resulting in numerous vision tokens.", "lv": "四级", "ov": "", "sec": "Encoder"}, {"w": "overflow", "ipa": "ˌoʊvərˈfloʊ", "pos": "v.", "m": "溢出，淹没", "ex": "While this encoder can handle diverse resolutions flexibly, it faces substantial challenges with large images due to massive activation memory consumption that can cause GPU memory overflow, and sequence packing requires …", "lv": "六级", "ov": "", "sec": "Encoder"}, {"w": "particularly", "ipa": "ˌpɑrˈtɪkjələrli", "pos": "adv.", "m": "特别，尤其，格外", "ex": "End-to-end OCR Models OCR, particularly document parsing task, has been a highly active topic in the image-to-text domain.", "lv": "四级", "ov": "", "sec": "Encoder"}, {"w": "perception", "ipa": "pərˈsɛpʃən", "pos": "n.", "m": "感知", "ex": "DeepEncoder is the core of DeepSeek-OCR, comprising three components: a SAM [17] for perception dominated by window attention, a CLIP [29] for", "lv": "六级", "ov": "", "sec": "Encoder"}, {"w": "phase", "ipa": "feɪz", "pos": "n.", "m": "阶段；方面；相位", "ex": "Long vision tokens will slow down both prefill and generation phases of inference.", "lv": "四级", "ov": "", "sec": "Encoder"}, {"w": "scope", "ipa": "skoʊp", "pos": "n.", "m": "范围", "ex": "GOT-OCR2.0 [38] expands the scope of OCR2.0 to include more synthetic image parsing tasks and designs an OCR model with performance-efficiency trade-offs, further highlighting the potential of end-to-end OCR researches.", "lv": "四级", "ov": "", "sec": "Encoder"}, {"w": "synthetic", "ipa": "sɪnˈθɛtɪk", "pos": "adj.", "m": "合成的，人造的", "ex": "GOT-OCR2.0 [38] expands the scope of OCR2.0 to include more synthetic image parsing tasks and designs an OCR model with performance-efficiency trade-offs, further highlighting the potential of end-to-end OCR researches.", "lv": "四级", "ov": "", "sec": "Encoder"}, {"w": "activate", "ipa": "ˈæktəˌveɪt", "pos": "v.", "m": "激活", "ex": "During inference, the model activates 6 out of 64 routed experts and 2 shared experts, with about 570M activated parameters.", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "anneal", "ipa": "əˈnil", "pos": "v.", "m": "使退火； 使加强， 使变硬", "ex": "All data is trained for 2 epochs with a batch size of 1280, using the AdamW [23] optimizer with cosine annealing scheduler [22] and a learning rate of 5e-5.", "lv": "GRE", "ov": "", "sec": "Disc"}, {"w": "annotation", "ipa": "ˌænəˈteɪʃən", "pos": "n.", "m": "注释， 注解", "ex": "For this data, we create two types of ground truth: coarse annotations and fine annotations.", "lv": "托福", "ov": "", "sec": "Disc"}, {"w": "augmentation", "ipa": "ˌɑgmɛnˈteɪʃən", "pos": "n.", "m": "增加", "ex": "To increase the diversity of rendered data, we introduce geometric translation-invariant data augmentation, where the same geometric image is translated in the original image, corresponding to the same ground truth drawn at the …", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "batch", "ipa": "bæʧ", "pos": "n.", "m": "一批， 一组， 一群； 一批生产量", "ex": "All data is trained for 2 epochs with a batch size of 1280, using the AdamW [23] optimizer with cosine annealing scheduler [22] and a learning rate of 5e-5.", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "bin", "ipa": "bɪn", "pos": "n.；v.", "m": "箱子，容器；二进制；把…放入箱中", "ex": "All coordinates are normalized into 1000 bins. directly from the full dataset using fitz, aimed at teaching the model to recognize optical text, especially in minority languages.", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "calculation", "ipa": "ˌkælkjəˈleɪʃən", "pos": "n.", "m": "计算，计算结果", "ex": "After padding, the number of valid vision tokens is less than the actual number of vision tokens, with the calculation formula being:", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "capability", "ipa": "ˌkeɪpəˈbɪləti", "pos": "n.", "m": "能力，才能", "ex": "It is reasonable to conjecture that LLMs, through specialized pretraining optimization, would demonstrate more natural integration of such capabilities.", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "centric", "ipa": "ˈsɛntrɪk", "pos": "adj.", "m": "以…为中心的", "ex": "The 3B DeepSeekMoE is very suitable for domain-centric (OCR for us) VLM research, as it obtains the expressive capability of a 3B model while enjoying the inference efficiency of a 500M small model.", "lv": "托福", "ov": "", "sec": "Disc"}, {"w": "coarse", "ipa": "kɔrs", "pos": "adj.", "m": "粗的，粗糙的", "ex": "During the training of DeepSeek-OCR, coarse labels and fine labels are distinguished using different prompts.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "commonly", "ipa": "ˈkɑmənli", "pos": "adv.", "m": "普通地，一般地", "ex": "Each line segment is encoded using the Slow Perception [39] manner. to render 10M images, mainly including commonly used line, bar, pie, and composite charts.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "compose", "ipa": "kəmˈpoʊz", "pos": "v.", "m": "组成，构成；创作", "ex": "DeepEncoder is approximately 380M in parameters, mainly composed of an 80M SAM-base [17] and a 300M CLIP-large [29] connected in series.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "composite", "ipa": "kəmˈpɑzət", "pos": "adj.；n.", "m": "合成的；合成物", "ex": "Each line segment is encoded using the Slow Perception [39] manner. to render 10M images, mainly including commonly used line, bar, pie, and composite charts.", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "conjecture", "ipa": "kənˈʤɛkʧər", "pos": "n.；v.", "m": "推测；猜想；推测；揣摩", "ex": "It is reasonable to conjecture that LLMs, through specialized pretraining optimization, would demonstrate more natural integration of such capabilities.", "lv": "考博", "ov": "", "sec": "Disc"}, {"w": "conveniently", "ipa": "kənˈvinjəntli", "pos": "adv.", "m": "方便地；合宜地", "ex": "We introduce such type of data mainly to preserve the general vision interface, so that researchers interested in our model and general vision task can conveniently advance their work in the future.", "lv": "托福", "ov": "", "sec": "Disc"}, {"w": "conversion", "ipa": "kənˈvərʒən", "pos": "n.", "m": "转变，转化；改变", "ex": "We define chart parsing as image-to-HTML-table conversion task, as shown in Figure 6(a).", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "coordinate", "ipa": "koʊˈɔrdəˌneɪt", "pos": "v.", "m": "使协调，调节", "ex": "All coordinates are normalized into 1000 bins. directly from the full dataset using fitz, aimed at teaching the model to recognize optical text, especially in minority languages.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "decode", "ipa": "diːˈkoʊd", "pos": "v.", "m": "解码", "ex": "the model can effectively decode text tokens", "lv": "专四", "ov": "", "sec": "Disc"}, {"w": "define", "ipa": "dɪˈfaɪn", "pos": "v.", "m": "下定义，确定", "ex": "We define chart parsing as image-to-HTML-table conversion task, as shown in Figure 6(a).", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "degrade", "ipa": "dɪˈgreɪd", "pos": "v.", "m": "使降低；使堕落", "ex": "For images with both width and height smaller than 640, 𝑛is set to 0, i.e., Gundam mode will degrade to Base mode.", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "delve", "ipa": "dɛlv", "pos": "v.；n.", "m": "钻研；探究；挖；穴；洞", "ex": "In the following paragraphs, we will delve into the model components, data engineering, and training skills.", "lv": "专八", "ov": "", "sec": "Disc"}, {"w": "detail", "ipa": "ˈditeɪl", "pos": "n.", "m": "细节", "ex": "Since the training protocol is identical to other modes, we omit the detailed description hereafter.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "detection", "ipa": "dɪˈtɛkʃən", "pos": "n.", "m": "侦查；察觉", "ex": "For minority languages, in the detection part, we find that the layout model enjoys certain generalization capabilities.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "directly", "ipa": "dɪˈrɛkli", "pos": "adv.", "m": "直接地；立即", "ex": "Since Tiny and Small modes have relatively small resolutions, to avoid wasting vision tokens, images are processed by directly resizing the original shape.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "diversity", "ipa": "dɪˈvərsɪti", "pos": "n.", "m": "多样性；差异", "ex": "To increase the diversity of rendered data, we introduce geometric translation-invariant data augmentation, where the same geometric image is translated in the original image, corresponding to the same ground truth drawn at the …", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "drawn", "ipa": "drɔn", "pos": "adj.", "m": "憔悴的", "ex": "To increase the diversity of rendered data, we introduce geometric translation-invariant data augmentation, where the same geometric image is translated in the original image, corresponding to the same ground truth drawn at the …", "lv": "GRE", "ov": "", "sec": "Disc"}, {"w": "effectively", "ipa": "ˈifɛktɪvli", "pos": "adv.", "m": "有效地", "ex": "The function 𝑓dec represents a non-linear mapping that can be effectively learned by compact language models through OCR-style training.", "lv": "托福", "ov": "", "sec": "Disc"}, {"w": "efficiency", "ipa": "ɪˈfɪʃənsi", "pos": "n.", "m": "效率；功效，效能", "ex": "The 3B DeepSeekMoE is very suitable for domain-centric (OCR for us) VLM research, as it obtains the expressive capability of a 3B model while enjoying the inference efficiency of a 500M small model.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "embed", "ipa": "ɪmˈbɛd", "pos": "vt.", "m": "把…嵌入， 扎牢； 使深留脑中", "ex": "For CLIP, we remove the first patch embedding layer since its input is no longer images but output tokens from the previous pipeline.", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "encode", "ipa": "ɛnˈkoʊd", "pos": "vt.", "m": "把译成电码， 把…编码", "ex": "Each line segment is encoded using the Slow Perception [39] manner. to render 10M images, mainly including commonly used line, bar, pie, and composite charts.", "lv": "考博", "ov": "", "sec": "Disc"}, {"w": "endpoint", "ipa": "ˈɛndˌpɔɪnt", "pos": "n.", "m": "端点", "ex": "For plane geometry, we convert the ground truth to dictionary format, where the dictionary contains keys such as line segments, endpoint coordinates, line segment types, etc., for better readability.", "lv": "托福", "ov": "", "sec": "Disc"}, {"w": "engine", "ipa": "ˈɪnʤən", "pos": "n.", "m": "引擎，发动机", "ex": "Data Engine We constructe complex and diverse training data for DeepSeek-OCR, including OCR 1.0 data, which mainly consists of traditional OCR tasks such as scene image OCR and document OCR;", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "epoch", "ipa": "ˈɛpək", "pos": "n.", "m": "（新）时代；历元", "ex": "All data is trained for 2 epochs with a batch size of 1280, using the AdamW [23] optimizer with cosine annealing scheduler [22] and a learning rate of 5e-5.", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "exceed", "ipa": "ɪkˈsiːd", "pos": "v.", "m": "超过", "ex": "decode text tokens exceeding 10 times the quantity", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "expressive", "ipa": "ɪkˈsprɛsɪv", "pos": "adj.", "m": "表现的；有表现力的；表达…的", "ex": "The 3B DeepSeekMoE is very suitable for domain-centric (OCR for us) VLM research, as it obtains the expressive capability of a 3B model while enjoying the inference efficiency of a 500M small model.", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "extract", "ipa": "ˈɛkˌstrækt", "pos": "v.；n.", "m": "取出；提取；摘录", "ex": "The encoder (namely DeepEncoder) is responsible for extracting image features and tokenizing as well as compressing visual representations.", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "facilitate", "ipa": "fəˈsɪlɪteɪt", "pos": "v.", "m": "促进", "ex": "this finding will facilitate the development of VLMs and LLMs", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "feasibility", "ipa": "ˌfiːzəˈbɪləti", "pos": "n.", "m": "可行性", "ex": "preliminarily validate the feasibility of contexts optical compression", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "feature", "ipa": "ˈfiʧər", "pos": "n.", "m": "特点", "ex": "The encoder (namely DeepEncoder) is responsible for extracting image features and tokenizing as well as compressing visual representations.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "flywheel", "ipa": "ˈflaɪˌwil", "pos": "n.", "m": "[机] 飞轮，惯性轮；调速轮", "ex": "In the recognition part, we use fitz to create small patch data to train a GOT-OCR2.0, then use the trained model to label small patches after layout processing, employing a model flywheel to create 600K data samples.", "lv": "专八", "ov": "", "sec": "Disc"}, {"w": "formula", "ipa": "ˈfɔrmjələ", "pos": "n.", "m": "公式，式", "ex": "For chemical formulas, we utilize SMILES format from PubChem as the data source and render them into images using RDKit, constructing 5M image-text pairs.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "fragment", "ipa": "ˈfrægmənt", "pos": "n.", "m": "碎片，破片，碎块", "ex": "It’s worth noting that due to our relatively large native resolutions, images won’t be fragmented too much under dynamic resolution (the number of tiles is controlled within the range of 2 to 9).", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "fully", "ipa": "ˈfʊli", "pos": "adv.；n.", "m": "充分地；完全地；彻底地；(Fully)人名；(法)菲利", "ex": "However, as described in the Section 2.1, current open-source encoders cannot fully satisfy all these conditions.", "lv": "专四", "ov": "", "sec": "Disc"}, {"w": "generalization", "ipa": "ˌʤɛnərəlɪˈzeɪʃən", "pos": "n.", "m": "一般化", "ex": "For minority languages, in the detection part, we find that the layout model enjoys certain generalization capabilities.", "lv": "专八", "ov": "", "sec": "Disc"}, {"w": "global", "ipa": "ˈgloʊbəl", "pos": "adj.", "m": "全球的， 全世界的； 总的， 完整的", "ex": "We use 20 nodes (each with 8 A100-40G GPUs) for training, with a data parallelism (DP) of 40 and a global batch size of 640.", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "hereafter", "ipa": "hɪˈræftər", "pos": "adv.", "m": "此后 n. || the hereafter将来，死后的生命", "ex": "Since the training protocol is identical to other modes, we omit the detailed description hereafter.", "lv": "专八", "ov": "", "sec": "Disc"}, {"w": "identical", "ipa": "aɪˈdɛntɪkəl", "pos": "adj.", "m": "相同的", "ex": "Since the training protocol is identical to other modes, we omit the detailed description hereafter.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "image", "ipa": "ˈɪmɪʤ", "pos": "n.", "m": "形象，声誉，印象", "ex": "The encoder (namely DeepEncoder) is responsible for extracting image features and tokenizing as well as compressing visual representations.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "incorporate", "ipa": "ˌɪnˈkɔrpərˌeɪt", "pos": "v.", "m": "合并；体现", "ex": "General vision data DeepEncoder can benefit from CLIP’s pretraining gains and has sufficient parameters to incorporate general visual knowledge.", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "indispensable", "ipa": "ˌɪndɪˈspensəbl", "pos": "adj.", "m": "不可或缺的", "ex": "serving as an indispensable assistant for LLMs", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "inference", "ipa": "ˈɪnfərəns", "pos": "n.", "m": "推断结果， 结论； 推论， 推理， 推断", "ex": "During inference, the model activates 6 out of 64 routed experts and 2 shared experts, with about 570M activated parameters.", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "inject", "ipa": "ˌɪnˈʤɛkt", "pos": "v.", "m": "注射；注满；喷射", "ex": "General vision data, which is mainly used to inject certain general image understanding capabilities into DeepSeek-OCR and preserve the general vision interface.", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "input", "ipa": "ˈɪnˌpʊt", "pos": "n.", "m": "输入；投入的资金", "ex": "Supporting dynamic resolution is mainly for application considera-tions, especially for ultra-high-resolution inputs (such as newspaper images).", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "insufficient", "ipa": "ˌɪnsəˈfɪʃnt", "pos": "adj.", "m": "不足的", "ex": "OCR alone is insufficient to fully validate true context optical compression", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "integration", "ipa": "ˌɪnəˈgreɪʃən", "pos": "n.", "m": "综合", "ex": "It is reasonable to conjecture that LLMs, through specialized pretraining optimization, would demonstrate more natural integration of such capabilities.", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "interface", "ipa": "ˈɪnərˌfeɪs", "pos": "n.", "m": "分界面", "ex": "General vision data, which is mainly used to inject certain general image understanding capabilities into DeepSeek-OCR and preserve the general vision interface.", "lv": "考研", "ov": "", "sec": "Disc"}, {"w": "interleaved", "ipa": "ˌɪntərˈliːvd", "pos": "adj.", "m": "交错的", "ex": "we will conduct digital-optical text interleaved pretraining", "lv": "超纲", "ov": "", "sec": "Disc"}, {"w": "interpolation", "ipa": "ɪn,tɚpəˈleʃən", "pos": "n.", "m": "篡改, 添写, 插补", "ex": "We meet the requirement aforementioned through dynamic interpolation of positional encodings, and design several resolution modes for simultaneous model training to achieve the capability of a single DeepSeek-OCR model supporting …", "lv": "GRE", "ov": "", "sec": "Disc"}, {"w": "kernel", "ipa": "ˈkərnəl", "pos": "n.", "m": "（果实的）核；谷粒", "ex": "Each convolutional layer has a kernel size of 3, stride of 2, padding of 1, and channels", "lv": "考博", "ov": "", "sec": "Disc"}, {"w": "label", "ipa": "ˈleɪbəl", "pos": "n.", "m": "标签；标记，符号", "ex": "The image data sources come from LAION [31] and Wukong [13], labeled using PaddleOCR [9], with 10M data samples each for Chinese and English.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "latent", "ipa": "ˈleɪtənt", "pos": "adj.", "m": "存在但看不见的", "ex": "The decoder reconstructs the original text representation from the compressed latent vision tokens of DeepEncoder as:", "lv": "考研", "ov": "", "sec": "Disc"}, {"w": "layer", "ipa": "leɪər", "pos": "n.", "m": "层，层次；铺设者", "ex": "For CLIP, we remove the first patch embedding layer since its input is no longer images but output tokens from the previous pipeline.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "layout", "ipa": "leɪaʊt", "pos": "n.", "m": "布局，安排，设计", "ex": "For minority languages, in the detection part, we find that the layout model enjoys certain generalization capabilities.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "linear", "ipa": "ˈlɪniər", "pos": "adj.", "m": "线的；长度的", "ex": "The function 𝑓dec represents a non-linear mapping that can be effectively learned by compact language models through OCR-style training.", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "longer", "ipa": "ˈlɔŋgər", "pos": "—", "m": "比较久(的)", "ex": "For CLIP, we remove the first patch embedding layer since its input is no longer images but output tokens from the previous pipeline.", "lv": "托福", "ov": "", "sec": "Disc"}, {"w": "mainly", "ipa": "ˈmeɪnli", "pos": "adv.", "m": "主要地，大体上", "ex": "DeepEncoder is approximately 380M in parameters, mainly composed of an 80M SAM-base [17] and a 300M CLIP-large [29] connected in series.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "methodology", "ipa": "ˌmɛθəˈdɑləʤi", "pos": "n.", "m": "方法学，方法论", "ex": "Methodology 3.1.", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "mode", "ipa": "moʊd", "pos": "n.", "m": "方式，样式", "ex": "Since Tiny and Small modes have relatively small resolutions, to avoid wasting vision tokens, images are processed by directly resizing the original shape.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "moderate", "ipa": "ˈmɑdərˌeɪt", "pos": "adj.", "m": "温和的；有节制的", "ex": "Moderate parameter count.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "module", "ipa": "ˈmɑʤul", "pos": "n.", "m": "模块；组件", "ex": "numbers of vision tokens) and enhance the practicality of DeepSeek-OCR, we configure it with multiple resolution modes. the 4096 tokens go through the compression module and the token count becomes 4096/16=256, thus making the …", "lv": "考研", "ov": "", "sec": "Disc"}, {"w": "multiple", "ipa": "ˈməltəpəl", "pos": "adj.", "m": "复合的；并联的", "ex": "Multiple resolution support Suppose we have an image with 1000 optical characters and we want to test how many vision tokens are needed for decoding.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "namely", "ipa": "ˈneɪmli", "pos": "adv.", "m": "即，也就是", "ex": "The encoder (namely DeepEncoder) is responsible for extracting image features and tokenizing as well as compressing visual representations.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "normalize", "ipa": "ˈnɔrməˌlaɪz", "pos": "v.", "m": "使标准化，使正规化；归一化", "ex": "All coordinates are normalized into 1000 bins. directly from the full dataset using fitz, aimed at teaching the model to recognize optical text, especially in minority languages.", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "omit", "ipa": "oʊˈmɪt", "pos": "v.", "m": "省略，省去；遗漏", "ex": "Since the training protocol is identical to other modes, we omit the detailed description hereafter.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "optical", "ipa": "ˈɑptɪkəl", "pos": "adj.", "m": "眼的；光学的", "ex": "Multiple resolution support Suppose we have an image with 1000 optical characters and we want to test how many vision tokens are needed for decoding.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "optimization", "ipa": "ɑptɪmɪˈzeɪʃən", "pos": "n.", "m": "最佳化, 最优化", "ex": "It is reasonable to conjecture that LLMs, through specialized pretraining optimization, would demonstrate more natural integration of such capabilities.", "lv": "托福", "ov": "", "sec": "Disc"}, {"w": "original", "ipa": "ərˈɪʤənəl", "pos": "adj.", "m": "原始的，最初的", "ex": "Since Tiny and Small modes have relatively small resolutions, to avoid wasting vision tokens, images are processed by directly resizing the original shape.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "overall", "ipa": "ˈoʊvərˌɔl", "pos": "n.；adj.", "m": "工装裤；全面的", "ex": "This is mainly for load balancing, as Gundam-master’s resolution is too large and training it together would slow down the overall training speed.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "pad", "ipa": "pæd", "pos": "n.；v.", "m": "垫；本子；填塞", "ex": "After padding, the number of valid vision tokens is less than the actual number of vision tokens, with the calculation formula being:", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "parallelism", "ipa": "ˈpɛrəˌlɛˌlɪzəm", "pos": "n.", "m": "平行， 类似", "ex": "The entire model uses pipeline parallelism (PP) and is divided into 4 parts, with DeepEncoder taking two parts and the decoder taking two parts.", "lv": "GRE", "ov": "", "sec": "Disc"}, {"w": "parameter", "ipa": "pərˈæmətər", "pos": "n.", "m": "参（变）数；参量", "ex": "DeepEncoder is approximately 380M in parameters, mainly composed of an 80M SAM-base [17] and a 300M CLIP-large [29] connected in series.", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "patch", "ipa": "pæʧ", "pos": "n.；v.", "m": "补钉；碎片；补缀", "ex": "For CLIP, we remove the first patch embedding layer since its input is no longer images but output tokens from the previous pipeline.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "pipeline", "ipa": "ˈpaɪˌplaɪn", "pos": "n.", "m": "管道, 传递途径", "ex": "The entire model uses pipeline parallelism (PP) and is divided into 4 parts, with DeepEncoder taking two parts and the decoder taking two parts.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "portion", "ipa": "ˈpɔrʃən", "pos": "n.", "m": "一部分；一分", "ex": "Note that DeepSeek-OCR is not a general VLM model, and this portion of data accounts for only 20% of the total data.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "practicality", "ipa": "ˌpræktɪˈkæləti", "pos": "n.", "m": "实用性，实际性；实际，实例", "ex": "numbers of vision tokens) and enhance the practicality of DeepSeek-OCR, we configure it with multiple resolution modes. the 4096 tokens go through the compression module and the token count becomes 4096/16=256, thus making the …", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "precede", "ipa": "prɪˈsid", "pos": "v.", "m": "先于…，领先", "ex": "layout and text format, where each paragraph of text is preceded by the coordinates and label of it in the original image.", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "prediction", "ipa": "priˈdɪkʃən", "pos": "n.", "m": "预言，预告；预报", "ex": "Training DeepEncoder Following Vary [36], we utilize a compact language model [15] and use the next token prediction framework to train DeepEncoder.", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "previous", "ipa": "ˈpriviəs", "pos": "adj.；adv.", "m": "之前的；先前地", "ex": "For CLIP, we remove the first patch embedding layer since its input is no longer images but output tokens from the previous pipeline.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "priority", "ipa": "praɪˈɔrəti", "pos": "n.", "m": "优先，优先权", "ex": "OCR 1.0 data Document data is the top priority for DeepSeek-OCR.", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "protocol", "ipa": "ˈproʊtəˌkɔl", "pos": "n.", "m": "礼仪， 礼节； 草案， 议定书", "ex": "Since the training protocol is identical to other modes, we omit the detailed description hereafter.", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "ratio", "ipa": "ˈreɪʃiˌoʊ", "pos": "n.", "m": "比，比率", "ex": "For Base and Large modes, in order to preserve the original image aspect ratio, images are padded to the corresponding size.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "readability", "ipa": "ˌridəˈbɪlɪti", "pos": "n.", "m": "可读性", "ex": "For plane geometry, we convert the ground truth to dictionary format, where the dictionary contains keys such as line segments, endpoint coordinates, line segment types, etc., for better readability.", "lv": "托福", "ov": "", "sec": "Disc"}, {"w": "reconstruct", "ipa": "ˌrikənˈstrəkt", "pos": "v.", "m": "重建；改造；修复；重现", "ex": "is the reconstructed text representation.", "lv": "专四", "ov": "", "sec": "Disc"}, {"w": "relatively", "ipa": "ˈrɛlətɪvli", "pos": "adv.", "m": "相对地，比较地", "ex": "Since Tiny and Small modes have relatively small resolutions, to avoid wasting vision tokens, images are processed by directly resizing the original shape.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "representation", "ipa": "ˌrɛprəzɛnˈteɪʃən", "pos": "n.", "m": "描写；陈述；代表", "ex": "The encoder (namely DeepEncoder) is responsible for extracting image features and tokenizing as well as compressing visual representations.", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "researcher", "ipa": "ˈrisərʧər", "pos": "n.", "m": "研究员", "ex": "We introduce such type of data mainly to preserve the general vision interface, so that researchers interested in our model and general vision task can conveniently advance their work in the future.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "resolution", "ipa": "ˌrɛzəˈluʃən", "pos": "n.", "m": "坚决，坚定；决定", "ex": "Supporting dynamic resolution is mainly for application considera-tions, especially for ultra-high-resolution inputs (such as newspaper images).", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "respectively", "ipa": "rɪˈspɛktɪvli", "pos": "adv.", "m": "各自地", "ex": "To benefit from the pretraining gains of previous works, we use SAM-base (patch-size 16) and CLIP-large as the main architectures for the two components respectively.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "responsible", "ipa": "riˈspɑnsəbəl", "pos": "adj.", "m": "负责的，有责任的", "ex": "The encoder (namely DeepEncoder) is responsible for extracting image features and tokenizing as well as compressing visual representations.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "rout", "ipa": "raʊt", "pos": "n.", "m": "溃退", "ex": "During inference, the model activates 6 out of 64 routed experts and 2 shared experts, with about 570M activated parameters.", "lv": "GRE", "ov": "", "sec": "Disc"}, {"w": "sample", "ipa": "ˈsæmpəl", "pos": "n.", "m": "样品；实例，标本", "ex": "The image data sources come from LAION [31] and Wukong [13], labeled using PaddleOCR [9], with 10M data samples each for Chinese and English.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "secondary", "ipa": "ˈsɛkənˌdɛri", "pos": "adj.", "m": "第二的；次要的", "ex": "Tiling is a form of secondary window attention that can effectively reduce activation memory further.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "series", "ipa": "ˈsɪriz", "pos": "n.", "m": "连续，系列；丛书", "ex": "DeepEncoder is approximately 380M in parameters, mainly composed of an 80M SAM-base [17] and a 300M CLIP-large [29] connected in series.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "simultaneous", "ipa": "ˌsaɪməlˈteɪniəs", "pos": "adj.", "m": "同步的", "ex": "We meet the requirement aforementioned through dynamic interpolation of positional encodings, and design several resolution modes for simultaneous model training to achieve the capability of a single DeepSeek-OCR model supporting …", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "source", "ipa": "sɔrs", "pos": "n.", "m": "来源", "ex": "The image data sources come from LAION [31] and Wukong [13], labeled using PaddleOCR [9], with 10M data samples each for Chinese and English.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "specialize", "ipa": "ˈspɛʃəˌlaɪz", "pos": "v.", "m": "专业从事", "ex": "It is reasonable to conjecture that LLMs, through specialized pretraining optimization, would demonstrate more natural integration of such capabilities.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "stride", "ipa": "straɪd", "pos": "v.；n.", "m": "大踏步走；大步", "ex": "Each convolutional layer has a kernel size of 3, stride of 2, padding of 1, and channels", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "sufficient", "ipa": "səˈfɪʃənt", "pos": "adj.", "m": "足够的", "ex": "General vision data DeepEncoder can benefit from CLIP’s pretraining gains and has sufficient parameters to incorporate general visual knowledge.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "supplement", "ipa": "ˌsəpləˈmɛnt", "pos": "—", "m": "增补，补充", "ex": "Additionally, we select some open-source data [28, 37] as supplements.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "tile", "ipa": "taɪl", "pos": "n.", "m": "瓷砖；贴砖；瓦片", "ex": "It’s worth noting that due to our relatively large native resolutions, images won’t be fragmented too much under dynamic resolution (the number of tiles is controlled within the range of 2 to 9).", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "ultra", "ipa": "ˈəltrə", "pos": "adj./n.", "m": "超前的，极端的；超…（前缀用法）", "ex": "Supporting dynamic resolution is mainly for application considera-tions, especially for ultra-high-resolution inputs (such as newspaper images).", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "unify", "ipa": "ˈjunəˌfaɪ", "pos": "vt.", "m": "使联合， 统一； 使相同， 使一致", "ex": "Architecture As shown in Figure 3, DeepSeek-OCR enjoys a unified end-to-end VLM architecture consisting of an encoder and a decoder.", "lv": "六级", "ov": "", "sec": "Disc"}, {"w": "utilize", "ipa": "ˈjutəˌlaɪz", "pos": "v.", "m": "利用", "ex": "Training DeepEncoder Following Vary [36], we utilize a compact language model [15] and use the next token prediction framework to train DeepEncoder.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "variable", "ipa": "ˈvɛriəbəl", "pos": "adj.；n.", "m": "易变的；变量", "ex": "This requires the model to support a variable number of vision tokens.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "vary", "ipa": "ˈvɛri", "pos": "v.", "m": "变化；不同", "ex": "Training DeepEncoder Following Vary [36], we utilize a compact language model [15] and use the next token prediction framework to train DeepEncoder.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "vision", "ipa": "ˈvɪʒən", "pos": "n.", "m": "视；想象力；梦幻", "ex": "In summary, when training DeepSeek-OCR, OCR data accounts for 70%, general vision data accounts for 20%, and text-only data accounts for 10%.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "width", "ipa": "wɪdθ", "pos": "n.", "m": "宽阔，广阔；宽度", "ex": "For images with both width and height smaller than 640, 𝑛is set to 0, i.e., Gundam mode will degrade to Base mode.", "lv": "四级", "ov": "", "sec": "Disc"}, {"w": "acceptable", "ipa": "əkˈsɛptəbəl", "pos": "adj.", "m": "可接受的，合意的", "ex": "acceptable edit distances, because the text tokens in newspapers are 4-5,000, far exceeding the", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "accord", "ipa": "əˈkɔrd", "pos": "v.", "m": "使一致；给予", "ex": "For the DeepSeek-OCR model, the values in parentheses in the \"Tokens\" column represent valid vision tokens, calculated according to Equation 1.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "additional", "ipa": "əˈdɪʃənəl", "pos": "adj.", "m": "额外的", "ex": "These results indicate that optical contexts compression is a very promising and worthwhile research direction, and this approach does not bring any overhead because it can leverage VLM infrastructure, as multimodal systems …", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "additionally", "ipa": "əˈdɪʃəˌnəli", "pos": "adv.", "m": "此外；又，加之", "ex": "Additionally, DeepSeek-OCR is a highly practical model capable of large-scale pretraining data production, serving as an indispensable assistant for LLMs.", "lv": "专四", "ov": "", "sec": "Concl"}, {"w": "arabic", "ipa": "ˈɛrəbɪk", "pos": "adj.；n.", "m": "阿拉伯的；阿拉伯人的；阿拉伯语", "ex": "Figure 11, where we select Arabic and Sinhala languages to demonstrate results.", "lv": "专四", "ov": "", "sec": "Concl"}, {"w": "assurance", "ipa": "əˈʃʊrəns", "pos": "n.", "m": "保证", "ex": "On the front label: - At the top left corner, some Chinese characters. - In bold black letters near the center-top reads \"6月香\" (June Fragrance). - Below that, smaller white font states \"鲜甜咸香\" which translates roughly to \"Fresh …", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "automatically", "ipa": "ˌɔtəˈmætɪkli", "pos": "adv.", "m": "自动地；不经思考地", "ex": "With just a prompt, the model can automatically identify what type of image it is and output the required results.", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "benchmark", "ipa": "ˈbɛnʧˌmɑrk", "pos": "n.；v.", "m": "基准；标准检查程序；用基准问题测试（计算机系统等）", "ex": "Nevertheless, the output format still cannot completely match Fox benchmarks, so the actual performance would be somewhat higher than the test results.", "lv": "专八", "ov": "", "sec": "Concl"}, {"w": "biological", "ipa": "ˌbaɪəˈlɑʤɪkəl", "pos": "adj.", "m": "生物的", "ex": "By combining these mechanisms, contexts optical compression method enables a form of memory decay that mirrors biological forgetting curves, where recent information maintains high fidelity while distant memories naturally fade …", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "bold", "ipa": "boʊld", "pos": "adj.", "m": "大胆的；冒失的", "ex": "On the front label: - At the top left corner, some Chinese characters. - In bold black letters near the center-top reads \"6月香\" (June Fragrance). - Below that, smaller white font states \"鲜甜咸香\" which translates roughly to \"Fresh …", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "bulletin", "ipa": "ˈbʊlɪtən", "pos": "n.", "m": "告示，公告，公报", "ex": "The classroom has a green wall with educational posters and a bulletin board.", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "cannot", "ipa": "ˈkænɑt", "pos": "conj.", "m": "不能", "ex": "Nevertheless, the output format still cannot completely match Fox benchmarks, so the actual performance would be somewhat higher than the test results.", "lv": "托福", "ov": "", "sec": "Concl"}, {"w": "capable", "ipa": "ˈkeɪpəbəl", "pos": "adj.", "m": "能干的，有能力的", "ex": "Additionally, DeepSeek-OCR is a highly practical model capable of large-scale pretraining data production, serving as an indispensable assistant for LLMs.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "circular", "ipa": "ˈsərkjələr", "pos": "adj.", "m": "圆的；循环的", "ex": "On the front label: - At the top left corner, some Chinese characters. - In bold black letters near the center-top reads \"6月香\" (June Fragrance). - Below that, smaller white font states \"鲜甜咸香\" which translates roughly to \"Fresh …", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "column", "ipa": "ˈkɑləm", "pos": "n.", "m": "专栏", "ex": "For the DeepSeek-OCR model, the values in parentheses in the \"Tokens\" column represent valid vision tokens, calculated according to Equation 1.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "completely", "ipa": "kəmˈplitli", "pos": "adv.", "m": "十分，完全地", "ex": "Nevertheless, the output format still cannot completely match Fox benchmarks, so the actual performance would be somewhat higher than the test results.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "completion", "ipa": "kəmˈpliʃən", "pos": "n.", "m": "完成，结束，完满", "ex": "Note that since we do not include SFT (Supervised Fine-Tuning) stage, the model is not a chatbot, and some capabilities need completion prompts to be activated.", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "constitute", "ipa": "ˈkɑnstəˌtut", "pos": "v.", "m": "组成", "ex": "Figure 13 | Forgetting mechanisms constitute one of the most fundamental characteristics of", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "constraint", "ipa": "kənˈstreɪnt", "pos": "n.", "m": "限制，束缚，约束", "ex": "The approach suggests a path toward theoretically unlimited context architectures that balance information retention with computational constraints, though the practical implications and limitations of such vision-text …", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "consumer", "ipa": "kənˈsumər", "pos": "n.", "m": "消费者， 用户， 消耗者", "ex": "It has clear labeling intended for easy identification and understanding among consumers who read Mandarin.", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "consumption", "ipa": "kənˈsəmʃən", "pos": "n.", "m": "消费，消耗", "ex": "For older contexts, we could progressively downsizing the rendered images to further reduce token consumption.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "context", "ipa": "ˈkɑntɛkst", "pos": "n.", "m": "背景，环境", "ex": "From another perspective, optical contexts compression still offers substantial room for research and improvement, representing a promising new direction.", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "convert", "ipa": "ˈkɑnvərt", "pos": "v.", "m": "使转变；使改变", "ex": "Input image Result <image>\\nParse the figure. <image>\\n<|grounding|>Convert the document to markdown.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "crawl", "ipa": "krɔl", "pos": "v.", "m": "爬，爬行", "ex": "Figure 11 | To endow the capability of processing widely crawled PDFs (multilingual data), we", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "crucial", "ipa": "ˈkruʃəl", "pos": "adj.", "m": "至关重要的", "ex": "Charts are a crucial form of data representation in finance and scientific fields, and the chart structured extraction is an indispensable capability for future OCR models.", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "crystal", "ipa": "ˈkrɪstəl", "pos": "n.", "m": "水晶，结晶体；晶粒", "ex": "Just happened Crystal Clear 1 hour Very Clear Clear 1 day 1 week 1 month 1 year Blurry Very Blurry Almost Gone Distance↑ 10cm Crystal Clear 50cm Very Clear Clear 1m 3m 10m 20m Blurry Very Blurry Almost Gone Resolution↓ Crystal …", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "curve", "ipa": "kərv", "pos": "n.；v.", "m": "曲线；弯；弄弯", "ex": "By combining these mechanisms, contexts optical compression method enables a form of memory decay that mirrors biological forgetting curves, where recent information maintains high fidelity while distant memories naturally fade …", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "decay", "ipa": "dɪˈkeɪ", "pos": "v.；n.", "m": "腐烂；衰败；腐烂", "ex": "This assumption draws inspiration from the natural parallel between human memory decay over time and visual perception degradation over spatial distance—both exhibit similar patterns of progressive information loss, as shown in …", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "decompression", "ipa": "ˌdikəmˈprɛʃən", "pos": "n.", "m": "减压； 减压室", "ex": "Vision-text Compression Study We select Fox [21] benchmarks to verify DeepSeek-OCR’s compression-decompression capability for text-rich documents, in order to preliminarily explore the feasibility and boundaries of contexts …", "lv": "雅思", "ov": "", "sec": "Concl"}, {"w": "degradation", "ipa": "ˌdɛgrəˈdeɪʃən", "pos": "n.", "m": "降级；退化；衰变", "ex": "This assumption draws inspiration from the natural parallel between human memory decay over time and visual perception degradation over spatial distance—both exhibit similar patterns of progressive information loss, as shown in …", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "depict", "ipa": "dɪˈpɪkt", "pos": "vt.", "m": "描绘， 描述", "ex": "Input image Result Rendering The image depicts an indoor classroom setting with a group of children and an adult.", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "downsize", "ipa": "ˈdaʊnˌsaɪz", "pos": "v.", "m": "裁员", "ex": "For older contexts, we could progressively downsizing the rendered images to further reduce token consumption.", "lv": "雅思", "ov": "", "sec": "Concl"}, {"w": "dresser", "ipa": "ˈdrɛsər", "pos": "n.", "m": "梳妆台；碗柜；化妆师；裹伤员", "ex": "To the left, there is a wooden dresser with a drawer partially open, and a chair is visible behind it.", "lv": "专四", "ov": "", "sec": "Concl"}, {"w": "edit", "ipa": "ˈɛdət", "pos": "v.", "m": "剪辑，编辑", "ex": "Table 4 | Edit distances for different categories of documents in OmniDocBench.", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "educational", "ipa": "ˌɛʤəˈkeɪʃənəl", "pos": "adj.", "m": "教育的， 教育性的", "ex": "The presence of educational materials and the organized layout of the room indicate that this is a space designed for learning and reading. <image>\\nParse the figure.", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "enable", "ipa": "ɪˈneɪbəl", "pos": "v.", "m": "使能够……", "ex": "By combining these mechanisms, contexts optical compression method enables a form of memory decay that mirrors biological forgetting curves, where recent information maintains high fidelity while distant memories naturally fade …", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "endow", "ipa": "ɛnˈdaʊ", "pos": "v.", "m": "资助；赋予", "ex": "Figure 11 | To endow the capability of processing widely crawled PDFs (multilingual data), we", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "engage", "ipa": "ɪnˈgeɪʤ", "pos": "v.", "m": "忙于，从事；吸引", "ex": "The children are engaged with the woman, with some looking at her and others looking down or away.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "equation", "ipa": "ɪkˈweɪʒən", "pos": "n.", "m": "方程(式)；等式", "ex": "For the DeepSeek-OCR model, the values in parentheses in the \"Tokens\" column represent valid vision tokens, calculated according to Equation 1.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "evaluation", "ipa": "ɪˌvæljuˈeɪʃən", "pos": "n.", "m": "评价，评估", "ex": "Of course, OCR alone is insufficient to fully validate true context optical compression and we will conduct digital-optical text interleaved pretraining, needle-in-a-haystack testing, and other evaluations in the future.", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "exhibit", "ipa": "ɪgˈzɪbɪt", "pos": "v.", "m": "显示；陈列，展览", "ex": "This assumption draws inspiration from the natural parallel between human memory decay over time and visual perception degradation over spatial distance—both exhibit similar patterns of progressive information loss, as shown in …", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "experimental", "ipa": "ɪkˌspɛrɪˈmɛntəl", "pos": "adj.", "m": "实验的，试验的", "ex": "OCR Practical Performance DeepSeek-OCR is not only an experimental model; it has strong practical capabilities and can construct data for LLM/VLM pretraining.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "extraction", "ipa": "ɛkˈstrækʃən", "pos": "n.", "m": "抽出；提取法", "ex": "Charts are a crucial form of data representation in finance and scientific fields, and the chart structured extraction is an indispensable capability for future OCR models.", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "extremely", "ipa": "ɪkˈstrimli", "pos": "adv.", "m": "极端，极其，非常", "ex": "Due to the intricate interdependencies among line segments in geometric shapes, parsing geometry task is extremely challenging and has a long way to go.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "ferment", "ipa": "ˈfərmɛnt", "pos": "n.；v.", "m": "发酵；酵素；动乱；发酵；动乱", "ex": "On the front label: - At the top left corner, some Chinese characters. - In bold black letters near the center-top reads \"6月香\" (June Fragrance). - Below that, smaller white font states \"鲜甜咸香\" which translates roughly to \"Fresh …", "lv": "专四", "ov": "", "sec": "Concl"}, {"w": "fidelity", "ipa": "ˌfaɪˈdɛləti", "pos": "n.", "m": "保真度；忠诚；精确；尽责", "ex": "By combining these mechanisms, contexts optical compression method enables a form of memory decay that mirrors biological forgetting curves, where recent information maintains high fidelity while distant memories naturally fade …", "lv": "专四", "ov": "", "sec": "Concl"}, {"w": "financial", "ipa": "ˌfaɪˈnænʃəl", "pos": "adj.", "m": "财政的，经济的", "ex": "Figure 7 | In the field of financial research reports, the deep parsing mode of DeepSeek-OCR", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "font", "ipa": "fɑnt", "pos": "n.", "m": "字体；字形；泉；洗礼盘，圣水器", "ex": "On the front label: - At the top left corner, some Chinese characters. - In bold black letters near the center-top reads \"6月香\" (June Fragrance). - Below that, smaller white font states \"鲜甜咸香\" which translates roughly to \"Fresh …", "lv": "专八", "ov": "", "sec": "Concl"}, {"w": "fragrance", "ipa": "ˈfreɪgrəns", "pos": "n.", "m": "芳香， 香味； 香水", "ex": "On the front label: - At the top left corner, some Chinese characters. - In bold black letters near the center-top reads \"6月香\" (June Fragrance). - Below that, smaller white font states \"鲜甜咸香\" which translates roughly to \"Fresh …", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "geometric", "ipa": "ˌʤiəˈmɛtrɪk", "pos": "adj.", "m": "几何学的；[数] 几何学图形的", "ex": "Due to the intricate interdependencies among line segments in geometric shapes, parsing geometry task is extremely challenging and has a long way to go.", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "haystack", "ipa": "ˈheɪˌstæk", "pos": "n.", "m": "干草堆", "ex": "Of course, OCR alone is insufficient to fully validate true context optical compression and we will conduct digital-optical text interleaved pretraining, needle-in-a-haystack testing, and other evaluations in the future.", "lv": "专八", "ov": "", "sec": "Concl"}, {"w": "highly", "ipa": "ˈhaɪli", "pos": "adv.", "m": "高度地，很，非常", "ex": "Additionally, DeepSeek-OCR is a highly practical model capable of large-scale pretraining data production, serving as an indispensable assistant for LLMs.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "historical", "ipa": "hɪˈstɔrɪkəl", "pos": "adj.", "m": "历史的，有关历史的", "ex": "The contexts optical compression approach can simulate this mechanism by rendering previous rounds of historical text onto images for initial compression, then progressively resizing older images to achieve multi-level …", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "identity", "ipa": "aɪˈdɛntəˌti", "pos": "n.", "m": "身份", "ex": "Note: There might be slight variations due to handwriting styles but overall maintains readability regarding brand identity and contents description. <image>\\nDescribe this image in detail. <image>\\nLocate <|ref|>the …", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "illustration", "ipa": "ˌɪləˈstreɪʃən", "pos": "n.", "m": "说明，图解；例证", "ex": "On the front label: - At the top left corner, some Chinese characters. - In bold black letters near the center-top reads \"6月香\" (June Fragrance). - Below that, smaller white font states \"鲜甜咸香\" which translates roughly to \"Fresh …", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "implement", "ipa": "ˈɪmpləmənt", "pos": "v.", "m": "实施，执行", "ex": "directions for future applications, such as implementing optical processing for dialogue histories", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "implication", "ipa": "ˌɪmpləˈkeɪʃən", "pos": "n.", "m": "含义，暗示", "ex": "The approach suggests a path toward theoretically unlimited context architectures that balance information retention with computational constraints, though the practical implications and limitations of such vision-text …", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "improvement", "ipa": "ˌɪmˈpruvmənt", "pos": "n.", "m": "改进，改善；改进处", "ex": "From another perspective, optical contexts compression still offers substantial room for research and improvement, representing a promising new direction.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "inclusion", "ipa": "ˌɪnˈkluʒən", "pos": "n.", "m": "包含；内含物", "ex": "Meanwhile, due to the inclusion of text-only data, DeepSeek-OCR’s language capabilities are also retained.", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "increasingly", "ipa": "ˌɪnˈkrisɪŋgli", "pos": "adv.", "m": "日益，越来越多地", "ex": "The contexts optical compression approach can simulate this mechanism by rendering previous rounds of historical text onto images for initial compression, then progressively resizing older images to achieve multi-level …", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "indoor", "ipa": "ˈɪnˌdɔr", "pos": "adv.；adj.", "m": "在室内， 在户内；室内的", "ex": "Input image Result Rendering The image depicts an indoor classroom setting with a group of children and an adult.", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "infrastructure", "ipa": "ˌɪnfrəˈstrəkʧər", "pos": "n.", "m": "基础设施；公共建设；下部构造", "ex": "These results indicate that optical contexts compression is a very promising and worthwhile research direction, and this approach does not bring any overhead because it can leverage VLM infrastructure, as multimodal systems …", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "inherently", "ipa": "ˌɪnˈhɛrəntli", "pos": "adv.", "m": "固有地， 天性地", "ex": "These results indicate that optical contexts compression is a very promising and worthwhile research direction, and this approach does not bring any overhead because it can leverage VLM infrastructure, as multimodal systems …", "lv": "GRE", "ov": "", "sec": "Concl"}, {"w": "inspiration", "ipa": "ˌɪnspərˈeɪʃən", "pos": "n.", "m": "灵感", "ex": "This assumption draws inspiration from the natural parallel between human memory decay over time and visual perception degradation over spatial distance—both exhibit similar patterns of progressive information loss, as shown in …", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "interpolate", "ipa": "ˌɪˈtərpəˌleɪt", "pos": "v.", "m": "窜改, 添写进去, 插入新语句", "ex": "All metrics in the table are edit distances, where smaller values indicate better performance. \"Tokens\" represents the average number of vision tokens used per page, and \"†200dpi\" means using fitz to interpolate the original …", "lv": "GRE", "ov": "", "sec": "Concl"}, {"w": "intricate", "ipa": "ˈɪntrəkət", "pos": "adj.", "m": "错综复杂的， 复杂精细的", "ex": "Due to the intricate interdependencies among line segments in geometric shapes, parsing geometry task is extremely challenging and has a long way to go.", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "investigation", "ipa": "ˌɪnˌvɛstəˈgeɪʃən", "pos": "n.", "m": "调查，调查研究", "ex": "While our initial exploration shows potential for scalable ultra-long context processing, where recent contexts preserve high resolution and older contexts consume fewer resources, we acknowledge this is early-stage work that …", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "issue", "ipa": "ˈɪʃu", "pos": "v.；n.", "m": "发行；问题", "ex": "The first issue can be solved", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "item", "ipa": "ˈaɪtəm", "pos": "n.", "m": "条，条款", "ex": "Overall Style/Type: It looks like commercial packaging designed specifically for preserving food items within the jar.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "large-scale", "ipa": "ˈlɑrʤˌskeɪl", "pos": "adj.", "m": "大规模的， 大范围的", "ex": "believe this finding will facilitate the development of VLMs and LLMs in the future. Additionally, DeepSeek-OCR is a highly practical model capable of large-scale pretraining data", "lv": "雅思", "ov": "", "sec": "Concl"}, {"w": "leverage", "ipa": "ˈlɛvərɪʤ", "pos": "n.；v.", "m": "手段，影响力；杠杆作用；杠杆效率；利用；举债经营", "ex": "These results indicate that optical contexts compression is a very promising and worthwhile research direction, and this approach does not bring any overhead because it can leverage VLM infrastructure, as multimodal systems …", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "logo", "ipa": "ˈloʊgoʊ", "pos": "n.", "m": "商标，徽标；标识语", "ex": "On the front label: - At the top left corner, some Chinese characters. - In bold black letters near the center-top reads \"6月香\" (June Fragrance). - Below that, smaller white font states \"鲜甜咸香\" which translates roughly to \"Fresh …", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "mandarin", "ipa": "ˈmændərən", "pos": "n.；adj.", "m": "（中国）普通话；国语；官话；满清官吏；柑橘；紧身马褂的", "ex": "It has clear labeling intended for easy identification and understanding among consumers who read Mandarin.", "lv": "专八", "ov": "", "sec": "Concl"}, {"w": "mechanism", "ipa": "ˈmɛkəˌnɪzəm", "pos": "n.", "m": "机制，机能", "ex": "Figure 13 | Forgetting mechanisms constitute one of the most fundamental characteristics of", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "metric", "ipa": "ˈmɛtrɪk", "pos": "adj.", "m": "公制的，米制的", "ex": "All metrics in the table are edit distances, where smaller values indicate better performance. \"Tokens\" represents the average number of vision tokens used per page, and \"†200dpi\" means using fitz to interpolate the original …", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "naturally", "ipa": "ˈnæʧərəli", "pos": "adv.", "m": "自然地；天然地", "ex": "By combining these mechanisms, contexts optical compression method enables a form of memory decay that mirrors biological forgetting curves, where recent information maintains high fidelity while distant memories naturally fade …", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "nevertheless", "ipa": "ˌnɛvərðəˈlɛs", "pos": "conj.；adv.", "m": "然而；仍然", "ex": "Nevertheless, the output format still cannot completely match Fox benchmarks, so the actual performance would be somewhat higher than the test results.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "pant", "ipa": "pænt", "pos": "v.", "m": "气喘", "ex": "The children are dressed in various colors, with some wearing short pants and others in long pants.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "par", "ipa": "pɑr", "pos": "n.；adj.", "m": "标准；票面价值；平均数量；标准的；票面的", "ex": "400 tokens (285 valid tokens, 1280×1280 resolution), it achieves on-par performance with state-of-the-arts on this benchmark.", "lv": "专八", "ov": "", "sec": "Concl"}, {"w": "parse", "ipa": "pɑrs", "pos": "v.", "m": "解析", "ex": "Due to the intricate interdependencies among line segments in geometric shapes, parsing geometry task is extremely challenging and has a long way to go.", "lv": "GRE", "ov": "", "sec": "Concl"}, {"w": "partially", "ipa": "ˈpɑrʃəli", "pos": "adv.", "m": "部分地", "ex": "To the left, there is a wooden dresser with a drawer partially open, and a chair is visible behind it.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "paste", "ipa": "peɪst", "pos": "n.", "m": "糊，酱；浆湖", "ex": "On the front label: - At the top left corner, some Chinese characters. - In bold black letters near the center-top reads \"6月香\" (June Fragrance). - Below that, smaller white font states \"鲜甜咸香\" which translates roughly to \"Fresh …", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "perspective", "ipa": "pərˈspɛktɪv", "pos": "n.", "m": "视角，观点；远景", "ex": "From another perspective, optical contexts compression still offers substantial room for research and improvement, representing a promising new direction.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "planar", "ipa": "ˈpleɪnər", "pos": "adj.", "m": "平面的，二维的", "ex": "Figure 10 | DeepSeek-OCR also possesses the capability to copy (structure) simple planar", "lv": "超纲", "ov": "", "sec": "Concl"}, {"w": "presence", "ipa": "ˈprɛzəns", "pos": "n.", "m": "出席，到场；在", "ex": "The presence of educational materials and the organized layout of the room indicate that this is a space designed for learning and reading. <image>\\nParse the figure.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "progressive", "ipa": "prəˈgrɛsɪv", "pos": "adj.", "m": "进步的；向前进的", "ex": "This assumption draws inspiration from the natural parallel between human memory decay over time and visual perception degradation over spatial distance—both exhibit similar patterns of progressive information loss, as shown in …", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "progressively", "ipa": "prɑˈgrɛsɪvli", "pos": "adv.", "m": "日益增多地", "ex": "For older contexts, we could progressively downsizing the rendered images to further reduce token consumption.", "lv": "托福", "ov": "", "sec": "Concl"}, {"w": "prompt", "ipa": "prɑmpt", "pos": "adj.", "m": "敏捷的；v. 敦促", "ex": "Note that since we do not include SFT (Supervised Fine-Tuning) stage, the model is not a chatbot, and some capabilities need completion prompts to be activated.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "qualitative", "ipa": "kˈwɑləˌteɪtɪv", "pos": "adj.", "m": "质的；定性的", "ex": "Qualitative Study 4.3.1.", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "quantify", "ipa": "kˈwɑntɪˌfaɪ", "pos": "v.", "m": "确定…的数量", "ex": "To quantify OCR performance, we test DeepSeek-OCR on OmniDocBench [27], with results shown in Table 3.", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "recognition", "ipa": "ˌrɛkɪgˈnɪʃən", "pos": "n.", "m": "认出，识别；承认", "ex": "Multilingual recognition PDF data on the Internet contains not only Chinese and English, but also a large amount of multilingual data, which is also crucial when training LLMs.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "render", "ipa": "ˈrɛndər", "pos": "v.", "m": "给予", "ex": "Input image Result Rendering The image depicts an indoor classroom setting with a group of children and an adult.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "resource", "ipa": "ˈrisɔrs", "pos": "n.", "m": "资源； 财力； 应付办法， 谋略", "ex": "While our initial exploration shows potential for scalable ultra-long context processing, where recent contexts preserve high resolution and older contexts consume fewer resources, we acknowledge this is early-stage work that …", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "retain", "ipa": "rɪˈteɪn", "pos": "v.", "m": "保留,留用", "ex": "Meanwhile, due to the inclusion of text-only data, DeepSeek-OCR’s language capabilities are also retained.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "retention", "ipa": "riˈtɛnʃən", "pos": "n.", "m": "保留， 保持", "ex": "The approach suggests a path toward theoretically unlimited context architectures that balance information retention with computational constraints, though the practical implications and limitations of such vision-text …", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "roughly", "ipa": "ˈrəfli", "pos": "adv.", "m": "粗糙地；概略地", "ex": "On the front label: - At the top left corner, some Chinese characters. - In bold black letters near the center-top reads \"6月香\" (June Fragrance). - Below that, smaller white font states \"鲜甜咸香\" which translates roughly to \"Fresh …", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "satisfactory", "ipa": "ˌsætɪsˈfæktəri", "pos": "adj.", "m": "令人满意的，良好的", "ex": "As shown in Table 4, some categories of documents require very few tokens to achieve satisfactory performance, such as slides which only need 64 vision tokens.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "sauce", "ipa": "sɔs", "pos": "n.", "m": "调味汁， 作料", "ex": "On the front label: - At the top left corner, some Chinese characters. - In bold black letters near the center-top reads \"6月香\" (June Fragrance). - Below that, smaller white font states \"鲜甜咸香\" which translates roughly to \"Fresh …", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "scale", "ipa": "skeɪl", "pos": "n.", "m": "规模，比例", "ex": "Additionally, DeepSeek-OCR is a highly practical model capable of large-scale pretraining data production, serving as an indispensable assistant for LLMs.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "segment", "ipa": "ˌsɛgˈmɛnt", "pos": "n.", "m": "部分， 片段； 瓣", "ex": "Due to the intricate interdependencies among line segments in geometric shapes, parsing geometry task is extremely challenging and has a long way to go.", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "significant", "ipa": "sɪgˈnɪfɪkənt", "pos": "adj.", "m": "重要的", "ex": "In the future, OCR 1.0+2.0 technology may play a significant role in the development of VLM/LLM in STEM fields.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "simulate", "ipa": "ˈsɪmjəˌleɪt", "pos": "v.", "m": "模拟，模仿", "ex": "The contexts optical compression approach can simulate this mechanism by rendering previous rounds of historical text onto images for initial compression, then progressively resizing older images to achieve multi-level …", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "slightly", "ipa": "sˈlaɪtli", "pos": "adv.", "m": "轻微地", "ex": "The lid is yellow and appears slightly worn out.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "solve", "ipa": "sɑlv", "pos": "v.", "m": "解决", "ex": "The first issue can be solved", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "somewhat", "ipa": "ˈsəmˈwət", "pos": "pron.；adv.", "m": "一点儿；有点", "ex": "Nevertheless, the output format still cannot completely match Fox benchmarks, so the actual performance would be somewhat higher than the test results.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "spatial", "ipa": "ˈspeɪʃəl", "pos": "adj.", "m": "空间的，占据空间的", "ex": "This assumption draws inspiration from the natural parallel between human memory decay over time and visual perception degradation over spatial distance—both exhibit similar patterns of progressive information loss, as shown in …", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "specifically", "ipa": "spəˈsɪfɪkli", "pos": "adv.", "m": "特别地， 特定地； 明确地， 具体地", "ex": "Overall Style/Type: It looks like commercial packaging designed specifically for preserving food items within the jar.", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "specification", "ipa": "ˌspɛsɪfɪˈkeɪʃən", "pos": "n.", "m": "说明书", "ex": "On the front label: - At the top left corner, some Chinese characters. - In bold black letters near the center-top reads \"6月香\" (June Fragrance). - Below that, smaller white font states \"鲜甜咸香\" which translates roughly to \"Fresh …", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "stem", "ipa": "stɛm", "pos": "n.；v.", "m": "茎，(树)干；起源", "ex": "In the future, OCR 1.0+2.0 technology may play a significant role in the development of VLM/LLM in STEM fields.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "structure", "ipa": "ˈstrəkʧər", "pos": "n.", "m": "结构", "ex": "Charts are a crucial form of data representation in finance and scientific fields, and the chart structured extraction is an indispensable capability for future OCR models.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "substantial", "ipa": "səbˈstænʃl", "pos": "adj.", "m": "可观的", "ex": "optical contexts compression still offers substantial room for research", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "supervise", "ipa": "ˈsupərˌvaɪz", "pos": "v.", "m": "监督，监视", "ex": "Note that since we do not include SFT (Supervised Fine-Tuning) stage, the model is not a chatbot, and some capabilities need completion prompts to be activated.", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "surpass", "ipa": "sərˈpæs", "pos": "v.", "m": "超过", "ex": "(640×640 resolution), DeepSeek-OCR surpasses GOT-OCR2.0 [38] which uses 256 tokens; with", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "thereby", "ipa": "ˈðɛrˈbaɪ", "pos": "adv.", "m": "因此，从而，由此", "ex": "The contexts optical compression approach can simulate this mechanism by rendering previous rounds of historical text onto images for initial compression, then progressively resizing older images to achieve multi-level …", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "token", "ipa": "ˈtoʊkən", "pos": "n.", "m": "辅币；象征", "ex": "For the DeepSeek-OCR model, the values in parentheses in the \"Tokens\" column represent valid vision tokens, calculated according to Equation 1.", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "unlimited", "ipa": "ənˈlɪmɪtɪd", "pos": "adj.", "m": "无限的；不定的", "ex": "The approach suggests a path toward theoretically unlimited context architectures that balance information retention with computational constraints, though the practical implications and limitations of such vision-text …", "lv": "专四", "ov": "", "sec": "Concl"}, {"w": "validate", "ipa": "ˈvælədeɪt", "pos": "v.", "m": "证实，验证；确认；使生效", "ex": "Of course, OCR alone is insufficient to fully validate true context optical compression and we will conduct digital-optical text interleaved pretraining, needle-in-a-haystack testing, and other evaluations in the future.", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "variation", "ipa": "ˌvɛriˈeɪʃən", "pos": "n.", "m": "变化，变动；变异", "ex": "Note: There might be slight variations due to handwriting styles but overall maintains readability regarding brand identity and contents description. <image>\\nDescribe this image in detail. <image>\\nLocate <|ref|>the …", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "verify", "ipa": "ˈvɛrəˌfaɪ", "pos": "v.", "m": "证实，查证；证明", "ex": "Vision-text Compression Study We select Fox [21] benchmarks to verify DeepSeek-OCR’s compression-decompression capability for text-rich documents, in order to preliminarily explore the feasibility and boundaries of contexts …", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "visible", "ipa": "ˈvɪzəbəl", "pos": "adj.", "m": "看得见的", "ex": "The text \"BIBLIOTECA\" is visible on the wall, suggesting that the room may be part of a library or a section dedicated to books.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "warrant", "ipa": "ˈwɔrənt", "pos": "n.", "m": "（法院授权警方采取行动的）令状；许可证", "ex": "The approach suggests a path toward theoretically unlimited context architectures that balance information retention with computational constraints, though the practical implications and limitations of such vision-text …", "lv": "六级", "ov": "", "sec": "Concl"}, {"w": "widely", "ipa": "ˈwaɪdli", "pos": "adv.", "m": "大大地", "ex": "Figure 11 | To endow the capability of processing widely crawled PDFs (multilingual data), we", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "wooden", "ipa": "ˈwʊdən", "pos": "adj.", "m": "木制的；呆板的", "ex": "To the left, there is a wooden dresser with a drawer partially open, and a chair is visible behind it.", "lv": "四级", "ov": "", "sec": "Concl"}, {"w": "auxiliary", "ipa": "ɑgˈzɪljəri", "pos": "adj.", "m": "辅助的；附属的", "ex": "Onechart: Purify the chart structural extraction via one auxiliary token.", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "comparison", "ipa": "kəmˈpɛrəsən", "pos": "n.", "m": "比较，对照；比似", "ex": "comparisons on OmniDocBench [27]. DeepSeek-OCR can achieve state-of-the-art performance", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "considerable", "ipa": "kənˈsɪdərəbəl", "pos": "adj.", "m": "相当大(或多)的", "ex": "compression ratio of 20×, the OCR accuracy still remains at about 60%. This shows considerable", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "decouple", "ipa": "diˈkəpəl", "pos": "v.", "m": "减弱， 减少", "ex": "Decoupled weight decay regularization.", "lv": "雅思", "ov": "", "sec": "文献区"}, {"w": "descent", "ipa": "dɪˈsɛnt", "pos": "n.", "m": "血统, 后裔", "ex": "Sgdr: Stochastic gradient descent with warm restarts. arXiv preprint arXiv:1608.03983, 2016. [23] I.", "lv": "六级", "ov": "", "sec": "文献区"}, {"w": "dolphin", "ipa": "ˈdɑlfən", "pos": "n.", "m": "海豚", "ex": "Dolphin: Document image parsing via heterogeneous anchor prompting. arXiv preprint arXiv:2505.14059, 2025. [12] Y.", "lv": "六级", "ov": "", "sec": "文献区"}, {"w": "economical", "ipa": "ˌɛkəˈnɑmɪkəl", "pos": "adj.", "m": "节约的；经济学的", "ex": "Deepseek-v2: A strong, economical, and efficient mixture-of-experts language model. arXiv preprint arXiv:2405.04434, 2024. [20] A.", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "elevate", "ipa": "ˈɛləˌveɪt", "pos": "v.", "m": "提升，举起；使高兴", "ex": "Making the v in vqa matter: Elevating the role of image understanding in visual question answering.", "lv": "六级", "ov": "", "sec": "文献区"}, {"w": "filter", "ipa": "ˈfɪltər", "pos": "v.；n.", "m": "过滤；滤纸", "ex": "J. Jitsev, and A. Komatsuzaki. Laion-400m: Open dataset of clip-filtered 400 million image-text pairs. arXiv preprint arXiv:2111.02114, 2021.", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "flyer", "ipa": "flaɪər", "pos": "n.", "m": "传单；飞鸟；飞行物；飞跳；孤注一掷", "ex": "Advances in Neural Information Processing Systems, 35:26418–26431, 2022. [14] High-flyer.", "lv": "专八", "ov": "", "sec": "文献区"}, {"w": "gap", "ipa": "gæp", "pos": "n.", "m": "差距;缝隙缺口", "ex": "How far are we to gpt-4v? closing the gap to commercial multimodal models with open-source suites. arXiv preprint arXiv:2404.16821, 2024. [9] C.", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "gradient", "ipa": "ˈgreɪdiənt", "pos": "n.", "m": "斜坡", "ex": "Sgdr: Stochastic gradient descent with warm restarts. arXiv preprint arXiv:1608.03983, 2016. [23] I.", "lv": "考博", "ov": "", "sec": "文献区"}, {"w": "heterogeneous", "ipa": "ˌhɛtərəˈʤinjəs", "pos": "adj.", "m": "[化学] 多相的；异种的；[化学] 不均匀的；由不同成分形成的", "ex": "Dolphin: Document image parsing via heterogeneous anchor prompting. arXiv preprint arXiv:2505.14059, 2025. [12] Y.", "lv": "考博", "ov": "", "sec": "文献区"}, {"w": "integrate", "ipa": "ˈɪnəˌgreɪt", "pos": "v.", "m": "成为一体， 合并", "ex": "Mm-vet: Evaluating large multimodal models for integrated capabilities. arXiv preprint arXiv:2308.02490, 2023. [42] J.", "lv": "六级", "ov": "", "sec": "文献区"}, {"w": "lens", "ipa": "lɛnz", "pos": "n.", "m": "透镜，镜片；镜头", "ex": "Opt-iml: Scaling language model instruction meta learning through the lens of generalization. arXiv preprint arXiv:2212.12017, 2022. [16] S.", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "lightweight", "ipa": "ˈlaɪtˈweɪt", "pos": "n.", "m": "轻量级选手, 不能胜任者", "ex": "HAI-LLM: Efficient and lightweight training tool for large models, 2023.", "lv": "托福", "ov": "", "sec": "文献区"}, {"w": "logical", "ipa": "ˈlɑʤɪkəl", "pos": "adj.", "m": "逻辑的；符合逻辑的", "ex": "Chartqa: A benchmark for question answering about charts with visual and logical reasoning. arXiv preprint arXiv:2203.10244, 2022. [25] A.", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "manageable", "ipa": "ˈmænɪʤəbəl", "pos": "adj.", "m": "易管理的；易控制的；易办的", "ex": "compression ratios to ensure an optimal and manageable number of vision tokens. Experiments", "lv": "专八", "ov": "", "sec": "文献区"}, {"w": "marker", "ipa": "ˈmɑrkər", "pos": "n.", "m": "记分员；书签；标识物；作记号的人", "ex": "References [1] Marker.", "lv": "专四", "ov": "", "sec": "文献区"}, {"w": "modal", "ipa": "ˈmoʊdəl", "pos": "adj.", "m": "模态的, 形态上的", "ex": "Wukong: A 100 million large-scale chinese cross-modal pre-training benchmark.", "lv": "托福", "ov": "", "sec": "文献区"}, {"w": "multimedia", "ipa": "ˌməltiˈmidiə", "pos": "n.；adj.", "m": "多媒体；多媒体的", "ex": "In Proceedings of the 32nd ACM International Conference on Multimedia, pages 147–155, 2024. [8] Z.", "lv": "专四", "ov": "", "sec": "文献区"}, {"w": "neural", "ipa": "ˈnʊrəl", "pos": "adj.", "m": "神经的", "ex": "Advances in Neural Information Processing Systems, 35:26418–26431, 2022. [14] High-flyer.", "lv": "专四", "ov": "", "sec": "文献区"}, {"w": "opt", "ipa": "ɑpt", "pos": "v.", "m": "选择", "ex": "Opt-iml: Scaling language model instruction meta learning through the lens of generalization. arXiv preprint arXiv:2212.12017, 2022. [16] S.", "lv": "六级", "ov": "", "sec": "文献区"}, {"w": "optimal", "ipa": "ˈɑptɪməl", "pos": "adj.", "m": "最佳的；最理想的", "ex": "compression ratios to ensure an optimal and manageable number of vision tokens. Experiments", "lv": "六级", "ov": "", "sec": "文献区"}, {"w": "perceive", "ipa": "pərˈsiv", "pos": "v.", "m": "察觉", "ex": "Slow perception: Let’s perceive geometric figures step-by-step. arXiv preprint arXiv:2412.20631, 2024. [40] Z.", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "pro", "ipa": "proʊ", "pos": "adv.；n.；prep.", "m": "赞成地；赞成者；赞成的意见；赞成", "ex": "Gemini 2.5-pro, 2025.", "lv": "专八", "ov": "", "sec": "文献区"}, {"w": "proceeding", "ipa": "prəˈsidɪŋ", "pos": "n.", "m": "程序，行动，事项", "ex": "In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition, pages 8317–8326, 2019. [33] T.", "lv": "考研", "ov": "", "sec": "文献区"}, {"w": "publicly", "ipa": "ˈpəblɪkli", "pos": "adv.", "m": "公然地, 舆论上", "ex": "at a scale of 200k+ pages per day (a single A100-40G). Codes and model weights are publicly", "lv": "六级", "ov": "", "sec": "文献区"}, {"w": "purify", "ipa": "ˈpjʊrəˌfaɪ", "pos": "v.", "m": "提纯，精炼（金属）", "ex": "Onechart: Purify the chart structural extraction via one auxiliary token.", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "reinforce", "ipa": "ˌriɪnˈfɔrs", "pos": "v.", "m": "加强，强化", "ex": "Small language model meets with reinforced vision vocabulary. arXiv preprint arXiv:2401.12503, 2024. [38] H.", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "structural", "ipa": "ˈstrəkʧərəl", "pos": "adj.", "m": "结构的，构造的", "ex": "Onechart: Purify the chart structural extraction via one auxiliary token.", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "supervision", "ipa": "ˌsupərˈvɪʒən", "pos": "n.", "m": "监督", "ex": "Learning transferable visual models from natural language supervision.", "lv": "六级", "ov": "", "sec": "文献区"}, {"w": "transferable", "ipa": "trænsˈfərəbəl", "pos": "adj.", "m": "可转移的", "ex": "Learning transferable visual models from natural language supervision.", "lv": "GRE", "ov": "", "sec": "文献区"}, {"w": "transformer", "ipa": "trænsˈfɔrmər", "pos": "n.", "m": "变压器，转换器", "ex": "Patch n’ pack: Navit, a vision transformer for any aspect ratio and resolution.", "lv": "四级", "ov": "", "sec": "文献区"}, {"w": "trillion", "ipa": "ˈtrɪljən", "pos": "num.", "m": "万亿", "ex": "Soldaini. olmocr: Unlocking trillions of tokens in pdfs with vision language models. arXiv preprint arXiv:2502.18443, 2025. [29] A.", "lv": "六级", "ov": "", "sec": "文献区"}, {"w": "triplet", "ipa": "ˈtrɪplət", "pos": "n.", "m": "三合组，三元组；三胞胎", "ex": "Monkeyocr: Document parsing with a structure-recognition-relation triplet paradigm. arXiv preprint arXiv:2506.05218, 2025. [19] A.", "lv": "超纲", "ov": "", "sec": "文献区"}, {"w": "unlock", "ipa": "ənˈlɑk", "pos": "v.", "m": "开…的锁；开启", "ex": "Soldaini. olmocr: Unlocking trillions of tokens in pdfs with vision language models. arXiv preprint arXiv:2502.18443, 2025. [29] A.", "lv": "专四", "ov": "", "sec": "文献区"}, {"w": "vet", "ipa": "vɛt", "pos": "v.；n.", "m": "审查；诊疗；兽医", "ex": "Mm-vet: Evaluating large multimodal models for integrated capabilities. arXiv preprint arXiv:2308.02490, 2023. [42] J.", "lv": "专四", "ov": "", "sec": "文献区"}];
+const AUDIO={};      /* 预生成的微软语音清单：{w:{单词:路径},m:{释义:路径}}；空则全部走在线 TTS */
+const SKINS=[
+  {id:"lemon",n:"柠檬黄",p:"linear-gradient(135deg,#fbf3cd,#e3c878)"},
+  {id:"qq",n:"蜜桃粉",p:"linear-gradient(135deg,#f9b8bb,#ef8f92)"},
+  {id:"nred",n:"网易云红",p:"linear-gradient(135deg,#fbdcd9,#c0342c)"},
+  {id:"qqgreen",n:"QQ绿",p:"linear-gradient(135deg,#d6f4e6,#22a96c)"},
+  {id:"kugou",n:"酷狗蓝",p:"linear-gradient(135deg,#d3edfd,#1a86d0)"},
+  {id:"xiami",n:"虾米橙",p:"linear-gradient(135deg,#ffe9d8,#e85f1f)"},
+  {id:"netease",n:"网易云黑",p:"linear-gradient(135deg,#3a2429,#150d10)"},
+  {id:"vinyl",n:"黑胶原色",p:"linear-gradient(135deg,#e6e9f2,#161616)"},
+  {id:"gold",n:"香槟金",p:"linear-gradient(135deg,#f2dfbd,#3a2a14)"},
+  {id:"sakura",n:"樱花粉",p:"linear-gradient(135deg,#fdeef3,#f2b9cd)"},
+  {id:"matcha",n:"抹茶",p:"linear-gradient(135deg,#eef3e6,#a9c489)"},
+  {id:"mint",n:"薄荷",p:"linear-gradient(135deg,#eefaf7,#8fd8c8)"},
+  {id:"ocean",n:"海盐蓝",p:"linear-gradient(135deg,#eef5fc,#7fb3e6)"},
+  {id:"grape",n:"星空紫",p:"linear-gradient(135deg,#f2eefa,#b39ade)"},
+  {id:"amusic",n:"Apple红",p:"linear-gradient(135deg,#fff4f4,#fa5c74)"},
+  {id:"mocha",n:"摩卡",p:"linear-gradient(135deg,#f7f1ea,#b08d6d)"},
+  {id:"spotify",n:"Spotify",p:"linear-gradient(135deg,#1d2420,#1db954)"},
+  {id:"midnight",n:"深夜蓝",p:"linear-gradient(135deg,#1e2740,#4a9eff)"},
+  {id:"vinylx",n:"悬浮黑胶",p:"radial-gradient(circle at 50% 50%,#5b5bd6 0 30%,#17171a 31%)"}
+];
+const $=id=>document.getElementById(id);
+const app=$("app");
+let S={voice:"us",pause:2000,reveal:true,zh:true,ex:true,order:"seq",skipOn:true,font:"sans",repeat:1,source:"all",timer:0,rate:1,enVoice:"",zhVoice:""};
+try{const c=JSON.parse(localStorage.getItem("listen_qq_cfg")||"{}");Object.assign(S,c)}catch(e){}
+const save=()=>{try{localStorage.setItem("listen_qq_cfg",JSON.stringify(S))}catch(e){}};
+
+/* 收藏 / 已掌握 / 章节范围（跨页面共享） */
+const rd=(k)=>{try{return new Set(JSON.parse(localStorage.getItem(k)||"[]"))}catch(e){return new Set()}};
+const wr=(k,s)=>{try{localStorage.setItem(k,JSON.stringify([...s]))}catch(e){}};
+let stars=rd("listen_qq_star"), favs=rd("listen_qq_fav"), skips=rd("listen_qq_skip");
+const SECS=[...new Set(ITEMS.map(i=>i.sec))];
+let range={};
+try{const r=JSON.parse(localStorage.getItem("listen_qq_range")||"null");if(r)range=r}catch(e){}
+SECS.forEach(s=>{if(!(s in range))range[s]=true});
+/* 词汇级别筛选（老版功能，之前搬新模板时漏掉了）：默认全开，点一下关掉该级 */
+const LVORDER=["四级","六级","考研","专四","考博","专八","雅思","托福","GRE","超纲"];
+const LVS=LVORDER.filter(k=>ITEMS.some(i=>i.lv===k||i.ov===k));
+let lvOff=new Set();
+try{const s=JSON.parse(localStorage.getItem("listen_qq_lvoff")||"[]");if(Array.isArray(s))lvOff=new Set(s)}catch(e){}
+
+let queue=[], qi=0, playing=false, timer=null, audio=null;
+let autoplayBlocked=false;   /* 只有浏览器明确拒绝播放（NotAllowedError）才置位 */
+let pendingRebuild=false;    /* 播放中改了标记：等当前词念完再重建队列，绝不中途掐断 */
+
+function buildQueue(){
+  let list=ITEMS.filter(i=>range[i.sec]!==false);
+  /* 词汇级别筛选（四级/六级/考研/考博/雅思托福/GRE） */
+  if(lvOff&&lvOff.size) list=list.filter(i=>!lvOff.has(i.lv)&&!(i.ov&&lvOff.has(i.ov)));
+  if(S.source==="star")      list=list.filter(i=>stars.has(i.w));    /* 只背星标词 */
+  else if(S.source==="fav")  list=list.filter(i=>favs.has(i.w));     /* 只读收藏词 */
+  else if(S.source==="skip") list=list.filter(i=>skips.has(i.w));    /* 仅跳过：回看被跳过的，方便取消 */
+  else if(S.source==="new")  list=list.filter(i=>!skips.has(i.w));   /* 仅新词：只读还没标已掌握的 */
+  else if(S.skipOn)          list=list.filter(i=>!skips.has(i.w));   /* 全部：按开关跳过已划掉的 */
+  /* 专背模式不再二次排除已跳过的：否则「星标+已跳过」的词根本读不到，没法取消误点 */
+  if(S.order==="rand"){for(let i=list.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[list[i],list[j]]=[list[j],list[i]]}}
+  queue=list;
+  if(qi>=queue.length)qi=0;
+}
+function rebuild(keep){
+  const cur=queue[qi];
+  buildQueue();
+  if(keep&&cur){const k=queue.findIndex(x=>x.w===cur.w);qi=k>=0?k:0}
+  pendingRebuild=false;                       /* 这里已经重建过了，撤掉待办的延迟重建 */
+}
+/* 延迟重建：等到"当前这个词念完"再生效（给 pendingRebuild 用） */
+function rebuildKeepPos(){
+  const oldLen=queue.length, oldQi=qi, cur=queue[qi], key=cur?cur.w:null;
+  buildQueue();
+  if(!queue.length){qi=0;return}
+  if(!key){if(qi>=queue.length)qi=0;return}
+  const k=queue.findIndex(x=>x.w===key);
+  if(k>=0){qi=k;return}                       /* 当前词还在队列里：原地不动 */
+  /* 当前词已被排除（刚标了跳过 / 取消了星标）：把指针放到"下一个该读的词"的前一位，
+     goNext 再 +1，正好接到原位置上的那个词——不会漏读，也不会重读 */
+  qi = (oldQi>=oldLen-1) ? -1 : Math.min(oldQi,queue.length-1)-1;
+}
+function updateBtns(){
+  const w=queue[qi];
+  $("favBtn").classList.toggle("on",!!(w&&favs.has(w.w)));
+  $("starBtn").classList.toggle("on",!!(w&&stars.has(w.w)));
+  $("okBtn").classList.toggle("on",!!(w&&skips.has(w.w)));
+}
+function updateCounts(){
+  /* 跳过计数在上方「词库来源」行的 ⭐❤✓ 里已有，这里不再重复显示「已跳过 N 词」 */
+  $("markCnt").innerHTML="<b>"+IC.star+stars.size+"</b><b>"+IC.heart+favs.size+"</b><b>"+IC.skip+skips.size+"</b>";
+}
+/* 当前词的标记：只显示「跳过」（星标/收藏看顶栏图标即可，不重复占地方） */
+function renderMarks(w){
+  const box=$("mkBadge"); if(!box)return;
+  /* 已跳过不再浮出徽标：跳过时本就有 toast「已跳过」提示 + 顶栏 ✓ 按钮的状态，
+     这里去掉重复提醒（原先的「跳过✕」胶囊）。 */
+  box.style.display="none";
+}
+$("mkBadge").onclick=e=>{
+  const el=e.target.closest("[data-cancel]"); if(!el)return;
+  const w=queue[qi]; if(!w)return;
+  const k=el.dataset.cancel;
+  if(k==="star"){stars.delete(w.w);wr("listen_qq_star",stars);wordTip("已取消星标「"+w.w+"」")}
+  else if(k==="fav"){favs.delete(w.w);wr("listen_qq_fav",favs);wordTip("已取消收藏「"+w.w+"」")}
+  else if(k==="skip"){skips.delete(w.w);wr("listen_qq_skip",skips);wordTip("已恢复朗读「"+w.w+"」")}
+  afterMark();
+};
+/* 标记后收尾：正在朗读时不打断——当前词照常念完，队列等这个词结束时才重建。
+   （以前是立刻重建+重播，等于一点 ✓ 这个词就被掐掉，这次白学了） */
+function afterMark(){
+  updateBtns(); updateCounts(); renderMarks(queue[qi]);
+  if(playing){ pendingRebuild=true; return }
+  rebuild(true);
+  if(!queue.length){ clearT(); stopAudio(); setPlaying(false); emptyHint(); return }
+  render(queue[qi],true);
+}
+function renderRange(){
+  const box=$("rangeBox"); box.innerHTML="";
+  SECS.forEach(s=>{
+    const c=document.createElement("b");
+    c.textContent=s+" "+ITEMS.filter(i=>i.sec===s).length;
+    c.className=range[s]?"on":"";
+    c.onclick=()=>{
+      range[s]=!range[s];
+      try{localStorage.setItem("listen_qq_range",JSON.stringify(range))}catch(e){}
+      renderRange(); rebuild(true); updateArm();
+      if(!playing&&queue[qi])render(queue[qi],true);
+    };
+    box.appendChild(c);
+  });
+}
+/* 词汇级别：点一下关掉该级（再点开回来），和「范围」同一套交互 */
+function renderLv(){
+  const box=$("lvBox"); if(!box)return;
+  const row=box.closest(".srow");
+  if(!LVS.length){ if(row)row.style.display="none"; return }
+  box.innerHTML="";
+  LVS.forEach(k=>{
+    const c=document.createElement("b");
+    c.textContent=k+" "+ITEMS.filter(i=>i.lv===k||i.ov===k).length;
+    c.className=lvOff.has(k)?"":"on";
+    c.title="点一下"+(lvOff.has(k)?"恢复":"关掉")+"朗读「"+k+"」的词";
+    c.onclick=()=>{
+      if(lvOff.has(k))lvOff.delete(k); else lvOff.add(k);
+      try{localStorage.setItem("listen_qq_lvoff",JSON.stringify([...lvOff]))}catch(e){}
+      renderLv(); rebuild(true); updateArm(); updateCounts();
+      if(!queue.length){ clearT(); stopAudio(); setPlaying(false); emptyHint(); return }
+      if(!playing&&queue[qi])render(queue[qi],true);
+    };
+    box.appendChild(c);
+  });
+}
+
+// 皮肤：右上角 👕 点一下按顺序循环，不需要挑颜色
+let skinIdx=0;
+function applySkin(id,announce){
+  const i=SKINS.findIndex(s=>s.id===id);
+  skinIdx=i<0?0:i;
+  app.dataset.skin=SKINS[skinIdx].id;
+  try{localStorage.setItem("listen_qq_skin",SKINS[skinIdx].id)}catch(e){}
+  updateArm();
+  if(announce)toast("皮肤： "+SKINS[skinIdx].n);
+}
+$("skinBtn").onclick=()=>{ skinIdx=(skinIdx+1)%SKINS.length; applySkin(SKINS[skinIdx].id,true); };
+try{const sv=localStorage.getItem("listen_qq_skin"); if(sv)applySkin(sv,false)}catch(e){}
+
+// 设置段
+/* 小图标库：星标 / 收藏 / 跳过（用户提供）/ 加号（新词）/ 全部 */
+const IC={
+  star:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="m12 3.8 2.6 5.3 5.8.85-4.2 4.1 1 5.8-5.2-2.75-5.2 2.75 1-5.8-4.2-4.1 5.8-.85Z"/></svg>',
+  heart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/></svg>',
+  skip:'<svg class="fill" viewBox="0 0 1024 1024"><path d="M921.6 356.266667c-14.933333-8.533333-34.133333-4.266667-42.666667 12.8L829.866667 448c-51.2-157.866667-200.533333-266.666667-369.066667-266.666667-172.8 0-324.266667 115.2-373.333333 277.333334-4.266667 17.066667 4.266667 34.133333 21.333333 40.533333 17.066667 4.266667 34.133333-4.266667 40.533333-21.333333 40.533333-136.533333 166.4-232.533333 311.466667-232.533334 140.8 0 264.533333 89.6 307.2 219.733334l-81.066667-46.933334c-14.933333-8.533333-34.133333-4.266667-42.666666 10.666667-8.533333 14.933333-4.266667 34.133333 10.666666 42.666667l147.2 85.333333c4.266667 2.133333 10.666667 4.266667 17.066667 4.266667 2.133333 0 6.4 0 8.533333-2.133334 8.533333-2.133333 14.933333-8.533333 19.2-14.933333l85.333334-147.2c8.533333-12.8 4.266667-32-10.666667-40.533333zM896 757.333333H128c-17.066667 0-32 14.933333-32 32s14.933333 32 32 32h768c17.066667 0 32-14.933333 32-32s-14.933333-32-32-32z"/></svg>',
+  news:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4.5 13.6 9.4l4.9 1.6-4.9 1.6L12 17.5l-1.6-4.9-4.9-1.6 4.9-1.6Z"/></svg>',
+  all:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h10"/></svg>',
+  check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m5 13 4.5 4.5L19 7"/></svg>'
+};
+function seg(box,opts,get,set,after){
+  box.innerHTML="";
+  opts.forEach(o=>{
+    const b=document.createElement("b");
+    if(o.svg){ b.innerHTML=o.svg; b.className="icn" } else { b.textContent=o.t }
+    b.dataset.v=o.v;
+    if(o.tip) b.title=o.tip;
+    if(get()===o.v) b.classList.add("on");
+    b.onclick=()=>{set(o.v);box.querySelectorAll("b").forEach(x=>x.classList.remove("on"));b.classList.add("on");save();after&&after(o.v)};
+    box.appendChild(b);
+  });
+}
+/* 设置改完立刻生效：播放中重播当前词，暂停中按新设置重绘 —— 否则改了像没改 */
+function refreshCurrent(msg){
+  if(msg)toast(msg);
+  if(!queue[qi])return;
+  if(playing)playCurrent();
+  else render(queue[qi],true);
+}
+seg($("segVoice"),[{t:"美音",v:"us"},{t:"英音",v:"uk"}],()=>S.voice,v=>S.voice=v,
+  ()=>refreshCurrent("发音： "+(S.voice==="uk"?"英音":"美音")));
+seg($("segPause"),[{t:"2s",v:2000},{t:"4s",v:4000},{t:"6s",v:6000}],()=>S.pause,v=>S.pause=v,
+  ()=>refreshCurrent("每词停顿： "+(S.pause/1000)+" 秒"));
+/* 语速：直接改 audio.playbackRate（对有道/百度/系统语音都生效，不改音调） */
+seg($("segRate"),[{t:"0.75x",v:.75},{t:"1x",v:1},{t:"1.25x",v:1.25},{t:"1.5x",v:1.5}],()=>+S.rate||1,v=>S.rate=v,
+  ()=>refreshCurrent("语速： "+S.rate+"x"));
+/* 单词重复次数：1/3/5 快捷 + 右侧输入框自定义（1–20） */
+function setRepeat(v,persist){
+  v=Math.max(1,Math.min(20,Math.round(+v||1)));
+  S.repeat=v; $("repInput").value=v;
+  $("segRepeat").querySelectorAll("b").forEach(b=>b.classList.toggle("on",+b.dataset.v===v));
+  if(persist)save();
+}
+seg($("segRepeat"),[{t:"1次",v:1},{t:"3次",v:3},{t:"5次",v:5}],()=>S.repeat,v=>S.repeat=v,
+  ()=>{setRepeat(S.repeat,false);refreshCurrent("单词重复： "+S.repeat+" 次")});
+$("repInput").addEventListener("change",()=>{setRepeat($("repInput").value,true);refreshCurrent("单词重复： "+S.repeat+" 次")});
+$("repInput").addEventListener("keydown",e=>{if(e.key==="Enter")e.target.blur()});
+setRepeat(S.repeat||1,false);
+seg($("segReveal"),[{t:"开",v:true},{t:"关",v:false}],()=>S.reveal,v=>S.reveal=v,
+  ()=>refreshCurrent("先听后现： "+(S.reveal?"开":"关")));
+seg($("segZh"),[{t:"开",v:true},{t:"关",v:false}],()=>S.zh,v=>S.zh=v,
+  ()=>refreshCurrent("朗读中文： "+(S.zh?"开":"关")));
+/* 朗读例句：沿用老版方案 = 百度在线合成（lan=en，spd=5，source=web）。
+   本篇若预生成了例句音频则用本地微软音，没有就走百度在线 */
+seg($("segEx"),[{t:"开",v:true},{t:"关",v:false}],()=>S.ex,v=>S.ex=v,
+  ()=>refreshCurrent("朗读例句： "+(S.ex?"开":"关")));
+// 单词字体：选项本身就用自己的字体渲染，所见即所得
+const FONTS=[
+  {v:"sans",    t:"黑体", f:'"PingFang SC",-apple-system,"Helvetica Neue",sans-serif'},
+  {v:"serif",   t:"宋体", f:'"Songti SC","SimSun",Georgia,serif'},
+  {v:"round",   t:"圆体", f:'"Yuanti SC","Hiragino Sans GB","PingFang SC",sans-serif'},
+  {v:"kai",     t:"楷体", f:'"Kaiti SC","STKaiti","楷体",serif'},
+  {v:"mono",    t:"等宽", f:'"SF Mono",Menlo,Consolas,monospace'},
+  {v:"xingkai", t:"行楷", f:'"Xingkai SC","STXingkai","Snell Roundhand",cursive'},
+  {v:"weibei",  t:"魏碑", f:'"Weibei SC","STWeibei","Kaiti SC",serif'},
+  {v:"wawati",  t:"娃娃", f:'"Wawati SC","STWawati","Comic Sans MS",cursive'},
+  {v:"lanting", t:"兰亭", f:'"Lantinghei SC","FZLanTingHei-S-GB","PingFang SC",sans-serif'},
+  {v:"futura",  t:"几何", f:'Futura,"Avenir Next","Century Gothic",sans-serif'},
+  {v:"georgia", t:"书卷", f:'Georgia,"Times New Roman","Songti SC",serif'},
+  {v:"rounded", t:"圆润", f:'"Arial Rounded MT Bold","Hiragino Maru Gothic ProN","Yuanti SC",sans-serif'},
+  {v:"marker",  t:"手写", f:'"Marker Felt","Chalkboard SE","Comic Sans MS",cursive'}
+];
+function applyFont(v){
+  const f=FONTS.find(x=>x.v===v)||FONTS[0];
+  app.style.setProperty("--wfont",f.f);
+}
+seg($("segFont"),FONTS.map(x=>({t:x.t,v:x.v})),()=>S.font,v=>{S.font=v;applyFont(v);save()});
+$("segFont").querySelectorAll("b").forEach((b,i)=>{b.style.fontFamily=FONTS[i].f;b.style.fontSize="13px"});
+applyFont(S.font);
+
+/* 定时停止：到点自动停（最长 60 分钟），词区右上角显示倒计时 */
+let timerLeft=0, timerInt=null;
+function renderTimer(){
+  const m=Math.floor(timerLeft/60), s=timerLeft%60;
+  $("timerChip").textContent="⏱ "+m+":"+String(s).padStart(2,"0");
+}
+function stopTimer(fired){
+  if(timerInt){clearInterval(timerInt);timerInt=null}
+  timerLeft=0; $("timerChip").style.display="none";
+  if(fired){ clearT(); stopAudio(); setPlaying(false); toast("⏱ 定时时间到，已停止播放") }
+}
+function startTimer(min){
+  stopTimer(false);
+  if(!min)return;
+  timerLeft=Math.round(min*60);
+  $("timerChip").style.display=""; renderTimer();
+  timerInt=setInterval(()=>{
+    timerLeft--;
+    if(timerLeft<=0){ stopTimer(true); return }
+    renderTimer();
+  },1000);
+}
+seg($("segTimer"),[{t:"关",v:0},{t:"5分",v:5},{t:"10分",v:10},{t:"20分",v:20},{t:"30分",v:30},{t:"60分",v:60}],
+  ()=>S.timer,v=>S.timer=v,m=>{ startTimer(m); if(m)toast("⏱ "+m+" 分钟后自动停止") });
+if(S.timer>0)startTimer(S.timer);
+
+/* 词库来源：全部 / 只背星标 / 只读收藏 */
+function applySource(){
+  qi=0; rebuild(false); updateArm(); updateCounts();
+  if(!queue.length){ clearT(); stopAudio(); setPlaying(false); emptyHint(); return }
+  if(playing)playCurrent(); else render(queue[qi],true);
+}
+/* 词库来源：纯图标（全部 / 星标 / 收藏 / 跳过 / 新词），鼠标悬停有说明 */
+seg($("segSource"),[
+  {v:"all", svg:IC.all,  tip:"全部词"},
+  {v:"star",svg:IC.star, tip:"只看星标词"},
+  {v:"fav", svg:IC.heart,tip:"只看收藏词"},
+  {v:"skip",svg:IC.skip, tip:"只看已跳过的词（点标记可取消）"},
+  {v:"new", svg:IC.news, tip:"只看还没跳过的词"}
+],()=>S.source,v=>S.source=v,applySource);
+
+seg($("segOrder"),[{t:"顺序",v:"seq"},{t:"随机",v:"rand"}],()=>S.order,v=>S.order=v,
+  ()=>{rebuild(true);updateArm();if(!playing&&queue[qi])render(queue[qi],true)});
+seg($("segSkip"),[{t:"开",v:true},{t:"关",v:false}],()=>S.skipOn,v=>S.skipOn=v,
+  ()=>{rebuild(true);updateArm()});
+renderRange(); renderLv(); updateCounts();
+
+$("favBtn").onclick=()=>{
+  const w=queue[qi]; if(!w){toast("先进入一个词再收藏");return}
+  if(favs.has(w.w)){favs.delete(w.w);wordTip("已取消收藏「"+w.w+"」")}else{favs.add(w.w);wordTip("已收藏「"+w.w+"」")}
+  wr("listen_qq_fav",favs); afterMark();
+};
+$("starBtn").onclick=()=>{
+  const w=queue[qi]; if(!w){toast("先进入一个词再标星");return}
+  if(stars.has(w.w)){stars.delete(w.w);wordTip("已取消星标「"+w.w+"」")}else{stars.add(w.w);wordTip("已标星「"+w.w+"」，可只背星标")}
+  wr("listen_qq_star",stars); afterMark();
+};
+$("okBtn").onclick=()=>{
+  const w=queue[qi]; if(!w){toast("先进入一个词再标记");return}
+  if(skips.has(w.w)){skips.delete(w.w);wordTip("已恢复朗读「"+w.w+"」")}
+  else{skips.add(w.w);wordTip("已跳过「"+w.w+"」");pulse("okBtn")}
+  wr("listen_qq_skip",skips); afterMark();
+};
+/* 清空按钮：图标+✕（不写汉字，和「词库来源」一致），每次点击都必须有反馈 */
+$("clearBox").innerHTML=[["star",IC.star,"清空所有星标"],["fav",IC.heart,"清空所有收藏"],["skip",IC.skip,"清空所有跳过（恢复朗读）"]]
+  .map(x=>'<b data-clr="'+x[0]+'" title="'+x[2]+'">'+x[1]+'<i>✕</i></b>').join("");
+$("clearBox").onclick=e=>{
+  const b=e.target.closest("[data-clr]"); if(!b)return;
+  const k=b.dataset.clr;
+  const set = k==="star"?stars : k==="fav"?favs : skips;
+  const key = k==="star"?"listen_qq_star" : k==="fav"?"listen_qq_fav" : "listen_qq_skip";
+  const name= k==="star"?"星标" : k==="fav"?"收藏" : "跳过";
+  const n=set.size;
+  if(!n){ toast("本来就没有"+name+"的词"); return }
+  set.clear(); wr(key,set); afterMark(); toast("已清空 "+n+" 个"+name+"词");
+};
+const _cs=$("clearStar"); if(_cs)_cs.onclick=()=>{stars.clear();wr("listen_qq_star",stars);afterMark();toast("已清空星标")};
+/* ===== 自定义链接（朗读/讲解）：按篇独立存，多链接可勾选多开 ===== */
+const PKEY=(document.title||"").replace(/\s*·\s*单词连播\s*$/,"").trim();
+const LKEY="listen_qq_links";
+const rdLinks=()=>{try{const L=JSON.parse(localStorage.getItem(LKEY)||"{}");return Array.isArray(L[PKEY])?L[PKEY]:[]}catch(e){return []}};
+const wrLinks=arr=>{try{const L=JSON.parse(localStorage.getItem(LKEY)||"{}");L[PKEY]=arr;localStorage.setItem(LKEY,JSON.stringify(L))}catch(e){}};
+let LINKS=rdLinks();
+const linkHost=u=>{try{return new URL(u).hostname.replace(/^www\./,"")}catch(e){return u}};
+const esc=s=>String(s==null?"":s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
+
+function renderLinkPop(){
+  const box=$("linkList"),btns=$("linkPopBtns");
+  if(!LINKS.length){
+    box.innerHTML='<div class="lkempty">本篇还没有配置链接。<br>点下方「配置链接」，把朗读音频或讲解视频的网址加进来（B站 / YouTube / 网页等），可以加多个。</div>';
+    btns.innerHTML='<b id="lpCfg" class="pri">配置链接</b>';
+    $("lpCfg").onclick=openLinkCfg;
+    return;
+  }
+  const multi=LINKS.length>1;
+  box.innerHTML=LINKS.map((l,i)=>'<div class="lk">'
+    +'<input type="checkbox" data-i="'+i+'"'+(multi?"":" checked")+' title="勾选后可批量打开">'
+    +'<span class="lkn" data-open="'+i+'" title="'+esc(l.url)+'">'+esc(l.n||("链接"+(i+1)))+'</span>'
+    +'<span class="lku">'+esc(linkHost(l.url))+'</span></div>').join("");
+  btns.innerHTML=(multi?'<b id="lpOpenSel" class="pri">打开所选</b>':"")
+    +'<b id="lpOpenAll">全部打开</b><b id="lpCfg">配置链接</b>';
+  box.querySelectorAll(".lkn").forEach(el=>el.onclick=()=>window.open(LINKS[+el.dataset.open].url,"_blank","noopener"));
+  const openMany=ls=>{if(!ls.length){toast("先勾选要打开的链接");return}
+    ls.forEach(l=>window.open(l.url,"_blank","noopener"));toast("已打开 "+ls.length+" 个（若被拦截请允许弹出窗口）")};
+  if(multi)$("lpOpenSel").onclick=()=>openMany([...box.querySelectorAll("input:checked")].map(c=>LINKS[+c.dataset.i]));
+  $("lpOpenAll").onclick=()=>openMany(LINKS);
+  $("lpCfg").onclick=openLinkCfg;
+}
+function openLinkCfg(){
+  $("linkPop").classList.remove("on");
+  const box=$("linkRows");
+  const row=l=>'<div class="lkrow">'
+    +'<input class="nm" placeholder="名称" value="'+esc(l.n)+'">'
+    +'<input class="ul" placeholder="https:// 网址" value="'+esc(l.url)+'">'
+    +'<span class="del" title="删除此行">✕</span></div>';
+  box.innerHTML=(LINKS.length?LINKS:[{}]).map(row).join("");
+  const bindDel=()=>box.querySelectorAll(".del").forEach(d=>d.onclick=()=>d.closest(".lkrow").remove());
+  bindDel();
+  $("linkAddRow").onclick=()=>{box.insertAdjacentHTML("beforeend",row({}));bindDel();box.lastElementChild.querySelector(".nm").focus()};
+  $("linkCfg").classList.add("on");
+}
+$("linkSave").onclick=()=>{
+  const out=[];
+  $("linkRows").querySelectorAll(".lkrow").forEach(r=>{
+    const n=r.querySelector(".nm").value.trim(), raw=r.querySelector(".ul").value.trim();
+    if(!raw)return;
+    out.push({n:n||("链接"+(out.length+1)), url:/^[a-z][a-z0-9+.-]*:\/\//i.test(raw)?raw:"https://"+raw});
+  });
+  LINKS=out; wrLinks(out);
+  $("linkCfg").classList.remove("on");
+  toast("已保存 "+out.length+" 个链接");
+};
+$("linkCfgBack").onclick=()=>{$("linkCfg").classList.remove("on");renderLinkPop();$("linkPop").classList.add("on")};
+$("linkPopBack").onclick=()=>$("linkPop").classList.remove("on");
+
+/* ===== 备份与恢复：链接 + 星标/收藏/跳过 + 设置 一并导出/导入（清缓存不怕丢）===== */
+$("backupBox").innerHTML='<b data-bk="cfg">配置链接</b><b data-bk="out">导出备份</b><b data-bk="in">导入备份</b>';
+$("backupBox").onclick=e=>{
+  const b=e.target.closest("[data-bk]");if(!b)return;
+  if(b.dataset.bk==="cfg")openLinkCfg();
+  else if(b.dataset.bk==="out")doExport();
+  else $("importFile").click();
+};
+function doExport(){
+  let links={};try{links=JSON.parse(localStorage.getItem(LKEY)||"{}")}catch(e){}
+  const data={app:"listen_qq_backup",v:1,time:new Date().toISOString(),paper:PKEY,
+    links,stars:[...stars],favs:[...favs],skips:[...skips],cfg:S,range};
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob([JSON.stringify(data,null,1)],{type:"application/json"}));
+  a.download="听力记录备份_"+new Date().toISOString().slice(0,10)+".json";
+  a.click();setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+  toast("已导出 ⭐"+stars.size+" ❤"+favs.size+" ✓"+skips.size+" + 链接配置");
+}
+$("importFile").onchange=e=>{
+  const f=e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{
+    try{
+      const d=JSON.parse(r.result);
+      if(d.app!=="listen_qq_backup")throw new Error("这不是本播放器的备份文件");
+      let links={};try{links=JSON.parse(localStorage.getItem(LKEY)||"{}")}catch(_){}
+      Object.keys(d.links||{}).forEach(k=>{                        /* 链接按篇合并，同网址不重复 */
+        const cur=new Set((links[k]||[]).map(l=>l.url));
+        (d.links[k]||[]).forEach(l=>{if(l&&l.url&&!cur.has(l.url)){(links[k]=links[k]||[]).push(l);cur.add(l.url)}});
+      });
+      try{localStorage.setItem(LKEY,JSON.stringify(links))}catch(_){}
+      (d.stars||[]).forEach(w=>stars.add(w));                      /* 标记取并集，绝不覆盖已有 */
+      (d.favs||[]).forEach(w=>favs.add(w));
+      (d.skips||[]).forEach(w=>skips.add(w));
+      wr("listen_qq_star",stars);wr("listen_qq_fav",favs);wr("listen_qq_skip",skips);
+      if(d.cfg){Object.assign(S,d.cfg);save()}
+      if(d.range){range=d.range;try{localStorage.setItem("listen_qq_range",JSON.stringify(range))}catch(_){}}
+      LINKS=rdLinks();updateCounts();afterMark();
+      toast("导入成功 ⭐"+(d.stars||[]).length+" ❤"+(d.favs||[]).length+" ✓"+(d.skips||[]).length+"，即将刷新");
+      setTimeout(()=>location.reload(),1200);
+    }catch(err){toast("导入失败："+err.message)}
+    e.target.value="";
+  };
+  r.readAsText(f);
+};
+
+/* 弯箭头：沿用旧设计语义 = 重听当前词（不想启用时删掉这三行即可） */
+$("replayBtn").onclick=()=>{
+  if(!queue[qi])return;
+  if(!playing)setPlaying(true);
+  playCurrent(); toast("重听当前词");
+};
+
+// 颜色/封面
+function hue(w){let h=7;for(const c of w)h=(h*31+c.charCodeAt(0))%360;return h}
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("on");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("on"),1600)}
+/* 当前词的标记反馈（已收藏/已跳过/已标星）：显示在单词正上方 */
+function wordTip(m){const t=$("wordTip");if(!t)return;t.textContent=m;t.classList.add("on");clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("on"),1300)}
+/* 标记点亮：图标动一下，短促、不挡视线（和收藏/星标同一手感） */
+function pulse(id){const el=$(id);if(!el)return;el.classList.remove("pulse");void el.offsetWidth;el.classList.add("pulse");setTimeout(()=>el.classList.remove("pulse"),360)}
+
+// 唱臂：静止垂直在盘右 → 播放落到盘面 → 随队列进度内移
+const armBar=document.querySelector(".arm .bar");
+const needle=document.querySelector(".needle");
+const ARM_REST=0, ARM_START=16, ARM_END=24;
+function updateArm(){
+  const p=queue.length>1?Math.min(1,qi/(queue.length-1)):0;
+  if(app.dataset.skin==="vinylx"){          /* 顶部细针：播放落盘（如图），暂停抬起 */
+    needle.style.setProperty("--nd",(playing?6*p:-30).toFixed(2)+"deg");
+    return;
+  }
+  const a=playing?ARM_START+(ARM_END-ARM_START)*p:ARM_REST;
+  armBar.style.setProperty("--arm",a.toFixed(2)+"deg");
+}
+
+function render(w,reveal){
+  app.style.setProperty("--h",hue(w.w));
+  updateBtns();                                      /* 顶栏 ❤/★/✓ 跟随当前词（原先切词不刷新，显示的是上一个词的状态） */
+  renderMarks(w);                                    /* 跳过标记（仅被跳过的词显示） */
+  $("art").style.opacity=(S.reveal&&!reveal)?.42:1;   /* 先听后现：未揭晓时封面变暗 */
+  $("wsec").textContent=w.sec+" · 第 "+(qi+1)+"/"+queue.length+" 词";
+  $("wbig").textContent=w.w;
+  const ipaRaw=(w.ipa||"").trim().replace(/^[/\[]+|[/\]]+$/g,"");   /* 去掉可能已有的斜线/方括号 */
+  $("wipa").textContent=ipaRaw?"/"+ipaRaw+"/":"";                    /* 统一包成 /.../ */
+  $("wmean").textContent=(w.pos?w.pos+" ":"")+w.m;
+  $("wex").textContent=w.ex?"“"+w.ex+"”":"";
+  const hid=S.reveal&&!reveal;
+  /* 同一个槽位内原地切换：未揭晓=波浪（正在听），揭晓=释义；高度不变，绝不跳动 */
+  $("wav").style.display=hid?"flex":"none";
+  $("wtxt").style.display=hid?"none":"";
+  $("cur").textContent="第 "+(qi+1)+" 词";
+  $("dur").textContent="共 "+queue.length+" 词";
+  const pct=queue.length?qi/queue.length*100:0;
+  $("fill").style.width=pct+"%"; $("knob").style.left=pct+"%";
+  updateBtns();
+}
+
+/* 音源（全部实测过）：
+   · 单词 → 有道词典音（只有一个英文词时可靠）
+   · 中文/例句 → 百度 gettts，必须带 spd + **source=web**，否则返回错误页（200 但播不出）
+   · 每个都带兜底 + 开播看门狗，最后一层用系统语音 */
+/* ===== 本地微软语音：按音色取音频，缺失自动回退其它音色 → 再回退在线 TTS ===== */
+const VNAME={
+  "en-US-BrianNeural":"Brian","en-US-AndrewNeural":"Andrew","en-US-GuyNeural":"Guy",
+  "en-US-AriaNeural":"Aria","en-US-JennyNeural":"Jenny","en-US-AvaNeural":"Ava",
+  "en-US-EmmaNeural":"Emma","en-US-ChristopherNeural":"Christopher","en-US-EricNeural":"Eric",
+  "en-US-RogerNeural":"Roger","en-US-SteffanNeural":"Steffan","en-US-AnaNeural":"Ana",
+  "en-US-MichelleNeural":"Michelle","en-GB-SoniaNeural":"Sonia","en-GB-RyanNeural":"Ryan",
+  "en-GB-LibbyNeural":"Libby","en-GB-ThomasNeural":"Thomas","en-GB-MaisieNeural":"Maisie",
+  "zh-CN-YunyangNeural":"云扬","zh-CN-YunjianNeural":"云健","zh-CN-YunxiNeural":"云希",
+  "zh-CN-XiaoxiaoNeural":"晓晓","zh-CN-XiaoyiNeural":"晓伊","zh-CN-YunxiaNeural":"云夏",
+  "zh-CN-liaoning-XiaobeiNeural":"晓北","zh-CN-shaanxi-XiaoniNeural":"晓妮"
+};
+const voiceLabel=id=>VNAME[id]||String(id).replace(/Neural$/,"").split("-").pop();
+/* 本篇已生成哪些音色：w/e = 英文音色，m = 中文音色 */
+function audioVoices(kind){ try{ return AUDIO?Object.keys(AUDIO).filter(v=>AUDIO[v]&&AUDIO[v][kind]):[] }catch(e){ return [] } }
+function localAudio(t,kind){
+  try{
+    if(!AUDIO)return "";
+    const map = kind==="word"?"w" : kind==="zh"?"m" : kind==="sent"?"e" : null;
+    if(!map)return "";
+    const key = kind==="word" ? String(t).toLowerCase()
+              : kind==="zh"   ? String(t).replace(/^[a-z]+\.\s*/i,"")
+              : String(t);
+    const all = audioVoices(map);
+    const want = kind==="zh" ? S.zhVoice : S.enVoice;
+    const order = (want&&all.indexOf(want)>=0) ? [want].concat(all.filter(v=>v!==want)) : all;
+    for(let i=0;i<order.length;i++){
+      const m=AUDIO[order[i]]&&AUDIO[order[i]][map];
+      if(m&&m[key])return m[key];
+    }
+  }catch(e){}
+  return "";
+}
+/* 中文朗读文本：去掉词性前缀 + 去掉括号里的英文注释。
+   否则中文音色会把括号里的英文也念出来，中英混读听着就是"机器音" */
+function zhText(w){
+  return String((w&&w.m)||"")
+    .replace(/^[a-z]+\.\s*/i,"")
+    .replace(/[（(][^）)]*[A-Za-z][^）)]*[）)]/g,"")
+    .replace(/\s+/g," ").trim();
+}
+function ttsURL(t,kind){
+  const e=encodeURIComponent(t);
+  const yd="https://dict.youdao.com/dictvoice?type="+(S.voice==="uk"?0:1)+"&audio="+e;
+  const bd=lan=>"https://fanyi.baidu.com/gettts?lan="+lan+"&spd=5&source=web&text="+e;   /* 老版参数：spd=5 */
+  const L=localAudio(t,kind); if(L)return L;
+  if(kind==="zh")return bd("zh");
+  if(kind==="sent")return bd("en");
+  return yd;
+}
+function ttsURLs(t,kind){
+  const e=encodeURIComponent(t);
+  const yd="https://dict.youdao.com/dictvoice?type="+(S.voice==="uk"?0:1)+"&audio="+e;
+  const bd=lan=>"https://fanyi.baidu.com/gettts?lan="+lan+"&spd=5&source=web&text="+e;   /* 老版参数：spd=5 */
+  const urls=[];
+  const L=localAudio(t,kind); if(L)urls.push(L);   /* 1) 微软预生成音频（有就用） */
+  if(kind==="zh")urls.push(bd("zh"));
+  else if(kind==="sent")urls.push(bd("en"));
+  else urls.push(yd,bd("en"));                     /* 单词：有道 → 百度 */
+  return urls;
+}
+
+/* ===== 音色选择器：只列本篇已生成的音色（在设置里切换，立即重播当前词）===== */
+(function voiceRows(){
+  const en=audioVoices("w"), zh=audioVoices("m");
+  const rowOf=id=>{const e=$(id); return e?e.closest(".srow"):null};
+  const rEn=rowOf("segEnVoice"), rZh=rowOf("segZhVoice");
+  if(en.length){
+    if(!S.enVoice||en.indexOf(S.enVoice)<0)S.enVoice=(en.find(v=>/brian/i.test(v))||en[0]);
+    seg($("segEnVoice"),en.map(v=>({t:voiceLabel(v),v})),()=>S.enVoice,v=>{S.enVoice=v},
+        ()=>refreshCurrent("单词音色： "+voiceLabel(S.enVoice)));
+    const vr=$("segVoice")&&$("segVoice").closest(".srow"); if(vr)vr.style.display="none";  /* 有微软音后，美音/英音已无意义 */
+  }else if(rEn){ rEn.style.display="none" }
+  if(zh.length){
+    if(!S.zhVoice||zh.indexOf(S.zhVoice)<0)S.zhVoice=(zh.find(v=>/yunyang/i.test(v))||zh[0]);
+    seg($("segZhVoice"),zh.map(v=>({t:voiceLabel(v),v})),()=>S.zhVoice,v=>{S.zhVoice=v},
+        ()=>refreshCurrent("中文音色： "+voiceLabel(S.zhVoice)));
+  }else if(rZh){ rZh.style.display="none" }
+})();
+let failStreak=0;   /* 连续失败计数：防止音源全挂时疯狂空转刷完词表 */
+/* 系统语音兜底：在线音源都不可用时，用浏览器自带语音朗读，保证有声音 */
+function speakLocal(text,lang,cb){
+  try{
+    if(!window.speechSynthesis){ cb&&cb(false); return }
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang=lang; u.rate=Math.max(.5,Math.min(2,(+S.rate||1)*.95));   /* 系统语音也跟着语速 */
+    let done=false; const fin=ok=>{ if(done)return; done=true; cb&&cb(ok) };
+    u.onend=()=>fin(true); u.onerror=()=>fin(false);
+    speechSynthesis.cancel(); speechSynthesis.speak(u);
+    setTimeout(()=>fin(true),Math.min(12000,1200+String(text).length*90));  /* 无 onend 时按字长估算收尾 */
+  }catch(e){ cb&&cb(false) }
+}
+function say(text,kind,cb){
+  const urls=ttsURLs(text,kind);
+  const t0=Date.now();
+  let i=0, done=false, local=false;
+  const finish=ok=>{
+    if(done)return; done=true;
+    failStreak=ok?0:failStreak+1;
+    if(!ok&&failStreak>=3){                 /* 连续 3 次完全没声：停下来告诉用户，别静默刷词 */
+      clearT(); stopAudio(); setPlaying(false);
+      toast("⚠️ 朗读音源暂时不可用，已暂停。检查网络后点 ▶ 继续");
+      return;
+    }
+    const wait=Math.max(0,700-(Date.now()-t0));   /* 最短停留 0.7s，杜绝秒刷 */
+    setTimeout(()=>cb&&cb(ok),wait);
+  };
+  const tryNext=()=>{
+    if(done)return;
+    if(i>=urls.length){                            /* 在线音源都不行 → 系统语音兜底 */
+      if(local)return;                             /* 防重入：重复调用会把上一句 cancel 掉，等于没声 */
+      local=true;
+      speakLocal(text, kind==="zh"?"zh-CN":"en-US", finish);
+      return;
+    }
+    stopAudio();
+    const a=new Audio(urls[i++]);
+    audio=a;
+    try{a.playbackRate=+S.rate||1}catch(e){}      /* 语速（preservesPitch 默认开，不改音调） */
+    let started=false;
+    a.addEventListener("playing",()=>{ started=true });
+    a.addEventListener("ended",()=>{ if(started)finish(true); else tryNext() });
+    a.addEventListener("error",()=>{ if(!started)tryNext(); else finish(true) });
+    a.play().catch(err=>{
+      if(err&&err.name==="NotAllowedError"){ autoplayBlocked=true; finish(false) }
+      else tryNext();
+    });
+    setTimeout(()=>{ if(!started&&!done)tryNext() },2500);   /* 2.5s 没出声 → 换下一个音源 */
+    setTimeout(()=>{ if(!done)finish(!!started) },15000);
+  };
+  tryNext();
+}
+function stopAudio(){try{if(audio){audio.pause();audio=null}}catch(e){}}
+function clearT(){if(timer){clearTimeout(timer);timer=null}}
+
+/* 池子为空（比如「只背星标」但一个都没标）时的提示 */
+function emptyHint(){
+  const src=S.source;
+  $("wsec").textContent="";
+  $("wbig").textContent="—";
+  $("wipa").textContent="";
+  $("wmean").textContent = src==="star"?"还没有 ⭐ 星标词"
+    : src==="fav"?"还没有 ❤ 收藏词"
+    : src==="skip"?"还没有 ✓ 跳过的词"
+    : "这里还没有可读的词";
+  $("wex").textContent = src==="skip"?"在词上点「✓ 跳过」标记后，这里能集中回看并一键取消"
+    : "点右上角 "+(src==="fav"?"❤":"☆")+" 标记后，这里会自动连播";
+  renderMarks(null);
+  $("wav").style.display="none";
+  $("wtxt").style.display="";
+  $("art").style.opacity=1;
+  $("cur").textContent="第 0 词"; $("dur").textContent="共 0 词";
+  $("fill").style.width="0%"; $("knob").style.left="0%";
+}
+
+/* 播放代际：每次 playCurrent 换代，上一代残留的延时/回执一律作废。
+   否则旧链的 420/450ms 延时会插进新链 → 开关关了还在读、中文被顶掉、读串词 */
+let gen=0;
+function playCurrent(){
+  const g=++gen;
+  clearT();stopAudio();
+  const w=queue[qi]; if(!w)return;
+  const live=fn=>(...a)=>{ if(g!==gen)return; return fn(...a) };
+  render(w,!(S.reveal));
+  updateArm();
+  if(!playing)return;
+  const goNext=live(()=>{
+    if(S.reveal)render(w,true);
+    timer=setTimeout(live(()=>{
+      if(pendingRebuild){pendingRebuild=false;rebuildKeepPos()}   /* 这个词念完了，标记此刻才生效 */
+      qi=(qi+1+queue.length)%queue.length;playCurrent();
+    }),S.pause);
+  });
+  /* 例句：有本地微软音频就播本地，没有就走百度在线（老版方案） */
+  const afterEx=live(()=>{ if(S.ex){say(w.ex,"sent",live(()=>goNext()))} else goNext(); });
+  const afterZh=live(()=>{
+    if(S.zh){ timer=setTimeout(live(()=>say(zhText(w),"zh",afterEx)),450) }
+    else afterEx();
+  });
+  /* 单词可重复朗读 N 次（默认 1），全部读完再走中文/例句 */
+  let left=Math.max(1,Math.min(20,Math.round(+S.repeat||1)));
+  const again=live(()=>{
+    left--;
+    if(left>0){ timer=setTimeout(live(()=>say(w.w,"word",again)),420) }
+    else afterZh();
+  });
+  say(w.w,"word",again);
+}
+
+function setPlaying(on){
+  playing=on; app.classList.toggle("playing",on);
+  $("icPlay").style.display=on?"none":""; $("icPause").style.display=on?"":"none";
+  updateArm();
+}
+$("play").onclick=()=>{ setPlaying(!playing); if(playing)playCurrent(); else {clearT();stopAudio();} };
+/* 上一词/下一词：抽成函数——它们是 <svg>，没有 .click()，键盘里点会直接抛异常 */
+function prevWord(){if(!queue.length)return;if(pendingRebuild){pendingRebuild=false;rebuildKeepPos()}
+  qi=(qi-1+queue.length)%queue.length;if(playing)playCurrent();else render(queue[qi],true)}
+function nextWord(){if(!queue.length)return;if(pendingRebuild){pendingRebuild=false;rebuildKeepPos()}
+  qi=(qi+1)%queue.length;if(playing)playCurrent();else render(queue[qi],true)}
+$("prevBtn").onclick=prevWord;
+$("nextBtn").onclick=nextWord;
+$("moreBtn").onclick=()=>$("sheet").classList.add("on");
+$("listBtn").onclick=()=>$("sheet").classList.add("on");
+$("sheetBack").onclick=()=>{$("sheet").classList.remove("on");if(!playing){setPlaying(true);playCurrent()}};
+$("backBtn").onclick=()=>{
+  if(history.length>1)history.back();          // 从站点点进来的：退回上一页
+  else location.href="../../listen.html";          // 直接打开的：回听力索引
+};
+$("ordBtn").textContent=S.order==="rand"?"随机":"顺序";
+$("ordBtn").onclick=()=>{
+  S.order=S.order==="seq"?"rand":"seq"; save();
+  $("ordBtn").textContent=S.order==="rand"?"随机":"顺序";
+  rebuild(true); updateArm();
+  toast(S.order==="rand"?"随机播放":"顺序播放");
+  if(playing)playCurrent(); else if(queue[qi])render(queue[qi],true);
+};
+$("setupBack").onclick=()=>{$("sheet").classList.remove("on");if(!playing){setPlaying(true);playCurrent()}};
+$("bar").onclick=e=>{
+  if(!queue.length)return;
+  const r=$("bar").getBoundingClientRect();
+  qi=Math.min(queue.length-1,Math.max(0,Math.floor((e.clientX-r.left)/r.width*queue.length)));
+  if(playing)playCurrent(); else render(queue[qi],true);
+};
+document.addEventListener("keydown",e=>{
+  if(e.code==="Space"){e.preventDefault();$("play").click()}
+  else if(e.key==="ArrowRight")nextWord();
+  else if(e.key==="ArrowLeft")prevWord();
+  else if(e.key==="Escape"){$("linkCfg").classList.remove("on");$("linkPop").classList.remove("on");$("sheet").classList.remove("on")}
+});
+
+// 释义/例句位置的律动波浪：恢复原来的固定 26 根、紧凑居中
+(function(){
+  const box=$("wav");
+  for(let i=0;i<26;i++){
+    const b=document.createElement("i");
+    b.style.animationDuration=(0.55+Math.random()*0.55).toFixed(2)+"s";
+    b.style.animationDelay=(-Math.random()*0.9).toFixed(2)+"s";
+    box.appendChild(b);
+  }
+})();
+
+// 界面缩放：设置面板里切档（窄屏才生效；宽屏走双栏，固定 1x）
+const ZOOMS=[1,1.25,1.5,2];
+function setZ(z,persist){
+  app.style.setProperty("--z",z);
+  const zs=$("segZoom");
+  if(zs)zs.querySelectorAll("b").forEach(b=>b.classList.toggle("on",+b.dataset.v===+z));
+  if(persist){try{localStorage.setItem("listen_qq_zoom",z)}catch(e){}}
+}
+seg($("segZoom"),ZOOMS.map(z=>({t:z+"x",v:z})),()=>+(localStorage.getItem("listen_qq_zoom")||1),v=>setZ(v,true));
+function measureDesign(){
+  const prev=app.style.minHeight; app.style.minHeight="0px";
+  const h=app.scrollHeight; app.style.minHeight=prev; return h;
+}
+addEventListener("resize",()=>{
+  if(innerWidth<760 && !localStorage.getItem("listen_qq_zoom")) initZoom();
+});
+function initZoom(){
+  const saved=+(localStorage.getItem("listen_qq_zoom")||0);
+  /* 用户手动选过档位：任何屏幕都尊重，别再被自动逻辑覆盖 */
+  if(saved&&ZOOMS.indexOf(saved)>=0){ setZ(saved,false); return }
+  if(innerWidth>=760){ setZ(1,false); return }      // 宽屏默认 1x（双栏本来就够大）
+  app.style.setProperty("--z","1");
+  const dh=Math.max(measureDesign(),640);
+  const fit=Math.min(2,(innerWidth-20)/430,(innerHeight-20)/dh);
+  const ok=ZOOMS.filter(v=>v<=fit+1e-6);
+  setZ(ok.length?ok[ok.length-1]:1,false);
+}
+initZoom();
+
+// 进入即播放；被浏览器拦截则停在 ▶ 等点击
+(function autoStart(){
+  buildQueue();
+  if(!queue.length){ emptyHint(); return }
+  setPlaying(true); playCurrent();
+  let heard=false; const mark=()=>{heard=true};
+  const iv=setInterval(()=>{if(audio){audio.addEventListener("playing",mark);audio.addEventListener("timeupdate",mark)}},250);
+  setTimeout(()=>{
+    clearInterval(iv);
+    if(heard)return;                        /* 真的出声了：正常播放 */
+    if(!autoplayBlocked)return;             /* 没出声但不是被拦（网络慢/无音频设备）：不干预，别误暂停 */
+    clearT();stopAudio();setPlaying(false);qi=0;render(queue[0],true);
+    toast("浏览器拦截了自动播放，点 ▶ 开始");
+  },3000);
+})();
+</script>
+</body>
+</html>

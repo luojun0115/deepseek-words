@@ -1,0 +1,187 @@
+/* ============ 全站基线 ============ */
+:root {
+  --dr-radius: var(--dr-r);
+}
+.VPDoc { background: var(--dr-bg); }
+
+/* DECISIONS §C10：宽版页面（frontmatter pageClass: wide）——实测瓶颈有三处：.container 被限 1104px、
+   has-aside 白占 256px 侧栏位、.content 自身 max-width+padding，逐一放开 */
+.wide .VPDoc .container { max-width: 100% !important; }
+.wide .VPDoc .aside { display: none; }
+.wide .VPDoc:not(.has-sidebar) .content { max-width: none !important; }
+.wide .VPDoc .content-container { max-width: 1400px !important; }
+
+/* 宽版只给卡片栅格用，正文段落不该拉到 1400px 那么长的行（2026-10-08 用户嫌页面难看）。
+   只管 .vp-doc 的直接子元素，组件内部的段落不受影响。 */
+.wide .vp-doc > p, .wide .vp-doc > ul, .wide .vp-doc > ol { max-width: 74ch; }
+.wide .vp-doc > p { line-height: 1.85; }
+
+/* ============ 论文总览（pageClass: papers）============ */
+/* 链接名称不带下划线（2026-10-08 用户要求）：下划线来自 VitePress 默认的
+   `.vp-doc a { text-decoration: underline }`，这里两级类名压过它；悬停时才显，
+   保留“这里可点”的视觉反馈。 */
+.papers .vp-doc a { text-decoration: none; }
+.papers .vp-doc a:hover { text-decoration: underline; text-underline-offset: 2px; }
+
+/* ============ 首页学法介绍卡（components/HomeIntro.vue）============ */
+/* 原本开头几句是挂在正文里的光秃段落，跟下面的卡片栅格对不上（2026-10-08 用户要求收进卡片）。
+   选择器一律 `.dr-intro .xxx` 两段式，压过 `.vp-doc p` / `.vp-doc a`（DECISIONS §C2）。 */
+.dr-intro {
+  background: var(--dr-panel); border: var(--dr-bw) solid var(--dr-line);
+  border-radius: var(--dr-radius); padding: 22px 24px 18px; margin: 18px 0 26px;
+}
+.dr-intro .dr-intro-lead { font-weight: 500; font-size: 15.5px; line-height: 1.85; color: var(--dr-ink); margin: 0 0 14px; }
+.dr-intro .dr-ways { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 12px; }
+.dr-intro .dr-way {
+  display: flex; align-items: center; gap: 11px; text-decoration: none; color: var(--dr-ink);
+  padding: 13px 15px; border-radius: 10px; border: 1.5px solid transparent; transition: all .15s;
+}
+/* 注：`font: … inherit` 是无效写法（inherit 只能占整条属性），浏览器会整行丢弃，
+   字号/字重/圆角都静默失效。全站已改用 longhand，改样式时别再写 `font:` 简写。 */
+.dr-intro .dr-way-tag { flex: 0 0 auto; font-weight: 700; font-size: 13.5px; line-height: 1; }
+.dr-intro .dr-way-txt { font-size: 12.5px; line-height: 1.6; color: var(--dr-ink2); }
+.dr-intro .dr-way-go { margin-left: auto; flex: 0 0 auto; font-weight: 700; font-size: 16px; line-height: 1; opacity: .55 }
+.dr-intro .dr-way:hover .dr-way-go { opacity: 1 }
+/* 两键分色沿用全站口径：词汇学习=绿、词汇朗读=橙 */
+.dr-intro .dr-way.v { background: rgba(22,163,74,.07); border-color: rgba(22,163,74,.35) }
+.dr-intro .dr-way.v .dr-way-tag, .dr-intro .dr-way.v .dr-way-go { color: #16a34a }
+.dr-intro .dr-way.v:hover { border-color: #16a34a; background: rgba(22,163,74,.13) }
+.dr-intro .dr-way.l { background: rgba(234,115,23,.07); border-color: rgba(234,115,23,.35) }
+.dr-intro .dr-way.l .dr-way-tag, .dr-intro .dr-way.l .dr-way-go { color: #ea7317 }
+.dr-intro .dr-way.l:hover { border-color: #ea7317; background: rgba(234,115,23,.13) }
+
+/* ============ 索引组件（.dr-lib 前缀压过 .vp-doc，DECISIONS §C2）============ */
+.dr-lib { color: var(--dr-ink); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; }
+
+.dr-lib .dr-tools {
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+  margin: 4px 0 18px;
+}
+.dr-lib .dr-search {
+  flex: 1 1 240px; min-width: 200px;
+  font-weight: 400; font-size: 14px; line-height: 1; color: var(--dr-ink);
+  background: var(--dr-panel); border: var(--dr-bw) solid var(--dr-line);
+  border-radius: var(--dr-radius); padding: 10px 14px;
+}
+.dr-lib .dr-search:focus { outline: 2px solid var(--dr-accent); outline-offset: -1px; }
+.dr-lib select.dr-search { flex: 0 0 auto; cursor: pointer; }
+.dr-lib .dr-count { font-size: 13px; color: var(--dr-ink2); white-space: nowrap; margin-left: auto; }
+
+/* 栅格：同排等高交给 grid，不用 min-height（旧坑8，见 DECISIONS §C 开头的对照注）；1440 视口下一排 4 卡 */
+.dr-lib .dr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+.dr-lib .dr-card {
+  display: flex; flex-direction: column;
+  background: var(--dr-panel); border: var(--dr-bw) solid var(--dr-line);
+  border-radius: var(--dr-radius); padding: 16px 18px;
+  transition: box-shadow .15s, border-color .15s, transform .15s;
+}
+.dr-lib .dr-card:hover { border-color: var(--dr-accent); box-shadow: 0 6px 22px rgba(0,0,0,.08); transform: translateY(-2px); }
+
+.dr-lib .dr-card-top { display: flex; align-items: center; gap: 10px; }
+.dr-lib .dr-num {
+  font: 700 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--dr-accent); background: var(--dr-soft);
+  border-radius: 6px; padding: 4px 7px; letter-spacing: .5px;
+}
+.dr-lib .dr-card-nm {
+  font: 700 16px/1.3 var(--dr-hf); color: var(--dr-ink);
+  text-decoration: none; margin: 0;
+}
+.dr-lib .dr-full {
+  font: 400 12.5px/1.5 var(--dr-hf); color: var(--dr-ink2);
+  margin: 8px 0 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  min-height: 0;
+}
+.dr-lib .dr-meta { font-size: 11.5px; color: var(--dr-ink2); margin-top: 6px; }
+
+/* 底部两按钮：底对齐交给 flex（旧坑8，同上） */
+.dr-lib .dr-acts { display: flex; gap: 8px; margin-top: auto; padding-top: 14px; }
+.dr-lib .dr-go {
+  flex: 1; text-align: center; text-decoration: none;
+  font-weight: 600; font-size: 13px; line-height: 1; border-radius: 8px; padding: 9px 0;
+  transition: all .15s;
+}
+/* 两键分色（2026-10-08 用户要求）：词汇学习=绿、词汇朗读=橙，字与描边同色，悬停淡填充 */
+.dr-lib .dr-go.v { color: #16a34a; background: transparent; border: 1.5px solid #16a34a55; }
+.dr-lib .dr-go.v:hover { border-color: #16a34a; background: #16a34a14; }
+.dr-lib .dr-go.l { color: #ea7317; background: transparent; border: 1.5px solid #ea731755; }
+.dr-lib .dr-go.l:hover { border-color: #ea7317; background: #ea731714; }
+/* 第三键＝学习笔记（2026-10-09 新增栏目）：青蓝，与绿/橙并列。
+   选 #0284c7 的理由是量过：10 套配色里最差一侧 4.10:1（绿 3.30 / 橙 3.02 是现有基线） */
+.dr-lib .dr-go.n { color: #0284c7; background: transparent; border: 1.5px solid #0284c755; }
+.dr-lib .dr-go.n:hover { border-color: #0284c7; background: #0284c714; }
+/* 「未写」小标（只在 /notes 索引页出现）：跟按钮同色，不额外引入颜色 */
+.dr-lib .dr-nb {
+  font-style: normal; font-size: 10.5px; font-weight: 600; margin-left: 5px;
+  padding: 1px 5px; border-radius: 999px; border: 1px solid currentColor; opacity: .72;
+}
+
+/* 总集入口横幅（词汇页=总览全局 / 听力页=全部朗读），位于标题下方、工具条上方 */
+.dr-lib .dr-master { display: flex; align-items: stretch; gap: 10px; margin-bottom: 16px; }
+.dr-lib .dr-m-main {
+  flex: 1 1 0; display: flex; align-items: center; gap: 13px; text-decoration: none;
+  min-width: 0;
+  padding: 13px 16px; border-radius: 11px; border: 1.5px solid var(--dr-line);
+  background: var(--dr-bg2); transition: all .15s;
+}
+.dr-lib .dr-m-main:hover { border-color: var(--dr-accent); background: var(--dr-soft, var(--dr-bg2)); }
+.dr-lib .dr-m-ico { font-size: 21px; line-height: 1; flex: 0 0 auto; }
+.dr-lib .dr-m-txt { display: flex; flex-direction: column; gap: 3px; min-width: 0; line-height: 1.35; }
+.dr-lib .dr-m-txt b { font-size: 15.5px; font-weight: 700; color: var(--dr-ink); }
+.dr-lib .dr-m-txt i { font-style: normal; font-size: 12px; color: var(--dr-ink2); }
+.dr-lib .dr-m-arrow { margin-left: auto; align-self: center; font-size: 20px; font-weight: 700; color: var(--dr-accent); flex: 0 0 auto; }
+/* 两键平分（2026-10-08 用户要求）：旧写法 main=flex:1 + alt=内容宽，导致 1148:154 的失衡 */
+.dr-lib .dr-m-alt {
+  flex: 1 1 0; display: flex; align-items: center; justify-content: center; gap: 6px;
+  padding: 0 15px; border-radius: 11px; min-width: 0;
+  border: 1.5px dashed var(--dr-line); font-size: 12.5px; font-weight: 600;
+  color: var(--dr-ink2); text-decoration: none; white-space: nowrap; transition: all .15s;
+}
+.dr-lib .dr-m-alt:hover { border-color: var(--dr-accent); color: var(--dr-accent); }
+
+.dr-lib .dr-empty { color: var(--dr-ink2); font-size: 14px; padding: 30px 0; text-align: center; }
+
+/* 笔记页正文还空着时给一行轻提示（纯 CSS，写了内容自动消失，不需要构建期数据）：
+   VitePress 对“只有 frontmatter”的 md 渲染出 <div class="vp-doc …"><div></div></div>，
+   内层 div 真的空，所以 :empty 命中（实测 SSR 产物）。
+   `.note-page` 来自每篇笔记 frontmatter 的 pageClass（它落在 .Layout 根上，不在 .vp-doc 上）。
+   2026-10-09 用户要求：这句面向站点读者，**不许写仓库目录/文件路径/构建命令**怎么开仓写笔记；
+   写笔记的操作说明在 README「维护：改哪里」与每篇 md 的 frontmatter 注释里（后者不渲染成页面）。 */
+.note-page .vp-doc > div:empty::after {
+  content: '这篇还没有写笔记。';
+  display: block; margin-top: 8px; padding: 16px 18px;
+  border: 1.5px dashed var(--dr-line); border-radius: 11px;
+  color: var(--dr-ink2); font-size: 13.5px; line-height: 1.75;
+}
+
+/* ============ 笔记页页头（.vitepress/theme/NoteHeader.vue，挂在 #doc-before）============ */
+/* 空白笔记页原本光秃秃（md 里只有 frontmatter，页面上一句标题都没有），
+   页头由主题层按 URL 反查 papers.json 补上，不往 md 里写一个字节。
+   青蓝＝笔记栏目的固定语义色（与卡片第三枚按钮同色），跟绿/橙一样不随主题走。 */
+.dr-note-hd {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  margin: 0 0 22px; padding-bottom: 15px;
+  border-bottom: var(--dr-bw) solid var(--dr-line);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+}
+/* 编号 chip 跟卡片上的 .dr-num 一个口径（主题强调色 + 主题淡底）：
+   试过直接用笔记栏目的青蓝 #0284c7，量下来在十套里最差 3.65:1（小字号），
+   换成主题色后每套都拿自己配好的对比度，不跟主题抢颜。青蓝只留给按钮/返回链 */
+.dr-note-num {
+  flex: 0 0 auto; font: 700 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--dr-accent); background: var(--dr-soft);
+  border: 1px solid var(--dr-line);
+  border-radius: 6px; padding: 5px 7px; letter-spacing: .5px;
+}
+.dr-note-txt { display: flex; flex-direction: column; gap: 3px; flex: 1 1 220px; min-width: 0; }
+.dr-note-txt b { font: 700 17px/1.3 var(--dr-hf); color: var(--dr-ink); }
+.dr-note-txt i {
+  font-style: normal; font-size: 12px; line-height: 1.45; color: var(--dr-ink2);
+  display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden;
+}
+.dr-note-back {
+  flex: 0 0 auto; margin-left: auto; text-decoration: none; white-space: nowrap;
+  font-size: 12.5px; font-weight: 600; color: var(--dr-ink2);
+  padding: 7px 12px; border-radius: 9px; border: 1.5px solid var(--dr-line); transition: all .15s;
+}
+.dr-note-back:hover { color: #0284c7; border-color: #0284c7; background: rgba(2,132,199,.07); }

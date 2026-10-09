@@ -1,0 +1,3360 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DeepSeek-OCR 论文核心词汇</title>
+<style>
+:root{--c4:#3b82f6;--c6:#8b5cf6;--ckaon:#f59e0b;--cphd:#ef4444;--ct:#0d9488;--cg:#d946ef;--cm4:#0ea5e9;--cm8:#f43f5e;--cy:#10b981;--csuper:#facc15}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;transition:background .3s,color .3s}
+.tag{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:4px;color:#fff;vertical-align:2px;margin-left:6px;font-style:normal;flex:none;white-space:nowrap}
+.tag.t4{background:var(--c4)}.tag.t6{background:var(--c6)}.tag.tk{background:var(--ckaon)}.tag.tp{background:var(--cphd)}.tag.tm4{background:var(--cm4)}.tag.tm8{background:var(--cm8)}
+.tag.tt{background:var(--ct)}.tag.tg{background:var(--cg)}.tag.ty{background:var(--cy)}.tag.tsuper{background:var(--csuper);color:#3a2f00}
+.ipa{font-family:"SF Mono",Menlo,monospace;font-size:.82em;font-weight:400;opacity:.62;margin-left:6px}
+
+
+/* 论文原标题小字 */
+.ptitle{font-size:12.5px;letter-spacing:.3px;margin-top:6px}
+.ptitle i{font-family:Georgia,serif}
+.theme-mag .ptitle{color:#999;text-transform:none}
+.theme-dark .ptitle{color:#6e7681}
+.theme-paper .ptitle{color:#a09578}
+.theme-fresh .ptitle{color:#9ca3af}
+body.lv-mode .ptitle{color:#7d8590}
+
+/* 预览工具条 */
+.toolbar{position:fixed;right:16px;bottom:16px;z-index:99;display:flex;flex-direction:column;gap:8px;background:rgba(20,22,30,.88);padding:12px;border-radius:14px;backdrop-filter:blur(8px);box-shadow:0 6px 24px rgba(0,0,0,.35)}
+.toolbar .row{display:flex;gap:6px}
+.toolbar button{border:none;cursor:pointer;padding:7px 12px;border-radius:8px;font-size:12.5px;background:#3a3f4d;color:#cbd2e0;transition:.15s}
+.toolbar button:hover{background:#4a5164}
+.toolbar button.on{background:#fff;color:#111;font-weight:600}
+.toolbar .lbl{font-size:10px;color:#8a93a6;text-align:left;margin:2px 0 -2px 2px}
+
+/* ---------- A 纸质阅读 ---------- */
+body.theme-paper{background:#faf6ee;color:#2c2a25}
+.theme-paper .wrap{max-width:880px;margin:0 auto;padding:56px 24px 140px}
+.theme-paper .hero h1{font-family:Georgia,"Songti SC",serif;font-size:34px}
+.theme-paper .hero p{color:#8a8272;margin:10px 0 42px;font-size:14px}
+.theme-paper .sec{margin-bottom:44px}
+.theme-paper .sec>h2{font-family:Georgia,"Songti SC",serif;font-size:20px;padding-left:14px;border-left:4px solid #b08d4f;margin-bottom:18px}
+.theme-paper .word{display:flex;gap:14px;padding:14px 16px;border-bottom:1px dashed #ddd2bc;align-items:baseline}
+.theme-paper .word:hover{background:#f3ecdc}
+.theme-paper .w{font-family:Georgia,serif;font-size:19px;font-weight:700;min-width:250px}
+.theme-paper .pos{color:#a09578;font-size:13px;margin-right:6px}
+.theme-paper .m{color:#4a463c;font-size:15px}
+.theme-paper .ex{margin-left:auto;max-width:270px;font-size:12.5px;color:#9a8f76;font-style:italic;text-align:right}
+.theme-paper .from{display:block;font-size:11px;color:#b3a888;font-style:normal;margin-top:3px}
+
+/* ---------- B 暗色科技 ---------- */
+body.theme-dark{background:#0d1117;color:#e6edf3}
+.theme-dark .wrap{max-width:1000px;margin:0 auto;padding:56px 24px 140px}
+.theme-dark .hero h1{font-family:"SF Mono",Menlo,monospace;font-size:26px}
+.theme-dark .hero h1::before{content:"$ ";color:#3fb950}
+.theme-dark .hero p{color:#7d8590;margin:10px 0 40px;font-size:14px;font-family:Menlo,monospace}
+.theme-dark .sec>h2{font-size:15px;font-family:Menlo,monospace;color:#58a6ff;padding:10px 16px;background:#161b22;border:1px solid #30363d;border-radius:8px 8px 0 0;margin-bottom:-1px}
+.theme-dark .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;padding:20px;background:#161b22;border:1px solid #30363d;border-radius:0 0 8px 8px}
+.theme-dark .card{background:#0d1117;border:1px solid #30363d;border-left:4px solid #58a6ff;border-radius:6px;padding:15px 17px;transition:.2s;cursor:pointer;font-family:Menlo,monospace}
+.theme-dark .card:hover{border-color:#58a6ff;box-shadow:0 0 14px rgba(88,166,255,.25);transform:translateY(-2px)}
+.theme-dark .w{font-family:Menlo,monospace;font-size:17px;color:#79c0ff}
+.theme-dark .ipa{color:#7ee787;opacity:.9}
+.theme-dark .m{color:#8b949e;font-size:13.5px;margin-top:7px;line-height:1.55}
+.theme-dark .ex{font-size:12px;color:#6e7681;margin-top:8px;border-top:1px solid #21262d;padding-top:8px;font-style:italic}
+.theme-dark .from{color:#484f58;font-size:11px;margin-top:4px}
+
+/* ---------- C 清新卡片 ---------- */
+body.theme-fresh{background:linear-gradient(160deg,#eef4ff 0%,#f6f0ff 50%,#fff7ec 100%);color:#1f2430}
+.theme-fresh .wrap{max-width:1020px;margin:0 auto;padding:56px 24px 140px}
+.theme-fresh .hero h1{font-size:32px;font-weight:800;background:linear-gradient(90deg,#3b82f6,#8b5cf6,#f59e0b);-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block}
+.theme-fresh .hero p{color:#6b7280;margin:10px 0 40px;font-size:14px}
+.theme-fresh .sec>h2{font-size:19px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.theme-fresh .sec>h2 .n{width:30px;height:30px;border-radius:10px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.08);display:inline-flex;align-items:center;justify-content:center;font-size:13px}
+.theme-fresh .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+.theme-fresh .card{background:rgba(255,255,255,.82);backdrop-filter:blur(6px);border-radius:18px;padding:17px 19px 15px;box-shadow:0 3px 14px rgba(80,80,140,.09);transition:.2s;cursor:pointer;border-top:5px solid #dbe3f5}
+.theme-fresh .card.lv四级{border-top-color:#3b82f6}.theme-fresh .card.lv六级{border-top-color:#8b5cf6}
+.theme-fresh .card.lv考研{border-top-color:#f59e0b}.theme-fresh .card.lv考博{border-top-color:#ef4444}
+.theme-fresh .card.lv专四{border-top-color:#0ea5e9}.theme-fresh .card.lv专八{border-top-color:#f43f5e}
+.theme-fresh .card.lv雅思{border-top-color:#10b981}.theme-fresh .card.lv托福{border-top-color:#0d9488}
+.theme-fresh .card.lvGRE{border-top-color:#d946ef}.theme-fresh .card.lv超纲{border-top-color:#facc15}
+.theme-fresh .card .w{display:inline-block;background:#f3f5fb;border-radius:8px;padding:2px 10px}
+.theme-fresh .card:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(80,80,140,.16)}
+.theme-fresh .w{font-size:18px;font-weight:700}
+.theme-fresh .m{color:#4b5563;font-size:14px;margin-top:6px;line-height:1.55}
+.theme-fresh .ex{color:#9ca3af;font-size:12.5px;margin-top:8px}
+.theme-fresh .from{color:#b6bcc9;font-size:11.5px;margin-top:4px}
+
+/* ---------- D 杂志表格（宽松版） ---------- */
+body.theme-mag{background:#fff;color:#111}
+.theme-mag .wrap{max-width:960px;margin:0 auto;padding:52px 28px 140px}
+.theme-mag .hero{border-bottom:3px solid #111;padding-bottom:16px;margin-bottom:10px}
+.theme-mag .hero h1{font-family:"Songti SC",Georgia,serif;font-size:38px;font-weight:900}
+.theme-mag .hero p{color:#888;font-size:13.5px;margin-top:8px}
+.theme-mag .sec>h2{font-size:14px;letter-spacing:3px;text-transform:uppercase;color:#c2410c;margin:44px 0 8px;border-bottom:1px solid #e5e5e5;padding-bottom:8px}
+.theme-mag table{width:100%;border-collapse:collapse}
+.theme-mag td{padding:16px 12px;border-bottom:1px solid #f0f0f0;font-size:15.5px;line-height:1.65;vertical-align:top}
+.theme-mag tr:hover td{background:#fff8f3}
+.theme-mag .w{font-weight:700;font-size:17px;width:300px}
+.theme-mag .lv{width:60px}
+.theme-mag .lv b{font-size:11.5px;padding:3px 0;display:block;text-align:center;border-radius:3px;color:#fff;font-weight:600}
+.theme-mag .m{color:#3d3d3d}
+.theme-mag .ex{color:#9a9a9a;font-size:13px;font-style:italic}
+.theme-mag .from{display:block;color:#c9c9c9;font-size:11.5px;font-style:normal;margin-top:4px}
+
+/* ---------- 按级别：学习模式同款暗色大页 ---------- */
+body.lv-mode{background:#0b0e13 !important}
+body.lv-mode .hero h1,body.lv-mode .hero p{color:#e8ecf3}
+body.lv-mode .hero p{color:#7d8590}
+.lvslide{background:#101318;color:#e8ecf3;border-radius:20px;padding:26px 32px 22px;margin-bottom:26px;border-top:6px solid var(--c4)}
+.lvslide.l6{border-top-color:var(--c6)}.lvslide.lk{border-top-color:var(--ckaon)}.lvslide.lp{border-top-color:var(--cphd)}
+.lvslide.lt{border-top-color:var(--ct)}.lvslide.lg{border-top-color:var(--cg)}.lvslide.lm4{border-top-color:var(--cm4)}.lvslide.lm8{border-top-color:var(--cm8)}.lvslide.ly{border-top-color:var(--cy)}.lvslide.lsuper{border-top-color:var(--csuper)}
+.lvslide .ltitle{font-size:26px;font-weight:800;font-family:Georgia,serif;display:flex;align-items:baseline;gap:14px}
+.lvslide .ltitle small{font-size:14px;color:#7d8590;font-family:Menlo,monospace;font-weight:400}
+.lvslide .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;padding:20px 0 8px}
+.lvslide .lcard{background:#171c26;border:1px solid #2b3342;border-radius:14px;padding:15px 17px;cursor:pointer;transition:.15s}
+.lvslide .lcard:hover{border-color:#79c0ff;transform:translateY(-2px)}
+.lvslide .lcard .w{font-size:19px;font-weight:700;font-family:Georgia,serif}
+.lvslide .lcard .ipa{font-family:Menlo,monospace;font-size:13px;color:#7ee787;margin-left:8px}
+.lvslide .lcard .m{color:#aeb6c4;font-size:14px;margin-top:7px;line-height:1.55}
+.lvslide .lcard .ex{color:#646d7d;font-size:12px;font-style:italic;margin-top:7px}
+.lvslide .lcard .from{color:#4d5563;font-size:11px;margin-top:6px}
+
+
+/* ---------- 白天 / 夜晚 ---------- */
+body.lv-mode:not(.night){background:#eef1f6 !important}
+body.lv-mode:not(.night) .hero h1{color:#1f2430}
+body.lv-mode:not(.night) .hero p{color:#6b7280}
+body.lv-mode:not(.night) .lvslide{background:#fff;color:#1f2430;box-shadow:0 4px 18px rgba(80,80,140,.10)}
+body.lv-mode:not(.night) .lvslide .lcard{background:#f7f9fd;border-color:#e4e9f3}
+body.lv-mode:not(.night) .lvslide .lcard:hover{border-color:#3b82f6}
+body.lv-mode:not(.night) .lvslide .lcard .m{color:#4b5563}
+body.lv-mode:not(.night) .lvslide .lcard .ex{color:#98a0ae}
+body.lv-mode:not(.night) .lvslide .lcard .from{color:#b3bac6}
+body.lv-mode:not(.night) .lvslide .lcard .ipa{color:#0a7d33}
+body.night.theme-mag{background:#0d1117;color:#e6edf3}
+body.night.theme-mag .hero{border-bottom-color:#e6edf3}
+body.night.theme-mag .hero p{color:#8b949e}
+body.night.theme-mag .sec>h2{color:#fbbf24;border-bottom-color:#30363d}
+body.night.theme-mag td{border-bottom-color:#1c2230}
+body.night.theme-mag tr:hover td{background:#161b22}
+body.night.theme-mag .m{color:#c9d1d9}
+body.night.theme-mag .ex{color:#8b949e}
+body.night.theme-mag .from{color:#57606a}
+body.night.theme-mag .w{color:#e6edf3}
+body.night.theme-mag .ptitle{color:#8b949e}
+body.night.theme-mag .ipa{opacity:.55}
+#study.day{background:#f5f7fa;color:#1f2430}
+#study.day .scard{background:#fff;border-color:#e4e9f3}
+#study.day .scard .m{color:#4b5563}
+#study.day .scard .ex{color:#98a0ae}
+#study.day .scard:hover{border-color:#3b82f6}
+#study.day .sfoot{color:#98a0ae;border-top-color:#e6e9f0}
+#study.day .snav button,#study.day #sClose{background:#fff;color:#1f2430;border-color:#d7dce6}
+#study.day .sfoot kbd{background:#e8ecf3;color:#1f2430}
+
+/* ---------- 学习模式（PPT 按章节翻页） ---------- */
+#study{position:fixed;inset:0;z-index:200;display:none;background:#101318;color:#e8ecf3;flex-direction:column}
+#study.on{display:flex}
+#study .sprog{height:4px;background:#262c38}
+#study .sprog i{display:block;height:100%;background:linear-gradient(90deg,#58a6ff,#8b5cf6);width:0;transition:width .25s}
+#study .sbody{flex:1;overflow:auto;padding:20px 40px}
+#study .stitle{font-size:24px;font-weight:800;font-family:Georgia,serif;padding:6px 4px 2px}
+#study .stitle small{color:#5b6472;font-size:14px;font-family:Menlo,monospace;font-weight:400;margin-left:12px}
+#study .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;padding:16px 2px 30px}
+#study .scard{background:#171c26;border:1px solid #2b3342;border-radius:14px;padding:16px 18px;cursor:pointer;transition:.15s}
+#study .scard:hover{border-color:#58a6ff;transform:translateY(-2px)}
+#study .scard .w{font-size:22px;font-weight:700;font-family:Georgia,serif}
+#study .scard .ipa{color:#7ee787;font-size:14px;margin-left:8px}
+#study .scard .m{color:#aeb6c4;font-size:14.5px;margin-top:8px;line-height:1.55}
+#study .scard .ex{color:#646d7d;font-size:12px;font-style:italic;margin-top:6px}
+#study .sfoot{display:flex;justify-content:space-between;align-items:center;padding:14px 28px;color:#5b6472;font-size:13px;border-top:1px solid #1d232e}
+#study .sfoot kbd{background:#262c38;border-radius:5px;padding:2px 8px;margin:0 2px;font-family:Menlo,monospace;font-size:12px}
+#study .snav{display:flex;gap:10px;align-items:center}
+#study .snav button{border:1px solid #333b4a;background:#1a2029;color:#cbd2e0;border-radius:8px;padding:8px 18px;cursor:pointer;font-size:14px}
+#study .snav button:hover{border-color:#58a6ff}
+#study .snav button:disabled{opacity:.35;cursor:default}
+
+
+
+/* —— 样式·暖白（暖白纸底） —— */
+
+body.theme-mag.paper{background:#f4f2ea!important;color:#23211c!important}
+body.theme-mag.paper .hero{border-bottom-color:#23211c}
+body.theme-mag.paper .hero h1{color:#1c1a12}
+body.theme-mag.paper .hero p{color:#6b6a5c}
+body.theme-mag.paper .ptitle{color:#8a8878}
+body.theme-mag.paper .sec>h2{color:#5f7a3f;border-bottom-color:#ddd8ca}
+body.theme-mag.paper td{border-bottom-color:#e6e1d3}
+body.theme-mag.paper tr:hover td{background:#ece7da}
+body.theme-mag.paper .m{color:#33312a}
+body.theme-mag.paper .ex{color:#8a8878}
+body.theme-mag.paper .from{color:#b3b0a0}
+body.theme-mag.paper .ipa{color:#6b6a5c}
+.theme-mag .hwband{padding:0 3px;font-weight:700}
+body.theme-mag.paper .hwband{background:linear-gradient(transparent 16%,#cdddb8 16%,#cdddb8 84%,transparent 84%);color:#1c1a12}
+
+
+</style>
+</head>
+<body class="theme-mag">
+<div class="wrap">
+  <div class="hero">
+    <h1>DeepSeek-OCR 论文核心词汇</h1>
+    <div class="ptitle"><i>DeepSeek-OCR: Contexts Optical Compression · arXiv:2510.18234 · DeepSeek-AI, 2025</i></div>
+    <p>全量口径重做 · 5 节 358 词 · 十一档 + 超纲（2026-10-08）</p>
+  </div>
+  <div id="app"></div>
+</div>
+
+<div class="toolbar">
+  <div class="lbl">视图</div>
+  <div class="row">
+    <button id="v-sec" class="on">按章节</button>
+    <button id="v-lv">按级别综合</button>
+    <button id="v-study">▶ 学习模式</button>
+  </div>
+  <div class="lbl">样式</div>
+  <div class="row">
+    <button id="st-day" class="on">☀ 白天</button>
+    <button id="st-night">🌙 夜晚</button>
+    <button id="st-paper">暖白</button>
+  </div>
+  <div class="lbl">朗读声音 · 多引擎</div>
+  <div class="row"><select id="voiceSel" style="flex:1;border:none;border-radius:8px;padding:7px 8px;background:#3a3f4d;color:#cbd2e0;font-size:12.5px;outline:none"></select><span id="srcState" style="align-self:center;font-size:10.5px;color:#8a93a6;min-width:34px;text-align:center"></span></div>
+</div>
+
+<div id="study">
+  <div class="sprog"><i id="sbar"></i></div>
+  <button id="sClose" title="退出学习模式 (Esc)" style="position:absolute;top:14px;right:18px;z-index:5;border:1px solid #333b4a;background:#1a2029;color:#cbd2e0;border-radius:8px;width:34px;height:34px;font-size:16px;cursor:pointer">✕</button>
+  <div class="sbody"><div id="sPage"></div></div>
+  <div class="sfoot">
+    <span><kbd>空格</kbd>/<kbd>→</kbd> 下一页 &nbsp; <kbd>←</kbd> 上一页 &nbsp; 点单词发音 &nbsp; <kbd>Esc</kbd> 退出</span>
+    <div class="snav">
+      <span id="sIdx">0 / 0</span>
+      <button id="sPrev">← 上一页</button>
+      <button id="sNext">下一页 →</button>
+      <button id="sExit" style="border-color:#5b3a3a">退出</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// lv: 4=四级 6=六级 k=考研 p=考博；ipa 为美式音标
+const DATA = [
+ {
+  "sec": "1. Introduction · 引言",
+  "short": "Intro",
+  "icon": "1",
+  "words": [
+   {
+    "w": "accordingly",
+    "ipa": "əˈkɔrdɪŋli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "因此，据此",
+    "ex": "Accordingly, we present DeepSeek-OCR"
+   },
+   {
+    "w": "allocation",
+    "ipa": "ˌæləˈkeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "分配，配置；安置",
+    "ex": "Our quantitative analysis provides empirical guidelines for VLM token allocation optimization, while the proposed DeepEncoder architecture showcases practical feasibility with real-world deployment capabilities."
+   },
+   {
+    "w": "compact",
+    "ipa": "kəmˈpækt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "紧凑的",
+    "g": "g",
+    "ex": "compact language models can effectively learn to decode compressed visual representations"
+   },
+   {
+    "w": "comprehensive",
+    "ipa": "ˌkɑmprɪˈhensɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "全面的",
+    "ex": "we provide comprehensive quantitative analysis of vision-text token compression ratios"
+   },
+   {
+    "w": "compression",
+    "ipa": "kəmˈprɛʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "压缩，压紧，浓缩",
+    "ex": "Our work makes three primary contributions: First, we provide comprehensive quantitative analysis of vision-text token compression"
+   },
+   {
+    "w": "compressor",
+    "ipa": "kəmˈpresər",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "压缩器",
+    "ex": "This design ensures that the window attention component processes a large number of vision tokens, while the compressor reduces vision tokens before they enter the dense global attention component, achieving effective memory and …"
+   },
+   {
+    "w": "deficiency",
+    "ipa": "dɪˈfɪʃənsi",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "缺乏；不足",
+    "ex": "used in current open-source VLMs, all of which suffer from their respective deficiencies."
+   },
+   {
+    "w": "demonstrate",
+    "ipa": "ˈdemənstreɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "证明",
+    "ex": "The results demonstrate that compact language models can effectively learn"
+   },
+   {
+    "w": "deployment",
+    "ipa": "dɪˈplɔɪmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "部署",
+    "ex": "Our quantitative analysis provides empirical guidelines for VLM token allocation optimization, while the proposed DeepEncoder architecture showcases practical feasibility with real-world deployment capabilities."
+   },
+   {
+    "w": "effective",
+    "ipa": "ˈifɛktɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "有效的；有影响的",
+    "ex": "This design ensures that the window attention component processes a large number of vision tokens, while the compressor reduces vision tokens before they enter the dense global attention component, achieving effective memory and …"
+   },
+   {
+    "w": "efficient",
+    "ipa": "ɪˈfɪʃənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "效率高的，有能力的",
+    "ex": "Accordingly, we present DeepSeek-OCR, a VLM designed as a preliminary proof-of-concept for efficient vision-text compression."
+   },
+   {
+    "w": "empirical",
+    "ipa": "ˌɛmˈpɪrɪkəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "经验主义的",
+    "ex": "Our quantitative analysis provides empirical guidelines for VLM token allocation optimization, while the proposed DeepEncoder architecture showcases practical feasibility with real-world deployment capabilities."
+   },
+   {
+    "w": "enhance",
+    "ipa": "ɛnˈhæns",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "提高；加强；增加",
+    "ex": "Additionally, we equip the model with capabilities for parsing charts, chemical formulas, simple geometric figures, and natural images to enhance its practical utility further."
+   },
+   {
+    "w": "ensure",
+    "ipa": "ɪnˈʃʊr",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "确保",
+    "ex": "This design ensures that the window attention component processes a large number"
+   },
+   {
+    "w": "equivalent",
+    "ipa": "ɪˈkwɪvələnt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "等价的",
+    "ex": "fewer tokens than the equivalent digital text"
+   },
+   {
+    "w": "establish",
+    "ipa": "ɪˈstæblɪʃ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "建立，创办，设立",
+    "ex": "OCR tasks, as an intermediate modality bridging vision and language, provide an ideal testbed for this vision-text compression paradigm, as they establish a natural compression-decompression mapping between visual and textual …"
+   },
+   {
+    "w": "excel",
+    "ipa": "ɪkˈsɛl",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "胜过，杰出",
+    "ex": "This insight motivates us to reexamine vision-language models (VLMs) from an LLM-centric perspective, focusing on how vision encoders can enhance LLMs’ efficiency in processing textual information rather than basic VQA [12, 16 …"
+   },
+   {
+    "w": "exploration",
+    "ipa": "ˌɛksplərˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "考察；勘探；探查",
+    "ex": "In summary, this work presents a preliminary exploration of using visual modality as an efficient compression medium for textual information processing in LLMs."
+   },
+   {
+    "w": "generate",
+    "ipa": "ˈʤɛnərˌeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "产生",
+    "ex": "In production, DeepSeek-OCR can generate 33 million pages of data per day for LLMs or VLMs using 20 nodes (each with 8 A100-40G GPUs)."
+   },
+   {
+    "w": "guideline",
+    "ipa": "ˈgaɪˌdlaɪn",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "指导原则",
+    "ex": "Our quantitative analysis provides empirical guidelines for VLM token allocation optimization, while the proposed DeepEncoder architecture showcases practical feasibility with real-world deployment capabilities."
+   },
+   {
+    "w": "ideal",
+    "ipa": "aɪˈdiːl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "理想的",
+    "ex": "provide an ideal testbed for this vision-text compression paradigm"
+   },
+   {
+    "w": "insight",
+    "ipa": "ˈɪnsaɪt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "洞见",
+    "ex": "This insight motivates us to reexamine vision-language models"
+   },
+   {
+    "w": "intermediate",
+    "ipa": "ˌɪntərˈmiːdiət",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "中间的",
+    "ex": "OCR tasks, as an intermediate modality bridging vision and language"
+   },
+   {
+    "w": "maintain",
+    "ipa": "meɪnˈteɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "保持",
+    "ex": "a novel architecture that maintains low activation memory"
+   },
+   {
+    "w": "minimal",
+    "ipa": "ˈmɪnɪməl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "极少的",
+    "ex": "minimal vision tokens even with high-resolution inputs"
+   },
+   {
+    "w": "motivate",
+    "ipa": "ˈmoʊtɪveɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "促使",
+    "ex": "This insight motivates us to reexamine vision-language models"
+   },
+   {
+    "w": "node",
+    "ipa": "noʊd",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "节点；瘤；[数] 叉点",
+    "ex": "In production, DeepSeek-OCR can generate 33 million pages of data per day for LLMs or VLMs using 20 nodes (each with 8 A100-40G GPUs)."
+   },
+   {
+    "w": "overly",
+    "ipa": "ˈoʊvərli",
+    "pos": "adv.；n.",
+    "lv": "专八",
+    "m": "过度地；极度地；(Overly)人名；(英)奥弗利",
+    "ex": "[×] overly small patches"
+   },
+   {
+    "w": "paradigm",
+    "ipa": "ˈpærədaɪm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "范式",
+    "ex": "an ideal testbed for this vision-text compression paradigm"
+   },
+   {
+    "w": "precision",
+    "ipa": "prɪˈsɪʒn",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "精度",
+    "ex": "OCR decoding precision at"
+   },
+   {
+    "w": "preliminary",
+    "ipa": "prɪˈlɪmɪneri",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "初步的",
+    "ex": "designed as a preliminary proof-of-concept for efficient vision-text compression"
+   },
+   {
+    "w": "proof",
+    "ipa": "pruf",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "证据；证明；校样",
+    "ex": "Accordingly, we present DeepSeek-OCR, a VLM designed as a preliminary proof-of-concept for efficient vision-text compression."
+   },
+   {
+    "w": "propose",
+    "ipa": "prəˈpoʊz",
+    "pos": "v.；v.",
+    "lv": "四级",
+    "m": "提议；求婚",
+    "ex": "Our quantitative analysis provides empirical guidelines for VLM token allocation optimization, while the proposed DeepEncoder architecture showcases practical feasibility with real-world deployment capabilities."
+   },
+   {
+    "w": "quadratic",
+    "ipa": "kwɑˈdrætɪk",
+    "pos": "adj.；n.",
+    "lv": "专八",
+    "m": "[数] 二次的；二次方程式",
+    "ex": "Introduction Current Large Language Models (LLMs) face significant computational challenges when processing long textual content due to quadratic scaling with sequence length."
+   },
+   {
+    "w": "quantitative",
+    "ipa": "ˈkwɑntɪteɪtɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "定量的",
+    "ex": "while offering quantitative evaluation metrics"
+   },
+   {
+    "w": "readily",
+    "ipa": "ˈredɪli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "轻易地",
+    "ex": "larger LLMs could readily acquire similar capabilities"
+   },
+   {
+    "w": "reduction",
+    "ipa": "rɪˈdəkʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "减少，减小，缩减",
+    "ex": "Through DeepSeek-OCR, we demonstrate that vision-text compression can achieve significant token reduction"
+   },
+   {
+    "w": "reexamine",
+    "ipa": "ˌriːɪɡˈzæmɪn",
+    "pos": "v.",
+    "lv": "超纲",
+    "m": "重新审视",
+    "ex": "This insight motivates us to reexamine vision-language models (VLMs)"
+   },
+   {
+    "w": "respective",
+    "ipa": "rɪˈspɛktɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "各自的，各个的",
+    "ex": "used in current open-source VLMs, all of which suffer from their respective deficiencies."
+   },
+   {
+    "w": "sequence",
+    "ipa": "ˈsikwəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "连续，继续；次序",
+    "ex": "Introduction Current Large Language Models (LLMs) face significant computational challenges when processing long textual content due to quadratic scaling with sequence length."
+   },
+   {
+    "w": "serially",
+    "ipa": "ˈsɪriəli",
+    "pos": "adv.",
+    "lv": "超纲",
+    "m": "串行地",
+    "ex": "It serially connects window attention and global attention encoder components"
+   },
+   {
+    "w": "showcase",
+    "ipa": "ˈʃoʊˌkeɪs",
+    "pos": "n.；vt.",
+    "lv": "六级",
+    "m": "陈列橱，[家具] 陈列柜；显示优点的东西；使展现；在玻璃橱窗陈列",
+    "ex": "Our quantitative analysis provides empirical guidelines for VLM token allocation optimization, while the proposed DeepEncoder architecture showcases practical feasibility with real-world deployment capabilities."
+   },
+   {
+    "w": "solution",
+    "ipa": "səˈluʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "解决，解答，解决办法",
+    "ex": "We explore a potential solution: leveraging visual modality as an efficient compression medium for textual information."
+   },
+   {
+    "w": "substantially",
+    "ipa": "səbˈstænʃəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "大幅地",
+    "ex": "represent rich information using substantially fewer tokens"
+   },
+   {
+    "w": "textual",
+    "ipa": "ˈtɛksˌʧuəl",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "本文的；按原文的",
+    "ex": "In summary, this work presents a preliminary exploration of using visual modality as an efficient compression medium for textual information processing in LLMs."
+   },
+   {
+    "w": "utility",
+    "ipa": "juˈtɪləti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "使用，公共设施",
+    "ex": "Additionally, we equip the model with capabilities for parsing charts, chemical formulas, simple geometric figures, and natural images to enhance its practical utility further."
+   }
+  ]
+ },
+ {
+  "sec": "2. DeepEncoder · 编码器设计",
+  "short": "Encoder",
+  "icon": "2",
+  "words": [
+   {
+    "w": "activation",
+    "ipa": "ˌæktɪˈveɪʃn",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "激活",
+    "ex": "maintains low activation memory and minimal vision tokens"
+   },
+   {
+    "w": "adaptive",
+    "ipa": "əˈdæptɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "适合的, 适应的",
+    "ex": "The third type is adaptive resolution encoding represented by Qwen2-VL [35], which adopts the NaViT [10] paradigm to directly process full images through patch-based segmentation without tile parallelization."
+   },
+   {
+    "w": "advancement",
+    "ipa": "ədˈvænsmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "进步，提升",
+    "ex": "With the advancement of VLMs, a large number of end-to-end OCR models have emerged, fundamentally transforming the traditional pipeline architecture (which required separate detection and recognition expert models) by simplifying …"
+   },
+   {
+    "w": "approach",
+    "ipa": "əˈproʊʧ",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "靠近；接近，方法",
+    "ex": "Although capable of handling extremely high resolutions, this approach has notable limitations due to its"
+   },
+   {
+    "w": "clip",
+    "ipa": "klɪp",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "剪；剪辑报刊",
+    "ex": "DeepEncoder is the core of DeepSeek-OCR, comprising three components: a SAM [17] for perception dominated by window attention, a CLIP [29] for"
+   },
+   {
+    "w": "complicate",
+    "ipa": "ˈkɑmpləˌkeɪt",
+    "pos": "vt.",
+    "lv": "四级",
+    "m": "使复杂；使陷入",
+    "ex": "While offering controllable parameters and activation memory, this approach suffers from significant drawbacks: it requires dual image preprocessing that complicates deployment and makes encoder pipeline parallelism challenging …"
+   },
+   {
+    "w": "compress",
+    "ipa": "kəmˈpres",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "压缩",
+    "ex": "the compressor reduces vision tokens before they enter the dense global attention"
+   },
+   {
+    "w": "comprise",
+    "ipa": "kəmˈpraɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "包含，包括；构成",
+    "ex": "DeepEncoder is the core of DeepSeek-OCR, comprising three components: a SAM [17] for perception dominated by window attention, a CLIP [29] for"
+   },
+   {
+    "w": "computation",
+    "ipa": "ˌkɑmpjəˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "计算, 估计",
+    "ex": "The second type is tile-based method exemplified by InternVL2.0 [8], which processes images by dividing them into small tiles for parallel computation, reducing activation memory under high-resolution settings."
+   },
+   {
+    "w": "controllable",
+    "ipa": "kənˈtroʊləbəl",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "可管理的, 可控制的",
+    "ex": "While offering controllable parameters and activation memory, this approach suffers from significant drawbacks: it requires dual image preprocessing that complicates deployment and makes encoder pipeline parallelism challenging …"
+   },
+   {
+    "w": "core",
+    "ipa": "kɔr",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "果实的心，核心",
+    "ex": "DeepEncoder is the core of DeepSeek-OCR, comprising three components: a SAM [17] for perception dominated by window attention, a CLIP [29] for"
+   },
+   {
+    "w": "current",
+    "ipa": "ˈkɑrənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "当前的",
+    "ex": "Typical Vision Encoders in VLMs Current open-source VLMs employ three main types of vision encoders, as illustrated in Figure 2."
+   },
+   {
+    "w": "dense",
+    "ipa": "dɛns",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "稠密的",
+    "ex": "before they enter the dense global attention component"
+   },
+   {
+    "w": "derivative",
+    "ipa": "dərˈɪvɪtɪv",
+    "pos": "n.；adj.",
+    "lv": "六级",
+    "m": "[化学] 衍生物，派生物；导数；派生的；引出的",
+    "ex": "Additionally, general vision models such as Qwen-VL series [35], InternVL series [8], and many their derivatives continuously enhance their document OCR capabilities to explore dense visual perception boundaries."
+   },
+   {
+    "w": "domain",
+    "ipa": "doʊˈmeɪn",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "领域",
+    "ex": "End-to-end OCR Models OCR, particularly document parsing task, has been a highly active topic in the image-to-text domain."
+   },
+   {
+    "w": "dominate",
+    "ipa": "ˈdɑməˌneɪt",
+    "pos": "vi.；vt.",
+    "lv": "六级",
+    "m": "拥有优势；在…中占首要地位；支配，统治，控制；耸立于，俯视",
+    "ex": "DeepEncoder is the core of DeepSeek-OCR, comprising three components: a SAM [17] for perception dominated by window attention, a CLIP [29] for"
+   },
+   {
+    "w": "dual",
+    "ipa": "duəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "双的， 两重的",
+    "ex": "The first type is a dual-tower architecture represented by Vary [36], which utilizes parallel SAM [17] encoder to increase visual vocabulary parameters for high-resolution image processing."
+   },
+   {
+    "w": "emerge",
+    "ipa": "ˈimərʤ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "出现",
+    "ex": "With the advancement of VLMs, a large number of end-to-end OCR models have emerged, fundamentally transforming the traditional pipeline architecture (which required separate detection and recognition expert models) by simplifying …"
+   },
+   {
+    "w": "excessively",
+    "ipa": "ɪkˈsɛsɪvli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "过分，极端地",
+    "ex": "typically low native encoder resolution (below 512×512), causing large images to be excessively"
+   },
+   {
+    "w": "exemplify",
+    "ipa": "ɪgˈzɛmpləˌfaɪ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "举例证明（解释）",
+    "ex": "The second type is tile-based method exemplified by InternVL2.0 [8], which processes images by dividing them into small tiles for parallel computation, reducing activation memory under high-resolution settings."
+   },
+   {
+    "w": "flexibly",
+    "ipa": "ˈflɛksəbli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "灵活地；易曲地；柔软地；有弹性地",
+    "ex": "While this encoder can handle diverse resolutions flexibly, it faces substantial challenges with large images due to massive activation memory consumption that can cause GPU memory overflow, and sequence packing requires …"
+   },
+   {
+    "w": "fundamentally",
+    "ipa": "ˌfəndəˈmɛnəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "根本上",
+    "ex": "With the advancement of VLMs, a large number of end-to-end OCR models have emerged, fundamentally transforming the traditional pipeline architecture (which required separate detection and recognition expert models) by simplifying …"
+   },
+   {
+    "w": "highlight",
+    "ipa": "ˈhaɪˌlaɪt",
+    "pos": "—",
+    "lv": "六级",
+    "m": "照亮；突出；强调",
+    "ex": "GOT-OCR2.0 [38] expands the scope of OCR2.0 to include more synthetic image parsing tasks and designs an OCR model with performance-efficiency trade-offs, further highlighting the potential of end-to-end OCR researches."
+   },
+   {
+    "w": "illustrate",
+    "ipa": "ˈɪləˌstreɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "说明,阐明",
+    "ex": "Typical Vision Encoders in VLMs Current open-source VLMs employ three main types of vision encoders, as illustrated in Figure 2."
+   },
+   {
+    "w": "limitation",
+    "ipa": "ˌlɪmɪˈteɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "限制；限度，局限",
+    "ex": "Although capable of handling extremely high resolutions, this approach has notable limitations due to its"
+   },
+   {
+    "w": "massive",
+    "ipa": "ˈmæsɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "巨大的 大量的",
+    "ex": "While this encoder can handle diverse resolutions flexibly, it faces substantial challenges with large images due to massive activation memory consumption that can cause GPU memory overflow, and sequence packing requires …"
+   },
+   {
+    "w": "notable",
+    "ipa": "ˈnoʊtəbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "值得注意的；著名的",
+    "ex": "Although capable of handling extremely high resolutions, this approach has notable limitations due to its"
+   },
+   {
+    "w": "numerous",
+    "ipa": "ˈnumərəs",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "为数众多的；许多",
+    "ex": "fragmented and resulting in numerous vision tokens."
+   },
+   {
+    "w": "overflow",
+    "ipa": "ˌoʊvərˈfloʊ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "溢出，淹没",
+    "ex": "While this encoder can handle diverse resolutions flexibly, it faces substantial challenges with large images due to massive activation memory consumption that can cause GPU memory overflow, and sequence packing requires …"
+   },
+   {
+    "w": "particularly",
+    "ipa": "ˌpɑrˈtɪkjələrli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "特别，尤其，格外",
+    "ex": "End-to-end OCR Models OCR, particularly document parsing task, has been a highly active topic in the image-to-text domain."
+   },
+   {
+    "w": "perception",
+    "ipa": "pərˈsɛpʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "感知",
+    "ex": "DeepEncoder is the core of DeepSeek-OCR, comprising three components: a SAM [17] for perception dominated by window attention, a CLIP [29] for"
+   },
+   {
+    "w": "phase",
+    "ipa": "feɪz",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "阶段；方面；相位",
+    "ex": "Long vision tokens will slow down both prefill and generation phases of inference."
+   },
+   {
+    "w": "scope",
+    "ipa": "skoʊp",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "范围",
+    "ex": "GOT-OCR2.0 [38] expands the scope of OCR2.0 to include more synthetic image parsing tasks and designs an OCR model with performance-efficiency trade-offs, further highlighting the potential of end-to-end OCR researches."
+   },
+   {
+    "w": "synthetic",
+    "ipa": "sɪnˈθɛtɪk",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "合成的，人造的",
+    "ex": "GOT-OCR2.0 [38] expands the scope of OCR2.0 to include more synthetic image parsing tasks and designs an OCR model with performance-efficiency trade-offs, further highlighting the potential of end-to-end OCR researches."
+   }
+  ]
+ },
+ {
+  "sec": "3. Discussion · 讨论",
+  "short": "Disc",
+  "icon": "3",
+  "words": [
+   {
+    "w": "activate",
+    "ipa": "ˈæktəˌveɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "激活",
+    "ex": "During inference, the model activates 6 out of 64 routed experts and 2 shared experts, with about 570M activated parameters."
+   },
+   {
+    "w": "anneal",
+    "ipa": "əˈnil",
+    "pos": "v.",
+    "lv": "GRE",
+    "m": "使退火； 使加强， 使变硬",
+    "ex": "All data is trained for 2 epochs with a batch size of 1280, using the AdamW [23] optimizer with cosine annealing scheduler [22] and a learning rate of 5e-5."
+   },
+   {
+    "w": "annotation",
+    "ipa": "ˌænəˈteɪʃən",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "注释， 注解",
+    "ex": "For this data, we create two types of ground truth: coarse annotations and fine annotations."
+   },
+   {
+    "w": "augmentation",
+    "ipa": "ˌɑgmɛnˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "增加",
+    "ex": "To increase the diversity of rendered data, we introduce geometric translation-invariant data augmentation, where the same geometric image is translated in the original image, corresponding to the same ground truth drawn at the …"
+   },
+   {
+    "w": "batch",
+    "ipa": "bæʧ",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "一批， 一组， 一群； 一批生产量",
+    "ex": "All data is trained for 2 epochs with a batch size of 1280, using the AdamW [23] optimizer with cosine annealing scheduler [22] and a learning rate of 5e-5."
+   },
+   {
+    "w": "bin",
+    "ipa": "bɪn",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "箱子，容器；二进制；把…放入箱中",
+    "ex": "All coordinates are normalized into 1000 bins. directly from the full dataset using fitz, aimed at teaching the model to recognize optical text, especially in minority languages."
+   },
+   {
+    "w": "calculation",
+    "ipa": "ˌkælkjəˈleɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "计算，计算结果",
+    "ex": "After padding, the number of valid vision tokens is less than the actual number of vision tokens, with the calculation formula being:"
+   },
+   {
+    "w": "capability",
+    "ipa": "ˌkeɪpəˈbɪləti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "能力，才能",
+    "ex": "It is reasonable to conjecture that LLMs, through specialized pretraining optimization, would demonstrate more natural integration of such capabilities."
+   },
+   {
+    "w": "centric",
+    "ipa": "ˈsɛntrɪk",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "以…为中心的",
+    "ex": "The 3B DeepSeekMoE is very suitable for domain-centric (OCR for us) VLM research, as it obtains the expressive capability of a 3B model while enjoying the inference efficiency of a 500M small model."
+   },
+   {
+    "w": "coarse",
+    "ipa": "kɔrs",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "粗的，粗糙的",
+    "ex": "During the training of DeepSeek-OCR, coarse labels and fine labels are distinguished using different prompts."
+   },
+   {
+    "w": "commonly",
+    "ipa": "ˈkɑmənli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "普通地，一般地",
+    "ex": "Each line segment is encoded using the Slow Perception [39] manner. to render 10M images, mainly including commonly used line, bar, pie, and composite charts."
+   },
+   {
+    "w": "compose",
+    "ipa": "kəmˈpoʊz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "组成，构成；创作",
+    "ex": "DeepEncoder is approximately 380M in parameters, mainly composed of an 80M SAM-base [17] and a 300M CLIP-large [29] connected in series."
+   },
+   {
+    "w": "composite",
+    "ipa": "kəmˈpɑzət",
+    "pos": "adj.；n.",
+    "lv": "六级",
+    "m": "合成的；合成物",
+    "ex": "Each line segment is encoded using the Slow Perception [39] manner. to render 10M images, mainly including commonly used line, bar, pie, and composite charts."
+   },
+   {
+    "w": "conjecture",
+    "ipa": "kənˈʤɛkʧər",
+    "pos": "n.；v.",
+    "lv": "考博",
+    "m": "推测；猜想；推测；揣摩",
+    "ex": "It is reasonable to conjecture that LLMs, through specialized pretraining optimization, would demonstrate more natural integration of such capabilities."
+   },
+   {
+    "w": "conveniently",
+    "ipa": "kənˈvinjəntli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "方便地；合宜地",
+    "ex": "We introduce such type of data mainly to preserve the general vision interface, so that researchers interested in our model and general vision task can conveniently advance their work in the future."
+   },
+   {
+    "w": "conversion",
+    "ipa": "kənˈvərʒən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "转变，转化；改变",
+    "ex": "We define chart parsing as image-to-HTML-table conversion task, as shown in Figure 6(a)."
+   },
+   {
+    "w": "coordinate",
+    "ipa": "koʊˈɔrdəˌneɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使协调，调节",
+    "ex": "All coordinates are normalized into 1000 bins. directly from the full dataset using fitz, aimed at teaching the model to recognize optical text, especially in minority languages."
+   },
+   {
+    "w": "decode",
+    "ipa": "diːˈkoʊd",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "解码",
+    "ex": "the model can effectively decode text tokens"
+   },
+   {
+    "w": "define",
+    "ipa": "dɪˈfaɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "下定义，确定",
+    "ex": "We define chart parsing as image-to-HTML-table conversion task, as shown in Figure 6(a)."
+   },
+   {
+    "w": "degrade",
+    "ipa": "dɪˈgreɪd",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使降低；使堕落",
+    "ex": "For images with both width and height smaller than 640, 𝑛is set to 0, i.e., Gundam mode will degrade to Base mode."
+   },
+   {
+    "w": "delve",
+    "ipa": "dɛlv",
+    "pos": "v.；n.",
+    "lv": "专八",
+    "m": "钻研；探究；挖；穴；洞",
+    "ex": "In the following paragraphs, we will delve into the model components, data engineering, and training skills."
+   },
+   {
+    "w": "detail",
+    "ipa": "ˈditeɪl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "细节",
+    "ex": "Since the training protocol is identical to other modes, we omit the detailed description hereafter."
+   },
+   {
+    "w": "detection",
+    "ipa": "dɪˈtɛkʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "侦查；察觉",
+    "ex": "For minority languages, in the detection part, we find that the layout model enjoys certain generalization capabilities."
+   },
+   {
+    "w": "directly",
+    "ipa": "dɪˈrɛkli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "直接地；立即",
+    "ex": "Since Tiny and Small modes have relatively small resolutions, to avoid wasting vision tokens, images are processed by directly resizing the original shape."
+   },
+   {
+    "w": "diversity",
+    "ipa": "dɪˈvərsɪti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "多样性；差异",
+    "ex": "To increase the diversity of rendered data, we introduce geometric translation-invariant data augmentation, where the same geometric image is translated in the original image, corresponding to the same ground truth drawn at the …"
+   },
+   {
+    "w": "drawn",
+    "ipa": "drɔn",
+    "pos": "adj.",
+    "lv": "GRE",
+    "m": "憔悴的",
+    "ex": "To increase the diversity of rendered data, we introduce geometric translation-invariant data augmentation, where the same geometric image is translated in the original image, corresponding to the same ground truth drawn at the …"
+   },
+   {
+    "w": "effectively",
+    "ipa": "ˈifɛktɪvli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "有效地",
+    "ex": "The function 𝑓dec represents a non-linear mapping that can be effectively learned by compact language models through OCR-style training."
+   },
+   {
+    "w": "efficiency",
+    "ipa": "ɪˈfɪʃənsi",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "效率；功效，效能",
+    "ex": "The 3B DeepSeekMoE is very suitable for domain-centric (OCR for us) VLM research, as it obtains the expressive capability of a 3B model while enjoying the inference efficiency of a 500M small model."
+   },
+   {
+    "w": "embed",
+    "ipa": "ɪmˈbɛd",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "把…嵌入， 扎牢； 使深留脑中",
+    "ex": "For CLIP, we remove the first patch embedding layer since its input is no longer images but output tokens from the previous pipeline."
+   },
+   {
+    "w": "encode",
+    "ipa": "ɛnˈkoʊd",
+    "pos": "vt.",
+    "lv": "考博",
+    "m": "把译成电码， 把…编码",
+    "ex": "Each line segment is encoded using the Slow Perception [39] manner. to render 10M images, mainly including commonly used line, bar, pie, and composite charts."
+   },
+   {
+    "w": "endpoint",
+    "ipa": "ˈɛndˌpɔɪnt",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "端点",
+    "ex": "For plane geometry, we convert the ground truth to dictionary format, where the dictionary contains keys such as line segments, endpoint coordinates, line segment types, etc., for better readability."
+   },
+   {
+    "w": "engine",
+    "ipa": "ˈɪnʤən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "引擎，发动机",
+    "ex": "Data Engine We constructe complex and diverse training data for DeepSeek-OCR, including OCR 1.0 data, which mainly consists of traditional OCR tasks such as scene image OCR and document OCR;"
+   },
+   {
+    "w": "epoch",
+    "ipa": "ˈɛpək",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "（新）时代；历元",
+    "ex": "All data is trained for 2 epochs with a batch size of 1280, using the AdamW [23] optimizer with cosine annealing scheduler [22] and a learning rate of 5e-5."
+   },
+   {
+    "w": "exceed",
+    "ipa": "ɪkˈsiːd",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "超过",
+    "ex": "decode text tokens exceeding 10 times the quantity"
+   },
+   {
+    "w": "expressive",
+    "ipa": "ɪkˈsprɛsɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "表现的；有表现力的；表达…的",
+    "ex": "The 3B DeepSeekMoE is very suitable for domain-centric (OCR for us) VLM research, as it obtains the expressive capability of a 3B model while enjoying the inference efficiency of a 500M small model."
+   },
+   {
+    "w": "extract",
+    "ipa": "ˈɛkˌstrækt",
+    "pos": "v.；n.",
+    "lv": "六级",
+    "m": "取出；提取；摘录",
+    "ex": "The encoder (namely DeepEncoder) is responsible for extracting image features and tokenizing as well as compressing visual representations."
+   },
+   {
+    "w": "facilitate",
+    "ipa": "fəˈsɪlɪteɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "促进",
+    "ex": "this finding will facilitate the development of VLMs and LLMs"
+   },
+   {
+    "w": "feasibility",
+    "ipa": "ˌfiːzəˈbɪləti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "可行性",
+    "ex": "preliminarily validate the feasibility of contexts optical compression"
+   },
+   {
+    "w": "feature",
+    "ipa": "ˈfiʧər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "特点",
+    "ex": "The encoder (namely DeepEncoder) is responsible for extracting image features and tokenizing as well as compressing visual representations."
+   },
+   {
+    "w": "flywheel",
+    "ipa": "ˈflaɪˌwil",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "[机] 飞轮，惯性轮；调速轮",
+    "ex": "In the recognition part, we use fitz to create small patch data to train a GOT-OCR2.0, then use the trained model to label small patches after layout processing, employing a model flywheel to create 600K data samples."
+   },
+   {
+    "w": "formula",
+    "ipa": "ˈfɔrmjələ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "公式，式",
+    "ex": "For chemical formulas, we utilize SMILES format from PubChem as the data source and render them into images using RDKit, constructing 5M image-text pairs."
+   },
+   {
+    "w": "fragment",
+    "ipa": "ˈfrægmənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "碎片，破片，碎块",
+    "ex": "It’s worth noting that due to our relatively large native resolutions, images won’t be fragmented too much under dynamic resolution (the number of tiles is controlled within the range of 2 to 9)."
+   },
+   {
+    "w": "fully",
+    "ipa": "ˈfʊli",
+    "pos": "adv.；n.",
+    "lv": "专四",
+    "m": "充分地；完全地；彻底地；(Fully)人名；(法)菲利",
+    "ex": "However, as described in the Section 2.1, current open-source encoders cannot fully satisfy all these conditions."
+   },
+   {
+    "w": "generalization",
+    "ipa": "ˌʤɛnərəlɪˈzeɪʃən",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "一般化",
+    "ex": "For minority languages, in the detection part, we find that the layout model enjoys certain generalization capabilities."
+   },
+   {
+    "w": "global",
+    "ipa": "ˈgloʊbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "全球的， 全世界的； 总的， 完整的",
+    "ex": "We use 20 nodes (each with 8 A100-40G GPUs) for training, with a data parallelism (DP) of 40 and a global batch size of 640."
+   },
+   {
+    "w": "hereafter",
+    "ipa": "hɪˈræftər",
+    "pos": "adv.",
+    "lv": "专八",
+    "m": "此后 n. || the hereafter将来，死后的生命",
+    "ex": "Since the training protocol is identical to other modes, we omit the detailed description hereafter."
+   },
+   {
+    "w": "identical",
+    "ipa": "aɪˈdɛntɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "相同的",
+    "ex": "Since the training protocol is identical to other modes, we omit the detailed description hereafter."
+   },
+   {
+    "w": "image",
+    "ipa": "ˈɪmɪʤ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "形象，声誉，印象",
+    "ex": "The encoder (namely DeepEncoder) is responsible for extracting image features and tokenizing as well as compressing visual representations."
+   },
+   {
+    "w": "incorporate",
+    "ipa": "ˌɪnˈkɔrpərˌeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "合并；体现",
+    "ex": "General vision data DeepEncoder can benefit from CLIP’s pretraining gains and has sufficient parameters to incorporate general visual knowledge."
+   },
+   {
+    "w": "indispensable",
+    "ipa": "ˌɪndɪˈspensəbl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "不可或缺的",
+    "g": "g",
+    "ex": "serving as an indispensable assistant for LLMs"
+   },
+   {
+    "w": "inference",
+    "ipa": "ˈɪnfərəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "推断结果， 结论； 推论， 推理， 推断",
+    "ex": "During inference, the model activates 6 out of 64 routed experts and 2 shared experts, with about 570M activated parameters."
+   },
+   {
+    "w": "inject",
+    "ipa": "ˌɪnˈʤɛkt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "注射；注满；喷射",
+    "ex": "General vision data, which is mainly used to inject certain general image understanding capabilities into DeepSeek-OCR and preserve the general vision interface."
+   },
+   {
+    "w": "input",
+    "ipa": "ˈɪnˌpʊt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "输入；投入的资金",
+    "ex": "Supporting dynamic resolution is mainly for application considera-tions, especially for ultra-high-resolution inputs (such as newspaper images)."
+   },
+   {
+    "w": "insufficient",
+    "ipa": "ˌɪnsəˈfɪʃnt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "不足的",
+    "ex": "OCR alone is insufficient to fully validate true context optical compression"
+   },
+   {
+    "w": "integration",
+    "ipa": "ˌɪnəˈgreɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "综合",
+    "ex": "It is reasonable to conjecture that LLMs, through specialized pretraining optimization, would demonstrate more natural integration of such capabilities."
+   },
+   {
+    "w": "interface",
+    "ipa": "ˈɪnərˌfeɪs",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "分界面",
+    "ex": "General vision data, which is mainly used to inject certain general image understanding capabilities into DeepSeek-OCR and preserve the general vision interface."
+   },
+   {
+    "w": "interleaved",
+    "ipa": "ˌɪntərˈliːvd",
+    "pos": "adj.",
+    "lv": "超纲",
+    "m": "交错的",
+    "ex": "we will conduct digital-optical text interleaved pretraining"
+   },
+   {
+    "w": "interpolation",
+    "ipa": "ɪn,tɚpəˈleʃən",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "篡改, 添写, 插补",
+    "ex": "We meet the requirement aforementioned through dynamic interpolation of positional encodings, and design several resolution modes for simultaneous model training to achieve the capability of a single DeepSeek-OCR model supporting …"
+   },
+   {
+    "w": "kernel",
+    "ipa": "ˈkərnəl",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "（果实的）核；谷粒",
+    "ex": "Each convolutional layer has a kernel size of 3, stride of 2, padding of 1, and channels"
+   },
+   {
+    "w": "label",
+    "ipa": "ˈleɪbəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "标签；标记，符号",
+    "ex": "The image data sources come from LAION [31] and Wukong [13], labeled using PaddleOCR [9], with 10M data samples each for Chinese and English."
+   },
+   {
+    "w": "latent",
+    "ipa": "ˈleɪtənt",
+    "pos": "adj.",
+    "lv": "考研",
+    "m": "存在但看不见的",
+    "ex": "The decoder reconstructs the original text representation from the compressed latent vision tokens of DeepEncoder as:"
+   },
+   {
+    "w": "layer",
+    "ipa": "leɪər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "层，层次；铺设者",
+    "ex": "For CLIP, we remove the first patch embedding layer since its input is no longer images but output tokens from the previous pipeline."
+   },
+   {
+    "w": "layout",
+    "ipa": "leɪaʊt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "布局，安排，设计",
+    "ex": "For minority languages, in the detection part, we find that the layout model enjoys certain generalization capabilities."
+   },
+   {
+    "w": "linear",
+    "ipa": "ˈlɪniər",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "线的；长度的",
+    "ex": "The function 𝑓dec represents a non-linear mapping that can be effectively learned by compact language models through OCR-style training."
+   },
+   {
+    "w": "longer",
+    "ipa": "ˈlɔŋgər",
+    "pos": "—",
+    "lv": "托福",
+    "m": "比较久(的)",
+    "ex": "For CLIP, we remove the first patch embedding layer since its input is no longer images but output tokens from the previous pipeline."
+   },
+   {
+    "w": "mainly",
+    "ipa": "ˈmeɪnli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "主要地，大体上",
+    "ex": "DeepEncoder is approximately 380M in parameters, mainly composed of an 80M SAM-base [17] and a 300M CLIP-large [29] connected in series."
+   },
+   {
+    "w": "methodology",
+    "ipa": "ˌmɛθəˈdɑləʤi",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "方法学，方法论",
+    "ex": "Methodology 3.1."
+   },
+   {
+    "w": "mode",
+    "ipa": "moʊd",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "方式，样式",
+    "ex": "Since Tiny and Small modes have relatively small resolutions, to avoid wasting vision tokens, images are processed by directly resizing the original shape."
+   },
+   {
+    "w": "moderate",
+    "ipa": "ˈmɑdərˌeɪt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "温和的；有节制的",
+    "ex": "Moderate parameter count."
+   },
+   {
+    "w": "module",
+    "ipa": "ˈmɑʤul",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "模块；组件",
+    "ex": "numbers of vision tokens) and enhance the practicality of DeepSeek-OCR, we configure it with multiple resolution modes. the 4096 tokens go through the compression module and the token count becomes 4096/16=256, thus making the …"
+   },
+   {
+    "w": "multiple",
+    "ipa": "ˈməltəpəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "复合的；并联的",
+    "ex": "Multiple resolution support Suppose we have an image with 1000 optical characters and we want to test how many vision tokens are needed for decoding."
+   },
+   {
+    "w": "namely",
+    "ipa": "ˈneɪmli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "即，也就是",
+    "ex": "The encoder (namely DeepEncoder) is responsible for extracting image features and tokenizing as well as compressing visual representations."
+   },
+   {
+    "w": "normalize",
+    "ipa": "ˈnɔrməˌlaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使标准化，使正规化；归一化",
+    "ex": "All coordinates are normalized into 1000 bins. directly from the full dataset using fitz, aimed at teaching the model to recognize optical text, especially in minority languages."
+   },
+   {
+    "w": "omit",
+    "ipa": "oʊˈmɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "省略，省去；遗漏",
+    "ex": "Since the training protocol is identical to other modes, we omit the detailed description hereafter."
+   },
+   {
+    "w": "optical",
+    "ipa": "ˈɑptɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "眼的；光学的",
+    "ex": "Multiple resolution support Suppose we have an image with 1000 optical characters and we want to test how many vision tokens are needed for decoding."
+   },
+   {
+    "w": "optimization",
+    "ipa": "ɑptɪmɪˈzeɪʃən",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "最佳化, 最优化",
+    "ex": "It is reasonable to conjecture that LLMs, through specialized pretraining optimization, would demonstrate more natural integration of such capabilities."
+   },
+   {
+    "w": "original",
+    "ipa": "ərˈɪʤənəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "原始的，最初的",
+    "ex": "Since Tiny and Small modes have relatively small resolutions, to avoid wasting vision tokens, images are processed by directly resizing the original shape."
+   },
+   {
+    "w": "overall",
+    "ipa": "ˈoʊvərˌɔl",
+    "pos": "n.；adj.",
+    "lv": "四级",
+    "m": "工装裤；全面的",
+    "ex": "This is mainly for load balancing, as Gundam-master’s resolution is too large and training it together would slow down the overall training speed."
+   },
+   {
+    "w": "pad",
+    "ipa": "pæd",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "垫；本子；填塞",
+    "ex": "After padding, the number of valid vision tokens is less than the actual number of vision tokens, with the calculation formula being:"
+   },
+   {
+    "w": "parallelism",
+    "ipa": "ˈpɛrəˌlɛˌlɪzəm",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "平行， 类似",
+    "ex": "The entire model uses pipeline parallelism (PP) and is divided into 4 parts, with DeepEncoder taking two parts and the decoder taking two parts."
+   },
+   {
+    "w": "parameter",
+    "ipa": "pərˈæmətər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "参（变）数；参量",
+    "ex": "DeepEncoder is approximately 380M in parameters, mainly composed of an 80M SAM-base [17] and a 300M CLIP-large [29] connected in series."
+   },
+   {
+    "w": "patch",
+    "ipa": "pæʧ",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "补钉；碎片；补缀",
+    "ex": "For CLIP, we remove the first patch embedding layer since its input is no longer images but output tokens from the previous pipeline."
+   },
+   {
+    "w": "pipeline",
+    "ipa": "ˈpaɪˌplaɪn",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "管道, 传递途径",
+    "ex": "The entire model uses pipeline parallelism (PP) and is divided into 4 parts, with DeepEncoder taking two parts and the decoder taking two parts."
+   },
+   {
+    "w": "portion",
+    "ipa": "ˈpɔrʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "一部分；一分",
+    "ex": "Note that DeepSeek-OCR is not a general VLM model, and this portion of data accounts for only 20% of the total data."
+   },
+   {
+    "w": "practicality",
+    "ipa": "ˌpræktɪˈkæləti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "实用性，实际性；实际，实例",
+    "ex": "numbers of vision tokens) and enhance the practicality of DeepSeek-OCR, we configure it with multiple resolution modes. the 4096 tokens go through the compression module and the token count becomes 4096/16=256, thus making the …"
+   },
+   {
+    "w": "precede",
+    "ipa": "prɪˈsid",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "先于…，领先",
+    "ex": "layout and text format, where each paragraph of text is preceded by the coordinates and label of it in the original image."
+   },
+   {
+    "w": "prediction",
+    "ipa": "priˈdɪkʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "预言，预告；预报",
+    "ex": "Training DeepEncoder Following Vary [36], we utilize a compact language model [15] and use the next token prediction framework to train DeepEncoder."
+   },
+   {
+    "w": "previous",
+    "ipa": "ˈpriviəs",
+    "pos": "adj.；adv.",
+    "lv": "四级",
+    "m": "之前的；先前地",
+    "ex": "For CLIP, we remove the first patch embedding layer since its input is no longer images but output tokens from the previous pipeline."
+   },
+   {
+    "w": "priority",
+    "ipa": "praɪˈɔrəti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "优先，优先权",
+    "ex": "OCR 1.0 data Document data is the top priority for DeepSeek-OCR."
+   },
+   {
+    "w": "protocol",
+    "ipa": "ˈproʊtəˌkɔl",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "礼仪， 礼节； 草案， 议定书",
+    "ex": "Since the training protocol is identical to other modes, we omit the detailed description hereafter."
+   },
+   {
+    "w": "ratio",
+    "ipa": "ˈreɪʃiˌoʊ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比，比率",
+    "ex": "For Base and Large modes, in order to preserve the original image aspect ratio, images are padded to the corresponding size."
+   },
+   {
+    "w": "readability",
+    "ipa": "ˌridəˈbɪlɪti",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "可读性",
+    "ex": "For plane geometry, we convert the ground truth to dictionary format, where the dictionary contains keys such as line segments, endpoint coordinates, line segment types, etc., for better readability."
+   },
+   {
+    "w": "reconstruct",
+    "ipa": "ˌrikənˈstrəkt",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "重建；改造；修复；重现",
+    "ex": "is the reconstructed text representation."
+   },
+   {
+    "w": "relatively",
+    "ipa": "ˈrɛlətɪvli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "相对地，比较地",
+    "ex": "Since Tiny and Small modes have relatively small resolutions, to avoid wasting vision tokens, images are processed by directly resizing the original shape."
+   },
+   {
+    "w": "representation",
+    "ipa": "ˌrɛprəzɛnˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "描写；陈述；代表",
+    "ex": "The encoder (namely DeepEncoder) is responsible for extracting image features and tokenizing as well as compressing visual representations."
+   },
+   {
+    "w": "researcher",
+    "ipa": "ˈrisərʧər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "研究员",
+    "ex": "We introduce such type of data mainly to preserve the general vision interface, so that researchers interested in our model and general vision task can conveniently advance their work in the future."
+   },
+   {
+    "w": "resolution",
+    "ipa": "ˌrɛzəˈluʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "坚决，坚定；决定",
+    "ex": "Supporting dynamic resolution is mainly for application considera-tions, especially for ultra-high-resolution inputs (such as newspaper images)."
+   },
+   {
+    "w": "respectively",
+    "ipa": "rɪˈspɛktɪvli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "各自地",
+    "ex": "To benefit from the pretraining gains of previous works, we use SAM-base (patch-size 16) and CLIP-large as the main architectures for the two components respectively."
+   },
+   {
+    "w": "responsible",
+    "ipa": "riˈspɑnsəbəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "负责的，有责任的",
+    "ex": "The encoder (namely DeepEncoder) is responsible for extracting image features and tokenizing as well as compressing visual representations."
+   },
+   {
+    "w": "rout",
+    "ipa": "raʊt",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "溃退",
+    "ex": "During inference, the model activates 6 out of 64 routed experts and 2 shared experts, with about 570M activated parameters."
+   },
+   {
+    "w": "sample",
+    "ipa": "ˈsæmpəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "样品；实例，标本",
+    "ex": "The image data sources come from LAION [31] and Wukong [13], labeled using PaddleOCR [9], with 10M data samples each for Chinese and English."
+   },
+   {
+    "w": "secondary",
+    "ipa": "ˈsɛkənˌdɛri",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "第二的；次要的",
+    "ex": "Tiling is a form of secondary window attention that can effectively reduce activation memory further."
+   },
+   {
+    "w": "series",
+    "ipa": "ˈsɪriz",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "连续，系列；丛书",
+    "ex": "DeepEncoder is approximately 380M in parameters, mainly composed of an 80M SAM-base [17] and a 300M CLIP-large [29] connected in series."
+   },
+   {
+    "w": "simultaneous",
+    "ipa": "ˌsaɪməlˈteɪniəs",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "同步的",
+    "ex": "We meet the requirement aforementioned through dynamic interpolation of positional encodings, and design several resolution modes for simultaneous model training to achieve the capability of a single DeepSeek-OCR model supporting …"
+   },
+   {
+    "w": "source",
+    "ipa": "sɔrs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "来源",
+    "ex": "The image data sources come from LAION [31] and Wukong [13], labeled using PaddleOCR [9], with 10M data samples each for Chinese and English."
+   },
+   {
+    "w": "specialize",
+    "ipa": "ˈspɛʃəˌlaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "专业从事",
+    "ex": "It is reasonable to conjecture that LLMs, through specialized pretraining optimization, would demonstrate more natural integration of such capabilities."
+   },
+   {
+    "w": "stride",
+    "ipa": "straɪd",
+    "pos": "v.；n.",
+    "lv": "六级",
+    "m": "大踏步走；大步",
+    "ex": "Each convolutional layer has a kernel size of 3, stride of 2, padding of 1, and channels"
+   },
+   {
+    "w": "sufficient",
+    "ipa": "səˈfɪʃənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "足够的",
+    "ex": "General vision data DeepEncoder can benefit from CLIP’s pretraining gains and has sufficient parameters to incorporate general visual knowledge."
+   },
+   {
+    "w": "supplement",
+    "ipa": "ˌsəpləˈmɛnt",
+    "pos": "—",
+    "lv": "四级",
+    "m": "增补，补充",
+    "ex": "Additionally, we select some open-source data [28, 37] as supplements."
+   },
+   {
+    "w": "tile",
+    "ipa": "taɪl",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "瓷砖；贴砖；瓦片",
+    "ex": "It’s worth noting that due to our relatively large native resolutions, images won’t be fragmented too much under dynamic resolution (the number of tiles is controlled within the range of 2 to 9)."
+   },
+   {
+    "w": "ultra",
+    "ipa": "ˈəltrə",
+    "pos": "adj./n.",
+    "lv": "六级",
+    "m": "超前的，极端的；超…（前缀用法）",
+    "ex": "Supporting dynamic resolution is mainly for application considera-tions, especially for ultra-high-resolution inputs (such as newspaper images)."
+   },
+   {
+    "w": "unify",
+    "ipa": "ˈjunəˌfaɪ",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "使联合， 统一； 使相同， 使一致",
+    "ex": "Architecture As shown in Figure 3, DeepSeek-OCR enjoys a unified end-to-end VLM architecture consisting of an encoder and a decoder."
+   },
+   {
+    "w": "utilize",
+    "ipa": "ˈjutəˌlaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "利用",
+    "ex": "Training DeepEncoder Following Vary [36], we utilize a compact language model [15] and use the next token prediction framework to train DeepEncoder."
+   },
+   {
+    "w": "variable",
+    "ipa": "ˈvɛriəbəl",
+    "pos": "adj.；n.",
+    "lv": "四级",
+    "m": "易变的；变量",
+    "ex": "This requires the model to support a variable number of vision tokens."
+   },
+   {
+    "w": "vary",
+    "ipa": "ˈvɛri",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "变化；不同",
+    "ex": "Training DeepEncoder Following Vary [36], we utilize a compact language model [15] and use the next token prediction framework to train DeepEncoder."
+   },
+   {
+    "w": "vision",
+    "ipa": "ˈvɪʒən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "视；想象力；梦幻",
+    "ex": "In summary, when training DeepSeek-OCR, OCR data accounts for 70%, general vision data accounts for 20%, and text-only data accounts for 10%."
+   },
+   {
+    "w": "width",
+    "ipa": "wɪdθ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "宽阔，广阔；宽度",
+    "ex": "For images with both width and height smaller than 640, 𝑛is set to 0, i.e., Gundam mode will degrade to Base mode."
+   }
+  ]
+ },
+ {
+  "sec": "4. Conclusion · 结论",
+  "short": "Concl",
+  "icon": "4",
+  "words": [
+   {
+    "w": "acceptable",
+    "ipa": "əkˈsɛptəbəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "可接受的，合意的",
+    "ex": "acceptable edit distances, because the text tokens in newspapers are 4-5,000, far exceeding the"
+   },
+   {
+    "w": "accord",
+    "ipa": "əˈkɔrd",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使一致；给予",
+    "ex": "For the DeepSeek-OCR model, the values in parentheses in the \"Tokens\" column represent valid vision tokens, calculated according to Equation 1."
+   },
+   {
+    "w": "additional",
+    "ipa": "əˈdɪʃənəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "额外的",
+    "ex": "These results indicate that optical contexts compression is a very promising and worthwhile research direction, and this approach does not bring any overhead because it can leverage VLM infrastructure, as multimodal systems …"
+   },
+   {
+    "w": "additionally",
+    "ipa": "əˈdɪʃəˌnəli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "此外；又，加之",
+    "ex": "Additionally, DeepSeek-OCR is a highly practical model capable of large-scale pretraining data production, serving as an indispensable assistant for LLMs."
+   },
+   {
+    "w": "arabic",
+    "ipa": "ˈɛrəbɪk",
+    "pos": "adj.；n.",
+    "lv": "专四",
+    "m": "阿拉伯的；阿拉伯人的；阿拉伯语",
+    "ex": "Figure 11, where we select Arabic and Sinhala languages to demonstrate results."
+   },
+   {
+    "w": "assurance",
+    "ipa": "əˈʃʊrəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "保证",
+    "ex": "On the front label: - At the top left corner, some Chinese characters. - In bold black letters near the center-top reads \"6月香\" (June Fragrance). - Below that, smaller white font states \"鲜甜咸香\" which translates roughly to \"Fresh …"
+   },
+   {
+    "w": "automatically",
+    "ipa": "ˌɔtəˈmætɪkli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "自动地；不经思考地",
+    "ex": "With just a prompt, the model can automatically identify what type of image it is and output the required results."
+   },
+   {
+    "w": "benchmark",
+    "ipa": "ˈbɛnʧˌmɑrk",
+    "pos": "n.；v.",
+    "lv": "专八",
+    "m": "基准；标准检查程序；用基准问题测试（计算机系统等）",
+    "ex": "Nevertheless, the output format still cannot completely match Fox benchmarks, so the actual performance would be somewhat higher than the test results."
+   },
+   {
+    "w": "biological",
+    "ipa": "ˌbaɪəˈlɑʤɪkəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "生物的",
+    "ex": "By combining these mechanisms, contexts optical compression method enables a form of memory decay that mirrors biological forgetting curves, where recent information maintains high fidelity while distant memories naturally fade …"
+   },
+   {
+    "w": "bold",
+    "ipa": "boʊld",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "大胆的；冒失的",
+    "ex": "On the front label: - At the top left corner, some Chinese characters. - In bold black letters near the center-top reads \"6月香\" (June Fragrance). - Below that, smaller white font states \"鲜甜咸香\" which translates roughly to \"Fresh …"
+   },
+   {
+    "w": "bulletin",
+    "ipa": "ˈbʊlɪtən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "告示，公告，公报",
+    "ex": "The classroom has a green wall with educational posters and a bulletin board."
+   },
+   {
+    "w": "cannot",
+    "ipa": "ˈkænɑt",
+    "pos": "conj.",
+    "lv": "托福",
+    "m": "不能",
+    "ex": "Nevertheless, the output format still cannot completely match Fox benchmarks, so the actual performance would be somewhat higher than the test results."
+   },
+   {
+    "w": "capable",
+    "ipa": "ˈkeɪpəbəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "能干的，有能力的",
+    "ex": "Additionally, DeepSeek-OCR is a highly practical model capable of large-scale pretraining data production, serving as an indispensable assistant for LLMs."
+   },
+   {
+    "w": "circular",
+    "ipa": "ˈsərkjələr",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "圆的；循环的",
+    "ex": "On the front label: - At the top left corner, some Chinese characters. - In bold black letters near the center-top reads \"6月香\" (June Fragrance). - Below that, smaller white font states \"鲜甜咸香\" which translates roughly to \"Fresh …"
+   },
+   {
+    "w": "column",
+    "ipa": "ˈkɑləm",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "专栏",
+    "ex": "For the DeepSeek-OCR model, the values in parentheses in the \"Tokens\" column represent valid vision tokens, calculated according to Equation 1."
+   },
+   {
+    "w": "completely",
+    "ipa": "kəmˈplitli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "十分，完全地",
+    "ex": "Nevertheless, the output format still cannot completely match Fox benchmarks, so the actual performance would be somewhat higher than the test results."
+   },
+   {
+    "w": "completion",
+    "ipa": "kəmˈpliʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "完成，结束，完满",
+    "ex": "Note that since we do not include SFT (Supervised Fine-Tuning) stage, the model is not a chatbot, and some capabilities need completion prompts to be activated."
+   },
+   {
+    "w": "constitute",
+    "ipa": "ˈkɑnstəˌtut",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "组成",
+    "ex": "Figure 13 | Forgetting mechanisms constitute one of the most fundamental characteristics of"
+   },
+   {
+    "w": "constraint",
+    "ipa": "kənˈstreɪnt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "限制，束缚，约束",
+    "ex": "The approach suggests a path toward theoretically unlimited context architectures that balance information retention with computational constraints, though the practical implications and limitations of such vision-text …"
+   },
+   {
+    "w": "consumer",
+    "ipa": "kənˈsumər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "消费者， 用户， 消耗者",
+    "ex": "It has clear labeling intended for easy identification and understanding among consumers who read Mandarin."
+   },
+   {
+    "w": "consumption",
+    "ipa": "kənˈsəmʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "消费，消耗",
+    "ex": "For older contexts, we could progressively downsizing the rendered images to further reduce token consumption."
+   },
+   {
+    "w": "context",
+    "ipa": "ˈkɑntɛkst",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "背景，环境",
+    "ex": "From another perspective, optical contexts compression still offers substantial room for research and improvement, representing a promising new direction."
+   },
+   {
+    "w": "convert",
+    "ipa": "ˈkɑnvərt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使转变；使改变",
+    "ex": "Input image Result <image>\\nParse the figure. <image>\\n<|grounding|>Convert the document to markdown."
+   },
+   {
+    "w": "crawl",
+    "ipa": "krɔl",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "爬，爬行",
+    "ex": "Figure 11 | To endow the capability of processing widely crawled PDFs (multilingual data), we"
+   },
+   {
+    "w": "crucial",
+    "ipa": "ˈkruʃəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "至关重要的",
+    "ex": "Charts are a crucial form of data representation in finance and scientific fields, and the chart structured extraction is an indispensable capability for future OCR models."
+   },
+   {
+    "w": "crystal",
+    "ipa": "ˈkrɪstəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "水晶，结晶体；晶粒",
+    "ex": "Just happened Crystal Clear 1 hour Very Clear Clear 1 day 1 week 1 month 1 year Blurry Very Blurry Almost Gone Distance↑ 10cm Crystal Clear 50cm Very Clear Clear 1m 3m 10m 20m Blurry Very Blurry Almost Gone Resolution↓ Crystal …"
+   },
+   {
+    "w": "curve",
+    "ipa": "kərv",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "曲线；弯；弄弯",
+    "ex": "By combining these mechanisms, contexts optical compression method enables a form of memory decay that mirrors biological forgetting curves, where recent information maintains high fidelity while distant memories naturally fade …"
+   },
+   {
+    "w": "decay",
+    "ipa": "dɪˈkeɪ",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "腐烂；衰败；腐烂",
+    "ex": "This assumption draws inspiration from the natural parallel between human memory decay over time and visual perception degradation over spatial distance—both exhibit similar patterns of progressive information loss, as shown in …"
+   },
+   {
+    "w": "decompression",
+    "ipa": "ˌdikəmˈprɛʃən",
+    "pos": "n.",
+    "lv": "雅思",
+    "m": "减压； 减压室",
+    "ex": "Vision-text Compression Study We select Fox [21] benchmarks to verify DeepSeek-OCR’s compression-decompression capability for text-rich documents, in order to preliminarily explore the feasibility and boundaries of contexts …"
+   },
+   {
+    "w": "degradation",
+    "ipa": "ˌdɛgrəˈdeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "降级；退化；衰变",
+    "ex": "This assumption draws inspiration from the natural parallel between human memory decay over time and visual perception degradation over spatial distance—both exhibit similar patterns of progressive information loss, as shown in …"
+   },
+   {
+    "w": "depict",
+    "ipa": "dɪˈpɪkt",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "描绘， 描述",
+    "ex": "Input image Result Rendering The image depicts an indoor classroom setting with a group of children and an adult."
+   },
+   {
+    "w": "downsize",
+    "ipa": "ˈdaʊnˌsaɪz",
+    "pos": "v.",
+    "lv": "雅思",
+    "m": "裁员",
+    "ex": "For older contexts, we could progressively downsizing the rendered images to further reduce token consumption."
+   },
+   {
+    "w": "dresser",
+    "ipa": "ˈdrɛsər",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "梳妆台；碗柜；化妆师；裹伤员",
+    "ex": "To the left, there is a wooden dresser with a drawer partially open, and a chair is visible behind it."
+   },
+   {
+    "w": "edit",
+    "ipa": "ˈɛdət",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "剪辑，编辑",
+    "ex": "Table 4 | Edit distances for different categories of documents in OmniDocBench."
+   },
+   {
+    "w": "educational",
+    "ipa": "ˌɛʤəˈkeɪʃənəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "教育的， 教育性的",
+    "ex": "The presence of educational materials and the organized layout of the room indicate that this is a space designed for learning and reading. <image>\\nParse the figure."
+   },
+   {
+    "w": "enable",
+    "ipa": "ɪˈneɪbəl",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使能够……",
+    "ex": "By combining these mechanisms, contexts optical compression method enables a form of memory decay that mirrors biological forgetting curves, where recent information maintains high fidelity while distant memories naturally fade …"
+   },
+   {
+    "w": "endow",
+    "ipa": "ɛnˈdaʊ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "资助；赋予",
+    "ex": "Figure 11 | To endow the capability of processing widely crawled PDFs (multilingual data), we"
+   },
+   {
+    "w": "engage",
+    "ipa": "ɪnˈgeɪʤ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "忙于，从事；吸引",
+    "ex": "The children are engaged with the woman, with some looking at her and others looking down or away."
+   },
+   {
+    "w": "equation",
+    "ipa": "ɪkˈweɪʒən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "方程(式)；等式",
+    "ex": "For the DeepSeek-OCR model, the values in parentheses in the \"Tokens\" column represent valid vision tokens, calculated according to Equation 1."
+   },
+   {
+    "w": "evaluation",
+    "ipa": "ɪˌvæljuˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "评价，评估",
+    "ex": "Of course, OCR alone is insufficient to fully validate true context optical compression and we will conduct digital-optical text interleaved pretraining, needle-in-a-haystack testing, and other evaluations in the future."
+   },
+   {
+    "w": "exhibit",
+    "ipa": "ɪgˈzɪbɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "显示；陈列，展览",
+    "ex": "This assumption draws inspiration from the natural parallel between human memory decay over time and visual perception degradation over spatial distance—both exhibit similar patterns of progressive information loss, as shown in …"
+   },
+   {
+    "w": "experimental",
+    "ipa": "ɪkˌspɛrɪˈmɛntəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "实验的，试验的",
+    "ex": "OCR Practical Performance DeepSeek-OCR is not only an experimental model; it has strong practical capabilities and can construct data for LLM/VLM pretraining."
+   },
+   {
+    "w": "extraction",
+    "ipa": "ɛkˈstrækʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "抽出；提取法",
+    "ex": "Charts are a crucial form of data representation in finance and scientific fields, and the chart structured extraction is an indispensable capability for future OCR models."
+   },
+   {
+    "w": "extremely",
+    "ipa": "ɪkˈstrimli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "极端，极其，非常",
+    "ex": "Due to the intricate interdependencies among line segments in geometric shapes, parsing geometry task is extremely challenging and has a long way to go."
+   },
+   {
+    "w": "ferment",
+    "ipa": "ˈfərmɛnt",
+    "pos": "n.；v.",
+    "lv": "专四",
+    "m": "发酵；酵素；动乱；发酵；动乱",
+    "ex": "On the front label: - At the top left corner, some Chinese characters. - In bold black letters near the center-top reads \"6月香\" (June Fragrance). - Below that, smaller white font states \"鲜甜咸香\" which translates roughly to \"Fresh …"
+   },
+   {
+    "w": "fidelity",
+    "ipa": "ˌfaɪˈdɛləti",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "保真度；忠诚；精确；尽责",
+    "ex": "By combining these mechanisms, contexts optical compression method enables a form of memory decay that mirrors biological forgetting curves, where recent information maintains high fidelity while distant memories naturally fade …"
+   },
+   {
+    "w": "financial",
+    "ipa": "ˌfaɪˈnænʃəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "财政的，经济的",
+    "ex": "Figure 7 | In the field of financial research reports, the deep parsing mode of DeepSeek-OCR"
+   },
+   {
+    "w": "font",
+    "ipa": "fɑnt",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "字体；字形；泉；洗礼盘，圣水器",
+    "ex": "On the front label: - At the top left corner, some Chinese characters. - In bold black letters near the center-top reads \"6月香\" (June Fragrance). - Below that, smaller white font states \"鲜甜咸香\" which translates roughly to \"Fresh …"
+   },
+   {
+    "w": "fragrance",
+    "ipa": "ˈfreɪgrəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "芳香， 香味； 香水",
+    "ex": "On the front label: - At the top left corner, some Chinese characters. - In bold black letters near the center-top reads \"6月香\" (June Fragrance). - Below that, smaller white font states \"鲜甜咸香\" which translates roughly to \"Fresh …"
+   },
+   {
+    "w": "geometric",
+    "ipa": "ˌʤiəˈmɛtrɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "几何学的；[数] 几何学图形的",
+    "ex": "Due to the intricate interdependencies among line segments in geometric shapes, parsing geometry task is extremely challenging and has a long way to go."
+   },
+   {
+    "w": "haystack",
+    "ipa": "ˈheɪˌstæk",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "干草堆",
+    "ex": "Of course, OCR alone is insufficient to fully validate true context optical compression and we will conduct digital-optical text interleaved pretraining, needle-in-a-haystack testing, and other evaluations in the future."
+   },
+   {
+    "w": "highly",
+    "ipa": "ˈhaɪli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "高度地，很，非常",
+    "ex": "Additionally, DeepSeek-OCR is a highly practical model capable of large-scale pretraining data production, serving as an indispensable assistant for LLMs."
+   },
+   {
+    "w": "historical",
+    "ipa": "hɪˈstɔrɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "历史的，有关历史的",
+    "ex": "The contexts optical compression approach can simulate this mechanism by rendering previous rounds of historical text onto images for initial compression, then progressively resizing older images to achieve multi-level …"
+   },
+   {
+    "w": "identity",
+    "ipa": "aɪˈdɛntəˌti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "身份",
+    "ex": "Note: There might be slight variations due to handwriting styles but overall maintains readability regarding brand identity and contents description. <image>\\nDescribe this image in detail. <image>\\nLocate <|ref|>the …"
+   },
+   {
+    "w": "illustration",
+    "ipa": "ˌɪləˈstreɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "说明，图解；例证",
+    "ex": "On the front label: - At the top left corner, some Chinese characters. - In bold black letters near the center-top reads \"6月香\" (June Fragrance). - Below that, smaller white font states \"鲜甜咸香\" which translates roughly to \"Fresh …"
+   },
+   {
+    "w": "implement",
+    "ipa": "ˈɪmpləmənt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "实施，执行",
+    "ex": "directions for future applications, such as implementing optical processing for dialogue histories"
+   },
+   {
+    "w": "implication",
+    "ipa": "ˌɪmpləˈkeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "含义，暗示",
+    "ex": "The approach suggests a path toward theoretically unlimited context architectures that balance information retention with computational constraints, though the practical implications and limitations of such vision-text …"
+   },
+   {
+    "w": "improvement",
+    "ipa": "ˌɪmˈpruvmənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "改进，改善；改进处",
+    "ex": "From another perspective, optical contexts compression still offers substantial room for research and improvement, representing a promising new direction."
+   },
+   {
+    "w": "inclusion",
+    "ipa": "ˌɪnˈkluʒən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "包含；内含物",
+    "ex": "Meanwhile, due to the inclusion of text-only data, DeepSeek-OCR’s language capabilities are also retained."
+   },
+   {
+    "w": "increasingly",
+    "ipa": "ˌɪnˈkrisɪŋgli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "日益，越来越多地",
+    "ex": "The contexts optical compression approach can simulate this mechanism by rendering previous rounds of historical text onto images for initial compression, then progressively resizing older images to achieve multi-level …"
+   },
+   {
+    "w": "indoor",
+    "ipa": "ˈɪnˌdɔr",
+    "pos": "adv.；adj.",
+    "lv": "六级",
+    "m": "在室内， 在户内；室内的",
+    "ex": "Input image Result Rendering The image depicts an indoor classroom setting with a group of children and an adult."
+   },
+   {
+    "w": "infrastructure",
+    "ipa": "ˌɪnfrəˈstrəkʧər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "基础设施；公共建设；下部构造",
+    "ex": "These results indicate that optical contexts compression is a very promising and worthwhile research direction, and this approach does not bring any overhead because it can leverage VLM infrastructure, as multimodal systems …"
+   },
+   {
+    "w": "inherently",
+    "ipa": "ˌɪnˈhɛrəntli",
+    "pos": "adv.",
+    "lv": "GRE",
+    "m": "固有地， 天性地",
+    "ex": "These results indicate that optical contexts compression is a very promising and worthwhile research direction, and this approach does not bring any overhead because it can leverage VLM infrastructure, as multimodal systems …"
+   },
+   {
+    "w": "inspiration",
+    "ipa": "ˌɪnspərˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "灵感",
+    "ex": "This assumption draws inspiration from the natural parallel between human memory decay over time and visual perception degradation over spatial distance—both exhibit similar patterns of progressive information loss, as shown in …"
+   },
+   {
+    "w": "interpolate",
+    "ipa": "ˌɪˈtərpəˌleɪt",
+    "pos": "v.",
+    "lv": "GRE",
+    "m": "窜改, 添写进去, 插入新语句",
+    "ex": "All metrics in the table are edit distances, where smaller values indicate better performance. \"Tokens\" represents the average number of vision tokens used per page, and \"†200dpi\" means using fitz to interpolate the original …"
+   },
+   {
+    "w": "intricate",
+    "ipa": "ˈɪntrəkət",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "错综复杂的， 复杂精细的",
+    "ex": "Due to the intricate interdependencies among line segments in geometric shapes, parsing geometry task is extremely challenging and has a long way to go."
+   },
+   {
+    "w": "investigation",
+    "ipa": "ˌɪnˌvɛstəˈgeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "调查，调查研究",
+    "ex": "While our initial exploration shows potential for scalable ultra-long context processing, where recent contexts preserve high resolution and older contexts consume fewer resources, we acknowledge this is early-stage work that …"
+   },
+   {
+    "w": "issue",
+    "ipa": "ˈɪʃu",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "发行；问题",
+    "ex": "The first issue can be solved"
+   },
+   {
+    "w": "item",
+    "ipa": "ˈaɪtəm",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "条，条款",
+    "ex": "Overall Style/Type: It looks like commercial packaging designed specifically for preserving food items within the jar."
+   },
+   {
+    "w": "large-scale",
+    "ipa": "ˈlɑrʤˌskeɪl",
+    "pos": "adj.",
+    "lv": "雅思",
+    "m": "大规模的， 大范围的",
+    "ex": "believe this finding will facilitate the development of VLMs and LLMs in the future. Additionally, DeepSeek-OCR is a highly practical model capable of large-scale pretraining data"
+   },
+   {
+    "w": "leverage",
+    "ipa": "ˈlɛvərɪʤ",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "手段，影响力；杠杆作用；杠杆效率；利用；举债经营",
+    "ex": "These results indicate that optical contexts compression is a very promising and worthwhile research direction, and this approach does not bring any overhead because it can leverage VLM infrastructure, as multimodal systems …"
+   },
+   {
+    "w": "logo",
+    "ipa": "ˈloʊgoʊ",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "商标，徽标；标识语",
+    "ex": "On the front label: - At the top left corner, some Chinese characters. - In bold black letters near the center-top reads \"6月香\" (June Fragrance). - Below that, smaller white font states \"鲜甜咸香\" which translates roughly to \"Fresh …"
+   },
+   {
+    "w": "mandarin",
+    "ipa": "ˈmændərən",
+    "pos": "n.；adj.",
+    "lv": "专八",
+    "m": "（中国）普通话；国语；官话；满清官吏；柑橘；紧身马褂的",
+    "ex": "It has clear labeling intended for easy identification and understanding among consumers who read Mandarin."
+   },
+   {
+    "w": "mechanism",
+    "ipa": "ˈmɛkəˌnɪzəm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "机制，机能",
+    "ex": "Figure 13 | Forgetting mechanisms constitute one of the most fundamental characteristics of"
+   },
+   {
+    "w": "metric",
+    "ipa": "ˈmɛtrɪk",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "公制的，米制的",
+    "ex": "All metrics in the table are edit distances, where smaller values indicate better performance. \"Tokens\" represents the average number of vision tokens used per page, and \"†200dpi\" means using fitz to interpolate the original …"
+   },
+   {
+    "w": "naturally",
+    "ipa": "ˈnæʧərəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "自然地；天然地",
+    "ex": "By combining these mechanisms, contexts optical compression method enables a form of memory decay that mirrors biological forgetting curves, where recent information maintains high fidelity while distant memories naturally fade …"
+   },
+   {
+    "w": "nevertheless",
+    "ipa": "ˌnɛvərðəˈlɛs",
+    "pos": "conj.；adv.",
+    "lv": "四级",
+    "m": "然而；仍然",
+    "ex": "Nevertheless, the output format still cannot completely match Fox benchmarks, so the actual performance would be somewhat higher than the test results."
+   },
+   {
+    "w": "pant",
+    "ipa": "pænt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "气喘",
+    "ex": "The children are dressed in various colors, with some wearing short pants and others in long pants."
+   },
+   {
+    "w": "par",
+    "ipa": "pɑr",
+    "pos": "n.；adj.",
+    "lv": "专八",
+    "m": "标准；票面价值；平均数量；标准的；票面的",
+    "ex": "400 tokens (285 valid tokens, 1280×1280 resolution), it achieves on-par performance with state-of-the-arts on this benchmark."
+   },
+   {
+    "w": "parse",
+    "ipa": "pɑrs",
+    "pos": "v.",
+    "lv": "GRE",
+    "m": "解析",
+    "ex": "Due to the intricate interdependencies among line segments in geometric shapes, parsing geometry task is extremely challenging and has a long way to go."
+   },
+   {
+    "w": "partially",
+    "ipa": "ˈpɑrʃəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "部分地",
+    "ex": "To the left, there is a wooden dresser with a drawer partially open, and a chair is visible behind it."
+   },
+   {
+    "w": "paste",
+    "ipa": "peɪst",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "糊，酱；浆湖",
+    "ex": "On the front label: - At the top left corner, some Chinese characters. - In bold black letters near the center-top reads \"6月香\" (June Fragrance). - Below that, smaller white font states \"鲜甜咸香\" which translates roughly to \"Fresh …"
+   },
+   {
+    "w": "perspective",
+    "ipa": "pərˈspɛktɪv",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "视角，观点；远景",
+    "ex": "From another perspective, optical contexts compression still offers substantial room for research and improvement, representing a promising new direction."
+   },
+   {
+    "w": "planar",
+    "ipa": "ˈpleɪnər",
+    "pos": "adj.",
+    "lv": "超纲",
+    "m": "平面的，二维的",
+    "ex": "Figure 10 | DeepSeek-OCR also possesses the capability to copy (structure) simple planar"
+   },
+   {
+    "w": "presence",
+    "ipa": "ˈprɛzəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "出席，到场；在",
+    "ex": "The presence of educational materials and the organized layout of the room indicate that this is a space designed for learning and reading. <image>\\nParse the figure."
+   },
+   {
+    "w": "progressive",
+    "ipa": "prəˈgrɛsɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "进步的；向前进的",
+    "ex": "This assumption draws inspiration from the natural parallel between human memory decay over time and visual perception degradation over spatial distance—both exhibit similar patterns of progressive information loss, as shown in …"
+   },
+   {
+    "w": "progressively",
+    "ipa": "prɑˈgrɛsɪvli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "日益增多地",
+    "ex": "For older contexts, we could progressively downsizing the rendered images to further reduce token consumption."
+   },
+   {
+    "w": "prompt",
+    "ipa": "prɑmpt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "敏捷的；v. 敦促",
+    "ex": "Note that since we do not include SFT (Supervised Fine-Tuning) stage, the model is not a chatbot, and some capabilities need completion prompts to be activated."
+   },
+   {
+    "w": "qualitative",
+    "ipa": "kˈwɑləˌteɪtɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "质的；定性的",
+    "ex": "Qualitative Study 4.3.1."
+   },
+   {
+    "w": "quantify",
+    "ipa": "kˈwɑntɪˌfaɪ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "确定…的数量",
+    "ex": "To quantify OCR performance, we test DeepSeek-OCR on OmniDocBench [27], with results shown in Table 3."
+   },
+   {
+    "w": "recognition",
+    "ipa": "ˌrɛkɪgˈnɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "认出，识别；承认",
+    "ex": "Multilingual recognition PDF data on the Internet contains not only Chinese and English, but also a large amount of multilingual data, which is also crucial when training LLMs."
+   },
+   {
+    "w": "render",
+    "ipa": "ˈrɛndər",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "给予",
+    "ex": "Input image Result Rendering The image depicts an indoor classroom setting with a group of children and an adult."
+   },
+   {
+    "w": "resource",
+    "ipa": "ˈrisɔrs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "资源； 财力； 应付办法， 谋略",
+    "ex": "While our initial exploration shows potential for scalable ultra-long context processing, where recent contexts preserve high resolution and older contexts consume fewer resources, we acknowledge this is early-stage work that …"
+   },
+   {
+    "w": "retain",
+    "ipa": "rɪˈteɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "保留,留用",
+    "ex": "Meanwhile, due to the inclusion of text-only data, DeepSeek-OCR’s language capabilities are also retained."
+   },
+   {
+    "w": "retention",
+    "ipa": "riˈtɛnʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "保留， 保持",
+    "ex": "The approach suggests a path toward theoretically unlimited context architectures that balance information retention with computational constraints, though the practical implications and limitations of such vision-text …"
+   },
+   {
+    "w": "roughly",
+    "ipa": "ˈrəfli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "粗糙地；概略地",
+    "ex": "On the front label: - At the top left corner, some Chinese characters. - In bold black letters near the center-top reads \"6月香\" (June Fragrance). - Below that, smaller white font states \"鲜甜咸香\" which translates roughly to \"Fresh …"
+   },
+   {
+    "w": "satisfactory",
+    "ipa": "ˌsætɪsˈfæktəri",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "令人满意的，良好的",
+    "ex": "As shown in Table 4, some categories of documents require very few tokens to achieve satisfactory performance, such as slides which only need 64 vision tokens."
+   },
+   {
+    "w": "sauce",
+    "ipa": "sɔs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "调味汁， 作料",
+    "ex": "On the front label: - At the top left corner, some Chinese characters. - In bold black letters near the center-top reads \"6月香\" (June Fragrance). - Below that, smaller white font states \"鲜甜咸香\" which translates roughly to \"Fresh …"
+   },
+   {
+    "w": "scale",
+    "ipa": "skeɪl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "规模，比例",
+    "ex": "Additionally, DeepSeek-OCR is a highly practical model capable of large-scale pretraining data production, serving as an indispensable assistant for LLMs."
+   },
+   {
+    "w": "segment",
+    "ipa": "ˌsɛgˈmɛnt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "部分， 片段； 瓣",
+    "ex": "Due to the intricate interdependencies among line segments in geometric shapes, parsing geometry task is extremely challenging and has a long way to go."
+   },
+   {
+    "w": "significant",
+    "ipa": "sɪgˈnɪfɪkənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "重要的",
+    "ex": "In the future, OCR 1.0+2.0 technology may play a significant role in the development of VLM/LLM in STEM fields."
+   },
+   {
+    "w": "simulate",
+    "ipa": "ˈsɪmjəˌleɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "模拟，模仿",
+    "ex": "The contexts optical compression approach can simulate this mechanism by rendering previous rounds of historical text onto images for initial compression, then progressively resizing older images to achieve multi-level …"
+   },
+   {
+    "w": "slightly",
+    "ipa": "sˈlaɪtli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "轻微地",
+    "ex": "The lid is yellow and appears slightly worn out."
+   },
+   {
+    "w": "solve",
+    "ipa": "sɑlv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "解决",
+    "ex": "The first issue can be solved"
+   },
+   {
+    "w": "somewhat",
+    "ipa": "ˈsəmˈwət",
+    "pos": "pron.；adv.",
+    "lv": "四级",
+    "m": "一点儿；有点",
+    "ex": "Nevertheless, the output format still cannot completely match Fox benchmarks, so the actual performance would be somewhat higher than the test results."
+   },
+   {
+    "w": "spatial",
+    "ipa": "ˈspeɪʃəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "空间的，占据空间的",
+    "ex": "This assumption draws inspiration from the natural parallel between human memory decay over time and visual perception degradation over spatial distance—both exhibit similar patterns of progressive information loss, as shown in …"
+   },
+   {
+    "w": "specifically",
+    "ipa": "spəˈsɪfɪkli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "特别地， 特定地； 明确地， 具体地",
+    "ex": "Overall Style/Type: It looks like commercial packaging designed specifically for preserving food items within the jar."
+   },
+   {
+    "w": "specification",
+    "ipa": "ˌspɛsɪfɪˈkeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "说明书",
+    "ex": "On the front label: - At the top left corner, some Chinese characters. - In bold black letters near the center-top reads \"6月香\" (June Fragrance). - Below that, smaller white font states \"鲜甜咸香\" which translates roughly to \"Fresh …"
+   },
+   {
+    "w": "stem",
+    "ipa": "stɛm",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "茎，(树)干；起源",
+    "ex": "In the future, OCR 1.0+2.0 technology may play a significant role in the development of VLM/LLM in STEM fields."
+   },
+   {
+    "w": "structure",
+    "ipa": "ˈstrəkʧər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "结构",
+    "ex": "Charts are a crucial form of data representation in finance and scientific fields, and the chart structured extraction is an indispensable capability for future OCR models."
+   },
+   {
+    "w": "substantial",
+    "ipa": "səbˈstænʃl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "可观的",
+    "ex": "optical contexts compression still offers substantial room for research"
+   },
+   {
+    "w": "supervise",
+    "ipa": "ˈsupərˌvaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "监督，监视",
+    "ex": "Note that since we do not include SFT (Supervised Fine-Tuning) stage, the model is not a chatbot, and some capabilities need completion prompts to be activated."
+   },
+   {
+    "w": "surpass",
+    "ipa": "sərˈpæs",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "超过",
+    "ex": "(640×640 resolution), DeepSeek-OCR surpasses GOT-OCR2.0 [38] which uses 256 tokens; with"
+   },
+   {
+    "w": "thereby",
+    "ipa": "ˈðɛrˈbaɪ",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "因此，从而，由此",
+    "ex": "The contexts optical compression approach can simulate this mechanism by rendering previous rounds of historical text onto images for initial compression, then progressively resizing older images to achieve multi-level …"
+   },
+   {
+    "w": "token",
+    "ipa": "ˈtoʊkən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "辅币；象征",
+    "ex": "For the DeepSeek-OCR model, the values in parentheses in the \"Tokens\" column represent valid vision tokens, calculated according to Equation 1."
+   },
+   {
+    "w": "unlimited",
+    "ipa": "ənˈlɪmɪtɪd",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "无限的；不定的",
+    "ex": "The approach suggests a path toward theoretically unlimited context architectures that balance information retention with computational constraints, though the practical implications and limitations of such vision-text …"
+   },
+   {
+    "w": "validate",
+    "ipa": "ˈvælədeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "证实，验证；确认；使生效",
+    "ex": "Of course, OCR alone is insufficient to fully validate true context optical compression and we will conduct digital-optical text interleaved pretraining, needle-in-a-haystack testing, and other evaluations in the future."
+   },
+   {
+    "w": "variation",
+    "ipa": "ˌvɛriˈeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "变化，变动；变异",
+    "ex": "Note: There might be slight variations due to handwriting styles but overall maintains readability regarding brand identity and contents description. <image>\\nDescribe this image in detail. <image>\\nLocate <|ref|>the …"
+   },
+   {
+    "w": "verify",
+    "ipa": "ˈvɛrəˌfaɪ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "证实，查证；证明",
+    "ex": "Vision-text Compression Study We select Fox [21] benchmarks to verify DeepSeek-OCR’s compression-decompression capability for text-rich documents, in order to preliminarily explore the feasibility and boundaries of contexts …"
+   },
+   {
+    "w": "visible",
+    "ipa": "ˈvɪzəbəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "看得见的",
+    "ex": "The text \"BIBLIOTECA\" is visible on the wall, suggesting that the room may be part of a library or a section dedicated to books."
+   },
+   {
+    "w": "warrant",
+    "ipa": "ˈwɔrənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "（法院授权警方采取行动的）令状；许可证",
+    "ex": "The approach suggests a path toward theoretically unlimited context architectures that balance information retention with computational constraints, though the practical implications and limitations of such vision-text …"
+   },
+   {
+    "w": "widely",
+    "ipa": "ˈwaɪdli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "大大地",
+    "ex": "Figure 11 | To endow the capability of processing widely crawled PDFs (multilingual data), we"
+   },
+   {
+    "w": "wooden",
+    "ipa": "ˈwʊdən",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "木制的；呆板的",
+    "ex": "To the left, there is a wooden dresser with a drawer partially open, and a chair is visible behind it."
+   }
+  ]
+ },
+ {
+  "sec": "References · 参考文献区用词（正文未出现）",
+  "short": "文献区",
+  "icon": "R",
+  "words": [
+   {
+    "w": "auxiliary",
+    "ipa": "ɑgˈzɪljəri",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "辅助的；附属的",
+    "ex": "Onechart: Purify the chart structural extraction via one auxiliary token."
+   },
+   {
+    "w": "comparison",
+    "ipa": "kəmˈpɛrəsən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比较，对照；比似",
+    "ex": "comparisons on OmniDocBench [27]. DeepSeek-OCR can achieve state-of-the-art performance"
+   },
+   {
+    "w": "considerable",
+    "ipa": "kənˈsɪdərəbəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "相当大(或多)的",
+    "ex": "compression ratio of 20×, the OCR accuracy still remains at about 60%. This shows considerable"
+   },
+   {
+    "w": "decouple",
+    "ipa": "diˈkəpəl",
+    "pos": "v.",
+    "lv": "雅思",
+    "m": "减弱， 减少",
+    "ex": "Decoupled weight decay regularization."
+   },
+   {
+    "w": "descent",
+    "ipa": "dɪˈsɛnt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "血统, 后裔",
+    "ex": "Sgdr: Stochastic gradient descent with warm restarts. arXiv preprint arXiv:1608.03983, 2016. [23] I."
+   },
+   {
+    "w": "dolphin",
+    "ipa": "ˈdɑlfən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "海豚",
+    "ex": "Dolphin: Document image parsing via heterogeneous anchor prompting. arXiv preprint arXiv:2505.14059, 2025. [12] Y."
+   },
+   {
+    "w": "economical",
+    "ipa": "ˌɛkəˈnɑmɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "节约的；经济学的",
+    "ex": "Deepseek-v2: A strong, economical, and efficient mixture-of-experts language model. arXiv preprint arXiv:2405.04434, 2024. [20] A."
+   },
+   {
+    "w": "elevate",
+    "ipa": "ˈɛləˌveɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "提升，举起；使高兴",
+    "ex": "Making the v in vqa matter: Elevating the role of image understanding in visual question answering."
+   },
+   {
+    "w": "filter",
+    "ipa": "ˈfɪltər",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "过滤；滤纸",
+    "ex": "J. Jitsev, and A. Komatsuzaki. Laion-400m: Open dataset of clip-filtered 400 million image-text pairs. arXiv preprint arXiv:2111.02114, 2021."
+   },
+   {
+    "w": "flyer",
+    "ipa": "flaɪər",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "传单；飞鸟；飞行物；飞跳；孤注一掷",
+    "ex": "Advances in Neural Information Processing Systems, 35:26418–26431, 2022. [14] High-flyer."
+   },
+   {
+    "w": "gap",
+    "ipa": "gæp",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "差距;缝隙缺口",
+    "ex": "How far are we to gpt-4v? closing the gap to commercial multimodal models with open-source suites. arXiv preprint arXiv:2404.16821, 2024. [9] C."
+   },
+   {
+    "w": "gradient",
+    "ipa": "ˈgreɪdiənt",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "斜坡",
+    "ex": "Sgdr: Stochastic gradient descent with warm restarts. arXiv preprint arXiv:1608.03983, 2016. [23] I."
+   },
+   {
+    "w": "heterogeneous",
+    "ipa": "ˌhɛtərəˈʤinjəs",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "[化学] 多相的；异种的；[化学] 不均匀的；由不同成分形成的",
+    "ex": "Dolphin: Document image parsing via heterogeneous anchor prompting. arXiv preprint arXiv:2505.14059, 2025. [12] Y."
+   },
+   {
+    "w": "integrate",
+    "ipa": "ˈɪnəˌgreɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "成为一体， 合并",
+    "ex": "Mm-vet: Evaluating large multimodal models for integrated capabilities. arXiv preprint arXiv:2308.02490, 2023. [42] J."
+   },
+   {
+    "w": "lens",
+    "ipa": "lɛnz",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "透镜，镜片；镜头",
+    "ex": "Opt-iml: Scaling language model instruction meta learning through the lens of generalization. arXiv preprint arXiv:2212.12017, 2022. [16] S."
+   },
+   {
+    "w": "lightweight",
+    "ipa": "ˈlaɪtˈweɪt",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "轻量级选手, 不能胜任者",
+    "ex": "HAI-LLM: Efficient and lightweight training tool for large models, 2023."
+   },
+   {
+    "w": "logical",
+    "ipa": "ˈlɑʤɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "逻辑的；符合逻辑的",
+    "ex": "Chartqa: A benchmark for question answering about charts with visual and logical reasoning. arXiv preprint arXiv:2203.10244, 2022. [25] A."
+   },
+   {
+    "w": "manageable",
+    "ipa": "ˈmænɪʤəbəl",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "易管理的；易控制的；易办的",
+    "ex": "compression ratios to ensure an optimal and manageable number of vision tokens. Experiments"
+   },
+   {
+    "w": "marker",
+    "ipa": "ˈmɑrkər",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "记分员；书签；标识物；作记号的人",
+    "ex": "References [1] Marker."
+   },
+   {
+    "w": "modal",
+    "ipa": "ˈmoʊdəl",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "模态的, 形态上的",
+    "ex": "Wukong: A 100 million large-scale chinese cross-modal pre-training benchmark."
+   },
+   {
+    "w": "multimedia",
+    "ipa": "ˌməltiˈmidiə",
+    "pos": "n.；adj.",
+    "lv": "专四",
+    "m": "多媒体；多媒体的",
+    "ex": "In Proceedings of the 32nd ACM International Conference on Multimedia, pages 147–155, 2024. [8] Z."
+   },
+   {
+    "w": "neural",
+    "ipa": "ˈnʊrəl",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "神经的",
+    "ex": "Advances in Neural Information Processing Systems, 35:26418–26431, 2022. [14] High-flyer."
+   },
+   {
+    "w": "opt",
+    "ipa": "ɑpt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "选择",
+    "ex": "Opt-iml: Scaling language model instruction meta learning through the lens of generalization. arXiv preprint arXiv:2212.12017, 2022. [16] S."
+   },
+   {
+    "w": "optimal",
+    "ipa": "ˈɑptɪməl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "最佳的；最理想的",
+    "ex": "compression ratios to ensure an optimal and manageable number of vision tokens. Experiments"
+   },
+   {
+    "w": "perceive",
+    "ipa": "pərˈsiv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "察觉",
+    "ex": "Slow perception: Let’s perceive geometric figures step-by-step. arXiv preprint arXiv:2412.20631, 2024. [40] Z."
+   },
+   {
+    "w": "pro",
+    "ipa": "proʊ",
+    "pos": "adv.；n.；prep.",
+    "lv": "专八",
+    "m": "赞成地；赞成者；赞成的意见；赞成",
+    "ex": "Gemini 2.5-pro, 2025."
+   },
+   {
+    "w": "proceeding",
+    "ipa": "prəˈsidɪŋ",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "程序，行动，事项",
+    "ex": "In Proceedings of the IEEE/CVF conference on computer vision and pattern recognition, pages 8317–8326, 2019. [33] T."
+   },
+   {
+    "w": "publicly",
+    "ipa": "ˈpəblɪkli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "公然地, 舆论上",
+    "ex": "at a scale of 200k+ pages per day (a single A100-40G). Codes and model weights are publicly"
+   },
+   {
+    "w": "purify",
+    "ipa": "ˈpjʊrəˌfaɪ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "提纯，精炼（金属）",
+    "ex": "Onechart: Purify the chart structural extraction via one auxiliary token."
+   },
+   {
+    "w": "reinforce",
+    "ipa": "ˌriɪnˈfɔrs",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "加强，强化",
+    "ex": "Small language model meets with reinforced vision vocabulary. arXiv preprint arXiv:2401.12503, 2024. [38] H."
+   },
+   {
+    "w": "structural",
+    "ipa": "ˈstrəkʧərəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "结构的，构造的",
+    "ex": "Onechart: Purify the chart structural extraction via one auxiliary token."
+   },
+   {
+    "w": "supervision",
+    "ipa": "ˌsupərˈvɪʒən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "监督",
+    "ex": "Learning transferable visual models from natural language supervision."
+   },
+   {
+    "w": "transferable",
+    "ipa": "trænsˈfərəbəl",
+    "pos": "adj.",
+    "lv": "GRE",
+    "m": "可转移的",
+    "ex": "Learning transferable visual models from natural language supervision."
+   },
+   {
+    "w": "transformer",
+    "ipa": "trænsˈfɔrmər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "变压器，转换器",
+    "ex": "Patch n’ pack: Navit, a vision transformer for any aspect ratio and resolution."
+   },
+   {
+    "w": "trillion",
+    "ipa": "ˈtrɪljən",
+    "pos": "num.",
+    "lv": "六级",
+    "m": "万亿",
+    "ex": "Soldaini. olmocr: Unlocking trillions of tokens in pdfs with vision language models. arXiv preprint arXiv:2502.18443, 2025. [29] A."
+   },
+   {
+    "w": "triplet",
+    "ipa": "ˈtrɪplət",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "三合组，三元组；三胞胎",
+    "ex": "Monkeyocr: Document parsing with a structure-recognition-relation triplet paradigm. arXiv preprint arXiv:2506.05218, 2025. [19] A."
+   },
+   {
+    "w": "unlock",
+    "ipa": "ənˈlɑk",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "开…的锁；开启",
+    "ex": "Soldaini. olmocr: Unlocking trillions of tokens in pdfs with vision language models. arXiv preprint arXiv:2502.18443, 2025. [29] A."
+   },
+   {
+    "w": "vet",
+    "ipa": "vɛt",
+    "pos": "v.；n.",
+    "lv": "专四",
+    "m": "审查；诊疗；兽医",
+    "ex": "Mm-vet: Evaluating large multimodal models for integrated capabilities. arXiv preprint arXiv:2308.02490, 2023. [42] J."
+   }
+  ]
+ }
+];
+// lv 一律写中文档名（十一档平级，2026-09-30 定案；旧短码由 build 脚本自动翻译）
+const LVCLS={"四级":"t4","六级":"t6","考研":"tk","考博":"tp","专四":"tm4","专八":"tm8","雅思":"ty","托福":"tt","GRE":"tg","超纲":"tsuper"};
+const LVNAME={"四级":"四级","六级":"六级","考研":"考研","考博":"考博","专四":"专业四级","专八":"专业八级","雅思":"雅思","托福":"托福","GRE":"GRE","超纲":"超纲（大纲未收）"};
+const LVSHORT={"四级":"4","六级":"6","考研":"考研","考博":"考博","专四":"专四","专八":"专八","雅思":"雅思","托福":"托福","GRE":"GRE","超纲":"★超纲"};
+const LVORDER=["四级","六级","考研","考博","专四","专八","雅思","托福","GRE","超纲"];
+
+let mode="sec";
+let theme="theme-mag"; // 章节视图固定杂志风；按级别视图固定暗色大页
+
+function cardHTML(x,sec){
+  const from = mode==="lv" ? `<div class="from">出自 ${sec}</div>` : "";
+  if(theme==="theme-paper"){
+    return `<div class="word"><span class="w">${x.w}<span class="ipa">/${x.ipa}/</span><i class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</i></span>
+      <span><span class="pos">${x.pos}</span><span class="m">${x.m}</span>${from}</span>
+      <span class="ex">${x.ex}</span></div>`;
+  }
+  if(theme==="theme-mag") return "";
+  return `<div class="card lv${x.lv}" data-say="${x.w}"><span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span><span class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</span>
+    <div class="m">${x.pos} ${x.m}</div><div class="ex">${x.ex}</div>${from}</div>`;
+}
+function magRow(x,sec){
+  return `<tr data-say="${x.w}"><td class="w"><span class="hwband">${x.w}</span><span class="ipa">/${x.ipa}/</span></td>
+    <td class="lv"><b class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</b></td>
+    <td class="m">${x.pos} ${x.m}${mode==="lv"?`<span class="from">出自 ${sec}</span>`:""}</td>
+    <td class="ex">${x.ex}</td></tr>`;
+}
+function groupHTML(title,icon,inner){
+  if(theme==="theme-mag") return `<div class="sec"><h2>${title}</h2><table>${inner}</table></div>`;
+  if(theme==="theme-dark"||theme==="theme-fresh")
+    return `<div class="sec"><h2>${theme==="theme-dark"?"":"<span class='n'>"+icon+"</span>"}${title}</h2><div class="grid">${inner}</div></div>`;
+  return `<div class="sec"><h2>${title}</h2>${inner}</div>`;
+}
+
+function render(){
+  document.body.classList.toggle("lv-mode",mode==="lv");
+  // 注意：必须用 classList.add，不能整体赋值 className —— 否则会抹掉 body.night，
+  // 而夜晚章节视图依赖 body.night.theme-mag 这条 CSS，抹掉后点「按章节」会静默退回白天。
+  if(mode==="sec")document.body.classList.add("theme-mag");
+  const app=document.getElementById("app");
+  let html="";
+  if(mode==="sec"){
+    for(const s of DATA){
+      html += theme==="theme-mag"
+        ? groupHTML(s.sec,s.icon,s.words.map(x=>magRow(x,s.short)).join(""))
+        : groupHTML(s.sec,s.icon,s.words.map(x=>cardHTML(x,s.short)).join(""));
+    }
+  }else{
+    // 学习模式同款暗色大页：每个级别一块
+    const dot={"四级":"var(--c4)","六级":"var(--c6)","考研":"var(--ckaon)","考博":"var(--cphd)","专四":"var(--cm4)","专八":"var(--cm8)","雅思":"var(--cy)","托福":"var(--ct)","GRE":"var(--cg)","超纲":"var(--csuper)"};
+    html=LVORDER.map(lv=>{
+      const items=[];
+      DATA.forEach(s=>s.words.forEach(x=>{if(x.lv===lv)items.push([x,s.short])}));   // ov 已废除（2026-09-30）
+      if(!items.length)return"";   // 本词表里没有这一档 → 不出空面板
+      items.sort((a,b)=>a[0].w.localeCompare(b[0].w));
+      const cls={"六级":"l6","考研":"lk","考博":"lp","专四":"lm4","专八":"lm8","雅思":"ly","托福":"lt","GRE":"lg","超纲":"lsuper"}[lv]||"";
+      return `<div class="lvslide ${cls}">
+        <div class="ltitle"><span style="color:${dot[lv]}">${LVNAME[lv]}</span>词汇<small>${items.length} words · 按字母排序 · 悬停看原文例句 · 点击发音</small></div>
+        <div class="sgrid">${items.map(([x,sec])=>`
+          <div class="lcard" data-say="${x.w}">
+            <span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span>
+            <div class="m">${x.pos} ${x.m}</div>
+            <div class="ex">${x.ex}</div>
+            <div class="from">出自 ${sec}</div>
+          </div>`).join("")}</div></div>`;
+    }).join("");
+  }
+  app.innerHTML=html;
+}
+function syncToolbar(){
+  document.getElementById("v-sec").classList.toggle("on",mode==="sec");
+  document.getElementById("v-lv").classList.toggle("on",mode==="lv");
+}
+document.getElementById("v-sec").onclick=()=>{mode="sec";theme="theme-mag";syncToolbar();render();};
+document.getElementById("v-lv").onclick=()=>{mode="lv";syncToolbar();render();};
+
+// 朗读：多引擎在线 TTS 自动降级（有道 / Polly / 百度 / 谷歌），可按下拉切换主音色
+// 合并自 .agents 有道源版 与 workbuddy Polly 源版 —— 单文件同时支持两套引擎
+const VOICE_MAP={
+  yd1:{src:"yd",label:"美式 · 有道（推荐）"},
+  yd0:{src:"yd",label:"英式 · 有道"},
+  Brian:{src:"se",label:"Brian · 英式男声"},
+  Amy:{src:"se",label:"Amy · 英式女声"},
+  Matthew:{src:"se",label:"Matthew · 美式男声"},
+  Joanna:{src:"se",label:"Joanna · 美式女声"},
+  Salli:{src:"se",label:"Salli · 美式女声"},
+  Ivy:{src:"se",label:"Ivy · 美式童声"},
+  bd:{src:"bd",label:"百度翻译 · 女声"},
+  gg:{src:"gg",label:"谷歌翻译"},
+  mute:{src:"mute",label:"🔇 不朗读"}
+};
+const VOICE_ORDER=["yd1","yd0","Brian","Amy","Matthew","Joanna","Salli","Ivy","bd","gg","mute"];
+let ONLINE="yd1"; // 默认有道 · 美音（保留 .agents 版行为）
+try{const sv=localStorage.getItem("vocab_voice");if(sv&&VOICE_MAP[sv])ONLINE=sv;}catch(e){}
+const ENG=["yd","se","bd","gg"];               // 全部可选引擎
+const ENG_NAME={yd:"有道",se:"Polly",bd:"百度",gg:"谷歌"};
+const POLLY_VOICES={Brian:1,Amy:1,Matthew:1,Joanna:1,Salli:1,Ivy:1};
+let SRC_ORDER=ENG.slice(),srcIdx=0;           // 降级顺序：按所选音色的主引擎优先
+function applyVoiceOrder(){
+  const want=VOICE_MAP[ONLINE].src;
+  const i=ENG.indexOf(want);
+  SRC_ORDER=i<0?ENG.slice():ENG.slice(i).concat(ENG.slice(0,i));
+}
+applyVoiceOrder();
+let audio=null;
+function ttsURL(src,t){
+  const q=encodeURIComponent(t);
+  if(src==="yd")return `https://dict.youdao.com/dictvoice?type=${ONLINE==="yd0"?"0":"1"}&audio=${q}`;
+  if(src==="se")return `https://api.streamelements.com/kappa/v2/speech?voice=${POLLY_VOICES[ONLINE]?ONLINE:"Brian"}&text=${q}`;
+  if(src==="bd")return `https://fanyi.baidu.com/gettts?lan=en&text=${q}&spd=5&source=web`;
+  return `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q=${q}`;
+}
+function fillVoiceSel(){
+  const sel=document.getElementById("voiceSel");if(!sel)return;
+  sel.innerHTML=VOICE_ORDER.map(v=>`<option value="${v}" ${ONLINE===v?"selected":""}>${VOICE_MAP[v].label}</option>`).join("");
+  const st=document.getElementById("srcState");
+  if(st)st.textContent=ENG_NAME[SRC_ORDER[srcIdx]]||"";
+}
+fillVoiceSel();
+let saying=0; // 防并发
+function say(t){
+  if(ONLINE==="mute"){try{if(audio){audio.pause();audio=null}}catch(e){}return}
+  const my=++saying;
+  trySrc(0,t,my);
+}
+function trySrc(i,t,my){
+  if(my!==saying)return;
+  if(i>=SRC_ORDER.length){const st=document.getElementById("srcState");if(st)st.textContent="无可用源";return}
+  const src=SRC_ORDER[i];
+  const st=document.getElementById("srcState");
+  if(st)st.textContent="尝试 "+ENG_NAME[src];
+  try{if(audio){audio.pause();audio=null}}catch(e){}
+  const a=new Audio(ttsURL(src,t));
+  let ok=false,advanced=false;
+  const advance=()=>{ if(!ok&&!advanced&&my===saying){advanced=true;trySrc(i+1,t,my);} };
+  a.addEventListener("playing",()=>{ok=true;
+    if(srcIdx!==i){srcIdx=i;fillVoiceSel();} // 记住能用的源
+  });
+  a.addEventListener("error",advance);
+  audio=a;
+  a.play().catch(advance);
+  setTimeout(()=>{ if(!ok&&my===saying&&a.paused)advance(); },2500);
+}
+document.getElementById("voiceSel").addEventListener("change",e=>{
+  ONLINE=e.target.value; applyVoiceOrder(); srcIdx=0; // 换音色重新从头试源
+  try{localStorage.setItem("vocab_voice",ONLINE);}catch(e){}
+  if(ONLINE!=="mute") say("Hello, let us learn new words together.");
+});
+/* ---- 白天 / 夜晚 ---- */
+let style="day";
+try{const s=localStorage.getItem("vocab_style");if(["day","night","paper"].indexOf(s)>=0)style=s;}catch(e){}
+function applyStyle(){
+  document.body.classList.toggle("night",style==="night");
+  document.body.classList.toggle("paper",style==="paper");
+  ["day","night","paper"].forEach(k=>{const b=document.getElementById("st-"+k);if(b)b.classList.toggle("on",style===k);});
+  if(typeof studyEl!=="undefined"&&studyEl)studyEl.classList.toggle("day",style!=="night");
+}
+document.getElementById("st-day").onclick=()=>{style="day";try{localStorage.setItem("vocab_style","day")}catch(e){};applyStyle();};
+document.getElementById("st-night").onclick=()=>{style="night";try{localStorage.setItem("vocab_style","night")}catch(e){};applyStyle();};
+document.getElementById("st-paper").onclick=()=>{style="paper";try{localStorage.setItem("vocab_style","paper")}catch(e){};applyStyle();};
+document.getElementById("app").addEventListener("click",e=>{
+  const el=e.target.closest("[data-say]"); if(el) say(el.dataset.say);
+});
+
+/* ---------- 学习模式：按章节分页的 PPT 翻页 ---------- */
+const PER_PAGE = 12; // 每页最多词数，放不下自动续页
+let slides=[],si=0;
+function buildSlides(){
+  slides=[];
+  for(const s of DATA){
+    for(let i=0;i<s.words.length;i+=PER_PAGE){
+      slides.push({sec:s.sec,page:Math.floor(i/PER_PAGE)+1,
+        pages:Math.ceil(s.words.length/PER_PAGE),words:s.words.slice(i,i+PER_PAGE)});
+    }
+  }
+}
+const studyEl=document.getElementById("study");
+let open=false;
+function showSlide(){
+  const sl=slides[si];
+  const title=sl.pages>1 ? `${sl.sec}（第 ${sl.page}/${sl.pages} 页）` : sl.sec;
+  document.getElementById("sPage").innerHTML =
+    `<div class="stitle">${title}<small>${sl.words.length} words</small></div>
+     <div class="sgrid">${sl.words.map(x=>`
+       <div class="scard" data-say="${x.w}">
+         <span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span><span class="tag ${LVCLS[x.lv]}" style="font-size:11px;padding:2px 8px">${LVSHORT[x.lv]}</span>
+         <div class="m">${x.pos} ${x.m}</div>
+         <div class="ex">${x.ex}</div>
+       </div>`).join("")}</div>`;
+  document.getElementById("sIdx").textContent=(si+1)+" / "+slides.length;
+  document.getElementById("sbar").style.width=((si+1)/slides.length*100)+"%";
+  document.getElementById("sPrev").disabled=si===0;
+  document.getElementById("sNext").disabled=si===slides.length-1;
+  studyEl.querySelector(".sbody").scrollTop=0;
+}
+function studyOpen(){ buildSlides(); si=0; open=true; studyEl.classList.add("on"); applyStyle(); showSlide(); }
+function studyClose(){ open=false; studyEl.classList.remove("on"); }
+function next(){ if(si<slides.length-1){ si++; showSlide(); } }
+function prev(){ if(si>0){ si--; showSlide(); } }
+document.getElementById("v-study").onclick=()=>open?studyClose():studyOpen();
+document.getElementById("sClose").onclick=studyClose;
+document.getElementById("sExit").onclick=studyClose;
+document.getElementById("sNext").onclick=next;
+document.getElementById("sPrev").onclick=prev;
+studyEl.addEventListener("click",e=>{
+  const el=e.target.closest("[data-say]"); if(el) say(el.dataset.say);
+});
+document.addEventListener("keydown",e=>{
+  if(!open) return;
+  if(e.code==="Space"||e.key==="ArrowRight"||e.key==="PageDown"){ e.preventDefault(); next(); }
+  else if(e.key==="ArrowLeft"||e.key==="PageUp"){ prev(); }
+  else if(e.key==="Escape"){ studyClose(); }
+});
+applyStyle(); syncToolbar(); render();
+</script>
+<a href="../../vocab.html" target="_self" style="position:fixed;left:14px;bottom:14px;z-index:9999;font:600 13px/1 -apple-system,system-ui,sans-serif;color:#fff;background:rgba(0,0,0,.55);padding:8px 12px;border-radius:20px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.25)">← 返回索引</a></body>
+</html>

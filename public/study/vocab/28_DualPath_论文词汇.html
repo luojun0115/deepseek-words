@@ -1,0 +1,4288 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DualPath 论文核心词汇</title>
+<style>
+:root{--c4:#3b82f6;--c6:#8b5cf6;--ckaon:#f59e0b;--cphd:#ef4444;--ct:#0d9488;--cg:#d946ef;--cm4:#0ea5e9;--cm8:#f43f5e;--cy:#10b981;--csuper:#facc15}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;transition:background .3s,color .3s}
+.tag{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:4px;color:#fff;vertical-align:2px;margin-left:6px;font-style:normal;flex:none;white-space:nowrap}
+.tag.t4{background:var(--c4)}.tag.t6{background:var(--c6)}.tag.tk{background:var(--ckaon)}.tag.tp{background:var(--cphd)}.tag.tm4{background:var(--cm4)}.tag.tm8{background:var(--cm8)}
+.tag.tt{background:var(--ct)}.tag.tg{background:var(--cg)}.tag.ty{background:var(--cy)}.tag.tsuper{background:var(--csuper);color:#3a2f00}
+.ipa{font-family:"SF Mono",Menlo,monospace;font-size:.82em;font-weight:400;opacity:.62;margin-left:6px}
+
+
+/* 论文原标题小字 */
+.ptitle{font-size:12.5px;letter-spacing:.3px;margin-top:6px}
+.ptitle i{font-family:Georgia,serif}
+.theme-mag .ptitle{color:#999;text-transform:none}
+.theme-dark .ptitle{color:#6e7681}
+.theme-paper .ptitle{color:#a09578}
+.theme-fresh .ptitle{color:#9ca3af}
+body.lv-mode .ptitle{color:#7d8590}
+
+/* 预览工具条 */
+.toolbar{position:fixed;right:16px;bottom:16px;z-index:99;display:flex;flex-direction:column;gap:8px;background:rgba(20,22,30,.88);padding:12px;border-radius:14px;backdrop-filter:blur(8px);box-shadow:0 6px 24px rgba(0,0,0,.35)}
+.toolbar .row{display:flex;gap:6px}
+.toolbar button{border:none;cursor:pointer;padding:7px 12px;border-radius:8px;font-size:12.5px;background:#3a3f4d;color:#cbd2e0;transition:.15s}
+.toolbar button:hover{background:#4a5164}
+.toolbar button.on{background:#fff;color:#111;font-weight:600}
+.toolbar .lbl{font-size:10px;color:#8a93a6;text-align:left;margin:2px 0 -2px 2px}
+
+/* ---------- A 纸质阅读 ---------- */
+body.theme-paper{background:#faf6ee;color:#2c2a25}
+.theme-paper .wrap{max-width:880px;margin:0 auto;padding:56px 24px 140px}
+.theme-paper .hero h1{font-family:Georgia,"Songti SC",serif;font-size:34px}
+.theme-paper .hero p{color:#8a8272;margin:10px 0 42px;font-size:14px}
+.theme-paper .sec{margin-bottom:44px}
+.theme-paper .sec>h2{font-family:Georgia,"Songti SC",serif;font-size:20px;padding-left:14px;border-left:4px solid #b08d4f;margin-bottom:18px}
+.theme-paper .word{display:flex;gap:14px;padding:14px 16px;border-bottom:1px dashed #ddd2bc;align-items:baseline}
+.theme-paper .word:hover{background:#f3ecdc}
+.theme-paper .w{font-family:Georgia,serif;font-size:19px;font-weight:700;min-width:250px}
+.theme-paper .pos{color:#a09578;font-size:13px;margin-right:6px}
+.theme-paper .m{color:#4a463c;font-size:15px}
+.theme-paper .ex{margin-left:auto;max-width:270px;font-size:12.5px;color:#9a8f76;font-style:italic;text-align:right}
+.theme-paper .from{display:block;font-size:11px;color:#b3a888;font-style:normal;margin-top:3px}
+
+/* ---------- B 暗色科技 ---------- */
+body.theme-dark{background:#0d1117;color:#e6edf3}
+.theme-dark .wrap{max-width:1000px;margin:0 auto;padding:56px 24px 140px}
+.theme-dark .hero h1{font-family:"SF Mono",Menlo,monospace;font-size:26px}
+.theme-dark .hero h1::before{content:"$ ";color:#3fb950}
+.theme-dark .hero p{color:#7d8590;margin:10px 0 40px;font-size:14px;font-family:Menlo,monospace}
+.theme-dark .sec>h2{font-size:15px;font-family:Menlo,monospace;color:#58a6ff;padding:10px 16px;background:#161b22;border:1px solid #30363d;border-radius:8px 8px 0 0;margin-bottom:-1px}
+.theme-dark .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;padding:20px;background:#161b22;border:1px solid #30363d;border-radius:0 0 8px 8px}
+.theme-dark .card{background:#0d1117;border:1px solid #30363d;border-left:4px solid #58a6ff;border-radius:6px;padding:15px 17px;transition:.2s;cursor:pointer;font-family:Menlo,monospace}
+.theme-dark .card:hover{border-color:#58a6ff;box-shadow:0 0 14px rgba(88,166,255,.25);transform:translateY(-2px)}
+.theme-dark .w{font-family:Menlo,monospace;font-size:17px;color:#79c0ff}
+.theme-dark .ipa{color:#7ee787;opacity:.9}
+.theme-dark .m{color:#8b949e;font-size:13.5px;margin-top:7px;line-height:1.55}
+.theme-dark .ex{font-size:12px;color:#6e7681;margin-top:8px;border-top:1px solid #21262d;padding-top:8px;font-style:italic}
+.theme-dark .from{color:#484f58;font-size:11px;margin-top:4px}
+
+/* ---------- C 清新卡片 ---------- */
+body.theme-fresh{background:linear-gradient(160deg,#eef4ff 0%,#f6f0ff 50%,#fff7ec 100%);color:#1f2430}
+.theme-fresh .wrap{max-width:1020px;margin:0 auto;padding:56px 24px 140px}
+.theme-fresh .hero h1{font-size:32px;font-weight:800;background:linear-gradient(90deg,#3b82f6,#8b5cf6,#f59e0b);-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block}
+.theme-fresh .hero p{color:#6b7280;margin:10px 0 40px;font-size:14px}
+.theme-fresh .sec>h2{font-size:19px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.theme-fresh .sec>h2 .n{width:30px;height:30px;border-radius:10px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.08);display:inline-flex;align-items:center;justify-content:center;font-size:13px}
+.theme-fresh .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+.theme-fresh .card{background:rgba(255,255,255,.82);backdrop-filter:blur(6px);border-radius:18px;padding:17px 19px 15px;box-shadow:0 3px 14px rgba(80,80,140,.09);transition:.2s;cursor:pointer;border-top:5px solid #dbe3f5}
+.theme-fresh .card.lv四级{border-top-color:#3b82f6}.theme-fresh .card.lv六级{border-top-color:#8b5cf6}
+.theme-fresh .card.lv考研{border-top-color:#f59e0b}.theme-fresh .card.lv考博{border-top-color:#ef4444}
+.theme-fresh .card.lv专四{border-top-color:#0ea5e9}.theme-fresh .card.lv专八{border-top-color:#f43f5e}
+.theme-fresh .card.lv雅思{border-top-color:#10b981}.theme-fresh .card.lv托福{border-top-color:#0d9488}
+.theme-fresh .card.lvGRE{border-top-color:#d946ef}.theme-fresh .card.lv超纲{border-top-color:#facc15}
+.theme-fresh .card .w{display:inline-block;background:#f3f5fb;border-radius:8px;padding:2px 10px}
+.theme-fresh .card:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(80,80,140,.16)}
+.theme-fresh .w{font-size:18px;font-weight:700}
+.theme-fresh .m{color:#4b5563;font-size:14px;margin-top:6px;line-height:1.55}
+.theme-fresh .ex{color:#9ca3af;font-size:12.5px;margin-top:8px}
+.theme-fresh .from{color:#b6bcc9;font-size:11.5px;margin-top:4px}
+
+/* ---------- D 杂志表格（宽松版） ---------- */
+body.theme-mag{background:#fff;color:#111}
+.theme-mag .wrap{max-width:960px;margin:0 auto;padding:52px 28px 140px}
+.theme-mag .hero{border-bottom:3px solid #111;padding-bottom:16px;margin-bottom:10px}
+.theme-mag .hero h1{font-family:"Songti SC",Georgia,serif;font-size:38px;font-weight:900}
+.theme-mag .hero p{color:#888;font-size:13.5px;margin-top:8px}
+.theme-mag .sec>h2{font-size:14px;letter-spacing:3px;text-transform:uppercase;color:#c2410c;margin:44px 0 8px;border-bottom:1px solid #e5e5e5;padding-bottom:8px}
+.theme-mag table{width:100%;border-collapse:collapse}
+.theme-mag td{padding:16px 12px;border-bottom:1px solid #f0f0f0;font-size:15.5px;line-height:1.65;vertical-align:top}
+.theme-mag tr:hover td{background:#fff8f3}
+.theme-mag .w{font-weight:700;font-size:17px;width:300px}
+.theme-mag .lv{width:60px}
+.theme-mag .lv b{font-size:11.5px;padding:3px 0;display:block;text-align:center;border-radius:3px;color:#fff;font-weight:600}
+.theme-mag .m{color:#3d3d3d}
+.theme-mag .ex{color:#9a9a9a;font-size:13px;font-style:italic}
+.theme-mag .from{display:block;color:#c9c9c9;font-size:11.5px;font-style:normal;margin-top:4px}
+
+/* ---------- 按级别：学习模式同款暗色大页 ---------- */
+body.lv-mode{background:#0b0e13 !important}
+body.lv-mode .hero h1,body.lv-mode .hero p{color:#e8ecf3}
+body.lv-mode .hero p{color:#7d8590}
+.lvslide{background:#101318;color:#e8ecf3;border-radius:20px;padding:26px 32px 22px;margin-bottom:26px;border-top:6px solid var(--c4)}
+.lvslide.l6{border-top-color:var(--c6)}.lvslide.lk{border-top-color:var(--ckaon)}.lvslide.lp{border-top-color:var(--cphd)}
+.lvslide.lt{border-top-color:var(--ct)}.lvslide.lg{border-top-color:var(--cg)}.lvslide.lm4{border-top-color:var(--cm4)}.lvslide.lm8{border-top-color:var(--cm8)}.lvslide.ly{border-top-color:var(--cy)}.lvslide.lsuper{border-top-color:var(--csuper)}
+.lvslide .ltitle{font-size:26px;font-weight:800;font-family:Georgia,serif;display:flex;align-items:baseline;gap:14px}
+.lvslide .ltitle small{font-size:14px;color:#7d8590;font-family:Menlo,monospace;font-weight:400}
+.lvslide .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;padding:20px 0 8px}
+.lvslide .lcard{background:#171c26;border:1px solid #2b3342;border-radius:14px;padding:15px 17px;cursor:pointer;transition:.15s}
+.lvslide .lcard:hover{border-color:#79c0ff;transform:translateY(-2px)}
+.lvslide .lcard .w{font-size:19px;font-weight:700;font-family:Georgia,serif}
+.lvslide .lcard .ipa{font-family:Menlo,monospace;font-size:13px;color:#7ee787;margin-left:8px}
+.lvslide .lcard .m{color:#aeb6c4;font-size:14px;margin-top:7px;line-height:1.55}
+.lvslide .lcard .ex{color:#646d7d;font-size:12px;font-style:italic;margin-top:7px}
+.lvslide .lcard .from{color:#4d5563;font-size:11px;margin-top:6px}
+
+
+/* ---------- 白天 / 夜晚 ---------- */
+body.lv-mode:not(.night){background:#eef1f6 !important}
+body.lv-mode:not(.night) .hero h1{color:#1f2430}
+body.lv-mode:not(.night) .hero p{color:#6b7280}
+body.lv-mode:not(.night) .lvslide{background:#fff;color:#1f2430;box-shadow:0 4px 18px rgba(80,80,140,.10)}
+body.lv-mode:not(.night) .lvslide .lcard{background:#f7f9fd;border-color:#e4e9f3}
+body.lv-mode:not(.night) .lvslide .lcard:hover{border-color:#3b82f6}
+body.lv-mode:not(.night) .lvslide .lcard .m{color:#4b5563}
+body.lv-mode:not(.night) .lvslide .lcard .ex{color:#98a0ae}
+body.lv-mode:not(.night) .lvslide .lcard .from{color:#b3bac6}
+body.lv-mode:not(.night) .lvslide .lcard .ipa{color:#0a7d33}
+body.night.theme-mag{background:#0d1117;color:#e6edf3}
+body.night.theme-mag .hero{border-bottom-color:#e6edf3}
+body.night.theme-mag .hero p{color:#8b949e}
+body.night.theme-mag .sec>h2{color:#fbbf24;border-bottom-color:#30363d}
+body.night.theme-mag td{border-bottom-color:#1c2230}
+body.night.theme-mag tr:hover td{background:#161b22}
+body.night.theme-mag .m{color:#c9d1d9}
+body.night.theme-mag .ex{color:#8b949e}
+body.night.theme-mag .from{color:#57606a}
+body.night.theme-mag .w{color:#e6edf3}
+body.night.theme-mag .ptitle{color:#8b949e}
+body.night.theme-mag .ipa{opacity:.55}
+#study.day{background:#f5f7fa;color:#1f2430}
+#study.day .scard{background:#fff;border-color:#e4e9f3}
+#study.day .scard .m{color:#4b5563}
+#study.day .scard .ex{color:#98a0ae}
+#study.day .scard:hover{border-color:#3b82f6}
+#study.day .sfoot{color:#98a0ae;border-top-color:#e6e9f0}
+#study.day .snav button,#study.day #sClose{background:#fff;color:#1f2430;border-color:#d7dce6}
+#study.day .sfoot kbd{background:#e8ecf3;color:#1f2430}
+
+/* ---------- 学习模式（PPT 按章节翻页） ---------- */
+#study{position:fixed;inset:0;z-index:200;display:none;background:#101318;color:#e8ecf3;flex-direction:column}
+#study.on{display:flex}
+#study .sprog{height:4px;background:#262c38}
+#study .sprog i{display:block;height:100%;background:linear-gradient(90deg,#58a6ff,#8b5cf6);width:0;transition:width .25s}
+#study .sbody{flex:1;overflow:auto;padding:20px 40px}
+#study .stitle{font-size:24px;font-weight:800;font-family:Georgia,serif;padding:6px 4px 2px}
+#study .stitle small{color:#5b6472;font-size:14px;font-family:Menlo,monospace;font-weight:400;margin-left:12px}
+#study .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;padding:16px 2px 30px}
+#study .scard{background:#171c26;border:1px solid #2b3342;border-radius:14px;padding:16px 18px;cursor:pointer;transition:.15s}
+#study .scard:hover{border-color:#58a6ff;transform:translateY(-2px)}
+#study .scard .w{font-size:22px;font-weight:700;font-family:Georgia,serif}
+#study .scard .ipa{color:#7ee787;font-size:14px;margin-left:8px}
+#study .scard .m{color:#aeb6c4;font-size:14.5px;margin-top:8px;line-height:1.55}
+#study .scard .ex{color:#646d7d;font-size:12px;font-style:italic;margin-top:6px}
+#study .sfoot{display:flex;justify-content:space-between;align-items:center;padding:14px 28px;color:#5b6472;font-size:13px;border-top:1px solid #1d232e}
+#study .sfoot kbd{background:#262c38;border-radius:5px;padding:2px 8px;margin:0 2px;font-family:Menlo,monospace;font-size:12px}
+#study .snav{display:flex;gap:10px;align-items:center}
+#study .snav button{border:1px solid #333b4a;background:#1a2029;color:#cbd2e0;border-radius:8px;padding:8px 18px;cursor:pointer;font-size:14px}
+#study .snav button:hover{border-color:#58a6ff}
+#study .snav button:disabled{opacity:.35;cursor:default}
+
+
+
+/* —— 样式·暖白（暖白纸底） —— */
+
+body.theme-mag.paper{background:#f4f2ea!important;color:#23211c!important}
+body.theme-mag.paper .hero{border-bottom-color:#23211c}
+body.theme-mag.paper .hero h1{color:#1c1a12}
+body.theme-mag.paper .hero p{color:#6b6a5c}
+body.theme-mag.paper .ptitle{color:#8a8878}
+body.theme-mag.paper .sec>h2{color:#5f7a3f;border-bottom-color:#ddd8ca}
+body.theme-mag.paper td{border-bottom-color:#e6e1d3}
+body.theme-mag.paper tr:hover td{background:#ece7da}
+body.theme-mag.paper .m{color:#33312a}
+body.theme-mag.paper .ex{color:#8a8878}
+body.theme-mag.paper .from{color:#b3b0a0}
+body.theme-mag.paper .ipa{color:#6b6a5c}
+.theme-mag .hwband{padding:0 3px;font-weight:700}
+body.theme-mag.paper .hwband{background:linear-gradient(transparent 16%,#cdddb8 16%,#cdddb8 84%,transparent 84%);color:#1c1a12}
+
+
+</style>
+</head>
+<body class="theme-mag">
+<div class="wrap">
+  <div class="hero">
+    <h1>DualPath 论文核心词汇</h1>
+    <div class="ptitle"><i>DualPath: Breaking the Storage Bandwidth Bottleneck in Agentic LLM Inference · arXiv:2602.21548 · DeepSeek-AI, 2026</i></div>
+    <p>全量口径重做 · 3 节 476 词 · 十一档 + 超纲（2026-10-08）</p>
+  </div>
+  <div id="app"></div>
+</div>
+
+<div class="toolbar">
+  <div class="lbl">视图</div>
+  <div class="row">
+    <button id="v-sec" class="on">按章节</button>
+    <button id="v-lv">按级别综合</button>
+    <button id="v-study">▶ 学习模式</button>
+  </div>
+  <div class="lbl">样式</div>
+  <div class="row">
+    <button id="st-day" class="on">☀ 白天</button>
+    <button id="st-night">🌙 夜晚</button>
+    <button id="st-paper">暖白</button>
+  </div>
+  <div class="lbl">朗读声音 · 多引擎</div>
+  <div class="row"><select id="voiceSel" style="flex:1;border:none;border-radius:8px;padding:7px 8px;background:#3a3f4d;color:#cbd2e0;font-size:12.5px;outline:none"></select><span id="srcState" style="align-self:center;font-size:10.5px;color:#8a93a6;min-width:34px;text-align:center"></span></div>
+</div>
+
+<div id="study">
+  <div class="sprog"><i id="sbar"></i></div>
+  <button id="sClose" title="退出学习模式 (Esc)" style="position:absolute;top:14px;right:18px;z-index:5;border:1px solid #333b4a;background:#1a2029;color:#cbd2e0;border-radius:8px;width:34px;height:34px;font-size:16px;cursor:pointer">✕</button>
+  <div class="sbody"><div id="sPage"></div></div>
+  <div class="sfoot">
+    <span><kbd>空格</kbd>/<kbd>→</kbd> 下一页 &nbsp; <kbd>←</kbd> 上一页 &nbsp; 点单词发音 &nbsp; <kbd>Esc</kbd> 退出</span>
+    <div class="snav">
+      <span id="sIdx">0 / 0</span>
+      <button id="sPrev">← 上一页</button>
+      <button id="sNext">下一页 →</button>
+      <button id="sExit" style="border-color:#5b3a3a">退出</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// lv: 4=四级 6=六级 k=考研 p=考博；ipa 为美式音标
+const DATA = [
+ {
+  "sec": "2. Conclusion · 结论",
+  "short": "Concl",
+  "icon": "2",
+  "words": [
+   {
+    "w": "asymmetry",
+    "ipa": "eɪˈsɪmətri",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "不对称性",
+    "ex": "addresses the imbalance of KV-Cache reading under PD-disaggregated architecture"
+   },
+   {
+    "w": "redistribute",
+    "ipa": "ˌriːdɪˈstrɪbjuːt",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "重新分配",
+    "ex": "By redistributing storage network load with workload-aware scheduling"
+   }
+  ]
+ },
+ {
+  "sec": "1. Introduction · 引言",
+  "short": "Intro",
+  "icon": "1",
+  "words": [
+   {
+    "w": "acceleration",
+    "ipa": "ˌækˌsɛlərˈeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "加速；加速度",
+    "ex": "Recent years have seen many inference acceleration techniques, such as paged attention [26], chunked prefill, and hybrid batching [2, 21]."
+   },
+   {
+    "w": "accommodate",
+    "ipa": "əˈkɑmədeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "容纳",
+    "ex": "to accommodate as many requests as possible within a single batch"
+   },
+   {
+    "w": "accord",
+    "ipa": "əˈkɔrd",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使一致；给予",
+    "ex": "Agents arrive according to a Poisson process at a specified rate, with each agent commencing replay from round zero to its last round upon arrival."
+   },
+   {
+    "w": "activate",
+    "ipa": "ˈæktəˌveɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "激活",
+    "ex": "A.2 27B Model Specifications In terms of overall model scale, the hidden dimension 2560, the intermediate size of dense layers is 12288, the number of hidden layers is 30, the number of attention heads is 32, the number of routed …"
+   },
+   {
+    "w": "adaptive",
+    "ipa": "əˈdæptɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "适合的, 适应的",
+    "ex": "Therefore, more adaptive and flexible approaches for parallelism and P/D ratio configuration are needed, such as simulators or online adjustment mechanisms."
+   },
+   {
+    "w": "additional",
+    "ipa": "əˈdɪʃənəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "额外的",
+    "ex": "To generate additional agent trajectories, we sample an existing trajectory and prepend a synthetic round with random tokens as 𝐴1 and 𝑔1 = 1."
+   },
+   {
+    "w": "additionally",
+    "ipa": "əˈdɪʃəˌnəli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "此外；又，加之",
+    "ex": "Additionally, each node is provisioned with eight 400Gbps RDMA NICs connected to InfiniBand network and one additional storage NIC connected to 3FS."
+   },
+   {
+    "w": "aggregate",
+    "ipa": "ˈægrəgət",
+    "pos": "adj.；n.；vt.",
+    "lv": "六级",
+    "m": "总计的， 合计的；总数，合计；总计达， 合计； 使聚集， 使积聚",
+    "ex": "4.3 Practical Challenges The dual-path architecture fundamentally reorients data movement: KV-Cache can be loaded either directly from storage into prefill engines or indirectly via decode engines, thereby aggregating storage …"
+   },
+   {
+    "w": "align",
+    "ipa": "əˈlaɪn",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使结盟；使成一行；匹配",
+    "ex": "For CUDA kernels, our in-house framework adopt the combination of FlashMLA [27], DeepGEMM [14], and DeepEP [56], which aligns with the current mainstream open-source framework [26, 57]."
+   },
+   {
+    "w": "allocation",
+    "ipa": "ˌæləˈkeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "分配，配置；安置",
+    "ex": "We conduct rollout experiments on DS 27B with 1P1D, 2P1D, and 1P2D prefill-decode ratios to characterize the impact of resource allocation between prefill and decode stages on overall system performance."
+   },
+   {
+    "w": "amortize",
+    "ipa": "ˈæmərˌtaɪz",
+    "pos": "v.",
+    "lv": "GRE",
+    "m": "分期清偿",
+    "ex": "Furthermore, the RDMA work submission overhead can be significantly amortized by leveraging doorbell batching [25]."
+   },
+   {
+    "w": "append",
+    "ipa": "əˈpɛnd",
+    "pos": "v.；n.",
+    "lv": "专八",
+    "m": "附加；贴上；盖章；设置数据文件的搜索路径",
+    "ex": "Longer append lengths imply greater GPU compute pressure, and longer generation lengths lower KV-Cache loading pressure due to larger prefill gap time."
+   },
+   {
+    "w": "approach",
+    "ipa": "əˈproʊʧ",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "靠近；接近，方法",
+    "ex": "Therefore, more adaptive and flexible approaches for parallelism and P/D ratio configuration are needed, such as simulators or online adjustment mechanisms."
+   },
+   {
+    "w": "approximate",
+    "ipa": "əˈprɑksəˌmeɪt",
+    "pos": "adj.；v.",
+    "lv": "四级",
+    "m": "近似的；近似",
+    "ex": "KV-Cache can thus be approximated as 𝜆¯𝑇× 𝑡𝑜𝑡𝑎𝑙_𝑙𝑒𝑛𝑎𝑣𝑔/2."
+   },
+   {
+    "w": "arbiter",
+    "ipa": "ˈɑrbɪtər",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "[法] 仲裁者；裁决人",
+    "ex": "We configure the VL arbiters of all network switches and NICs with a weighted round-robin policy that reserves approximately 99% of total bandwidth to high-priority VL."
+   },
+   {
+    "w": "arbitrator",
+    "ipa": "ˈɑrbɪˌtreɪtər",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "仲裁人, 公断者",
+    "ex": "The InfiniBand QoS mechanism employs two arbitrators: high-priority and low-priority."
+   },
+   {
+    "w": "assign",
+    "ipa": "əˈsaɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "分配，布置",
+    "ex": "If both categories are empty, we terminate this fetch request and return the already-assigned requests to the Leader Engine."
+   },
+   {
+    "w": "assignment",
+    "ipa": "əˈsaɪnmənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "作业",
+    "ex": "After assignment, we update the selected PE’s 𝑡𝑜𝑘𝑒, then proceed to the next request in the waiting queue."
+   },
+   {
+    "w": "automate",
+    "ipa": "ˈɔtəˌmeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使自动化",
+    "ex": "Swe-agent: Agent-computer interfaces enable automated software engineering."
+   },
+   {
+    "w": "autonomously",
+    "ipa": "ɔˈtɑnəməsli",
+    "pos": "adv.",
+    "lv": "超纲",
+    "m": "自主地",
+    "ex": "agentic systems that can autonomously plan, invoke tools"
+   },
+   {
+    "w": "bash",
+    "ipa": "bæʃ",
+    "pos": "v.；n.",
+    "lv": "专八",
+    "m": "猛击，痛击；怒殴；猛烈的一击，痛击",
+    "ex": "The model possesses tool-use capabilities, invoking bash commands in the sandbox by emitting structured outputs."
+   },
+   {
+    "w": "batch",
+    "ipa": "bæʧ",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "一批， 一组， 一群； 一批生产量",
+    "ex": "Recent years have seen many inference acceleration techniques, such as paged attention [26], chunked prefill, and hybrid batching [2, 21]."
+   },
+   {
+    "w": "benchmark",
+    "ipa": "ˈbɛnʧˌmɑrk",
+    "pos": "n.；v.",
+    "lv": "专八",
+    "m": "基准；标准检查程序；用基准问题测试（计算机系统等）",
+    "ex": "Evaluation and benchmarking of llm agents: A survey."
+   },
+   {
+    "w": "bin",
+    "ipa": "bɪn",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "箱子，容器；二进制；把…放入箱中",
+    "ex": "Advances in Neural Information Processing Systems 37 (2024), 50528–50652. [53] Dingyu Yao, Bowen Shen, Zheng Lin, Wei Liu, Jian Luan, Bin Wang, and Weiping Wang."
+   },
+   {
+    "w": "binary",
+    "ipa": "ˈbaɪnəˌri",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "[数] 二进制的；二元的，二态的",
+    "ex": "If adding a request would exceed this bound, we perform binary search on 𝑏𝑠𝑧to find a smaller 𝑏𝑠𝑧′ to fit in the remaining compute quota and perform chunked prefill for that request."
+   },
+   {
+    "w": "bottleneck",
+    "ipa": "ˈbɑtəlˌnɛk",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "瓶颈；障碍物",
+    "ex": "Efficiently loading the massive KV-Cache from other caching tiers is a fundamental bottleneck in disaggregated LLM serving architectures."
+   },
+   {
+    "w": "breakdown",
+    "ipa": "ˈbreɪkˌdaʊn",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "垮， 衰竭； 损坏， 故障； 倒塌",
+    "ex": "Figure 12: Left (§7.4): TTFT breakdown for online serving"
+   },
+   {
+    "w": "briefly",
+    "ipa": "ˈbrifli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "短暂地；简略地；暂时地",
+    "ex": "We briefly outline these challenges below and refer the reader to the corresponding sec-tions for details."
+   },
+   {
+    "w": "bubble",
+    "ipa": "ˈbəbəl",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "泡；冒泡，沸腾",
+    "ex": "For attention layers, DualPath maintains the Max/Avg ratio as low as 1.06 during the first 5% of the task, reducing GPU idle bubbles (Figure 14)."
+   },
+   {
+    "w": "buffer",
+    "ipa": "ˈbəfər",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "[计] 缓冲区；缓冲器，[车辆] 减震器；缓冲",
+    "ex": "In the PE read case, KV-Cache loading to PE HBM and transfer to DE Buffer occur in a layerwise streaming fashion, both using Layer Blocks."
+   },
+   {
+    "w": "bug",
+    "ipa": "bəg",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "虫子；臭虫",
+    "ex": "Each agent operates within a sandbox environment containing a code repository with known bugs and associated error messages."
+   },
+   {
+    "w": "burger",
+    "ipa": "ˈbərgər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "汉堡包",
+    "ex": "TokenLake: A Unified Segment-level Prefix Cache Pool for Fine-grained Elastic Long-Context LLM Serving. (2025). arXiv:cs.DC/2508.17219 https://arxiv.org/abs/2508.17219 [47] Qingyun Wu, Gagan Bansal, Jieyu Zhang, Yiran Wu, Beibin …"
+   },
+   {
+    "w": "bypass",
+    "ipa": "ˈbaɪˌpæs",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "旁通管；绕过",
+    "ex": "The design of DE buffer imposes bandwidth pressure on DRAM and CNIC (an extra H2D), which could be avoided by directly bypassing it via GPU Direct RDMA."
+   },
+   {
+    "w": "byte",
+    "ipa": "baɪt",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "字节； 位元组",
+    "ex": "The number of tokens is called 𝑏𝑙𝑜𝑐𝑘_𝑠𝑖𝑧𝑒. 𝑏𝑦𝑡𝑒𝑠indicates the cache bytes needed per layer per token."
+   },
+   {
+    "w": "cache",
+    "ipa": "kæˈʃeɪ",
+    "pos": "n.；v.",
+    "lv": "专八",
+    "m": "电脑高速缓冲存储器；贮存物；隐藏处；隐藏；窖藏",
+    "ex": "A.5 KV-Cache Block Layout Layerwise prefill reduces KV-Cache block size to 1/𝑙𝑎𝑦𝑒𝑟 of the original, and makes the number of blocks larger to"
+   },
+   {
+    "w": "calculation",
+    "ipa": "ˌkælkjəˈleɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "计算，计算结果",
+    "ex": "KV-Cache Hit Length Calculation."
+   },
+   {
+    "w": "cannot",
+    "ipa": "ˈkænɑt",
+    "pos": "conj.",
+    "lv": "托福",
+    "m": "不能",
+    "ex": "Such experiments require 𝑟times more machine hours and 𝑟2 times more storage (cost scaling as 𝑟3), which we cannot afford given limited resources."
+   },
+   {
+    "w": "capability",
+    "ipa": "ˌkeɪpəˈbɪləti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "能力，才能",
+    "ex": "By consolidating all traffic onto the compute network, we can leverage the native QoS capabilities of compute network to enforce strict traffic differentiation."
+   },
+   {
+    "w": "capacity",
+    "ipa": "kəˈpæsɪti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "容量；能力；能量",
+    "ex": "The layer-wise execution paradigm, while essential for overcoming HBM capacity limits, fragments the KV-Cache into numerous fine-grained blocks [37]."
+   },
+   {
+    "w": "centric",
+    "ipa": "ˈsɛntrɪk",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "以…为中心的",
+    "ex": "Mooncake: Trading More Storage for Less Computation — A KVCache-centric Architecture for Serving LLM Chatbot."
+   },
+   {
+    "w": "characterize",
+    "ipa": "ˈkɛrɪktərˌaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "以……特点",
+    "ex": "We conduct rollout experiments on DS 27B with 1P1D, 2P1D, and 1P2D prefill-decode ratios to characterize the impact of resource allocation between prefill and decode stages on overall system performance."
+   },
+   {
+    "w": "checkpoint",
+    "ipa": "ˈʧɛkˌpɔɪnt",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "检查站，关卡",
+    "ex": "GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints."
+   },
+   {
+    "w": "chip",
+    "ipa": "ʧɪp",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "屑片， 碎片； 炸土豆条； 集成电路片， 集成块； 缺口， 瑕疵",
+    "ex": "CNIC-CENTRIC TRAFFIC MANAGER Modern LLM inference systems employ a range of advanced data transfer technologies — such as on-chip CUDA copy engine and GPUDirect Storage [34] — to move data efficiently between storage, host …"
+   },
+   {
+    "w": "chunk",
+    "ipa": "ʧəŋk",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "厚片， 大块； 相当大的部分",
+    "ex": "Recent years have seen many inference acceleration techniques, such as paged attention [26], chunked prefill, and hybrid batching [2, 21]."
+   },
+   {
+    "w": "classification",
+    "ipa": "ˌklæsəfəˈkeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "分类，级别",
+    "ex": "RoCE enforces QoS through DSCP-based traffic classification and hardware traffic classes (TC)."
+   },
+   {
+    "w": "client",
+    "ipa": "klaɪənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "客户",
+    "ex": "SGL(MC) exhibits anomalously low TTST, likely due to implementation issues where the first two tokens arrive at the client almost simultaneously."
+   },
+   {
+    "w": "cluster",
+    "ipa": "ˈkləstər",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "串，束，簇；群，组；群聚；聚集",
+    "ex": "Our cluster-wide 3FS has no internal DRAM cache and can saturate the 400Gbps bandwidth of the storage NIC."
+   },
+   {
+    "w": "collective",
+    "ipa": "kəˈlɛktɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "集体的；集合性的",
+    "ex": "However, all these mechanisms can interfere with latency-sensitive collective communications (e.g., EP AllToAll) during model execution."
+   },
+   {
+    "w": "combination",
+    "ipa": "ˌkɑmbəˈneɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "联合，结合",
+    "ex": "For CUDA kernels, our in-house framework adopt the combination of FlashMLA [27], DeepGEMM [14], and DeepEP [56], which aligns with the current mainstream open-source framework [26, 57]."
+   },
+   {
+    "w": "commence",
+    "ipa": "kəˈmɛns",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "开始；获得学位",
+    "ex": "Agents arrive according to a Poisson process at a specified rate, with each agent commencing replay from round zero to its last round upon arrival."
+   },
+   {
+    "w": "commodity",
+    "ipa": "kəˈmɑdəti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "商品",
+    "ex": "RDMA over Commodity Ethernet at Scale."
+   },
+   {
+    "w": "comparable",
+    "ipa": "ˈkɑmprəbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "可比较的； 类似的； 比得上的",
+    "ex": "DualPath’s TTST is comparable to Basic, while TPOT shows that DualPath does not introduce additional decoding overhead compared to Basic."
+   },
+   {
+    "w": "comparably",
+    "ipa": "ˈkɑmprəˌbli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "同等地,可比较地",
+    "ex": "comparably; so do DualPath 1P1D and Basic 2P1D, as well as DualPath 2P1D and DualPath 1P2D."
+   },
+   {
+    "w": "completion",
+    "ipa": "kəmˈpliʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "完成，结束，完满",
+    "ex": "For offline inference scenarios, we measure job completion time (JCT) for the entire task."
+   },
+   {
+    "w": "compression",
+    "ipa": "kəmˈprɛʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "压缩，压紧，浓缩",
+    "ex": "The LoRA compression for the Q matrix of both indexer and main attention is removed."
+   },
+   {
+    "w": "computation",
+    "ipa": "ˌkɑmpjəˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "计算, 估计",
+    "ex": "After a layer’s computation completes, only the KV-Caches of miss tokens are transferred to DE buffer and merged with the existing hit token KV-Cache."
+   },
+   {
+    "w": "compute",
+    "ipa": "kəmˈpjut",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "计算，估计，估算",
+    "ex": "Longer append lengths imply greater GPU compute pressure, and longer generation lengths lower KV-Cache loading pressure due to larger prefill gap time."
+   },
+   {
+    "w": "con",
+    "ipa": "kɑn",
+    "pos": "n.；v.；adv.；adj.；prep.",
+    "lv": "专八",
+    "m": "反对票；反对论；精读；默记；反面地；欺诈的；以…",
+    "ex": "Across all experiments, scheduler CPU usage remains below 10 cores, con-firming it is not a bottleneck."
+   },
+   {
+    "w": "concatenate",
+    "ipa": "kənˈkætəˌneɪt",
+    "pos": "v.",
+    "lv": "GRE",
+    "m": "连接",
+    "ex": "We define𝐶𝑜𝑛𝑡𝑒𝑥𝑡𝑖+1 as the concatenated list of 𝐴1,𝐺1,𝐴2,𝐺2, ...,𝐴𝑖,𝐺𝑖."
+   },
+   {
+    "w": "concur",
+    "ipa": "kənˈkər",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "同意；一致；互助",
+    "ex": "CONCUR: High-Throughput Agentic Batch Inference of LLM via Congestion-Based Concurrency Control. (2026). arXiv:cs.DC/2601.22705 https://arxiv.org/abs/2601.22705 [8] Sadia Sultana Chowa, Riasad Alvi, Subhey Sadi Rahman, Md Abdur …"
+   },
+   {
+    "w": "configuration",
+    "ipa": "kənˌfɪgjərˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "配置， 布局， 构造",
+    "ex": "N/A for running into an error before finishing. configuration represents the theoretical performance upper bound assuming zero I/O overhead."
+   },
+   {
+    "w": "congestion",
+    "ipa": "kənˈʤɛsʧən",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "拥挤；拥塞；淤血",
+    "ex": "We assume a well-configured PCIe topology (each pair of GPU–NIC is under the same PCIe switch), load-balanced task scheduling, no congestion on the computation network, and that storage read bandwidth is fully utilized."
+   },
+   {
+    "w": "conjunction",
+    "ipa": "kənˈʤəŋkʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "接合，连接；连接词",
+    "ex": "DualPath can be conducted on RDMA over Converged Ethernet (RoCE) by leveraging Traffic Class (TC) and Differentiated Services Code Point (DSCP) markings [6, 20] in conjunction with hardware packet queues."
+   },
+   {
+    "w": "considerable",
+    "ipa": "kənˈsɪdərəbəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "相当大(或多)的",
+    "ex": "However, both Basic and DualPath show significantly higher TPOT than Oracle, suggesting the overhead of basic P-D transferring is considerable in small model cases."
+   },
+   {
+    "w": "consistently",
+    "ipa": "kənˈsɪstəntli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "一贯地；一致地；坚实地",
+    "ex": "Right: varying generation lengths (DS 660B, 64K, 1024 agents) DualPath and Oracle performance changes only slightly, indicating that the bottleneck consistently lies in GPU compute"
+   },
+   {
+    "w": "consolidate",
+    "ipa": "kənˈsɑlɪˌdeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "巩固；合并",
+    "ex": "By consolidating all traffic onto the compute network, we can leverage the native QoS capabilities of compute network to enforce strict traffic differentiation."
+   },
+   {
+    "w": "consortium",
+    "ipa": "kənˈsɔrʃjəm",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "财团；联合；合伙",
+    "ex": "Artificial Intelligence Review (2026). [9] Ultra Ethernet Consortium."
+   },
+   {
+    "w": "constrain",
+    "ipa": "kənˈstreɪn",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "限制",
+    "ex": "severely constrains overall system throughput"
+   },
+   {
+    "w": "constraint",
+    "ipa": "kənˈstreɪnt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "限制，束缚，约束",
+    "ex": "and TailorKV [53], mitigates bandwidth constraints (e.g.,"
+   },
+   {
+    "w": "contend",
+    "ipa": "kənˈtɛnd",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "竞争；坚决主张",
+    "ex": "This arises for two primary reasons: (1) such transfer technologies often operate over separate paths that do not share the same QoS controls as the compute network, and (2) existing GPUs do not support PCIe QoS [39], making it …"
+   },
+   {
+    "w": "context",
+    "ipa": "ˈkɑntɛkst",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "背景，环境",
+    "ex": "We collected three agent trace datasets from our production agentic RL training workloads with varying maximum context lengths (MaxLen)."
+   },
+   {
+    "w": "contrast",
+    "ipa": "ˈkɑntræst",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "对比，反差；对比",
+    "ex": "In contrast, submitting one RDMA Write work request involves only a few mmio writes to NIC regis-ters in user space and takes only around 1𝜇𝑠."
+   },
+   {
+    "w": "converge",
+    "ipa": "kənˈvɜrdʒd",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "趋同的",
+    "ex": "existing LLM inference systems have converged on a common set"
+   },
+   {
+    "w": "conversion",
+    "ipa": "kənˈvərʒən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "转变，转化；改变",
+    "ex": "This design enables us to avoid manual KV-Cache memory layout conversion throughout inference by simply concate-nating 𝑛Layer Blocks to yield a Full Block."
+   },
+   {
+    "w": "core",
+    "ipa": "kɔr",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "果实的心，核心",
+    "ex": "Across all experiments, scheduler CPU usage remains below 10 cores, con-firming it is not a bottleneck."
+   },
+   {
+    "w": "correlate",
+    "ipa": "ˈkɔrəˌleɪt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "互相关联的事物",
+    "ex": "GPU load, disk read load, and network load are all strongly correlated with token count."
+   },
+   {
+    "w": "costly",
+    "ipa": "ˈkɔstli",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "昂贵的；价值高的",
+    "ex": "Meanwhile, profiling these tentative experiments is costly, as some experiments are only run a limited number of times."
+   },
+   {
+    "w": "critical",
+    "ipa": "ˈkrɪtɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "批评的，爱挑剔的",
+    "ex": "Since these collective communications are critical to end-to-end inference latency, a key challenge lies in exploiting spare I/O bandwidth without degrading model inference performance."
+   },
+   {
+    "w": "current",
+    "ipa": "ˈkɑrənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "当前的",
+    "ex": "We assign the current request to the PE with minimum 𝑡𝑜𝑘𝑒in the second category if non-empty, otherwise in the third category if non-empty."
+   },
+   {
+    "w": "currently",
+    "ipa": "ˈkərəntli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "当前；一般地",
+    "ex": "Although this approach may appear to take a detour compared to GPUDirect Storage (which directly reads KV-Cache to GPU HBM) and CUDA copy engine (which directly copies host memory to GPU HBM), to our best knowledge, this is …"
+   },
+   {
+    "w": "decode",
+    "ipa": "dɪˈkoʊd",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "解码",
+    "ex": "During decode, whenever a full block of tokens (e.g., 64 tokens) is accumulated, it is immediately persisted to disk."
+   },
+   {
+    "w": "default",
+    "ipa": "dɪˈfɔlt",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "不履行义务；不履行义务",
+    "ex": "We default to 2P4D for DS 660B, 1P2D for Qwen 32B, and 1P1D for DS 27B (where 1P1D means one node for each side)."
+   },
+   {
+    "w": "define",
+    "ipa": "dɪˈfaɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "下定义，确定",
+    "ex": "We define two constants, short reading queue threshold 𝛼, and unfinished token upper limit 𝛽, measured in tokens."
+   },
+   {
+    "w": "degrade",
+    "ipa": "dɪˈgreɪd",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使降低；使堕落",
+    "ex": "Although this approach may appear to take a detour compared to GPUDirect Storage (which directly reads KV-Cache to GPU HBM) and CUDA copy engine (which directly copies host memory to GPU HBM), to our best knowledge, this is …"
+   },
+   {
+    "w": "demonstrate",
+    "ipa": "ˈdɛmənˌstreɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "证明；展示",
+    "ex": "Across all ratios, DualPath demonstrates substantial performance gains compared to Basic."
+   },
+   {
+    "w": "denote",
+    "ipa": "dɪˈnoʊt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "指示，意味着",
+    "ex": "For those attention mechanisms (denoted as dense attention), the ratio of computation and KV-Cache size for one token is a constant since both scale linearly with sequence length."
+   },
+   {
+    "w": "dense",
+    "ipa": "dɛns",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "密集的；浓厚的",
+    "ex": "For those attention mechanisms (denoted as dense attention), the ratio of computation and KV-Cache size for one token is a constant since both scale linearly with sequence length."
+   },
+   {
+    "w": "deployment",
+    "ipa": "dɪˈplɔɪmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "部署",
+    "ex": "Second, large-scale deployment offers more scheduling opportunities to mitigate queuing latency under unpredictable bursty online requests."
+   },
+   {
+    "w": "detail",
+    "ipa": "ˈditeɪl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "细节",
+    "ex": "We did not run SGL(MC) for DS 27B because SGLang lacks support for this downscaled version. • Basic: Our unmodified internal inference framework (detailed in §7.1)."
+   },
+   {
+    "w": "detour",
+    "ipa": "ˈditʊr",
+    "pos": "v.；n.",
+    "lv": "专八",
+    "m": "使…绕道而行；绕道；便道",
+    "ex": "Although this approach may appear to take a detour compared to GPUDirect Storage (which directly reads KV-Cache to GPU HBM) and CUDA copy engine (which directly copies host memory to GPU HBM), to our best knowledge, this is …"
+   },
+   {
+    "w": "device",
+    "ipa": "dɪˈvaɪs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "装置，设备",
+    "ex": "The DE first allocates HBM and performs host-to-device (H2D) transfers (Label 8 and 9 in Figure 4a;"
+   },
+   {
+    "w": "diagnose",
+    "ipa": "ˌdaɪəgˈnoʊs",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "诊断",
+    "ex": "The agent is instructed via prompt to diagnose and fix the bug."
+   },
+   {
+    "w": "differentiate",
+    "ipa": "ˌdɪfərˈɛnʧiˌeɪt",
+    "pos": "vi.；vt.",
+    "lv": "六级",
+    "m": "区分，区别；区分， 区别； 使不同， 使有差异",
+    "ex": "DualPath can be conducted on RDMA over Converged Ethernet (RoCE) by leveraging Traffic Class (TC) and Differentiated Services Code Point (DSCP) markings [6, 20] in conjunction with hardware packet queues."
+   },
+   {
+    "w": "differentiation",
+    "ipa": "ˌdɪfərˌɛnʧiˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "区别",
+    "ex": "By consolidating all traffic onto the compute network, we can leverage the native QoS capabilities of compute network to enforce strict traffic differentiation."
+   },
+   {
+    "w": "directly",
+    "ipa": "dɪˈrɛkli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "直接地；立即",
+    "ex": "The design of DE buffer imposes bandwidth pressure on DRAM and CNIC (an extra H2D), which could be avoided by directly bypassing it via GPU Direct RDMA."
+   },
+   {
+    "w": "disable",
+    "ipa": "dɪˈseɪbəl",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使无能，使伤残",
+    "ex": "Traffic is scheduled using Weighted Round Robin (WRR) in the high-priority arbitrator, then steered to the low-priority arbitrator according to qos_high_limit; setting it to 255 disables the low-priority arbitrator entirely."
+   },
+   {
+    "w": "distinct",
+    "ipa": "dɪˈstɪŋkt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "明显的；有区别的",
+    "ex": "To overcome this, we design two distinct block types:"
+   },
+   {
+    "w": "dominant",
+    "ipa": "ˈdɑmɪnənt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "主导的",
+    "ex": "the dominant performance factor"
+   },
+   {
+    "w": "drain",
+    "ipa": "dreɪn",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "排去；放水；耗竭",
+    "ex": "When a DE group fetches, group-level scheduling drains the global queue and assigns each request to the group whose total 𝑡𝑜𝑘𝑒(sum over its engines) is minimum; this balances token count across groups and thus NIC and GPU load."
+   },
+   {
+    "w": "dram",
+    "ipa": "ˈdiˌræm",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "液量特兰(药衡系统中的容量单位), 少量",
+    "ex": "The design of DE buffer imposes bandwidth pressure on DRAM and CNIC (an extra H2D), which could be avoided by directly bypassing it via GPU Direct RDMA."
+   },
+   {
+    "w": "dramatically",
+    "ipa": "drəˈmætɪkəli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "戏剧性地，引人注目地",
+    "ex": "As shown in Figure 12 (left), DualPath maintains stable TTFT components across different APS, while Basic’s queuing time grows dramatically due to insufficient storage bandwidth."
+   },
+   {
+    "w": "dual",
+    "ipa": "duəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "双的， 两重的",
+    "ex": "The differences between Basic and Ours are grouped into three techniques: layerwise prefill, dual-path loading, and scheduling algorithm."
+   },
+   {
+    "w": "dynamically",
+    "ipa": "daɪˈnæmɪkli",
+    "pos": "adv.",
+    "lv": "超纲",
+    "m": "动态地",
+    "ex": "dynamically balances"
+   },
+   {
+    "w": "easily",
+    "ipa": "ˈizəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "容易地；舒适的",
+    "ex": "Second-category engines are prioritized over third-category engines because they reside on nodes with shorter disk reading queues, and lack of subsequent requests would easily lead to storage NIC underutilization."
+   },
+   {
+    "w": "effectiveness",
+    "ipa": "ˈifɛktɪvnəs",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "效力",
+    "ex": "loading paths achieves the best performance, reducing JCT by 45.62% compared to Basic, demonstrating the effectiveness of load-balanced scheduling across storage NICs."
+   },
+   {
+    "w": "efficiency",
+    "ipa": "ɪˈfɪʃənsi",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "效率；功效，效能",
+    "ex": "Personal LLM Agents: Insights and Survey about the Capability, Efficiency and Security. (2024). arXiv:cs.HC/2401.05459 https://arxiv.org/abs/2401.05459 [29] Weizhe Lin, Hui-Ling Zhen, Shuai Yang, Xian Wang, Renxi Liu, Hant-ing …"
+   },
+   {
+    "w": "efficient",
+    "ipa": "ɪˈfɪʃənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "效率高的，有能力的",
+    "ex": "Cost-Efficient Large Language Model Serving for Multi-turn Conversations with CachedAttention."
+   },
+   {
+    "w": "efficiently",
+    "ipa": "ɪˈfɪʃəntli",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "有效地",
+    "ex": "Efficiently loading the massive KV-Cache from other caching tiers is a fundamental bottleneck in disaggregated LLM serving architectures."
+   },
+   {
+    "w": "elastic",
+    "ipa": "ɪˈlæstɪk",
+    "pos": "n.；adj.",
+    "lv": "四级",
+    "m": "松紧带；有弹性的",
+    "ex": "TokenLake: A Unified Segment-level Prefix Cache Pool for Fine-grained Elastic Long-Context LLM Serving. (2025). arXiv:cs.DC/2508.17219 https://arxiv.org/abs/2508.17219 [47] Qingyun Wu, Gagan Bansal, Jieyu Zhang, Yiran Wu, Beibin …"
+   },
+   {
+    "w": "eliminate",
+    "ipa": "ɪˈlɪməˌneɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "消除",
+    "ex": "I/O is largely eliminated."
+   },
+   {
+    "w": "emerge",
+    "ipa": "ɪˈmɜrdʒd",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "兴起的",
+    "ex": "multi-turn LLM inference has emerged as a critical workload"
+   },
+   {
+    "w": "emit",
+    "ipa": "ɪˈmɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "发出，排出",
+    "ex": "The model possesses tool-use capabilities, invoking bash commands in the sandbox by emitting structured outputs."
+   },
+   {
+    "w": "empirical",
+    "ipa": "ˌɛmˈpɪrɪkəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "经验主义的",
+    "ex": "In Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing."
+   },
+   {
+    "w": "enable",
+    "ipa": "ɪˈneɪbəl",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使能够……",
+    "ex": "This design enables us to avoid manual KV-Cache memory layout conversion throughout inference by simply concate-nating 𝑛Layer Blocks to yield a Full Block."
+   },
+   {
+    "w": "encounter",
+    "ipa": "ɪnˈkaʊnər",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "遭遇，遇到；遭遇",
+    "ex": "SGL(MC) encountered errors in our setup and failed to complete some large configurations (marked as N/A)."
+   },
+   {
+    "w": "enforce",
+    "ipa": "ɛnˈfɔrs",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "实施，执行；强制",
+    "ex": "By consolidating all traffic onto the compute network, we can leverage the native QoS capabilities of compute network to enforce strict traffic differentiation."
+   },
+   {
+    "w": "engage",
+    "ipa": "ɪnˈgeɪʤ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "忙于，从事；吸引",
+    "ex": "The agent and environment engage in multi-turn interactions, where each turn consists of a prompt (previous context concatenated with new information, most of which is tool output) and the model generating a subsequent tool …"
+   },
+   {
+    "w": "engine",
+    "ipa": "ˈɪnʤən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "引擎，发动机",
+    "ex": "All engines are split into three categories: (1) overloaded engines where 𝑡𝑜𝑘𝑒> 𝛽; (2) engines on"
+   },
+   {
+    "w": "ensure",
+    "ipa": "ɪnˈʃʊr",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "确保",
+    "ex": "In round 𝑖+ 1 of our replay, the agent concatenates the prompt as 𝐶𝑜𝑛𝑡𝑒𝑥𝑡𝑖+1 + 𝐴𝑖+1, and then sets proper sampling parameters to ensure it generates exactly 𝑔𝑖+1 tokens, i.e., 𝐺𝑖+1."
+   },
+   {
+    "w": "entirely",
+    "ipa": "ɪnˈtaɪərli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "完全地，彻底地",
+    "ex": "Traffic is scheduled using Weighted Round Robin (WRR) in the high-priority arbitrator, then steered to the low-priority arbitrator according to qos_high_limit; setting it to 255 disables the low-priority arbitrator entirely."
+   },
+   {
+    "w": "equivalent",
+    "ipa": "ɪkˈwɪvələnt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "相等的，相当的",
+    "ex": "This occurs because each pair of systems has equivalent available storage bandwidth (Basic can only use prefill node storage bandwidth, while DualPath can utilize all nodes), which confirms that storage bandwidth is the dominant …"
+   },
+   {
+    "w": "essential",
+    "ipa": "ɛˈsɛnʃəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "本质的，必须的",
+    "ex": "The layer-wise execution paradigm, while essential for overcoming HBM capacity limits, fragments the KV-Cache into numerous fine-grained blocks [37]."
+   },
+   {
+    "w": "establish",
+    "ipa": "ɪˈstæblɪʃ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "建立，创办，设立",
+    "ex": "This design establishes the CNIC as the central QoS scheduler for all GPU PCIe traffic, allowing its VL arbiter to prioritize the inference communication traffic and perform KV-Cache transfer using spare PCIe bandwidth."
+   },
+   {
+    "w": "estimate",
+    "ipa": "ˈɛstəˌmeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "估计",
+    "ex": "From these pairs, we compute the total theoretical computation for the attention layer and estimate its execution time."
+   },
+   {
+    "w": "estimation",
+    "ipa": "ˌɛstəˈmeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "估计；尊重",
+    "ex": "Layer Time Estimation."
+   },
+   {
+    "w": "evaluation",
+    "ipa": "ɪˌvæljuˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "评价，评估",
+    "ex": "In realistic setting, the working set would be larger since our evaluation assumes zero inter-arrival time and zero tool call latency."
+   },
+   {
+    "w": "evenly",
+    "ipa": "ˈivənli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "一致地；平静地",
+    "ex": "Under load balancing, storage NIC bandwidth is evenly shared."
+   },
+   {
+    "w": "eviction",
+    "ipa": "ɪˈvɪkʃən",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "逐出；赶出；收回",
+    "ex": "For all systems except SGL(MC), we limit the KV-Cache hits to only occur within a trajectory, and the hit length is calculated in the client because no eviction is needed."
+   },
+   {
+    "w": "exceed",
+    "ipa": "ɪkˈsid",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "超过，胜过；超出",
+    "ex": "We keep adding requests in FIFO order as long as the predicted attention layer execution time does not exceed a predefined upper bound, called the compute quota."
+   },
+   {
+    "w": "execution",
+    "ipa": "ˌɛksəˈkjuʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "实行，执行；处死刑",
+    "ex": "However, all these mechanisms can interfere with latency-sensitive collective communications (e.g., EP AllToAll) during model execution."
+   },
+   {
+    "w": "exhaustion",
+    "ipa": "ɪgˈzɔsʧən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "耗尽，疲惫",
+    "ex": "Within category (2) we choose the DE with minimum 𝑠𝑒𝑞𝑒to balance request count; if category (2) is empty we choose the DE with minimum 𝑡𝑜𝑘𝑒in category (1) to reduce HBM exhaustion and preemption risk."
+   },
+   {
+    "w": "exhibit",
+    "ipa": "ɪgˈzɪbɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "显示；陈列，展览",
+    "ex": "SGL(MC) exhibits anomalously low TTST, likely due to implementation issues where the first two tokens arrive at the client almost simultaneously."
+   },
+   {
+    "w": "experimental",
+    "ipa": "ɪkˌspɛrɪˈmɛntəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "实验的，试验的",
+    "ex": "DS 27B is our internal experimental model with a similar architecture to DS 660B."
+   },
+   {
+    "w": "experimentation",
+    "ipa": "ɪkˌspɛrəmənˈteɪʃən",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "实验；试验",
+    "ex": "Due to the lack of fine-tuned parallelism settings and P/D ratios (which requires a substantial experimentation budget), the large-scale experiments do not demonstrate additional JCT or serving capacity gains compared to multiple …"
+   },
+   {
+    "w": "exploit",
+    "ipa": "ˌɛkˈsplɔɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "开采",
+    "ex": "Since these collective communications are critical to end-to-end inference latency, a key challenge lies in exploiting spare I/O bandwidth without degrading model inference performance."
+   },
+   {
+    "w": "extend",
+    "ipa": "ɪkˈstɛnd",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "延长；扩大；致",
+    "ex": "Although our experiments are conducted on an InfiniBand-based network, the same design principles naturally extend to other interconnect technologies."
+   },
+   {
+    "w": "factor",
+    "ipa": "ˈfæktər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "因素；因子，系数",
+    "ex": "To investigate the impact of this factor, we scale each round’s append length by a constant factor, and then truncate the whole trajectory at given MAL."
+   },
+   {
+    "w": "fashion",
+    "ipa": "ˈfæʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "样子，方式；风尚",
+    "ex": "In the PE read case, KV-Cache loading to PE HBM and transfer to DE Buffer occur in a layerwise streaming fashion, both using Layer Blocks."
+   },
+   {
+    "w": "feature",
+    "ipa": "ˈfiʧər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "特点",
+    "ex": "SGLang HiCache. https://docs.sglang.io/advanced_ features/hicache.html. (2026). [41] Noam Shazeer."
+   },
+   {
+    "w": "fitted",
+    "ipa": "ˈfɪtɪd",
+    "pos": "adj.；v.",
+    "lv": "专四",
+    "m": "合适的；订做的；有…设备的；适应（fit的过去分词）；合适；为…提供设备",
+    "ex": "The relationship between theoretical computation and wall-clock time depends on hardware and parallel configuration, and can be fitted in advance through profiling as previous works [17] and [2]."
+   },
+   {
+    "w": "flexibility",
+    "ipa": "ˌflɛksəˈbɪləti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "灵活性；适应性",
+    "ex": "First, it reduces fragmentation and provides greater flexibility for fine-tuning parallelism and P/D ratios."
+   },
+   {
+    "w": "fluctuation",
+    "ipa": "ˌfləkʧuˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "波动",
+    "ex": "Shadow means the fluctuation in the last 150s"
+   },
+   {
+    "w": "fraction",
+    "ipa": "ˈfrækʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "小部分；片断；分数",
+    "ex": "Bandwidth isolation is achieved by assigning proportional scheduling weights to these TCs on both NICs and switches, reserving the majority of bandwidth for model inference traffic while allocating a small fraction to KV-cache …"
+   },
+   {
+    "w": "fragment",
+    "ipa": "ˈfrægmənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "碎片，破片，碎块",
+    "ex": "The layer-wise execution paradigm, while essential for overcoming HBM capacity limits, fragments the KV-Cache into numerous fine-grained blocks [37]."
+   },
+   {
+    "w": "fragmentation",
+    "ipa": "ˌfrægmənˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "碎片化，分裂；（内存/存储）碎片化",
+    "ex": "First, it reduces fragmentation and provides greater flexibility for fine-tuning parallelism and P/D ratios."
+   },
+   {
+    "w": "frank",
+    "ipa": "fræŋk",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "坦白的，直率的",
+    "ex": "193–210. [59] Shuyan Zhou, Frank F Xu, Hao Zhu, Xuhui Zhou, Robert Lo, Abishek Sridhar, Xianyi Cheng, Tianyue Ou, Yonatan Bisk, Daniel Fried, et al."
+   },
+   {
+    "w": "fully",
+    "ipa": "ˈfʊli",
+    "pos": "adv.；n.",
+    "lv": "专四",
+    "m": "充分地；完全地；彻底地；(Fully)人名；(法)菲利",
+    "ex": "We assume that the storage read bandwidth is fully utilized and that task scheduling is load-balanced."
+   },
+   {
+    "w": "fundamentally",
+    "ipa": "ˌfəndəˈmɛnəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "根本上",
+    "ex": "4.3 Practical Challenges The dual-path architecture fundamentally reorients data movement: KV-Cache can be loaded either directly from storage into prefill engines or indirectly via decode engines, thereby aggregating storage …"
+   },
+   {
+    "w": "furthermore",
+    "ipa": "ˈfərðərˌmɔr",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "而且，此外",
+    "ex": "Furthermore, the RDMA work submission overhead can be significantly amortized by leveraging doorbell batching [25]."
+   },
+   {
+    "w": "gap",
+    "ipa": "gæp",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "差距;缝隙缺口",
+    "ex": "If JCT increases by 𝑟times due to these gaps, the system’s APS capacity increases by 𝑟times (gaps do not stress LLM inference), causing the working set to expand by 𝑟2 times."
+   },
+   {
+    "w": "garland",
+    "ipa": "ˈgɑrlənd",
+    "pos": "n.；v.",
+    "lv": "专八",
+    "m": "花环；戴花环",
+    "ex": "Science China Information Sciences 68, 2 (2025), 121101. [49] Zhiqiang Xie, Ziyi Xu, Mark Zhao, Yuwei An, Vikram Sharma Mailthody, Scott Mahlke, Michael Garland, and Christos Kozyrakis."
+   },
+   {
+    "w": "generalize",
+    "ipa": "ˈʤɛnərəˌlaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "概括出",
+    "ex": "GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints."
+   },
+   {
+    "w": "generally",
+    "ipa": "ˈʤɛnərəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "一般地；通常地",
+    "ex": "For PE MEM, the pressure is 2𝑠𝐵, which generally does not exceed memory bandwidth."
+   },
+   {
+    "w": "generate",
+    "ipa": "ˈʤɛnərˌeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "产生",
+    "ex": "Each trajectory is a sequence of rounds; round 𝑖consists of appended tokens 𝐴𝑖and the number of generated tokens 𝑔𝑖."
+   },
+   {
+    "w": "generative",
+    "ipa": "ˈʤɛnərətɪv",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "生产的，有生产力的",
+    "ex": "Splitwise: Efficient Generative LLM Inference Using Phase Splitting."
+   },
+   {
+    "w": "global",
+    "ipa": "ˈgloʊbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "全球的， 全世界的； 总的， 完整的",
+    "ex": "There is a global waiting queue and a private queue per DE engine group."
+   },
+   {
+    "w": "gong",
+    "ipa": "gɔŋ",
+    "pos": "n.；v.",
+    "lv": "专四",
+    "m": "锣；钟状物；奖章；鸣锣传唤；鸣锣命令驾车者停驶",
+    "ex": "LayerKV: Optimizing Large Language Model Serving with Layer-wise KV Cache Management. (2024). arXiv:2410.00428 [51] Jianqin Yan, Shi Qiu, Yina Lv, Yifan Hu, Hao Chen, Zhirong Shen, Xin Yao, Renhai Chen, Jiwu Shu, Gong Zhang, and …"
+   },
+   {
+    "w": "granular",
+    "ipa": "ˈgrænjələr",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "颗粒的；粒状的",
+    "ex": "PCIe) on this path via recomputation overlapping and layer-granular hybrid quantization."
+   },
+   {
+    "w": "greatly",
+    "ipa": "ˈgreɪtli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "大大地，非常",
+    "ex": "Compared to them, DualPath targets storage backend directly, balancing the traffic among all SNICs, and reduces DRAM usage greatly without harming performance."
+   },
+   {
+    "w": "guideline",
+    "ipa": "ˈgaɪˌdlaɪn",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "指导原则",
+    "ex": "Design guidelines for high performance RDMA systems."
+   },
+   {
+    "w": "hardware",
+    "ipa": "ˈhɑrdˌwɛr",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "五金器具；硬件",
+    "ex": "Packets are first mapped from DSCP values to TCs, each backed by a dedicated hardware queue on NICs and switches (typically up to eight)."
+   },
+   {
+    "w": "heterogeneous",
+    "ipa": "ˌhɛtərəˈʤinjəs",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "[化学] 多相的；异种的；[化学] 不均匀的；由不同成分形成的",
+    "ex": "Emerging technologies such as UnifiedBus [1] and Ultra Ethernet [9] are likewise converging on QoS mechanisms for heterogeneous traffic, which can directly support the requirements of DualPath."
+   },
+   {
+    "w": "hidden",
+    "ipa": "ˈhɪdən",
+    "pos": "adj.；v.；n.",
+    "lv": "专四",
+    "m": "隐藏的；隐藏，躲藏（hide的过去分词）；(Hidden)人名；(英)希登",
+    "ex": "A.2 27B Model Specifications In terms of overall model scale, the hidden dimension 2560, the intermediate size of dense layers is 12288, the number of hidden layers is 30, the number of attention heads is 32, the number of routed …"
+   },
+   {
+    "w": "hierarchical",
+    "ipa": "ˌhaɪˈrɑrkəkəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "分层的；等级体系的",
+    "ex": "Strata [49] tackles I/O bottlenecks in hierarchical storage by co-designing GPU-assisted I/O with cache-aware scheduling."
+   },
+   {
+    "w": "highly",
+    "ipa": "ˈhaɪli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "高度地，很，非常",
+    "ex": "DISCUSSION 8.1 Potential Future Work The workload of offline inference is highly dynamic."
+   },
+   {
+    "w": "hopper",
+    "ipa": "ˈhɑpər",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "料斗；漏斗；单足跳者；跳虫",
+    "ex": "Each server has 8 NVIDIA Hopper GPUs and dual processors."
+   },
+   {
+    "w": "hybrid",
+    "ipa": "ˈhaɪbrɪd",
+    "pos": "n.；adj.",
+    "lv": "六级",
+    "m": "杂种，混血儿；混合物；混合的；杂种的",
+    "ex": "Recent years have seen many inference acceleration techniques, such as paged attention [26], chunked prefill, and hybrid batching [2, 21]."
+   },
+   {
+    "w": "idle",
+    "ipa": "ˈaɪdəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "空闲的；懒散的",
+    "ex": "For attention layers, DualPath maintains the Max/Avg ratio as low as 1.06 during the first 5% of the task, reducing GPU idle bubbles (Figure 14)."
+   },
+   {
+    "w": "illustration",
+    "ipa": "ˌɪləˈstreɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "说明，图解；例证",
+    "ex": "An illustration of the inter-engine scheduling process is shown in Figure 5."
+   },
+   {
+    "w": "imbalance",
+    "ipa": "ɪmˈbæləns",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "不平衡",
+    "ex": "It may lead to workload imbalance among all GPUs that must synchronize after the attention stage and enter the FFN stage together, causing GPU bubbles waiting for other peers."
+   },
+   {
+    "w": "impact",
+    "ipa": "ˌɪmˈpækt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "影响",
+    "ex": "To investigate the impact of this factor, we scale each round’s append length by a constant factor, and then truncate the whole trajectory at given MAL."
+   },
+   {
+    "w": "implement",
+    "ipa": "ˈɪmpləmənt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "实施，执行",
+    "ex": "EVALUATION 7.1 Implementation We implement DualPath based on our in-house inference framework."
+   },
+   {
+    "w": "implementation",
+    "ipa": "ˌɪmpləmɛnˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "实现，履行",
+    "ex": "SGL(MC) exhibits anomalously low TTST, likely due to implementation issues where the first two tokens arrive at the client almost simultaneously."
+   },
+   {
+    "w": "implication",
+    "ipa": "ˌɪmpləˈkeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "含义，暗示",
+    "ex": "A detailed analysis of working set implications is discussed in §8."
+   },
+   {
+    "w": "imply",
+    "ipa": "ˌɪmˈplaɪ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "意味；暗示",
+    "ex": "(6) This implies:"
+   },
+   {
+    "w": "impose",
+    "ipa": "ˌɪmˈpoʊz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "强加",
+    "ex": "The design of DE buffer imposes bandwidth pressure on DRAM and CNIC (an extra H2D), which could be avoided by directly bypassing it via GPU Direct RDMA."
+   },
+   {
+    "w": "impractical",
+    "ipa": "ˌɪmˈpræktɪkəl",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "不切实际的，不现实的；不能实行的",
+    "ex": "sub-millisecond-level bursts, it is impractical to rely on a"
+   },
+   {
+    "w": "improvement",
+    "ipa": "ˌɪmˈpruvmənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "改进，改善；改进处",
+    "ex": "Second, the scheduling algorithm still has room for improvement, as we expect to achieve lower TTFT percentiles under large-scale deployment."
+   },
+   {
+    "w": "increasingly",
+    "ipa": "ɪnˈkriːsɪŋli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "日益",
+    "ex": "agentic applications become increasingly prevalent"
+   },
+   {
+    "w": "incur",
+    "ipa": "ˌɪnˈkər",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "引起，导致",
+    "ex": "Our measurements show that submitting a single copy operation via cudaMemcpyAsync incurs a latency overhead of approximately 5-7𝜇𝑠."
+   },
+   {
+    "w": "index",
+    "ipa": "ˈɪndɛks",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "索引；指数；指标",
+    "ex": "Regarding the index attention mechanism, the number of attention heads is 32, the head dimension is 64, the topk tokens for sparse attention is 1024."
+   },
+   {
+    "w": "indirectly",
+    "ipa": "ˌɪndərˈɛkˌtli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "间接地",
+    "ex": "4.3 Practical Challenges The dual-path architecture fundamentally reorients data movement: KV-Cache can be loaded either directly from storage into prefill engines or indirectly via decode engines, thereby aggregating storage …"
+   },
+   {
+    "w": "individual",
+    "ipa": "ˌɪndɪˈvɪdʒuəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "单个的",
+    "ex": "each individual tool call or feedback is short"
+   },
+   {
+    "w": "inference",
+    "ipa": "ˈɪnfərəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "推断结果， 结论； 推论， 推理， 推断",
+    "ex": "Recent years have seen many inference acceleration techniques, such as paged attention [26], chunked prefill, and hybrid batching [2, 21]."
+   },
+   {
+    "w": "infrastructure",
+    "ipa": "ˌɪnfrəˈstrəkʧər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "基础设施；公共建设；下部构造",
+    "ex": "SuperPOD: Next Generation Scalable Infrastructure for AI Leadership. http://docs.nvidia.com/https:/docs.nvidia.com/dgx-superpod-reference-architecture-dgx-h100.pdf. (2023). [33] NVIDIA."
+   },
+   {
+    "w": "initiate",
+    "ipa": "ˌɪˈnɪʃiˌeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "开始，发起",
+    "ex": "The scheduling algorithm is invoked when a PE group initiates a fetch request."
+   },
+   {
+    "w": "insight",
+    "ipa": "ˈɪnˌsaɪt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "洞察力，洞悉",
+    "ex": "Insights into deepseek-v3: Scaling challenges and reflections on hardware for ai architectures."
+   },
+   {
+    "w": "insufficient",
+    "ipa": "ˌɪnsəˈfɪʃənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "不足的；不适当的",
+    "ex": "As shown in Figure 12 (left), DualPath maintains stable TTFT components across different APS, while Basic’s queuing time grows dramatically due to insufficient storage bandwidth."
+   },
+   {
+    "w": "inter",
+    "ipa": "ˌɪnˈtər",
+    "pos": "v.",
+    "lv": "托福",
+    "m": "埋葬",
+    "ex": "In realistic setting, the working set would be larger since our evaluation assumes zero inter-arrival time and zero tool call latency."
+   },
+   {
+    "w": "interact",
+    "ipa": "ˌɪntərˈækt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "交互",
+    "ex": "an agentic LLM may interact with an external environment"
+   },
+   {
+    "w": "interaction",
+    "ipa": "ˌɪnərˈækʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "相互作用；干扰",
+    "ex": "The average interaction turns (Turns), average appended and generated tokens per turn (Append and Gen), average number of total tokens (Total), and average number of context tokens (Context) are summarized in Table 2."
+   },
+   {
+    "w": "interconnect",
+    "ipa": "ˌɪntərkəˈnɛkt",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "相互联系",
+    "ex": "Although our experiments are conducted on an InfiniBand-based network, the same design principles naturally extend to other interconnect technologies."
+   },
+   {
+    "w": "interface",
+    "ipa": "ˈɪnərˌfeɪs",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "分界面",
+    "ex": "We adopt 3FS [13] as distributed storage and use an io_uring-like interface for kernel bypass."
+   },
+   {
+    "w": "interfere",
+    "ipa": "ˌɪnərˈfɪr",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "干涉，干预；妨碍",
+    "ex": "However, all these mechanisms can interfere with latency-sensitive collective communications (e.g., EP AllToAll) during model execution."
+   },
+   {
+    "w": "interference",
+    "ipa": "ˌɪntərˈfɪrəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "干扰",
+    "ex": "avoids interference with latency-critical model execution communications"
+   },
+   {
+    "w": "intermediate",
+    "ipa": "ˌɪnərˈmidiɪt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "中间的；中级的",
+    "ex": "A.2 27B Model Specifications In terms of overall model scale, the hidden dimension 2560, the intermediate size of dense layers is 12288, the number of hidden layers is 30, the number of attention heads is 32, the number of routed …"
+   },
+   {
+    "w": "internal",
+    "ipa": "ˌɪnˈtərnəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "内的；国内的",
+    "ex": "We did not run SGL(MC) for DS 27B because SGLang lacks support for this downscaled version. • Basic: Our unmodified internal inference framework (detailed in §7.1)."
+   },
+   {
+    "w": "internally",
+    "ipa": "ˌɪnˈtərnəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "内部地, 国内地",
+    "ex": "For SGL(MC), hit lengths are computed internally based on HiCache and Mooncake Store cache states."
+   },
+   {
+    "w": "interrelate",
+    "ipa": "ˌɪntərrɪˈleɪt",
+    "pos": "v.",
+    "lv": "托福",
+    "m": "相互关联， 紧密联系",
+    "ex": "However, realizing this high-level design in a practical system introduces three interrelated challenges."
+   },
+   {
+    "w": "investigate",
+    "ipa": "ˌɪnˈvɛstəˌgeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "调查",
+    "ex": "To investigate the impact of this factor, we scale each round’s append length by a constant factor, and then truncate the whole trajectory at given MAL."
+   },
+   {
+    "w": "invocation",
+    "ipa": "ˌɪnvəˈkeɪʃən",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "祈祷；符咒；【法律】(法院对另案的)文件调取；(法权的)行使",
+    "ex": "The agent and environment engage in multi-turn interactions, where each turn consists of a prompt (previous context concatenated with new information, most of which is tool output) and the model generating a subsequent tool …"
+   },
+   {
+    "w": "invoke",
+    "ipa": "ˌɪnˈvoʊk",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "调用；祈求；引起；恳求",
+    "ex": "The scheduling algorithm is invoked when a PE group initiates a fetch request."
+   },
+   {
+    "w": "involve",
+    "ipa": "ˌɪnˈvɑlv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "卷入，包含",
+    "ex": "In contrast, submitting one RDMA Write work request involves only a few mmio writes to NIC regis-ters in user space and takes only around 1𝜇𝑠."
+   },
+   {
+    "w": "ion",
+    "ipa": "aɪən",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "离子",
+    "ex": "DeepEP: an efficient expert-parallel communication library. https://github.com/deepseek-ai/DeepEP. (2025). [57] Lianmin Zheng, Liangsheng Yin, Zhiqiang Xie, Chuyue Sun, Jeff Huang, Cody Hao Yu, Shiyi Cao, Christos Kozyrakis, Ion …"
+   },
+   {
+    "w": "islam",
+    "ipa": "ˌɪsˈlɑm",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "伊斯兰教，回教",
+    "ex": "CONCUR: High-Throughput Agentic Batch Inference of LLM via Congestion-Based Concurrency Control. (2026). arXiv:cs.DC/2601.22705 https://arxiv.org/abs/2601.22705 [8] Sadia Sultana Chowa, Riasad Alvi, Subhey Sadi Rahman, Md Abdur …"
+   },
+   {
+    "w": "isolate",
+    "ipa": "ˈaɪsəleɪtɪd",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "孤立的",
+    "ex": "an LLM no longer serves isolated prompts"
+   },
+   {
+    "w": "isolation",
+    "ipa": "ˌaɪsəˈleɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "隔绝，隔离",
+    "ex": "A APPENDIX A.1 Traffic Isolation Configuration Details InfiniBand."
+   },
+   {
+    "w": "issue",
+    "ipa": "ˈɪʃu",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "发行；问题",
+    "ex": "SGL(MC) exhibits anomalously low TTST, likely due to implementation issues where the first two tokens arrive at the client almost simultaneously."
+   },
+   {
+    "w": "kernel",
+    "ipa": "ˈkərnəl",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "（果实的）核；谷粒",
+    "ex": "For CUDA kernels, our in-house framework adopt the combination of FlashMLA [27], DeepGEMM [14], and DeepEP [56], which aligns with the current mainstream open-source framework [26, 57]."
+   },
+   {
+    "w": "known",
+    "ipa": "noʊn",
+    "pos": "adj.；v.",
+    "lv": "专四",
+    "m": "已知的；知名的；大家知道的；知道（know的过去分词）",
+    "ex": "Each agent operates within a sandbox environment containing a code repository with known bugs and associated error messages."
+   },
+   {
+    "w": "label",
+    "ipa": "ˈleɪbəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "标签；标记，符号",
+    "ex": "The DE first allocates HBM and performs host-to-device (H2D) transfers (Label 8 and 9 in Figure 4a;"
+   },
+   {
+    "w": "lane",
+    "ipa": "leɪn",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "(乡间)小路；跑道",
+    "ex": "5.1 Traffic Isolation For the InfiniBand-based network, we leverage virtual lanes (VLs) [5] to enforce isolation between different traffic classes."
+   },
+   {
+    "w": "large-scale",
+    "ipa": "ˈlɑrʤˌskeɪl",
+    "pos": "adj.",
+    "lv": "雅思",
+    "m": "大规模的， 大范围的",
+    "ex": "JCT or serving capacity gains compared to multiple small-scale units with equivalent cost. However, large-scale setting"
+   },
+   {
+    "w": "largely",
+    "ipa": "ˈlɑrʤli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "大部分；大量地",
+    "ex": "It has largely become the de facto standard for inference serving."
+   },
+   {
+    "w": "latency",
+    "ipa": "ˈleɪtənsi",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "潜伏, 潜在, 潜伏物, 性潜伏期（ 岁或 岁至青春期）, [生理]（肌肉等的）反应时间（介于刺激与反应之间的时间）",
+    "ex": "Second, large-scale deployment offers more scheduling opportunities to mitigate queuing latency under unpredictable bursty online requests."
+   },
+   {
+    "w": "latent",
+    "ipa": "ˈleɪtənt",
+    "pos": "adj.",
+    "lv": "考研",
+    "m": "存在但看不见的",
+    "ex": "There are many variants such as Multi-Head Attention (MHA) [44], Multi-Query Attention (MQA) [41] and Grouped-Query Attention (GQA) [3], Multi-head Latent Attention (MLA) [12]."
+   },
+   {
+    "w": "layer",
+    "ipa": "leɪər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "层，层次；铺设者",
+    "ex": "In the PE read case, KV-Cache loading to PE HBM and transfer to DE Buffer occur in a layerwise streaming fashion, both using Layer Blocks."
+   },
+   {
+    "w": "layout",
+    "ipa": "leɪaʊt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "布局，安排，设计",
+    "ex": "A.5 KV-Cache Block Layout Layerwise prefill reduces KV-Cache block size to 1/𝑙𝑎𝑦𝑒𝑟 of the original, and makes the number of blocks larger to"
+   },
+   {
+    "w": "leadership",
+    "ipa": "ˈlidərˌʃɪp",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "领导",
+    "ex": "SuperPOD: Next Generation Scalable Infrastructure for AI Leadership. http://docs.nvidia.com/https:/docs.nvidia.com/dgx-superpod-reference-architecture-dgx-h100.pdf. (2023). [33] NVIDIA."
+   },
+   {
+    "w": "lee",
+    "ipa": "li",
+    "pos": "n.；adj.",
+    "lv": "专八",
+    "m": "保护；背风处；保护的；庇荫的；避风的",
+    "ex": "117–134. [3] Joshua Ainslie, James Lee-Thorp, Michiel de Jong, Yury Zemlyanskiy, Federico Lebron, and Sumit Sanghai."
+   },
+   {
+    "w": "leverage",
+    "ipa": "ˈlɛvərɪʤ",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "手段，影响力；杠杆作用；杠杆效率；利用；举债经营",
+    "ex": "By consolidating all traffic onto the compute network, we can leverage the native QoS capabilities of compute network to enforce strict traffic differentiation."
+   },
+   {
+    "w": "likewise",
+    "ipa": "ˈlaɪkˌwaɪz",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "同样地；也，又",
+    "ex": "Emerging technologies such as UnifiedBus [1] and Ultra Ethernet [9] are likewise converging on QoS mechanisms for heterogeneous traffic, which can directly support the requirements of DualPath."
+   },
+   {
+    "w": "limitation",
+    "ipa": "ˌlɪmɪˈteɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "限制；限度，局限",
+    "ex": "To solve the limitations of existing approaches, we adopt a CNIC-assisted H2D/D2H data path."
+   },
+   {
+    "w": "linear",
+    "ipa": "ˈlɪniər",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "线的；长度的",
+    "ex": "For offline inference, scaling from 2P4D (2K agents) to 48P96D (48K agents) achieves near-linear speedup with comparable JCT (3,167s vs."
+   },
+   {
+    "w": "linguistic",
+    "ipa": "lɪŋgˈwɪstɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "语言的；语言学的",
+    "ex": "In Findings of the Association for Computational Linguistics: ACL 2025."
+   },
+   {
+    "w": "longer",
+    "ipa": "ˈlɔŋgər",
+    "pos": "—",
+    "lv": "托福",
+    "m": "比较久(的)",
+    "ex": "Longer append lengths imply greater GPU compute pressure, and longer generation lengths lower KV-Cache loading pressure due to larger prefill gap time."
+   },
+   {
+    "w": "lower",
+    "ipa": "loʊər",
+    "pos": "adj.；v.",
+    "lv": "四级",
+    "m": "较低的；放下",
+    "ex": "Second, the scheduling algorithm still has room for improvement, as we expect to achieve lower TTFT percentiles under large-scale deployment."
+   },
+   {
+    "w": "mainstream",
+    "ipa": "ˈmeɪnˌstrim",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "主流",
+    "ex": "For CUDA kernels, our in-house framework adopt the combination of FlashMLA [27], DeepGEMM [14], and DeepEP [56], which aligns with the current mainstream open-source framework [26, 57]."
+   },
+   {
+    "w": "maintain",
+    "ipa": "meɪnˈteɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "维持，主张",
+    "ex": "APS) while maintaining similar latency."
+   },
+   {
+    "w": "management",
+    "ipa": "ˈmænɪʤmənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "管理；经营，处理",
+    "ex": "Efficient Memory Management for Large Language Model Serving with PagedAttention."
+   },
+   {
+    "w": "manual",
+    "ipa": "ˈmænjuəl",
+    "pos": "adj.；n.",
+    "lv": "四级",
+    "m": "体力的；手册",
+    "ex": "This design enables us to avoid manual KV-Cache memory layout conversion throughout inference by simply concate-nating 𝑛Layer Blocks to yield a Full Block."
+   },
+   {
+    "w": "marginal",
+    "ipa": "ˈmɑrʤənəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "边缘的；记在页边的",
+    "ex": "DualPath can also be combined with a middle DRAM cache, but the performance gain is marginal."
+   },
+   {
+    "w": "massive",
+    "ipa": "ˈmæsɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "巨大的 大量的",
+    "ex": "Efficiently loading the massive KV-Cache from other caching tiers is a fundamental bottleneck in disaggregated LLM serving architectures."
+   },
+   {
+    "w": "matrix",
+    "ipa": "ˈmeɪtrɪks",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "[数] 矩阵；模型；[生物][地质] 基质；母体；子宫；[地质] 脉石",
+    "ex": "The LoRA compression for the Q matrix of both indexer and main attention is removed."
+   },
+   {
+    "w": "meaningless",
+    "ipa": "ˈminɪŋləs",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "无意义的",
+    "ex": "As the task progresses, both ratios become meaningless due to underloaded system."
+   },
+   {
+    "w": "measurement",
+    "ipa": "ˈmɛʒərmənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "衡量，测量；尺寸",
+    "ex": "Our measurements show that submitting a single copy operation via cudaMemcpyAsync incurs a latency overhead of approximately 5-7𝜇𝑠."
+   },
+   {
+    "w": "mechanism",
+    "ipa": "ˈmɛkəˌnɪzəm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "机制，机能",
+    "ex": "However, all these mechanisms can interfere with latency-sensitive collective communications (e.g., EP AllToAll) during model execution."
+   },
+   {
+    "w": "merge",
+    "ipa": "mərʤ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "合并",
+    "ex": "After a layer’s computation completes, only the KV-Caches of miss tokens are transferred to DE buffer and merged with the existing hit token KV-Cache."
+   },
+   {
+    "w": "methodology",
+    "ipa": "ˌmɛθəˈdɑləʤi",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "方法学，方法论",
+    "ex": "ACM Transactions on Software Engineering and Methodology (2024). [25] Anuj Kalia, Michael Kaminsky, and David G Andersen."
+   },
+   {
+    "w": "metric",
+    "ipa": "ˈmɛtrɪk",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "公制的，米制的",
+    "ex": "Some detailed metrics over offline inference process are shown in Figure 15."
+   },
+   {
+    "w": "minimal",
+    "ipa": "ˈmɪnəməl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "最低的，最小限度的",
+    "ex": "Transferring this multitude of fine-grained data chunks between storage, host DRAM, and GPU HBM must incur minimal overhead and seamlessly overlap with computation to realize throughput gains."
+   },
+   {
+    "w": "minimize",
+    "ipa": "ˈmɪnəˌmaɪz",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "将…减少； 最小化",
+    "ex": "Therefore, we need to make sure they have similar attention layer execution times to minimize the waiting bubbles."
+   },
+   {
+    "w": "mitigate",
+    "ipa": "ˈmɪtəˌgeɪt",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "使缓和，使减轻",
+    "ex": "Second, large-scale deployment offers more scheduling opportunities to mitigate queuing latency under unpredictable bursty online requests."
+   },
+   {
+    "w": "modification",
+    "ipa": "ˌmɑdəfəˈkeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "修改",
+    "ex": "The DualPath implementation involves approximately 5K lines of modifications on"
+   },
+   {
+    "w": "module",
+    "ipa": "ˈmɑʤul",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "模块；组件",
+    "ex": "Developing a Linux Kernel Module using GPUDirect RDMA. https://docs.nvidia.com/cuda/gpudirect-rdma/index.html. (2026). [34] NVIDIA."
+   },
+   {
+    "w": "multiple",
+    "ipa": "ˈməltəpəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "复合的；并联的",
+    "ex": "The traffic scheduler must balance multiple factors in real-time: storage NIC queue lengths, computational load on GPUs, and request workload characteristics."
+   },
+   {
+    "w": "multitude",
+    "ipa": "ˈməltəˌtud",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "大批，大群；大量",
+    "ex": "Transferring this multitude of fine-grained data chunks between storage, host DRAM, and GPU HBM must incur minimal overhead and seamlessly overlap with computation to realize throughput gains."
+   },
+   {
+    "w": "naive",
+    "ipa": "naɪiv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "幼稚的； 天真的； 轻信的",
+    "ex": "A naive policy could overload one path, recreating the original bottleneck."
+   },
+   {
+    "w": "naturally",
+    "ipa": "ˈnæʧərəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "自然地；天然地",
+    "ex": "Although our experiments are conducted on an InfiniBand-based network, the same design principles naturally extend to other interconnect technologies."
+   },
+   {
+    "w": "negligible",
+    "ipa": "ˈnɛglɪʤəbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "微不足道的",
+    "ex": "However, since the generation length is typically short in this scenario, time-to-first-token (TTFT) accounts for a non-negligible portion of the total end-to-end request time."
+   },
+   {
+    "w": "neural",
+    "ipa": "ˈnʊrəl",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "神经的",
+    "ex": "Advances in Neural Information Processing Systems 37 (2024), 50528–50652. [53] Dingyu Yao, Bowen Shen, Zheng Lin, Wei Liu, Jian Luan, Bin Wang, and Weiping Wang."
+   },
+   {
+    "w": "newly",
+    "ipa": "ˈnuli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "新近，最近",
+    "ex": "After receiving the complete prompt KV-Cache in DE buffer (including loaded KV-Cache via PE read path and the KV-Cache of newly appended tokens), the decode phase begins."
+   },
+   {
+    "w": "node",
+    "ipa": "noʊd",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "节点；瘤；[数] 叉点",
+    "ex": "Additionally, each node is provisioned with eight 400Gbps RDMA NICs connected to InfiniBand network and one additional storage NIC connected to 3FS."
+   },
+   {
+    "w": "notation",
+    "ipa": "noʊˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "记号， 标记法",
+    "ex": "Notation. Let 𝑃and 𝐷denote the number of prefill and"
+   },
+   {
+    "w": "numerous",
+    "ipa": "ˈnumərəs",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "为数众多的；许多",
+    "ex": "The layer-wise execution paradigm, while essential for overcoming HBM capacity limits, fragments the KV-Cache into numerous fine-grained blocks [37]."
+   },
+   {
+    "w": "observation",
+    "ipa": "ˌɑbzərˈveɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "注意；观察；观察力",
+    "ex": "These observations suggest several directions for future work (§8.1)."
+   },
+   {
+    "w": "online",
+    "ipa": "ˈɔnˌlaɪn",
+    "pos": "adj.；adv.",
+    "lv": "六级",
+    "m": "联机的；在线的；在线地",
+    "ex": "Second, large-scale deployment offers more scheduling opportunities to mitigate queuing latency under unpredictable bursty online requests."
+   },
+   {
+    "w": "opportunity",
+    "ipa": "ˌɑpərˈtunəti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "机会，良机",
+    "ex": "Second, large-scale deployment offers more scheduling opportunities to mitigate queuing latency under unpredictable bursty online requests."
+   },
+   {
+    "w": "optimization",
+    "ipa": "ɑptɪmɪˈzeɪʃən",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "最佳化, 最优化",
+    "ex": "TailorKV: A Hybrid Framework for Long-Context Inference via Tailored KV Cache Optimization."
+   },
+   {
+    "w": "optimize",
+    "ipa": "ˈɑptɪˌmaɪz",
+    "pos": "vt.",
+    "lv": "考博",
+    "m": "使最优化； 充分利用",
+    "ex": "DistServe: Disaggregating Prefill and Decoding for Goodput-optimized Large Language Model Serving."
+   },
+   {
+    "w": "opus",
+    "ipa": "ˈoʊpəs",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "作品",
+    "ex": "Introducing Claude Opus 4.6. https://www.anthropic. com/news/claude-opus-4-6. (2026). [5] InfiniBand Trade Association."
+   },
+   {
+    "w": "oracle",
+    "ipa": "ˈɔrəkəl",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "神谕；预言；神谕处；圣人",
+    "ex": "However, both Basic and DualPath show significantly higher TPOT than Oracle, suggesting the overhead of basic P-D transferring is considerable in small model cases."
+   },
+   {
+    "w": "original",
+    "ipa": "ərˈɪʤənəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "原始的，最初的",
+    "ex": "A.5 KV-Cache Block Layout Layerwise prefill reduces KV-Cache block size to 1/𝑙𝑎𝑦𝑒𝑟 of the original, and makes the number of blocks larger to"
+   },
+   {
+    "w": "overall",
+    "ipa": "ˈoʊvərˌɔl",
+    "pos": "n.；adj.",
+    "lv": "四级",
+    "m": "工装裤；全面的",
+    "ex": "We conduct rollout experiments on DS 27B with 1P1D, 2P1D, and 1P2D prefill-decode ratios to characterize the impact of resource allocation between prefill and decode stages on overall system performance."
+   },
+   {
+    "w": "overlap",
+    "ipa": "ˈoʊvərˌlæp",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "重叠",
+    "ex": "During PE prefill, KV-Cache for the corresponding layer is read from the DE buffer, also overlapping with computation (3-5)."
+   },
+   {
+    "w": "overload",
+    "ipa": "ˈoʊvərˌloʊd",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "使负担太重",
+    "ex": "All engines are split into three categories: (1) overloaded engines where 𝑡𝑜𝑘𝑒> 𝛽; (2) engines on"
+   },
+   {
+    "w": "overview",
+    "ipa": "ˈoʊvərvˌju",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "[图情] 综述；概观",
+    "ex": "GPUDirect Storage Overview Guide. https://docs. nvidia.com/gpudirect-storage/overview-guide/index.html. (2026). [35] OpenAI."
+   },
+   {
+    "w": "paradigm",
+    "ipa": "ˈpɛrəˌdaɪm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "典范; 范例; 示例",
+    "ex": "The layer-wise execution paradigm, while essential for overcoming HBM capacity limits, fragments the KV-Cache into numerous fine-grained blocks [37]."
+   },
+   {
+    "w": "parallelism",
+    "ipa": "ˈpɛrəˌlɛˌlɪzəm",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "平行， 类似",
+    "ex": "Therefore, more adaptive and flexible approaches for parallelism and P/D ratio configuration are needed, such as simulators or online adjustment mechanisms."
+   },
+   {
+    "w": "parameter",
+    "ipa": "pərˈæmətər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "参（变）数；参量",
+    "ex": "In round 𝑖+ 1 of our replay, the agent concatenates the prompt as 𝐶𝑜𝑛𝑡𝑒𝑥𝑡𝑖+1 + 𝐴𝑖+1, and then sets proper sampling parameters to ensure it generates exactly 𝑔𝑖+1 tokens, i.e., 𝐺𝑖+1."
+   },
+   {
+    "w": "partial",
+    "ipa": "ˈpɑrʃəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "部分的；不公平的",
+    "ex": "KVPR: Efficient LLM Inference with I/O-Aware KV Cache Partial Recomputation."
+   },
+   {
+    "w": "partition",
+    "ipa": "pɑrˈtɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "分开，分割；隔墙",
+    "ex": "Remove 𝑟from 𝑄; end request, we partition into (1) high-token DEs, where 𝑡𝑜𝑘𝑒+ len(𝑟) > 𝑍, and (2) the rest."
+   },
+   {
+    "w": "peer",
+    "ipa": "pɪr",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "同龄人",
+    "ex": "It may lead to workload imbalance among all GPUs that must synchronize after the attention stage and enter the FFN stage together, causing GPU bubbles waiting for other peers."
+   },
+   {
+    "w": "persist",
+    "ipa": "pərˈsɪst",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "坚持，固执；持续",
+    "ex": "During decode, whenever a full block of tokens (e.g., 64 tokens) is accumulated, it is immediately persisted to disk."
+   },
+   {
+    "w": "perspective",
+    "ipa": "pərˈspɛktɪv",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "视角，观点；远景",
+    "ex": "Prior work has approached this problem primarily from the perspective of a single data path."
+   },
+   {
+    "w": "phase",
+    "ipa": "feɪz",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "阶段；方面；相位",
+    "ex": "After receiving the complete prompt KV-Cache in DE buffer (including loaded KV-Cache via PE read path and the KV-Cache of newly appended tokens), the decode phase begins."
+   },
+   {
+    "w": "phoenix",
+    "ipa": "ˈfinɪks",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "凤凰；死而复生的人",
+    "ex": "Phoenix: A Refactored I/O Stack for GPU Direct Storage without Phony Buffers."
+   },
+   {
+    "w": "phony",
+    "ipa": "ˈfoʊni",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "假冒的",
+    "ex": "Phoenix: A Refactored I/O Stack for GPU Direct Storage without Phony Buffers."
+   },
+   {
+    "w": "physically",
+    "ipa": "ˈfɪzɪkəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "身体上；体格上",
+    "ex": "The computation and storage networks are physically isolated."
+   },
+   {
+    "w": "pillar",
+    "ipa": "ˈpɪlər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "柱，柱子；栋梁",
+    "ex": "In each pair of pillars, the first is for DualPath and the second is for Basic."
+   },
+   {
+    "w": "portion",
+    "ipa": "ˈpɔrʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "一部分；一分",
+    "ex": "However, since the generation length is typically short in this scenario, time-to-first-token (TTFT) accounts for a non-negligible portion of the total end-to-end request time."
+   },
+   {
+    "w": "pose",
+    "ipa": "poʊz",
+    "pos": "v.；n.",
+    "lv": "六级",
+    "m": "摆姿势，装腔作势；姿势",
+    "ex": "𝑙𝑎𝑦𝑒𝑟×, posing challenges to transfer and storage performance."
+   },
+   {
+    "w": "preemption",
+    "ipa": "ˌpriˈɛmpʃən",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "优先购买(权), 强制收购(权), 抢先占有, 取代",
+    "ex": "Within category (2) we choose the DE with minimum 𝑠𝑒𝑞𝑒to balance request count; if category (2) is empty we choose the DE with minimum 𝑡𝑜𝑘𝑒in category (1) to reduce HBM exhaustion and preemption risk."
+   },
+   {
+    "w": "prefix",
+    "ipa": "ˈprifɪks",
+    "pos": "n.；v.",
+    "lv": "专四",
+    "m": "前缀；加前缀；将某事物加在前面",
+    "ex": "TokenLake [46] introduces a unified segment-level prefix cache pool."
+   },
+   {
+    "w": "prevalent",
+    "ipa": "ˈprevələnt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "盛行的",
+    "ex": "In prevalent disaggregated architectures, loading the massive KV-Cache"
+   },
+   {
+    "w": "previous",
+    "ipa": "ˈpriviəs",
+    "pos": "adj.；adv.",
+    "lv": "四级",
+    "m": "之前的；先前地",
+    "ex": "The relationship between theoretical computation and wall-clock time depends on hardware and parallel configuration, and can be fitted in advance through profiling as previous works [17] and [2]."
+   },
+   {
+    "w": "primarily",
+    "ipa": "praɪˈmɛrəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "主要地，首先",
+    "ex": "Prior work has approached this problem primarily from the perspective of a single data path."
+   },
+   {
+    "w": "prior",
+    "ipa": "praɪər",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "在先的；优先的",
+    "ex": "Prior work has approached this problem primarily from the perspective of a single data path."
+   },
+   {
+    "w": "prioritize",
+    "ipa": "praɪˈɔrəˌtaɪz",
+    "pos": "v.",
+    "lv": "托福",
+    "m": "优先",
+    "ex": "Second-category engines are prioritized over third-category engines because they reside on nodes with shorter disk reading queues, and lack of subsequent requests would easily lead to storage NIC underutilization."
+   },
+   {
+    "w": "priority",
+    "ipa": "praɪˈɔrəti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "优先，优先权",
+    "ex": "To match the four-VL configuration in InfiniBand, we configure four lossless RDMA TCs with Priority Flow Control (PFC) enabled."
+   },
+   {
+    "w": "pro",
+    "ipa": "proʊ",
+    "pos": "adv.；n.；prep.",
+    "lv": "专八",
+    "m": "赞成地；赞成者；赞成的意见；赞成",
+    "ex": "Gemini 3 Pro. https://deepmind.google/models/gemini/pro/. (2026). [12] DeepSeek-AI."
+   },
+   {
+    "w": "proceed",
+    "ipa": "pərˈsid",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "进行；继续进行",
+    "ex": "After assignment, we update the selected PE’s 𝑡𝑜𝑘𝑒, then proceed to the next request in the waiting queue."
+   },
+   {
+    "w": "proceeding",
+    "ipa": "prəˈsidɪŋ",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "程序，行动，事项",
+    "ex": "In Proceedings of the International Conference for High Performance Computing, Networking, Storage and Analysis (SC ’25)."
+   },
+   {
+    "w": "processor",
+    "ipa": "ˈprɑˌsɛsər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "加工机； 加工工人； 处理器",
+    "ex": "Each server has 8 NVIDIA Hopper GPUs and dual processors."
+   },
+   {
+    "w": "profile",
+    "ipa": "ˈproʊˌfaɪl",
+    "pos": "n.；vt.",
+    "lv": "六级",
+    "m": "侧面；人物简介；轮廓，形象；姿态，引人注目的状态；为…描绘； 写…的传略",
+    "ex": "Meanwhile, profiling these tentative experiments is costly, as some experiments are only run a limited number of times."
+   },
+   {
+    "w": "prompt",
+    "ipa": "prɑmpt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "敏捷的；v. 敦促",
+    "ex": "Then, all KV-Caches of both hit and miss tokens are transferred to the DE buffer to form the complete prompt KV-Cache (5-7)."
+   },
+   {
+    "w": "promptly",
+    "ipa": "ˈprɑmptli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "敏捷地，迅速地",
+    "ex": "As we are adopting two different paths for KV-cache loading, the system must promptly decide which path to use for each request."
+   },
+   {
+    "w": "proportional",
+    "ipa": "prəˈpɔrʃənəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "比例的；相称的",
+    "ex": "Bandwidth isolation is achieved by assigning proportional scheduling weights to these TCs on both NICs and switches, reserving the majority of bandwidth for model inference traffic while allocating a small fraction to KV-cache …"
+   },
+   {
+    "w": "propose",
+    "ipa": "prəˈpoʊz",
+    "pos": "v.；v.",
+    "lv": "四级",
+    "m": "提议；求婚",
+    "ex": "To address this, we propose a CNIC–centric data transfer approach which is widely adopted in our production deployment: all data traffic in or out of a GPU, including local H2D/D2H copy, must go through the GPU’s paired CNIC with …"
+   },
+   {
+    "w": "provision",
+    "ipa": "prəˈvɪʒən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "供应；预备；存粮",
+    "ex": "Additionally, each node is provisioned with eight 400Gbps RDMA NICs connected to InfiniBand network and one additional storage NIC connected to 3FS."
+   },
+   {
+    "w": "proxy",
+    "ipa": "ˈprɑksi",
+    "pos": "n.",
+    "lv": "雅思",
+    "m": "代理权，代表权；代理人",
+    "ex": "as a proxy and aim to balance it across engines."
+   },
+   {
+    "w": "publicly",
+    "ipa": "ˈpəblɪkli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "公然地, 舆论上",
+    "ex": "DS 660B and Qwen 32B correspond to the publicly released checkpoint on HuggingFace."
+   },
+   {
+    "w": "quantify",
+    "ipa": "kˈwɑntɪˌfaɪ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "确定…的数量",
+    "ex": "7.5 Ablation Study We conduct an ablation study to quantify the contribution of each technical component in DualPath."
+   },
+   {
+    "w": "query",
+    "ipa": "kˈwiri",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "疑问，质问；疑问号 ；[计] 查询；询问；对……表示疑问",
+    "ex": "There are many variants such as Multi-Head Attention (MHA) [44], Multi-Query Attention (MQA) [41] and Grouped-Query Attention (GQA) [3], Multi-head Latent Attention (MLA) [12]."
+   },
+   {
+    "w": "quota",
+    "ipa": "kˈwoʊtə",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "配额，销售额",
+    "ex": "Right: GPU timeline before and after apply-ing compute quota. the intra-engine scheduling process is shown in Figure 6."
+   },
+   {
+    "w": "ram",
+    "ipa": "ræm",
+    "pos": "n.；v.",
+    "lv": "专四",
+    "m": "随机存取存储器（random access memory的缩写）；随机访问内存（random-access memory的缩写）；公羊；撞锤；撞击装置；有撞角的",
+    "ex": "UnifiedBus. https://www.unifiedbus.com/en. (2026). [2] Amey Agrawal, Nitin Kedia, Ashish Panwar, Jayashree Mohan, Nipun Kwatra, Bhargav Gulavani, Alexey Tumanov, and Ramachandran Ram-jee."
+   },
+   {
+    "w": "ratio",
+    "ipa": "ˈreɪʃiˌoʊ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比，比率",
+    "ex": "For attention layers, DualPath maintains the Max/Avg ratio as low as 1.06 during the first 5% of the task, reducing GPU idle bubbles (Figure 14)."
+   },
+   {
+    "w": "reader",
+    "ipa": "ˈridər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "读者；读物，读本",
+    "ex": "We briefly outline these challenges below and refer the reader to the corresponding sec-tions for details."
+   },
+   {
+    "w": "realistic",
+    "ipa": "ˌriəˈlɪstɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "现实的，实际的",
+    "ex": "In realistic setting, the working set would be larger since our evaluation assumes zero inter-arrival time and zero tool call latency."
+   },
+   {
+    "w": "recreate",
+    "ipa": "ˈrɛkriˌeɪt",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "娱乐；消遣",
+    "ex": "A naive policy could overload one path, recreating the original bottleneck."
+   },
+   {
+    "w": "reflection",
+    "ipa": "rɪˈflɛkʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "反射；映象；反映",
+    "ex": "Insights into deepseek-v3: Scaling challenges and reflections on hardware for ai architectures."
+   },
+   {
+    "w": "regularly",
+    "ipa": "ˈrɛgjələrli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "定期地，有规律地",
+    "ex": "All engines in one group proactively fetch tasks together regularly."
+   },
+   {
+    "w": "release",
+    "ipa": "riˈlis",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "发布，释放",
+    "ex": "DS 660B and Qwen 32B correspond to the publicly released checkpoint on HuggingFace."
+   },
+   {
+    "w": "reorient",
+    "ipa": "riˈɔriɛnt",
+    "pos": "v.",
+    "lv": "专八",
+    "m": "使适应；再调整",
+    "ex": "4.3 Practical Challenges The dual-path architecture fundamentally reorients data movement: KV-Cache can be loaded either directly from storage into prefill engines or indirectly via decode engines, thereby aggregating storage …"
+   },
+   {
+    "w": "replay",
+    "ipa": "riˈpleɪ",
+    "pos": "v.；n.",
+    "lv": "专四",
+    "m": "重放；重演；重新比赛；重赛；重播；重演",
+    "ex": "Agents arrive according to a Poisson process at a specified rate, with each agent commencing replay from round zero to its last round upon arrival."
+   },
+   {
+    "w": "repository",
+    "ipa": "riˈpɑzəˌtɔri",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "贮藏室，仓库；知识库；智囊团",
+    "ex": "Each agent operates within a sandbox environment containing a code repository with known bugs and associated error messages."
+   },
+   {
+    "w": "representation",
+    "ipa": "ˌrɛprəzɛnˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "描写；陈述；代表",
+    "ex": "In International Conference on Learning Representations."
+   },
+   {
+    "w": "researcher",
+    "ipa": "ˈrisərʧər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "研究员",
+    "ex": "For example, in our agentic RL tasks, the workload depends heavily on the researchers’ algorithm design, and the prefill stage typically experiences significantly higher pressure in the first half of execution than in the second …"
+   },
+   {
+    "w": "reside",
+    "ipa": "rɪˈzaɪd",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "居住，驻扎；属于",
+    "ex": "Second-category engines are prioritized over third-category engines because they reside on nodes with shorter disk reading queues, and lack of subsequent requests would easily lead to storage NIC underutilization."
+   },
+   {
+    "w": "resolve",
+    "ipa": "riˈzɑlv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "解决，下决心",
+    "ex": "Resolving Performance Interference in SR-IOV Setups with PCIe Quality-of-Service Extensions."
+   },
+   {
+    "w": "resource",
+    "ipa": "ˈrisɔrs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "资源； 财力； 应付办法， 谋略",
+    "ex": "Such experiments require 𝑟times more machine hours and 𝑟2 times more storage (cost scaling as 𝑟3), which we cannot afford given limited resources."
+   },
+   {
+    "w": "respectively",
+    "ipa": "rɪˈspɛktɪvli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "各自地",
+    "ex": "We adopt two different block layouts: Full Block and Layer Block, which contain all layers and a single layer, respectively."
+   },
+   {
+    "w": "restoration",
+    "ipa": "ˌrɛstərˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "恢复；复位；王政复辟；归还",
+    "ex": "Fast State Restoration in LLM Serving with HCache."
+   },
+   {
+    "w": "robin",
+    "ipa": "ˈrɑbɪn",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "知更鸟",
+    "ex": "For storage NICs, our scheduling algorithm improves load balance from 1.53 to 1.18 compared to round robin scheduling (Figure 13)."
+   },
+   {
+    "w": "rout",
+    "ipa": "raʊt",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "溃退",
+    "ex": "A.2 27B Model Specifications In terms of overall model scale, the hidden dimension 2560, the intermediate size of dense layers is 12288, the number of hidden layers is 30, the number of attention heads is 32, the number of routed …"
+   },
+   {
+    "w": "sample",
+    "ipa": "ˈsæmpəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "样品；实例，标本",
+    "ex": "To generate additional agent trajectories, we sample an existing trajectory and prepend a synthetic round with random tokens as 𝐴1 and 𝑔1 = 1."
+   },
+   {
+    "w": "saturate",
+    "ipa": "ˈsæʧərˌeɪt",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "使湿透， 浸透； 使充满， 使饱和",
+    "ex": "Our cluster-wide 3FS has no internal DRAM cache and can saturate the 400Gbps bandwidth of the storage NIC."
+   },
+   {
+    "w": "scale",
+    "ipa": "skeɪl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "规模，比例",
+    "ex": "Second, large-scale deployment offers more scheduling opportunities to mitigate queuing latency under unpredictable bursty online requests."
+   },
+   {
+    "w": "scenario",
+    "ipa": "sɪˈnɛrioʊ",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "情境 “；剧本",
+    "ex": "For offline inference scenarios, we measure job completion time (JCT) for the entire task."
+   },
+   {
+    "w": "segment",
+    "ipa": "ˌsɛgˈmɛnt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "部分， 片段； 瓣",
+    "ex": "TokenLake [46] introduces a unified segment-level prefix cache pool."
+   },
+   {
+    "w": "selection",
+    "ipa": "səˈlɛkʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "选择，挑选",
+    "ex": "batch selection."
+   },
+   {
+    "w": "sequence",
+    "ipa": "ˈsikwəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "连续，继续；次序",
+    "ex": "Each trajectory is a sequence of rounds; round 𝑖consists of appended tokens 𝐴𝑖and the number of generated tokens 𝑔𝑖."
+   },
+   {
+    "w": "server",
+    "ipa": "ˈsərvər",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "服务器",
+    "ex": "We conduct our experiments on a cluster of GPU servers with InfiniBand interconnection."
+   },
+   {
+    "w": "setup",
+    "ipa": "ˈsɛˌtəp",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "装备, 安装,计划",
+    "ex": "SGL(MC) encountered errors in our setup and failed to complete some large configurations (marked as N/A)."
+   },
+   {
+    "w": "severely",
+    "ipa": "səˈvɪrli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "严重地",
+    "ex": "This asymmetry severely constrains overall system throughput"
+   },
+   {
+    "w": "shaper",
+    "ipa": "ˈʃeɪpər",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "造形者, 塑造者",
+    "ex": "software-based traffic shaper to interleave lower-priority I/O"
+   },
+   {
+    "w": "shield",
+    "ipa": "ʃild",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "盾；防护物；保护",
+    "ex": "This arises for two primary reasons: (1) such transfer technologies often operate over separate paths that do not share the same QoS controls as the compute network, and (2) existing GPUs do not support PCIe QoS [39], making it …"
+   },
+   {
+    "w": "similarly",
+    "ipa": "ˈsɪmələrli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "类似地，相似地",
+    "ex": "Similarly, for the DE read path, transfers from the DE Buffer to the PE HBM use Layer Blocks."
+   },
+   {
+    "w": "simply",
+    "ipa": "ˈsɪmpli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "简单地；朴素地",
+    "ex": "This design enables us to avoid manual KV-Cache memory layout conversion throughout inference by simply concate-nating 𝑛Layer Blocks to yield a Full Block."
+   },
+   {
+    "w": "simultaneously",
+    "ipa": "ˌsaɪməlˈteɪniəsli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "同步地，同时地",
+    "ex": "SGL(MC) exhibits anomalously low TTST, likely due to implementation issues where the first two tokens arrive at the client almost simultaneously."
+   },
+   {
+    "w": "slightly",
+    "ipa": "sˈlaɪtli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "轻微地",
+    "ex": "Right: varying generation lengths (DS 660B, 64K, 1024 agents) DualPath and Oracle performance changes only slightly, indicating that the bottleneck consistently lies in GPU compute"
+   },
+   {
+    "w": "solve",
+    "ipa": "sɑlv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "解决",
+    "ex": "To solve the limitations of existing approaches, we adopt a CNIC-assisted H2D/D2H data path."
+   },
+   {
+    "w": "source",
+    "ipa": "sɔrs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "来源",
+    "ex": "For CUDA kernels, our in-house framework adopt the combination of FlashMLA [27], DeepGEMM [14], and DeepEP [56], which aligns with the current mainstream open-source framework [26, 57]."
+   },
+   {
+    "w": "sparse",
+    "ipa": "spɑrs",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "稀疏的；稀少的",
+    "ex": "Regarding the index attention mechanism, the number of attention heads is 32, the head dimension is 64, the topk tokens for sparse attention is 1024."
+   },
+   {
+    "w": "specification",
+    "ipa": "ˌspɛsɪfɪˈkeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "说明书",
+    "ex": "InfiniBand Architecture Specification Volume 1, Release 1.2.1. (2007). [6] Brian E."
+   },
+   {
+    "w": "specify",
+    "ipa": "ˈspɛsəˌfaɪ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "指定，具体说明",
+    "ex": "Agents arrive according to a Poisson process at a specified rate, with each agent commencing replay from round zero to its last round upon arrival."
+   },
+   {
+    "w": "speculative",
+    "ipa": "ˈspɛkjələtɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "投机的； 思考的",
+    "ex": "Speculative decoding is disabled for all settings."
+   },
+   {
+    "w": "stack",
+    "ipa": "stæk",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "堆，垛；堆积",
+    "ex": "Phoenix: A Refactored I/O Stack for GPU Direct Storage without Phony Buffers."
+   },
+   {
+    "w": "steer",
+    "ipa": "stɪr",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "驾驶",
+    "ex": "Traffic is scheduled using Weighted Round Robin (WRR) in the high-priority arbitrator, then steered to the low-priority arbitrator according to qos_high_limit; setting it to 255 disables the low-priority arbitrator entirely."
+   },
+   {
+    "w": "strata",
+    "ipa": "ˈstrætə",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "层，地层；阶层（stratum 的复数）",
+    "ex": "Strata [49] tackles I/O bottlenecks in hierarchical storage by co-designing GPU-assisted I/O with cache-aware scheduling."
+   },
+   {
+    "w": "strategy",
+    "ipa": "ˈstrætəʤi",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "策略，战略",
+    "ex": "Prefill-decode disaggregated inference [37, 58] separates the prefill and decode stages onto different GPUs, reducing performance interference between them and allowing each stage to adopt distinct parallel strategies and …"
+   },
+   {
+    "w": "strongly",
+    "ipa": "ˈstrɔŋli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "强烈地；强有力地",
+    "ex": "GPU load, disk read load, and network load are all strongly correlated with token count."
+   },
+   {
+    "w": "structure",
+    "ipa": "ˈstrəkʧər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "结构",
+    "ex": "KV-Cache is stored in distributed storage using a trie structure, where each tree node corresponds to a Full Block."
+   },
+   {
+    "w": "submission",
+    "ipa": "səbˈmɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "投降；提交（物）；服从；（向法官提出的）意见；谦恭",
+    "ex": "Furthermore, the RDMA work submission overhead can be significantly amortized by leveraging doorbell batching [25]."
+   },
+   {
+    "w": "subsequent",
+    "ipa": "ˈsəbsəkwənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "随后的，后来的",
+    "ex": "Second-category engines are prioritized over third-category engines because they reside on nodes with shorter disk reading queues, and lack of subsequent requests would easily lead to storage NIC underutilization."
+   },
+   {
+    "w": "substantial",
+    "ipa": "səbˈstænʃəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "大量的",
+    "ex": "Across all ratios, DualPath demonstrates substantial performance gains compared to Basic."
+   },
+   {
+    "w": "sufficient",
+    "ipa": "səˈfɪʃənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "足够的",
+    "ex": "If no DE has sufficient HBM, the fetch ends and already-assigned requests are returned."
+   },
+   {
+    "w": "sum",
+    "ipa": "səm",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "总数；金额；共计",
+    "ex": "Then we calculate the sum of remaining HBM for all DEs in the group and traverse from the head of the private queue to calculate how many requests can be scheduled assuming no HBM fragmentation."
+   },
+   {
+    "w": "summarize",
+    "ipa": "ˈsəmərˌaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "概括，概述，总结",
+    "ex": "The average interaction turns (Turns), average appended and generated tokens per turn (Append and Gen), average number of total tokens (Total), and average number of context tokens (Context) are summarized in Table 2."
+   },
+   {
+    "w": "survey",
+    "ipa": "ˈsərˌveɪ",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "调查，审视，仔细考虑；勘测，测量，测绘，调查",
+    "ex": "The rise and potential of large language model based agents: A survey."
+   },
+   {
+    "w": "symmetric",
+    "ipa": "sɪˈmɛtrɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "对称的；匀称的",
+    "ex": "Storing newly generated KV-Cache follows a symmetric process: it is first transferred to host DRAM via CNIC, then persisted to the storage backend over the storage network."
+   },
+   {
+    "w": "symposium",
+    "ipa": "sɪmˈpoʊziəm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "座谈会",
+    "ex": "In Proceedings of the ACM SIGOPS 31st Symposium on Operating Systems Principles (SOSP ’25)."
+   },
+   {
+    "w": "synchronize",
+    "ipa": "ˈsɪŋkrəˌnaɪz",
+    "pos": "v.",
+    "lv": "雅思",
+    "m": "使同时发生，使同步发生",
+    "ex": "It may lead to workload imbalance among all GPUs that must synchronize after the attention stage and enter the FFN stage together, causing GPU bubbles waiting for other peers."
+   },
+   {
+    "w": "synthetic",
+    "ipa": "sɪnˈθɛtɪk",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "合成的，人造的",
+    "ex": "To generate additional agent trajectories, we sample an existing trajectory and prepend a synthetic round with random tokens as 𝐴1 and 𝑔1 = 1."
+   },
+   {
+    "w": "tackle",
+    "ipa": "ˈtækəl",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "处理",
+    "ex": "Strata [49] tackles I/O bottlenecks in hierarchical storage by co-designing GPU-assisted I/O with cache-aware scheduling."
+   },
+   {
+    "w": "tame",
+    "ipa": "teɪm",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "驯服的；顺从的",
+    "ex": "Taming Throughput-Latency Tradeoff in LLM Inference with Sarathi-Serve."
+   },
+   {
+    "w": "tang",
+    "ipa": "tɑŋ",
+    "pos": "v.",
+    "lv": "托福",
+    "m": "有浓味 n特殊气味",
+    "ex": "6000–6010. [45] Lei Wang, Chen Ma, Xueyang Feng, Zeyu Zhang, Hao Yang, Jingsen Zhang, Zhiyuan Chen, Jiakai Tang, Xu Chen, Yankai Lin, et al."
+   },
+   {
+    "w": "terminate",
+    "ipa": "ˈtərməˌneɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "停止，终止",
+    "ex": "If both categories are empty, we terminate this fetch request and return the already-assigned requests to the Leader Engine."
+   },
+   {
+    "w": "termination",
+    "ipa": "tərməˈneɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "终止",
+    "ex": "Experiment termination is triggered when either: (1) TTFT exceeds 4 seconds, or (2) the system reaches steady state, defined as TTFT variation within a 150-second sliding window remaining below 5% compared to that 30 minutes …"
+   },
+   {
+    "w": "thereby",
+    "ipa": "ˈðɛrˈbaɪ",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "因此，从而，由此",
+    "ex": "4.3 Practical Challenges The dual-path architecture fundamentally reorients data movement: KV-Cache can be loaded either directly from storage into prefill engines or indirectly via decode engines, thereby aggregating storage …"
+   },
+   {
+    "w": "threshold",
+    "ipa": "θˈrɛˌʃoʊld",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "门槛",
+    "ex": "We define two constants, short reading queue threshold 𝛼, and unfinished token upper limit 𝛽, measured in tokens."
+   },
+   {
+    "w": "throughput",
+    "ipa": "θˈruˌpʊt",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "生产量，生产能力",
+    "ex": "Transferring this multitude of fine-grained data chunks between storage, host DRAM, and GPU HBM must incur minimal overhead and seamlessly overlap with computation to realize throughput gains."
+   },
+   {
+    "w": "tier",
+    "ipa": "tir",
+    "pos": "n.；vt.；vi.",
+    "lv": "专四",
+    "m": "层，排；行，列；等级；使层叠；成递升排列",
+    "ex": "Efficiently loading the massive KV-Cache from other caching tiers is a fundamental bottleneck in disaggregated LLM serving architectures."
+   },
+   {
+    "w": "token",
+    "ipa": "ˈtoʊkən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "辅币；象征",
+    "ex": "To generate additional agent trajectories, we sample an existing trajectory and prepend a synthetic round with random tokens as 𝐴1 and 𝑔1 = 1."
+   },
+   {
+    "w": "totally",
+    "ipa": "ˈtoʊtəli",
+    "pos": "adv.",
+    "lv": "考博",
+    "m": "完全地, 整全地",
+    "ex": "For DeepSeek models, Dual-Path allocates 80GB DRAM each node, and SGL(MC) uses totally 1.5TB DRAM on every node."
+   },
+   {
+    "w": "trace",
+    "ipa": "treɪs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "痕迹",
+    "ex": "We collected three agent trace datasets from our production agentic RL training workloads with varying maximum context lengths (MaxLen)."
+   },
+   {
+    "w": "tradeoff",
+    "ipa": "ˈtreɪˌdɔf",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "权衡，交易",
+    "ex": "Taming Throughput-Latency Tradeoff in LLM Inference with Sarathi-Serve."
+   },
+   {
+    "w": "trajectory",
+    "ipa": "trəˈʤɛktəri",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "[物](射线的) 轨道, 弹道, 轨线",
+    "ex": "To generate additional agent trajectories, we sample an existing trajectory and prepend a synthetic round with random tokens as 𝐴1 and 𝑔1 = 1."
+   },
+   {
+    "w": "transaction",
+    "ipa": "trænˈzækʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "交易，业务，事务",
+    "ex": "ACM Transactions on Software Engineering and Methodology (2024). [25] Anuj Kalia, Michael Kaminsky, and David G Andersen."
+   },
+   {
+    "w": "transfer",
+    "ipa": "ˈtrænsfər",
+    "pos": "—",
+    "lv": "四级",
+    "m": "转换，调换",
+    "ex": "In the PE read case, KV-Cache loading to PE HBM and transfer to DE Buffer occur in a layerwise streaming fashion, both using Layer Blocks."
+   },
+   {
+    "w": "transformation",
+    "ipa": "ˌtrænsfərˈmeɪʃn",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "转变",
+    "ex": "driven a significant transformation in LLM inference workloads"
+   },
+   {
+    "w": "transformer",
+    "ipa": "trænsˈfɔrmər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "变压器，转换器",
+    "ex": "GQA: Training Generalized Multi-Query Transformer Models from Multi-Head Checkpoints."
+   },
+   {
+    "w": "traverse",
+    "ipa": "ˈtrævərs",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "横越",
+    "ex": "Then we calculate the sum of remaining HBM for all DEs in the group and traverse from the head of the private queue to calculate how many requests can be scheduled assuming no HBM fragmentation."
+   },
+   {
+    "w": "trigger",
+    "ipa": "ˈtrɪgər",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "引发，引起",
+    "ex": "Experiment termination is triggered when either: (1) TTFT exceeds 4 seconds, or (2) the system reaches steady state, defined as TTFT variation within a 150-second sliding window remaining below 5% compared to that 30 minutes …"
+   },
+   {
+    "w": "truncate",
+    "ipa": "ˈtrəŋˌkeɪt",
+    "pos": "v.",
+    "lv": "GRE",
+    "m": "截短， 缩短",
+    "ex": "To investigate the impact of this factor, we scale each round’s append length by a constant factor, and then truncate the whole trajectory at given MAL."
+   },
+   {
+    "w": "ultra",
+    "ipa": "ˈəltrə",
+    "pos": "adj./n.",
+    "lv": "六级",
+    "m": "超前的，极端的；超…（前缀用法）",
+    "ex": "Emerging technologies such as UnifiedBus [1] and Ultra Ethernet [9] are likewise converging on QoS mechanisms for heterogeneous traffic, which can directly support the requirements of DualPath."
+   },
+   {
+    "w": "unaffected",
+    "ipa": "ˌənəˈfɛktɪd",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "不受影响的；自然的；真挚的；不矫揉造作的",
+    "ex": "This configuration ensures that model execution traffic is virtually unaffected by KV-cache transfers, while still allowing KV-cache traffic to opportunistically utilize otherwise idle bandwidth in the compute network."
+   },
+   {
+    "w": "unify",
+    "ipa": "ˈjunəˌfaɪ",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "使联合， 统一； 使相同， 使一致",
+    "ex": "TokenLake [46] introduces a unified segment-level prefix cache pool."
+   },
+   {
+    "w": "unlock",
+    "ipa": "ənˈlɑk",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "开…的锁；开启",
+    "ex": "Prefill-decode disaggregated inference [37, 58] separates the prefill and decode stages onto different GPUs, reducing performance interference between them and allowing each stage to adopt distinct parallel strategies and …"
+   },
+   {
+    "w": "unpredictable",
+    "ipa": "ˌənprɪˈdɪktəbəl",
+    "pos": "adj.；n.",
+    "lv": "专四",
+    "m": "不可预知的；不定的；出乎意料的；不可预言的事",
+    "ex": "Second, large-scale deployment offers more scheduling opportunities to mitigate queuing latency under unpredictable bursty online requests."
+   },
+   {
+    "w": "usage",
+    "ipa": "ˈjusɪʤ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "使用，对待；惯用法",
+    "ex": "Compared to them, DualPath targets storage backend directly, balancing the traffic among all SNICs, and reduces DRAM usage greatly without harming performance."
+   },
+   {
+    "w": "utilization",
+    "ipa": "ˌjutələˈzeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "利用",
+    "ex": "ADAPTIVE REQUEST SCHEDULER Although our theoretical analysis shows promising results, imbalanced load reduces hardware utilization, and in this scenario, we need to consider two dimensions of balance simultaneously: (1) NIC …"
+   },
+   {
+    "w": "utilize",
+    "ipa": "ˈjutəˌlaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "利用",
+    "ex": "We assume that the storage read bandwidth is fully utilized and that task scheduling is load-balanced."
+   },
+   {
+    "w": "variant",
+    "ipa": "ˈvɛriənt",
+    "pos": "adj.；n.",
+    "lv": "六级",
+    "m": "不同的；多样的；变体；转化",
+    "ex": "There are many variants such as Multi-Head Attention (MHA) [44], Multi-Query Attention (MQA) [41] and Grouped-Query Attention (GQA) [3], Multi-head Latent Attention (MLA) [12]."
+   },
+   {
+    "w": "variation",
+    "ipa": "ˌvɛriˈeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "变化，变动；变异",
+    "ex": "Experiment termination is triggered when either: (1) TTFT exceeds 4 seconds, or (2) the system reaches steady state, defined as TTFT variation within a 150-second sliding window remaining below 5% compared to that 30 minutes …"
+   },
+   {
+    "w": "vary",
+    "ipa": "ˈvɛri",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "变化；不同",
+    "ex": "We collected three agent trace datasets from our production agentic RL training workloads with varying maximum context lengths (MaxLen)."
+   },
+   {
+    "w": "versus",
+    "ipa": "ˈvərsəz",
+    "pos": "prep.",
+    "lv": "六级",
+    "m": "（比赛等中）对",
+    "ex": "Figure 11: Average completion time of all trajectories versus"
+   },
+   {
+    "w": "virtual",
+    "ipa": "ˈvərʧuəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "虚拟的",
+    "ex": "5.1 Traffic Isolation For the InfiniBand-based network, we leverage virtual lanes (VLs) [5] to enforce isolation between different traffic classes."
+   },
+   {
+    "w": "virtually",
+    "ipa": "ˈvərʧuəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "几乎，差不多",
+    "ex": "This configuration ensures that model execution traffic is virtually unaffected by KV-cache transfers, while still allowing KV-cache traffic to opportunistically utilize otherwise idle bandwidth in the compute network."
+   },
+   {
+    "w": "volume",
+    "ipa": "ˈvɑljum",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "卷，册；容积；音量",
+    "ex": "InfiniBand Architecture Specification Volume 1, Release 1.2.1. (2007). [6] Brian E."
+   },
+   {
+    "w": "widely",
+    "ipa": "ˈwaɪdli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "大大地",
+    "ex": "Data parallelism is widely adopted for attention layers, especially for MLA models."
+   },
+   {
+    "w": "workload",
+    "ipa": "ˈwərˌkloʊd",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "工作量",
+    "ex": "We collected three agent trace datasets from our production agentic RL training workloads with varying maximum context lengths (MaxLen)."
+   },
+   {
+    "w": "workshop",
+    "ipa": "ˈwərkˌʃɑp",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "车间，工场；创作室",
+    "ex": "In Proceedings of the 16th ACM SIGOPS Asia-Pacific Workshop on Systems (APSys ’25)."
+   },
+   {
+    "w": "yield",
+    "ipa": "jild",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "屈服，产出；产量",
+    "ex": "This design enables us to avoid manual KV-Cache memory layout conversion throughout inference by simply concate-nating 𝑛Layer Blocks to yield a Full Block."
+   },
+   {
+    "w": "yuan",
+    "ipa": "juɑn",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "元(中国货币单位)",
+    "ex": "Personal LLM Agents: Insights and Survey about the Capability, Efficiency and Security. (2024). arXiv:cs.HC/2401.05459 https://arxiv.org/abs/2401.05459 [29] Weizhe Lin, Hui-Ling Zhen, Shuai Yang, Xian Wang, Renxi Liu, Hant-ing …"
+   }
+  ]
+ },
+ {
+  "sec": "References · 参考文献区用词（正文未出现）",
+  "short": "文献区",
+  "icon": "R",
+  "words": [
+   {
+    "w": "affinity",
+    "ipa": "əˈfɪnɪti",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "亲密关系",
+    "ex": "distributed DRAM pool and employs an affinity-aware scheduler to maximize the DRAM KV-Cache hit rate. However, it"
+   },
+   {
+    "w": "alleviate",
+    "ipa": "əˈliviˌeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "减轻，缓解",
+    "ex": "Prior studies have attempted to alleviate the KV-Cache"
+   },
+   {
+    "w": "ampere",
+    "ipa": "ˈæmˌpər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "安培",
+    "ex": "in Figure 3, from NVIDIA Ampere to Blackwell, the I/O-compute ratio decreases by 14.4×. Low NIC bandwidth limits"
+   },
+   {
+    "w": "architectural",
+    "ipa": "ˌɑrkəˈtɛkʧərəl",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "建筑上的； 建筑学的",
+    "ex": "of architectural patterns: layer-wise prefill [17, 50], prefill–"
+   },
+   {
+    "w": "asymmetric",
+    "ipa": ",esɪˈmɛtrɪk",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "不对称的；非对称的",
+    "ex": "bandwidth of all engines — including otherwise-idle decode-side NICs — and eliminates the asymmetric bandwidth saturation that limits existing systems. This approach transforms"
+   },
+   {
+    "w": "boost",
+    "ipa": "bust",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "推动,宣扬；促使，促进",
+    "ex": "equal to the number of layers, boosting prefill throughput."
+   },
+   {
+    "w": "browser",
+    "ipa": "ˈbraʊzər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "[计] 浏览器；吃嫩叶的动物；浏览书本的人",
+    "ex": "through tools such as a web browser and Python interpreter,"
+   },
+   {
+    "w": "burst",
+    "ipa": "bərst",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使爆裂；爆炸",
+    "ex": "inference burst in sub-millisecond intervals. Therefore, an"
+   },
+   {
+    "w": "categorize",
+    "ipa": "ˈkætəgərˌaɪz",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "分类",
+    "ex": "• Inference Engines. Each engine manages one GPU. Engines are categorized into prefill engines (PEs) for prefill"
+   },
+   {
+    "w": "centralize",
+    "ipa": "ˈsɛntrəˌlaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "集聚, 集中",
+    "ex": "from remote storage. This design centralizes all storage I/O"
+   },
+   {
+    "w": "comparison",
+    "ipa": "kəmˈpɛrəsən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比较，对照；比似",
+    "ex": "online serving), considering the cost comparison between"
+   },
+   {
+    "w": "compose",
+    "ipa": "kəmˈpoʊz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "组成，构成；创作",
+    "ex": "a typical turn, the model receives a prompt composed by the"
+   },
+   {
+    "w": "comprise",
+    "ipa": "kəmˈpraɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "包含，包括；构成",
+    "ex": "transformer architecture, comprising stacked blocks with"
+   },
+   {
+    "w": "consequently",
+    "ipa": "ˈkɑnsəkˌwɛntli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "结果",
+    "ex": "engines remain largely idle. Consequently, the aggregate"
+   },
+   {
+    "w": "decisive",
+    "ipa": "dɪˈsaɪsɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "决定性的",
+    "ex": "that three decisive factors jointly cause this bottleneck, as"
+   },
+   {
+    "w": "dominate",
+    "ipa": "ˈdɑməˌneɪt",
+    "pos": "vi.；vt.",
+    "lv": "六级",
+    "m": "拥有优势；在…中占首要地位；支配，统治，控制；耸立于，俯视",
+    "ex": "The performance of multi-turn, agentic LLM inference is increasingly dominated by KV-Cache storage I/O rather than"
+   },
+   {
+    "w": "drastically",
+    "ipa": "ˈdræstɪkli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "激烈地，猛烈地",
+    "ex": "them, and drastically reduces compute communication latency. This design also ensures that the inter-GPU communication remains highly reliable and predictable even when per-forming data-intensive tasks such as reading large …"
+   },
+   {
+    "w": "effective",
+    "ipa": "ˈifɛktɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "有效的；有影响的",
+    "ex": "the effective batch size (in tokens) by approximately a factor"
+   },
+   {
+    "w": "enormous",
+    "ipa": "ɪˈnɔrmɪs",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "巨大的",
+    "ex": "cost-effective in scenarios with enormous working sets (e.g.,"
+   },
+   {
+    "w": "equipped",
+    "ipa": "ɪkˈwɪpt",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "装备；预备（equip的过去分词）；整装",
+    "ex": "NVIDIA DGX SuperPOD [32], each node is equipped with 8"
+   },
+   {
+    "w": "evolve",
+    "ipa": "ɪˈvɑlv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使发展",
+    "ex": "Large Language Models (LLMs) are rapidly evolving from"
+   },
+   {
+    "w": "exclusively",
+    "ipa": "ɪkˈsklusɪvli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "专门地",
+    "ex": "for hit tokens is loaded exclusively by prefill engines directly"
+   },
+   {
+    "w": "external",
+    "ipa": "ɪkˈstərnəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "外部的，外面的",
+    "ex": "Cache. This reinforces the need for external, high-capacity"
+   },
+   {
+    "w": "fabric",
+    "ipa": "ˈfæbrɪk",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "织物，纺织品；结构",
+    "ex": "communication bandwidth. Independent of the compute fabric, each node also features a storage NIC (SNIC, also known"
+   },
+   {
+    "w": "feedback",
+    "ipa": "ˈfidˌbæk",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "反馈",
+    "ex": "e.g., terminal commands, code execution, or asking for human feedback) over long sessions. As shown in Figure 2, in"
+   },
+   {
+    "w": "finally",
+    "ipa": "ˈfaɪnəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "最后；不可更改的",
+    "ex": "Finally, the LLM parameters are updated to increase the likelihood of high-scoring outputs and reduce the likelihood of"
+   },
+   {
+    "w": "flop",
+    "ipa": "flɑp",
+    "pos": "v.；n.；adv.",
+    "lv": "专八",
+    "m": "笨拙地抛下；扑通放下；拍（翅）；失败；砰然落下；拍击声；扑通一声；恰巧",
+    "ex": "of GPU FLOPS, which drives us to run into memory and"
+   },
+   {
+    "w": "general-purpose",
+    "ipa": "ˈʤɛnərəl ˈpərpəs",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "通用的，一般用途的（与专用 special-purpose 相对）",
+    "ex": "engines is costly and often impractical in general-purpose"
+   },
+   {
+    "w": "globally",
+    "ipa": "ˈgloʊbəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "世界上, 全世界",
+    "ex": "the storage I/O from a single-bottleneck resource into a globally pooled and schedulable capacity. The exact data flows"
+   },
+   {
+    "w": "harness",
+    "ipa": "ˈhɑrnɪs",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "治理；马具，挽具",
+    "ex": "storage network bandwidth cannot be fully harnessed."
+   },
+   {
+    "w": "hinder",
+    "ipa": "ˈhɪndər",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "阻碍",
+    "ex": "kernels [10, 14, 27, 54] to compute at the same time, hindering"
+   },
+   {
+    "w": "inherent",
+    "ipa": "ˌɪnˈhɛrənt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "固有的",
+    "ex": "an optimized dual-path loading data path design, which introduces no inherent congestion under common P/D ratios,"
+   },
+   {
+    "w": "inherently",
+    "ipa": "ˌɪnˈhɛrəntli",
+    "pos": "adv.",
+    "lv": "GRE",
+    "m": "固有地， 天性地",
+    "ex": "inherently avoids network congestion and avoids interference with latency-critical model execution communications"
+   },
+   {
+    "w": "input",
+    "ipa": "ˈɪnˌpʊt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "输入；投入的资金",
+    "ex": "tool output or user input) and generates the next action or"
+   },
+   {
+    "w": "intensity",
+    "ipa": "ˌɪnˈtɛnsɪti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "强烈，剧烈；强度",
+    "ex": "both storage and application performance. By isolating high-intensity east-west compute traffic between GPUs from storage traffic, the architecture prevents interference between"
+   },
+   {
+    "w": "intensive",
+    "ipa": "ˌɪnˈtɛnsɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "加强的；精耕细作的",
+    "ex": "distinct compute and memory patterns: prefill is compute-intensive and batched, while decode is memory-bound and"
+   },
+   {
+    "w": "intermittent",
+    "ipa": "ˌɪntərˈmɪtənt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "间歇的， 断断续续的",
+    "ex": "intermittent pattern: collective operations used in model"
+   },
+   {
+    "w": "interpreter",
+    "ipa": "ˌɪnˈtərprətər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "译员，口译者",
+    "ex": "through tools such as a web browser and Python interpreter,"
+   },
+   {
+    "w": "investigation",
+    "ipa": "ˌɪnˌvɛstəˈgeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "调查，调查研究",
+    "ex": "We observe severe GPU underutilization during agentic inference tasks. Our investigation reveals that KV-Cache loading"
+   },
+   {
+    "w": "likelihood",
+    "ipa": "ˈlaɪkliˌhʊd",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "可能（性）",
+    "ex": "Finally, the LLM parameters are updated to increase the likelihood of high-scoring outputs and reduce the likelihood of"
+   },
+   {
+    "w": "locality",
+    "ipa": "loʊˈkæləti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "位置，地点，发生地",
+    "ex": "locality in prefill computations: each layer requires only its"
+   },
+   {
+    "w": "logical",
+    "ipa": "ˈlɑʤɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "逻辑的；符合逻辑的",
+    "ex": "Modern AI data centers are purpose-built logical supercom-puters engineered to handle large-scale generative AI training and inference workloads. For example, in a standard"
+   },
+   {
+    "w": "loop",
+    "ipa": "lup",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "圈，环，环孔",
+    "ex": "agent LLM training, which often adopts reinforcement learning (RL) approaches. In a typical RL training loop, the agent"
+   },
+   {
+    "w": "maximize",
+    "ipa": "ˈmæksəˌmaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "取最大值, 最佳化",
+    "ex": "distributed DRAM pool and employs an affinity-aware scheduler to maximize the DRAM KV-Cache hit rate. However, it"
+   },
+   {
+    "w": "persistent",
+    "ipa": "pərˈsɪstənt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "持续的，坚持的",
+    "ex": "KV Persistent Storage"
+   },
+   {
+    "w": "precede",
+    "ipa": "prɪˈsid",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "先于…，领先",
+    "ex": "FFNs process tokens independently. The model predicts subsequent tokens based on preceding ones, storing attention"
+   },
+   {
+    "w": "predictable",
+    "ipa": "prɪˈdɪktəbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "可预料的",
+    "ex": "them, and drastically reduces compute communication latency. This design also ensures that the inter-GPU communication remains highly reliable and predictable even when per-forming data-intensive tasks such as reading large …"
+   },
+   {
+    "w": "preliminary",
+    "ipa": "prɪˈlɪməˌnɛri",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "预备的，初步的",
+    "ex": "LLM Inference Preliminary"
+   },
+   {
+    "w": "proportion",
+    "ipa": "prəˈpɔrʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比例，部分",
+    "ex": "[38] can only store a small proportion of KV-Caches, neces-sitating the use of larger yet cheaper external SSD-based"
+   },
+   {
+    "w": "python",
+    "ipa": "ˈpaɪθɑn",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "巨蟒；大蟒",
+    "ex": "through tools such as a web browser and Python interpreter,"
+   },
+   {
+    "w": "rapidly",
+    "ipa": "ˈræpədli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "迅速地；很快地；立即",
+    "ex": "Large Language Models (LLMs) are rapidly evolving from"
+   },
+   {
+    "w": "recently",
+    "ipa": "ˈrisəntli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "最近，新近",
+    "ex": "LLM inference is becoming one of the most important system workloads recently. Popular LLMs utilize decoder-only"
+   },
+   {
+    "w": "reinforce",
+    "ipa": "ˌriɪnˈfɔrs",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "加强，强化",
+    "ex": "Cache. This reinforces the need for external, high-capacity"
+   },
+   {
+    "w": "reinforcement",
+    "ipa": "ˌriɪnˈfɔrsmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "加固；增援；援军；加强",
+    "ex": "agent LLM training, which often adopts reinforcement learning (RL) approaches. In a typical RL training loop, the agent"
+   },
+   {
+    "w": "response",
+    "ipa": "rɪˈspɑns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "反应",
+    "ex": "response. A single agent run is a trajectory of dozens or even"
+   },
+   {
+    "w": "responsible",
+    "ipa": "riˈspɑnsəbəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "负责的，有责任的",
+    "ex": "also responsible for dynamically distributing data traffic"
+   },
+   {
+    "w": "retrieval",
+    "ipa": "rɪˈtrivəl",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "检索；恢复；取回；拯救",
+    "ex": "The above analysis demonstrates that the fundamental performance issue for agentic inference on PD-disaggregated architecture is the high I/O demand for KV-Cache retrieval and"
+   },
+   {
+    "w": "retrieve",
+    "ipa": "rɪˈtriv",
+    "pos": "vi.",
+    "lv": "六级",
+    "m": "重新得到， 取回， 收回； 挽回， 补救； 检索",
+    "ex": "Cache data to retrieve [19] and reduce the retrieval overhead"
+   },
+   {
+    "w": "reuse",
+    "ipa": "riˈjuz",
+    "pos": "v.",
+    "lv": "托福",
+    "m": "再使用 n重新使用",
+    "ex": "Cache in distributed storage to enable reuse across turns."
+   },
+   {
+    "w": "reveal",
+    "ipa": "rɪˈvil",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "揭露，揭示",
+    "ex": "We observe severe GPU underutilization during agentic inference tasks. Our investigation reveals that KV-Cache loading"
+   },
+   {
+    "w": "saturation",
+    "ipa": "ˌsæʧərˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "饱和（状态）；浸透",
+    "ex": "bandwidth of all engines — including otherwise-idle decode-side NICs — and eliminates the asymmetric bandwidth saturation that limits existing systems. This approach transforms"
+   },
+   {
+    "w": "shift",
+    "ipa": "ʃɪft",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "替换，转移；转换",
+    "ex": "This paradigm shift in applications has driven a significant"
+   },
+   {
+    "w": "significant",
+    "ipa": "sɪgˈnɪfɪkənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "重要的",
+    "ex": "This paradigm shift in applications has driven a significant"
+   },
+   {
+    "w": "tan",
+    "ipa": "tæn",
+    "pos": "vi.；vt.；n.",
+    "lv": "四级",
+    "m": "晒成棕褐色；使晒成棕褐色；硝制；棕褐色， 棕黄色； 晒成棕褐色， 晒黑",
+    "ex": "Yixuan Tan3 Wentao Zhang3 Liyue Zhang3 Shangyan Zhou3 Yuxuan Liu3"
+   },
+   {
+    "w": "unbalance",
+    "ipa": "ənˈbæləns",
+    "pos": "v.",
+    "lv": "托福",
+    "m": "使失衡,使精神紊乱n失衡",
+    "ex": "unbalanced storage network bandwidth utilization across"
+   },
+   {
+    "w": "undergo",
+    "ipa": "ˌəndərˈgoʊ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "承受",
+    "ex": "LLM first undergoes a rollout phase, where it is prompted"
+   },
+   {
+    "w": "underutilized",
+    "ipa": "ˈəndərˌjutəˌlaɪzd",
+    "pos": "adj.",
+    "lv": "GRE",
+    "m": "未充分利用的",
+    "ex": "persistently saturated, while decoding engines remain underutilized. Simply provisioning more bandwidth to prefill"
+   },
+   {
+    "w": "unevenly",
+    "ipa": "əˈnivənli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "不平坦地, 不均衡地",
+    "ex": "This imbalance reveals a fundamental inefficiency in existing designs: storage network bandwidth is unevenly utilized across engines. The bandwidth of prefill engines are"
+   },
+   {
+    "w": "unused",
+    "ipa": "ənˈjuzd",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "不用的；未消耗的",
+    "ex": "often have substantial unused storage network bandwidth."
+   }
+  ]
+ }
+];
+// lv 一律写中文档名（十一档平级，2026-09-30 定案；旧短码由 build 脚本自动翻译）
+const LVCLS={"四级":"t4","六级":"t6","考研":"tk","考博":"tp","专四":"tm4","专八":"tm8","雅思":"ty","托福":"tt","GRE":"tg","超纲":"tsuper"};
+const LVNAME={"四级":"四级","六级":"六级","考研":"考研","考博":"考博","专四":"专业四级","专八":"专业八级","雅思":"雅思","托福":"托福","GRE":"GRE","超纲":"超纲（大纲未收）"};
+const LVSHORT={"四级":"4","六级":"6","考研":"考研","考博":"考博","专四":"专四","专八":"专八","雅思":"雅思","托福":"托福","GRE":"GRE","超纲":"★超纲"};
+const LVORDER=["四级","六级","考研","考博","专四","专八","雅思","托福","GRE","超纲"];
+
+let mode="sec";
+let theme="theme-mag"; // 章节视图固定杂志风；按级别视图固定暗色大页
+
+function cardHTML(x,sec){
+  const from = mode==="lv" ? `<div class="from">出自 ${sec}</div>` : "";
+  if(theme==="theme-paper"){
+    return `<div class="word"><span class="w">${x.w}<span class="ipa">/${x.ipa}/</span><i class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</i></span>
+      <span><span class="pos">${x.pos}</span><span class="m">${x.m}</span>${from}</span>
+      <span class="ex">${x.ex}</span></div>`;
+  }
+  if(theme==="theme-mag") return "";
+  return `<div class="card lv${x.lv}" data-say="${x.w}"><span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span><span class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</span>
+    <div class="m">${x.pos} ${x.m}</div><div class="ex">${x.ex}</div>${from}</div>`;
+}
+function magRow(x,sec){
+  return `<tr data-say="${x.w}"><td class="w"><span class="hwband">${x.w}</span><span class="ipa">/${x.ipa}/</span></td>
+    <td class="lv"><b class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</b></td>
+    <td class="m">${x.pos} ${x.m}${mode==="lv"?`<span class="from">出自 ${sec}</span>`:""}</td>
+    <td class="ex">${x.ex}</td></tr>`;
+}
+function groupHTML(title,icon,inner){
+  if(theme==="theme-mag") return `<div class="sec"><h2>${title}</h2><table>${inner}</table></div>`;
+  if(theme==="theme-dark"||theme==="theme-fresh")
+    return `<div class="sec"><h2>${theme==="theme-dark"?"":"<span class='n'>"+icon+"</span>"}${title}</h2><div class="grid">${inner}</div></div>`;
+  return `<div class="sec"><h2>${title}</h2>${inner}</div>`;
+}
+
+function render(){
+  document.body.classList.toggle("lv-mode",mode==="lv");
+  // 注意：必须用 classList.add，不能整体赋值 className —— 否则会抹掉 body.night，
+  // 而夜晚章节视图依赖 body.night.theme-mag 这条 CSS，抹掉后点「按章节」会静默退回白天。
+  if(mode==="sec")document.body.classList.add("theme-mag");
+  const app=document.getElementById("app");
+  let html="";
+  if(mode==="sec"){
+    for(const s of DATA){
+      html += theme==="theme-mag"
+        ? groupHTML(s.sec,s.icon,s.words.map(x=>magRow(x,s.short)).join(""))
+        : groupHTML(s.sec,s.icon,s.words.map(x=>cardHTML(x,s.short)).join(""));
+    }
+  }else{
+    // 学习模式同款暗色大页：每个级别一块
+    const dot={"四级":"var(--c4)","六级":"var(--c6)","考研":"var(--ckaon)","考博":"var(--cphd)","专四":"var(--cm4)","专八":"var(--cm8)","雅思":"var(--cy)","托福":"var(--ct)","GRE":"var(--cg)","超纲":"var(--csuper)"};
+    html=LVORDER.map(lv=>{
+      const items=[];
+      DATA.forEach(s=>s.words.forEach(x=>{if(x.lv===lv)items.push([x,s.short])}));   // ov 已废除（2026-09-30）
+      if(!items.length)return"";   // 本词表里没有这一档 → 不出空面板
+      items.sort((a,b)=>a[0].w.localeCompare(b[0].w));
+      const cls={"六级":"l6","考研":"lk","考博":"lp","专四":"lm4","专八":"lm8","雅思":"ly","托福":"lt","GRE":"lg","超纲":"lsuper"}[lv]||"";
+      return `<div class="lvslide ${cls}">
+        <div class="ltitle"><span style="color:${dot[lv]}">${LVNAME[lv]}</span>词汇<small>${items.length} words · 按字母排序 · 悬停看原文例句 · 点击发音</small></div>
+        <div class="sgrid">${items.map(([x,sec])=>`
+          <div class="lcard" data-say="${x.w}">
+            <span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span>
+            <div class="m">${x.pos} ${x.m}</div>
+            <div class="ex">${x.ex}</div>
+            <div class="from">出自 ${sec}</div>
+          </div>`).join("")}</div></div>`;
+    }).join("");
+  }
+  app.innerHTML=html;
+}
+function syncToolbar(){
+  document.getElementById("v-sec").classList.toggle("on",mode==="sec");
+  document.getElementById("v-lv").classList.toggle("on",mode==="lv");
+}
+document.getElementById("v-sec").onclick=()=>{mode="sec";theme="theme-mag";syncToolbar();render();};
+document.getElementById("v-lv").onclick=()=>{mode="lv";syncToolbar();render();};
+
+// 朗读：多引擎在线 TTS 自动降级（有道 / Polly / 百度 / 谷歌），可按下拉切换主音色
+// 合并自 .agents 有道源版 与 workbuddy Polly 源版 —— 单文件同时支持两套引擎
+const VOICE_MAP={
+  yd1:{src:"yd",label:"美式 · 有道（推荐）"},
+  yd0:{src:"yd",label:"英式 · 有道"},
+  Brian:{src:"se",label:"Brian · 英式男声"},
+  Amy:{src:"se",label:"Amy · 英式女声"},
+  Matthew:{src:"se",label:"Matthew · 美式男声"},
+  Joanna:{src:"se",label:"Joanna · 美式女声"},
+  Salli:{src:"se",label:"Salli · 美式女声"},
+  Ivy:{src:"se",label:"Ivy · 美式童声"},
+  bd:{src:"bd",label:"百度翻译 · 女声"},
+  gg:{src:"gg",label:"谷歌翻译"},
+  mute:{src:"mute",label:"🔇 不朗读"}
+};
+const VOICE_ORDER=["yd1","yd0","Brian","Amy","Matthew","Joanna","Salli","Ivy","bd","gg","mute"];
+let ONLINE="yd1"; // 默认有道 · 美音（保留 .agents 版行为）
+try{const sv=localStorage.getItem("vocab_voice");if(sv&&VOICE_MAP[sv])ONLINE=sv;}catch(e){}
+const ENG=["yd","se","bd","gg"];               // 全部可选引擎
+const ENG_NAME={yd:"有道",se:"Polly",bd:"百度",gg:"谷歌"};
+const POLLY_VOICES={Brian:1,Amy:1,Matthew:1,Joanna:1,Salli:1,Ivy:1};
+let SRC_ORDER=ENG.slice(),srcIdx=0;           // 降级顺序：按所选音色的主引擎优先
+function applyVoiceOrder(){
+  const want=VOICE_MAP[ONLINE].src;
+  const i=ENG.indexOf(want);
+  SRC_ORDER=i<0?ENG.slice():ENG.slice(i).concat(ENG.slice(0,i));
+}
+applyVoiceOrder();
+let audio=null;
+function ttsURL(src,t){
+  const q=encodeURIComponent(t);
+  if(src==="yd")return `https://dict.youdao.com/dictvoice?type=${ONLINE==="yd0"?"0":"1"}&audio=${q}`;
+  if(src==="se")return `https://api.streamelements.com/kappa/v2/speech?voice=${POLLY_VOICES[ONLINE]?ONLINE:"Brian"}&text=${q}`;
+  if(src==="bd")return `https://fanyi.baidu.com/gettts?lan=en&text=${q}&spd=5&source=web`;
+  return `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q=${q}`;
+}
+function fillVoiceSel(){
+  const sel=document.getElementById("voiceSel");if(!sel)return;
+  sel.innerHTML=VOICE_ORDER.map(v=>`<option value="${v}" ${ONLINE===v?"selected":""}>${VOICE_MAP[v].label}</option>`).join("");
+  const st=document.getElementById("srcState");
+  if(st)st.textContent=ENG_NAME[SRC_ORDER[srcIdx]]||"";
+}
+fillVoiceSel();
+let saying=0; // 防并发
+function say(t){
+  if(ONLINE==="mute"){try{if(audio){audio.pause();audio=null}}catch(e){}return}
+  const my=++saying;
+  trySrc(0,t,my);
+}
+function trySrc(i,t,my){
+  if(my!==saying)return;
+  if(i>=SRC_ORDER.length){const st=document.getElementById("srcState");if(st)st.textContent="无可用源";return}
+  const src=SRC_ORDER[i];
+  const st=document.getElementById("srcState");
+  if(st)st.textContent="尝试 "+ENG_NAME[src];
+  try{if(audio){audio.pause();audio=null}}catch(e){}
+  const a=new Audio(ttsURL(src,t));
+  let ok=false,advanced=false;
+  const advance=()=>{ if(!ok&&!advanced&&my===saying){advanced=true;trySrc(i+1,t,my);} };
+  a.addEventListener("playing",()=>{ok=true;
+    if(srcIdx!==i){srcIdx=i;fillVoiceSel();} // 记住能用的源
+  });
+  a.addEventListener("error",advance);
+  audio=a;
+  a.play().catch(advance);
+  setTimeout(()=>{ if(!ok&&my===saying&&a.paused)advance(); },2500);
+}
+document.getElementById("voiceSel").addEventListener("change",e=>{
+  ONLINE=e.target.value; applyVoiceOrder(); srcIdx=0; // 换音色重新从头试源
+  try{localStorage.setItem("vocab_voice",ONLINE);}catch(e){}
+  if(ONLINE!=="mute") say("Hello, let us learn new words together.");
+});
+/* ---- 白天 / 夜晚 ---- */
+let style="day";
+try{const s=localStorage.getItem("vocab_style");if(["day","night","paper"].indexOf(s)>=0)style=s;}catch(e){}
+function applyStyle(){
+  document.body.classList.toggle("night",style==="night");
+  document.body.classList.toggle("paper",style==="paper");
+  ["day","night","paper"].forEach(k=>{const b=document.getElementById("st-"+k);if(b)b.classList.toggle("on",style===k);});
+  if(typeof studyEl!=="undefined"&&studyEl)studyEl.classList.toggle("day",style!=="night");
+}
+document.getElementById("st-day").onclick=()=>{style="day";try{localStorage.setItem("vocab_style","day")}catch(e){};applyStyle();};
+document.getElementById("st-night").onclick=()=>{style="night";try{localStorage.setItem("vocab_style","night")}catch(e){};applyStyle();};
+document.getElementById("st-paper").onclick=()=>{style="paper";try{localStorage.setItem("vocab_style","paper")}catch(e){};applyStyle();};
+document.getElementById("app").addEventListener("click",e=>{
+  const el=e.target.closest("[data-say]"); if(el) say(el.dataset.say);
+});
+
+/* ---------- 学习模式：按章节分页的 PPT 翻页 ---------- */
+const PER_PAGE = 12; // 每页最多词数，放不下自动续页
+let slides=[],si=0;
+function buildSlides(){
+  slides=[];
+  for(const s of DATA){
+    for(let i=0;i<s.words.length;i+=PER_PAGE){
+      slides.push({sec:s.sec,page:Math.floor(i/PER_PAGE)+1,
+        pages:Math.ceil(s.words.length/PER_PAGE),words:s.words.slice(i,i+PER_PAGE)});
+    }
+  }
+}
+const studyEl=document.getElementById("study");
+let open=false;
+function showSlide(){
+  const sl=slides[si];
+  const title=sl.pages>1 ? `${sl.sec}（第 ${sl.page}/${sl.pages} 页）` : sl.sec;
+  document.getElementById("sPage").innerHTML =
+    `<div class="stitle">${title}<small>${sl.words.length} words</small></div>
+     <div class="sgrid">${sl.words.map(x=>`
+       <div class="scard" data-say="${x.w}">
+         <span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span><span class="tag ${LVCLS[x.lv]}" style="font-size:11px;padding:2px 8px">${LVSHORT[x.lv]}</span>
+         <div class="m">${x.pos} ${x.m}</div>
+         <div class="ex">${x.ex}</div>
+       </div>`).join("")}</div>`;
+  document.getElementById("sIdx").textContent=(si+1)+" / "+slides.length;
+  document.getElementById("sbar").style.width=((si+1)/slides.length*100)+"%";
+  document.getElementById("sPrev").disabled=si===0;
+  document.getElementById("sNext").disabled=si===slides.length-1;
+  studyEl.querySelector(".sbody").scrollTop=0;
+}
+function studyOpen(){ buildSlides(); si=0; open=true; studyEl.classList.add("on"); applyStyle(); showSlide(); }
+function studyClose(){ open=false; studyEl.classList.remove("on"); }
+function next(){ if(si<slides.length-1){ si++; showSlide(); } }
+function prev(){ if(si>0){ si--; showSlide(); } }
+document.getElementById("v-study").onclick=()=>open?studyClose():studyOpen();
+document.getElementById("sClose").onclick=studyClose;
+document.getElementById("sExit").onclick=studyClose;
+document.getElementById("sNext").onclick=next;
+document.getElementById("sPrev").onclick=prev;
+studyEl.addEventListener("click",e=>{
+  const el=e.target.closest("[data-say]"); if(el) say(el.dataset.say);
+});
+document.addEventListener("keydown",e=>{
+  if(!open) return;
+  if(e.code==="Space"||e.key==="ArrowRight"||e.key==="PageDown"){ e.preventDefault(); next(); }
+  else if(e.key==="ArrowLeft"||e.key==="PageUp"){ prev(); }
+  else if(e.key==="Escape"){ studyClose(); }
+});
+applyStyle(); syncToolbar(); render();
+</script>
+<a href="../../vocab.html" target="_self" style="position:fixed;left:14px;bottom:14px;z-index:9999;font:600 13px/1 -apple-system,system-ui,sans-serif;color:#fff;background:rgba(0,0,0,.55);padding:8px 12px;border-radius:20px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.25)">← 返回索引</a></body>
+</html>

@@ -1,0 +1,4480 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fire-Flyer 论文核心词汇</title>
+<style>
+:root{--c4:#3b82f6;--c6:#8b5cf6;--ckaon:#f59e0b;--cphd:#ef4444;--ct:#0d9488;--cg:#d946ef;--cm4:#0ea5e9;--cm8:#f43f5e;--cy:#10b981;--csuper:#facc15}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;transition:background .3s,color .3s}
+.tag{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:4px;color:#fff;vertical-align:2px;margin-left:6px;font-style:normal;flex:none;white-space:nowrap}
+.tag.t4{background:var(--c4)}.tag.t6{background:var(--c6)}.tag.tk{background:var(--ckaon)}.tag.tp{background:var(--cphd)}.tag.tm4{background:var(--cm4)}.tag.tm8{background:var(--cm8)}
+.tag.tt{background:var(--ct)}.tag.tg{background:var(--cg)}.tag.ty{background:var(--cy)}.tag.tsuper{background:var(--csuper);color:#3a2f00}
+.ipa{font-family:"SF Mono",Menlo,monospace;font-size:.82em;font-weight:400;opacity:.62;margin-left:6px}
+
+
+/* 论文原标题小字 */
+.ptitle{font-size:12.5px;letter-spacing:.3px;margin-top:6px}
+.ptitle i{font-family:Georgia,serif}
+.theme-mag .ptitle{color:#999;text-transform:none}
+.theme-dark .ptitle{color:#6e7681}
+.theme-paper .ptitle{color:#a09578}
+.theme-fresh .ptitle{color:#9ca3af}
+body.lv-mode .ptitle{color:#7d8590}
+
+/* 预览工具条 */
+.toolbar{position:fixed;right:16px;bottom:16px;z-index:99;display:flex;flex-direction:column;gap:8px;background:rgba(20,22,30,.88);padding:12px;border-radius:14px;backdrop-filter:blur(8px);box-shadow:0 6px 24px rgba(0,0,0,.35)}
+.toolbar .row{display:flex;gap:6px}
+.toolbar button{border:none;cursor:pointer;padding:7px 12px;border-radius:8px;font-size:12.5px;background:#3a3f4d;color:#cbd2e0;transition:.15s}
+.toolbar button:hover{background:#4a5164}
+.toolbar button.on{background:#fff;color:#111;font-weight:600}
+.toolbar .lbl{font-size:10px;color:#8a93a6;text-align:left;margin:2px 0 -2px 2px}
+
+/* ---------- A 纸质阅读 ---------- */
+body.theme-paper{background:#faf6ee;color:#2c2a25}
+.theme-paper .wrap{max-width:880px;margin:0 auto;padding:56px 24px 140px}
+.theme-paper .hero h1{font-family:Georgia,"Songti SC",serif;font-size:34px}
+.theme-paper .hero p{color:#8a8272;margin:10px 0 42px;font-size:14px}
+.theme-paper .sec{margin-bottom:44px}
+.theme-paper .sec>h2{font-family:Georgia,"Songti SC",serif;font-size:20px;padding-left:14px;border-left:4px solid #b08d4f;margin-bottom:18px}
+.theme-paper .word{display:flex;gap:14px;padding:14px 16px;border-bottom:1px dashed #ddd2bc;align-items:baseline}
+.theme-paper .word:hover{background:#f3ecdc}
+.theme-paper .w{font-family:Georgia,serif;font-size:19px;font-weight:700;min-width:250px}
+.theme-paper .pos{color:#a09578;font-size:13px;margin-right:6px}
+.theme-paper .m{color:#4a463c;font-size:15px}
+.theme-paper .ex{margin-left:auto;max-width:270px;font-size:12.5px;color:#9a8f76;font-style:italic;text-align:right}
+.theme-paper .from{display:block;font-size:11px;color:#b3a888;font-style:normal;margin-top:3px}
+
+/* ---------- B 暗色科技 ---------- */
+body.theme-dark{background:#0d1117;color:#e6edf3}
+.theme-dark .wrap{max-width:1000px;margin:0 auto;padding:56px 24px 140px}
+.theme-dark .hero h1{font-family:"SF Mono",Menlo,monospace;font-size:26px}
+.theme-dark .hero h1::before{content:"$ ";color:#3fb950}
+.theme-dark .hero p{color:#7d8590;margin:10px 0 40px;font-size:14px;font-family:Menlo,monospace}
+.theme-dark .sec>h2{font-size:15px;font-family:Menlo,monospace;color:#58a6ff;padding:10px 16px;background:#161b22;border:1px solid #30363d;border-radius:8px 8px 0 0;margin-bottom:-1px}
+.theme-dark .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;padding:20px;background:#161b22;border:1px solid #30363d;border-radius:0 0 8px 8px}
+.theme-dark .card{background:#0d1117;border:1px solid #30363d;border-left:4px solid #58a6ff;border-radius:6px;padding:15px 17px;transition:.2s;cursor:pointer;font-family:Menlo,monospace}
+.theme-dark .card:hover{border-color:#58a6ff;box-shadow:0 0 14px rgba(88,166,255,.25);transform:translateY(-2px)}
+.theme-dark .w{font-family:Menlo,monospace;font-size:17px;color:#79c0ff}
+.theme-dark .ipa{color:#7ee787;opacity:.9}
+.theme-dark .m{color:#8b949e;font-size:13.5px;margin-top:7px;line-height:1.55}
+.theme-dark .ex{font-size:12px;color:#6e7681;margin-top:8px;border-top:1px solid #21262d;padding-top:8px;font-style:italic}
+.theme-dark .from{color:#484f58;font-size:11px;margin-top:4px}
+
+/* ---------- C 清新卡片 ---------- */
+body.theme-fresh{background:linear-gradient(160deg,#eef4ff 0%,#f6f0ff 50%,#fff7ec 100%);color:#1f2430}
+.theme-fresh .wrap{max-width:1020px;margin:0 auto;padding:56px 24px 140px}
+.theme-fresh .hero h1{font-size:32px;font-weight:800;background:linear-gradient(90deg,#3b82f6,#8b5cf6,#f59e0b);-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block}
+.theme-fresh .hero p{color:#6b7280;margin:10px 0 40px;font-size:14px}
+.theme-fresh .sec>h2{font-size:19px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.theme-fresh .sec>h2 .n{width:30px;height:30px;border-radius:10px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.08);display:inline-flex;align-items:center;justify-content:center;font-size:13px}
+.theme-fresh .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+.theme-fresh .card{background:rgba(255,255,255,.82);backdrop-filter:blur(6px);border-radius:18px;padding:17px 19px 15px;box-shadow:0 3px 14px rgba(80,80,140,.09);transition:.2s;cursor:pointer;border-top:5px solid #dbe3f5}
+.theme-fresh .card.lv四级{border-top-color:#3b82f6}.theme-fresh .card.lv六级{border-top-color:#8b5cf6}
+.theme-fresh .card.lv考研{border-top-color:#f59e0b}.theme-fresh .card.lv考博{border-top-color:#ef4444}
+.theme-fresh .card.lv专四{border-top-color:#0ea5e9}.theme-fresh .card.lv专八{border-top-color:#f43f5e}
+.theme-fresh .card.lv雅思{border-top-color:#10b981}.theme-fresh .card.lv托福{border-top-color:#0d9488}
+.theme-fresh .card.lvGRE{border-top-color:#d946ef}.theme-fresh .card.lv超纲{border-top-color:#facc15}
+.theme-fresh .card .w{display:inline-block;background:#f3f5fb;border-radius:8px;padding:2px 10px}
+.theme-fresh .card:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(80,80,140,.16)}
+.theme-fresh .w{font-size:18px;font-weight:700}
+.theme-fresh .m{color:#4b5563;font-size:14px;margin-top:6px;line-height:1.55}
+.theme-fresh .ex{color:#9ca3af;font-size:12.5px;margin-top:8px}
+.theme-fresh .from{color:#b6bcc9;font-size:11.5px;margin-top:4px}
+
+/* ---------- D 杂志表格（宽松版） ---------- */
+body.theme-mag{background:#fff;color:#111}
+.theme-mag .wrap{max-width:960px;margin:0 auto;padding:52px 28px 140px}
+.theme-mag .hero{border-bottom:3px solid #111;padding-bottom:16px;margin-bottom:10px}
+.theme-mag .hero h1{font-family:"Songti SC",Georgia,serif;font-size:38px;font-weight:900}
+.theme-mag .hero p{color:#888;font-size:13.5px;margin-top:8px}
+.theme-mag .sec>h2{font-size:14px;letter-spacing:3px;text-transform:uppercase;color:#c2410c;margin:44px 0 8px;border-bottom:1px solid #e5e5e5;padding-bottom:8px}
+.theme-mag table{width:100%;border-collapse:collapse}
+.theme-mag td{padding:16px 12px;border-bottom:1px solid #f0f0f0;font-size:15.5px;line-height:1.65;vertical-align:top}
+.theme-mag tr:hover td{background:#fff8f3}
+.theme-mag .w{font-weight:700;font-size:17px;width:300px}
+.theme-mag .lv{width:60px}
+.theme-mag .lv b{font-size:11.5px;padding:3px 0;display:block;text-align:center;border-radius:3px;color:#fff;font-weight:600}
+.theme-mag .m{color:#3d3d3d}
+.theme-mag .ex{color:#9a9a9a;font-size:13px;font-style:italic}
+.theme-mag .from{display:block;color:#c9c9c9;font-size:11.5px;font-style:normal;margin-top:4px}
+
+/* ---------- 按级别：学习模式同款暗色大页 ---------- */
+body.lv-mode{background:#0b0e13 !important}
+body.lv-mode .hero h1,body.lv-mode .hero p{color:#e8ecf3}
+body.lv-mode .hero p{color:#7d8590}
+.lvslide{background:#101318;color:#e8ecf3;border-radius:20px;padding:26px 32px 22px;margin-bottom:26px;border-top:6px solid var(--c4)}
+.lvslide.l6{border-top-color:var(--c6)}.lvslide.lk{border-top-color:var(--ckaon)}.lvslide.lp{border-top-color:var(--cphd)}
+.lvslide.lt{border-top-color:var(--ct)}.lvslide.lg{border-top-color:var(--cg)}.lvslide.lm4{border-top-color:var(--cm4)}.lvslide.lm8{border-top-color:var(--cm8)}.lvslide.ly{border-top-color:var(--cy)}.lvslide.lsuper{border-top-color:var(--csuper)}
+.lvslide .ltitle{font-size:26px;font-weight:800;font-family:Georgia,serif;display:flex;align-items:baseline;gap:14px}
+.lvslide .ltitle small{font-size:14px;color:#7d8590;font-family:Menlo,monospace;font-weight:400}
+.lvslide .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;padding:20px 0 8px}
+.lvslide .lcard{background:#171c26;border:1px solid #2b3342;border-radius:14px;padding:15px 17px;cursor:pointer;transition:.15s}
+.lvslide .lcard:hover{border-color:#79c0ff;transform:translateY(-2px)}
+.lvslide .lcard .w{font-size:19px;font-weight:700;font-family:Georgia,serif}
+.lvslide .lcard .ipa{font-family:Menlo,monospace;font-size:13px;color:#7ee787;margin-left:8px}
+.lvslide .lcard .m{color:#aeb6c4;font-size:14px;margin-top:7px;line-height:1.55}
+.lvslide .lcard .ex{color:#646d7d;font-size:12px;font-style:italic;margin-top:7px}
+.lvslide .lcard .from{color:#4d5563;font-size:11px;margin-top:6px}
+
+
+/* ---------- 白天 / 夜晚 ---------- */
+body.lv-mode:not(.night){background:#eef1f6 !important}
+body.lv-mode:not(.night) .hero h1{color:#1f2430}
+body.lv-mode:not(.night) .hero p{color:#6b7280}
+body.lv-mode:not(.night) .lvslide{background:#fff;color:#1f2430;box-shadow:0 4px 18px rgba(80,80,140,.10)}
+body.lv-mode:not(.night) .lvslide .lcard{background:#f7f9fd;border-color:#e4e9f3}
+body.lv-mode:not(.night) .lvslide .lcard:hover{border-color:#3b82f6}
+body.lv-mode:not(.night) .lvslide .lcard .m{color:#4b5563}
+body.lv-mode:not(.night) .lvslide .lcard .ex{color:#98a0ae}
+body.lv-mode:not(.night) .lvslide .lcard .from{color:#b3bac6}
+body.lv-mode:not(.night) .lvslide .lcard .ipa{color:#0a7d33}
+body.night.theme-mag{background:#0d1117;color:#e6edf3}
+body.night.theme-mag .hero{border-bottom-color:#e6edf3}
+body.night.theme-mag .hero p{color:#8b949e}
+body.night.theme-mag .sec>h2{color:#fbbf24;border-bottom-color:#30363d}
+body.night.theme-mag td{border-bottom-color:#1c2230}
+body.night.theme-mag tr:hover td{background:#161b22}
+body.night.theme-mag .m{color:#c9d1d9}
+body.night.theme-mag .ex{color:#8b949e}
+body.night.theme-mag .from{color:#57606a}
+body.night.theme-mag .w{color:#e6edf3}
+body.night.theme-mag .ptitle{color:#8b949e}
+body.night.theme-mag .ipa{opacity:.55}
+#study.day{background:#f5f7fa;color:#1f2430}
+#study.day .scard{background:#fff;border-color:#e4e9f3}
+#study.day .scard .m{color:#4b5563}
+#study.day .scard .ex{color:#98a0ae}
+#study.day .scard:hover{border-color:#3b82f6}
+#study.day .sfoot{color:#98a0ae;border-top-color:#e6e9f0}
+#study.day .snav button,#study.day #sClose{background:#fff;color:#1f2430;border-color:#d7dce6}
+#study.day .sfoot kbd{background:#e8ecf3;color:#1f2430}
+
+/* ---------- 学习模式（PPT 按章节翻页） ---------- */
+#study{position:fixed;inset:0;z-index:200;display:none;background:#101318;color:#e8ecf3;flex-direction:column}
+#study.on{display:flex}
+#study .sprog{height:4px;background:#262c38}
+#study .sprog i{display:block;height:100%;background:linear-gradient(90deg,#58a6ff,#8b5cf6);width:0;transition:width .25s}
+#study .sbody{flex:1;overflow:auto;padding:20px 40px}
+#study .stitle{font-size:24px;font-weight:800;font-family:Georgia,serif;padding:6px 4px 2px}
+#study .stitle small{color:#5b6472;font-size:14px;font-family:Menlo,monospace;font-weight:400;margin-left:12px}
+#study .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;padding:16px 2px 30px}
+#study .scard{background:#171c26;border:1px solid #2b3342;border-radius:14px;padding:16px 18px;cursor:pointer;transition:.15s}
+#study .scard:hover{border-color:#58a6ff;transform:translateY(-2px)}
+#study .scard .w{font-size:22px;font-weight:700;font-family:Georgia,serif}
+#study .scard .ipa{color:#7ee787;font-size:14px;margin-left:8px}
+#study .scard .m{color:#aeb6c4;font-size:14.5px;margin-top:8px;line-height:1.55}
+#study .scard .ex{color:#646d7d;font-size:12px;font-style:italic;margin-top:6px}
+#study .sfoot{display:flex;justify-content:space-between;align-items:center;padding:14px 28px;color:#5b6472;font-size:13px;border-top:1px solid #1d232e}
+#study .sfoot kbd{background:#262c38;border-radius:5px;padding:2px 8px;margin:0 2px;font-family:Menlo,monospace;font-size:12px}
+#study .snav{display:flex;gap:10px;align-items:center}
+#study .snav button{border:1px solid #333b4a;background:#1a2029;color:#cbd2e0;border-radius:8px;padding:8px 18px;cursor:pointer;font-size:14px}
+#study .snav button:hover{border-color:#58a6ff}
+#study .snav button:disabled{opacity:.35;cursor:default}
+
+
+
+/* —— 样式·暖白（暖白纸底） —— */
+
+body.theme-mag.paper{background:#f4f2ea!important;color:#23211c!important}
+body.theme-mag.paper .hero{border-bottom-color:#23211c}
+body.theme-mag.paper .hero h1{color:#1c1a12}
+body.theme-mag.paper .hero p{color:#6b6a5c}
+body.theme-mag.paper .ptitle{color:#8a8878}
+body.theme-mag.paper .sec>h2{color:#5f7a3f;border-bottom-color:#ddd8ca}
+body.theme-mag.paper td{border-bottom-color:#e6e1d3}
+body.theme-mag.paper tr:hover td{background:#ece7da}
+body.theme-mag.paper .m{color:#33312a}
+body.theme-mag.paper .ex{color:#8a8878}
+body.theme-mag.paper .from{color:#b3b0a0}
+body.theme-mag.paper .ipa{color:#6b6a5c}
+.theme-mag .hwband{padding:0 3px;font-weight:700}
+body.theme-mag.paper .hwband{background:linear-gradient(transparent 16%,#cdddb8 16%,#cdddb8 84%,transparent 84%);color:#1c1a12}
+
+
+</style>
+</head>
+<body class="theme-mag">
+<div class="wrap">
+  <div class="hero">
+    <h1>Fire-Flyer 论文核心词汇</h1>
+    <div class="ptitle"><i>Fire-Flyer AI-HPC: A Cost-Effective Software-Hardware Co-Design for Deep Learning · arXiv:2408.14158 · DeepSeek-AI, 2024</i></div>
+    <p>全量口径首建 · 11 节 493 词 · 十一档 + 超纲（2026-10-08）</p>
+  </div>
+  <div id="app"></div>
+</div>
+
+<div class="toolbar">
+  <div class="lbl">视图</div>
+  <div class="row">
+    <button id="v-sec" class="on">按章节</button>
+    <button id="v-lv">按级别综合</button>
+    <button id="v-study">▶ 学习模式</button>
+  </div>
+  <div class="lbl">样式</div>
+  <div class="row">
+    <button id="st-day" class="on">☀ 白天</button>
+    <button id="st-night">🌙 夜晚</button>
+    <button id="st-paper">暖白</button>
+  </div>
+  <div class="lbl">朗读声音 · 多引擎</div>
+  <div class="row"><select id="voiceSel" style="flex:1;border:none;border-radius:8px;padding:7px 8px;background:#3a3f4d;color:#cbd2e0;font-size:12.5px;outline:none"></select><span id="srcState" style="align-self:center;font-size:10.5px;color:#8a93a6;min-width:34px;text-align:center"></span></div>
+</div>
+
+<div id="study">
+  <div class="sprog"><i id="sbar"></i></div>
+  <button id="sClose" title="退出学习模式 (Esc)" style="position:absolute;top:14px;right:18px;z-index:5;border:1px solid #333b4a;background:#1a2029;color:#cbd2e0;border-radius:8px;width:34px;height:34px;font-size:16px;cursor:pointer">✕</button>
+  <div class="sbody"><div id="sPage"></div></div>
+  <div class="sfoot">
+    <span><kbd>空格</kbd>/<kbd>→</kbd> 下一页 &nbsp; <kbd>←</kbd> 上一页 &nbsp; 点单词发音 &nbsp; <kbd>Esc</kbd> 退出</span>
+    <div class="snav">
+      <span id="sIdx">0 / 0</span>
+      <button id="sPrev">← 上一页</button>
+      <button id="sNext">下一页 →</button>
+      <button id="sExit" style="border-color:#5b3a3a">退出</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// lv: 4=四级 6=六级 k=考研 p=考博；ipa 为美式音标
+const DATA = [
+ {
+  "sec": "I. Introduction · 引言",
+  "short": "Intro",
+  "icon": "I",
+  "words": [
+   {
+    "w": "alphabetical",
+    "ipa": "ˌælfəˈbɛtɪkəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "按字母表顺序的",
+    "ex": "Although LLM training is challenging, the emerging capabilities resulting from more Authors are listed in alphabetical order of their surnames. parameters have shown the benefits of continued model expansion."
+   },
+   {
+    "w": "capability",
+    "ipa": "ˌkeɪpəˈbɪləti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "能力，才能",
+    "ex": "Although LLM training is challenging, the emerging capabilities resulting from more Authors are listed in alphabetical order of their surnames. parameters have shown the benefits of continued model expansion."
+   },
+   {
+    "w": "collective",
+    "ipa": "kəˈlɛktɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "集体的；集合性的",
+    "ex": "To prevent congestion, we employed various network tunings detailed in Section VI-A. • HFReduce: Achieves computation-communication overlap via asynchronous allreduce on the CPU, outper-forming NVIDIA Collective Communications …"
+   },
+   {
+    "w": "compose",
+    "ipa": "kəmˈpoʊz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "组成，构成；创作",
+    "ex": "Fire-Flyer AI-HPC Architecture: We have deployed a cluster composed of 10,000 PCIe A100 GPUs for Deep Learning training purposes."
+   },
+   {
+    "w": "computation",
+    "ipa": "ˌkɑmpjəˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "计算, 估计",
+    "ex": "Key Technical Topics in our Architecture • Network Co-Design: The Two-Layer Fat-Tree Network [9] integrates storage and computation network, as shown in Section III-B."
+   },
+   {
+    "w": "copious",
+    "ipa": "ˈkoʊpiəs",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "丰富的， 富饶的",
+    "ex": "Training with copious amounts of data demands massive computational resources."
+   },
+   {
+    "w": "deploy",
+    "ipa": "dɪˈplɔɪ",
+    "pos": "v.；n.",
+    "lv": "六级",
+    "m": "配置；展开；使疏开；部署",
+    "ex": "Fire-Flyer AI-HPC Architecture: We have deployed a cluster composed of 10,000 PCIe A100 GPUs for Deep Learning training purposes."
+   },
+   {
+    "w": "downtime",
+    "ipa": "ˈdaʊnˌtaɪm",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "（工厂等由于检修，待料等的）停工期；[电子] 故障停机时间",
+    "ex": "Our systems are equipped with robust mechanisms to handle hardware failures, minimizing downtime and impact on operations."
+   },
+   {
+    "w": "emerge",
+    "ipa": "ˈimərʤ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "出现",
+    "ex": "Although LLM training is challenging, the emerging capabilities resulting from more Authors are listed in alphabetical order of their surnames. parameters have shown the benefits of continued model expansion."
+   },
+   {
+    "w": "emission",
+    "ipa": "ɪˈmɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "排放，辐射",
+    "ex": "Moreover, more nodes lead to higher energy consumption, which contradicts this era’s goal of reducing carbon emissions and achieving carbon neutrality."
+   },
+   {
+    "w": "exceed",
+    "ipa": "ɪkˈsid",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "超过，胜过；超出",
+    "ex": "Relying on Moore’s Law [2], computer speeds double every two years on average, but the pace of DL far exceeds this speed."
+   },
+   {
+    "w": "expansion",
+    "ipa": "ɪkˈspænʧən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "扩大，扩充；扩张",
+    "ex": "Although LLM training is challenging, the emerging capabilities resulting from more Authors are listed in alphabetical order of their surnames. parameters have shown the benefits of continued model expansion."
+   },
+   {
+    "w": "fundamentally",
+    "ipa": "ˌfəndəˈmɛnəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "根本上",
+    "ex": "The rapid development of DL is fundamentally tied to the support rendered by data."
+   },
+   {
+    "w": "insight",
+    "ipa": "ˈɪnˌsaɪt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "洞察力，洞悉",
+    "ex": "We hope these insights will be beneficial to industry peers and researchers alike."
+   },
+   {
+    "w": "mechanism",
+    "ipa": "ˈmɛkəˌnɪzəm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "机制，机能",
+    "ex": "Our systems are equipped with robust mechanisms to handle hardware failures, minimizing downtime and impact on operations."
+   },
+   {
+    "w": "moreover",
+    "ipa": "mɔˈroʊvər",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "再者，加之，此外",
+    "ex": "Moreover, more nodes lead to higher energy consumption, which contradicts this era’s goal of reducing carbon emissions and achieving carbon neutrality."
+   },
+   {
+    "w": "neutrality",
+    "ipa": "nuˈtræləti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "中立",
+    "ex": "Moreover, more nodes lead to higher energy consumption, which contradicts this era’s goal of reducing carbon emissions and achieving carbon neutrality."
+   },
+   {
+    "w": "propose",
+    "ipa": "prəˈpoʊz",
+    "pos": "v.；v.",
+    "lv": "四级",
+    "m": "提议；求婚",
+    "ex": "In Section IX, we propose the next generation of PCIe architecture, which is aimed at Mixture-of-Experts Large Language Models training and primarily utilizes multi-NICs and a Multi-Plane network."
+   },
+   {
+    "w": "rapidly",
+    "ipa": "ˈræpədli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "迅速地；很快地；立即",
+    "ex": "In recent years, Deep Learning (DL) [1] has developed rapidly and is widely used in image recognition, speech recognition, content generation, autonomous driving, and other ar-eas."
+   },
+   {
+    "w": "recognition",
+    "ipa": "ˌrɛkɪgˈnɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "认出，识别；承认",
+    "ex": "In recent years, Deep Learning (DL) [1] has developed rapidly and is widely used in image recognition, speech recognition, content generation, autonomous driving, and other ar-eas."
+   },
+   {
+    "w": "render",
+    "ipa": "ˈrɛndər",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "给予",
+    "ex": "The rapid development of DL is fundamentally tied to the support rendered by data."
+   },
+   {
+    "w": "researcher",
+    "ipa": "ˈrisərʧər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "研究员",
+    "ex": "Since then, researchers have gone down the path of making models bigger and never looked back."
+   },
+   {
+    "w": "resource",
+    "ipa": "ˈrisɔrs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "资源； 财力； 应付办法， 谋略",
+    "ex": "In particular, Large Language Models (LLMs) [3]–[7] that have become popular in recent years have exploded the demand for computational resources and memory."
+   },
+   {
+    "w": "robust",
+    "ipa": "roʊˈbəst",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "强健的",
+    "ex": "Our systems are equipped with robust mechanisms to handle hardware failures, minimizing downtime and impact on operations."
+   },
+   {
+    "w": "source",
+    "ipa": "sɔrs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "来源",
+    "ex": "It is already open-sourced: https://github.com/HFAiLab/hai-platform Stability and Robustness: These are crucial topics in HPC."
+   },
+   {
+    "w": "surge",
+    "ipa": "sərʤ",
+    "pos": "vi.；n.",
+    "lv": "六级",
+    "m": "蜂拥而出；洋溢，奔放；汹涌，奔腾；大浪， 波涛； 高涨； 汹涌",
+    "ex": "This leads to a surge in the cost of building AI infrastructure."
+   },
+   {
+    "w": "surname",
+    "ipa": "ˈsərˌneɪm",
+    "pos": "n.；vt.",
+    "lv": "四级",
+    "m": "姓，姓氏；绰号，别名；给…起别名；给…姓氏",
+    "ex": "Although LLM training is challenging, the emerging capabilities resulting from more Authors are listed in alphabetical order of their surnames. parameters have shown the benefits of continued model expansion."
+   },
+   {
+    "w": "utility",
+    "ipa": "juˈtɪləti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "使用，公共设施",
+    "ex": "These mechanisms, discussed in Section VII, include: • Disaster recovery through our checkpoint manager • A validator utility for detecting hardware failures • An overview of real hardware failure data from our cluster over the …"
+   },
+   {
+    "w": "widely",
+    "ipa": "ˈwaɪdli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "大大地",
+    "ex": "In recent years, Deep Learning (DL) [1] has developed rapidly and is widely used in image recognition, speech recognition, content generation, autonomous driving, and other ar-eas."
+   }
+  ]
+ },
+ {
+  "sec": "II. Background · 背景与相关工作",
+  "short": "Bg",
+  "icon": "II",
+  "words": [
+   {
+    "w": "acceleration",
+    "ipa": "ˌækˌsɛlərˈeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "加速；加速度",
+    "ex": "Fugaku [40], despite its high performance, does not support tensor GEMM acceleration, a key component for DL workloads."
+   },
+   {
+    "w": "accessibility",
+    "ipa": "ˌæksɛsəˈbɪlɪti",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "易接近, 可到达的",
+    "ex": "Despite their convenience and easy accessibility, the costs can accumulate significantly over time."
+   },
+   {
+    "w": "advent",
+    "ipa": "ˈædˌvɛnt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "(重要事件等的)到来，来临",
+    "ex": "However, with the advent of the LLMs era, they adopted an architecture similar to DGX, building a cluster with over 10,000 GPUs [48]."
+   },
+   {
+    "w": "allocation",
+    "ipa": "ˌæləˈkeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "分配，配置；安置",
+    "ex": "The gate model selects tokens for allocation during input, with corresponding tokens sent to experts model via all2all communication. • Fully Sharded Data Parallel (FSDP) is an implementation based on the ZeRO Stage 3 algorithm …"
+   },
+   {
+    "w": "ascend",
+    "ipa": "əˈsɛnd",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "上升",
+    "ex": "Huawei has designed the Ascend AI DSA chip [55], [56], which remains competitive with NVIDIA, as noted by NVIDIA CEO Jensen Huang."
+   },
+   {
+    "w": "assemble",
+    "ipa": "əˈsɛmbəl",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "组装；集合",
+    "ex": "During forward propagation, FSDP performs an allgather operation to assemble the complete parameters, which are then re-leased after the forward pass is completed."
+   },
+   {
+    "w": "aurora",
+    "ipa": "ərˈɔrə",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "黎明的女神,极光",
+    "ex": "2) GPU based HPC: Supercomputers like Frontier [41], Aurora [42], Summit [43] and Perlmutter [44] utilize high-performance GPUs to tackle large-scale computations."
+   },
+   {
+    "w": "azure",
+    "ipa": "ˈæʒər",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "天蓝色, 苍天, 碧空",
+    "ex": "5) Cloud Service Providers: Cloud service providers, such as Azure, offer flexible and scalable resources for AI training."
+   },
+   {
+    "w": "boost",
+    "ipa": "bust",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "推动,宣扬；促使，促进",
+    "ex": "While this will provide a considerable boost in computational power for AI tasks, the high cost of DGX systems raises questions about economic viability."
+   },
+   {
+    "w": "bubble",
+    "ipa": "ˈbəbəl",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "泡；冒泡，沸腾",
+    "ex": "Efficient scheduling strategies like GPipe [11], PipeDream 1F1B [12], and Zero Bubble Pipeline Parallelism (ZBPP) [33], are required to minimize “pipeline bubbles”. • Tensor Parallelism (TP): This involves placing a model layer …"
+   },
+   {
+    "w": "calculation",
+    "ipa": "ˌkælkjəˈleɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "计算，计算结果",
+    "ex": "HPC and AI Clusters of This Era 1) HPC Inadequacies for AI Training: Traditional supercomputers such as TianHe-2A [37], Stampede 2 [38], and Sunway TaihuLight [39] primarily focus on double precision calculations and do not …"
+   },
+   {
+    "w": "chase",
+    "ipa": "ʧeɪs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "追逐，追赶，追求",
+    "ex": "For long-term projects spanning around two years, these costs could amount to pur-chasing an entire dedicated cluster."
+   },
+   {
+    "w": "chip",
+    "ipa": "ʧɪp",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "屑片， 碎片； 炸土豆条； 集成电路片， 集成块； 缺口， 瑕疵",
+    "ex": "Recognizing the potential, industry giants have set up large AI clusters to train LLMs while constantly investing in computational power chips."
+   },
+   {
+    "w": "classification",
+    "ipa": "ˌklæsəfəˈkeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "分类，级别",
+    "ex": "Evolution of Deep Learning The revolution in Machine Learning and Deep Learning be-gan in 2012 with AlexNet [21], which outperformed traditional methods in image classification, marking the onset of big data utilization and …"
+   },
+   {
+    "w": "cluster",
+    "ipa": "ˈkləstər",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "串，束，簇；群，组；群聚；聚集",
+    "ex": "Recognizing the potential, industry giants have set up large AI clusters to train LLMs while constantly investing in computational power chips."
+   },
+   {
+    "w": "colossal",
+    "ipa": "kəˈlɑsəl",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "巨大的",
+    "ex": "Consequently, despite requiring colossal computational resources, efforts are being made to train large models on tens or hundreds of billions or even trillions of parameters."
+   },
+   {
+    "w": "column",
+    "ipa": "ˈkɑləm",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "专栏",
+    "ex": "It includes row-wise and column-wise parallelism, necessitating allgather and all2all for input splitting and output merging. • Expert Parallelism (EP): MoE Models’ different expert models are distributed on different GPUs during …"
+   },
+   {
+    "w": "competitive",
+    "ipa": "kəmˈpɛtɪtɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "竞争的， 比赛的； 好竞争的， 求胜心切的； 有竞争力的",
+    "ex": "Huawei has designed the Ascend AI DSA chip [55], [56], which remains competitive with NVIDIA, as noted by NVIDIA CEO Jensen Huang."
+   },
+   {
+    "w": "con",
+    "ipa": "kɑn",
+    "pos": "n.；v.；adv.；adj.；prep.",
+    "lv": "专八",
+    "m": "反对票；反对论；精读；默记；反面地；欺诈的；以…",
+    "ex": "Indeed, con-ducting DL training on these GPU-based HPCs yields significant performance."
+   },
+   {
+    "w": "considerable",
+    "ipa": "kənˈsɪdərəbəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "相当大(或多)的",
+    "ex": "While this will provide a considerable boost in computational power for AI tasks, the high cost of DGX systems raises questions about economic viability."
+   },
+   {
+    "w": "constantly",
+    "ipa": "ˈkɑnstəntli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "不断地，时常地",
+    "ex": "Recognizing the potential, industry giants have set up large AI clusters to train LLMs while constantly investing in computational power chips."
+   },
+   {
+    "w": "consumption",
+    "ipa": "kənˈsəmʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "消费，消耗",
+    "ex": "Besides communication, factors like operation optimization, data pre-processing, and GPU memory consumption significantly influence MFU."
+   },
+   {
+    "w": "crucial",
+    "ipa": "ˈkruʃəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "至关重要的",
+    "ex": "This massive scale introduces system-level challenges: 1) Efficiency: Firstly, achieving efficient training at this magnitude is crucial."
+   },
+   {
+    "w": "decelerate",
+    "ipa": "dɪˈsɛlərˌeɪt",
+    "pos": "v.",
+    "lv": "专八",
+    "m": "减速，降低速度",
+    "ex": "Stragglers can decelerate tasks involving hundreds of GPUs, em-phasizing the importance of stability and task recovery time."
+   },
+   {
+    "w": "despite",
+    "ipa": "dɪˈspaɪt",
+    "pos": "prep.",
+    "lv": "四级",
+    "m": "不管",
+    "ex": "Fugaku [40], despite its high performance, does not support tensor GEMM acceleration, a key component for DL workloads."
+   },
+   {
+    "w": "detail",
+    "ipa": "ˈditeɪl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "细节",
+    "ex": "Table I: Our Arch and DGX-A100 Server Hardware Details Our PCIe Arch DGX-A100 CPU 2 * AMD 32 Cores EPYC Rome/Milan CPU 2 * AMD 64 Cores"
+   },
+   {
+    "w": "disparity",
+    "ipa": "dɪˈspɛrəti",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "不同；不一致；不等",
+    "ex": "This disparity necessitates more machines, raising DL training costs, particularly for LLM training, where the computational power required surpasses that of traditional HPC applications."
+   },
+   {
+    "w": "domain",
+    "ipa": "doʊˈmeɪn",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "领域",
+    "ex": "4) AI DSA Clusters: Custom-designed AI DSA (Domain Specific Architecture) accelerators like Google’s TPU [51] , utilize highly advanced optical switch reconfigurable networks."
+   },
+   {
+    "w": "dram",
+    "ipa": "ˈdiˌræm",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "液量特兰(药衡系统中的容量单位), 少量",
+    "ex": "And as summarized in Figure 2 [32], while AI’s demand for computational power is growing at 10x per year, Moore’s Law lags behind with hardware FLOPs increase at only 3.0x every two years, DRAM bandwidth at 1.6x, and interconnect …"
+   },
+   {
+    "w": "dropout",
+    "ipa": "ˈdrɑˌpaʊt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "辍学",
+    "ex": "Research indicates that an upscale in the number of language model parameters and computational budget  e- e- e- e- e- e+ e+ e+ DQN GoogleNet Xception Neural Architecture Seach Neural Machinr Translation …"
+   },
+   {
+    "w": "duct",
+    "ipa": "dəkt",
+    "pos": "n.；vt.",
+    "lv": "专八",
+    "m": "输送管，导管；用导管输送；以导管封住",
+    "ex": "Indeed, con-ducting DL training on these GPU-based HPCs yields significant performance."
+   },
+   {
+    "w": "economic",
+    "ipa": "ˌɛkəˈnɑmɪk",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "经济的，经济学的",
+    "ex": "While this will provide a considerable boost in computational power for AI tasks, the high cost of DGX systems raises questions about economic viability."
+   },
+   {
+    "w": "economical",
+    "ipa": "ˌɛkəˈnɑmɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "节约的；经济学的",
+    "ex": "The question of how to construct a high-performance, efficient, economical, and environmentally friendly HPC to meet AI training requirements has become a hot topic."
+   },
+   {
+    "w": "ecosystem",
+    "ipa": "ˈikoʊˌsɪstəm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "生态系统",
+    "ex": "However, their software ecosystems, while progressing, still require further development to match the maturity of NVIDIA’s offerings."
+   },
+   {
+    "w": "efficient",
+    "ipa": "ɪˈfɪʃənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "效率高的，有能力的",
+    "ex": "This massive scale introduces system-level challenges: 1) Efficiency: Firstly, achieving efficient training at this magnitude is crucial."
+   },
+   {
+    "w": "emergence",
+    "ipa": "ˈimərʤəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "出现，发生",
+    "ex": "The emergence of ResNet [22], with its deeper layers, further broad-ened the horizons of image processing, truly bringing about the “deep” in “Deep Learning”."
+   },
+   {
+    "w": "environmentally",
+    "ipa": "ɪnˌvaɪrənˈmɛnəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "在环境方面地",
+    "ex": "The question of how to construct a high-performance, efficient, economical, and environmentally friendly HPC to meet AI training requirements has become a hot topic."
+   },
+   {
+    "w": "era",
+    "ipa": "ˈɪrə",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "纪元，年代",
+    "ex": "However, with the advent of the LLMs era, they adopted an architecture similar to DGX, building a cluster with over 10,000 GPUs [48]."
+   },
+   {
+    "w": "execution",
+    "ipa": "ˌɛksəˈkjuʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "实行，执行；处死刑",
+    "ex": "These accelerators are tailored for efficient execution of AI workloads, offering specialized features to optimize model training and inference."
+   },
+   {
+    "w": "exploration",
+    "ipa": "ˌɛksplərˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "考察；勘探；探查",
+    "ex": "Drawing from our extensive experience in Deep Learning spanning over the past decade, we have conducted considerable exploration in terms of cost-effectiveness."
+   },
+   {
+    "w": "exponential",
+    "ipa": "ˌɛkspoʊˈnɛnʃəl",
+    "pos": "n.；adj.",
+    "lv": "考博",
+    "m": "指数；指数的, 幂数的",
+    "ex": "Figure 1 illustrates the exponential growth of computational"
+   },
+   {
+    "w": "extensively",
+    "ipa": "ɪkˈstɛnsɪvli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "广泛地",
+    "ex": "Training LLMs involves dividing models among GPUs that communicate extensively for progress."
+   },
+   {
+    "w": "factor",
+    "ipa": "ˈfæktər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "因素；因子，系数",
+    "ex": "Besides communication, factors like operation optimization, data pre-processing, and GPU memory consumption significantly influence MFU."
+   },
+   {
+    "w": "feature",
+    "ipa": "ˈfiʧər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "特点",
+    "ex": "These accelerators are tailored for efficient execution of AI workloads, offering specialized features to optimize model training and inference."
+   },
+   {
+    "w": "finally",
+    "ipa": "ˈfaɪnəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "最后；不可更改的",
+    "ex": "Finally, FSDP updates the 1/n parameters using each GPU’s 1/n gradients and optimizer states."
+   },
+   {
+    "w": "firstly",
+    "ipa": "ˈfərstli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "首先，第一（列举论点用）",
+    "ex": "This massive scale introduces system-level challenges: 1) Efficiency: Firstly, achieving efficient training at this magnitude is crucial."
+   },
+   {
+    "w": "flop",
+    "ipa": "flɑp",
+    "pos": "v.；n.；adv.",
+    "lv": "专八",
+    "m": "笨拙地抛下；扑通放下；拍（翅）；失败；砰然落下；拍击声；扑通一声；恰巧",
+    "ex": "Figure 2: Scaling of Peak Hardware FLOPS, and Memory/Interconnect Bandwidth."
+   },
+   {
+    "w": "formerly",
+    "ipa": "ˈfɔrmərli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "以前，从前",
+    "ex": "3) GPU Clusters of Large Companies: Meta, formerly Facebook, has developed its AI-HPC using a software-hardware co-design approach, with one system utilizing IB and another employing RoCE [45], [46]."
+   },
+   {
+    "w": "generate",
+    "ipa": "ˈʤɛnərˌeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "产生",
+    "ex": "The shift towards the Mixture-of-Experts (MoE) Models [28]–[30] architecture starting from GPT-4 [7], and the recent AI Generated Content (AIGC) multi-modal (Sora [31]) has amplified the demand for memory and computational …"
+   },
+   {
+    "w": "giant",
+    "ipa": "ʤaɪənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "巨人；巨物",
+    "ex": "Recognizing the potential, industry giants have set up large AI clusters to train LLMs while constantly investing in computational power chips."
+   },
+   {
+    "w": "gradient",
+    "ipa": "ˈgreɪdiənt",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "斜坡",
+    "ex": "It then performs a reduce-scatter operation to synchronize gradients across all GPUs, resulting in each GPU holding 1/n of the reduced gradients."
+   },
+   {
+    "w": "heterogeneous",
+    "ipa": "ˌhɛtərəˈʤinjəs",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "[化学] 多相的；异种的；[化学] 不均匀的；由不同成分形成的",
+    "ex": "Some works, such as [57] analyzes the construction of HPC, discussed the interconnection of heterogeneous clusters, cooling systems."
+   },
+   {
+    "w": "highly",
+    "ipa": "ˈhaɪli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "高度地，很，非常",
+    "ex": "4) AI DSA Clusters: Custom-designed AI DSA (Domain Specific Architecture) accelerators like Google’s TPU [51] , utilize highly advanced optical switch reconfigurable networks."
+   },
+   {
+    "w": "horizon",
+    "ipa": "hərˈaɪzən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "地平线；眼界，见识",
+    "ex": "The emergence of ResNet [22], with its deeper layers, further broad-ened the horizons of image processing, truly bringing about the “deep” in “Deep Learning”."
+   },
+   {
+    "w": "image",
+    "ipa": "ˈɪmɪʤ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "形象，声誉，印象",
+    "ex": "The emergence of ResNet [22], with its deeper layers, further broad-ened the horizons of image processing, truly bringing about the “deep” in “Deep Learning”."
+   },
+   {
+    "w": "imperative",
+    "ipa": "ˌɪmˈpɛrətɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "必须的,必要的",
+    "ex": "However, as AI development outpaces hardware development, leading to skyrocketing training costs, adopting cost-saving solutions has become imperative."
+   },
+   {
+    "w": "inadequacy",
+    "ipa": "ˌɪˈnædɪkwəsi",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "不足",
+    "ex": "HPC and AI Clusters of This Era 1) HPC Inadequacies for AI Training: Traditional supercomputers such as TianHe-2A [37], Stampede 2 [38], and Sunway TaihuLight [39] primarily focus on double precision calculations and do not …"
+   },
+   {
+    "w": "inference",
+    "ipa": "ˈɪnfərəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "推断结果， 结论； 推论， 推理， 推断",
+    "ex": "These accelerators are tailored for efficient execution of AI workloads, offering specialized features to optimize model training and inference."
+   },
+   {
+    "w": "infrastructure",
+    "ipa": "ˌɪnfrəˈstrəkʧər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "基础设施；公共建设；下部构造",
+    "ex": "Challenges in AI Infrastructure As models continue to grow larger, DL training requires thousands of GPUs."
+   },
+   {
+    "w": "input",
+    "ipa": "ˈɪnˌpʊt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "输入；投入的资金",
+    "ex": "The gate model selects tokens for allocation during input, with corresponding tokens sent to experts model via all2all communication. • Fully Sharded Data Parallel (FSDP) is an implementation based on the ZeRO Stage 3 algorithm …"
+   },
+   {
+    "w": "invest",
+    "ipa": "ˌɪnˈvɛst",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "投资",
+    "ex": "Recognizing the potential, industry giants have set up large AI clusters to train LLMs while constantly investing in computational power chips."
+   },
+   {
+    "w": "lag",
+    "ipa": "læg",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "走得慢；落后",
+    "ex": "And as summarized in Figure 2 [32], while AI’s demand for computational power is growing at 10x per year, Moore’s Law lags behind with hardware FLOPs increase at only 3.0x every two years, DRAM bandwidth at 1.6x, and interconnect …"
+   },
+   {
+    "w": "large-scale",
+    "ipa": "ˈlɑrʤˌskeɪl",
+    "pos": "adj.",
+    "lv": "雅思",
+    "m": "大规模的， 大范围的",
+    "ex": "Aurora [42], Summit [43] and Perlmutter [44] utilize high-performance GPUs to tackle large-scale computations. It’s"
+   },
+   {
+    "w": "lease",
+    "ipa": "lis",
+    "pos": "n.；vt.",
+    "lv": "六级",
+    "m": "租约，租契；出租； 租得， 租有",
+    "ex": "During forward propagation, FSDP performs an allgather operation to assemble the complete parameters, which are then re-leased after the forward pass is completed."
+   },
+   {
+    "w": "long-term",
+    "ipa": "ˈlɔŋˈtərm",
+    "pos": "adj.",
+    "lv": "雅思",
+    "m": "长期的",
+    "ex": "can accumulate significantly over time. For long-term projects"
+   },
+   {
+    "w": "magnitude",
+    "ipa": "ˈmægnəˌtud",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "重大；星等",
+    "ex": "This massive scale introduces system-level challenges: 1) Efficiency: Firstly, achieving efficient training at this magnitude is crucial."
+   },
+   {
+    "w": "maintain",
+    "ipa": "meɪnˈteɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "维持，主张",
+    "ex": "FSDP reduces GPU memory usage by maintaining only 1/n of the parameters, gradients, and optimizer states on each GPU, enabling training of larger-scale models."
+   },
+   {
+    "w": "massive",
+    "ipa": "ˈmæsɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "巨大的 大量的",
+    "ex": "This massive scale introduces system-level challenges: 1) Efficiency: Firstly, achieving efficient training at this magnitude is crucial."
+   },
+   {
+    "w": "maturity",
+    "ipa": "məˈʧʊrəti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "成熟",
+    "ex": "However, their software ecosystems, while progressing, still require further development to match the maturity of NVIDIA’s offerings."
+   },
+   {
+    "w": "merge",
+    "ipa": "mərʤ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "合并",
+    "ex": "It includes row-wise and column-wise parallelism, necessitating allgather and all2all for input splitting and output merging. • Expert Parallelism (EP): MoE Models’ different expert models are distributed on different GPUs during …"
+   },
+   {
+    "w": "metric",
+    "ipa": "ˈmɛtrɪk",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "公制的，米制的",
+    "ex": "Model FLOPs Utilization (MFU), which assesses the ratio of observed throughput to theoretical maximum throughput (assuming 100% peak FLOPS), serves as the standard metric for evaluating training efficiency."
+   },
+   {
+    "w": "modal",
+    "ipa": "ˈmoʊdəl",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "模态的, 形态上的",
+    "ex": "The shift towards the Mixture-of-Experts (MoE) Models [28]–[30] architecture starting from GPT-4 [7], and the recent AI Generated Content (AIGC) multi-modal (Sora [31]) has amplified the demand for memory and computational …"
+   },
+   {
+    "w": "necessitate",
+    "ipa": "nəˈsɛsəˌteɪt",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "成为必要， 需要",
+    "ex": "This disparity necessitates more machines, raising DL training costs, particularly for LLM training, where the computational power required surpasses that of traditional HPC applications."
+   },
+   {
+    "w": "neural",
+    "ipa": "ˈnʊrəl",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "神经的",
+    "ex": "Research indicates that an upscale in the number of language model parameters and computational budget  e- e- e- e- e- e+ e+ e+ DQN GoogleNet Xception Neural Architecture Seach Neural Machinr Translation …"
+   },
+   {
+    "w": "nudge",
+    "ipa": "nəʤ",
+    "pos": "n.；v.",
+    "lv": "专八",
+    "m": "推动；用肘轻推；没完没了抱怨的人；推进；用肘轻推；向…不停地唠叨",
+    "ex": "At the same time, big data-driven model training nudged the evolution of data storage technology, leading to the advent of all-flash SSD distributed file systems."
+   },
+   {
+    "w": "onset",
+    "ipa": "ˈɔnˌsɛt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "开始，着手；发作；攻击，进攻",
+    "ex": "Evolution of Deep Learning The revolution in Machine Learning and Deep Learning be-gan in 2012 with AlexNet [21], which outperformed traditional methods in image classification, marking the onset of big data utilization and …"
+   },
+   {
+    "w": "optimization",
+    "ipa": "ɑptɪmɪˈzeɪʃən",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "最佳化, 最优化",
+    "ex": "Besides communication, factors like operation optimization, data pre-processing, and GPU memory consumption significantly influence MFU."
+   },
+   {
+    "w": "option",
+    "ipa": "ˈɔpʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "选择",
+    "ex": "Therefore, this option may not be the most economical choice for extensive AI computations."
+   },
+   {
+    "w": "palm",
+    "ipa": "pɑm",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "手掌，手心；掌状物",
+    "ex": "Pioneering examples include GPT-3 [26] and PaLM [27], which occupy close to 1TB of GPU Memory."
+   },
+   {
+    "w": "parameter",
+    "ipa": "pərˈæmətər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "参（变）数；参量",
+    "ex": "FSDP reduces GPU memory usage by maintaining only 1/n of the parameters, gradients, and optimizer states on each GPU, enabling training of larger-scale models."
+   },
+   {
+    "w": "particularly",
+    "ipa": "ˌpɑrˈtɪkjələrli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "特别，尤其，格外",
+    "ex": "This disparity necessitates more machines, raising DL training costs, particularly for LLM training, where the computational power required surpasses that of traditional HPC applications."
+   },
+   {
+    "w": "partition",
+    "ipa": "pɑrˈtɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "分开，分割；隔墙",
+    "ex": "FSDP partitions the model’s parameters, optimizer states, and gradients, distributing them across different GPUs, with each GPU retaining only 1/n of the total."
+   },
+   {
+    "w": "peak",
+    "ipa": "pik",
+    "pos": "n.；adj.",
+    "lv": "四级",
+    "m": "山顶，巅；最高的",
+    "ex": "It’s worth mentioning that Perlmutter utilizes an all-flash storage system, achieving a peak bandwidth of 5TB/s."
+   },
+   {
+    "w": "portion",
+    "ipa": "ˈpɔrʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "一部分；一分",
+    "ex": "For LLMs training, the Zero Redundancy Optimizer (ZeRO) [19] further enhances this method by sharding these states on each data parallel process and using allgather and reduce-scatter for parameter fetching and gradient …"
+   },
+   {
+    "w": "practitioner",
+    "ipa": "prækˈtɪʃənər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "开业者，从业者，执业医生",
+    "ex": "Therefore, a cluster with at least tens of thousands of GPUs can meet the needs of AI practitioners."
+   },
+   {
+    "w": "precision",
+    "ipa": "priˈsɪʒən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "精确，精密，精密度",
+    "ex": "HPC and AI Clusters of This Era 1) HPC Inadequacies for AI Training: Traditional supercomputers such as TianHe-2A [37], Stampede 2 [38], and Sunway TaihuLight [39] primarily focus on double precision calculations and do not …"
+   },
+   {
+    "w": "propagation",
+    "ipa": "ˌprɑpəˈgeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "繁殖；传播；蔓延",
+    "ex": "During forward propagation, FSDP performs an allgather operation to assemble the complete parameters, which are then re-leased after the forward pass is completed."
+   },
+   {
+    "w": "recovery",
+    "ipa": "rɪˈkəvəri",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "重获；痊愈，恢复",
+    "ex": "These costs include but are not limited to power support, cooling, networking, storage, fault handling, disaster recovery, etc."
+   },
+   {
+    "w": "reveal",
+    "ipa": "rɪˈvil",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "揭露，揭示",
+    "ex": "With the advent of more complex models like AlphaFold [24] and AlphaZero [25] highlighting the need for more computational power and memory, revealing the limitations of traditional FP64 / FP32 computing devices."
+   },
+   {
+    "w": "rome",
+    "ipa": "roʊm",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "罗马（意大利首都）",
+    "ex": "Table I: Our Arch and DGX-A100 Server Hardware Details Our PCIe Arch DGX-A100 CPU 2 * AMD 32 Cores EPYC Rome/Milan CPU 2 * AMD 64 Cores"
+   },
+   {
+    "w": "scale",
+    "ipa": "skeɪl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "规模，比例",
+    "ex": "This massive scale introduces system-level challenges: 1) Efficiency: Firstly, achieving efficient training at this magnitude is crucial."
+   },
+   {
+    "w": "scatter",
+    "ipa": "ˈskætər",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使消散；撒；散播",
+    "ex": "It then performs a reduce-scatter operation to synchronize gradients across all GPUs, resulting in each GPU holding 1/n of the reduced gradients."
+   },
+   {
+    "w": "shard",
+    "ipa": "ʃɑrd",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "[瓷]碎片破片",
+    "ex": "The gate model selects tokens for allocation during input, with corresponding tokens sent to experts model via all2all communication. • Fully Sharded Data Parallel (FSDP) is an implementation based on the ZeRO Stage 3 algorithm …"
+   },
+   {
+    "w": "shift",
+    "ipa": "ʃɪft",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "替换，转移；转换",
+    "ex": "The shift towards the Mixture-of-Experts (MoE) Models [28]–[30] architecture starting from GPT-4 [7], and the recent AI Generated Content (AIGC) multi-modal (Sora [31]) has amplified the demand for memory and computational …"
+   },
+   {
+    "w": "silicon",
+    "ipa": "ˈsɪləkən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "硅（旧名矽）",
+    "ex": "Wafer technology to build an entire silicon wafer as a single chip."
+   },
+   {
+    "w": "similarly",
+    "ipa": "ˈsɪmələrli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "类似地，相似地",
+    "ex": "Similarly, during backward propagation, FSDP conducts an allgather operation to obtain the complete parameters, followed by backward computation to calculate gradients."
+   },
+   {
+    "w": "skyrocket",
+    "ipa": "ˈskaɪˌrɑkət",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "突升，猛涨",
+    "ex": "However, as AI development outpaces hardware development, leading to skyrocketing training costs, adopting cost-saving solutions has become imperative."
+   },
+   {
+    "w": "specialize",
+    "ipa": "ˈspɛʃəˌlaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "专业从事",
+    "ex": "These accelerators are tailored for efficient execution of AI workloads, offering specialized features to optimize model training and inference."
+   },
+   {
+    "w": "stability",
+    "ipa": "stəˈbɪlɪti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "稳定，稳定性，巩固",
+    "ex": "Stragglers can decelerate tasks involving hundreds of GPUs, em-phasizing the importance of stability and task recovery time."
+   },
+   {
+    "w": "stampede",
+    "ipa": "stæmˈpid",
+    "pos": "n.；v.",
+    "lv": "专八",
+    "m": "惊跑；人群的蜂拥；军队溃败；蜂拥；逃窜",
+    "ex": "HPC and AI Clusters of This Era 1) HPC Inadequacies for AI Training: Traditional supercomputers such as TianHe-2A [37], Stampede 2 [38], and Sunway TaihuLight [39] primarily focus on double precision calculations and do not …"
+   },
+   {
+    "w": "standpoint",
+    "ipa": "ˈstændˌpɔɪnt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "立场",
+    "ex": "Stability is vital from a production standpoint as training a big model with a trillion tokens may span several weeks."
+   },
+   {
+    "w": "subsequent",
+    "ipa": "ˈsəbsəkwənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "随后的，后来的",
+    "ex": "Although these supercomputers may not be well-suited for DL training, their robust high-performance networks and extensive experience in large-scale cluster construction offer valuable insights and lessons for subsequent …"
+   },
+   {
+    "w": "summarize",
+    "ipa": "ˈsəmərˌaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "概括，概述，总结",
+    "ex": "And as summarized in Figure 2 [32], while AI’s demand for computational power is growing at 10x per year, Moore’s Law lags behind with hardware FLOPs increase at only 3.0x every two years, DRAM bandwidth at 1.6x, and interconnect …"
+   },
+   {
+    "w": "summit",
+    "ipa": "ˈsəmɪt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "最高点， 峰顶； 最高级会议",
+    "ex": "2) GPU based HPC: Supercomputers like Frontier [41], Aurora [42], Summit [43] and Perlmutter [44] utilize high-performance GPUs to tackle large-scale computations."
+   },
+   {
+    "w": "surpass",
+    "ipa": "sərˈpæs",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "超过",
+    "ex": "This disparity necessitates more machines, raising DL training costs, particularly for LLM training, where the computational power required surpasses that of traditional HPC applications."
+   },
+   {
+    "w": "synchronize",
+    "ipa": "ˈsɪŋkrəˌnaɪz",
+    "pos": "v.",
+    "lv": "雅思",
+    "m": "使同时发生，使同步发生",
+    "ex": "It then performs a reduce-scatter operation to synchronize gradients across all GPUs, resulting in each GPU holding 1/n of the reduced gradients."
+   },
+   {
+    "w": "token",
+    "ipa": "ˈtoʊkən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "辅币；象征",
+    "ex": "Stability is vital from a production standpoint as training a big model with a trillion tokens may span several weeks."
+   },
+   {
+    "w": "transformer",
+    "ipa": "trænsˈfɔrmər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "变压器，转换器",
+    "ex": "Fast forward to 2017, Google’s Transformer [23] made its grand entry, introducing the concept of ”Attention is all you need”, shaking up the field of Natural Language Processing (NLP)."
+   },
+   {
+    "w": "trillion",
+    "ipa": "ˈtrɪljən",
+    "pos": "num.",
+    "lv": "六级",
+    "m": "万亿",
+    "ex": "Stability is vital from a production standpoint as training a big model with a trillion tokens may span several weeks."
+   },
+   {
+    "w": "upscale",
+    "ipa": "ˈəpˌskeɪl",
+    "pos": "v.",
+    "lv": "GRE",
+    "m": "升高级， 升档",
+    "ex": "Research indicates that an upscale in the number of language model parameters and computational budget  e- e- e- e- e- e+ e+ e+ DQN GoogleNet Xception Neural Architecture Seach Neural Machinr Translation …"
+   },
+   {
+    "w": "viability",
+    "ipa": "vaɪəˈbɪləti",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "生存能力",
+    "ex": "While this will provide a considerable boost in computational power for AI tasks, the high cost of DGX systems raises questions about economic viability."
+   },
+   {
+    "w": "visualize",
+    "ipa": "ˈvɪʒwəˌlaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "想象",
+    "ex": "Research indicates that an upscale in the number of language model parameters and computational budget  e- e- e- e- e- e+ e+ e+ DQN GoogleNet Xception Neural Architecture Seach Neural Machinr Translation …"
+   },
+   {
+    "w": "wafer",
+    "ipa": "ˈweɪfər",
+    "pos": "n.；vt.",
+    "lv": "考博",
+    "m": "圆片，晶片；薄片，干胶片；薄饼；圣饼；用干胶片封",
+    "ex": "Wafer technology to build an entire silicon wafer as a single chip."
+   },
+   {
+    "w": "workload",
+    "ipa": "ˈwərˌkloʊd",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "工作量",
+    "ex": "These accelerators are tailored for efficient execution of AI workloads, offering specialized features to optimize model training and inference."
+   },
+   {
+    "w": "yield",
+    "ipa": "jild",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "屈服，产出；产量",
+    "ex": "Indeed, con-ducting DL training on these GPU-based HPCs yields significant performance."
+   }
+  ]
+ },
+ {
+  "sec": "III. Fire-Flyer 2: Our Approach for Deep Learning and Early LLM Training · Fire-Flyer 2 方案",
+  "short": "Approach",
+  "icon": "III",
+  "words": [
+   {
+    "w": "accommodate",
+    "ipa": "əˈkɑməˌdeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "适合， 提供住宿",
+    "ex": "Our cluster, consisting of 10,000 A100 GPUs, includes approximately 1,250 GPU compute nodes and nearly 200 storage servers, although a Two-Layer Fat-Tree can accommodate up to 800 nodes (configured with 20 spine switches and 40 …"
+   },
+   {
+    "w": "binary",
+    "ipa": "ˈbaɪnəˌri",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "[数] 二进制的；二元的，二态的",
+    "ex": "Whether using NCCL [10] or our in-house developed communication library HFReduce, it can be run across zones by using a double binary tree algorithm [65]."
+   },
+   {
+    "w": "cable",
+    "ipa": "ˈkeɪbəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "缆，索；电缆；电报",
+    "ex": "Furthermore, by utilizing an 800-Ports Frame Switch, we have further reduced the cost of optical modules and cables."
+   },
+   {
+    "w": "compute",
+    "ipa": "kəmˈpjut",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "计算，估计，估算",
+    "ex": "Our HAI Platform scheduling strategy ensured that cross-zone computing tasks were limited to one at most."
+   },
+   {
+    "w": "configuration",
+    "ipa": "kənˌfɪgjərˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "配置， 布局， 构造",
+    "ex": "To reduce costs, , we opted for a two-zone network configuration instead of a three-layer Fat-Tree solution, as shown in Figure 5."
+   },
+   {
+    "w": "converge",
+    "ipa": "kənˈvərʤ",
+    "pos": "vi.",
+    "lv": "六级",
+    "m": "会合， 互相靠拢； 聚集， 集中； 趋近",
+    "ex": "At the time of implementation, various RoCE (RDMA over Converged Ethernet) [64] technolo-gies were not as mature as they are today, so we opted for InfiniBand (IB) as our network solution."
+   },
+   {
+    "w": "deem",
+    "ipa": "dim",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "认为",
+    "ex": "Therefore, when designing a cluster primarily for deep learning model training, and with insights gleaned from our Fire-Flyer 1 experiments, we deemed it prudent to incorporate PCIe A100 GPUs, which proved to be sufficient during …"
+   },
+   {
+    "w": "dragonfly",
+    "ipa": "ˈdræɡənflaɪ",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "[昆] 蜻蜓",
+    "ex": "Although the Dragonfly topology [62], [63] also offers comparable cost-effectiveness and performance, its lack of sufficient bisection bandwidth makes it unsuitable for our integrated storage and computation network design."
+   },
+   {
+    "w": "efficiently",
+    "ipa": "ɪˈfɪʃəntli",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "有效地",
+    "ex": "even tasks requiring all nodes can efficiently run on the entire"
+   },
+   {
+    "w": "encompass",
+    "ipa": "ɛnˈkəmpəs",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "包含；包围，环绕；完成",
+    "ex": "Contrasting with the DGX-A100 cluster, which necessitates a Three-Layer Fat-Tree encompassing 10,000 access points and involving 320 core switches, 500 spine switches and 500 leaf switches, amounting to 1,320 switches in total …"
+   },
+   {
+    "w": "equipped",
+    "ipa": "ɪkˈwɪpt",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "装备；预备（equip的过去分词）；整装",
+    "ex": "Each storage server equipped with two IB NICs, respectively connected to different zones, hence all GPU compute nodes could share a set of storage services."
+   },
+   {
+    "w": "exceptionally",
+    "ipa": "ɪkˈsɛpʃənəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "格外地, 特别地",
+    "ex": "Network Topology: Two-Layer Fat-Tree with Storage and Computation Integrated We selected the Fat-Tree [9] topology as our primary network architecture due to its exceptionally high bisection bandwidth, making it the preferred …"
+   },
+   {
+    "w": "frame",
+    "ipa": "freɪm",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "框架",
+    "ex": "Furthermore, by utilizing an 800-Ports Frame Switch, we have further reduced the cost of optical modules and cables."
+   },
+   {
+    "w": "furthermore",
+    "ipa": "ˈfərðərˌmɔr",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "而且，此外",
+    "ex": "Furthermore, by utilizing an 800-Ports Frame Switch, we have further reduced the cost of optical modules and cables."
+   },
+   {
+    "w": "generally",
+    "ipa": "ˈʤɛnərəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "一般地；通常地",
+    "ex": "As mentioned in the Background Section, LLMs generally require significant memory resources."
+   },
+   {
+    "w": "glean",
+    "ipa": "glin",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "收集（资料）；拾（落穗）",
+    "ex": "Therefore, when designing a cluster primarily for deep learning model training, and with insights gleaned from our Fire-Flyer 1 experiments, we deemed it prudent to incorporate PCIe A100 GPUs, which proved to be sufficient during …"
+   },
+   {
+    "w": "hence",
+    "ipa": "hɛns",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "因此，所以；今后",
+    "ex": "Each storage server equipped with two IB NICs, respectively connected to different zones, hence all GPU compute nodes could share a set of storage services."
+   },
+   {
+    "w": "incorporate",
+    "ipa": "ˌɪnˈkɔrpərˌeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "合并；体现",
+    "ex": "Therefore, when designing a cluster primarily for deep learning model training, and with insights gleaned from our Fire-Flyer 1 experiments, we deemed it prudent to incorporate PCIe A100 GPUs, which proved to be sufficient during …"
+   },
+   {
+    "w": "layer",
+    "ipa": "leɪər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "层，层次；铺设者",
+    "ex": "To reduce costs, , we opted for a two-zone network configuration instead of a three-layer Fat-Tree solution, as shown in Figure 5."
+   },
+   {
+    "w": "matrix",
+    "ipa": "ˈmeɪtrɪks",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "[数] 矩阵；模型；[生物][地质] 基质；母体；子宫；[地质] 脉石",
+    "ex": "Cost Performance of Our Architecture Compared to the NVIDIA DGX-A100 [8] architecture, our approach using PCIe A100 achieves approximately 83% of the performance in TF32 and FP16 General Matrix Multiply (GEMM) benchmarks."
+   },
+   {
+    "w": "module",
+    "ipa": "ˈmɑʤul",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "模块；组件",
+    "ex": "Furthermore, by utilizing an 800-Ports Frame Switch, we have further reduced the cost of optical modules and cables."
+   },
+   {
+    "w": "opt",
+    "ipa": "ɑpt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "选择",
+    "ex": "To reduce costs, , we opted for a two-zone network configuration instead of a three-layer Fat-Tree solution, as shown in Figure 5."
+   },
+   {
+    "w": "optical",
+    "ipa": "ˈɑptɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "眼的；光学的",
+    "ex": "Furthermore, by utilizing an 800-Ports Frame Switch, we have further reduced the cost of optical modules and cables."
+   },
+   {
+    "w": "prudent",
+    "ipa": "ˈprudənt",
+    "pos": "adj.",
+    "lv": "考研",
+    "m": "谨慎的；精明的",
+    "ex": "Therefore, when designing a cluster primarily for deep learning model training, and with insights gleaned from our Fire-Flyer 1 experiments, we deemed it prudent to incorporate PCIe A100 GPUs, which proved to be sufficient during …"
+   },
+   {
+    "w": "relatively",
+    "ipa": "ˈrɛlətɪvli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "相对地，比较地",
+    "ex": "BERT [60], MAE [61], among others, all have a parameter volume less than 1B, signifying relatively low memory requirements."
+   },
+   {
+    "w": "respectively",
+    "ipa": "rɪˈspɛktɪvli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "各自地",
+    "ex": "Each storage server equipped with two IB NICs, respectively connected to different zones, hence all GPU compute nodes could share a set of storage services."
+   },
+   {
+    "w": "signify",
+    "ipa": "ˈsɪgnəˌfaɪ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "表明，象征",
+    "ex": "BERT [60], MAE [61], among others, all have a parameter volume less than 1B, signifying relatively low memory requirements."
+   },
+   {
+    "w": "solution",
+    "ipa": "səˈluʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "解决，解答，解决办法",
+    "ex": "To reduce costs, , we opted for a two-zone network configuration instead of a three-layer Fat-Tree solution, as shown in Figure 5."
+   },
+   {
+    "w": "spine",
+    "ipa": "spaɪn",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "脊柱， 脊椎； 刺， 刺毛； 书脊",
+    "ex": "Our cluster, consisting of 10,000 A100 GPUs, includes approximately 1,250 GPU compute nodes and nearly 200 storage servers, although a Two-Layer Fat-Tree can accommodate up to 800 nodes (configured with 20 spine switches and 40 …"
+   },
+   {
+    "w": "substantial",
+    "ipa": "səbˈstænʃəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "大量的",
+    "ex": "However, it offers substantial reduc-tions in both costs and energy usage, achieving 60% of the GPU cost and energy consumption, as detailed in Table II."
+   },
+   {
+    "w": "trim",
+    "ipa": "trɪm",
+    "pos": "adj.；v.",
+    "lv": "四级",
+    "m": "整齐的；使整齐",
+    "ex": "Additionally, we managed to trim energy consumption by 40%, thereby reducing CO2 emissions."
+   },
+   {
+    "w": "unsuitable",
+    "ipa": "ənˈsutəbəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "不适宜的, 不合适的",
+    "ex": "Although the Dragonfly topology [62], [63] also offers comparable cost-effectiveness and performance, its lack of sufficient bisection bandwidth makes it unsuitable for our integrated storage and computation network design."
+   },
+   {
+    "w": "volume",
+    "ipa": "ˈvɑljum",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "卷，册；容积；音量",
+    "ex": "BERT [60], MAE [61], among others, all have a parameter volume less than 1B, signifying relatively low memory requirements."
+   }
+  ]
+ },
+ {
+  "sec": "IV. HFReduce: Hardware Software Co-Design in Network · HFReduce 通信库",
+  "short": "HFReduce",
+  "icon": "IV",
+  "words": [
+   {
+    "w": "additional",
+    "ipa": "əˈdɪʃənəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "额外的",
+    "ex": "This efficiency is achieved because GDRCopy can read data from host memory and temporarily cache it in the CPU caches, allowing data to be written to the four GPUs without additional reads from host memory."
+   },
+   {
+    "w": "aggregate",
+    "ipa": "ˈægrəgət",
+    "pos": "adj.；n.；vt.",
+    "lv": "六级",
+    "m": "总计的， 合计的；总数，合计；总计达， 合计； 使聚集， 使积聚",
+    "ex": "NETWORK In large-scale deep learning training, allreduce is essential for aggregating gradients across GPUs."
+   },
+   {
+    "w": "alleviate",
+    "ipa": "əˈliviˌeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "减轻，缓解",
+    "ex": "To alleviate the memory bound issue of the original HFReduce, we implemented another allreduce pattern, termed HFReduce with NVLink."
+   },
+   {
+    "w": "approximate",
+    "ipa": "əˈprɑksəˌmeɪt",
+    "pos": "adj.；v.",
+    "lv": "四级",
+    "m": "近似的；近似",
+    "ex": "Consequently, the theoretical maximum speed of HFReduce is approximately 13.3GB/s, but when considering the allreduce algorithm bandwidth and network bandwidth, this value realistically approximates 12GB/s."
+   },
+   {
+    "w": "awareness",
+    "ipa": "əˈwɛrnəs",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "意识",
+    "ex": "Deep Analysis of HFReduce 1) Key Technical Strategies in Implementation: • Using GDRCopy accelerate small data transfer in D2H, and educing reads from host memory by three times compared to MemCpyAsyn. • Intra-Node Reduction: CPU …"
+   },
+   {
+    "w": "bottleneck",
+    "ipa": "ˈbɑtəlˌnɛk",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "瓶颈；障碍物",
+    "ex": "Employing NVLink with HFReduce offers a functional method to alleviate these bottlenecks."
+   },
+   {
+    "w": "cannot",
+    "ipa": "ˈkænɑt",
+    "pos": "conj.",
+    "lv": "托福",
+    "m": "不能",
+    "ex": "However, it is worth not-ing that the next-generation CPUs, such as the EPYC Genoa, still face issues with PCIe Host Bridge bandwidth, which cannot support two full-speed PCIe ports simultaneously."
+   },
+   {
+    "w": "circumvent",
+    "ipa": "ˌsərkəmˈvɛnt",
+    "pos": "v.",
+    "lv": "专八",
+    "m": "绕过；巧妙地规避",
+    "ex": "HFReduce circumvents this limitation by utilizing the CPU for reduction and transferring data through IB and host memory."
+   },
+   {
+    "w": "contrast",
+    "ipa": "ˈkɑntræst",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "对比，反差；对比",
+    "ex": "In contrast, for each unit of data, HFReduce only requires one D2H and one H2D data transfer, only one unit of PCIe bidirectional bandwidth is consumed."
+   },
+   {
+    "w": "core",
+    "ipa": "kɔr",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "果实的心，核心",
+    "ex": "The core concept involves initially performing a reduction operation among GPUs interconnected by NVLink before passing the gradient to the CPU."
+   },
+   {
+    "w": "default",
+    "ipa": "dɪˈfɔlt",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "不履行义务；不履行义务",
+    "ex": "Note that tasks utilizing fewer than 128 GPUs do not require cross-zone nodes and are restricted by platform defaults."
+   },
+   {
+    "w": "device",
+    "ipa": "dɪˈvaɪs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "装置，设备",
+    "ex": "This Device-To-Host (D2H) Transfer can utilize GDRCopy [66] for small data and Mem-CpyAsync for larger data."
+   },
+   {
+    "w": "directly",
+    "ipa": "dɪˈrɛkli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "直接地；立即",
+    "ex": "GPU6 are directly connected to the CPU via the same PCIe Root Complex Port (also known as the PCIe Host Bridge)."
+   },
+   {
+    "w": "engine",
+    "ipa": "ˈɪnʤən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "引擎，发动机",
+    "ex": "2) No GPU Kernel Overhead: HFReduce utilizes the GPU’s Copy Engine (CE) for PCIe asynchronous transfers."
+   },
+   {
+    "w": "functional",
+    "ipa": "ˈfəŋkʃənəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "功能的",
+    "ex": "Employing NVLink with HFReduce offers a functional method to alleviate these bottlenecks."
+   },
+   {
+    "w": "implement",
+    "ipa": "ˈɪmpləmənt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "实施，执行",
+    "ex": "To alleviate the memory bound issue of the original HFReduce, we implemented another allreduce pattern, termed HFReduce with NVLink."
+   },
+   {
+    "w": "improvement",
+    "ipa": "ˌɪmˈpruvmənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "改进，改善；改进处",
+    "ex": "Performance Improvements: HFReduce with NVLink By installing the NVLink Bridge for PCIe A100 GPUs, efficient communication is enabled between paired GPUs via the 600 GB/s NVLink."
+   },
+   {
+    "w": "inbound",
+    "ipa": "ˌɪnˈbaʊnd",
+    "pos": "adj.",
+    "lv": "GRE",
+    "m": "内地的, 归航的",
+    "ex": "In NCCL’s ring topology, each unit of data needs to go through 2n −1 transmissions, each consuming one unit of inbound"
+   },
+   {
+    "w": "individual",
+    "ipa": "ˌɪndəˈvɪʤəwəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "个人",
+    "ex": "1 // Pass 1: reduce data,individual"
+   },
+   {
+    "w": "initially",
+    "ipa": "ˌɪˈnɪʃəli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "最初，起初",
+    "ex": "The core concept involves initially performing a reduction operation among GPUs interconnected by NVLink before passing the gradient to the CPU."
+   },
+   {
+    "w": "install",
+    "ipa": "ˌɪnˈstɔl",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "安装",
+    "ex": "Performance Improvements: HFReduce with NVLink By installing the NVLink Bridge for PCIe A100 GPUs, efficient communication is enabled between paired GPUs via the 600 GB/s NVLink."
+   },
+   {
+    "w": "inter",
+    "ipa": "ˌɪnˈtər",
+    "pos": "v.",
+    "lv": "托福",
+    "m": "埋葬",
+    "ex": "GPUs within each node. This inter-node allreduce leverages a Double Binary Tree Algorithm [65], akin to NCCL, and is pipelined by dividing data into chunks for transfer via Remote Direct Memory Access (RDMA), ensuring high performance."
+   },
+   {
+    "w": "interconnect",
+    "ipa": "ˌɪntərkəˈnɛkt",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "相互联系",
+    "ex": "The core concept involves initially performing a reduction operation among GPUs interconnected by NVLink before passing the gradient to the CPU."
+   },
+   {
+    "w": "internal",
+    "ipa": "ˌɪnˈtərnəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "内的；国内的",
+    "ex": "In AMD EPYC Rome and Milan CPUs, the maximum bandwidth from the Root Complex Port to the CPU’s internal bus is about 37.5GB/s."
+   },
+   {
+    "w": "involve",
+    "ipa": "ˌɪnˈvɑlv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "卷入，包含",
+    "ex": "The core concept involves initially performing a reduction operation among GPUs interconnected by NVLink before passing the gradient to the CPU."
+   },
+   {
+    "w": "kernel",
+    "ipa": "ˈkərnəl",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "（果实的）核；谷粒",
+    "ex": "In contrast, NCCL’s allreduce operation requires GPU kernel execution, which can affect other computational kernels on the GPU."
+   },
+   {
+    "w": "mainly",
+    "ipa": "ˈmeɪnli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "主要地，大体上",
+    "ex": "In our machine architecture, the performance of NCCL is mainly limited by PCIe bandwidth."
+   },
+   {
+    "w": "original",
+    "ipa": "ərˈɪʤənəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "原始的，最初的",
+    "ex": "To alleviate the memory bound issue of the original HFReduce, we implemented another allreduce pattern, termed HFReduce with NVLink."
+   },
+   {
+    "w": "parse",
+    "ipa": "pɑrs",
+    "pos": "v.",
+    "lv": "GRE",
+    "m": "解析",
+    "ex": "finished, go parse 2"
+   },
+   {
+    "w": "peer",
+    "ipa": "pɪr",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "同龄人",
+    "ex": "It was determined that the Rome CPUs do not support the chained write feature, which can significantly accelerate PCIe peer-to-peer (P2P) transfers between GPUs and IB NICs."
+   },
+   {
+    "w": "realistically",
+    "ipa": "ˌriəˈlɪstɪkli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "现实地,逼真地",
+    "ex": "Consequently, the theoretical maximum speed of HFReduce is approximately 13.3GB/s, but when considering the allreduce algorithm bandwidth and network bandwidth, this value realistically approximates 12GB/s."
+   },
+   {
+    "w": "reduction",
+    "ipa": "rɪˈdəkʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "减少，减小，缩减",
+    "ex": "The core concept involves initially performing a reduction operation among GPUs interconnected by NVLink before passing the gradient to the CPU."
+   },
+   {
+    "w": "restrict",
+    "ipa": "riˈstrɪkt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "限制，限定",
+    "ex": "Note that tasks utilizing fewer than 128 GPUs do not require cross-zone nodes and are restricted by platform defaults."
+   },
+   {
+    "w": "scenario",
+    "ipa": "sɪˈnɛrioʊ",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "情境 “；剧本",
+    "ex": "HFReduce is versatile and can be applied to any scenario requiring allreduce, as well as general reduce and broadcast operations."
+   },
+   {
+    "w": "schematic",
+    "ipa": "skɪˈmætɪk",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "图解的； 纲要的； 严谨的",
+    "ex": "Figure 6: HFReduce Schematic: 1) do intra-node reduce, 2) do"
+   },
+   {
+    "w": "slightly",
+    "ipa": "sˈlaɪtli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "轻微地",
+    "ex": "However, our tests only achieved slightly over 8GB/s."
+   },
+   {
+    "w": "subsequently",
+    "ipa": "ˈsəbsəkwəntli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "随后",
+    "ex": "Subsequently, when the CPU returns the result, it splits the result data and returns them to the paired GPUs connected by NVLink respectively, then performs allgather via NVLink."
+   },
+   {
+    "w": "temporarily",
+    "ipa": "ˌtɛmpərˈɛrəli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "临时",
+    "ex": "This efficiency is achieved because GDRCopy can read data from host memory and temporarily cache it in the CPU caches, allowing data to be written to the four GPUs without additional reads from host memory."
+   },
+   {
+    "w": "topology",
+    "ipa": "təˈpɔləʤi",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "拓扑；拓扑结构",
+    "ex": "In NCCL’s ring topology, each unit of data needs to go through 2n −1 transmissions, each consuming one unit of inbound"
+   },
+   {
+    "w": "transmission",
+    "ipa": "trænzˈmɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "传送；传动；发射",
+    "ex": "In NCCL’s ring topology, each unit of data needs to go through 2n −1 transmissions, each consuming one unit of inbound"
+   },
+   {
+    "w": "understandable",
+    "ipa": "ˌəndərˈstændəbəl",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "可以理解的；可以了解的",
+    "ex": "Our tests indicate that the maximum bandwidth between the GPU and IB NIC on Rome CPUs is approximately 9 GiB/s, making the observed 4GB/s all-reduce bandwidth for NCCL understandable."
+   },
+   {
+    "w": "vector",
+    "ipa": "ˈvɛktər",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "矢量；飞机航线",
+    "ex": "2) Upon the arrival of the gradients in memory, perform reduction add operation using CPU vector instructions."
+   },
+   {
+    "w": "verb",
+    "ipa": "vərb",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "动词",
+    "ex": "Inter-node reduction, as shown in the Algorithm 2: 1) Use the Double Binary Tree Algorithm [65] for internode allreduce, facilitating transfers between nodes using RDMA verbs implementation."
+   },
+   {
+    "w": "versatile",
+    "ipa": "ˈvərsətəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "多方面的；通用的",
+    "ex": "HFReduce is versatile and can be applied to any scenario requiring allreduce, as well as general reduce and broadcast operations."
+   },
+   {
+    "w": "whereas",
+    "ipa": "wɛˈræz",
+    "pos": "conj.",
+    "lv": "六级",
+    "m": "然而， 但是， 尽管",
+    "ex": "4) H2D Phase Utilizing GDRCopy can reduce this to only 2 read operations, whereas MemCopy necessitates 8 read operations."
+   }
+  ]
+ },
+ {
+  "sec": "V. HaiScale: Special Optimization for Deep Learning Models Training · HaiScale 训练栈",
+  "short": "HaiScale",
+  "icon": "V",
+  "words": [
+   {
+    "w": "asynchronous",
+    "ipa": "ˈeɪˈsɪŋkrənəs",
+    "pos": "adj.",
+    "lv": "超纲",
+    "m": "异步的",
+    "ex": "As previously mentioned, HFReduce does not depend on GPU Streaming Multiprocessors (SM) for reduction computation, enabling completely asynchronous allreduce without impacting performance."
+   },
+   {
+    "w": "batch",
+    "ipa": "bæʧ",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "一批， 一组， 一群； 一批生产量",
+    "ex": "Figure 9: Strong Scalability: (a) Train LLaMa-13B with a config of sequence length 2048, batch size 4096, pipeline parallel 4. (b)Train DeepSeekMoE-16B with a config of sequence"
+   },
+   {
+    "w": "benchmark",
+    "ipa": "ˈbɛnʧˌmɑrk",
+    "pos": "n.；v.",
+    "lv": "专八",
+    "m": "基准；标准检查程序；用基准问题测试（计算机系统等）",
+    "ex": "We also benchmarked the training performance of our DeepSeekMoE-16B model [72] on Fire-Flyer 2 AI-HPC."
+   },
+   {
+    "w": "completely",
+    "ipa": "kəmˈplitli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "十分，完全地",
+    "ex": "As previously mentioned, HFReduce does not depend on GPU Streaming Multiprocessors (SM) for reduction computation, enabling completely asynchronous allreduce without impacting performance."
+   },
+   {
+    "w": "contention",
+    "ipa": "kənˈtɛnʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "争论",
+    "ex": "2) Pipeline Parallelism Optimization in PCIe Architecture: In our architecture, there is only one IB NIC for 8 GPUs on a single node, which can lead to network bandwidth contention during Pipeline Parallelism (PP)."
+   },
+   {
+    "w": "demonstrate",
+    "ipa": "ˈdɛmənˌstreɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "证明；展示",
+    "ex": "Notably, with 320 GPUs, the step time was 10.71 seconds, resulting in a parallel efficiency of 92.92%, demonstrating excellent scalability."
+   },
+   {
+    "w": "discrepancy",
+    "ipa": "dɪˈskrɛpənsi",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "不符合， 不一致",
+    "ex": "However, due to the inherent gap between PCIe card specifications and SXM, there is a certain performance discrepancy."
+   },
+   {
+    "w": "efficiency",
+    "ipa": "ɪˈfɪʃənsi",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "效率；功效，效能",
+    "ex": "Notably, with 320 GPUs, the step time was 10.71 seconds, resulting in a parallel efficiency of 92.92%, demonstrating excellent scalability."
+   },
+   {
+    "w": "enable",
+    "ipa": "ɪˈneɪbəl",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使能够……",
+    "ex": "This addition established a bandwidth of 600GB/s between each pair of GPUs, enabling more efficient when performing Tensor Parallelism."
+   },
+   {
+    "w": "enhance",
+    "ipa": "ɛnˈhæns",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "提高；加强；增加",
+    "ex": "And we overlap allgather and reduce-scatter communication with forward and backward computation, split the optimization step during backward propagation for enhanced overlap."
+   },
+   {
+    "w": "establish",
+    "ipa": "ɪˈstæblɪʃ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "建立，创办，设立",
+    "ex": "This addition established a bandwidth of 600GB/s between each pair of GPUs, enabling more efficient when performing Tensor Parallelism."
+   },
+   {
+    "w": "fragmentation",
+    "ipa": "ˌfrægmənˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "碎片化，分裂；（内存/存储）碎片化",
+    "ex": "HaiScale’s FSDP offers better engineering implementation, optimizing memory management to reduce fragmentation specific to model adjustments."
+   },
+   {
+    "w": "gap",
+    "ipa": "gæp",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "差距;缝隙缺口",
+    "ex": "However, due to the inherent gap between PCIe card specifications and SXM, there is a certain performance discrepancy."
+   },
+   {
+    "w": "implementation",
+    "ipa": "ˌɪmpləmɛnˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "实现，履行",
+    "ex": "HaiScale’s FSDP offers better engineering implementation, optimizing memory management to reduce fragmentation specific to model adjustments."
+   },
+   {
+    "w": "lean",
+    "ipa": "lin",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "倾斜，屈身；靠",
+    "ex": "LEANING MODELS TRAINING"
+   },
+   {
+    "w": "management",
+    "ipa": "ˈmænɪʤmənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "管理；经营，处理",
+    "ex": "HaiScale’s FSDP offers better engineering implementation, optimizing memory management to reduce fragmentation specific to model adjustments."
+   },
+   {
+    "w": "notably",
+    "ipa": "ˈnoʊtəbli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "显著地，尤其",
+    "ex": "Notably, with 320 GPUs, the step time was 10.71 seconds, resulting in a parallel efficiency of 92.92%, demonstrating excellent scalability."
+   },
+   {
+    "w": "optimize",
+    "ipa": "ˈɑptɪˌmaɪz",
+    "pos": "vt.",
+    "lv": "考博",
+    "m": "使最优化； 充分利用",
+    "ex": "HaiScale’s FSDP offers better engineering implementation, optimizing memory management to reduce fragmentation specific to model adjustments."
+   },
+   {
+    "w": "overall",
+    "ipa": "ˈoʊvərˌɔl",
+    "pos": "n.；adj.",
+    "lv": "四级",
+    "m": "工装裤；全面的",
+    "ex": "Considering overall performance, basic setup cost, and energy consumption, we achieved 80% performance at half the cost."
+   },
+   {
+    "w": "overlap",
+    "ipa": "ˈoʊvərˌlæp",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "重叠",
+    "ex": "And we overlap allgather and reduce-scatter communication with forward and backward computation, split the optimization step during backward propagation for enhanced overlap."
+   },
+   {
+    "w": "parallelism",
+    "ipa": "ˈpɛrəˌlɛˌlɪzəm",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "平行， 类似",
+    "ex": "This addition established a bandwidth of 600GB/s between each pair of GPUs, enabling more efficient when performing Tensor Parallelism."
+   },
+   {
+    "w": "phase",
+    "ipa": "feɪz",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "阶段；方面；相位",
+    "ex": "During the backpropagation phase, HaiScale DDP performs an asynchronous allreduce operation on the computed gradients, allowing this communication to overlap with the computation involved in backpropagation."
+   },
+   {
+    "w": "pipeline",
+    "ipa": "ˈpaɪˌplaɪn",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "管道, 传递途径",
+    "ex": "Figure 9: Strong Scalability: (a) Train LLaMa-13B with a config of sequence length 2048, batch size 4096, pipeline parallel 4. (b)Train DeepSeekMoE-16B with a config of sequence"
+   },
+   {
+    "w": "previously",
+    "ipa": "ˈpriviəsli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "事先",
+    "ex": "As previously mentioned, HFReduce does not depend on GPU Streaming Multiprocessors (SM) for reduction computation, enabling completely asynchronous allreduce without impacting performance."
+   },
+   {
+    "w": "sequence",
+    "ipa": "ˈsikwəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "连续，继续；次序",
+    "ex": "Figure 9: Strong Scalability: (a) Train LLaMa-13B with a config of sequence length 2048, batch size 4096, pipeline parallel 4. (b)Train DeepSeekMoE-16B with a config of sequence"
+   },
+   {
+    "w": "setup",
+    "ipa": "ˈsɛˌtəp",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "装备, 安装,计划",
+    "ex": "Considering overall performance, basic setup cost, and energy consumption, we achieved 80% performance at half the cost."
+   },
+   {
+    "w": "solve",
+    "ipa": "sɑlv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "解决",
+    "ex": "We solve this by configuring Data Parallelism (DP) rank, making the 8 GPUs on the same node belong to different DP ranks which staggers the timing of PP for each DP rank."
+   },
+   {
+    "w": "specification",
+    "ipa": "ˌspɛsɪfɪˈkeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "说明书",
+    "ex": "However, due to the inherent gap between PCIe card specifications and SXM, there is a certain performance discrepancy."
+   },
+   {
+    "w": "stagger",
+    "ipa": "ˈstægər",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "蹒跚，使摇晃",
+    "ex": "We solve this by configuring Data Parallelism (DP) rank, making the 8 GPUs on the same node belong to different DP ranks which staggers the timing of PP for each DP rank."
+   },
+   {
+    "w": "strategy",
+    "ipa": "ˈstrætəʤi",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "策略，战略",
+    "ex": "LLMs Training Optimization Our HaiScale framework various parallelism strategies for training large language models (LLMs), similar to Megagron [69] and DeepSpeed [70]."
+   },
+   {
+    "w": "torch",
+    "ipa": "tɔrʧ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "火炬，火把；手电筒",
+    "ex": "As shown in Figure 8a, training VGG16 model [68] with HFReduce takes only half the time compared to using Torch DDP’s NCCL backend, achieving nearly 88% parallel scalability when scale from 32 GPUs to 512."
+   }
+  ]
+ },
+ {
+  "sec": "VI. Advanced Cost-Effective and Co-Design Optimizations · 进阶软硬件协同优化",
+  "short": "Advanced",
+  "icon": "VI",
+  "words": [
+   {
+    "w": "accord",
+    "ipa": "əˈkɔrd",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使一致；给予",
+    "ex": "The cluster deploying HAI Platform does not pool GPU resources, but classifies and marks them based on computing nodes as basic units, according to resource types, network ar-eas, etc."
+   },
+   {
+    "w": "actually",
+    "ipa": "ˈæˌkʧuəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "实际上；竟然",
+    "ex": "With totally 360 * 200Gbps outbound InfiniBand HCAs, the system can total provide 9TB/s outbound bandwidh, and we actually achieved total read throughput of 8TB/s."
+   },
+   {
+    "w": "adaptive",
+    "ipa": "əˈdæptɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "适合的, 适应的",
+    "ex": "Under such circumstances, we observed that enabling adaptive routing would lead to more severe congestion spread in the network."
+   },
+   {
+    "w": "akin",
+    "ipa": "ˈeɪkɪn",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "同类的",
+    "ex": "High-Throughput Distributed File System: 3FS 1) Overview: 3FS is our in-house developed high performance distributed file system, akin to WekaFS [78], DAOS [79], [80], and BeeGFS [81]."
+   },
+   {
+    "w": "apportion",
+    "ipa": "əˈpɔrʃən",
+    "pos": "vt.",
+    "lv": "考博",
+    "m": "分派， 分配",
+    "ex": "The storage service has an implementation of Chain Replication with Apportioned Queries (CRAQ) [82] to provide strong consistency."
+   },
+   {
+    "w": "approach",
+    "ipa": "əˈproʊʧ",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "靠近；接近，方法",
+    "ex": "CRAQ’s write-all-read-any approach helps to unleash the throughput and IOPS of all SSDs."
+   },
+   {
+    "w": "assign",
+    "ipa": "əˈsaɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "分配，布置",
+    "ex": "By using InfiniBand’s Service Level (SL) technology [74] [75], we assign different value of SL when estab-lishing connections between nodes and map SL to IB physical queues Virtual Lanes (VLs) [74] [75]."
+   },
+   {
+    "w": "bash",
+    "ipa": "bæʃ",
+    "pos": "v.；n.",
+    "lv": "专八",
+    "m": "猛击，痛击；怒殴；猛烈的一击，痛击",
+    "ex": "Users submit tasks, such as running Python / bash code, starting development containers, etc., and the platform interrupts and loads tasks according to current resource requirements, cluster busyness, etc."
+   },
+   {
+    "w": "bisection",
+    "ipa": "baɪˈsɛkʃən",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "二分，对分；bisection bandwidth 对分带宽（把节点平分成两组后，跨这两组之间能承载的总带宽）",
+    "ex": "The storage network has a Fat-Tree topology that provides full bisection bandwidth."
+   },
+   {
+    "w": "cache",
+    "ipa": "kæˈʃeɪ",
+    "pos": "n.；v.",
+    "lv": "专八",
+    "m": "电脑高速缓冲存储器；贮存物；隐藏处；隐藏；窖藏",
+    "ex": "3FS-KV supports DeepSeek’s KV Context Caching on Disk technology [84], which reduces the cost of LLM serving by an order of magnitude."
+   },
+   {
+    "w": "chiplet",
+    "ipa": "ˈʧplɪt",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "芯粒，小芯片（把一颗大芯片拆成多个独立裸片再封装互连）",
+    "ex": "This adjustment reduced PCIe congestion caused by CPU chiplet interconnects."
+   },
+   {
+    "w": "chunk",
+    "ipa": "ʧəŋk",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "厚片， 大块； 相当大的部分",
+    "ex": "File content are split into chunks, which are replicated over a chain of storage targets."
+   },
+   {
+    "w": "client",
+    "ipa": "klaɪənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "客户",
+    "ex": "When a storage service is granted the permission to transfer, it sends the data with a RDMA WRITE followed by a RDMA SEND to notify the client."
+   },
+   {
+    "w": "comprise",
+    "ipa": "kəmˈpraɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "包含，包括；构成",
+    "ex": "3) Key Techinical Points of 3FS: The 3FS system comprises four roles: cluster manager, meta service, storage service and client."
+   },
+   {
+    "w": "concurrent",
+    "ipa": "kənˈkərənt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "一致的；同时的",
+    "ex": "The client limits the number of concurrent senders."
+   },
+   {
+    "w": "congestion",
+    "ipa": "kənˈʤɛsʧən",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "拥挤；拥塞；淤血",
+    "ex": "To achieve maximum bandwidth, it is essential to isolate interference between different types of traffic and control network congestion."
+   },
+   {
+    "w": "consistency",
+    "ipa": "kənˈsɪstənsi",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "[计] 一致性；稠度；相容性",
+    "ex": "The storage service has an implementation of Chain Replication with Apportioned Queries (CRAQ) [82] to provide strong consistency."
+   },
+   {
+    "w": "context",
+    "ipa": "ˈkɑntɛkst",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "背景，环境",
+    "ex": "3FS-KV supports DeepSeek’s KV Context Caching on Disk technology [84], which reduces the cost of LLM serving by an order of magnitude."
+   },
+   {
+    "w": "current",
+    "ipa": "ˈkɑrənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "当前的",
+    "ex": "Users submit tasks, such as running Python / bash code, starting development containers, etc., and the platform interrupts and loads tasks according to current resource requirements, cluster busyness, etc."
+   },
+   {
+    "w": "currently",
+    "ipa": "ˈkərəntli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "当前；一般地",
+    "ex": "4) 3FS-KV: 3FS-KV is a shared-storage distributed data processing system built on top of 3FS, currently supporting three models: key-value, message queue, and object storage."
+   },
+   {
+    "w": "disperse",
+    "ipa": "dɪˈspərs",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "（使）分散；驱散",
+    "ex": "Based on the static routing scheme, to evenly disperse"
+   },
+   {
+    "w": "distinct",
+    "ipa": "dɪˈstɪŋkt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "明显的；有区别的",
+    "ex": "The use of Virtual Lanes ensures that flows in distinct lanes do not interfere with each other."
+   },
+   {
+    "w": "divergence",
+    "ipa": "dɪˈvərʤəns",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "分歧",
+    "ex": "In practice, we implemented the following measures: 1) Divergence of Different Traffics: In typical training tasks, there are four different types of traffic: HFReduce communication, NCCL communication, 3FS storage traffic, and …"
+   },
+   {
+    "w": "essential",
+    "ipa": "ɛˈsɛnʃəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "本质的，必须的",
+    "ex": "To achieve maximum bandwidth, it is essential to isolate interference between different types of traffic and control network congestion."
+   },
+   {
+    "w": "evenly",
+    "ipa": "ˈivənli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "一致地；平静地",
+    "ex": "To distribute read/write traffic evenly to all SSDs, each SSD serves multiple storage targets from different chains."
+   },
+   {
+    "w": "extremely",
+    "ipa": "ɪkˈstrimli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "极端，极其，非常",
+    "ex": "It supports read-write separation and on-demand startup, allowing it to fully leverage the extremely high I/O throughput provided by 3FS."
+   },
+   {
+    "w": "fully",
+    "ipa": "ˈfʊli",
+    "pos": "adv.；n.",
+    "lv": "专四",
+    "m": "充分地；完全地；彻底地；(Fully)人名；(法)菲利",
+    "ex": "It supports read-write separation and on-demand startup, allowing it to fully leverage the extremely high I/O throughput provided by 3FS."
+   },
+   {
+    "w": "grant",
+    "ipa": "grænt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "授予；允许",
+    "ex": "When a storage service is granted the permission to transfer, it sends the data with a RDMA WRITE followed by a RDMA SEND to notify the client."
+   },
+   {
+    "w": "heartbeat",
+    "ipa": "ˈhɑrtˌbit",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "心跳；情感",
+    "ex": "Meta and storage services send heartbeats to cluster manager."
+   },
+   {
+    "w": "interfere",
+    "ipa": "ˌɪnərˈfɪr",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "干涉，干预；妨碍",
+    "ex": "The use of Virtual Lanes ensures that flows in distinct lanes do not interfere with each other."
+   },
+   {
+    "w": "interference",
+    "ipa": "ˌɪnərˈfɪrəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "干涉，干预；阻碍",
+    "ex": "To achieve maximum bandwidth, it is essential to isolate interference between different types of traffic and control network congestion."
+   },
+   {
+    "w": "isolate",
+    "ipa": "ˈaɪsəˌleɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使隔离，使孤立",
+    "ex": "To achieve maximum bandwidth, it is essential to isolate interference between different types of traffic and control network congestion."
+   },
+   {
+    "w": "isolation",
+    "ipa": "ˌaɪsəˈleɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "隔绝，隔离",
+    "ex": "Ultimately, we configured their proportions to implement traffic isolation, thereby preventing network congestion caused by Head-of-line (HOL) blocking [76] and different traffic collisions."
+   },
+   {
+    "w": "iterate",
+    "ipa": "ˈɪtəreɪt",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "迭代；重复；反复说；重做",
+    "ex": "A separate directory entry table stores key-value pairs of (parent dir inode id, entry name) : (entry inode id, ...) to support iterating entries in a directory and resolving file/directory paths."
+   },
+   {
+    "w": "lane",
+    "ipa": "leɪn",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "(乡间)小路；跑道",
+    "ex": "The use of Virtual Lanes ensures that flows in distinct lanes do not interfere with each other."
+   },
+   {
+    "w": "latency",
+    "ipa": "ˈleɪtənsi",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "潜伏, 潜在, 潜伏物, 性潜伏期（ 岁或 岁至青春期）, [生理]（肌肉等的）反应时间（介于刺激与反应之间的时间）",
+    "ex": "The request-to-send control increases end-to-end IO latency but it’s required to achieve sustainable high throughput."
+   },
+   {
+    "w": "lax",
+    "ipa": "læks",
+    "pos": "n.；adj.",
+    "lv": "考博",
+    "m": "松元音；泻肚；松的；松懈的；腹泻的",
+    "ex": "Additionally, by using PCIe Re-laxed Ordering [77], we further reduced congestion and increased bandwidth."
+   },
+   {
+    "w": "leverage",
+    "ipa": "ˈlɛvərɪʤ",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "手段，影响力；杠杆作用；杠杆效率；利用；举债经营",
+    "ex": "It supports read-write separation and on-demand startup, allowing it to fully leverage the extremely high I/O throughput provided by 3FS."
+   },
+   {
+    "w": "location",
+    "ipa": "loʊˈkeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "位置，场所",
+    "ex": "The File inode/directory ID and meta data, such as file size and location information of the file content data, are stored as key-value pairs in the inode table."
+   },
+   {
+    "w": "minimal",
+    "ipa": "ˈmɪnəməl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "最低的，最小限度的",
+    "ex": "Ensuring Minimal Congestion in Our Computation-Storage Integrated Network As previously stated, our cost-effective network integrated computation communication and storage traffics together."
+   },
+   {
+    "w": "multiple",
+    "ipa": "ˈməltəpəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "复合的；并联的",
+    "ex": "The HAI Platform encourages users to fully utilize multiple GPUs simultaneously for parallel training, facilitating 99% utilization."
+   },
+   {
+    "w": "naturally",
+    "ipa": "ˈnæʧərəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "自然地；天然地",
+    "ex": "2) Topology Adjustment and Route Optimization: In high-throughput storage scenarios, there naturally exist many incast communication patterns, leading to certain congestion in the network."
+   },
+   {
+    "w": "notify",
+    "ipa": "ˈnoʊtəˌfaɪ",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "通知， 告知， 报告",
+    "ex": "When a storage service is granted the permission to transfer, it sends the data with a RDMA WRITE followed by a RDMA SEND to notify the client."
+   },
+   {
+    "w": "offset",
+    "ipa": "ˈɔfˌsɛt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "抵销",
+    "ex": "The meta service selects an offset in the chain table and a stripe size k for each file."
+   },
+   {
+    "w": "persist",
+    "ipa": "pərˈsɪst",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "坚持，固执；持续",
+    "ex": "All states of meta services are persisted on the distributed key-value storage system."
+   },
+   {
+    "w": "poll",
+    "ipa": "poʊl",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "民意调查",
+    "ex": "All services and clients poll cluster configuration and service status from the manager."
+   },
+   {
+    "w": "python",
+    "ipa": "ˈpaɪθɑn",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "巨蟒；大蟒",
+    "ex": "Users submit tasks, such as running Python / bash code, starting development containers, etc., and the platform interrupts and loads tasks according to current resource requirements, cluster busyness, etc."
+   },
+   {
+    "w": "query",
+    "ipa": "kˈwiri",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "疑问，质问；疑问号 ；[计] 查询；询问；对……表示疑问",
+    "ex": "The storage service has an implementation of Chain Replication with Apportioned Queries (CRAQ) [82] to provide strong consistency."
+   },
+   {
+    "w": "redundancy",
+    "ipa": "rɪˈdəndənsi",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "[计][数] 冗余（等于redundance）；裁员；人浮于事",
+    "ex": "The total 2880 NVMe SSDs provide over 20PiB storage space with an mirror data redundancy."
+   },
+   {
+    "w": "replicate",
+    "ipa": "ˈrɛplɪˌkeɪt",
+    "pos": "v.；adj.；n.",
+    "lv": "考博",
+    "m": "复制；折叠；复制的；折叠的；复制品；八音阶间隔的反覆音",
+    "ex": "File content are split into chunks, which are replicated over a chain of storage targets."
+   },
+   {
+    "w": "resolve",
+    "ipa": "riˈzɑlv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "解决，下决心",
+    "ex": "A separate directory entry table stores key-value pairs of (parent dir inode id, entry name) : (entry inode id, ...) to support iterating entries in a directory and resolving file/directory paths."
+   },
+   {
+    "w": "route",
+    "ipa": "rut",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "路，路线，路程",
+    "ex": "Under such circumstances, we observed that enabling adaptive routing would lead to more severe congestion spread in the network."
+   },
+   {
+    "w": "scheme",
+    "ipa": "skim",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "计划，规划；诡计",
+    "ex": "Based on the static routing scheme, to evenly disperse"
+   },
+   {
+    "w": "sender",
+    "ipa": "ˈsɛndər",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "寄件人,发送人",
+    "ex": "The client limits the number of concurrent senders."
+   },
+   {
+    "w": "simultaneously",
+    "ipa": "ˌsaɪməlˈteɪniəsli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "同步地，同时地",
+    "ex": "The HAI Platform encourages users to fully utilize multiple GPUs simultaneously for parallel training, facilitating 99% utilization."
+   },
+   {
+    "w": "specifically",
+    "ipa": "spəˈsɪfɪkli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "特别地， 特定地； 明确地， 具体地",
+    "ex": "However, the design and implementation of 3FS specifically focus on fully utilizing the high IOPS and throughput of NVMe SSDs and the RDMA network."
+   },
+   {
+    "w": "stripe",
+    "ipa": "straɪp",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "条纹，条子",
+    "ex": "The meta service selects an offset in the chain table and a stripe size k for each file."
+   },
+   {
+    "w": "sustainable",
+    "ipa": "səˈsteɪnəbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "可持续的",
+    "ex": "The request-to-send control increases end-to-end IO latency but it’s required to achieve sustainable high throughput."
+   },
+   {
+    "w": "throughput",
+    "ipa": "θˈruˌpʊt",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "生产量，生产能力",
+    "ex": "It supports read-write separation and on-demand startup, allowing it to fully leverage the extremely high I/O throughput provided by 3FS."
+   },
+   {
+    "w": "totally",
+    "ipa": "ˈtoʊtəli",
+    "pos": "adv.",
+    "lv": "考博",
+    "m": "完全地, 整全地",
+    "ex": "With totally 360 * 200Gbps outbound InfiniBand HCAs, the system can total provide 9TB/s outbound bandwidh, and we actually achieved total read throughput of 8TB/s."
+   },
+   {
+    "w": "transfer",
+    "ipa": "ˈtrænsfər",
+    "pos": "—",
+    "lv": "四级",
+    "m": "转换，调换",
+    "ex": "When a storage service is granted the permission to transfer, it sends the data with a RDMA WRITE followed by a RDMA SEND to notify the client."
+   },
+   {
+    "w": "ultimately",
+    "ipa": "ˈəltəmətli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "最后，最终",
+    "ex": "Ultimately, we configured their proportions to implement traffic isolation, thereby preventing network congestion caused by Head-of-line (HOL) blocking [76] and different traffic collisions."
+   },
+   {
+    "w": "unleash",
+    "ipa": "ənˈliʃ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "发动；解开…的皮带；解除…的束缚",
+    "ex": "CRAQ’s write-all-read-any approach helps to unleash the throughput and IOPS of all SSDs."
+   },
+   {
+    "w": "utilization",
+    "ipa": "ˌjutələˈzeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "利用",
+    "ex": "The HAI Platform encourages users to fully utilize multiple GPUs simultaneously for parallel training, facilitating 99% utilization."
+   },
+   {
+    "w": "utilize",
+    "ipa": "ˈjutəˌlaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "利用",
+    "ex": "However, the design and implementation of 3FS specifically focus on fully utilizing the high IOPS and throughput of NVMe SSDs and the RDMA network."
+   },
+   {
+    "w": "virtual",
+    "ipa": "ˈvərʧuəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "虚拟的",
+    "ex": "The use of Virtual Lanes ensures that flows in distinct lanes do not interfere with each other."
+   }
+  ]
+ },
+ {
+  "sec": "VII. Stability and Robustness · 稳定性与健壮性",
+  "short": "Stability",
+  "icon": "VII",
+  "words": [
+   {
+    "w": "additionally",
+    "ipa": "əˈdɪʃəˌnəli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "此外；又，加之",
+    "ex": "Additionally, GPU Memory ECC Errors, such as Xid63, Xid64, Xid94, and Xid95, require special attention as they represent about 2% of the total."
+   },
+   {
+    "w": "amplify",
+    "ipa": "ˈæmpləˌfaɪ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "放大，增强；扩大",
+    "ex": "This high frequency is due to the inherent fault rate of NVLink Bridge connectors, amplified by our extensive use of thousands of GPUs."
+   },
+   {
+    "w": "analyze",
+    "ipa": "ˈænəˌlaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "分析",
+    "ex": "We have categorized various types of Xid errors and analyzed the potential causes that may lead to such errors, as shown in the Table V."
+   },
+   {
+    "w": "anomaly",
+    "ipa": "əˈnɑməli",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "异常；不规则；反常事物",
+    "ex": "Table V: Type of GPU Xid Errors and Its Causes Xid Errors Analysis Software Causes: Xid 13/31 Xid 43/45 Triggered by application programs, software-related Xid messages may indicate anomalies in GPU memory affecting code and data …"
+   },
+   {
+    "w": "bug",
+    "ipa": "bəg",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "虫子；臭虫",
+    "ex": "However, these errors may also result from memory data corruption, so hardware faults should be considered if software bugs are ruled out."
+   },
+   {
+    "w": "byte",
+    "ipa": "baɪt",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "字节； 位元组",
+    "ex": "The validator mainly consists of the following parts: • Checking hardware frequency, link speed, and link status. • Testing CPU stress and memory bandwidth. • GPU Memory test: This involves checking each byte of GPU memory to …"
+   },
+   {
+    "w": "categorize",
+    "ipa": "ˈkætəgərˌaɪz",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "分类",
+    "ex": "We have categorized various types of Xid errors and analyzed the potential causes that may lead to such errors, as shown in the Table V."
+   },
+   {
+    "w": "characterization",
+    "ipa": "ˌkɛrɪktərɪˈzeɪʃən",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "描述, 人物之创造",
+    "ex": "Table VI in Appendix: Supplementary Characterization shows the Xid errors that have occurred in our Fire-Flyer 2 AI-HPC over the past year."
+   },
+   {
+    "w": "checkpoint",
+    "ipa": "ˈʧɛkˌpɔɪnt",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "检查站，关卡",
+    "ex": "Checkpoint Manager Training LLMs can span several months, during which unavoidable hardware failures may cause training interruptions."
+   },
+   {
+    "w": "comprehensive",
+    "ipa": "ˌkɑmpriˈhɛnsɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "综合的，全面的",
+    "ex": "However, it’s crucial to consider other information for a comprehensive hardware functionality assessment."
+   },
+   {
+    "w": "convergence",
+    "ipa": "kənˈvərʤəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "集中",
+    "ex": "Indeed, in our practice, we have encountered computational errors and GPU memory errors not detected by Error Correction Code (ECC), which led to models’ gradnorm spikes, loss explosions and even non-convergence."
+   },
+   {
+    "w": "correctly",
+    "ipa": "kərˈɛktli",
+    "pos": "adv.",
+    "lv": "考博",
+    "m": "正确地，恰当地",
+    "ex": "Therefore, we have developed a set of validator tools to verify whether the hardware is functioning correctly."
+   },
+   {
+    "w": "corruption",
+    "ipa": "kərˈəpʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "腐败",
+    "ex": "However, these errors may also result from memory data corruption, so hardware faults should be considered if software bugs are ruled out."
+   },
+   {
+    "w": "detect",
+    "ipa": "dɪˈtɛkt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "觉察;检测",
+    "ex": "Indeed, in our practice, we have encountered computational errors and GPU memory errors not detected by Error Correction Code (ECC), which led to models’ gradnorm spikes, loss explosions and even non-convergence."
+   },
+   {
+    "w": "diagnose",
+    "ipa": "ˌdaɪəgˈnoʊs",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "诊断",
+    "ex": "Diagnosing tools like hostping [85] also integrated in our platform, but to find root cause of Hardware Failures is still hard work for operation teams."
+   },
+   {
+    "w": "disruption",
+    "ipa": "dɪsˈrəpʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "动乱； 打乱； 破坏",
+    "ex": "flash cuts can lead to application communication disruption, even task failures."
+   },
+   {
+    "w": "encounter",
+    "ipa": "ɪnˈkaʊnər",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "遭遇，遇到；遭遇",
+    "ex": "Indeed, in our practice, we have encountered computational errors and GPU memory errors not detected by Error Correction Code (ECC), which led to models’ gradnorm spikes, loss explosions and even non-convergence."
+   },
+   {
+    "w": "exclude",
+    "ipa": "ɪkˈsklud",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "排除，不包括",
+    "ex": "Apart from stress testing to exclude those that are constantly repeating errors, there isn’t a good way to avoid the occurrence of Xid74 issues."
+   },
+   {
+    "w": "explosion",
+    "ipa": "ɪkˈsploʊʒən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "爆炸",
+    "ex": "Indeed, in our practice, we have encountered computational errors and GPU memory errors not detected by Error Correction Code (ECC), which led to models’ gradnorm spikes, loss explosions and even non-convergence."
+   },
+   {
+    "w": "extensive",
+    "ipa": "ɪkˈstɛnsɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "广阔的；广泛的",
+    "ex": "This high frequency is due to the inherent fault rate of NVLink Bridge connectors, amplified by our extensive use of thousands of GPUs."
+   },
+   {
+    "w": "faulty",
+    "ipa": "ˈfɔlti",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "有错误的，有缺点的",
+    "ex": "It removes the faulty nodes from the scheduling platform, ensuring that all scheduled nodes are operational."
+   },
+   {
+    "w": "flyer",
+    "ipa": "flaɪər",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "传单；飞鸟；飞行物；飞跳；孤注一掷",
+    "ex": "Table VI in Appendix: Supplementary Characterization shows the Xid errors that have occurred in our Fire-Flyer 2 AI-HPC over the past year."
+   },
+   {
+    "w": "frequency",
+    "ipa": "ˈfrikwənsi",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "屡次；次数；频率",
+    "ex": "This high frequency is due to the inherent fault rate of NVLink Bridge connectors, amplified by our extensive use of thousands of GPUs."
+   },
+   {
+    "w": "hardware",
+    "ipa": "ˈhɑrdˌwɛr",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "五金器具；硬件",
+    "ex": "However, these errors may also result from memory data corruption, so hardware faults should be considered if software bugs are ruled out."
+   },
+   {
+    "w": "highlight",
+    "ipa": "ˈhaɪˌlaɪt",
+    "pos": "—",
+    "lv": "六级",
+    "m": "照亮；突出；强调",
+    "ex": "Notably, illegal memory access (Xid 43) accounts for 33.48%, highlighting the need for improved memory management."
+   },
+   {
+    "w": "impact",
+    "ipa": "ˌɪmˈpækt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "影响",
+    "ex": "Since most tasks run on multiple nodes, an issue on a single node can impact many others, further reducing cluster utilization."
+   },
+   {
+    "w": "index",
+    "ipa": "ˈɪndɛks",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "索引；指数；指标",
+    "ex": "This enables saving to be completed in just a few seconds. • Parameters and optimization states are asynchronously transferred from GPU to CPU host memory, with checkpoint saving performed periodically (typically every 5 …"
+   },
+   {
+    "w": "inherent",
+    "ipa": "ˌɪnˈhɛrənt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "固有的",
+    "ex": "This high frequency is due to the inherent fault rate of NVLink Bridge connectors, amplified by our extensive use of thousands of GPUs."
+   },
+   {
+    "w": "instance",
+    "ipa": "ˈɪnstəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "情况，例子",
+    "ex": "With the introduction of row remapping technology in A100, most instances can be resolved by simply resetting the GPU to retain optimal performance."
+   },
+   {
+    "w": "integrate",
+    "ipa": "ˈɪnəˌgreɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "成为一体， 合并",
+    "ex": "Diagnosing tools like hostping [85] also integrated in our platform, but to find root cause of Hardware Failures is still hard work for operation teams."
+   },
+   {
+    "w": "interruption",
+    "ipa": "ˌɪntərˈəpʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "打扰，中断",
+    "ex": "Checkpoint Manager Training LLMs can span several months, during which unavoidable hardware failures may cause training interruptions."
+   },
+   {
+    "w": "known",
+    "ipa": "noʊn",
+    "pos": "adj.；v.",
+    "lv": "专四",
+    "m": "已知的；知名的；大家知道的；知道（know的过去分词）",
+    "ex": "In our PCIe-based system, Xid74, also known as NVLink errors, account for a significant proportion, comprising 42.57% of the total."
+   },
+   {
+    "w": "locate",
+    "ipa": "ˈloʊˌkeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "位于，定位",
+    "ex": "This paper [87] even directly points out that there is a substantial amount of Silent Data Corruption in data center processors, ultimately leading to a variety of complex issues that are difficult to replicate and locate."
+   },
+   {
+    "w": "log",
+    "ipa": "lɔg",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "原木，木料",
+    "ex": "1) GPU Xid Error: An Xid error [88] is a general GPU fault message that originates from the NVIDIA driver, logged into the kernel or event log of the operating system."
+   },
+   {
+    "w": "logged",
+    "ipa": "lɔgd",
+    "pos": "adj.",
+    "lv": "GRE",
+    "m": "笨拙的, （树）劈成木材的",
+    "ex": "1) GPU Xid Error: An Xid error [88] is a general GPU fault message that originates from the NVIDIA driver, logged into the kernel or event log of the operating system."
+   },
+   {
+    "w": "logic",
+    "ipa": "ˈlɑʤɪk",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "逻辑",
+    "ex": "The validator mainly consists of the following parts: • Checking hardware frequency, link speed, and link status. • Testing CPU stress and memory bandwidth. • GPU Memory test: This involves checking each byte of GPU memory to …"
+   },
+   {
+    "w": "maintenance",
+    "ipa": "ˈmeɪntənəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "维持，保持；维修",
+    "ex": "The platform’s automatic operation and maintenance system runs the validator program weekly on nodes to verify their proper functionality."
+   },
+   {
+    "w": "malfunction",
+    "ipa": "mælˈfəŋkʃən",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "失灵，故障",
+    "ex": "2) Network Flash Cut: In addition to CPU and GPU faults, network device malfunctions represent a significant portion of hardware issues."
+   },
+   {
+    "w": "minimize",
+    "ipa": "ˈmɪnəˌmaɪz",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "将…减少； 最小化",
+    "ex": "To minimize recovery time and support the HAI Platform’s interrupt and recovery operations, we developed a checkpoint manager."
+   },
+   {
+    "w": "node",
+    "ipa": "noʊd",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "节点；瘤；[数] 叉点",
+    "ex": "The platform’s automatic operation and maintenance system runs the validator program weekly on nodes to verify their proper functionality."
+   },
+   {
+    "w": "normally",
+    "ipa": "ˈnɔrməli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "通常，正常地",
+    "ex": "The validator mainly consists of the following parts: • Checking hardware frequency, link speed, and link status. • Testing CPU stress and memory bandwidth. • GPU Memory test: This involves checking each byte of GPU memory to …"
+   },
+   {
+    "w": "occupancy",
+    "ipa": "ˈɑkjəpənsi",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "居住；占有；占用",
+    "ex": "The validator mainly consists of the following parts: • Checking hardware frequency, link speed, and link status. • Testing CPU stress and memory bandwidth. • GPU Memory test: This involves checking each byte of GPU memory to …"
+   },
+   {
+    "w": "occurrence",
+    "ipa": "əˈkərəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "发生，出现；事件",
+    "ex": "Apart from stress testing to exclude those that are constantly repeating errors, there isn’t a good way to avoid the occurrence of Xid74 issues."
+   },
+   {
+    "w": "online",
+    "ipa": "ˈɔnˌlaɪn",
+    "pos": "adj.；adv.",
+    "lv": "六级",
+    "m": "联机的；在线的；在线地",
+    "ex": "How to tackle these hardware failures, promptly identify and categorize them, is a key issue to improve the online rate and overall utilization of cluster nodes."
+   },
+   {
+    "w": "operational",
+    "ipa": "ˌɑpərˈeɪʃənəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "操作上的；可使用的",
+    "ex": "It removes the faulty nodes from the scheduling platform, ensuring that all scheduled nodes are operational."
+   },
+   {
+    "w": "optimal",
+    "ipa": "ˈɑptɪməl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "最佳的；最理想的",
+    "ex": "With the introduction of row remapping technology in A100, most instances can be resolved by simply resetting the GPU to retain optimal performance."
+   },
+   {
+    "w": "originate",
+    "ipa": "ərˈɪʤəˌneɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "开始",
+    "ex": "1) GPU Xid Error: An Xid error [88] is a general GPU fault message that originates from the NVIDIA driver, logged into the kernel or event log of the operating system."
+   },
+   {
+    "w": "overflow",
+    "ipa": "ˌoʊvərˈfloʊ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "溢出，淹没",
+    "ex": "Hardware Failures Characterization in Fire-Flyer 2 AI-HPC In supercomputers and data centers, hardware failures and chip errors can lead to floating-point overflow, non-convergence, or slow convergence during model training [86]."
+   },
+   {
+    "w": "periodic",
+    "ipa": "ˌpɪriˈɑdɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "周期的；一定时期的",
+    "ex": "Thanks to the high write throughput of 3FS, periodic saving operations can be completed asynchronously in a matter of seconds, without impacting the training process."
+   },
+   {
+    "w": "periodically",
+    "ipa": "ˌpiriˈɑdɪkəli",
+    "pos": "adv.",
+    "lv": "雅思",
+    "m": "偶然地，定期地",
+    "ex": "This enables saving to be completed in just a few seconds. • Parameters and optimization states are asynchronously transferred from GPU to CPU host memory, with checkpoint saving performed periodically (typically every 5 …"
+   },
+   {
+    "w": "processor",
+    "ipa": "ˈprɑˌsɛsər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "加工机； 加工工人； 处理器",
+    "ex": "This paper [87] even directly points out that there is a substantial amount of Silent Data Corruption in data center processors, ultimately leading to a variety of complex issues that are difficult to replicate and locate."
+   },
+   {
+    "w": "promptly",
+    "ipa": "ˈprɑmptli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "敏捷地，迅速地",
+    "ex": "Therefore, it is crucial to promptly address GPU ECC faults to ensure that application performance and accuracy remain unaffected."
+   },
+   {
+    "w": "proportion",
+    "ipa": "prəˈpɔrʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比例，部分",
+    "ex": "In our PCIe-based system, Xid74, also known as NVLink errors, account for a significant proportion, comprising 42.57% of the total."
+   },
+   {
+    "w": "randomly",
+    "ipa": "ˈrændəmli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "随机地",
+    "ex": "Figure 11 illustrates the IB link failures data over the past year, with raw data attached in Appendix: Supplementary Characterization, Table VIII, indicating that these issues can occur randomly throughout the cluster’s …"
+   },
+   {
+    "w": "reset",
+    "ipa": "ˈrisɛt",
+    "pos": "v.",
+    "lv": "托福",
+    "m": "重新安排",
+    "ex": "With the introduction of row remapping technology in A100, most instances can be resolved by simply resetting the GPU to retain optimal performance."
+   },
+   {
+    "w": "retain",
+    "ipa": "rɪˈteɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "保留,留用",
+    "ex": "With the introduction of row remapping technology in A100, most instances can be resolved by simply resetting the GPU to retain optimal performance."
+   },
+   {
+    "w": "segment",
+    "ipa": "ˌsɛgˈmɛnt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "部分， 片段； 瓣",
+    "ex": "Table V: Type of GPU Xid Errors and Its Causes Xid Errors Analysis Software Causes: Xid 13/31 Xid 43/45 Triggered by application programs, software-related Xid messages may indicate anomalies in GPU memory affecting code and data …"
+   },
+   {
+    "w": "significant",
+    "ipa": "sɪgˈnɪfɪkənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "重要的",
+    "ex": "In our PCIe-based system, Xid74, also known as NVLink errors, account for a significant proportion, comprising 42.57% of the total."
+   },
+   {
+    "w": "simply",
+    "ipa": "ˈsɪmpli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "简单地；朴素地",
+    "ex": "With the introduction of row remapping technology in A100, most instances can be resolved by simply resetting the GPU to retain optimal performance."
+   },
+   {
+    "w": "span",
+    "ipa": "spæn",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "跨距；一段时间",
+    "ex": "Checkpoint Manager Training LLMs can span several months, during which unavoidable hardware failures may cause training interruptions."
+   },
+   {
+    "w": "spike",
+    "ipa": "spaɪk",
+    "pos": "n.；v.",
+    "lv": "专四",
+    "m": "长钉，道钉；钉鞋；细高跟；阻止；以大钉钉牢；用尖物刺穿",
+    "ex": "Indeed, in our practice, we have encountered computational errors and GPU memory errors not detected by Error Correction Code (ECC), which led to models’ gradnorm spikes, loss explosions and even non-convergence."
+   },
+   {
+    "w": "supplementary",
+    "ipa": "ˌsəpləˈmɛntəˌri",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "增补的， 补充的",
+    "ex": "Table VI in Appendix: Supplementary Characterization shows the Xid errors that have occurred in our Fire-Flyer 2 AI-HPC over the past year."
+   },
+   {
+    "w": "tackle",
+    "ipa": "ˈtækəl",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "处理",
+    "ex": "How to tackle these hardware failures, promptly identify and categorize them, is a key issue to improve the online rate and overall utilization of cluster nodes."
+   },
+   {
+    "w": "trigger",
+    "ipa": "ˈtrɪgər",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "引发，引起",
+    "ex": "Memory ECC Error: Xid 63/64 Xid 94/95 Triggered when the GPU handles memory ECC errors on the GPU."
+   },
+   {
+    "w": "unaffected",
+    "ipa": "ˌənəˈfɛktɪd",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "不受影响的；自然的；真挚的；不矫揉造作的",
+    "ex": "Therefore, it is crucial to promptly address GPU ECC faults to ensure that application performance and accuracy remain unaffected."
+   },
+   {
+    "w": "unavoidable",
+    "ipa": "ˌənəˈvɔɪdəbəl",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "不可避免的",
+    "ex": "Checkpoint Manager Training LLMs can span several months, during which unavoidable hardware failures may cause training interruptions."
+   },
+   {
+    "w": "verify",
+    "ipa": "ˈvɛrəˌfaɪ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "证实，查证；证明",
+    "ex": "The platform’s automatic operation and maintenance system runs the validator program weekly on nodes to verify their proper functionality."
+   }
+  ]
+ },
+ {
+  "sec": "VIII. Discussion · 讨论",
+  "short": "Discuss",
+  "icon": "VIII",
+  "words": [
+   {
+    "w": "algorithm",
+    "ipa": "ˈælgərˌɪðəm",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "算法；运算法则",
+    "ex": "To mitigate this, IB NICs use DCQCN (Data Center Quantized Congestion Notification) [93] as their congestion control algorithm."
+   },
+   {
+    "w": "comparison",
+    "ipa": "kəmˈpɛrəsən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比较，对照；比似",
+    "ex": "In comparison, our NVLink-related issues, primarily Xid-74 Errors, as mentioned in Section VII-C1, account for about 42.57% of GPU failures."
+   },
+   {
+    "w": "complexity",
+    "ipa": "kəmˈplɛksɪti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "复杂（性）",
+    "ex": "While Data Processing Units (DPUs), such as the NVIDIA BF series, allow users to customize congestion control algorithms (like HPCC [94] and TIMELY RTT-based CC [95]), they increase the cost and operational complexity of the …"
+   },
+   {
+    "w": "customize",
+    "ipa": "ˈkəstəˌmaɪz",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "定制",
+    "ex": "While Data Processing Units (DPUs), such as the NVIDIA BF series, allow users to customize congestion control algorithms (like HPCC [94] and TIMELY RTT-based CC [95]), they increase the cost and operational complexity of the …"
+   },
+   {
+    "w": "developer",
+    "ipa": "dɪˈvɛləpər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "开发者",
+    "ex": "Software costs, contributed by several dozen in-house developers, are just a fraction of the cost for thousands of GPU servers."
+   },
+   {
+    "w": "disable",
+    "ipa": "dɪˈseɪbəl",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使无能，使伤残",
+    "ex": "In practice, we chose to disable DCQCN to avoid its"
+   },
+   {
+    "w": "effectively",
+    "ipa": "ˈifɛktɪvli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "有效地",
+    "ex": "In network routing, static routing algorithms in IB or ECMP (Equal-Cost Multi-Path) [91] and AR (Adaptive Routing) [92] effectively handle routing issues."
+   },
+   {
+    "w": "effectiveness",
+    "ipa": "ˈifɛktɪvnəs",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "效力",
+    "ex": "By mul-tiplying this figure by the number of nodes and the PUE (Power Usage Effectiveness), the total operating costs can be calculated."
+   },
+   {
+    "w": "estimate",
+    "ipa": "ˈɛstəˌmeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "估计",
+    "ex": "3) Operation Cost: Operating costs can be estimated by considering power consumption and rack rental costs."
+   },
+   {
+    "w": "fraction",
+    "ipa": "ˈfrækʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "小部分；片断；分数",
+    "ex": "Software costs, contributed by several dozen in-house developers, are just a fraction of the cost for thousands of GPU servers."
+   },
+   {
+    "w": "issue",
+    "ipa": "ˈɪʃu",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "发行；问题",
+    "ex": "In comparison, our NVLink-related issues, primarily Xid-74 Errors, as mentioned in Section VII-C1, account for about 42.57% of GPU failures."
+   },
+   {
+    "w": "mitigate",
+    "ipa": "ˈmɪtəˌgeɪt",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "使缓和，使减轻",
+    "ex": "To mitigate this, IB NICs use DCQCN (Data Center Quantized Congestion Notification) [93] as their congestion control algorithm."
+   },
+   {
+    "w": "notification",
+    "ipa": "ˌnoʊtəfəˈkeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "通知， 告示； 通知书",
+    "ex": "To mitigate this, IB NICs use DCQCN (Data Center Quantized Congestion Notification) [93] as their congestion control algorithm."
+   },
+   {
+    "w": "overview",
+    "ipa": "ˈoʊvərvˌju",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "[图情] 综述；概观",
+    "ex": "Maintaince Cost Overview 1) Construction Cost: Relative hardware costs are provided in Table II and III."
+   },
+   {
+    "w": "potentially",
+    "ipa": "pəˈtɛnʃəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "潜在地",
+    "ex": "However, congestion can still occur when multiple servers send data to a single receiver, potentially blocking the entire network."
+   },
+   {
+    "w": "primarily",
+    "ipa": "praɪˈmɛrəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "主要地，首先",
+    "ex": "In comparison, our NVLink-related issues, primarily Xid-74 Errors, as mentioned in Section VII-C1, account for about 42.57% of GPU failures."
+   },
+   {
+    "w": "priority",
+    "ipa": "praɪˈɔrəti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "优先，优先权",
+    "ex": "Discussion on Congestion Control in RDMA Networks Lossless RDMA networks offer several flow-control mechanisms, such as Priority Flow Control (PFC) [89] for RoCE networks and credit-based flow control [90] for IB networks."
+   },
+   {
+    "w": "rack",
+    "ipa": "ræk",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "搁物架；行李架",
+    "ex": "3) Operation Cost: Operating costs can be estimated by considering power consumption and rack rental costs."
+   },
+   {
+    "w": "rental",
+    "ipa": "ˈrɛntəl",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "租",
+    "ex": "3) Operation Cost: Operating costs can be estimated by considering power consumption and rack rental costs."
+   },
+   {
+    "w": "server",
+    "ipa": "ˈsərvər",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "服务器",
+    "ex": "However, congestion can still occur when multiple servers send data to a single receiver, potentially blocking the entire network."
+   },
+   {
+    "w": "static",
+    "ipa": "ˈstætɪk",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "静的；静态的",
+    "ex": "In network routing, static routing algorithms in IB or ECMP (Equal-Cost Multi-Path) [91] and AR (Adaptive Routing) [92] effectively handle routing issues."
+   },
+   {
+    "w": "sufficient",
+    "ipa": "səˈfɪʃənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "足够的",
+    "ex": "Discussion about NVLink Technology Choices Initially, we did not use NVLink to avoid extra costs and maintain stability, as HFReduce was sufficient for training requirements at that time."
+   },
+   {
+    "w": "timely",
+    "ipa": "ˈtaɪmli",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "及时的；适时的",
+    "ex": "While Data Processing Units (DPUs), such as the NVIDIA BF series, allow users to customize congestion control algorithms (like HPCC [94] and TIMELY RTT-based CC [95]), they increase the cost and operational complexity of the …"
+   },
+   {
+    "w": "usage",
+    "ipa": "ˈjusɪʤ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "使用，对待；惯用法",
+    "ex": "By mul-tiplying this figure by the number of nodes and the PUE (Power Usage Effectiveness), the total operating costs can be calculated."
+   }
+  ]
+ },
+ {
+  "sec": "IX. Future Work · 未来工作",
+  "short": "Future",
+  "icon": "IX",
+  "words": [
+   {
+    "w": "comparable",
+    "ipa": "ˈkɑmprəbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "可比较的； 类似的； 比得上的",
+    "ex": "Therefore, the next-gen nodes feature a 1:1 GPU to NIC ratio, comparable to DGX-H100/B100 systems, as illustrated in Figure 12."
+   },
+   {
+    "w": "illustrate",
+    "ipa": "ˈɪləˌstreɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "说明,阐明",
+    "ex": "Therefore, the next-gen nodes feature a 1:1 GPU to NIC ratio, comparable to DGX-H100/B100 systems, as illustrated in Figure 12."
+   },
+   {
+    "w": "integration",
+    "ipa": "ˌɪnəˈgreɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "综合",
+    "ex": "Future Arch and Integration with New GPU Models Our next-generation PCIe architecture is designed for MoE (Mixture of Experts) LLM training, where all-to-all performance is crucial."
+   },
+   {
+    "w": "lower",
+    "ipa": "loʊər",
+    "pos": "adj.；v.",
+    "lv": "四级",
+    "m": "较低的；放下",
+    "ex": "Additionally, we are exploring the use of RoCE switches instead of IB switches, which can significantly lower network expenses."
+   },
+   {
+    "w": "ratio",
+    "ipa": "ˈreɪʃiˌoʊ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比，比率",
+    "ex": "Therefore, the next-gen nodes feature a 1:1 GPU to NIC ratio, comparable to DGX-H100/B100 systems, as illustrated in Figure 12."
+   }
+  ]
+ },
+ {
+  "sec": "X. Conclusions · 结论",
+  "short": "Concl",
+  "icon": "X",
+  "words": [
+   {
+    "w": "accrue",
+    "ipa": "əˈkru",
+    "pos": "v.",
+    "lv": "专八",
+    "m": "积累",
+    "ex": "The practical knowledge we have accrued may prove valuable for both industrial and academic sectors."
+   },
+   {
+    "w": "collaborative",
+    "ipa": "kəˈlæbərˌeɪtɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "合作的， 协作的， 协力完成的",
+    "ex": "Throughout the four years of design, construction, and operation, their collaborative efforts have been crucial in overcoming numerous challenges."
+   },
+   {
+    "w": "conjunction",
+    "ipa": "kənˈʤəŋkʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "接合，连接；连接词",
+    "ex": "Our in-house developed 3FS distributed file system,in conjunction with network co-design, facilitates traffic isolation for both 3FS and HFReduce allreduce traffic, effectively preventing congestion."
+   },
+   {
+    "w": "consequently",
+    "ipa": "ˈkɑnsəkˌwɛntli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "结果",
+    "ex": "Consequently, Fire-Flyer 2 AI-HPC now supports the training tasks of the DeepSeek-AI series large language models [72], [97]–[101]."
+   },
+   {
+    "w": "effective",
+    "ipa": "ˈifɛktɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "有效的；有影响的",
+    "ex": "We hope that our work will serve as a reference for others aiming to build their own cost-effective and efficient AI-HPC clusters."
+   },
+   {
+    "w": "endeavor",
+    "ipa": "ɪnˈdɛvər",
+    "pos": "v.；n.",
+    "lv": "六级",
+    "m": "努力，尽力；努力，尝试",
+    "ex": "We extend a special thanks to the HFAiLab System Team and the Operations Team, whose core contributions have been essential to the success of this endeavor."
+   },
+   {
+    "w": "ensure",
+    "ipa": "ɪnˈʃʊr",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "确保",
+    "ex": "In terms of software co-design, we introduced HFReduce and HaiScale to overcome hardware limitations, ensuring scalable performance of the PCIe architecture."
+   },
+   {
+    "w": "extend",
+    "ipa": "ɪkˈstɛnd",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "延长；扩大；致",
+    "ex": "We extend a special thanks to the HFAiLab System Team and the Operations Team, whose core contributions have been essential to the success of this endeavor."
+   },
+   {
+    "w": "facilitate",
+    "ipa": "fəˈsɪləˌteɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使便利，促进",
+    "ex": "Our in-house developed 3FS distributed file system,in conjunction with network co-design, facilitates traffic isolation for both 3FS and HFReduce allreduce traffic, effectively preventing congestion."
+   },
+   {
+    "w": "gratitude",
+    "ipa": "ˈgrætəˌtud",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "感激，感谢，感恩",
+    "ex": "We extend our heartfelt gratitude to all our colleagues at DeepSeek-AI and High-Flyer Quant for their invaluable contributions to the Fire-Flyer 2 AI-HPC project."
+   },
+   {
+    "w": "halve",
+    "ipa": "hæv",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "对分；平摊",
+    "ex": "In this paper, we have shared our experiences and insights from deploying and maintaining the Fire-Flyer 2 AI-HPC, which is equipped with 10,000 PCIe A100 GPUs.Our approach to PCIe architecture and storage-computation integrated …"
+   },
+   {
+    "w": "heartfelt",
+    "ipa": "ˈhɑrtˌfɛlt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "衷心的；真诚的；真心真意的",
+    "ex": "We extend our heartfelt gratitude to all our colleagues at DeepSeek-AI and High-Flyer Quant for their invaluable contributions to the Fire-Flyer 2 AI-HPC project."
+   },
+   {
+    "w": "industrial",
+    "ipa": "ˌɪnˈdəstriəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "工业的；产业的",
+    "ex": "The practical knowledge we have accrued may prove valuable for both industrial and academic sectors."
+   },
+   {
+    "w": "innovation",
+    "ipa": "ˌɪnəˈveɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "改革，创新",
+    "ex": "Together, these software and hardware innovations enable our PCIe A100 architecture to achieve 80% the performance of NVIDIA’s DGX-A100, while consuming less than 60% of its power."
+   },
+   {
+    "w": "invaluable",
+    "ipa": "ˌɪnˈvæljəbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "非常宝贵的， 极为贵重的， 无价的",
+    "ex": "We extend our heartfelt gratitude to all our colleagues at DeepSeek-AI and High-Flyer Quant for their invaluable contributions to the Fire-Flyer 2 AI-HPC project."
+   },
+   {
+    "w": "limitation",
+    "ipa": "ˌlɪmɪˈteɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "限制；限度，局限",
+    "ex": "In terms of software co-design, we introduced HFReduce and HaiScale to overcome hardware limitations, ensuring scalable performance of the PCIe architecture."
+   },
+   {
+    "w": "numerous",
+    "ipa": "ˈnumərəs",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "为数众多的；许多",
+    "ex": "Throughout the four years of design, construction, and operation, their collaborative efforts have been crucial in overcoming numerous challenges."
+   },
+   {
+    "w": "saving",
+    "ipa": "ˈseɪvɪŋ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "节省， 节约； 储蓄金， 存款",
+    "ex": "In this paper, we have shared our experiences and insights from deploying and maintaining the Fire-Flyer 2 AI-HPC, which is equipped with 10,000 PCIe A100 GPUs.Our approach to PCIe architecture and storage-computation integrated …"
+   },
+   {
+    "w": "scalable",
+    "ipa": "ˈskeɪləbəl",
+    "pos": "adj.",
+    "lv": "超纲",
+    "m": "可扩展的",
+    "ex": "In terms of software co-design, we introduced HFReduce and HaiScale to overcome hardware limitations, ensuring scalable performance of the PCIe architecture."
+   },
+   {
+    "w": "sector",
+    "ipa": "ˈsɛktər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "部门， 部分； 防御地段， 防区； 扇形",
+    "ex": "The practical knowledge we have accrued may prove valuable for both industrial and academic sectors."
+   },
+   {
+    "w": "series",
+    "ipa": "ˈsɪriz",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "连续，系列；丛书",
+    "ex": "Consequently, Fire-Flyer 2 AI-HPC now supports the training tasks of the DeepSeek-AI series large language models [72], [97]–[101]."
+   },
+   {
+    "w": "stack",
+    "ipa": "stæk",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "堆，垛；堆积",
+    "ex": "The comprehensive software stack within the HAI Platform addresses a variety of system faults, from network congestion to hardware failures, thereby ensuring high stability and robustness."
+   },
+   {
+    "w": "thereby",
+    "ipa": "ˈðɛrˈbaɪ",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "因此，从而，由此",
+    "ex": "The comprehensive software stack within the HAI Platform addresses a variety of system faults, from network congestion to hardware failures, thereby ensuring high stability and robustness."
+   }
+  ]
+ },
+ {
+  "sec": "References · 参考文献区用词（正文未出现）",
+  "short": "文献区",
+  "icon": "R",
+  "words": [
+   {
+    "w": "administrator",
+    "ipa": "ədˈmɪnɪˌstreɪtər",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "管理人；行政官",
+    "ex": "Available: https://dl.acm.org/doi/10.1145/3600006.3613149 VII-C [88] NVIDIA, “This document explains what xid messages are, and is intended to assist system administrators, developers, and faes in understanding the meaning behind …"
+   },
+   {
+    "w": "advancement",
+    "ipa": "ədˈvænsmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "进步，提升",
+    "ex": "Our system-oriented experience from DL training provides valuable insights to drive future advancements in AI-HPC."
+   },
+   {
+    "w": "architectural",
+    "ipa": "ˌɑrkəˈtɛkʧərəl",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "建筑上的； 建筑学的",
+    "ex": "Chen, “Adapipe: Optimizing pipeline parallelism with adaptive recomputation and partitioning,” in Proceedings of the 29th ACM International Conference on Architectural Support for Programming Languages and Operating Systems …"
+   },
+   {
+    "w": "automation",
+    "ipa": "ɔtəˈmeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "自动，自动化",
+    "ex": "Roweth, “Future of hpc: Diversifying heterogeneity,” in 2021 Design, Automation Test in Europe Conference Exhibition (DATE), 2021, pp."
+   },
+   {
+    "w": "copyright",
+    "ipa": "ˈkɑpiˌraɪt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "版权",
+    "ex": "18 332–18 346, 2022, publisher Copyright: Copyright © 2022 by the author(s);"
+   },
+   {
+    "w": "deployment",
+    "ipa": "dɪˈplɔɪmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "部署",
+    "ex": "Zhang, “Congestion control for large-scale rdma deployments,” SIGCOMM Comput."
+   },
+   {
+    "w": "diversify",
+    "ipa": "dɪˈvərsəˌfaɪ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使多样化，使变化",
+    "ex": "Roweth, “Future of hpc: Diversifying heterogeneity,” in 2021 Design, Automation Test in Europe Conference Exhibition (DATE), 2021, pp."
+   },
+   {
+    "w": "ere",
+    "ipa": "ɛr",
+    "pos": "—",
+    "lv": "托福",
+    "m": "在…之前",
+    "ex": "Rozi`ere, N."
+   },
+   {
+    "w": "feedback",
+    "ipa": "ˈfidˌbæk",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "反馈",
+    "ex": "Ruan, “DeepSeek-Prover-V1.5: Harnessing Proof Assistant Feedback for Reinforcement Learning and Monte-Carlo Tree Search,” Aug."
+   },
+   {
+    "w": "generalize",
+    "ipa": "ˈʤɛnərəˌlaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "概括出",
+    "ex": "Zaharia, “Pipedream: generalized pipeline parallelism for dnn training,” in Proceedings of the 27th ACM Symposium on Operating Systems Principles, ser."
+   },
+   {
+    "w": "harness",
+    "ipa": "ˈhɑrnɪs",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "治理；马具，挽具",
+    "ex": "Ruan, “DeepSeek-Prover-V1.5: Harnessing Proof Assistant Feedback for Reinforcement Learning and Monte-Carlo Tree Search,” Aug."
+   },
+   {
+    "w": "hierarchical",
+    "ipa": "ˌhaɪˈrɑrkəkəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "分层的；等级体系的",
+    "ex": "Jacobs, “Hierarchical mixtures of experts and the em algorithm,” Neural computation, vol."
+   },
+   {
+    "w": "hybrid",
+    "ipa": "ˈhaɪbrɪd",
+    "pos": "n.；adj.",
+    "lv": "六级",
+    "m": "杂种，混血儿；混合物；混合的；杂种的",
+    "ex": "Bhatele, “A hybrid tensor-expert-data parallelism approach to optimize mixture-of-experts training,” in Proceedings of the 37th ACM International Conference on Supercomputing, ser."
+   },
+   {
+    "w": "inflate",
+    "ipa": "ɪnˈfleɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "膨胀",
+    "ex": "has significantly inflated High Performance Computing (HPC)"
+   },
+   {
+    "w": "journal",
+    "ipa": "ˈʤərnəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "日报，杂志；日志",
+    "ex": "Awan, “Performance analysis of credit-based flow control in infiniband interconnection networks,” Journal of Interconnection Networks, vol."
+   },
+   {
+    "w": "learner",
+    "ipa": "ˈlərnər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "学习者, 初学者",
+    "ex": "Askell et al., “Language models are few-shot learners,” Advances in neural information processing systems, vol."
+   },
+   {
+    "w": "linguistic",
+    "ipa": "lɪŋgˈwɪstɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "语言的；语言学的",
+    "ex": "Toutanova, “Bert: Pre-training of deep bidirectional transformers for language understanding,” in North American Chapter of the Association for Computational Linguistics, 2019. [Online]."
+   },
+   {
+    "w": "machinery",
+    "ipa": "məˈʃinəri",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "机器， 机械",
+    "ex": "New York, NY, USA: Association for Computing Machinery, 2021. [Online]."
+   },
+   {
+    "w": "mar",
+    "ipa": "mɑr",
+    "pos": "v.；n.",
+    "lv": "六级",
+    "m": "损毁；损伤；糟蹋；玷污；污点；瑕疵",
+    "ex": "Catanzaro, “Megatron-LM: Training Multi-Billion Parameter Language Models Using Model Parallelism,” Mar."
+   },
+   {
+    "w": "mathematical",
+    "ipa": "ˌmæθəˈmætɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "数学的，数学上的",
+    "ex": "Guo, “DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models,” Apr."
+   },
+   {
+    "w": "measurement",
+    "ipa": "ˈmɛʒərmənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "衡量，测量；尺寸",
+    "ex": "Kiesel, “Nxg03-5: Head-of-line blocking in tcp and sctp: Analysis and measurements,” in IEEE Globecom 2006, 2006, pp."
+   },
+   {
+    "w": "mostly",
+    "ipa": "ˈmoʊstli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "主要的，大部分",
+    "ex": "Freedman, “Object storage on CRAQ: High-Throughput chain replication for Read-Mostly workloads,” in 2009 USENIX Annual Technical Conference (USENIX ATC 09)."
+   },
+   {
+    "w": "nile",
+    "ipa": "naɪl",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "尼罗河",
+    "ex": "Talaa, “Review: Mask R-CNN Models,” Nile Journal of Communication and Computer Science, vol."
+   },
+   {
+    "w": "orient",
+    "ipa": "ˈɔriˌɛnt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使适应，使确定方向",
+    "ex": "Our system-oriented experience from DL training provides valuable insights to drive future advancements in AI-HPC."
+   },
+   {
+    "w": "outrageously",
+    "ipa": "ˌaʊˈtreɪʤəsli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "令人不能容忍地； 肆无忌惮地",
+    "ex": "Dean, “Outrageously large neural networks: The sparsely-gated mixture-of-experts layer,” arXiv preprint arXiv:1701.06538, 2017."
+   },
+   {
+    "w": "pathway",
+    "ipa": "ˈpæθˌweɪ",
+    "pos": "n.",
+    "lv": "雅思",
+    "m": "路径， 途径",
+    "ex": "Gehrmann et al., “Palm: Scaling language modeling with pathways,” Journal of Machine Learning Research, vol."
+   },
+   {
+    "w": "prediction",
+    "ipa": "priˈdɪkʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "预言，预告；预报",
+    "ex": "Bridgland et al., “Improved protein structure prediction using potentials from deep learning,” Nature, vol."
+   },
+   {
+    "w": "preliminary",
+    "ipa": "prɪˈlɪməˌnɛri",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "预备的，初步的",
+    "ex": "Panda, “Rdma over ethernet — a preliminary study,” in 2009 IEEE International Conference on Cluster Computing and Workshops, 2009, pp."
+   },
+   {
+    "w": "proceeding",
+    "ipa": "prəˈsidɪŋ",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "程序，行动，事项",
+    "ex": "Sun, “Deep residual learning for image recognition,” in Proceedings of the IEEE conference on computer vision and pattern recognition, 2016, pp."
+   },
+   {
+    "w": "proof",
+    "ipa": "pruf",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "证据；证明；校样",
+    "ex": "Ruan, “DeepSeek-Prover-V1.5: Harnessing Proof Assistant Feedback for Reinforcement Learning and Monte-Carlo Tree Search,” Aug."
+   },
+   {
+    "w": "protein",
+    "ipa": "ˈproʊˌtin",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "蛋白质，朊",
+    "ex": "Bridgland et al., “Improved protein structure prediction using potentials from deep learning,” Nature, vol."
+   },
+   {
+    "w": "protocol",
+    "ipa": "ˈproʊtəˌkɔl",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "礼仪， 礼节； 草案， 议定书",
+    "ex": "Lusilao Zodi, “A predictive ecmp routing protocol for fat-tree enabled data centre networks,” in 2021 15th International Conference on Ubiquitous Information Management and Communication (IMCOM), 2021, pp."
+   },
+   {
+    "w": "publisher",
+    "ipa": "ˈpəblɪʃər",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "出版者，出版商；发行人",
+    "ex": "18 332–18 346, 2022, publisher Copyright: Copyright © 2022 by the author(s);"
+   },
+   {
+    "w": "recommendation",
+    "ipa": "ˌrɛkəmənˈdeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "推荐，介绍；劝告",
+    "ex": "Rao, “Software-Hardware Co-design for Fast and Scalable Training of Deep Learning Recommendation Models,” Feb."
+   },
+   {
+    "w": "reinforcement",
+    "ipa": "ˌriɪnˈfɔrsmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "加固；增援；援军；加强",
+    "ex": "Graepel et al., “A general reinforcement learning algorithm that masters chess, shogi, and go through self-play,” Science, vol."
+   },
+   {
+    "w": "residual",
+    "ipa": "rɪˈzɪʤuəl",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "剩余的；残余的",
+    "ex": "Sun, “Deep residual learning for image recognition,” in Proceedings of the IEEE conference on computer vision and pattern recognition, 2016, pp."
+   },
+   {
+    "w": "sample",
+    "ipa": "ˈsæmpəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "样品；实例，标本",
+    "ex": "Deng, “Very deep convolutional neural network based image classification using small training sample size,” in 2015 3rd IAPR Asian Conference on Pattern Recognition (ACPR), 2015, pp."
+   },
+   {
+    "w": "scope",
+    "ipa": "skoʊp",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "范围",
+    "ex": "Chiriatti, “Gpt-3: Its nature, scope, limits, and con-sequences,” Minds and Machines, vol."
+   },
+   {
+    "w": "self",
+    "ipa": "sɛlf",
+    "pos": "n.；adj.；vt.；vi.",
+    "lv": "四级",
+    "m": "自己，自我；本质；私心；同一的；使自花授精；使近亲繁殖；自花授精",
+    "ex": "Graepel et al., “A general reinforcement learning algorithm that masters chess, shogi, and go through self-play,” Science, vol."
+   },
+   {
+    "w": "sierra",
+    "ipa": "siˈɛrə",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "[地理] 锯齿山脊；呈齿状起伏的山脉",
+    "ex": "Chochia, “The high-speed networks of the Summit and Sierra supercomputers,” IBM Journal of Research and Development, vol."
+   },
+   {
+    "w": "simulation",
+    "ipa": "ˌsɪmjəˈleɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "假装； 模拟",
+    "ex": "Wu, “Exploring large all-flash storage system with scientific simulation,” in Proceedings of the 34th International Conference on Scientific and Statistical Database Management, ser."
+   },
+   {
+    "w": "sparsely",
+    "ipa": "ˈspɑrsli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "稀疏地；贫乏地",
+    "ex": "Dean, “Outrageously large neural networks: The sparsely-gated mixture-of-experts layer,” arXiv preprint arXiv:1701.06538, 2017."
+   },
+   {
+    "w": "spectrum",
+    "ipa": "ˈspɛktrəm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "系列，范围；波谱",
+    "ex": "Schneider, “The Exascale Era is Upon Us: The Frontier supercomputer may be the first to reach 1,000,000,000,000,000,000 operations per second,” IEEE Spectrum, vol."
+   },
+   {
+    "w": "statistical",
+    "ipa": "stəˈtɪstɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "统计的，统计学的",
+    "ex": "Wu, “Exploring large all-flash storage system with scientific simulation,” in Proceedings of the 34th International Conference on Scientific and Statistical Database Management, ser."
+   },
+   {
+    "w": "structure",
+    "ipa": "ˈstrəkʧər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "结构",
+    "ex": "Bridgland et al., “Improved protein structure prediction using potentials from deep learning,” Nature, vol."
+   },
+   {
+    "w": "sustainability",
+    "ipa": "səˌsteɪnəˈbɪlɪti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "持续性",
+    "ex": "Teller, “Stampede 2: The evolution of an xsede supercomputer,” in Proceedings of the Practice and Experience in Advanced Research Computing 2017 on Sustainability, Success and Impact, ser."
+   },
+   {
+    "w": "symposium",
+    "ipa": "sɪmˈpoʊziəm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "座谈会",
+    "ex": "Abts, “Technology-driven, highly-scalable dragonfly topology,” in 2008 International Symposium on Computer Architecture, 2008, pp."
+   },
+   {
+    "w": "synergistic",
+    "ipa": "ˌsɪnərˈʤɪstɪk",
+    "pos": "adj.",
+    "lv": "超纲",
+    "m": "协同增效的，相互促进的（整体效果大于各部分之和）",
+    "ex": "Fire-Flyer AI-HPC architecture, a synergistic hardware-software"
+   },
+   {
+    "w": "tan",
+    "ipa": "tæn",
+    "pos": "vi.；vt.；n.",
+    "lv": "四级",
+    "m": "晒成棕褐色；使晒成棕褐色；硝制；棕褐色， 棕黄色； 晒成棕褐色， 晒黑",
+    "ex": "Tian Pei, Junjie Qiu, Hui Qu, Zehui Ren, Zhangli Sha, Xuecheng Su, Xiaowen Sun, Yixuan Tan, Minghui Tang,"
+   },
+   {
+    "w": "tang",
+    "ipa": "tɑŋ",
+    "pos": "v.",
+    "lv": "托福",
+    "m": "有浓味 n特殊气味",
+    "ex": "Tian Pei, Junjie Qiu, Hui Qu, Zehui Ren, Zhangli Sha, Xuecheng Su, Xiaowen Sun, Yixuan Tan, Minghui Tang,"
+   },
+   {
+    "w": "transaction",
+    "ipa": "trænˈzækʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "交易，业务，事务",
+    "ex": "Leiserson, “Fat-trees: Universal networks for hardware-efficient supercomputing,” IEEE Transactions on Computers, vol."
+   },
+   {
+    "w": "ubiquitous",
+    "ipa": "juˈbɪkwɪtəs",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "无处无在的，普遍的",
+    "ex": "Lusilao Zodi, “A predictive ecmp routing protocol for fat-tree enabled data centre networks,” in 2021 15th International Conference on Ubiquitous Information Management and Communication (IMCOM), 2021, pp."
+   },
+   {
+    "w": "unify",
+    "ipa": "ˈjunəˌfaɪ",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "使联合， 统一； 使相同， 使一致",
+    "ex": "Guo, “A Unified Architecture for Accelerating Distributed DNN Training in Heterogeneous GPU/CPU Clusters.” II-C3 [48] Z."
+   },
+   {
+    "w": "vision",
+    "ipa": "ˈvɪʒən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "视；想象力；梦幻",
+    "ex": "Sun, “Deep residual learning for image recognition,” in Proceedings of the IEEE conference on computer vision and pattern recognition, 2016, pp."
+   },
+   {
+    "w": "workshop",
+    "ipa": "ˈwərkˌʃɑp",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "车间，工场；创作室",
+    "ex": "Panda, “Rdma over ethernet — a preliminary study,” in 2009 IEEE International Conference on Cluster Computing and Workshops, 2009, pp."
+   }
+  ]
+ }
+];
+// lv 一律写中文档名（十一档平级，2026-09-30 定案；旧短码由 build 脚本自动翻译）
+const LVCLS={"四级":"t4","六级":"t6","考研":"tk","考博":"tp","专四":"tm4","专八":"tm8","雅思":"ty","托福":"tt","GRE":"tg","超纲":"tsuper"};
+const LVNAME={"四级":"四级","六级":"六级","考研":"考研","考博":"考博","专四":"专业四级","专八":"专业八级","雅思":"雅思","托福":"托福","GRE":"GRE","超纲":"超纲（大纲未收）"};
+const LVSHORT={"四级":"4","六级":"6","考研":"考研","考博":"考博","专四":"专四","专八":"专八","雅思":"雅思","托福":"托福","GRE":"GRE","超纲":"★超纲"};
+const LVORDER=["四级","六级","考研","考博","专四","专八","雅思","托福","GRE","超纲"];
+
+let mode="sec";
+let theme="theme-mag"; // 章节视图固定杂志风；按级别视图固定暗色大页
+
+function cardHTML(x,sec){
+  const from = mode==="lv" ? `<div class="from">出自 ${sec}</div>` : "";
+  if(theme==="theme-paper"){
+    return `<div class="word"><span class="w">${x.w}<span class="ipa">/${x.ipa}/</span><i class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</i></span>
+      <span><span class="pos">${x.pos}</span><span class="m">${x.m}</span>${from}</span>
+      <span class="ex">${x.ex}</span></div>`;
+  }
+  if(theme==="theme-mag") return "";
+  return `<div class="card lv${x.lv}" data-say="${x.w}"><span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span><span class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</span>
+    <div class="m">${x.pos} ${x.m}</div><div class="ex">${x.ex}</div>${from}</div>`;
+}
+function magRow(x,sec){
+  return `<tr data-say="${x.w}"><td class="w"><span class="hwband">${x.w}</span><span class="ipa">/${x.ipa}/</span></td>
+    <td class="lv"><b class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</b></td>
+    <td class="m">${x.pos} ${x.m}${mode==="lv"?`<span class="from">出自 ${sec}</span>`:""}</td>
+    <td class="ex">${x.ex}</td></tr>`;
+}
+function groupHTML(title,icon,inner){
+  if(theme==="theme-mag") return `<div class="sec"><h2>${title}</h2><table>${inner}</table></div>`;
+  if(theme==="theme-dark"||theme==="theme-fresh")
+    return `<div class="sec"><h2>${theme==="theme-dark"?"":"<span class='n'>"+icon+"</span>"}${title}</h2><div class="grid">${inner}</div></div>`;
+  return `<div class="sec"><h2>${title}</h2>${inner}</div>`;
+}
+
+function render(){
+  document.body.classList.toggle("lv-mode",mode==="lv");
+  // 注意：必须用 classList.add，不能整体赋值 className —— 否则会抹掉 body.night，
+  // 而夜晚章节视图依赖 body.night.theme-mag 这条 CSS，抹掉后点「按章节」会静默退回白天。
+  if(mode==="sec")document.body.classList.add("theme-mag");
+  const app=document.getElementById("app");
+  let html="";
+  if(mode==="sec"){
+    for(const s of DATA){
+      html += theme==="theme-mag"
+        ? groupHTML(s.sec,s.icon,s.words.map(x=>magRow(x,s.short)).join(""))
+        : groupHTML(s.sec,s.icon,s.words.map(x=>cardHTML(x,s.short)).join(""));
+    }
+  }else{
+    // 学习模式同款暗色大页：每个级别一块
+    const dot={"四级":"var(--c4)","六级":"var(--c6)","考研":"var(--ckaon)","考博":"var(--cphd)","专四":"var(--cm4)","专八":"var(--cm8)","雅思":"var(--cy)","托福":"var(--ct)","GRE":"var(--cg)","超纲":"var(--csuper)"};
+    html=LVORDER.map(lv=>{
+      const items=[];
+      DATA.forEach(s=>s.words.forEach(x=>{if(x.lv===lv)items.push([x,s.short])}));   // ov 已废除（2026-09-30）
+      if(!items.length)return"";   // 本词表里没有这一档 → 不出空面板
+      items.sort((a,b)=>a[0].w.localeCompare(b[0].w));
+      const cls={"六级":"l6","考研":"lk","考博":"lp","专四":"lm4","专八":"lm8","雅思":"ly","托福":"lt","GRE":"lg","超纲":"lsuper"}[lv]||"";
+      return `<div class="lvslide ${cls}">
+        <div class="ltitle"><span style="color:${dot[lv]}">${LVNAME[lv]}</span>词汇<small>${items.length} words · 按字母排序 · 悬停看原文例句 · 点击发音</small></div>
+        <div class="sgrid">${items.map(([x,sec])=>`
+          <div class="lcard" data-say="${x.w}">
+            <span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span>
+            <div class="m">${x.pos} ${x.m}</div>
+            <div class="ex">${x.ex}</div>
+            <div class="from">出自 ${sec}</div>
+          </div>`).join("")}</div></div>`;
+    }).join("");
+  }
+  app.innerHTML=html;
+}
+function syncToolbar(){
+  document.getElementById("v-sec").classList.toggle("on",mode==="sec");
+  document.getElementById("v-lv").classList.toggle("on",mode==="lv");
+}
+document.getElementById("v-sec").onclick=()=>{mode="sec";theme="theme-mag";syncToolbar();render();};
+document.getElementById("v-lv").onclick=()=>{mode="lv";syncToolbar();render();};
+
+// 朗读：多引擎在线 TTS 自动降级（有道 / Polly / 百度 / 谷歌），可按下拉切换主音色
+// 合并自 .agents 有道源版 与 workbuddy Polly 源版 —— 单文件同时支持两套引擎
+const VOICE_MAP={
+  yd1:{src:"yd",label:"美式 · 有道（推荐）"},
+  yd0:{src:"yd",label:"英式 · 有道"},
+  Brian:{src:"se",label:"Brian · 英式男声"},
+  Amy:{src:"se",label:"Amy · 英式女声"},
+  Matthew:{src:"se",label:"Matthew · 美式男声"},
+  Joanna:{src:"se",label:"Joanna · 美式女声"},
+  Salli:{src:"se",label:"Salli · 美式女声"},
+  Ivy:{src:"se",label:"Ivy · 美式童声"},
+  bd:{src:"bd",label:"百度翻译 · 女声"},
+  gg:{src:"gg",label:"谷歌翻译"},
+  mute:{src:"mute",label:"🔇 不朗读"}
+};
+const VOICE_ORDER=["yd1","yd0","Brian","Amy","Matthew","Joanna","Salli","Ivy","bd","gg","mute"];
+let ONLINE="yd1"; // 默认有道 · 美音（保留 .agents 版行为）
+try{const sv=localStorage.getItem("vocab_voice");if(sv&&VOICE_MAP[sv])ONLINE=sv;}catch(e){}
+const ENG=["yd","se","bd","gg"];               // 全部可选引擎
+const ENG_NAME={yd:"有道",se:"Polly",bd:"百度",gg:"谷歌"};
+const POLLY_VOICES={Brian:1,Amy:1,Matthew:1,Joanna:1,Salli:1,Ivy:1};
+let SRC_ORDER=ENG.slice(),srcIdx=0;           // 降级顺序：按所选音色的主引擎优先
+function applyVoiceOrder(){
+  const want=VOICE_MAP[ONLINE].src;
+  const i=ENG.indexOf(want);
+  SRC_ORDER=i<0?ENG.slice():ENG.slice(i).concat(ENG.slice(0,i));
+}
+applyVoiceOrder();
+let audio=null;
+function ttsURL(src,t){
+  const q=encodeURIComponent(t);
+  if(src==="yd")return `https://dict.youdao.com/dictvoice?type=${ONLINE==="yd0"?"0":"1"}&audio=${q}`;
+  if(src==="se")return `https://api.streamelements.com/kappa/v2/speech?voice=${POLLY_VOICES[ONLINE]?ONLINE:"Brian"}&text=${q}`;
+  if(src==="bd")return `https://fanyi.baidu.com/gettts?lan=en&text=${q}&spd=5&source=web`;
+  return `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q=${q}`;
+}
+function fillVoiceSel(){
+  const sel=document.getElementById("voiceSel");if(!sel)return;
+  sel.innerHTML=VOICE_ORDER.map(v=>`<option value="${v}" ${ONLINE===v?"selected":""}>${VOICE_MAP[v].label}</option>`).join("");
+  const st=document.getElementById("srcState");
+  if(st)st.textContent=ENG_NAME[SRC_ORDER[srcIdx]]||"";
+}
+fillVoiceSel();
+let saying=0; // 防并发
+function say(t){
+  if(ONLINE==="mute"){try{if(audio){audio.pause();audio=null}}catch(e){}return}
+  const my=++saying;
+  trySrc(0,t,my);
+}
+function trySrc(i,t,my){
+  if(my!==saying)return;
+  if(i>=SRC_ORDER.length){const st=document.getElementById("srcState");if(st)st.textContent="无可用源";return}
+  const src=SRC_ORDER[i];
+  const st=document.getElementById("srcState");
+  if(st)st.textContent="尝试 "+ENG_NAME[src];
+  try{if(audio){audio.pause();audio=null}}catch(e){}
+  const a=new Audio(ttsURL(src,t));
+  let ok=false,advanced=false;
+  const advance=()=>{ if(!ok&&!advanced&&my===saying){advanced=true;trySrc(i+1,t,my);} };
+  a.addEventListener("playing",()=>{ok=true;
+    if(srcIdx!==i){srcIdx=i;fillVoiceSel();} // 记住能用的源
+  });
+  a.addEventListener("error",advance);
+  audio=a;
+  a.play().catch(advance);
+  setTimeout(()=>{ if(!ok&&my===saying&&a.paused)advance(); },2500);
+}
+document.getElementById("voiceSel").addEventListener("change",e=>{
+  ONLINE=e.target.value; applyVoiceOrder(); srcIdx=0; // 换音色重新从头试源
+  try{localStorage.setItem("vocab_voice",ONLINE);}catch(e){}
+  if(ONLINE!=="mute") say("Hello, let us learn new words together.");
+});
+/* ---- 白天 / 夜晚 ---- */
+let style="day";
+try{const s=localStorage.getItem("vocab_style");if(["day","night","paper"].indexOf(s)>=0)style=s;}catch(e){}
+function applyStyle(){
+  document.body.classList.toggle("night",style==="night");
+  document.body.classList.toggle("paper",style==="paper");
+  ["day","night","paper"].forEach(k=>{const b=document.getElementById("st-"+k);if(b)b.classList.toggle("on",style===k);});
+  if(typeof studyEl!=="undefined"&&studyEl)studyEl.classList.toggle("day",style!=="night");
+}
+document.getElementById("st-day").onclick=()=>{style="day";try{localStorage.setItem("vocab_style","day")}catch(e){};applyStyle();};
+document.getElementById("st-night").onclick=()=>{style="night";try{localStorage.setItem("vocab_style","night")}catch(e){};applyStyle();};
+document.getElementById("st-paper").onclick=()=>{style="paper";try{localStorage.setItem("vocab_style","paper")}catch(e){};applyStyle();};
+document.getElementById("app").addEventListener("click",e=>{
+  const el=e.target.closest("[data-say]"); if(el) say(el.dataset.say);
+});
+
+/* ---------- 学习模式：按章节分页的 PPT 翻页 ---------- */
+const PER_PAGE = 12; // 每页最多词数，放不下自动续页
+let slides=[],si=0;
+function buildSlides(){
+  slides=[];
+  for(const s of DATA){
+    for(let i=0;i<s.words.length;i+=PER_PAGE){
+      slides.push({sec:s.sec,page:Math.floor(i/PER_PAGE)+1,
+        pages:Math.ceil(s.words.length/PER_PAGE),words:s.words.slice(i,i+PER_PAGE)});
+    }
+  }
+}
+const studyEl=document.getElementById("study");
+let open=false;
+function showSlide(){
+  const sl=slides[si];
+  const title=sl.pages>1 ? `${sl.sec}（第 ${sl.page}/${sl.pages} 页）` : sl.sec;
+  document.getElementById("sPage").innerHTML =
+    `<div class="stitle">${title}<small>${sl.words.length} words</small></div>
+     <div class="sgrid">${sl.words.map(x=>`
+       <div class="scard" data-say="${x.w}">
+         <span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span><span class="tag ${LVCLS[x.lv]}" style="font-size:11px;padding:2px 8px">${LVSHORT[x.lv]}</span>
+         <div class="m">${x.pos} ${x.m}</div>
+         <div class="ex">${x.ex}</div>
+       </div>`).join("")}</div>`;
+  document.getElementById("sIdx").textContent=(si+1)+" / "+slides.length;
+  document.getElementById("sbar").style.width=((si+1)/slides.length*100)+"%";
+  document.getElementById("sPrev").disabled=si===0;
+  document.getElementById("sNext").disabled=si===slides.length-1;
+  studyEl.querySelector(".sbody").scrollTop=0;
+}
+function studyOpen(){ buildSlides(); si=0; open=true; studyEl.classList.add("on"); applyStyle(); showSlide(); }
+function studyClose(){ open=false; studyEl.classList.remove("on"); }
+function next(){ if(si<slides.length-1){ si++; showSlide(); } }
+function prev(){ if(si>0){ si--; showSlide(); } }
+document.getElementById("v-study").onclick=()=>open?studyClose():studyOpen();
+document.getElementById("sClose").onclick=studyClose;
+document.getElementById("sExit").onclick=studyClose;
+document.getElementById("sNext").onclick=next;
+document.getElementById("sPrev").onclick=prev;
+studyEl.addEventListener("click",e=>{
+  const el=e.target.closest("[data-say]"); if(el) say(el.dataset.say);
+});
+document.addEventListener("keydown",e=>{
+  if(!open) return;
+  if(e.code==="Space"||e.key==="ArrowRight"||e.key==="PageDown"){ e.preventDefault(); next(); }
+  else if(e.key==="ArrowLeft"||e.key==="PageUp"){ prev(); }
+  else if(e.key==="Escape"){ studyClose(); }
+});
+applyStyle(); syncToolbar(); render();
+</script>
+<a href="../../vocab.html" target="_self" style="position:fixed;left:14px;bottom:14px;z-index:9999;font:600 13px/1 -apple-system,system-ui,sans-serif;color:#fff;background:rgba(0,0,0,.55);padding:8px 12px;border-radius:20px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.25)">← 返回索引</a></body>
+</html>

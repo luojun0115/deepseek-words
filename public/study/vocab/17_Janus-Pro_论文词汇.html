@@ -1,0 +1,2537 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Janus-Pro 论文核心词汇</title>
+<style>
+:root{--c4:#3b82f6;--c6:#8b5cf6;--ckaon:#f59e0b;--cphd:#ef4444;--ct:#0d9488;--cg:#d946ef;--cm4:#0ea5e9;--cm8:#f43f5e;--cy:#10b981;--csuper:#facc15}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;transition:background .3s,color .3s}
+.tag{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:4px;color:#fff;vertical-align:2px;margin-left:6px;font-style:normal;flex:none;white-space:nowrap}
+.tag.t4{background:var(--c4)}.tag.t6{background:var(--c6)}.tag.tk{background:var(--ckaon)}.tag.tp{background:var(--cphd)}.tag.tm4{background:var(--cm4)}.tag.tm8{background:var(--cm8)}
+.tag.tt{background:var(--ct)}.tag.tg{background:var(--cg)}.tag.ty{background:var(--cy)}.tag.tsuper{background:var(--csuper);color:#3a2f00}
+.ipa{font-family:"SF Mono",Menlo,monospace;font-size:.82em;font-weight:400;opacity:.62;margin-left:6px}
+
+
+/* 论文原标题小字 */
+.ptitle{font-size:12.5px;letter-spacing:.3px;margin-top:6px}
+.ptitle i{font-family:Georgia,serif}
+.theme-mag .ptitle{color:#999;text-transform:none}
+.theme-dark .ptitle{color:#6e7681}
+.theme-paper .ptitle{color:#a09578}
+.theme-fresh .ptitle{color:#9ca3af}
+body.lv-mode .ptitle{color:#7d8590}
+
+/* 预览工具条 */
+.toolbar{position:fixed;right:16px;bottom:16px;z-index:99;display:flex;flex-direction:column;gap:8px;background:rgba(20,22,30,.88);padding:12px;border-radius:14px;backdrop-filter:blur(8px);box-shadow:0 6px 24px rgba(0,0,0,.35)}
+.toolbar .row{display:flex;gap:6px}
+.toolbar button{border:none;cursor:pointer;padding:7px 12px;border-radius:8px;font-size:12.5px;background:#3a3f4d;color:#cbd2e0;transition:.15s}
+.toolbar button:hover{background:#4a5164}
+.toolbar button.on{background:#fff;color:#111;font-weight:600}
+.toolbar .lbl{font-size:10px;color:#8a93a6;text-align:left;margin:2px 0 -2px 2px}
+
+/* ---------- A 纸质阅读 ---------- */
+body.theme-paper{background:#faf6ee;color:#2c2a25}
+.theme-paper .wrap{max-width:880px;margin:0 auto;padding:56px 24px 140px}
+.theme-paper .hero h1{font-family:Georgia,"Songti SC",serif;font-size:34px}
+.theme-paper .hero p{color:#8a8272;margin:10px 0 42px;font-size:14px}
+.theme-paper .sec{margin-bottom:44px}
+.theme-paper .sec>h2{font-family:Georgia,"Songti SC",serif;font-size:20px;padding-left:14px;border-left:4px solid #b08d4f;margin-bottom:18px}
+.theme-paper .word{display:flex;gap:14px;padding:14px 16px;border-bottom:1px dashed #ddd2bc;align-items:baseline}
+.theme-paper .word:hover{background:#f3ecdc}
+.theme-paper .w{font-family:Georgia,serif;font-size:19px;font-weight:700;min-width:250px}
+.theme-paper .pos{color:#a09578;font-size:13px;margin-right:6px}
+.theme-paper .m{color:#4a463c;font-size:15px}
+.theme-paper .ex{margin-left:auto;max-width:270px;font-size:12.5px;color:#9a8f76;font-style:italic;text-align:right}
+.theme-paper .from{display:block;font-size:11px;color:#b3a888;font-style:normal;margin-top:3px}
+
+/* ---------- B 暗色科技 ---------- */
+body.theme-dark{background:#0d1117;color:#e6edf3}
+.theme-dark .wrap{max-width:1000px;margin:0 auto;padding:56px 24px 140px}
+.theme-dark .hero h1{font-family:"SF Mono",Menlo,monospace;font-size:26px}
+.theme-dark .hero h1::before{content:"$ ";color:#3fb950}
+.theme-dark .hero p{color:#7d8590;margin:10px 0 40px;font-size:14px;font-family:Menlo,monospace}
+.theme-dark .sec>h2{font-size:15px;font-family:Menlo,monospace;color:#58a6ff;padding:10px 16px;background:#161b22;border:1px solid #30363d;border-radius:8px 8px 0 0;margin-bottom:-1px}
+.theme-dark .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;padding:20px;background:#161b22;border:1px solid #30363d;border-radius:0 0 8px 8px}
+.theme-dark .card{background:#0d1117;border:1px solid #30363d;border-left:4px solid #58a6ff;border-radius:6px;padding:15px 17px;transition:.2s;cursor:pointer;font-family:Menlo,monospace}
+.theme-dark .card:hover{border-color:#58a6ff;box-shadow:0 0 14px rgba(88,166,255,.25);transform:translateY(-2px)}
+.theme-dark .w{font-family:Menlo,monospace;font-size:17px;color:#79c0ff}
+.theme-dark .ipa{color:#7ee787;opacity:.9}
+.theme-dark .m{color:#8b949e;font-size:13.5px;margin-top:7px;line-height:1.55}
+.theme-dark .ex{font-size:12px;color:#6e7681;margin-top:8px;border-top:1px solid #21262d;padding-top:8px;font-style:italic}
+.theme-dark .from{color:#484f58;font-size:11px;margin-top:4px}
+
+/* ---------- C 清新卡片 ---------- */
+body.theme-fresh{background:linear-gradient(160deg,#eef4ff 0%,#f6f0ff 50%,#fff7ec 100%);color:#1f2430}
+.theme-fresh .wrap{max-width:1020px;margin:0 auto;padding:56px 24px 140px}
+.theme-fresh .hero h1{font-size:32px;font-weight:800;background:linear-gradient(90deg,#3b82f6,#8b5cf6,#f59e0b);-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block}
+.theme-fresh .hero p{color:#6b7280;margin:10px 0 40px;font-size:14px}
+.theme-fresh .sec>h2{font-size:19px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.theme-fresh .sec>h2 .n{width:30px;height:30px;border-radius:10px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.08);display:inline-flex;align-items:center;justify-content:center;font-size:13px}
+.theme-fresh .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+.theme-fresh .card{background:rgba(255,255,255,.82);backdrop-filter:blur(6px);border-radius:18px;padding:17px 19px 15px;box-shadow:0 3px 14px rgba(80,80,140,.09);transition:.2s;cursor:pointer;border-top:5px solid #dbe3f5}
+.theme-fresh .card.lv四级{border-top-color:#3b82f6}.theme-fresh .card.lv六级{border-top-color:#8b5cf6}
+.theme-fresh .card.lv考研{border-top-color:#f59e0b}.theme-fresh .card.lv考博{border-top-color:#ef4444}
+.theme-fresh .card.lv专四{border-top-color:#0ea5e9}.theme-fresh .card.lv专八{border-top-color:#f43f5e}
+.theme-fresh .card.lv雅思{border-top-color:#10b981}.theme-fresh .card.lv托福{border-top-color:#0d9488}
+.theme-fresh .card.lvGRE{border-top-color:#d946ef}.theme-fresh .card.lv超纲{border-top-color:#facc15}
+.theme-fresh .card .w{display:inline-block;background:#f3f5fb;border-radius:8px;padding:2px 10px}
+.theme-fresh .card:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(80,80,140,.16)}
+.theme-fresh .w{font-size:18px;font-weight:700}
+.theme-fresh .m{color:#4b5563;font-size:14px;margin-top:6px;line-height:1.55}
+.theme-fresh .ex{color:#9ca3af;font-size:12.5px;margin-top:8px}
+.theme-fresh .from{color:#b6bcc9;font-size:11.5px;margin-top:4px}
+
+/* ---------- D 杂志表格（宽松版） ---------- */
+body.theme-mag{background:#fff;color:#111}
+.theme-mag .wrap{max-width:960px;margin:0 auto;padding:52px 28px 140px}
+.theme-mag .hero{border-bottom:3px solid #111;padding-bottom:16px;margin-bottom:10px}
+.theme-mag .hero h1{font-family:"Songti SC",Georgia,serif;font-size:38px;font-weight:900}
+.theme-mag .hero p{color:#888;font-size:13.5px;margin-top:8px}
+.theme-mag .sec>h2{font-size:14px;letter-spacing:3px;text-transform:uppercase;color:#c2410c;margin:44px 0 8px;border-bottom:1px solid #e5e5e5;padding-bottom:8px}
+.theme-mag table{width:100%;border-collapse:collapse}
+.theme-mag td{padding:16px 12px;border-bottom:1px solid #f0f0f0;font-size:15.5px;line-height:1.65;vertical-align:top}
+.theme-mag tr:hover td{background:#fff8f3}
+.theme-mag .w{font-weight:700;font-size:17px;width:300px}
+.theme-mag .lv{width:60px}
+.theme-mag .lv b{font-size:11.5px;padding:3px 0;display:block;text-align:center;border-radius:3px;color:#fff;font-weight:600}
+.theme-mag .m{color:#3d3d3d}
+.theme-mag .ex{color:#9a9a9a;font-size:13px;font-style:italic}
+.theme-mag .from{display:block;color:#c9c9c9;font-size:11.5px;font-style:normal;margin-top:4px}
+
+/* ---------- 按级别：学习模式同款暗色大页 ---------- */
+body.lv-mode{background:#0b0e13 !important}
+body.lv-mode .hero h1,body.lv-mode .hero p{color:#e8ecf3}
+body.lv-mode .hero p{color:#7d8590}
+.lvslide{background:#101318;color:#e8ecf3;border-radius:20px;padding:26px 32px 22px;margin-bottom:26px;border-top:6px solid var(--c4)}
+.lvslide.l6{border-top-color:var(--c6)}.lvslide.lk{border-top-color:var(--ckaon)}.lvslide.lp{border-top-color:var(--cphd)}
+.lvslide.lt{border-top-color:var(--ct)}.lvslide.lg{border-top-color:var(--cg)}.lvslide.lm4{border-top-color:var(--cm4)}.lvslide.lm8{border-top-color:var(--cm8)}.lvslide.ly{border-top-color:var(--cy)}.lvslide.lsuper{border-top-color:var(--csuper)}
+.lvslide .ltitle{font-size:26px;font-weight:800;font-family:Georgia,serif;display:flex;align-items:baseline;gap:14px}
+.lvslide .ltitle small{font-size:14px;color:#7d8590;font-family:Menlo,monospace;font-weight:400}
+.lvslide .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;padding:20px 0 8px}
+.lvslide .lcard{background:#171c26;border:1px solid #2b3342;border-radius:14px;padding:15px 17px;cursor:pointer;transition:.15s}
+.lvslide .lcard:hover{border-color:#79c0ff;transform:translateY(-2px)}
+.lvslide .lcard .w{font-size:19px;font-weight:700;font-family:Georgia,serif}
+.lvslide .lcard .ipa{font-family:Menlo,monospace;font-size:13px;color:#7ee787;margin-left:8px}
+.lvslide .lcard .m{color:#aeb6c4;font-size:14px;margin-top:7px;line-height:1.55}
+.lvslide .lcard .ex{color:#646d7d;font-size:12px;font-style:italic;margin-top:7px}
+.lvslide .lcard .from{color:#4d5563;font-size:11px;margin-top:6px}
+
+
+/* ---------- 白天 / 夜晚 ---------- */
+body.lv-mode:not(.night){background:#eef1f6 !important}
+body.lv-mode:not(.night) .hero h1{color:#1f2430}
+body.lv-mode:not(.night) .hero p{color:#6b7280}
+body.lv-mode:not(.night) .lvslide{background:#fff;color:#1f2430;box-shadow:0 4px 18px rgba(80,80,140,.10)}
+body.lv-mode:not(.night) .lvslide .lcard{background:#f7f9fd;border-color:#e4e9f3}
+body.lv-mode:not(.night) .lvslide .lcard:hover{border-color:#3b82f6}
+body.lv-mode:not(.night) .lvslide .lcard .m{color:#4b5563}
+body.lv-mode:not(.night) .lvslide .lcard .ex{color:#98a0ae}
+body.lv-mode:not(.night) .lvslide .lcard .from{color:#b3bac6}
+body.lv-mode:not(.night) .lvslide .lcard .ipa{color:#0a7d33}
+body.night.theme-mag{background:#0d1117;color:#e6edf3}
+body.night.theme-mag .hero{border-bottom-color:#e6edf3}
+body.night.theme-mag .hero p{color:#8b949e}
+body.night.theme-mag .sec>h2{color:#fbbf24;border-bottom-color:#30363d}
+body.night.theme-mag td{border-bottom-color:#1c2230}
+body.night.theme-mag tr:hover td{background:#161b22}
+body.night.theme-mag .m{color:#c9d1d9}
+body.night.theme-mag .ex{color:#8b949e}
+body.night.theme-mag .from{color:#57606a}
+body.night.theme-mag .w{color:#e6edf3}
+body.night.theme-mag .ptitle{color:#8b949e}
+body.night.theme-mag .ipa{opacity:.55}
+#study.day{background:#f5f7fa;color:#1f2430}
+#study.day .scard{background:#fff;border-color:#e4e9f3}
+#study.day .scard .m{color:#4b5563}
+#study.day .scard .ex{color:#98a0ae}
+#study.day .scard:hover{border-color:#3b82f6}
+#study.day .sfoot{color:#98a0ae;border-top-color:#e6e9f0}
+#study.day .snav button,#study.day #sClose{background:#fff;color:#1f2430;border-color:#d7dce6}
+#study.day .sfoot kbd{background:#e8ecf3;color:#1f2430}
+
+/* ---------- 学习模式（PPT 按章节翻页） ---------- */
+#study{position:fixed;inset:0;z-index:200;display:none;background:#101318;color:#e8ecf3;flex-direction:column}
+#study.on{display:flex}
+#study .sprog{height:4px;background:#262c38}
+#study .sprog i{display:block;height:100%;background:linear-gradient(90deg,#58a6ff,#8b5cf6);width:0;transition:width .25s}
+#study .sbody{flex:1;overflow:auto;padding:20px 40px}
+#study .stitle{font-size:24px;font-weight:800;font-family:Georgia,serif;padding:6px 4px 2px}
+#study .stitle small{color:#5b6472;font-size:14px;font-family:Menlo,monospace;font-weight:400;margin-left:12px}
+#study .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;padding:16px 2px 30px}
+#study .scard{background:#171c26;border:1px solid #2b3342;border-radius:14px;padding:16px 18px;cursor:pointer;transition:.15s}
+#study .scard:hover{border-color:#58a6ff;transform:translateY(-2px)}
+#study .scard .w{font-size:22px;font-weight:700;font-family:Georgia,serif}
+#study .scard .ipa{color:#7ee787;font-size:14px;margin-left:8px}
+#study .scard .m{color:#aeb6c4;font-size:14.5px;margin-top:8px;line-height:1.55}
+#study .scard .ex{color:#646d7d;font-size:12px;font-style:italic;margin-top:6px}
+#study .sfoot{display:flex;justify-content:space-between;align-items:center;padding:14px 28px;color:#5b6472;font-size:13px;border-top:1px solid #1d232e}
+#study .sfoot kbd{background:#262c38;border-radius:5px;padding:2px 8px;margin:0 2px;font-family:Menlo,monospace;font-size:12px}
+#study .snav{display:flex;gap:10px;align-items:center}
+#study .snav button{border:1px solid #333b4a;background:#1a2029;color:#cbd2e0;border-radius:8px;padding:8px 18px;cursor:pointer;font-size:14px}
+#study .snav button:hover{border-color:#58a6ff}
+#study .snav button:disabled{opacity:.35;cursor:default}
+
+
+
+/* —— 样式·暖白（暖白纸底） —— */
+
+body.theme-mag.paper{background:#f4f2ea!important;color:#23211c!important}
+body.theme-mag.paper .hero{border-bottom-color:#23211c}
+body.theme-mag.paper .hero h1{color:#1c1a12}
+body.theme-mag.paper .hero p{color:#6b6a5c}
+body.theme-mag.paper .ptitle{color:#8a8878}
+body.theme-mag.paper .sec>h2{color:#5f7a3f;border-bottom-color:#ddd8ca}
+body.theme-mag.paper td{border-bottom-color:#e6e1d3}
+body.theme-mag.paper tr:hover td{background:#ece7da}
+body.theme-mag.paper .m{color:#33312a}
+body.theme-mag.paper .ex{color:#8a8878}
+body.theme-mag.paper .from{color:#b3b0a0}
+body.theme-mag.paper .ipa{color:#6b6a5c}
+.theme-mag .hwband{padding:0 3px;font-weight:700}
+body.theme-mag.paper .hwband{background:linear-gradient(transparent 16%,#cdddb8 16%,#cdddb8 84%,transparent 84%);color:#1c1a12}
+
+
+</style>
+</head>
+<body class="theme-mag">
+<div class="wrap">
+  <div class="hero">
+    <h1>Janus-Pro 论文核心词汇</h1>
+    <div class="ptitle"><i>Janus-Pro: Unified Multimodal Understanding and Generation with Data and Model Scaling · arXiv:2501.17811 · DeepSeek-AI, 2025</i></div>
+    <p>全量口径重做 · 5 节 255 词 · 十一档 + 超纲（2026-10-08）</p>
+  </div>
+  <div id="app"></div>
+</div>
+
+<div class="toolbar">
+  <div class="lbl">视图</div>
+  <div class="row">
+    <button id="v-sec" class="on">按章节</button>
+    <button id="v-lv">按级别综合</button>
+    <button id="v-study">▶ 学习模式</button>
+  </div>
+  <div class="lbl">样式</div>
+  <div class="row">
+    <button id="st-day" class="on">☀ 白天</button>
+    <button id="st-night">🌙 夜晚</button>
+    <button id="st-paper">暖白</button>
+  </div>
+  <div class="lbl">朗读声音 · 多引擎</div>
+  <div class="row"><select id="voiceSel" style="flex:1;border:none;border-radius:8px;padding:7px 8px;background:#3a3f4d;color:#cbd2e0;font-size:12.5px;outline:none"></select><span id="srcState" style="align-self:center;font-size:10.5px;color:#8a93a6;min-width:34px;text-align:center"></span></div>
+</div>
+
+<div id="study">
+  <div class="sprog"><i id="sbar"></i></div>
+  <button id="sClose" title="退出学习模式 (Esc)" style="position:absolute;top:14px;right:18px;z-index:5;border:1px solid #333b4a;background:#1a2029;color:#cbd2e0;border-radius:8px;width:34px;height:34px;font-size:16px;cursor:pointer">✕</button>
+  <div class="sbody"><div id="sPage"></div></div>
+  <div class="sfoot">
+    <span><kbd>空格</kbd>/<kbd>→</kbd> 下一页 &nbsp; <kbd>←</kbd> 上一页 &nbsp; 点单词发音 &nbsp; <kbd>Esc</kbd> 退出</span>
+    <div class="snav">
+      <span id="sIdx">0 / 0</span>
+      <button id="sPrev">← 上一页</button>
+      <button id="sNext">下一页 →</button>
+      <button id="sExit" style="border-color:#5b3a3a">退出</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// lv: 4=四级 6=六级 k=考研 p=考博；ipa 为美式音标
+const DATA = [
+ {
+  "sec": "1. Introduction · 引言",
+  "short": "Intro",
+  "icon": "1",
+  "words": [
+   {
+    "w": "incorporate",
+    "ipa": "ɪnˈkɔrpəreɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "吸收，纳入",
+    "ex": "incorporates improvements across three dimensions"
+   },
+   {
+    "w": "outperform",
+    "ipa": "ˌaʊtpərˈfɔrm",
+    "pos": "v.",
+    "lv": "超纲",
+    "m": "胜过",
+    "ex": "outperforming Janus"
+   },
+   {
+    "w": "precisely",
+    "ipa": "prɪˈsaɪsli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "精确地",
+    "ex": "written precisely and legibly in the center"
+   },
+   {
+    "w": "scalability",
+    "ipa": "ˌskeɪləˈbɪləti",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "可扩展性",
+    "ex": "demonstrating scalability of the visual encoding decoding method"
+   },
+   {
+    "w": "stability",
+    "ipa": "stəˈbɪləti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "稳定性",
+    "ex": "enhancing the stability of text-to-image generation"
+   },
+   {
+    "w": "suboptimal",
+    "ipa": "ˌsʌbˈɑptɪməl",
+    "pos": "adj.",
+    "lv": "超纲",
+    "m": "欠佳的",
+    "ex": "certain shortcomings, such as suboptimal performance on short prompts"
+   },
+   {
+    "w": "surpass",
+    "ipa": "sərˈpæs",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "超过",
+    "ex": "surpassing state-of-the-art unified multimodal models such as Janus"
+   },
+   {
+    "w": "unstable",
+    "ipa": "ˌʌnˈsteɪbl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "不稳定的",
+    "ex": "unstable text-to-image generation quality"
+   },
+   {
+    "w": "validate",
+    "ipa": "ˈvælɪdeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "验证",
+    "ex": "Janus is validated at the 1B parameter scale"
+   }
+  ]
+ },
+ {
+  "sec": "2. Method · 方法",
+  "short": "Method",
+  "icon": "2",
+  "words": [
+   {
+    "w": "additional",
+    "ipa": "əˈdɪʃənəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "额外的",
+    "ex": "For the Stage III supervised fine-tuning data, we also incorporate additional datasets from DeepSeek-VL2, such as MEME understanding, Chinese conversational data, and datasets aimed at enhancing dialogue experiences."
+   },
+   {
+    "w": "adhere",
+    "ipa": "ədˈhɪr",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "遵循",
+    "g": "g",
+    "ex": "The entire model adheres to an autoregressive framework"
+   },
+   {
+    "w": "aesthetic",
+    "ipa": "ɛsˈθɛtɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "美学的， 审美的； 悦目的， 雅致的",
+    "ex": "In Janus-Pro, we incorporate approximately 72 million samples of synthetic aesthetic data, bringing the ratio of real to synthetic data to 1:1 during the unified pretraining stage."
+   },
+   {
+    "w": "aesthetically",
+    "ipa": "ɛsˈθɛtɪkli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "有审美能力地",
+    "ex": "We observe that the real-world data used in the previous version of Janus lacks quality and contains significant noise, which often leads to instability in text-to-image generation, resulting in aesthetically poor outputs."
+   },
+   {
+    "w": "approach",
+    "ipa": "əˈproʊʧ",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "靠近；接近，方法",
+    "ex": "This redesigned approach enables Stage II to utilize the text-to-image data more efficiently, resulting in improved training efficiency and overall performance."
+   },
+   {
+    "w": "architectural",
+    "ipa": "ˌɑrkəˈtɛkʧərəl",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "建筑上的； 建筑学的",
+    "ex": "Table 1 | Architectural configuration for Janus-Pro."
+   },
+   {
+    "w": "concatenate",
+    "ipa": "kənˈkætəneɪt",
+    "pos": "v.",
+    "lv": "GRE",
+    "m": "拼接",
+    "ex": "We then concatenate these feature sequences to form a multimodal feature sequence"
+   },
+   {
+    "w": "configuration",
+    "ipa": "kənˌfɪgjərˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "配置， 布局， 构造",
+    "ex": "Table 1 | Architectural configuration for Janus-Pro."
+   },
+   {
+    "w": "converge",
+    "ipa": "kənˈvərʤ",
+    "pos": "vi.",
+    "lv": "六级",
+    "m": "会合， 互相靠拢； 聚集， 集中； 趋近",
+    "ex": "Experiments demonstrat that the model converges faster when trained on synthetic data, and the resulting text-to-image outputs are not only more stable but also exhibit significantly improved aesthetic quality."
+   },
+   {
+    "w": "convergence",
+    "ipa": "kənˈvərʤəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "集中",
+    "ex": "We observe that when utilizing a larger-scale LLM, the convergence speed of losses for both multimodal understanding and visual generation improved significantly compared to the smaller model."
+   },
+   {
+    "w": "conversational",
+    "ipa": "ˌkɑnvərˈseɪʃənəl",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "会话的, 对话的",
+    "ex": "These additions significantly expanded the model’s capabilities, enriching its ability to handle diverse tasks while improving the overall conversational experience. • Visual Generation."
+   },
+   {
+    "w": "convert",
+    "ipa": "ˈkɑnvərt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使转变；使改变",
+    "ex": "We apply independent encoding methods to convert the raw inputs into features, which are then processed by an unified autoregressive transformer."
+   },
+   {
+    "w": "core",
+    "ipa": "kɔr",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "果实的心，核心",
+    "ex": "The core design principle of the overall architecture is to decouple visual encoding for multimodal understanding and generation."
+   },
+   {
+    "w": "decouple",
+    "ipa": "diːˈkʌpl",
+    "pos": "v.",
+    "lv": "雅思",
+    "m": "解耦",
+    "g": "g",
+    "ex": "to decouple visual encoding for multimodal understanding and generation"
+   },
+   {
+    "w": "dependence",
+    "ipa": "dɪˈpɛndəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "依靠， 依赖； 信任",
+    "ex": "The first part trains on ImageNet [9] data, using image category names as prompts for text-to-image generation, with the goal of modeling pixel dependence."
+   },
+   {
+    "w": "detail",
+    "ipa": "ˈditeɪl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "细节",
+    "ex": "In Janus-Pro, we scaled the model up to 7B, with the hyperparameters of both the 1.5B and 7B LLMs detailed in Table 1."
+   },
+   {
+    "w": "dimensional",
+    "ipa": "dɪˈmɛnʃənəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "空间的；尺寸的",
+    "ex": "For multimodal understanding, we use the SigLIP [53] encoder to extract high-dimensional semantic features from images."
+   },
+   {
+    "w": "directly",
+    "ipa": "dɪˈrɛkli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "直接地；立即",
+    "ex": "Our findings reveals that even with the LLM parameters fixed, the model could effectively model pixel dependence and generate reasonable images based on category names. • Focused Training in Stage II: In Stage II, we drop …"
+   },
+   {
+    "w": "discrete",
+    "ipa": "dɪˈskriːt",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "离散的",
+    "ex": "to convert images into discrete IDs"
+   },
+   {
+    "w": "effectively",
+    "ipa": "ˈifɛktɪvli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "有效地",
+    "ex": "Our findings reveals that even with the LLM parameters fixed, the model could effectively model pixel dependence and generate reasonable images based on category names. • Focused Training in Stage II: In Stage II, we drop …"
+   },
+   {
+    "w": "effectiveness",
+    "ipa": "ˈifɛktɪvnəs",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "效力",
+    "ex": "Model Scaling The previous version of Janus validates the effectiveness of visual encoding decoupling using a 1.5B LLM."
+   },
+   {
+    "w": "efficiency",
+    "ipa": "ɪˈfɪʃənsi",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "效率；功效，效能",
+    "ex": "This redesigned approach enables Stage II to utilize the text-to-image data more efficiently, resulting in improved training efficiency and overall performance."
+   },
+   {
+    "w": "efficiently",
+    "ipa": "ɪˈfɪʃəntli",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "有效地",
+    "ex": "This redesigned approach enables Stage II to utilize the text-to-image data more efficiently, resulting in improved training efficiency and overall performance."
+   },
+   {
+    "w": "enable",
+    "ipa": "ɪˈneɪbəl",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使能够……",
+    "ex": "This redesigned approach enables Stage II to utilize the text-to-image data more efficiently, resulting in improved training efficiency and overall performance."
+   },
+   {
+    "w": "encode",
+    "ipa": "ɛnˈkoʊd",
+    "pos": "vt.",
+    "lv": "考博",
+    "m": "把译成电码， 把…编码",
+    "ex": "We apply independent encoding methods to convert the raw inputs into features, which are then processed by an unified autoregressive transformer."
+   },
+   {
+    "w": "enhance",
+    "ipa": "ɛnˈhæns",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "提高；加强；增加",
+    "ex": "For the Stage III supervised fine-tuning data, we also incorporate additional datasets from DeepSeek-VL2, such as MEME understanding, Chinese conversational data, and datasets aimed at enhancing dialogue experiences."
+   },
+   {
+    "w": "enrich",
+    "ipa": "ɪnˈrɪʧ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "丰富；使富有",
+    "ex": "These additions significantly expanded the model’s capabilities, enriching its ability to handle diverse tasks while improving the overall conversational experience. • Visual Generation."
+   },
+   {
+    "w": "experimentation",
+    "ipa": "ɪkˌspɛrəmənˈteɪʃən",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "实验；试验",
+    "ex": "experimentation, we find that this strategy is suboptimal and lead to significant computational"
+   },
+   {
+    "w": "extract",
+    "ipa": "ˈɛkˌstrækt",
+    "pos": "v.；n.",
+    "lv": "六级",
+    "m": "取出；提取；摘录",
+    "ex": "For multimodal understanding, we use the SigLIP [53] encoder to extract high-dimensional semantic features from images."
+   },
+   {
+    "w": "feature",
+    "ipa": "ˈfiʧər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "特点",
+    "ex": "We apply independent encoding methods to convert the raw inputs into features, which are then processed by an unified autoregressive transformer."
+   },
+   {
+    "w": "flatten",
+    "ipa": "ˈflætn",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "展平",
+    "ex": "These features are flattened from a 2-D grid into a 1-D sequence"
+   },
+   {
+    "w": "grid",
+    "ipa": "grɪd",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "输电网",
+    "ex": "These features are flattened from a 2-D grid into a 1-D sequence, and an understanding adaptor is used to map these image features into the input space of the LLM."
+   },
+   {
+    "w": "image",
+    "ipa": "ˈɪmɪʤ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "形象，声誉，印象",
+    "ex": "These include image caption datasets (e.g., YFCC [31]), as well as data for table, chart, and document understanding (e.g., Doc-matix [20])."
+   },
+   {
+    "w": "input",
+    "ipa": "ˈɪnˌpʊt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "输入；投入的资金",
+    "ex": "We apply independent encoding methods to convert the raw inputs into features, which are then processed by an unified autoregressive transformer."
+   },
+   {
+    "w": "instability",
+    "ipa": "ˌɪnstəˈbɪlɪti",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "不稳定性",
+    "ex": "We observe that the real-world data used in the previous version of Janus lacks quality and contains significant noise, which often leads to instability in text-to-image generation, resulting in aesthetically poor outputs."
+   },
+   {
+    "w": "issue",
+    "ipa": "ˈɪʃu",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "发行；问题",
+    "ex": "To address this issue, we make two modifications. • Longer Training in Stage I: We increase the training steps in Stage I, allowing sufficient training on the ImageNet dataset."
+   },
+   {
+    "w": "longer",
+    "ipa": "ˈlɔŋgər",
+    "pos": "—",
+    "lv": "托福",
+    "m": "比较久(的)",
+    "ex": "To address this issue, we make two modifications. • Longer Training in Stage I: We increase the training steps in Stage I, allowing sufficient training on the ImageNet dataset."
+   },
+   {
+    "w": "maintain",
+    "ipa": "meɪnˈteɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "维持，主张",
+    "ex": "By slightly reducing the proportion of text-to-image data, we observe that this adjustment allows us to maintain strong visual generation capabilities while achieving improved multimodal understanding performance."
+   },
+   {
+    "w": "modification",
+    "ipa": "ˌmɑdəfəˈkeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "修改",
+    "ex": "To address this issue, we make two modifications. • Longer Training in Stage I: We increase the training steps in Stage I, allowing sufficient training on the ImageNet dataset."
+   },
+   {
+    "w": "optimize",
+    "ipa": "ˈɑptɪˌmaɪz",
+    "pos": "vt.",
+    "lv": "考博",
+    "m": "使最优化； 充分利用",
+    "ex": "Optimized Training Strategy The previous version of Janus employs a three-stage training process."
+   },
+   {
+    "w": "overall",
+    "ipa": "ˈoʊvərˌɔl",
+    "pos": "n.；adj.",
+    "lv": "四级",
+    "m": "工装裤；全面的",
+    "ex": "The core design principle of the overall architecture is to decouple visual encoding for multimodal understanding and generation."
+   },
+   {
+    "w": "parameter",
+    "ipa": "pərˈæmətər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "参（变）数；参量",
+    "ex": "Stage III is supervised fine-tuning, building upon Stage II by further unlocking the parameters of the understanding encoder during training."
+   },
+   {
+    "w": "prediction",
+    "ipa": "priˈdɪkʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "预言，预告；预报",
+    "ex": "Apart from the built-in prediction head in the LLM, we also utilize a randomly initialized prediction head for image predictions in the visual generation task."
+   },
+   {
+    "w": "previous",
+    "ipa": "ˈpriviəs",
+    "pos": "adj.；adv.",
+    "lv": "四级",
+    "m": "之前的；先前地",
+    "ex": "Model Scaling The previous version of Janus validates the effectiveness of visual encoding decoupling using a 1.5B LLM."
+   },
+   {
+    "w": "prompt",
+    "ipa": "prɑmpt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "敏捷的；v. 敦促",
+    "ex": "The first part trains on ImageNet [9] data, using image category names as prompts for text-to-image generation, with the goal of modeling pixel dependence."
+   },
+   {
+    "w": "proportion",
+    "ipa": "prəˈpɔrʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比例，部分",
+    "ex": "By slightly reducing the proportion of text-to-image data, we observe that this adjustment allows us to maintain strong visual generation capabilities while achieving improved multimodal understanding performance."
+   },
+   {
+    "w": "publicly",
+    "ipa": "ˈpəblɪkli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "公然地, 舆论上",
+    "ex": "The prompts for these synthetic data samples are publicly available, such as those in [43]."
+   },
+   {
+    "w": "randomly",
+    "ipa": "ˈrændəmli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "随机地",
+    "ex": "a randomly initialized prediction head for image predictions"
+   },
+   {
+    "w": "ratio",
+    "ipa": "ˈreɪʃiˌoʊ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比，比率",
+    "ex": "In Janus-Pro, we incorporate approximately 72 million samples of synthetic aesthetic data, bringing the ratio of real to synthetic data to 1:1 during the unified pretraining stage."
+   },
+   {
+    "w": "redesign",
+    "ipa": "ˌridɪˈzaɪn",
+    "pos": "—",
+    "lv": "托福",
+    "m": "重新设计",
+    "ex": "This redesigned approach enables Stage II to utilize the text-to-image data more efficiently, resulting in improved training efficiency and overall performance."
+   },
+   {
+    "w": "reveal",
+    "ipa": "rɪˈvil",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "揭露，揭示",
+    "ex": "Our findings reveals that even with the LLM parameters fixed, the model could effectively model pixel dependence and generate reasonable images based on category names. • Focused Training in Stage II: In Stage II, we drop …"
+   },
+   {
+    "w": "sample",
+    "ipa": "ˈsæmpəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "样品；实例，标本",
+    "ex": "For the Stage II pretraining data, we refer to DeepSeek-VL2 [49] and add approximately 90 million samples."
+   },
+   {
+    "w": "scale",
+    "ipa": "skeɪl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "规模，比例",
+    "ex": "Data Scaling We scale up the training data used for Janus in both multimodal understanding and visual generation aspects. • Multimodal Understanding."
+   },
+   {
+    "w": "sequence",
+    "ipa": "ˈsikwəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "连续，继续；次序",
+    "ex": "We then concatenate these feature sequences to form a multimodal feature sequence, which is subsequently fed into the LLM for processing."
+   },
+   {
+    "w": "slightly",
+    "ipa": "sˈlaɪtli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "轻微地",
+    "ex": "By slightly reducing the proportion of text-to-image data, we observe that this adjustment allows us to maintain strong visual generation capabilities while achieving improved multimodal understanding performance."
+   },
+   {
+    "w": "subsequently",
+    "ipa": "ˈsʌbsɪkwəntli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "随后",
+    "ex": "which is subsequently fed into the LLM for processing"
+   },
+   {
+    "w": "sufficient",
+    "ipa": "səˈfɪʃənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "足够的",
+    "ex": "To address this issue, we make two modifications. • Longer Training in Stage I: We increase the training steps in Stage I, allowing sufficient training on the ImageNet dataset."
+   },
+   {
+    "w": "supervise",
+    "ipa": "ˈsupərˌvaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "监督，监视",
+    "ex": "Stage III is supervised fine-tuning, building upon Stage II by further unlocking the parameters of the understanding encoder during training."
+   },
+   {
+    "w": "synthetic",
+    "ipa": "sɪnˈθɛtɪk",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "合成的，人造的",
+    "ex": "In Janus-Pro, we incorporate approximately 72 million samples of synthetic aesthetic data, bringing the ratio of real to synthetic data to 1:1 during the unified pretraining stage."
+   },
+   {
+    "w": "transformer",
+    "ipa": "trænsˈfɔrmər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "变压器，转换器",
+    "ex": "We apply independent encoding methods to convert the raw inputs into features, which are then processed by an unified autoregressive transformer."
+   },
+   {
+    "w": "unify",
+    "ipa": "ˈjunəˌfaɪ",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "使联合， 统一； 使相同， 使一致",
+    "ex": "We apply independent encoding methods to convert the raw inputs into features, which are then processed by an unified autoregressive transformer."
+   },
+   {
+    "w": "unlock",
+    "ipa": "ˌʌnˈlɑk",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "解锁",
+    "ex": "further unlocking the parameters of the understanding encoder during training"
+   },
+   {
+    "w": "utilize",
+    "ipa": "ˈjutəˌlaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "利用",
+    "ex": "Apart from the built-in prediction head in the LLM, we also utilize a randomly initialized prediction head for image predictions in the visual generation task."
+   }
+  ]
+ },
+ {
+  "sec": "3. Experiments · 实验",
+  "short": "Exp",
+  "icon": "3",
+  "words": [
+   {
+    "w": "accord",
+    "ipa": "əˈkɔrd",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使一致；给予",
+    "ex": "We mix all data types according to the specified ratios in a single training step."
+   },
+   {
+    "w": "additionally",
+    "ipa": "əˈdɪʃəˌnəli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "此外；又，加之",
+    "ex": "The large black board has the following text: \"Serving Soul since Twenty Twelve\" Additionally, there are smaller sections with more detailed information, but the main heading is clearly visible."
+   },
+   {
+    "w": "alignment",
+    "ipa": "əˈlaɪnmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "排成直线；结盟，联合",
+    "ex": "DPG-Bench (Dense Prompt Graph Benchmark) is a comprehensive dataset consisting of 1065 lengthy, dense prompts, designed to assess the intricate semantic alignment capabilities of text-to-image models."
+   },
+   {
+    "w": "attribute",
+    "ipa": "əˈtrɪˌbjut",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "归因于",
+    "ex": "This can be attributed to decoupling the visual encoding for multimodal understanding and generation, mitigating the conflict between these two tasks."
+   },
+   {
+    "w": "backdrop",
+    "ipa": "ˈbækˌdrɑp",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "背景；背景幕；交流声",
+    "ex": "The cake features the characters Tom (the cat) and Jerry (the mouse) in a playful setting, with a backdrop that includes the words \"Tom & Jerry”."
+   },
+   {
+    "w": "benchmark",
+    "ipa": "ˈbentʃmɑrk",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "基准",
+    "t": "t",
+    "ex": "achieved a score of 79.2 on the multimodal understanding benchmark MMBench"
+   },
+   {
+    "w": "brightly",
+    "ipa": "ˈbraɪtli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "明亮地",
+    "ex": "A tiny galaxy contained inside a glass bottle, glowing brightly against a dark velvet cloth."
+   },
+   {
+    "w": "capture",
+    "ipa": "ˈkæpʧər",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "捕获，俘获；夺得",
+    "ex": "7B accurately captures the semantic information from the prompts, producing well-reasoned and coherent images."
+   },
+   {
+    "w": "chameleon",
+    "ipa": "kəˈmiliən",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "变色龙",
+    "ex": "SEED-X† [13] 0.97 0.58 0.26 0.80 0.19 0.14 0.49 Show-o [50] 0.95 0.52 0.49 0.82 0.11 0.28 0.53 D-DiT [24] 0.97 0.80 0.54 0.76 0.32 0.50 0.65 LWM [28] 0.93 0.41 0.46 0.79 0.09 0.15 0.47 Transfusion [55] - - - - - - 0.63 ILLUME …"
+   },
+   {
+    "w": "cliff",
+    "ipa": "klɪf",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "悬崖，峭壁",
+    "ex": "The cliffs are covered in patches of green vegetation, adding a touch of color to the otherwise earthy tones of the rocks."
+   },
+   {
+    "w": "cling",
+    "ipa": "klɪŋ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "粘住；依附；坚持",
+    "ex": "A single drop of water clinging to a green leaf, with sunlight creating a faint rainbow pris An ancient stone bridge arching over a crystal-clear mountain stream, surrounded by lush greenery."
+   },
+   {
+    "w": "cluster",
+    "ipa": "ˈkləstər",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "串，束，簇；群，组；群聚；聚集",
+    "ex": "The whole training process took about 9/14 days on a cluster of 16/32 nodes for 1.5B/7B model, each equipped with 8 Nvidia A100 (40GB) GPUs."
+   },
+   {
+    "w": "coastal",
+    "ipa": "ˈkoʊstəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "海滨的",
+    "ex": "This image depicts a stunning coastal landscape featuring a series of tall, rugged rock formations emerging from the ocean."
+   },
+   {
+    "w": "coastline",
+    "ipa": "ˈkoʊˌstlaɪn",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "海岸线",
+    "ex": "The coastline is sandy, with a narrow strip of beach visible on the right side of the image."
+   },
+   {
+    "w": "coherent",
+    "ipa": "koʊˈhɪrənt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "（文章、观点等）连贯的，有条理的，一致的",
+    "ex": "7B accurately captures the semantic information from the prompts, producing well-reasoned and coherent images."
+   },
+   {
+    "w": "comparison",
+    "ipa": "kəmˈpɛrəsən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比较，对照；比似",
+    "ex": "Table 3 | Comparison with state-of-the-arts on multimodal understanding benchmarks. “Und.”"
+   },
+   {
+    "w": "competitive",
+    "ipa": "kəmˈpɛtɪtɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "竞争的， 比赛的； 好竞争的， 求胜心切的； 有竞争力的",
+    "ex": "When compared to models with significantly larger sizes, Janus-Pro remains highly competitive."
+   },
+   {
+    "w": "compositional",
+    "ipa": "ˌkɑmpəˈzɪʃənəl",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "合成的,组成的",
+    "ex": "GenEval is a challenging benchmark for text-to-image generation, designed to reflect the comprehensive generative abilities of visual generation models by offering a detailed instance-level analysis of their compositional …"
+   },
+   {
+    "w": "comprehensive",
+    "ipa": "ˌkɑmpriˈhɛnsɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "综合的，全面的",
+    "ex": "DPG-Bench (Dense Prompt Graph Benchmark) is a comprehensive dataset consisting of 1065 lengthy, dense prompts, designed to assess the intricate semantic alignment capabilities of text-to-image models."
+   },
+   {
+    "w": "context",
+    "ipa": "ˈkɑntɛkst",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "背景，环境",
+    "ex": "Janus-Pro exhibits impressive comprehension abilities when handling inputs from various contexts, showcasing its powerful capabilities."
+   },
+   {
+    "w": "creative",
+    "ipa": "kriˈeɪtɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "创造性的，创作的",
+    "ex": "For imaginative and creative scenes, Janus-Pro-"
+   },
+   {
+    "w": "crystal",
+    "ipa": "ˈkrɪstəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "水晶，结晶体；晶粒",
+    "ex": "A glowing crystal ball floating above a sandstone table in the middle of a desert at sunset."
+   },
+   {
+    "w": "demonstrate",
+    "ipa": "ˈdɛmənˌstreɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "证明；展示",
+    "ex": "This demonstrates that Janus-Pro excels in following dense instructions for text-to-image generation."
+   },
+   {
+    "w": "denote",
+    "ipa": "dɪˈnoʊt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "指示，意味着",
+    "ex": "and “Gen.” denote “understanding” and “generation”, respectively."
+   },
+   {
+    "w": "dense",
+    "ipa": "dɛns",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "密集的；浓厚的",
+    "ex": "This demonstrates that Janus-Pro excels in following dense instructions for text-to-image generation."
+   },
+   {
+    "w": "depict",
+    "ipa": "dɪˈpɪkt",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "描绘， 描述",
+    "ex": "This image depicts a stunning coastal landscape featuring a series of tall, rugged rock formations emerging from the ocean."
+   },
+   {
+    "w": "despite",
+    "ipa": "dɪˈspaɪt",
+    "pos": "prep.",
+    "lv": "四级",
+    "m": "不管",
+    "ex": "The images generated by Janus-Pro-7B are highly realistic, and despite having a resolution of"
+   },
+   {
+    "w": "diffuse",
+    "ipa": "dɪfˈjuz",
+    "pos": "v.；adj.",
+    "lv": "六级",
+    "m": "扩散， 弥漫； 传播， 散布；冗长的， 漫无边际的； 四散的， 弥漫的",
+    "ex": "The light is diffused, casting a soft, muted glow over the entire scene."
+   },
+   {
+    "w": "diffusion",
+    "ipa": "dɪfˈjuʒən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "传播，散布",
+    "ex": "Models using external pretrained diffusion model are marked with †."
+   },
+   {
+    "w": "distinct",
+    "ipa": "dɪˈstɪŋkt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "明显的；有区别的",
+    "ex": "The rocks are layered with sedimentary rock, giving them a distinct stratified appearance."
+   },
+   {
+    "w": "dramatically",
+    "ipa": "drəˈmætɪkəli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "戏剧性地，引人注目地",
+    "ex": "The beach is bordered by steep cliffs, which rise dramatically from the shoreline."
+   },
+   {
+    "w": "earthy",
+    "ipa": "ˈərθi",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "土的；土质的；朴实的；粗俗的",
+    "ex": "The cliffs are covered in patches of green vegetation, adding a touch of color to the otherwise earthy tones of the rocks."
+   },
+   {
+    "w": "efficient",
+    "ipa": "ɪˈfɪʃənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "效率高的，有能力的",
+    "ex": "Our Janus-Pro is trained and evaluated using HAI-LLM [15], which is a lightweight and efficient distributed training framework built on top of PyTorch."
+   },
+   {
+    "w": "emerge",
+    "ipa": "ˈimərʤ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "出现",
+    "ex": "This image depicts a stunning coastal landscape featuring a series of tall, rugged rock formations emerging from the ocean."
+   },
+   {
+    "w": "entity",
+    "ipa": "ˈɛntɪti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "实体， 独立存在体， 实际存在物",
+    "ex": "Method Global Entity Attribute Relation Other Overall↑ SDv1.5 [36] 74.63 74.23 75.39 73.49 67.81 63.18 PixArt-𝛼[4] 74.97 79.32 78.60 82.57 76.96 71.11 Lumina-Next [57] 82.82 88.65 86.44 80.53 81.82 74.63 SDXL [33] 83.27 82.43 …"
+   },
+   {
+    "w": "equipped",
+    "ipa": "ɪkˈwɪpt",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "装备；预备（equip的过去分词）；整装",
+    "ex": "The whole training process took about 9/14 days on a cluster of 16/32 nodes for 1.5B/7B model, each equipped with 8 Nvidia A100 (40GB) GPUs."
+   },
+   {
+    "w": "evaluation",
+    "ipa": "ɪˌvæljuˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "评价，评估",
+    "ex": "Table 4 | Evaluation of text-to-image generation ability on GenEval benchmark. “Und.”"
+   },
+   {
+    "w": "excel",
+    "ipa": "ɪkˈsɛl",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "胜过，杰出",
+    "ex": "This demonstrates that Janus-Pro excels in following dense instructions for text-to-image generation."
+   },
+   {
+    "w": "exhibit",
+    "ipa": "ɪgˈzɪbɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "显示；陈列，展览",
+    "ex": "Janus-Pro exhibits impressive comprehension abilities when handling inputs from various contexts, showcasing its powerful capabilities."
+   },
+   {
+    "w": "external",
+    "ipa": "ɪkˈstərnəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "外部的，外面的",
+    "ex": "Models using external pretrained diffusion model are marked with †."
+   },
+   {
+    "w": "factor",
+    "ipa": "ˈfæktər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "因素；因子，系数",
+    "ex": "The generation encoder has a codebook of size 16, 384 and downsamples images by a factor of 16."
+   },
+   {
+    "w": "faint",
+    "ipa": "feɪnt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "微弱的；虚弱的",
+    "ex": "A single drop of water clinging to a green leaf, with sunlight creating a faint rainbow pris An ancient stone bridge arching over a crystal-clear mountain stream, surrounded by lush greenery."
+   },
+   {
+    "w": "foam",
+    "ipa": "foʊm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "泡沫塑料；泡沫",
+    "ex": "The ocean waves crash against the base of these formations, creating white foam and a dynamic sense of movement."
+   },
+   {
+    "w": "foreground",
+    "ipa": "ˈfɔrˌgraʊnd",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "前景；最显著的位置",
+    "ex": "The largest formation is prominently positioned in the foreground, with smaller ones receding into the distance."
+   },
+   {
+    "w": "formation",
+    "ipa": "fɔrˈmeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "形成；构成；形成物",
+    "ex": "This image depicts a stunning coastal landscape featuring a series of tall, rugged rock formations emerging from the ocean."
+   },
+   {
+    "w": "freckle",
+    "ipa": "ˈfrɛkəl",
+    "pos": "n.；v.",
+    "lv": "考博",
+    "m": "雀斑；斑点；使生雀斑",
+    "ex": "General Knowledge A young woman with freckles wearing a straw hat, standing in a golden wheat field."
+   },
+   {
+    "w": "galaxy",
+    "ipa": "ˈgæləksi",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "星系； 银河系， 银河； 一群",
+    "ex": "A tiny galaxy contained inside a glass bottle, glowing brightly against a dark velvet cloth."
+   },
+   {
+    "w": "generate",
+    "ipa": "ˈʤɛnərˌeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "产生",
+    "ex": "The images generated by Janus-Pro-7B are highly realistic, and despite having a resolution of"
+   },
+   {
+    "w": "generative",
+    "ipa": "ˈʤɛnərətɪv",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "生产的，有生产力的",
+    "ex": "GenEval is a challenging benchmark for text-to-image generation, designed to reflect the comprehensive generative abilities of visual generation models by offering a detailed instance-level analysis of their compositional …"
+   },
+   {
+    "w": "giant",
+    "ipa": "ʤaɪənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "巨人；巨物",
+    "ex": "A giant whale flying through a city skyline, surrounded by floating glowing lanterns."
+   },
+   {
+    "w": "global",
+    "ipa": "ˈgloʊbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "全球的， 全世界的； 总的， 完整的",
+    "ex": "Method Global Entity Attribute Relation Other Overall↑ SDv1.5 [36] 74.63 74.23 75.39 73.49 67.81 63.18 PixArt-𝛼[4] 74.97 79.32 78.60 82.57 76.96 71.11 Lumina-Next [57] 82.82 88.65 86.44 80.53 81.82 74.63 SDXL [33] 83.27 82.43 …"
+   },
+   {
+    "w": "glow",
+    "ipa": "gloʊ",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "白热光；发白热光",
+    "ex": "A glowing crystal ball floating above a sandstone table in the middle of a desert at sunset."
+   },
+   {
+    "w": "greenery",
+    "ipa": "ˈgrinəri",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "绿树，绿色植物",
+    "ex": "A single drop of water clinging to a green leaf, with sunlight creating a faint rainbow pris An ancient stone bridge arching over a crystal-clear mountain stream, surrounded by lush greenery."
+   },
+   {
+    "w": "halt",
+    "ipa": "hɔlt",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "停止；立定；停住",
+    "ex": "Please note that for Stage II, we employ an early stopping strategy, halting"
+   },
+   {
+    "w": "highly",
+    "ipa": "ˈhaɪli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "高度地，很，非常",
+    "ex": "When compared to models with significantly larger sizes, Janus-Pro remains highly competitive."
+   },
+   {
+    "w": "imaginative",
+    "ipa": "ˌɪˈmæʤənətɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "富有想象力的， 爱想象的",
+    "ex": "For imaginative and creative scenes, Janus-Pro-"
+   },
+   {
+    "w": "impend",
+    "ipa": "ˌɪmˈpɛnd",
+    "pos": "v.",
+    "lv": "托福",
+    "m": "迫近，逼近",
+    "ex": "The sky above is overcast, with thick clouds that suggest an impending storm or recent rainfall."
+   },
+   {
+    "w": "implementation",
+    "ipa": "ˌɪmpləmɛnˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "实现，履行",
+    "ex": "Implementation Details In our experiments, we utilize DeepSeek-LLM (1.5B and 7B) [3] with a maximum supported sequence length of 4096 as the base language model."
+   },
+   {
+    "w": "impressive",
+    "ipa": "ˌɪmˈprɛsɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "给人印象深刻的",
+    "ex": "Janus-Pro exhibits impressive comprehension abilities when handling inputs from various contexts, showcasing its powerful capabilities."
+   },
+   {
+    "w": "instance",
+    "ipa": "ˈɪnstəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "情况，例子",
+    "ex": "For instance, Janus-Pro-7B outperforms TokenFlow-XL (13B) on all benchmarks except GQA."
+   },
+   {
+    "w": "intricate",
+    "ipa": "ˈɪntrəkət",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "错综复杂的， 复杂精细的",
+    "ex": "DPG-Bench (Dense Prompt Graph Benchmark) is a comprehensive dataset consisting of 1065 lengthy, dense prompts, designed to assess the intricate semantic alignment capabilities of text-to-image models."
+   },
+   {
+    "w": "landmark",
+    "ipa": "ˈlændˌmɑrk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "有重大意义或影响的",
+    "ex": "Despite the cloudy sky, there is a sense of tranquility and natural beauty in this coastal landscape. 这张图⽚展示的是中国杭州的⻄湖，特别是著名的 三潭印⽉岛。图⽚中的建筑是三潭印⽉的亭⼦，周 围是平静的湖⽔，远处是连绵的⼭脉。⻄湖是中国 著名的旅游景点之⼀，以其美丽的⾃然景观和丰富 的历史⽂化⽽闻名。 猜猜这是哪里？ Landmark …"
+   },
+   {
+    "w": "landscape",
+    "ipa": "ˈlænˌskeɪp",
+    "pos": "n.；vt.",
+    "lv": "六级",
+    "m": "风景，景色；风景画；全景；美化…的景观",
+    "ex": "This image depicts a stunning coastal landscape featuring a series of tall, rugged rock formations emerging from the ocean."
+   },
+   {
+    "w": "layer",
+    "ipa": "leɪər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "层，层次；铺设者",
+    "ex": "The rocks are layered with sedimentary rock, giving them a distinct stratified appearance."
+   },
+   {
+    "w": "leaderboard",
+    "ipa": "ˈliːdərbɔrd",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "排行榜",
+    "ex": "in the text-to-image instruction-following leaderboard GenEval"
+   },
+   {
+    "w": "lengthy",
+    "ipa": "ˈlɛŋθi",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "长的，漫长的",
+    "ex": "DPG-Bench (Dense Prompt Graph Benchmark) is a comprehensive dataset consisting of 1065 lengthy, dense prompts, designed to assess the intricate semantic alignment capabilities of text-to-image models."
+   },
+   {
+    "w": "lightweight",
+    "ipa": "ˈlaɪtˈweɪt",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "轻量级选手, 不能胜任者",
+    "ex": "Our Janus-Pro is trained and evaluated using HAI-LLM [15], which is a lightweight and efficient distributed training framework built on top of PyTorch."
+   },
+   {
+    "w": "lower",
+    "ipa": "loʊər",
+    "pos": "adj.；v.",
+    "lv": "四级",
+    "m": "较低的；放下",
+    "ex": "We also present some text-to-image generation results in the lower part of Figure 4."
+   },
+   {
+    "w": "lush",
+    "ipa": "ləʃ",
+    "pos": "adj.；vi.；n.；vt.",
+    "lv": "专八",
+    "m": "丰富的，豪华的；苍翠繁茂的；喝酒；酒；酒鬼；饮",
+    "ex": "A single drop of water clinging to a green leaf, with sunlight creating a faint rainbow pris An ancient stone bridge arching over a crystal-clear mountain stream, surrounded by lush greenery."
+   },
+   {
+    "w": "mute",
+    "ipa": "mjut",
+    "pos": "adj.；n.",
+    "lv": "四级",
+    "m": "缄默的；哑巴",
+    "ex": "The light is diffused, casting a soft, muted glow over the entire scene."
+   },
+   {
+    "w": "node",
+    "ipa": "noʊd",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "节点；瘤；[数] 叉点",
+    "ex": "The whole training process took about 9/14 days on a cluster of 16/32 nodes for 1.5B/7B model, each equipped with 8 Nvidia A100 (40GB) GPUs."
+   },
+   {
+    "w": "overcast",
+    "ipa": "ˈoʊvərˌkæst",
+    "pos": "adj.；v.",
+    "lv": "专四",
+    "m": "阴天的；阴暗的；愁闷的；使沮丧；包缝；遮蔽",
+    "ex": "The sky above is overcast, with thick clouds that suggest an impending storm or recent rainfall."
+   },
+   {
+    "w": "pad",
+    "ipa": "pæd",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "垫；本子；填塞",
+    "ex": "we resize the long side of the image and pad the short side with the background color (RGB: 127, 127, 127) to reach 384."
+   },
+   {
+    "w": "palette",
+    "ipa": "ˈpælət",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "调色板；颜料",
+    "ex": "Astronaut in a jungle, cold color palette, muted colors, detailed, 8k"
+   },
+   {
+    "w": "patch",
+    "ipa": "pæʧ",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "补钉；碎片；补缀",
+    "ex": "The cliffs are covered in patches of green vegetation, adding a touch of color to the otherwise earthy tones of the rocks."
+   },
+   {
+    "w": "peacefully",
+    "ipa": "ˈpisfəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "平静地, 和平地",
+    "ex": "A golden retriever lying peacefully on a wooden porch, with autumn leaves scattered around."
+   },
+   {
+    "w": "playful",
+    "ipa": "ˈpleɪfəl",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "开玩笑的；幽默的；爱嬉戏的",
+    "ex": "The cake features the characters Tom (the cat) and Jerry (the mouse) in a playful setting, with a backdrop that includes the words \"Tom & Jerry”."
+   },
+   {
+    "w": "pope",
+    "ipa": "poʊp",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "（罗马天主教的）教皇",
+    "ex": "Type Model # LLM Params POPE↑MME-P↑MMB↑SEED↑GQA↑MMMU↑MM-Vet↑ Und."
+   },
+   {
+    "w": "porch",
+    "ipa": "pɔrʧ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "门廊",
+    "ex": "A golden retriever lying peacefully on a wooden porch, with autumn leaves scattered around."
+   },
+   {
+    "w": "pro",
+    "ipa": "proʊ",
+    "pos": "adv.；n.；prep.",
+    "lv": "专八",
+    "m": "赞成地；赞成者；赞成的意见；赞成",
+    "ex": "Janus-Pro exhibits impressive comprehension abilities when handling inputs from various contexts, showcasing its powerful capabilities."
+   },
+   {
+    "w": "propose",
+    "ipa": "prəˈpoʊz",
+    "pos": "v.；v.",
+    "lv": "四级",
+    "m": "提议；求婚",
+    "ex": "We compare the proposed method with state-of-the-art unified models and understanding-only models in Table 3."
+   },
+   {
+    "w": "qualitative",
+    "ipa": "kˈwɑləˌteɪtɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "质的；定性的",
+    "ex": "Figure 4 | Qualitative results of multimodal understanding and visual generation capability."
+   },
+   {
+    "w": "realistic",
+    "ipa": "ˌriəˈlɪstɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "现实的，实际的",
+    "ex": "The images generated by Janus-Pro-7B are highly realistic, and despite having a resolution of"
+   },
+   {
+    "w": "recede",
+    "ipa": "rɪˈsid",
+    "pos": "vi.",
+    "lv": "六级",
+    "m": "退， 退去， 渐渐远去； 向后倾斜， 缩进",
+    "ex": "The largest formation is prominently positioned in the foreground, with smaller ones receding into the distance."
+   },
+   {
+    "w": "recognition",
+    "ipa": "ˌrɛkɪgˈnɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "认出，识别；承认",
+    "ex": "Text Recognition This cake is themed around the classic cartoon character Tom and Jerry."
+   },
+   {
+    "w": "recur",
+    "ipa": "rɪˈkər",
+    "pos": "vi.",
+    "lv": "六级",
+    "m": "再发生， 重现",
+    "ex": "The cake itself is decorated with fondant shaped like cheese, which is a recurring theme in the cartoon series."
+   },
+   {
+    "w": "respectively",
+    "ipa": "rɪˈspɛktɪvli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "各自地",
+    "ex": "and “Gen.” denote “understanding” and “generation”, respectively."
+   },
+   {
+    "w": "rugged",
+    "ipa": "ˈrəgəd",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "崎岖的；坚固的；高低不平的；粗糙的",
+    "ex": "This image depicts a stunning coastal landscape featuring a series of tall, rugged rock formations emerging from the ocean."
+   },
+   {
+    "w": "sandstone",
+    "ipa": "ˈsænˌstoʊn",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "[岩] 砂岩；沙岩",
+    "ex": "A glowing crystal ball floating above a sandstone table in the middle of a desert at sunset."
+   },
+   {
+    "w": "sandy",
+    "ipa": "ˈsændi",
+    "pos": "adj.；n.",
+    "lv": "四级",
+    "m": "沙地的；多沙的；含沙的；(Sandy)人名；(法、喀、罗、西、英)桑迪(教名Alasdair、Alastair、Alexander、Alister、Elshen",
+    "ex": "The coastline is sandy, with a narrow strip of beach visible on the right side of the image."
+   },
+   {
+    "w": "scatter",
+    "ipa": "ˈskætər",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使消散；撒；散播",
+    "ex": "A golden retriever lying peacefully on a wooden porch, with autumn leaves scattered around."
+   },
+   {
+    "w": "sedimentary",
+    "ipa": "ˌsɛdəˈmɛntəri",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "沉积的,沉淀性的",
+    "ex": "The rocks are layered with sedimentary rock, giving them a distinct stratified appearance."
+   },
+   {
+    "w": "series",
+    "ipa": "ˈsɪriz",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "连续，系列；丛书",
+    "ex": "This image depicts a stunning coastal landscape featuring a series of tall, rugged rock formations emerging from the ocean."
+   },
+   {
+    "w": "setup",
+    "ipa": "ˈsɛˌtəp",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "装备, 安装,计划",
+    "ex": "Evaluation Setup Multimodal Understanding."
+   },
+   {
+    "w": "shoreline",
+    "ipa": "ˈʃɔˌrlaɪn",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "海岸线",
+    "ex": "The beach is bordered by steep cliffs, which rise dramatically from the shoreline."
+   },
+   {
+    "w": "showcase",
+    "ipa": "ˈʃoʊˌkeɪs",
+    "pos": "n.；vt.",
+    "lv": "六级",
+    "m": "陈列橱，[家具] 陈列柜；显示优点的东西；使展现；在玻璃橱窗陈列",
+    "ex": "Janus-Pro exhibits impressive comprehension abilities when handling inputs from various contexts, showcasing its powerful capabilities."
+   },
+   {
+    "w": "skyline",
+    "ipa": "ˈskaɪˌlaɪn",
+    "pos": "n.；vt.",
+    "lv": "六级",
+    "m": "地平线；空中轮廓线；架空索；天空映衬出…的轮廓",
+    "ex": "A giant whale flying through a city skyline, surrounded by floating glowing lanterns."
+   },
+   {
+    "w": "specify",
+    "ipa": "ˈspɛsəˌfaɪ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "指定，具体说明",
+    "ex": "We mix all data types according to the specified ratios in a single training step."
+   },
+   {
+    "w": "stratify",
+    "ipa": "ˈstrætəˌfaɪ",
+    "pos": "v.",
+    "lv": "专八",
+    "m": "分层；成层；使形成阶层",
+    "ex": "The rocks are layered with sedimentary rock, giving them a distinct stratified appearance."
+   },
+   {
+    "w": "strip",
+    "ipa": "strɪp",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "剥；夺去；条带",
+    "ex": "The coastline is sandy, with a narrow strip of beach visible on the right side of the image."
+   },
+   {
+    "w": "stun",
+    "ipa": "stən",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "使震惊， 使目瞪口呆； 把…打昏， 使昏迷",
+    "ex": "This image depicts a stunning coastal landscape featuring a series of tall, rugged rock formations emerging from the ocean."
+   },
+   {
+    "w": "tom",
+    "ipa": "tɑm",
+    "pos": "n.；v.",
+    "lv": "专八",
+    "m": "雄性动物（尤指雄猫）；汤姆（人名）；〈美口〉(像汤姆叔一样)逆来顺受",
+    "ex": "The cake features the characters Tom (the cat) and Jerry (the mouse) in a playful setting, with a backdrop that includes the words \"Tom & Jerry”."
+   },
+   {
+    "w": "tone",
+    "ipa": "toʊn",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "音；腔调；声调",
+    "ex": "The cliffs are covered in patches of green vegetation, adding a touch of color to the otherwise earthy tones of the rocks."
+   },
+   {
+    "w": "tranquility",
+    "ipa": "træŋkˈwɪlɪti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "宁静；平静",
+    "ex": "Despite the cloudy sky, there is a sense of tranquility and natural beauty in this coastal landscape. 这张图⽚展示的是中国杭州的⻄湖，特别是著名的 三潭印⽉岛。图⽚中的建筑是三潭印⽉的亭⼦，周 围是平静的湖⽔，远处是连绵的⼭脉。⻄湖是中国 著名的旅游景点之⼀，以其美丽的⾃然景观和丰富 的历史⽂化⽽闻名。 猜猜这是哪里？ Landmark …"
+   },
+   {
+    "w": "vegetation",
+    "ipa": "ˌvɛʤəˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "植物， 草木",
+    "ex": "The cliffs are covered in patches of green vegetation, adding a touch of color to the otherwise earthy tones of the rocks."
+   },
+   {
+    "w": "velvet",
+    "ipa": "ˈvɛlvət",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "丝绒制的；柔软光滑的",
+    "ex": "A tiny galaxy contained inside a glass bottle, glowing brightly against a dark velvet cloth."
+   },
+   {
+    "w": "vet",
+    "ipa": "vɛt",
+    "pos": "v.；n.",
+    "lv": "专四",
+    "m": "审查；诊疗；兽医",
+    "ex": "Type Model # LLM Params POPE↑MME-P↑MMB↑SEED↑GQA↑MMMU↑MM-Vet↑ Und."
+   },
+   {
+    "w": "visible",
+    "ipa": "ˈvɪzəbəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "看得见的",
+    "ex": "The coastline is sandy, with a narrow strip of beach visible on the right side of the image."
+   },
+   {
+    "w": "vision",
+    "ipa": "ˈvɪʒən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "视；想象力；梦幻",
+    "ex": "To assess multimodal understanding capabilities, we evaluate our model on widely recognized image-based vision-language benchmarks, which include GQA"
+   },
+   {
+    "w": "whimsical",
+    "ipa": "ˈwɪmzɪkəl",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "古怪的；异想天开的；反复无常的",
+    "ex": "The design also includes a small fondant house with a door, adding to the whimsical and playful theme of the cake."
+   },
+   {
+    "w": "widely",
+    "ipa": "ˈwaɪdli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "大大地",
+    "ex": "To assess multimodal understanding capabilities, we evaluate our model on widely recognized image-based vision-language benchmarks, which include GQA"
+   },
+   {
+    "w": "wooden",
+    "ipa": "ˈwʊdən",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "木制的；呆板的",
+    "ex": "A golden retriever lying peacefully on a wooden porch, with autumn leaves scattered around."
+   }
+  ]
+ },
+ {
+  "sec": "4. Conclusion · 结论",
+  "short": "Concl",
+  "icon": "4",
+  "words": [
+   {
+    "w": "advancement",
+    "ipa": "ədˈvænsmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "进步",
+    "ex": "significant advancements in both multimodal understanding"
+   },
+   {
+    "w": "capability",
+    "ipa": "ˌkeɪpəˈbɪləti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "能力，才能",
+    "ex": "These enhancements have led to significant advancements in both multimodal understanding and text-to-image instruction-following capabilities."
+   },
+   {
+    "w": "enhancement",
+    "ipa": "ɪnˈhænsmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "增强，改进",
+    "ex": "These enhancements have led to significant advancements"
+   },
+   {
+    "w": "improvement",
+    "ipa": "ˌɪmˈpruvmənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "改进，改善；改进处",
+    "ex": "Conclusion This paper introduces improvements to Janus from three aspects: training strategy, data, and model size."
+   },
+   {
+    "w": "limitation",
+    "ipa": "ˌlɪmɪˈteɪʃn",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "局限",
+    "ex": "Janus-Pro still has certain limitations"
+   },
+   {
+    "w": "mitigate",
+    "ipa": "ˈmɪtɪɡeɪt",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "缓解",
+    "ex": "Increasing the image resolution could mitigate these issues"
+   },
+   {
+    "w": "reconstruction",
+    "ipa": "ˌriːkənˈstrʌkʃn",
+    "pos": "n.",
+    "lv": "雅思",
+    "m": "重建",
+    "ex": "reconstruction losses introduced by the vision tokenizer"
+   },
+   {
+    "w": "region",
+    "ipa": "ˈriʤən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "地区，地带；领域",
+    "ex": "For example, small facial regions occupying limited image space may appear under-detailed."
+   },
+   {
+    "w": "resolution",
+    "ipa": "ˌrezəˈluːʃn",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "分辨率；决心",
+    "ex": "the input resolution is limited to"
+   },
+   {
+    "w": "semantic",
+    "ipa": "səˈmæntɪk",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "语义的",
+    "ex": "images that, while rich in semantic content, still lack fine details"
+   },
+   {
+    "w": "significant",
+    "ipa": "sɪgˈnɪfɪkənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "重要的",
+    "ex": "These enhancements have led to significant advancements in both multimodal understanding and text-to-image instruction-following capabilities."
+   },
+   {
+    "w": "strategy",
+    "ipa": "ˈstrætəʤi",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "策略，战略",
+    "ex": "Conclusion This paper introduces improvements to Janus from three aspects: training strategy, data, and model size."
+   }
+  ]
+ },
+ {
+  "sec": "References · 参考文献区用词（正文未出现）",
+  "short": "文献区",
+  "icon": "R",
+  "words": [
+   {
+    "w": "abbreviation",
+    "ipa": "əˌbriviˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "节略，缩写，缩短",
+    "ex": "Figure 3 | Architecture of our Janus-Pro. We decouple visual encoding for multimodal understanding and visual generation. “Und. Encoder” and “Gen. Encoder” are abbreviations for"
+   },
+   {
+    "w": "alleviate",
+    "ipa": "əˈliviˌeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "减轻，缓解",
+    "ex": "alleviates the conflict between multimodal understanding and generation tasks, achieving"
+   },
+   {
+    "w": "auto",
+    "ipa": "ˈɔtoʊ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "(口语)汽车",
+    "ex": "Auto-Regressive Transformer"
+   },
+   {
+    "w": "bloom",
+    "ipa": "blum",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "花；开花，开花期",
+    "ex": "in full bloom, with a honeybee perched on its"
+   },
+   {
+    "w": "bold",
+    "ipa": "boʊld",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "大胆的；冒失的",
+    "ex": "precisely and legibly in the center with bold,"
+   },
+   {
+    "w": "capable",
+    "ipa": "ˈkeɪpəbəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "能干的，有能力的",
+    "ex": "Dai, A. Hauth, et al. Gemini: a family of highly capable multimodal models. arXiv preprint"
+   },
+   {
+    "w": "capacity",
+    "ipa": "kəˈpæsɪti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "容量；能力；能量",
+    "ex": "limited amount of training data and the relatively small model capacity, it exhibites certain"
+   },
+   {
+    "w": "clip",
+    "ipa": "klɪp",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "剪；剪辑报刊",
+    "ex": "Hierarchical text-conditional image generation with clip latents. arXiv preprint arXiv:2204.06125, 1(2):3, 2022. [36] R."
+   },
+   {
+    "w": "conditional",
+    "ipa": "kənˈdɪʃənəl",
+    "pos": "adj.；n.",
+    "lv": "六级",
+    "m": "有条件的；假定的；条件句；条件语",
+    "ex": "Hierarchical text-conditional image generation with clip latents. arXiv preprint arXiv:2204.06125, 1(2):3, 2022. [36] R."
+   },
+   {
+    "w": "creation",
+    "ipa": "kriˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "创造， 创建； 创造的作品， 产物； 宇宙， 天地万物",
+    "ex": "[10] R. Dong, C. Han, Y. Peng, Z. Qi, Z. Ge, J. Yang, L. Zhao, J. Sun, H. Zhou, H. Wei, et al. Dreamllm: Synergistic multimodal comprehension and creation. arXiv preprint arXiv:2309.11499,"
+   },
+   {
+    "w": "decode",
+    "ipa": "dɪˈkoʊd",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "解码",
+    "ex": "of the visual encoding decoding method."
+   },
+   {
+    "w": "delicate",
+    "ipa": "ˈdɛləkət",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "纤细的；易碎的",
+    "ex": "petals, its delicate wings catching the sunlight."
+   },
+   {
+    "w": "device",
+    "ipa": "dɪˈvaɪs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "装置，设备",
+    "ex": "Mobilevlm: A fast, reproducible and strong vision language assistant for mobile devices. arXiv preprint arXiv:2312.16886, 2023. [7] X."
+   },
+   {
+    "w": "discipline",
+    "ipa": "ˈdɪsəplən",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "纪律；训练；训练",
+    "ex": "Mmmu: A massive multi-discipline multimodal understanding and reasoning benchmark for expert agi."
+   },
+   {
+    "w": "dual",
+    "ipa": "duəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "双的， 两重的",
+    "ex": "Dual diffusion for unified image generation and understanding. arXiv preprint arXiv:2501.00289, 2024. [25] Z."
+   },
+   {
+    "w": "exploration",
+    "ipa": "ˌɛksplərˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "考察；勘探；探查",
+    "ex": "inspire further exploration in the field. Code and models are publicly available."
+   },
+   {
+    "w": "flyer",
+    "ipa": "flaɪər",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "传单；飞鸟；飞行物；飞跳；孤注一掷",
+    "ex": "Advances in Neural Information Processing Systems, 36, 2024. [15] High-flyer."
+   },
+   {
+    "w": "fusion",
+    "ipa": "fˈjuʒən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "联合， 合并； 核聚变",
+    "ex": "Chameleon: Mixed-modal early-fusion foundation models. arXiv preprint arXiv:2405.09818, 2024. [41] G."
+   },
+   {
+    "w": "general-purpose",
+    "ipa": "ˈʤɛnərəl ˈpərpəs",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "通用的，一般用途的（与专用 special-purpose 相对）",
+    "ex": "Towards general-purpose vision-language models with instruction tuning, 2023."
+   },
+   {
+    "w": "hallucination",
+    "ipa": "həˌlusəˈneɪʃən",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "幻觉，幻想",
+    "ex": "Evaluating object hallucination in large vision-language models. arXiv preprint arXiv:2305.10355, 2023. [24] Z."
+   },
+   {
+    "w": "harmonize",
+    "ipa": "ˈhɑrməˌnaɪz",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "协调",
+    "ex": "Janusflow: Harmonizing autoregression and rectified flow for unified multimodal understanding and generation, 2024. [31] mehdidc."
+   },
+   {
+    "w": "hierarchical",
+    "ipa": "ˌhaɪˈrɑrkəkəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "分层的；等级体系的",
+    "ex": "Imagenet: A large-scale hierarchical image database."
+   },
+   {
+    "w": "honeybee",
+    "ipa": "ˈhəniˌbi",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "蜜蜂",
+    "ex": "in full bloom, with a honeybee perched on its"
+   },
+   {
+    "w": "illuminate",
+    "ipa": "ˌɪˈlumɪnɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "阐释，阐明",
+    "ex": "Illume: Illuminating your llms to see, draw, and self-enhance. arXiv preprint arXiv:2412.06673, 2024. [45] X."
+   },
+   {
+    "w": "insight",
+    "ipa": "ˈɪnˌsaɪt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "洞察力，洞悉",
+    "ex": "Building and better understanding vision-language models: insights and future directions., 2024. [21] B."
+   },
+   {
+    "w": "integrate",
+    "ipa": "ˈɪnəˌgreɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "成为一体， 合并",
+    "ex": "Mm-vet: Evaluating large multimodal models for integrated capabilities. arXiv preprint arXiv:2308.02490, 2023. [52] X."
+   },
+   {
+    "w": "large-scale",
+    "ipa": "ˈlɑrʤˌskeɪl",
+    "pos": "adj.",
+    "lv": "雅思",
+    "m": "大规模的， 大范围的",
+    "ex": "[9] J. Deng, W. Dong, R. Socher, L.-J. Li, K. Li, and L. Fei-Fei. Imagenet: A large-scale hierarchical image database. In 2009 IEEE conference on computer vision and pattern recognition,"
+   },
+   {
+    "w": "latent",
+    "ipa": "ˈleɪtənt",
+    "pos": "adj.",
+    "lv": "考研",
+    "m": "存在但看不见的",
+    "ex": "SDXL: Improving latent diffusion models for high-resolution image synthesis."
+   },
+   {
+    "w": "massive",
+    "ipa": "ˈmæsɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "巨大的 大量的",
+    "ex": "Mmmu: A massive multi-discipline multimodal understanding and reasoning benchmark for expert agi."
+   },
+   {
+    "w": "minimalist",
+    "ipa": "ˈmɪnəməlɪst",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "最低限要求者",
+    "ex": "A minimalist photo of an orange tangerine"
+   },
+   {
+    "w": "modal",
+    "ipa": "ˈmoʊdəl",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "模态的, 形态上的",
+    "ex": "Transfusion: Predict the next token and diffuse images with one multi-modal model. arXiv preprint arXiv:2408.11039, 2024. [56] Y."
+   },
+   {
+    "w": "multiple",
+    "ipa": "ˈməltəpəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "复合的；并联的",
+    "ex": "We evaluate Janus-Pro on multiple benchmarks, and the results reveal its superior multimodal understanding capabilities and significantly improved text-to-image instruction-following"
+   },
+   {
+    "w": "neural",
+    "ipa": "ˈnʊrəl",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "神经的",
+    "ex": "Advances in Neural Information Processing Systems, 36, 2024. [15] High-flyer."
+   },
+   {
+    "w": "perception",
+    "ipa": "pərˈsɛpʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "感知",
+    "ex": "MME-Perception are divided by 20 to scale to [0, 100]. For visual generation, we evaluate the performance"
+   },
+   {
+    "w": "perch",
+    "ipa": "pərʧ",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "（禽鸟的）栖木",
+    "ex": "in full bloom, with a honeybee perched on its"
+   },
+   {
+    "w": "petal",
+    "ipa": "ˈpɛtəl",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "花瓣",
+    "ex": "petals, its delicate wings catching the sunlight."
+   },
+   {
+    "w": "predecessor",
+    "ipa": "ˈprɛdəˌsɛsər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "前辈，前任者",
+    "ex": "Figure 2 | Comparison of text-to-image generation between Janus-Pro and its predecessor,"
+   },
+   {
+    "w": "proceeding",
+    "ipa": "prəˈsidɪŋ",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "程序，行动，事项",
+    "ex": "In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pages 26296–26306, 2024. [27] H."
+   },
+   {
+    "w": "prosperity",
+    "ipa": "prɑˈspɛrəti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "繁荣",
+    "ex": "prosperity, sitting on a red silk cloth during"
+   },
+   {
+    "w": "rectify",
+    "ipa": "ˈrɛktəˌfaɪ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "纠正；调整",
+    "ex": "Janusflow: Harmonizing autoregression and rectified flow for unified multimodal understanding and generation, 2024. [31] mehdidc."
+   },
+   {
+    "w": "redundancy",
+    "ipa": "rɪˈdəndənsi",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "[计][数] 冗余（等于redundance）；裁员；人浮于事",
+    "ex": "proven to enhance the instruction-following capabilities in visual generation tasks while reducing model redundancy. Most of these methods utilize the same visual encoder to process"
+   },
+   {
+    "w": "reflective",
+    "ipa": "rɪˈflɛktɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "深思熟虑的；反映的，反射的",
+    "ex": "A glass of red wine on a reflective surface."
+   },
+   {
+    "w": "regressive",
+    "ipa": "rəˈgrɛsɪv",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "回归的；后退的；退化的",
+    "ex": "Auto-Regressive Transformer"
+   },
+   {
+    "w": "relatively",
+    "ipa": "ˈrɛlətɪvli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "相对地，比较地",
+    "ex": "limited amount of training data and the relatively small model capacity, it exhibites certain"
+   },
+   {
+    "w": "representation",
+    "ipa": "ˌrɛprəzɛnˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "描写；陈述；代表",
+    "ex": "inputs for both multimodal understanding and generation tasks. Since the representations"
+   },
+   {
+    "w": "reproduction",
+    "ipa": "ˌriprəˈdəkʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "繁殖",
+    "ex": "Introducing idefics: An open reproduction of state-of-the-art visual language model, 2023."
+   },
+   {
+    "w": "response",
+    "ipa": "rɪˈspɑns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "反应",
+    "ex": "Language Response: X#"
+   },
+   {
+    "w": "self",
+    "ipa": "sɛlf",
+    "pos": "n.；adj.；vt.；vi.",
+    "lv": "四级",
+    "m": "自己，自我；本质；私心；同一的；使自花授精；使近亲繁殖；自花授精",
+    "ex": "Illume: Illuminating your llms to see, draw, and self-enhance. arXiv preprint arXiv:2412.06673, 2024. [45] X."
+   },
+   {
+    "w": "sigmoid",
+    "ipa": "ˈsɪɡmɔɪd",
+    "pos": "adj./n.",
+    "lv": "考博",
+    "m": "S 形的；sigmoid function 逻辑斯谛/乙状函数",
+    "ex": "Sigmoid loss for language image pretraining."
+   },
+   {
+    "w": "source",
+    "ipa": "sɔrs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "来源",
+    "ex": "Deepseek llm: Scaling open-source language models with longtermism. arXiv preprint arXiv:2401.02954, 2024. [4] J."
+   },
+   {
+    "w": "specifically",
+    "ipa": "spəˈsɪfɪkli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "特别地， 特定地； 明确地， 具体地",
+    "ex": "In this work, we introduce Janus-Pro, an advanced version of the previous work Janus. Specifically, Janus-Pro incorporates (1) an optimized training strategy, (2) expanded training data,"
+   },
+   {
+    "w": "stem",
+    "ipa": "stɛm",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "茎，(树)干；起源",
+    "ex": "with a green stem and leaves, symbolizing"
+   },
+   {
+    "w": "sunflower",
+    "ipa": "ˈsənˌflaʊər",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "向日葵",
+    "ex": "Capture a close-up shot of a vibrant sunflower"
+   },
+   {
+    "w": "symbolize",
+    "ipa": "ˈsɪmbəˌlaɪz",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "象征",
+    "ex": "with a green stem and leaves, symbolizing"
+   },
+   {
+    "w": "synthesis",
+    "ipa": "ˈsɪnθəsəs",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "综合，综合物；（化学或生物学物质的）合成；（用电子方式对声音、语音或音乐的）合成",
+    "ex": "Scaling rectified flow transformers for high-resolution image synthesis, 2024."
+   },
+   {
+    "w": "tangerine",
+    "ipa": "ˌtænʤərˈin",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "橘子",
+    "ex": "A minimalist photo of an orange tangerine"
+   },
+   {
+    "w": "token",
+    "ipa": "ˈtoʊkən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "辅币；象征",
+    "ex": "Transfusion: Predict the next token and diffuse images with one multi-modal model. arXiv preprint arXiv:2408.11039, 2024. [56] Y."
+   },
+   {
+    "w": "versatile",
+    "ipa": "ˈvərsətəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "多方面的；通用的",
+    "ex": "Qwen-vl: A frontier large vision-language model with versatile abilities. arXiv preprint arXiv:2308.12966, 2023. [2] J."
+   },
+   {
+    "w": "vibrant",
+    "ipa": "ˈvaɪbrənt",
+    "pos": "adj.；n.",
+    "lv": "专四",
+    "m": "振动的；充满生气的；响亮的；战栗的；(Vibrant)人名；(德)维布兰特",
+    "ex": "Capture a close-up shot of a vibrant sunflower"
+   }
+  ]
+ }
+];
+// lv 一律写中文档名（十一档平级，2026-09-30 定案；旧短码由 build 脚本自动翻译）
+const LVCLS={"四级":"t4","六级":"t6","考研":"tk","考博":"tp","专四":"tm4","专八":"tm8","雅思":"ty","托福":"tt","GRE":"tg","超纲":"tsuper"};
+const LVNAME={"四级":"四级","六级":"六级","考研":"考研","考博":"考博","专四":"专业四级","专八":"专业八级","雅思":"雅思","托福":"托福","GRE":"GRE","超纲":"超纲（大纲未收）"};
+const LVSHORT={"四级":"4","六级":"6","考研":"考研","考博":"考博","专四":"专四","专八":"专八","雅思":"雅思","托福":"托福","GRE":"GRE","超纲":"★超纲"};
+const LVORDER=["四级","六级","考研","考博","专四","专八","雅思","托福","GRE","超纲"];
+
+let mode="sec";
+let theme="theme-mag"; // 章节视图固定杂志风；按级别视图固定暗色大页
+
+function cardHTML(x,sec){
+  const from = mode==="lv" ? `<div class="from">出自 ${sec}</div>` : "";
+  if(theme==="theme-paper"){
+    return `<div class="word"><span class="w">${x.w}<span class="ipa">/${x.ipa}/</span><i class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</i></span>
+      <span><span class="pos">${x.pos}</span><span class="m">${x.m}</span>${from}</span>
+      <span class="ex">${x.ex}</span></div>`;
+  }
+  if(theme==="theme-mag") return "";
+  return `<div class="card lv${x.lv}" data-say="${x.w}"><span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span><span class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</span>
+    <div class="m">${x.pos} ${x.m}</div><div class="ex">${x.ex}</div>${from}</div>`;
+}
+function magRow(x,sec){
+  return `<tr data-say="${x.w}"><td class="w"><span class="hwband">${x.w}</span><span class="ipa">/${x.ipa}/</span></td>
+    <td class="lv"><b class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</b></td>
+    <td class="m">${x.pos} ${x.m}${mode==="lv"?`<span class="from">出自 ${sec}</span>`:""}</td>
+    <td class="ex">${x.ex}</td></tr>`;
+}
+function groupHTML(title,icon,inner){
+  if(theme==="theme-mag") return `<div class="sec"><h2>${title}</h2><table>${inner}</table></div>`;
+  if(theme==="theme-dark"||theme==="theme-fresh")
+    return `<div class="sec"><h2>${theme==="theme-dark"?"":"<span class='n'>"+icon+"</span>"}${title}</h2><div class="grid">${inner}</div></div>`;
+  return `<div class="sec"><h2>${title}</h2>${inner}</div>`;
+}
+
+function render(){
+  document.body.classList.toggle("lv-mode",mode==="lv");
+  // 注意：必须用 classList.add，不能整体赋值 className —— 否则会抹掉 body.night，
+  // 而夜晚章节视图依赖 body.night.theme-mag 这条 CSS，抹掉后点「按章节」会静默退回白天。
+  if(mode==="sec")document.body.classList.add("theme-mag");
+  const app=document.getElementById("app");
+  let html="";
+  if(mode==="sec"){
+    for(const s of DATA){
+      html += theme==="theme-mag"
+        ? groupHTML(s.sec,s.icon,s.words.map(x=>magRow(x,s.short)).join(""))
+        : groupHTML(s.sec,s.icon,s.words.map(x=>cardHTML(x,s.short)).join(""));
+    }
+  }else{
+    // 学习模式同款暗色大页：每个级别一块
+    const dot={"四级":"var(--c4)","六级":"var(--c6)","考研":"var(--ckaon)","考博":"var(--cphd)","专四":"var(--cm4)","专八":"var(--cm8)","雅思":"var(--cy)","托福":"var(--ct)","GRE":"var(--cg)","超纲":"var(--csuper)"};
+    html=LVORDER.map(lv=>{
+      const items=[];
+      DATA.forEach(s=>s.words.forEach(x=>{if(x.lv===lv)items.push([x,s.short])}));   // ov 已废除（2026-09-30）
+      if(!items.length)return"";   // 本词表里没有这一档 → 不出空面板
+      items.sort((a,b)=>a[0].w.localeCompare(b[0].w));
+      const cls={"六级":"l6","考研":"lk","考博":"lp","专四":"lm4","专八":"lm8","雅思":"ly","托福":"lt","GRE":"lg","超纲":"lsuper"}[lv]||"";
+      return `<div class="lvslide ${cls}">
+        <div class="ltitle"><span style="color:${dot[lv]}">${LVNAME[lv]}</span>词汇<small>${items.length} words · 按字母排序 · 悬停看原文例句 · 点击发音</small></div>
+        <div class="sgrid">${items.map(([x,sec])=>`
+          <div class="lcard" data-say="${x.w}">
+            <span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span>
+            <div class="m">${x.pos} ${x.m}</div>
+            <div class="ex">${x.ex}</div>
+            <div class="from">出自 ${sec}</div>
+          </div>`).join("")}</div></div>`;
+    }).join("");
+  }
+  app.innerHTML=html;
+}
+function syncToolbar(){
+  document.getElementById("v-sec").classList.toggle("on",mode==="sec");
+  document.getElementById("v-lv").classList.toggle("on",mode==="lv");
+}
+document.getElementById("v-sec").onclick=()=>{mode="sec";theme="theme-mag";syncToolbar();render();};
+document.getElementById("v-lv").onclick=()=>{mode="lv";syncToolbar();render();};
+
+// 朗读：多引擎在线 TTS 自动降级（有道 / Polly / 百度 / 谷歌），可按下拉切换主音色
+// 合并自 .agents 有道源版 与 workbuddy Polly 源版 —— 单文件同时支持两套引擎
+const VOICE_MAP={
+  yd1:{src:"yd",label:"美式 · 有道（推荐）"},
+  yd0:{src:"yd",label:"英式 · 有道"},
+  Brian:{src:"se",label:"Brian · 英式男声"},
+  Amy:{src:"se",label:"Amy · 英式女声"},
+  Matthew:{src:"se",label:"Matthew · 美式男声"},
+  Joanna:{src:"se",label:"Joanna · 美式女声"},
+  Salli:{src:"se",label:"Salli · 美式女声"},
+  Ivy:{src:"se",label:"Ivy · 美式童声"},
+  bd:{src:"bd",label:"百度翻译 · 女声"},
+  gg:{src:"gg",label:"谷歌翻译"},
+  mute:{src:"mute",label:"🔇 不朗读"}
+};
+const VOICE_ORDER=["yd1","yd0","Brian","Amy","Matthew","Joanna","Salli","Ivy","bd","gg","mute"];
+let ONLINE="yd1"; // 默认有道 · 美音（保留 .agents 版行为）
+try{const sv=localStorage.getItem("vocab_voice");if(sv&&VOICE_MAP[sv])ONLINE=sv;}catch(e){}
+const ENG=["yd","se","bd","gg"];               // 全部可选引擎
+const ENG_NAME={yd:"有道",se:"Polly",bd:"百度",gg:"谷歌"};
+const POLLY_VOICES={Brian:1,Amy:1,Matthew:1,Joanna:1,Salli:1,Ivy:1};
+let SRC_ORDER=ENG.slice(),srcIdx=0;           // 降级顺序：按所选音色的主引擎优先
+function applyVoiceOrder(){
+  const want=VOICE_MAP[ONLINE].src;
+  const i=ENG.indexOf(want);
+  SRC_ORDER=i<0?ENG.slice():ENG.slice(i).concat(ENG.slice(0,i));
+}
+applyVoiceOrder();
+let audio=null;
+function ttsURL(src,t){
+  const q=encodeURIComponent(t);
+  if(src==="yd")return `https://dict.youdao.com/dictvoice?type=${ONLINE==="yd0"?"0":"1"}&audio=${q}`;
+  if(src==="se")return `https://api.streamelements.com/kappa/v2/speech?voice=${POLLY_VOICES[ONLINE]?ONLINE:"Brian"}&text=${q}`;
+  if(src==="bd")return `https://fanyi.baidu.com/gettts?lan=en&text=${q}&spd=5&source=web`;
+  return `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q=${q}`;
+}
+function fillVoiceSel(){
+  const sel=document.getElementById("voiceSel");if(!sel)return;
+  sel.innerHTML=VOICE_ORDER.map(v=>`<option value="${v}" ${ONLINE===v?"selected":""}>${VOICE_MAP[v].label}</option>`).join("");
+  const st=document.getElementById("srcState");
+  if(st)st.textContent=ENG_NAME[SRC_ORDER[srcIdx]]||"";
+}
+fillVoiceSel();
+let saying=0; // 防并发
+function say(t){
+  if(ONLINE==="mute"){try{if(audio){audio.pause();audio=null}}catch(e){}return}
+  const my=++saying;
+  trySrc(0,t,my);
+}
+function trySrc(i,t,my){
+  if(my!==saying)return;
+  if(i>=SRC_ORDER.length){const st=document.getElementById("srcState");if(st)st.textContent="无可用源";return}
+  const src=SRC_ORDER[i];
+  const st=document.getElementById("srcState");
+  if(st)st.textContent="尝试 "+ENG_NAME[src];
+  try{if(audio){audio.pause();audio=null}}catch(e){}
+  const a=new Audio(ttsURL(src,t));
+  let ok=false,advanced=false;
+  const advance=()=>{ if(!ok&&!advanced&&my===saying){advanced=true;trySrc(i+1,t,my);} };
+  a.addEventListener("playing",()=>{ok=true;
+    if(srcIdx!==i){srcIdx=i;fillVoiceSel();} // 记住能用的源
+  });
+  a.addEventListener("error",advance);
+  audio=a;
+  a.play().catch(advance);
+  setTimeout(()=>{ if(!ok&&my===saying&&a.paused)advance(); },2500);
+}
+document.getElementById("voiceSel").addEventListener("change",e=>{
+  ONLINE=e.target.value; applyVoiceOrder(); srcIdx=0; // 换音色重新从头试源
+  try{localStorage.setItem("vocab_voice",ONLINE);}catch(e){}
+  if(ONLINE!=="mute") say("Hello, let us learn new words together.");
+});
+/* ---- 白天 / 夜晚 ---- */
+let style="day";
+try{const s=localStorage.getItem("vocab_style");if(["day","night","paper"].indexOf(s)>=0)style=s;}catch(e){}
+function applyStyle(){
+  document.body.classList.toggle("night",style==="night");
+  document.body.classList.toggle("paper",style==="paper");
+  ["day","night","paper"].forEach(k=>{const b=document.getElementById("st-"+k);if(b)b.classList.toggle("on",style===k);});
+  if(typeof studyEl!=="undefined"&&studyEl)studyEl.classList.toggle("day",style!=="night");
+}
+document.getElementById("st-day").onclick=()=>{style="day";try{localStorage.setItem("vocab_style","day")}catch(e){};applyStyle();};
+document.getElementById("st-night").onclick=()=>{style="night";try{localStorage.setItem("vocab_style","night")}catch(e){};applyStyle();};
+document.getElementById("st-paper").onclick=()=>{style="paper";try{localStorage.setItem("vocab_style","paper")}catch(e){};applyStyle();};
+document.getElementById("app").addEventListener("click",e=>{
+  const el=e.target.closest("[data-say]"); if(el) say(el.dataset.say);
+});
+
+/* ---------- 学习模式：按章节分页的 PPT 翻页 ---------- */
+const PER_PAGE = 12; // 每页最多词数，放不下自动续页
+let slides=[],si=0;
+function buildSlides(){
+  slides=[];
+  for(const s of DATA){
+    for(let i=0;i<s.words.length;i+=PER_PAGE){
+      slides.push({sec:s.sec,page:Math.floor(i/PER_PAGE)+1,
+        pages:Math.ceil(s.words.length/PER_PAGE),words:s.words.slice(i,i+PER_PAGE)});
+    }
+  }
+}
+const studyEl=document.getElementById("study");
+let open=false;
+function showSlide(){
+  const sl=slides[si];
+  const title=sl.pages>1 ? `${sl.sec}（第 ${sl.page}/${sl.pages} 页）` : sl.sec;
+  document.getElementById("sPage").innerHTML =
+    `<div class="stitle">${title}<small>${sl.words.length} words</small></div>
+     <div class="sgrid">${sl.words.map(x=>`
+       <div class="scard" data-say="${x.w}">
+         <span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span><span class="tag ${LVCLS[x.lv]}" style="font-size:11px;padding:2px 8px">${LVSHORT[x.lv]}</span>
+         <div class="m">${x.pos} ${x.m}</div>
+         <div class="ex">${x.ex}</div>
+       </div>`).join("")}</div>`;
+  document.getElementById("sIdx").textContent=(si+1)+" / "+slides.length;
+  document.getElementById("sbar").style.width=((si+1)/slides.length*100)+"%";
+  document.getElementById("sPrev").disabled=si===0;
+  document.getElementById("sNext").disabled=si===slides.length-1;
+  studyEl.querySelector(".sbody").scrollTop=0;
+}
+function studyOpen(){ buildSlides(); si=0; open=true; studyEl.classList.add("on"); applyStyle(); showSlide(); }
+function studyClose(){ open=false; studyEl.classList.remove("on"); }
+function next(){ if(si<slides.length-1){ si++; showSlide(); } }
+function prev(){ if(si>0){ si--; showSlide(); } }
+document.getElementById("v-study").onclick=()=>open?studyClose():studyOpen();
+document.getElementById("sClose").onclick=studyClose;
+document.getElementById("sExit").onclick=studyClose;
+document.getElementById("sNext").onclick=next;
+document.getElementById("sPrev").onclick=prev;
+studyEl.addEventListener("click",e=>{
+  const el=e.target.closest("[data-say]"); if(el) say(el.dataset.say);
+});
+document.addEventListener("keydown",e=>{
+  if(!open) return;
+  if(e.code==="Space"||e.key==="ArrowRight"||e.key==="PageDown"){ e.preventDefault(); next(); }
+  else if(e.key==="ArrowLeft"||e.key==="PageUp"){ prev(); }
+  else if(e.key==="Escape"){ studyClose(); }
+});
+applyStyle(); syncToolbar(); render();
+</script>
+<a href="../../vocab.html" target="_self" style="position:fixed;left:14px;bottom:14px;z-index:9999;font:600 13px/1 -apple-system,system-ui,sans-serif;color:#fff;background:rgba(0,0,0,.55);padding:8px 12px;border-radius:20px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.25)">← 返回索引</a></body>
+</html>

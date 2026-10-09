@@ -1,0 +1,3879 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NSA 论文核心词汇</title>
+<style>
+:root{--c4:#3b82f6;--c6:#8b5cf6;--ckaon:#f59e0b;--cphd:#ef4444;--ct:#0d9488;--cg:#d946ef;--cm4:#0ea5e9;--cm8:#f43f5e;--cy:#10b981;--csuper:#facc15}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;transition:background .3s,color .3s}
+.tag{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:4px;color:#fff;vertical-align:2px;margin-left:6px;font-style:normal;flex:none;white-space:nowrap}
+.tag.t4{background:var(--c4)}.tag.t6{background:var(--c6)}.tag.tk{background:var(--ckaon)}.tag.tp{background:var(--cphd)}.tag.tm4{background:var(--cm4)}.tag.tm8{background:var(--cm8)}
+.tag.tt{background:var(--ct)}.tag.tg{background:var(--cg)}.tag.ty{background:var(--cy)}.tag.tsuper{background:var(--csuper);color:#3a2f00}
+.ipa{font-family:"SF Mono",Menlo,monospace;font-size:.82em;font-weight:400;opacity:.62;margin-left:6px}
+
+
+/* 论文原标题小字 */
+.ptitle{font-size:12.5px;letter-spacing:.3px;margin-top:6px}
+.ptitle i{font-family:Georgia,serif}
+.theme-mag .ptitle{color:#999;text-transform:none}
+.theme-dark .ptitle{color:#6e7681}
+.theme-paper .ptitle{color:#a09578}
+.theme-fresh .ptitle{color:#9ca3af}
+body.lv-mode .ptitle{color:#7d8590}
+
+/* 预览工具条 */
+.toolbar{position:fixed;right:16px;bottom:16px;z-index:99;display:flex;flex-direction:column;gap:8px;background:rgba(20,22,30,.88);padding:12px;border-radius:14px;backdrop-filter:blur(8px);box-shadow:0 6px 24px rgba(0,0,0,.35)}
+.toolbar .row{display:flex;gap:6px}
+.toolbar button{border:none;cursor:pointer;padding:7px 12px;border-radius:8px;font-size:12.5px;background:#3a3f4d;color:#cbd2e0;transition:.15s}
+.toolbar button:hover{background:#4a5164}
+.toolbar button.on{background:#fff;color:#111;font-weight:600}
+.toolbar .lbl{font-size:10px;color:#8a93a6;text-align:left;margin:2px 0 -2px 2px}
+
+/* ---------- A 纸质阅读 ---------- */
+body.theme-paper{background:#faf6ee;color:#2c2a25}
+.theme-paper .wrap{max-width:880px;margin:0 auto;padding:56px 24px 140px}
+.theme-paper .hero h1{font-family:Georgia,"Songti SC",serif;font-size:34px}
+.theme-paper .hero p{color:#8a8272;margin:10px 0 42px;font-size:14px}
+.theme-paper .sec{margin-bottom:44px}
+.theme-paper .sec>h2{font-family:Georgia,"Songti SC",serif;font-size:20px;padding-left:14px;border-left:4px solid #b08d4f;margin-bottom:18px}
+.theme-paper .word{display:flex;gap:14px;padding:14px 16px;border-bottom:1px dashed #ddd2bc;align-items:baseline}
+.theme-paper .word:hover{background:#f3ecdc}
+.theme-paper .w{font-family:Georgia,serif;font-size:19px;font-weight:700;min-width:250px}
+.theme-paper .pos{color:#a09578;font-size:13px;margin-right:6px}
+.theme-paper .m{color:#4a463c;font-size:15px}
+.theme-paper .ex{margin-left:auto;max-width:270px;font-size:12.5px;color:#9a8f76;font-style:italic;text-align:right}
+.theme-paper .from{display:block;font-size:11px;color:#b3a888;font-style:normal;margin-top:3px}
+
+/* ---------- B 暗色科技 ---------- */
+body.theme-dark{background:#0d1117;color:#e6edf3}
+.theme-dark .wrap{max-width:1000px;margin:0 auto;padding:56px 24px 140px}
+.theme-dark .hero h1{font-family:"SF Mono",Menlo,monospace;font-size:26px}
+.theme-dark .hero h1::before{content:"$ ";color:#3fb950}
+.theme-dark .hero p{color:#7d8590;margin:10px 0 40px;font-size:14px;font-family:Menlo,monospace}
+.theme-dark .sec>h2{font-size:15px;font-family:Menlo,monospace;color:#58a6ff;padding:10px 16px;background:#161b22;border:1px solid #30363d;border-radius:8px 8px 0 0;margin-bottom:-1px}
+.theme-dark .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;padding:20px;background:#161b22;border:1px solid #30363d;border-radius:0 0 8px 8px}
+.theme-dark .card{background:#0d1117;border:1px solid #30363d;border-left:4px solid #58a6ff;border-radius:6px;padding:15px 17px;transition:.2s;cursor:pointer;font-family:Menlo,monospace}
+.theme-dark .card:hover{border-color:#58a6ff;box-shadow:0 0 14px rgba(88,166,255,.25);transform:translateY(-2px)}
+.theme-dark .w{font-family:Menlo,monospace;font-size:17px;color:#79c0ff}
+.theme-dark .ipa{color:#7ee787;opacity:.9}
+.theme-dark .m{color:#8b949e;font-size:13.5px;margin-top:7px;line-height:1.55}
+.theme-dark .ex{font-size:12px;color:#6e7681;margin-top:8px;border-top:1px solid #21262d;padding-top:8px;font-style:italic}
+.theme-dark .from{color:#484f58;font-size:11px;margin-top:4px}
+
+/* ---------- C 清新卡片 ---------- */
+body.theme-fresh{background:linear-gradient(160deg,#eef4ff 0%,#f6f0ff 50%,#fff7ec 100%);color:#1f2430}
+.theme-fresh .wrap{max-width:1020px;margin:0 auto;padding:56px 24px 140px}
+.theme-fresh .hero h1{font-size:32px;font-weight:800;background:linear-gradient(90deg,#3b82f6,#8b5cf6,#f59e0b);-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block}
+.theme-fresh .hero p{color:#6b7280;margin:10px 0 40px;font-size:14px}
+.theme-fresh .sec>h2{font-size:19px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.theme-fresh .sec>h2 .n{width:30px;height:30px;border-radius:10px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.08);display:inline-flex;align-items:center;justify-content:center;font-size:13px}
+.theme-fresh .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+.theme-fresh .card{background:rgba(255,255,255,.82);backdrop-filter:blur(6px);border-radius:18px;padding:17px 19px 15px;box-shadow:0 3px 14px rgba(80,80,140,.09);transition:.2s;cursor:pointer;border-top:5px solid #dbe3f5}
+.theme-fresh .card.lv四级{border-top-color:#3b82f6}.theme-fresh .card.lv六级{border-top-color:#8b5cf6}
+.theme-fresh .card.lv考研{border-top-color:#f59e0b}.theme-fresh .card.lv考博{border-top-color:#ef4444}
+.theme-fresh .card.lv专四{border-top-color:#0ea5e9}.theme-fresh .card.lv专八{border-top-color:#f43f5e}
+.theme-fresh .card.lv雅思{border-top-color:#10b981}.theme-fresh .card.lv托福{border-top-color:#0d9488}
+.theme-fresh .card.lvGRE{border-top-color:#d946ef}.theme-fresh .card.lv超纲{border-top-color:#facc15}
+.theme-fresh .card .w{display:inline-block;background:#f3f5fb;border-radius:8px;padding:2px 10px}
+.theme-fresh .card:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(80,80,140,.16)}
+.theme-fresh .w{font-size:18px;font-weight:700}
+.theme-fresh .m{color:#4b5563;font-size:14px;margin-top:6px;line-height:1.55}
+.theme-fresh .ex{color:#9ca3af;font-size:12.5px;margin-top:8px}
+.theme-fresh .from{color:#b6bcc9;font-size:11.5px;margin-top:4px}
+
+/* ---------- D 杂志表格（宽松版） ---------- */
+body.theme-mag{background:#fff;color:#111}
+.theme-mag .wrap{max-width:960px;margin:0 auto;padding:52px 28px 140px}
+.theme-mag .hero{border-bottom:3px solid #111;padding-bottom:16px;margin-bottom:10px}
+.theme-mag .hero h1{font-family:"Songti SC",Georgia,serif;font-size:38px;font-weight:900}
+.theme-mag .hero p{color:#888;font-size:13.5px;margin-top:8px}
+.theme-mag .sec>h2{font-size:14px;letter-spacing:3px;text-transform:uppercase;color:#c2410c;margin:44px 0 8px;border-bottom:1px solid #e5e5e5;padding-bottom:8px}
+.theme-mag table{width:100%;border-collapse:collapse}
+.theme-mag td{padding:16px 12px;border-bottom:1px solid #f0f0f0;font-size:15.5px;line-height:1.65;vertical-align:top}
+.theme-mag tr:hover td{background:#fff8f3}
+.theme-mag .w{font-weight:700;font-size:17px;width:300px}
+.theme-mag .lv{width:60px}
+.theme-mag .lv b{font-size:11.5px;padding:3px 0;display:block;text-align:center;border-radius:3px;color:#fff;font-weight:600}
+.theme-mag .m{color:#3d3d3d}
+.theme-mag .ex{color:#9a9a9a;font-size:13px;font-style:italic}
+.theme-mag .from{display:block;color:#c9c9c9;font-size:11.5px;font-style:normal;margin-top:4px}
+
+/* ---------- 按级别：学习模式同款暗色大页 ---------- */
+body.lv-mode{background:#0b0e13 !important}
+body.lv-mode .hero h1,body.lv-mode .hero p{color:#e8ecf3}
+body.lv-mode .hero p{color:#7d8590}
+.lvslide{background:#101318;color:#e8ecf3;border-radius:20px;padding:26px 32px 22px;margin-bottom:26px;border-top:6px solid var(--c4)}
+.lvslide.l6{border-top-color:var(--c6)}.lvslide.lk{border-top-color:var(--ckaon)}.lvslide.lp{border-top-color:var(--cphd)}
+.lvslide.lt{border-top-color:var(--ct)}.lvslide.lg{border-top-color:var(--cg)}.lvslide.lm4{border-top-color:var(--cm4)}.lvslide.lm8{border-top-color:var(--cm8)}.lvslide.ly{border-top-color:var(--cy)}.lvslide.lsuper{border-top-color:var(--csuper)}
+.lvslide .ltitle{font-size:26px;font-weight:800;font-family:Georgia,serif;display:flex;align-items:baseline;gap:14px}
+.lvslide .ltitle small{font-size:14px;color:#7d8590;font-family:Menlo,monospace;font-weight:400}
+.lvslide .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;padding:20px 0 8px}
+.lvslide .lcard{background:#171c26;border:1px solid #2b3342;border-radius:14px;padding:15px 17px;cursor:pointer;transition:.15s}
+.lvslide .lcard:hover{border-color:#79c0ff;transform:translateY(-2px)}
+.lvslide .lcard .w{font-size:19px;font-weight:700;font-family:Georgia,serif}
+.lvslide .lcard .ipa{font-family:Menlo,monospace;font-size:13px;color:#7ee787;margin-left:8px}
+.lvslide .lcard .m{color:#aeb6c4;font-size:14px;margin-top:7px;line-height:1.55}
+.lvslide .lcard .ex{color:#646d7d;font-size:12px;font-style:italic;margin-top:7px}
+.lvslide .lcard .from{color:#4d5563;font-size:11px;margin-top:6px}
+
+
+/* ---------- 白天 / 夜晚 ---------- */
+body.lv-mode:not(.night){background:#eef1f6 !important}
+body.lv-mode:not(.night) .hero h1{color:#1f2430}
+body.lv-mode:not(.night) .hero p{color:#6b7280}
+body.lv-mode:not(.night) .lvslide{background:#fff;color:#1f2430;box-shadow:0 4px 18px rgba(80,80,140,.10)}
+body.lv-mode:not(.night) .lvslide .lcard{background:#f7f9fd;border-color:#e4e9f3}
+body.lv-mode:not(.night) .lvslide .lcard:hover{border-color:#3b82f6}
+body.lv-mode:not(.night) .lvslide .lcard .m{color:#4b5563}
+body.lv-mode:not(.night) .lvslide .lcard .ex{color:#98a0ae}
+body.lv-mode:not(.night) .lvslide .lcard .from{color:#b3bac6}
+body.lv-mode:not(.night) .lvslide .lcard .ipa{color:#0a7d33}
+body.night.theme-mag{background:#0d1117;color:#e6edf3}
+body.night.theme-mag .hero{border-bottom-color:#e6edf3}
+body.night.theme-mag .hero p{color:#8b949e}
+body.night.theme-mag .sec>h2{color:#fbbf24;border-bottom-color:#30363d}
+body.night.theme-mag td{border-bottom-color:#1c2230}
+body.night.theme-mag tr:hover td{background:#161b22}
+body.night.theme-mag .m{color:#c9d1d9}
+body.night.theme-mag .ex{color:#8b949e}
+body.night.theme-mag .from{color:#57606a}
+body.night.theme-mag .w{color:#e6edf3}
+body.night.theme-mag .ptitle{color:#8b949e}
+body.night.theme-mag .ipa{opacity:.55}
+#study.day{background:#f5f7fa;color:#1f2430}
+#study.day .scard{background:#fff;border-color:#e4e9f3}
+#study.day .scard .m{color:#4b5563}
+#study.day .scard .ex{color:#98a0ae}
+#study.day .scard:hover{border-color:#3b82f6}
+#study.day .sfoot{color:#98a0ae;border-top-color:#e6e9f0}
+#study.day .snav button,#study.day #sClose{background:#fff;color:#1f2430;border-color:#d7dce6}
+#study.day .sfoot kbd{background:#e8ecf3;color:#1f2430}
+
+/* ---------- 学习模式（PPT 按章节翻页） ---------- */
+#study{position:fixed;inset:0;z-index:200;display:none;background:#101318;color:#e8ecf3;flex-direction:column}
+#study.on{display:flex}
+#study .sprog{height:4px;background:#262c38}
+#study .sprog i{display:block;height:100%;background:linear-gradient(90deg,#58a6ff,#8b5cf6);width:0;transition:width .25s}
+#study .sbody{flex:1;overflow:auto;padding:20px 40px}
+#study .stitle{font-size:24px;font-weight:800;font-family:Georgia,serif;padding:6px 4px 2px}
+#study .stitle small{color:#5b6472;font-size:14px;font-family:Menlo,monospace;font-weight:400;margin-left:12px}
+#study .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;padding:16px 2px 30px}
+#study .scard{background:#171c26;border:1px solid #2b3342;border-radius:14px;padding:16px 18px;cursor:pointer;transition:.15s}
+#study .scard:hover{border-color:#58a6ff;transform:translateY(-2px)}
+#study .scard .w{font-size:22px;font-weight:700;font-family:Georgia,serif}
+#study .scard .ipa{color:#7ee787;font-size:14px;margin-left:8px}
+#study .scard .m{color:#aeb6c4;font-size:14.5px;margin-top:8px;line-height:1.55}
+#study .scard .ex{color:#646d7d;font-size:12px;font-style:italic;margin-top:6px}
+#study .sfoot{display:flex;justify-content:space-between;align-items:center;padding:14px 28px;color:#5b6472;font-size:13px;border-top:1px solid #1d232e}
+#study .sfoot kbd{background:#262c38;border-radius:5px;padding:2px 8px;margin:0 2px;font-family:Menlo,monospace;font-size:12px}
+#study .snav{display:flex;gap:10px;align-items:center}
+#study .snav button{border:1px solid #333b4a;background:#1a2029;color:#cbd2e0;border-radius:8px;padding:8px 18px;cursor:pointer;font-size:14px}
+#study .snav button:hover{border-color:#58a6ff}
+#study .snav button:disabled{opacity:.35;cursor:default}
+
+
+
+/* —— 样式·暖白（暖白纸底） —— */
+
+body.theme-mag.paper{background:#f4f2ea!important;color:#23211c!important}
+body.theme-mag.paper .hero{border-bottom-color:#23211c}
+body.theme-mag.paper .hero h1{color:#1c1a12}
+body.theme-mag.paper .hero p{color:#6b6a5c}
+body.theme-mag.paper .ptitle{color:#8a8878}
+body.theme-mag.paper .sec>h2{color:#5f7a3f;border-bottom-color:#ddd8ca}
+body.theme-mag.paper td{border-bottom-color:#e6e1d3}
+body.theme-mag.paper tr:hover td{background:#ece7da}
+body.theme-mag.paper .m{color:#33312a}
+body.theme-mag.paper .ex{color:#8a8878}
+body.theme-mag.paper .from{color:#b3b0a0}
+body.theme-mag.paper .ipa{color:#6b6a5c}
+.theme-mag .hwband{padding:0 3px;font-weight:700}
+body.theme-mag.paper .hwband{background:linear-gradient(transparent 16%,#cdddb8 16%,#cdddb8 84%,transparent 84%);color:#1c1a12}
+
+
+</style>
+</head>
+<body class="theme-mag">
+<div class="wrap">
+  <div class="hero">
+    <h1>NSA 论文核心词汇</h1>
+    <div class="ptitle"><i>Native Sparse Attention: Hardware-Aligned and Natively Trainable Sparse Attention · arXiv:2502.11089 · DeepSeek-AI, 2025</i></div>
+    <p>全量口径重做 · 6 节 422 词 · 十一档 + 超纲（2026-10-08）</p>
+  </div>
+  <div id="app"></div>
+</div>
+
+<div class="toolbar">
+  <div class="lbl">视图</div>
+  <div class="row">
+    <button id="v-sec" class="on">按章节</button>
+    <button id="v-lv">按级别综合</button>
+    <button id="v-study">▶ 学习模式</button>
+  </div>
+  <div class="lbl">样式</div>
+  <div class="row">
+    <button id="st-day" class="on">☀ 白天</button>
+    <button id="st-night">🌙 夜晚</button>
+    <button id="st-paper">暖白</button>
+  </div>
+  <div class="lbl">朗读声音 · 多引擎</div>
+  <div class="row"><select id="voiceSel" style="flex:1;border:none;border-radius:8px;padding:7px 8px;background:#3a3f4d;color:#cbd2e0;font-size:12.5px;outline:none"></select><span id="srcState" style="align-self:center;font-size:10.5px;color:#8a93a6;min-width:34px;text-align:center"></span></div>
+</div>
+
+<div id="study">
+  <div class="sprog"><i id="sbar"></i></div>
+  <button id="sClose" title="退出学习模式 (Esc)" style="position:absolute;top:14px;right:18px;z-index:5;border:1px solid #333b4a;background:#1a2029;color:#cbd2e0;border-radius:8px;width:34px;height:34px;font-size:16px;cursor:pointer">✕</button>
+  <div class="sbody"><div id="sPage"></div></div>
+  <div class="sfoot">
+    <span><kbd>空格</kbd>/<kbd>→</kbd> 下一页 &nbsp; <kbd>←</kbd> 上一页 &nbsp; 点单词发音 &nbsp; <kbd>Esc</kbd> 退出</span>
+    <div class="snav">
+      <span id="sIdx">0 / 0</span>
+      <button id="sPrev">← 上一页</button>
+      <button id="sNext">下一页 →</button>
+      <button id="sExit" style="border-color:#5b3a3a">退出</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// lv: 4=四级 6=六级 k=考研 p=考博；ipa 为美式音标
+const DATA = [
+ {
+  "sec": "1. Introduction · 引言",
+  "short": "Intro",
+  "icon": "1",
+  "words": [
+   {
+    "w": "benchmark",
+    "ipa": "ˈbɛnʧˌmɑrk",
+    "pos": "n.；v.",
+    "lv": "专八",
+    "m": "基准；标准检查程序；用基准问题测试（计算机系统等）",
+    "ex": "Left: Despite being sparse, NSA surpasses Full Attention baseline on average across general benchmarks, long-context tasks, and reasoning evaluation."
+   },
+   {
+    "w": "capability",
+    "ipa": "ˌkeɪpəˈbɪləti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "能力，才能",
+    "ex": "These results validate that our hierarchical sparse attention design effectively balances model capability and computational efficiency."
+   },
+   {
+    "w": "coarse-grained",
+    "ipa": "ˈkɔrsɡreɪnd",
+    "pos": "adj.",
+    "lv": "超纲",
+    "m": "粗粒度的",
+    "ex": "compressed coarse-grained tokens, selectively retained fine-grained tokens"
+   },
+   {
+    "w": "coherent",
+    "ipa": "koʊˈhɪrənt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "连贯的",
+    "ex": "maintain coherent multi-turn conversations over thousands of tokens"
+   },
+   {
+    "w": "community",
+    "ipa": "kəmˈjunɪti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "社区；社会；公社",
+    "ex": "Introduction The research community increasingly recognizes long-context modeling as a crucial capability for next-generation large language models, driven by diverse real-world applications ranging from in-depth reasoning …"
+   },
+   {
+    "w": "comprehensive",
+    "ipa": "ˌkɑmpriˈhɛnsɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "综合的，全面的",
+    "ex": "We evaluate NSA through comprehensive experiments on real-world language corpora."
+   },
+   {
+    "w": "convert",
+    "ipa": "ˈkɑnvərt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使转变；使改变",
+    "ex": "To address these limitations, the deployment of effective sparse attention must tackle two key challenges: (1) Hardware-aligned inference speedup: Converting theoretical computation reductions into actual speed improvements …"
+   },
+   {
+    "w": "corpus",
+    "ipa": "ˈkɔrpəs",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "[计] 语料库；文集；本金",
+    "ex": "We evaluate NSA through comprehensive experiments on real-world language corpora."
+   },
+   {
+    "w": "critical",
+    "ipa": "ˈkrɪtɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "批评的，爱挑剔的",
+    "ex": "Jiang et al., 2023), where selectively computing critical query-key pairs can significantly reduce computational overhead while preserving performance."
+   },
+   {
+    "w": "crucial",
+    "ipa": "ˈkruʃl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "关键的",
+    "ex": "as a crucial capability for next-generation large language models"
+   },
+   {
+    "w": "effective",
+    "ipa": "ˈifɛktɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "有效的；有影响的",
+    "ex": "To achieve more effective and efficient sparse attention, we present NSA, a Natively trainable Sparse Attention architecture that integrates hierarchical token modeling."
+   },
+   {
+    "w": "effectively",
+    "ipa": "ɪˈfektɪvli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "有效地",
+    "ex": "effectively balances model capability and computational efficiency"
+   },
+   {
+    "w": "efficiency",
+    "ipa": "ɪˈfɪʃənsi",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "效率；功效，效能",
+    "ex": "These results validate that our hierarchical sparse attention design effectively balances model capability and computational efficiency."
+   },
+   {
+    "w": "emerge",
+    "ipa": "ɪˈmɜrdʒ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "显现",
+    "ex": "mechanisms emerges as a critical"
+   },
+   {
+    "w": "evaluation",
+    "ipa": "ɪˌvæljuˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "评价，评估",
+    "ex": "Left: Despite being sparse, NSA surpasses Full Attention baseline on average across general benchmarks, long-context tasks, and reasoning evaluation."
+   },
+   {
+    "w": "eviction",
+    "ipa": "ɪˈvɪkʃən",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "逐出；赶出；收回",
+    "ex": "Recent advances demonstrate this potential through diverse strategies: KV-cache eviction methods (Li et al., 2024;"
+   },
+   {
+    "w": "exhibit",
+    "ipa": "ɪɡˈzɪbɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "呈现",
+    "ex": "existing methods still exhibit a noticeable gap"
+   },
+   {
+    "w": "experimental",
+    "ipa": "ɪkˌspɛrɪˈmɛntəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "实验的，试验的",
+    "ex": "Experimental results demonstrate that NSA achieves comparable or superior performance to full attention baseline, while outperforming existing sparse attention approaches."
+   },
+   {
+    "w": "gap",
+    "ipa": "gæp",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "差距;缝隙缺口",
+    "ex": "When considering both aspects, existing methods still exhibit a noticeable gap."
+   },
+   {
+    "w": "hash",
+    "ipa": "hæʃ",
+    "pos": "n.；v.",
+    "lv": "专八",
+    "m": "剁碎的食物；混杂，拼凑；重新表述；搞糟，把…弄乱；切细；推敲",
+    "ex": "Xiao et al., 2024a), and sampling, clustering or hashing-based selection methods (Chen et al., 2024b;"
+   },
+   {
+    "w": "hierarchical",
+    "ipa": "ˌhaɪəˈrɑrkɪkl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "分层的",
+    "ex": "a Natively trainable Sparse Attention architecture that integrates hierarchical token modeling"
+   },
+   {
+    "w": "in-depth",
+    "ipa": "ɪn dɛpθ",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "深入的，彻底的",
+    "ex": "from in-depth reasoning (DeepSeek-AI, 2025; Zelikman et al., 2022), repository-level code generation (Zhang et al., 2023a; Zhang et al.) and multi-turn autonomous agent systems (Park et al.,"
+   },
+   {
+    "w": "inherent",
+    "ipa": "ˌɪnˈhɛrənt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "固有的",
+    "ex": "A natural approach to efficient long-context modeling is to take advantage of the inherent sparsity of softmax attention (Ge et al., 2023;"
+   },
+   {
+    "w": "innovation",
+    "ipa": "ˌɪnəˈveɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "改革，创新",
+    "ex": "NSA introduces two core innovations corresponding to the key requirements above: (1) Hardware-aligned system: Optimize blockwise sparse attention for Tensor Core utilization and memory access, ensuring balanced arithmetic …"
+   },
+   {
+    "w": "internship",
+    "ipa": "ˈɪntərnˌʃɪp",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "实习生身份； 实习医师期",
+    "ex": "*Contribution during internship at DeepSeek-AI."
+   },
+   {
+    "w": "latency",
+    "ipa": "ˈleɪtənsi",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "延迟",
+    "ex": "latency bottleneck as sequence length increases"
+   },
+   {
+    "w": "lengthy",
+    "ipa": "ˈlɛŋθi",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "长的，漫长的",
+    "ex": "Recent breakthroughs, including OpenAI’s o-series models, DeepSeek-R1 (DeepSeek-AI, 2025), and Gemini 1.5 Pro (Google et al., 2024), enabling models to process entire codebases, lengthy documents, maintain coherent multi-turn …"
+   },
+   {
+    "w": "mitigate",
+    "ipa": "ˈmɪtɪɡeɪt",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "缓解",
+    "ex": "to mitigate memory access and hardware scheduling bottlenecks"
+   },
+   {
+    "w": "moreover",
+    "ipa": "mɔˈroʊvər",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "再者，加之，此外",
+    "ex": "Many approaches fail to achieve speedups comparable to their theoretical gains; moreover, most methods lack effective training-time support to fully exploit the sparsity patterns of attention."
+   },
+   {
+    "w": "noticeable",
+    "ipa": "ˈnoʊtɪsəbl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "明显的",
+    "ex": "existing methods still exhibit a noticeable gap"
+   },
+   {
+    "w": "overview",
+    "ipa": "ˈoʊvərvˌju",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "[图情] 综述；概观",
+    "ex": "Figure 2 | Overview of NSA’s architecture."
+   },
+   {
+    "w": "repository",
+    "ipa": "riˈpɑzəˌtɔri",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "贮藏室，仓库；知识库；智囊团",
+    "ex": "Zelikman et al., 2022), repository-level code generation (Zhang et al., 2023a;"
+   },
+   {
+    "w": "retain",
+    "ipa": "rɪˈteɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "保留",
+    "ex": "selectively retained fine-grained tokens, and sliding windows"
+   },
+   {
+    "w": "series",
+    "ipa": "ˈsɪriz",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "连续，系列；丛书",
+    "ex": "Recent breakthroughs, including OpenAI’s o-series models, DeepSeek-R1 (DeepSeek-AI, 2025), and Gemini 1.5 Pro (Google et al., 2024), enabling models to process entire codebases, lengthy documents, maintain coherent multi-turn …"
+   },
+   {
+    "w": "speedup",
+    "ipa": "ˈspiːdʌp",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "加速（比）",
+    "ex": "We achieve substantial speedups through arithmetic intensity-balanced algorithm design"
+   },
+   {
+    "w": "surpass",
+    "ipa": "sərˈpæs",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "超过",
+    "ex": "Left: Despite being sparse, NSA surpasses Full Attention baseline on average across general benchmarks, long-context tasks, and reasoning evaluation."
+   },
+   {
+    "w": "tackle",
+    "ipa": "ˈtækl",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "攻克，处理",
+    "ex": "the deployment of effective sparse attention must tackle two key challenges"
+   },
+   {
+    "w": "temporal",
+    "ipa": "ˈtempərəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "时间维度的",
+    "ex": "organizing keys and values into temporal blocks"
+   },
+   {
+    "w": "trainable",
+    "ipa": "ˈtreɪnəbl",
+    "pos": "adj.",
+    "lv": "超纲",
+    "m": "可训练的",
+    "ex": "Enabling end-to-end computation with trainable operators"
+   },
+   {
+    "w": "underscore",
+    "ipa": "ˌəndərˈskɔr",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "强调",
+    "ex": "Theoretical estimates indicate that attention computation with softmax architectures accounts for 70–80% of total latency when decoding 64k-length contexts, underscoring the urgent need for more efficient attention mechanisms."
+   },
+   {
+    "w": "validate",
+    "ipa": "ˈvælɪdeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "证实",
+    "ex": "These results validate that our hierarchical sparse attention design effectively balances"
+   },
+   {
+    "w": "vanilla",
+    "ipa": "vəˈnɪlə",
+    "pos": "n.；adj.",
+    "lv": "考博",
+    "m": "香子兰，香草；香草味的",
+    "ex": "perform complex reasoning across long-range dependencies. However, the high complexity (Zaheer et al., 2020) of vanilla Attention (Vaswani et al., 2017) mechanisms emerges as a critical"
+   }
+  ]
+ },
+ {
+  "sec": "2. Rethinking · 反思现有方法",
+  "short": "Rethink",
+  "icon": "2",
+  "words": [
+   {
+    "w": "acceleration",
+    "ipa": "əkˌseləˈreɪʃn",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "加速",
+    "ex": "fail to achieve acceleration across all inference stages"
+   },
+   {
+    "w": "additionally",
+    "ipa": "əˈdɪʃəˌnəli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "此外；又，加之",
+    "ex": "Additionally, efforts to adapt existing sparse attention for training also expose challenges: Non-Trainable Components."
+   },
+   {
+    "w": "architectural",
+    "ipa": "ˌɑrkəˈtɛkʧərəl",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "建筑上的； 建筑学的",
+    "ex": "This architectural characteristic means that while these methods can reduce computation operations, the required KV-cache memory access remains relatively high."
+   },
+   {
+    "w": "backbone",
+    "ipa": "ˈbækboʊn",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "主干（网络）",
+    "ex": "retaining a pretrained Full Attention backbone"
+   },
+   {
+    "w": "bias",
+    "ipa": "ˈbaɪəs",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "偏差",
+    "ex": "introducing architectural bias that limits their ability"
+   },
+   {
+    "w": "calculation",
+    "ipa": "ˌkælkjəˈleɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "计算，计算结果",
+    "ex": "Methods such as H2O (Zhang et al., 2023b) apply sparsity during autoregressive decoding while requiring computationally intensive pre-processing (e.g. attention map calculation, index building) during prefilling."
+   },
+   {
+    "w": "capable",
+    "ipa": "ˈkeɪpəbəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "能干的，有能力的",
+    "ex": "This limitation hinders the development of more capable long-context models through efficient training."
+   },
+   {
+    "w": "capacity",
+    "ipa": "kəˈpæsɪti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "容量；能力；能量",
+    "ex": "This includes both pretraining on longer documents to enhance model capacity, and subsequent adaptation phases such as long-context fine-tuning and reinforcement learning."
+   },
+   {
+    "w": "comparable",
+    "ipa": "ˈkɑmpərəbl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "相当的",
+    "ex": "at least one phase remains computational costs comparable to Full Attention"
+   },
+   {
+    "w": "completion",
+    "ipa": "kəmˈpliʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "完成，结束，完满",
+    "ex": "The phase specialization reduces the speedup ability of these methods in prefilling-dominated workloads like book summarization and code completion, or decoding-dominated workloads like long chain-of-thought (Wei et al., 2022) …"
+   },
+   {
+    "w": "complexity",
+    "ipa": "kəmˈplɛksɪti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "复杂（性）",
+    "ex": "Rethinking Sparse Attention Methods Modern sparse attention methods have made significant strides in reducing the theoretical computational complexity of transformer models."
+   },
+   {
+    "w": "contrast",
+    "ipa": "ˈkɑntræst",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "对比，反差；对比",
+    "ex": "In contrast, approaches like MInference (Jiang et al., 2024) focus solely on prefilling sparsity."
+   },
+   {
+    "w": "degradation",
+    "ipa": "ˌdɛgrəˈdeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "降级；退化；衰变",
+    "ex": "The Myth of Trainable Sparsity Our pursuit of native trainable sparse attention is motivated by two key insights from analyzing inference-only approaches: (1) Performance Degradation: Applying sparsity post-hoc forces models to …"
+   },
+   {
+    "w": "deviate",
+    "ipa": "ˈdiviˌeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "偏离",
+    "ex": "The Myth of Trainable Sparsity Our pursuit of native trainable sparse attention is motivated by two key insights from analyzing inference-only approaches: (1) Performance Degradation: Applying sparsity post-hoc forces models to …"
+   },
+   {
+    "w": "discontinuity",
+    "ipa": "dɪˌskɑntɪˈnuɪti",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "不连续, 中断",
+    "ex": "Discrete operations in methods like ClusterKV (Liu et al., 2024) (includes k-means clustering) and MagicPIG (Chen et al., 2024b) (includes SimHash-based selecting) create discontinuities in the computational graph."
+   },
+   {
+    "w": "discrete",
+    "ipa": "dɪˈskrit",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "分离的， 不相关联的",
+    "ex": "Discrete operations in methods like ClusterKV (Liu et al., 2024) (includes k-means clustering) and MagicPIG (Chen et al., 2024b) (includes SimHash-based selecting) create discontinuities in the computational graph."
+   },
+   {
+    "w": "enhance",
+    "ipa": "ɛnˈhæns",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "提高；加强；增加",
+    "ex": "This includes both pretraining on longer documents to enhance model capacity, and subsequent adaptation phases such as long-context fine-tuning and reinforcement learning."
+   },
+   {
+    "w": "exploit",
+    "ipa": "ɪkˈsplɔɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "利用",
+    "ex": "limits their ability to fully exploit sparse attention's advantages"
+   },
+   {
+    "w": "gradient",
+    "ipa": "ˈgreɪdiənt",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "斜坡",
+    "ex": "These non-trainable components prevent gradient flow through the token selection process, limiting the model’s ability to learn optimal sparse patterns."
+   },
+   {
+    "w": "granular",
+    "ipa": "ˈgrænjələr",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "颗粒的；粒状的",
+    "ex": "Token-granular selection strategy used in approaches like HashAttention (Desai et al., 2024) leads to the need to load a large number of individual tokens from the KV cache during attention computation."
+   },
+   {
+    "w": "hardware",
+    "ipa": "ˈhɑrdˌwɛr",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "五金器具；硬件",
+    "ex": "As a result, implementations are forced to fall back to low hardware utilization, significantly degrading training efficiency."
+   },
+   {
+    "w": "hinder",
+    "ipa": "ˈhɪndər",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "阻碍",
+    "ex": "This limitation hinders the development of more capable long-context models through efficient training."
+   },
+   {
+    "w": "illusion",
+    "ipa": "ɪˈluːʒn",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "假象，幻觉",
+    "g": "g",
+    "ex": "The Illusion of Efficient Inference"
+   },
+   {
+    "w": "imperative",
+    "ipa": "ˌɪmˈpɛrətɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "必须的,必要的",
+    "ex": "Native Sparsity as an Imperative These limitations in inference efficiency and training viability motivate our fundamental redesign of sparse attention mechanisms."
+   },
+   {
+    "w": "incompatibility",
+    "ipa": "ˌɪnkəmˌpætəˈbɪləti",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "不兼容性",
+    "ex": "Incompatibility with Advanced Attention Architecture"
+   },
+   {
+    "w": "inference",
+    "ipa": "ˈɪnfərəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "推断结果， 结论； 推论， 推理， 推断",
+    "ex": "However, existing sparse attention methods primarily target inference, leaving the computational challenges in training largely unaddressed."
+   },
+   {
+    "w": "instance",
+    "ipa": "ˈɪnstəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "情况，例子",
+    "ex": "For instance, in approaches like Quest (Tang et al., 2024), each attention head indepen-dently selects its KV-cache subset."
+   },
+   {
+    "w": "intensive",
+    "ipa": "ɪnˈtensɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "密集的",
+    "ex": "requiring computationally intensive pre-processing"
+   },
+   {
+    "w": "largely",
+    "ipa": "ˈlɑrʤli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "大部分；大量地",
+    "ex": "However, existing sparse attention methods primarily target inference, leaving the computational challenges in training largely unaddressed."
+   },
+   {
+    "w": "limitation",
+    "ipa": "ˌlɪmɪˈteɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "限制；限度，局限",
+    "ex": "Before introducing our native sparse architecture, we systematically analyze these limitations through two critical lenses."
+   },
+   {
+    "w": "longer",
+    "ipa": "ˈlɔŋgər",
+    "pos": "—",
+    "lv": "托福",
+    "m": "比较久(的)",
+    "ex": "This includes both pretraining on longer documents to enhance model capacity, and subsequent adaptation phases such as long-context fine-tuning and reinforcement learning."
+   },
+   {
+    "w": "multiple",
+    "ipa": "ˈməltəpəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "复合的；并联的",
+    "ex": "Some sparse attention methods fail to adapt to modern decoding efficient architectures like Mulitiple-Query Attention (MQA) (Shazeer, 2019) and Grouped-Query Attention (GQA) (Ainslie et al., 2023), which significantly reduced the …"
+   },
+   {
+    "w": "myth",
+    "ipa": "mɪθ",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "神话",
+    "ex": "The Myth of Trainable Sparsity Our pursuit of native trainable sparse attention is motivated by two key insights from analyzing inference-only approaches: (1) Performance Degradation: Applying sparsity post-hoc forces models to …"
+   },
+   {
+    "w": "optimal",
+    "ipa": "ˈɑptɪməl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "最佳的；最理想的",
+    "ex": "These non-trainable components prevent gradient flow through the token selection process, limiting the model’s ability to learn optimal sparse patterns."
+   },
+   {
+    "w": "phase",
+    "ipa": "feɪz",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "阶段；方面；相位",
+    "ex": "These methods fail to achieve acceleration across all inference stages, as at least one phase remains computational costs comparable to Full Attention."
+   },
+   {
+    "w": "predominantly",
+    "ipa": "prɪˈdɑmɪnəntli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "主要地",
+    "ex": "most approaches predominantly apply sparsity during inference"
+   },
+   {
+    "w": "primarily",
+    "ipa": "praɪˈmɛrəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "主要地，首先",
+    "ex": "However, existing sparse attention methods primarily target inference, leaving the computational challenges in training largely unaddressed."
+   },
+   {
+    "w": "propose",
+    "ipa": "prəˈpoʊz",
+    "pos": "v.；v.",
+    "lv": "四级",
+    "m": "提议；求婚",
+    "ex": "We propose NSA, a natively sparse attention framework that addresses both computational efficiency and training requirements."
+   },
+   {
+    "w": "pursuit",
+    "ipa": "pərˈsut",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "追求",
+    "ex": "The Myth of Trainable Sparsity Our pursuit of native trainable sparse attention is motivated by two key insights from analyzing inference-only approaches: (1) Performance Degradation: Applying sparsity post-hoc forces models to …"
+   },
+   {
+    "w": "redesign",
+    "ipa": "ˌridɪˈzaɪn",
+    "pos": "—",
+    "lv": "托福",
+    "m": "重新设计",
+    "ex": "Native Sparsity as an Imperative These limitations in inference efficiency and training viability motivate our fundamental redesign of sparse attention mechanisms."
+   },
+   {
+    "w": "reinforcement",
+    "ipa": "ˌriɪnˈfɔrsmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "加固；增援；援军；加强",
+    "ex": "This includes both pretraining on longer documents to enhance model capacity, and subsequent adaptation phases such as long-context fine-tuning and reinforcement learning."
+   },
+   {
+    "w": "relatively",
+    "ipa": "ˈrɛlətɪvli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "相对地，比较地",
+    "ex": "This architectural characteristic means that while these methods can reduce computation operations, the required KV-cache memory access remains relatively high."
+   },
+   {
+    "w": "render",
+    "ipa": "ˈrɛndər",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "给予",
+    "ex": "As demonstrated by Chen et al. (2024b), top 20% attention can only cover 70% of the total attention scores, rendering structures like retrieval heads in pretrained models vulnerable to pruning during inference. (2) Training …"
+   },
+   {
+    "w": "restrict",
+    "ipa": "riˈstrɪkt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "限制，限定",
+    "ex": "Phase-Restricted Sparsity. Methods such as H2O (Zhang et al., 2023b) apply sparsity"
+   },
+   {
+    "w": "scatter",
+    "ipa": "ˈskætər",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使消散；撒；散播",
+    "ex": "This limitation forces a critical choice: while some sparse attention methods reduce computation, their scattered memory access pattern conflicts with efficient memory access design from advanced architectures."
+   },
+   {
+    "w": "scenario",
+    "ipa": "sɪˈnɛrioʊ",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "情境 “；剧本",
+    "ex": "Although it demonstrates consistent computation sparsity and memory access sparsity in Multi-Head Attention (MHA) models, it presents a different scenario in models based on architectures like GQA, where the memory access volume …"
+   },
+   {
+    "w": "significant",
+    "ipa": "sɪgˈnɪfɪkənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "重要的",
+    "ex": "Rethinking Sparse Attention Methods Modern sparse attention methods have made significant strides in reducing the theoretical computational complexity of transformer models."
+   },
+   {
+    "w": "solely",
+    "ipa": "ˈsoʊlli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "仅仅",
+    "ex": "focus solely on prefilling sparsity"
+   },
+   {
+    "w": "sparse",
+    "ipa": "spɑrs",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "稀疏的；稀少的",
+    "ex": "However, existing sparse attention methods primarily target inference, leaving the computational challenges in training largely unaddressed."
+   },
+   {
+    "w": "specialization",
+    "ipa": "ˌspɛʃələˈzeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "特殊化, 专门化",
+    "ex": "The phase specialization reduces the speedup ability of these methods in prefilling-dominated workloads like book summarization and code completion, or decoding-dominated workloads like long chain-of-thought (Wei et al., 2022) …"
+   },
+   {
+    "w": "stride",
+    "ipa": "straɪd",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "进展",
+    "g": "g",
+    "ex": "made significant strides in reducing the theoretical computational complexity"
+   },
+   {
+    "w": "subsequent",
+    "ipa": "ˈsəbsəkwənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "随后的，后来的",
+    "ex": "This includes both pretraining on longer documents to enhance model capacity, and subsequent adaptation phases such as long-context fine-tuning and reinforcement learning."
+   },
+   {
+    "w": "summarization",
+    "ipa": "ˌsʌmərɪˈzeʃən",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "摘要, 概要",
+    "ex": "The phase specialization reduces the speedup ability of these methods in prefilling-dominated workloads like book summarization and code completion, or decoding-dominated workloads like long chain-of-thought (Wei et al., 2022) …"
+   },
+   {
+    "w": "systematically",
+    "ipa": "ˌsɪstəˈmætɪkli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "系统地",
+    "ex": "we systematically analyze these limitations through two critical lenses"
+   },
+   {
+    "w": "trajectory",
+    "ipa": "trəˈʤɛktəri",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "[物](射线的) 轨道, 弹道, 轨线",
+    "ex": "The Myth of Trainable Sparsity Our pursuit of native trainable sparse attention is motivated by two key insights from analyzing inference-only approaches: (1) Performance Degradation: Applying sparsity post-hoc forces models to …"
+   },
+   {
+    "w": "transformer",
+    "ipa": "trænsˈfɔrmər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "变压器，转换器",
+    "ex": "Rethinking Sparse Attention Methods Modern sparse attention methods have made significant strides in reducing the theoretical computational complexity of transformer models."
+   },
+   {
+    "w": "utilization",
+    "ipa": "ˌjutələˈzeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "利用",
+    "ex": "As a result, implementations are forced to fall back to low hardware utilization, significantly degrading training efficiency."
+   },
+   {
+    "w": "viability",
+    "ipa": "vaɪəˈbɪləti",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "生存能力",
+    "ex": "Native Sparsity as an Imperative These limitations in inference efficiency and training viability motivate our fundamental redesign of sparse attention mechanisms."
+   },
+   {
+    "w": "vulnerable",
+    "ipa": "ˈvəlnərəbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "脆弱的, 易受影响的",
+    "ex": "As demonstrated by Chen et al. (2024b), top 20% attention can only cover 70% of the total attention scores, rendering structures like retrieval heads in pretrained models vulnerable to pruning during inference. (2) Training …"
+   },
+   {
+    "w": "workload",
+    "ipa": "ˈwɜrkloʊd",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "负载，工作负载",
+    "ex": "in prefilling-dominated workloads like book summarization and code completion"
+   }
+  ]
+ },
+ {
+  "sec": "3. NSA 架构 · 方法",
+  "short": "Method",
+  "icon": "3",
+  "words": [
+   {
+    "w": "accord",
+    "ipa": "əˈkɔrd",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使一致；给予",
+    "ex": "For cases where the blocking schemes differ, we derive the importance scores for selection blocks according to their spatial relationship."
+   },
+   {
+    "w": "aggregate",
+    "ipa": "ˈægrəgət",
+    "pos": "adj.；n.；vt.",
+    "lv": "六级",
+    "m": "总计的， 合计的；总数，合计；总计达， 合计； 使聚集， 使积聚",
+    "ex": "These branch outputs are then aggregated through a learned gating mechanism."
+   },
+   {
+    "w": "aggregation",
+    "ipa": "ˌægrəˈgeɪʃən",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "集合,集合体",
+    "ex": "This aggregation ensures consistent block selection across heads within the same group."
+   },
+   {
+    "w": "analogous",
+    "ipa": "əˈnæləgəs",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "类似的， 相似的； 可比拟的",
+    "ex": "An analogous formulation holds for the compressed value representation ˜𝑉cmp 𝑡 ."
+   },
+   {
+    "w": "auto",
+    "ipa": "ˈɔtoʊ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "(口语)汽车",
+    "ex": "In contrast, auto-regressive decoding becomes memory-bandwidth constrained because it generates one token per forward pass while requiring loading the entire key-value cache, resulting in low arithmetic intensity."
+   },
+   {
+    "w": "batch",
+    "ipa": "bæʧ",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "一批， 一组， 一群； 一批生产量",
+    "ex": "Specifically for causal self-attention mechanism, during training and prefilling phases, batched matrix multiplications and attention computations exhibit high arithmetic intensity, making these stages compute-bound on modern …"
+   },
+   {
+    "w": "capture",
+    "ipa": "ˈkæpʧər",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "捕获，俘获；夺得",
+    "ex": "Compressed representations capture coarser-grained higher-level semantic information and reduce computational burden of attention."
+   },
+   {
+    "w": "causal",
+    "ipa": "ˈkɔzəl",
+    "pos": "adj.；n.",
+    "lv": "考博",
+    "m": "因果关系的；有原因的；表示原因的连词",
+    "ex": "Specifically for causal self-attention mechanism, during training and prefilling phases, batched matrix multiplications and attention computations exhibit high arithmetic intensity, making these stages compute-bound on modern …"
+   },
+   {
+    "w": "centric",
+    "ipa": "ˈsɛntrɪk",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "以…为中心的",
+    "ex": "Group-Centric Data Loading."
+   },
+   {
+    "w": "characterize",
+    "ipa": "ˈkɛrɪktərˌaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "以……特点",
+    "ex": "The proposed kernel architecture is characterized by the following key features:"
+   },
+   {
+    "w": "compact",
+    "ipa": "ˈkɑmpækt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "紧密的，紧凑的",
+    "ex": "Overall Framework To leverage the potential of attention with natural sparse pattern, we propose replacing the original key-value pairs k:𝑡, v:𝑡in Equation (1) with a more compact and information-dense set of representation …"
+   },
+   {
+    "w": "compatible",
+    "ipa": "kəmˈpætəbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "兼容的",
+    "ex": "While compression and sliding window attention computations are readily compatible with existing FlashAttention-2 kernels, we introduce the specialized kernel design for sparse selection attention."
+   },
+   {
+    "w": "compose",
+    "ipa": "kəmˈpoʊz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "组成，构成；创作",
+    "ex": "𝑑⌋is tensor composed by compresion keys."
+   },
+   {
+    "w": "compress",
+    "ipa": "ˈkɑmprɛs",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "压紧，压缩",
+    "ex": "Compressed representations capture coarser-grained higher-level semantic information and reduce computational burden of attention."
+   },
+   {
+    "w": "compression",
+    "ipa": "kəmˈprɛʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "压缩，压紧，浓缩",
+    "ex": "Together with the compression, selection, and sliding window mechanisms described above, this forms the complete algorithmic framework of NSA."
+   },
+   {
+    "w": "concatenation",
+    "ipa": "kənˌkætəˈneɪʃən",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "串联",
+    "ex": "\u0003 , (12) where rank(·) denotes the ranking position in descending order, with rank = 1 corresponding to the highest score, I𝑡is the set of selected blocks’ indices, Cat denotes the concatenation operation. ˜𝐾slc 𝑡"
+   },
+   {
+    "w": "constrain",
+    "ipa": "kənˈstreɪn",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "限制",
+    "ex": "In contrast, auto-regressive decoding becomes memory-bandwidth constrained because it generates one token per forward pass while requiring loading the entire key-value cache, resulting in low arithmetic intensity."
+   },
+   {
+    "w": "contextual",
+    "ipa": "kənˈtekstʃuəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "上下文的",
+    "ex": "sliding windows for local contextual information"
+   },
+   {
+    "w": "continuous",
+    "ipa": "kənˈtɪnjuəs",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "连续不断的，持续的",
+    "ex": "That is because modern GPU architectures exhibit significantly higher throughput for continuous block accesses compared to random index-based reads."
+   },
+   {
+    "w": "current",
+    "ipa": "ˈkɑrənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "当前的",
+    "ex": "Given MHA is memory-intensive and inefficient for decoding, we focus on architectures with shared KV caches like GQA and MQA following the current state-of-the-art LLMs."
+   },
+   {
+    "w": "decode",
+    "ipa": "dɪˈkoʊd",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "解码",
+    "ex": "This leads to different optimization goals — reducing computation cost during training and prefilling, while reducing memory access during decoding."
+   },
+   {
+    "w": "denote",
+    "ipa": "dɪˈnoʊt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "指示，意味着",
+    "ex": "Given 𝑙⩽𝑙′, 𝑑| 𝑙 and 𝑑| 𝑙′, we have: pslc 𝑡[ 𝑗] = 𝑙′ 𝑑−1 ∑︁ 𝑚=0 𝑙 𝑑−1 ∑︁ 𝑛=0 pcmp 𝑡 \u0014 𝑙′ 𝑑𝑗−𝑚−𝑛 \u0015 , (9) where[·] denotes the indexing operator for accessing vector element."
+   },
+   {
+    "w": "dense",
+    "ipa": "dɛns",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "密集的；浓厚的",
+    "ex": "Overall Framework To leverage the potential of attention with natural sparse pattern, we propose replacing the original key-value pairs k:𝑡, v:𝑡in Equation (1) with a more compact and information-dense set of representation …"
+   },
+   {
+    "w": "derive",
+    "ipa": "dəraɪv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "得到，导出",
+    "ex": "For cases where the blocking schemes differ, we derive the importance scores for selection blocks according to their spatial relationship."
+   },
+   {
+    "w": "descend",
+    "ipa": "dɪˈsɛnd",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "下来，下降；下倾",
+    "ex": "\u0003 , (12) where rank(·) denotes the ranking position in descending order, with rank = 1 corresponding to the highest score, I𝑡is the set of selected blocks’ indices, Cat denotes the concatenation operation. ˜𝐾slc 𝑡"
+   },
+   {
+    "w": "directly",
+    "ipa": "dɪˈrɛkli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "直接地；立即",
+    "ex": "When compression blocks and selection blocks share the same blocking scheme, i.e., 𝑙′ = 𝑙= 𝑑, we can directly obtain the selection block importance scores pslc 𝑡 by pslc 𝑡 = pcmp 𝑡 straightforwardly."
+   },
+   {
+    "w": "dominant",
+    "ipa": "ˈdɑmənənt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "占优势的",
+    "ex": "As sequence length increases, attention computation becomes increasingly dominant in the overall computational cost, presenting significant challenges for long-context processing."
+   },
+   {
+    "w": "dominate",
+    "ipa": "ˈdɑməˌneɪt",
+    "pos": "vi.；vt.",
+    "lv": "六级",
+    "m": "拥有优势；在…中占首要地位；支配，统治，控制；耸立于，俯视",
+    "ex": "Sliding Window In attention mechanisms, local patterns typically adapt faster and can dominate the learning process, potentially preventing the model from effectively learning from compression and selection tokens."
+   },
+   {
+    "w": "element",
+    "ipa": "ˈɛləmənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "元素，要素",
+    "ex": "Given 𝑙⩽𝑙′, 𝑑| 𝑙 and 𝑑| 𝑙′, we have: pslc 𝑡[ 𝑗] = 𝑙′ 𝑑−1 ∑︁ 𝑚=0 𝑙 𝑑−1 ∑︁ 𝑛=0 pcmp 𝑡 \u0014 𝑙′ 𝑑𝑗−𝑚−𝑛 \u0015 , (9) where[·] denotes the indexing operator for accessing vector element."
+   },
+   {
+    "w": "enable",
+    "ipa": "ɪˈneɪbəl",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使能够……",
+    "ex": "This architectural design enables stable learning by preventing gradient interference between local and long-range pattern recognition, while introducing minimal overhead."
+   },
+   {
+    "w": "encode",
+    "ipa": "ɛnˈkoʊd",
+    "pos": "vt.",
+    "lv": "考博",
+    "m": "把译成电码， 把…编码",
+    "ex": "Formally, the compressed key representation is defined as: ˜𝐾cmp 𝑡 = 𝑓cmp 𝐾 (k:𝑡) = \u001a 𝜑(k𝑖𝑑+1:𝑖𝑑+𝑙) 0 ⩽𝑖⩽ \u0016𝑡−𝑙 𝑑 \u0017\u001b (7) where 𝑙is the block length, 𝑑is the sliding stride between adjacent blocks, and 𝜑is a learnable MLP with …"
+   },
+   {
+    "w": "equation",
+    "ipa": "ɪkˈweɪʒən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "方程(式)；等式",
+    "ex": "The selected keys and values then participate in the attention computation with q𝑡as defined in Equation (5)."
+   },
+   {
+    "w": "establish",
+    "ipa": "ɪˈstæblɪʃ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "建立，创办，设立",
+    "ex": "This architectural characteristic has established blockwise memory access and computation as a fundamental principle in high-performance attention implementations, as exemplified by FlashAttention’s block-based design."
+   },
+   {
+    "w": "exemplify",
+    "ipa": "ɪgˈzɛmpləˌfaɪ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "举例证明（解释）",
+    "ex": "This architectural characteristic has established blockwise memory access and computation as a fundamental principle in high-performance attention implementations, as exemplified by FlashAttention’s block-based design."
+   },
+   {
+    "w": "explicitly",
+    "ipa": "ɪkˈsplɪsətli",
+    "pos": "adv.",
+    "lv": "GRE",
+    "m": "直接地，明确地",
+    "ex": "To address this issue, we introduce a dedicated sliding window branch that explicitly handles local context, allowing other branches (compression and selection) to focus on learning their respective features without being …"
+   },
+   {
+    "w": "finally",
+    "ipa": "ˈfaɪnəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "最后；不可更改的",
+    "ex": "Finally, we detail our hardware-optimized kernel design that maximizes practical efficiency."
+   },
+   {
+    "w": "flop",
+    "ipa": "flɑp",
+    "pos": "v.；n.；adv.",
+    "lv": "专八",
+    "m": "笨拙地抛下；扑通放下；拍（翅）；失败；砰然落下；拍击声；扑通一声；恰巧",
+    "ex": "For computation tasks, arithmetic intensity above this critical threshold becomes compute-bound (limited by GPU FLOPS), while below it becomes memory-bound (limited by memory bandwidth)."
+   },
+   {
+    "w": "formally",
+    "ipa": "ˈfɔrməli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "正式地, 形式上",
+    "ex": "The shared importance scores across heads in a group are formally defined as: pslc 𝑡 ′ = 𝐻 ∑︁ ℎ=1 pslc,(ℎ) 𝑡 , (10) where (ℎ) in the superscript denotes the head index, and 𝐻is the number of query heads in each group."
+   },
+   {
+    "w": "formulate",
+    "ipa": "ˈfɔrmjəˌleɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "规定，制定",
+    "ex": "After obtaining the selection block importance scores, We retain tokens within the top-𝑛sparse blocks ranked by block importance scores, formulated as: I𝑡= {𝑖| rank(pslc 𝑡 ′[𝑖]) ⩽𝑛} (11) ˜𝐾slc 𝑡 = Cat \u0002"
+   },
+   {
+    "w": "formulation",
+    "ipa": "ˌfɔrmjəˈleɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "表述方式",
+    "ex": "An analogous formulation holds for the compressed value representation ˜𝑉cmp 𝑡 ."
+   },
+   {
+    "w": "fortunately",
+    "ipa": "ˈfɔrʧənətli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "幸运地",
+    "ex": "Fortunately, the attention computation of compression tokens produces intermediate attention scores that we can leverage to induce selection block importance scores, formulated as: pcmp 𝑡 = Softmax \u0010 q𝑇 𝑡˜𝐾cmp 𝑡 \u0011 , (8) where …"
+   },
+   {
+    "w": "fragmentation",
+    "ipa": "ˌfrægmənˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "碎片化，分裂；（内存/存储）碎片化",
+    "ex": "Usually, we adopt 𝑑< 𝑙to mitigate information fragmentation."
+   },
+   {
+    "w": "grid",
+    "ipa": "grɪd",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "输电网",
+    "ex": "Output Inner Loop K Select In Load Load Compute on SRAM Output to HBM Select In Q Grid Loop V Inner Loop Grid Loop"
+   },
+   {
+    "w": "identical",
+    "ipa": "aɪˈdɛntɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "相同的",
+    "ex": "Since the inner-loop length (proportional to the selected block count 𝑛) remains nearly identical for different query blocks, we put query/output loops in Triton’s grid scheduler to simplify and optimize the kernel."
+   },
+   {
+    "w": "illustrate",
+    "ipa": "ˈɪləˌstreɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "说明,阐明",
+    "ex": "𝑔𝑐 𝑡· Attn(q𝑡, ˜𝐾𝑐 𝑡, ˜𝑉𝑐 𝑡). (5) As illustrated in Figure 2, NSA have three mapping strategies C = {cmp, slc, win}, representing compression, selection, and sliding window for keys and values. 𝑔𝑐"
+   },
+   {
+    "w": "implement",
+    "ipa": "ˈɪmpləmənt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "实施，执行",
+    "ex": "Kernel Design To achieve FlashAttention-level speedup during the training and prefilling, we implement hardware-aligned sparse attention kernels upon Triton."
+   },
+   {
+    "w": "increasingly",
+    "ipa": "ˌɪnˈkrisɪŋgli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "日益，越来越多地",
+    "ex": "As sequence length increases, attention computation becomes increasingly dominant in the overall computational cost, presenting significant challenges for long-context processing."
+   },
+   {
+    "w": "index",
+    "ipa": "ˈɪndɛks",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "索引；指数；指标",
+    "ex": "That is because modern GPU architectures exhibit significantly higher throughput for continuous block accesses compared to random index-based reads."
+   },
+   {
+    "w": "induce",
+    "ipa": "ˌɪnˈdus",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "引诱",
+    "ex": "Fortunately, the attention computation of compression tokens produces intermediate attention scores that we can leverage to induce selection block importance scores, formulated as: pcmp 𝑡 = Softmax \u0010 q𝑇 𝑡˜𝐾cmp 𝑡 \u0011 , (8) where …"
+   },
+   {
+    "w": "inefficient",
+    "ipa": "ˌɪnɪˈfɪʃənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "效率低的，无能的",
+    "ex": "Given MHA is memory-intensive and inefficient for decoding, we focus on architectures with shared KV caches like GQA and MQA following the current state-of-the-art LLMs."
+   },
+   {
+    "w": "inner",
+    "ipa": "ˈɪnər",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "内部的；内心的",
+    "ex": "Output Inner Loop K Select In Load Load Compute on SRAM Output to HBM Select In Q Grid Loop V Inner Loop Grid Loop"
+   },
+   {
+    "w": "integrate",
+    "ipa": "ˈɪntɪɡreɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "整合",
+    "ex": "By integrating hierarchical token compression with blockwise token selection"
+   },
+   {
+    "w": "intensity",
+    "ipa": "ˌɪnˈtɛnsɪti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "强烈，剧烈；强度",
+    "ex": "Each GPU has a critical arithmetic intensity determined by its peak compute capability and memory bandwidth, calculated as the ratio of these two hardware limits."
+   },
+   {
+    "w": "interference",
+    "ipa": "ˌɪnərˈfɪrəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "干涉，干预；阻碍",
+    "ex": "This architectural design enables stable learning by preventing gradient interference between local and long-range pattern recognition, while introducing minimal overhead."
+   },
+   {
+    "w": "intermediate",
+    "ipa": "ˌɪnərˈmidiɪt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "中间的；中级的",
+    "ex": "Fortunately, the attention computation of compression tokens produces intermediate attention scores that we can leverage to induce selection block importance scores, formulated as: pcmp 𝑡 = Softmax \u0010 q𝑇 𝑡˜𝐾cmp 𝑡 \u0011 , (8) where …"
+   },
+   {
+    "w": "intrinsically",
+    "ipa": "ˌɪnˈtrɪnsɪkəli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "内在地, 固有地",
+    "ex": "It intrinsically shapes algorithm optimization on hardware."
+   },
+   {
+    "w": "isolate",
+    "ipa": "ˈaɪsəˌleɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使隔离，使孤立",
+    "ex": "Specifically, we maintain recent tokens ˜𝐾win 𝑡 = k𝑡−𝑤:𝑡, ˜𝑉win 𝑡 = v𝑡−𝑤:𝑡in a window 𝑤, and isolate attention computations of different information sources (compression tokens, and selected tokens, sliding window) into separate …"
+   },
+   {
+    "w": "issue",
+    "ipa": "ˈɪʃu",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "发行；问题",
+    "ex": "To address this issue, we introduce a dedicated sliding window branch that explicitly handles local context, allowing other branches (compression and selection) to focus on learning their respective features without being …"
+   },
+   {
+    "w": "loop",
+    "ipa": "lup",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "圈，环，环孔",
+    "ex": "Output Inner Loop K Select In Load Load Compute on SRAM Output to HBM Select In Q Grid Loop V Inner Loop Grid Loop"
+   },
+   {
+    "w": "marginal",
+    "ipa": "ˈmɑrʤənəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "边缘的；记在页边的",
+    "ex": "To further prevent shortcut learning across attention branches with marginal computational overhead, we provide independent keys and values for three branches."
+   },
+   {
+    "w": "matrix",
+    "ipa": "ˈmeɪtrɪks",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "[数] 矩阵；模型；[生物][地质] 基质；母体；子宫；[地质] 脉石",
+    "ex": "Specifically for causal self-attention mechanism, during training and prefilling phases, batched matrix multiplications and attention computations exhibit high arithmetic intensity, making these stages compute-bound on modern …"
+   },
+   {
+    "w": "maximize",
+    "ipa": "ˈmæksəˌmaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "取最大值, 最佳化",
+    "ex": "Finally, we detail our hardware-optimized kernel design that maximizes practical efficiency."
+   },
+   {
+    "w": "mechanism",
+    "ipa": "ˈmɛkəˌnɪzəm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "机制，机能",
+    "ex": "Together with the compression, selection, and sliding window mechanisms described above, this forms the complete algorithmic framework of NSA."
+   },
+   {
+    "w": "methodology",
+    "ipa": "ˌmɛθəˈdɑləʤi",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "方法学，方法论",
+    "ex": "In the following subsections, we first introduce the background of our methodology."
+   },
+   {
+    "w": "minimal",
+    "ipa": "ˈmɪnəməl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "最低的，最小限度的",
+    "ex": "This architectural design enables stable learning by preventing gradient interference between local and long-range pattern recognition, while introducing minimal overhead."
+   },
+   {
+    "w": "minimize",
+    "ipa": "ˈmɪnəˌmaɪz",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "将…减少； 最小化",
+    "ex": "For models employing GQA or MQA where key-value caches are shared across query heads, consistent block selection across these heads has to be ensured to minimize KV cache loading during decoding."
+   },
+   {
+    "w": "multiplication",
+    "ipa": "ˌməltəpləˈkeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "乘法；增加",
+    "ex": "Specifically for causal self-attention mechanism, during training and prefilling phases, batched matrix multiplications and attention computations exhibit high arithmetic intensity, making these stages compute-bound on modern …"
+   },
+   {
+    "w": "optimization",
+    "ipa": "ɑptɪmɪˈzeɪʃən",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "最佳化, 最优化",
+    "ex": "This leads to different optimization goals — reducing computation cost during training and prefilling, while reducing memory access during decoding."
+   },
+   {
+    "w": "original",
+    "ipa": "ərˈɪʤənəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "原始的，最初的",
+    "ex": "Overall Framework To leverage the potential of attention with natural sparse pattern, we propose replacing the original key-value pairs k:𝑡, v:𝑡in Equation (1) with a more compact and information-dense set of representation …"
+   },
+   {
+    "w": "peak",
+    "ipa": "pik",
+    "pos": "n.；adj.",
+    "lv": "四级",
+    "m": "山顶，巅；最高的",
+    "ex": "Each GPU has a critical arithmetic intensity determined by its peak compute capability and memory bandwidth, calculated as the ratio of these two hardware limits."
+   },
+   {
+    "w": "precede",
+    "ipa": "prɪˈsid",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "先于…，领先",
+    "ex": "Background Attention Mechanism is widely used in language modeling where each query token q𝑡computes relevance scores against all preceding keys k:𝑡to generate a weighted sum of values v:𝑡."
+   },
+   {
+    "w": "prior",
+    "ipa": "praɪər",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "在先的；优先的",
+    "ex": "Prior works (Jiang et al., 2024) have shown that attention scores often exhibit spatial continuity, suggesting that neighboring keys tend to share similar importance levels."
+   },
+   {
+    "w": "proportional",
+    "ipa": "prəˈpɔrʃənəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "比例的；相称的",
+    "ex": "Since the inner-loop length (proportional to the selected block count 𝑛) remains nearly identical for different query blocks, we put query/output loops in Triton’s grid scheduler to simplify and optimize the kernel."
+   },
+   {
+    "w": "readily",
+    "ipa": "ˈrɛdəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "乐意地， 欣然地； 容易地； 很快地， 立即",
+    "ex": "While compression and sliding window attention computations are readily compatible with existing FlashAttention-2 kernels, we introduce the specialized kernel design for sparse selection attention."
+   },
+   {
+    "w": "recognition",
+    "ipa": "ˌrɛkɪgˈnɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "认出，识别；承认",
+    "ex": "This architectural design enables stable learning by preventing gradient interference between local and long-range pattern recognition, while introducing minimal overhead."
+   },
+   {
+    "w": "redundant",
+    "ipa": "rɪˈdəndənt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "过剩的；失业的，被解雇的",
+    "ex": "This design achieves near-optimal arithmetic intensity by (1) eliminating redundant KV transfers through group-wise sharing, and (2) balancing compute workloads across GPU streaming multiprocessors."
+   },
+   {
+    "w": "regressive",
+    "ipa": "rəˈgrɛsɪv",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "回归的；后退的；退化的",
+    "ex": "In contrast, auto-regressive decoding becomes memory-bandwidth constrained because it generates one token per forward pass while requiring loading the entire key-value cache, resulting in low arithmetic intensity."
+   },
+   {
+    "w": "relevance",
+    "ipa": "ˈrɛləvəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "关联；适当；中肯",
+    "ex": "Background Attention Mechanism is widely used in language modeling where each query token q𝑡computes relevance scores against all preceding keys k:𝑡to generate a weighted sum of values v:𝑡."
+   },
+   {
+    "w": "representation",
+    "ipa": "ˌrɛprəzɛnˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "描写；陈述；代表",
+    "ex": "Compressed representations capture coarser-grained higher-level semantic information and reduce computational burden of attention."
+   },
+   {
+    "w": "respective",
+    "ipa": "rɪˈspɛktɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "各自的，各个的",
+    "ex": "To address this issue, we introduce a dedicated sliding window branch that explicitly handles local context, allowing other branches (compression and selection) to focus on learning their respective features without being …"
+   },
+   {
+    "w": "scheme",
+    "ipa": "skim",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "计划，规划；诡计",
+    "ex": "For cases where the blocking schemes differ, we derive the importance scores for selection blocks according to their spatial relationship."
+   },
+   {
+    "w": "self",
+    "ipa": "sɛlf",
+    "pos": "n.；adj.；vt.；vi.",
+    "lv": "四级",
+    "m": "自己，自我；本质；私心；同一的；使自花授精；使近亲繁殖；自花授精",
+    "ex": "Specifically for causal self-attention mechanism, during training and prefilling phases, batched matrix multiplications and attention computations exhibit high arithmetic intensity, making these stages compute-bound on modern …"
+   },
+   {
+    "w": "semantic",
+    "ipa": "sɪˈmæntɪk",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "语义的；语义学的（等于semantical）",
+    "ex": "Compressed representations capture coarser-grained higher-level semantic information and reduce computational burden of attention."
+   },
+   {
+    "w": "sequential",
+    "ipa": "səkˈwɛnʃəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "序列的； 连续的； 随之而来的",
+    "ex": "Token Compression By aggregating sequential blocks of keys or values into block-level representations, we obtain compressed keys and values that capture the information of the entire block."
+   },
+   {
+    "w": "shortcut",
+    "ipa": "ˈʃɔrtˌkət",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "捷径，近路",
+    "ex": "To further prevent shortcut learning across attention branches with marginal computational overhead, we provide independent keys and values for three branches."
+   },
+   {
+    "w": "sigmoid",
+    "ipa": "ˈsɪɡmɔɪd",
+    "pos": "adj./n.",
+    "lv": "考博",
+    "m": "S 形的；sigmoid function 逻辑斯谛/乙状函数",
+    "ex": "corresponding strategy 𝑐, derived from input features via an MLP and sigmoid activation."
+   },
+   {
+    "w": "source",
+    "ipa": "sɔrs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "来源",
+    "ex": "Specifically, we maintain recent tokens ˜𝐾win 𝑡 = k𝑡−𝑤:𝑡, ˜𝑉win 𝑡 = v𝑡−𝑤:𝑡in a window 𝑤, and isolate attention computations of different information sources (compression tokens, and selected tokens, sliding window) into separate …"
+   },
+   {
+    "w": "span",
+    "ipa": "spæn",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "跨距；一段时间",
+    "ex": "Methodology Our technical approach spans algorithm design and kernel optimization."
+   },
+   {
+    "w": "specifically",
+    "ipa": "spəˈsɪfɪkli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "特别地， 特定地； 明确地， 具体地",
+    "ex": "Specifically, we maintain recent tokens ˜𝐾win 𝑡 = k𝑡−𝑤:𝑡, ˜𝑉win 𝑡 = v𝑡−𝑤:𝑡in a window 𝑤, and isolate attention computations of different information sources (compression tokens, and selected tokens, sliding window) into separate …"
+   },
+   {
+    "w": "sum",
+    "ipa": "səm",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "总数；金额；共计",
+    "ex": "Background Attention Mechanism is widely used in language modeling where each query token q𝑡computes relevance scores against all preceding keys k:𝑡to generate a weighted sum of values v:𝑡."
+   },
+   {
+    "w": "threshold",
+    "ipa": "θˈrɛˌʃoʊld",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "门槛",
+    "ex": "For computation tasks, arithmetic intensity above this critical threshold becomes compute-bound (limited by GPU FLOPS), while below it becomes memory-bound (limited by memory bandwidth)."
+   },
+   {
+    "w": "throughput",
+    "ipa": "θˈruˌpʊt",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "生产量，生产能力",
+    "ex": "That is because modern GPU architectures exhibit significantly higher throughput for continuous block accesses compared to random index-based reads."
+   },
+   {
+    "w": "transfer",
+    "ipa": "ˈtrænsfər",
+    "pos": "—",
+    "lv": "四级",
+    "m": "转换，调换",
+    "ex": "This design achieves near-optimal arithmetic intensity by (1) eliminating redundant KV transfers through group-wise sharing, and (2) balancing compute workloads across GPU streaming multiprocessors."
+   },
+   {
+    "w": "vector",
+    "ipa": "ˈvɛktər",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "矢量；飞机航线",
+    "ex": "Given 𝑙⩽𝑙′, 𝑑| 𝑙 and 𝑑| 𝑙′, we have: pslc 𝑡[ 𝑗] = 𝑙′ 𝑑−1 ∑︁ 𝑚=0 𝑙 𝑑−1 ∑︁ 𝑛=0 pcmp 𝑡 \u0014 𝑙′ 𝑑𝑗−𝑚−𝑛 \u0015 , (9) where[·] denotes the indexing operator for accessing vector element."
+   },
+   {
+    "w": "widely",
+    "ipa": "ˈwaɪdli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "大大地",
+    "ex": "Background Attention Mechanism is widely used in language modeling where each query token q𝑡computes relevance scores against all preceding keys k:𝑡to generate a weighted sum of values v:𝑡."
+   }
+  ]
+ },
+ {
+  "sec": "4. Experiments · 实验",
+  "short": "Exp",
+  "icon": "4",
+  "words": [
+   {
+    "w": "activate",
+    "ipa": "ˈæktəˌveɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "激活",
+    "ex": "To ensure consistent sparsity, we set the token activated by each query in all sparse attention baselines to 2560 tokens, which corresponds to the average number of tokens activated in NSA when handling 32k sequence lengths."
+   },
+   {
+    "w": "awareness",
+    "ipa": "əˈwɛrnəs",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "意识",
+    "ex": "This design enables NSA to maintain both global awareness and local precision."
+   },
+   {
+    "w": "catastrophic",
+    "ipa": "ˌkætəˈstrɑfɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "悲惨的； 灾难性的",
+    "ex": "These results validate two key benefits of native sparse attention: (1) The pretrained sparse attention patterns enable efficient capture of long-range logical dependencies critical for complex mathematical derivations; (2) Our …"
+   },
+   {
+    "w": "coarse",
+    "ipa": "kɔrs",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "粗的，粗糙的",
+    "ex": "The coarse-grained compression identifies relevant context blocks at low computational cost, while the token-level attention on selected tokens ensures the preservation of critical fine-grained information."
+   },
+   {
+    "w": "comparison",
+    "ipa": "kəmˈpɛrəsən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比较，对照；比似",
+    "ex": "We exclude certain subsets from LongBench due to their low scores across all models, which may not provide meaningful comparisons."
+   },
+   {
+    "w": "compatibility",
+    "ipa": "kəmˌpætəˈbɪləˌti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "[计]兼容性",
+    "ex": "To evaluate NSA’s compatibility with advanced downstream training paradigms, we investigate its capacity to acquire chain-of-thought mathematical reasoning abilities via post-training."
+   },
+   {
+    "w": "con",
+    "ipa": "kɑn",
+    "pos": "n.；v.；adv.；adj.；prep.",
+    "lv": "专八",
+    "m": "反对票；反对论；精读；默记；反面地；欺诈的；以…",
+    "ex": "Given the limited effectiveness of reinforcement learning on smaller-scale models, we employ knowledge distillation from DeepSeek-R1, con-ducting supervised fine-tuning (SFT) with 10B tokens of 32k-length mathematical reasoning …"
+   },
+   {
+    "w": "consistently",
+    "ipa": "kənˈsɪstəntli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "一贯地；一致地；坚实地",
+    "ex": "and smooth decline, with NSA consistently outperforming the Full Attention model."
+   },
+   {
+    "w": "context",
+    "ipa": "ˈkɑntɛkst",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "背景，环境",
+    "ex": "As shown in Figure 5, NSA achieves perfect retrieval accuracy across all positions in 64k-context needle-in-a-haystack (Kamradt, 2023) test."
+   },
+   {
+    "w": "convergence",
+    "ipa": "kənˈvərʤəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "集中",
+    "ex": "Both models exhibit stable convergence, with NSA achieving lower loss values."
+   },
+   {
+    "w": "defer",
+    "ipa": "dɪˈfər",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "推迟， 延期",
+    "ex": "We defer the efficiency analysis of our sparse computation paradigm to Section 5, where we provide detailed discussions on training and inference speed."
+   },
+   {
+    "w": "demonstrate",
+    "ipa": "ˈdɛmənˌstreɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "证明；展示",
+    "ex": "Our NSA-R demonstrates better performance than Full Attention-R at both 8k and 16k sequence lengths"
+   },
+   {
+    "w": "density",
+    "ipa": "ˈdɛnsɪti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "密度",
+    "ex": "These results validate two key benefits of native sparse attention: (1) The pretrained sparse attention patterns enable efficient capture of long-range logical dependencies critical for complex mathematical derivations; (2) Our …"
+   },
+   {
+    "w": "derivation",
+    "ipa": "ˌdɛrəˈveɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "引出；起源；衍生",
+    "ex": "These results validate two key benefits of native sparse attention: (1) The pretrained sparse attention patterns enable efficient capture of long-range logical dependencies critical for complex mathematical derivations; (2) Our …"
+   },
+   {
+    "w": "despite",
+    "ipa": "dɪˈspaɪt",
+    "pos": "prep.",
+    "lv": "四级",
+    "m": "不管",
+    "ex": "Despite its sparsity, NSA achieves superior overall performance, outperforming all baselines including Full Attention on 7 out of 9 metrics."
+   },
+   {
+    "w": "detail",
+    "ipa": "ˈditeɪl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "细节",
+    "ex": "We defer the efficiency analysis of our sparse computation paradigm to Section 5, where we provide detailed discussions on training and inference speed."
+   },
+   {
+    "w": "distillation",
+    "ipa": "ˌdɪstəˈleɪʃən",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "精馏，蒸馏，净化；蒸馏法；精华，蒸馏物",
+    "ex": "Given the limited effectiveness of reinforcement learning on smaller-scale models, we employ knowledge distillation from DeepSeek-R1, con-ducting supervised fine-tuning (SFT) with 10B tokens of 32k-length mathematical reasoning …"
+   },
+   {
+    "w": "downstream",
+    "ipa": "ˈdaʊnˈstrim",
+    "pos": "adv.；adj.",
+    "lv": "专八",
+    "m": "下游地；顺流而下；下游的；顺流的",
+    "ex": "To evaluate NSA’s compatibility with advanced downstream training paradigms, we investigate its capacity to acquire chain-of-thought mathematical reasoning abilities via post-training."
+   },
+   {
+    "w": "duct",
+    "ipa": "dəkt",
+    "pos": "n.；vt.",
+    "lv": "专八",
+    "m": "输送管，导管；用导管输送；以导管封住",
+    "ex": "Given the limited effectiveness of reinforcement learning on smaller-scale models, we employ knowledge distillation from DeepSeek-R1, con-ducting supervised fine-tuning (SFT) with 10B tokens of 32k-length mathematical reasoning …"
+   },
+   {
+    "w": "ensure",
+    "ipa": "ɪnˈʃʊr",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "确保",
+    "ex": "In the long-context evaluation, we conduct comparisons across all baseline methods, with the sparsity of all sparse attention methods set to the same to ensure a fair comparison."
+   },
+   {
+    "w": "equivalent",
+    "ipa": "ɪkˈwɪvələnt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "相等的，相当的",
+    "ex": "For general evaluation, where most samples have lengths within the local context window of sparse attention baselines, these methods are effectively equivalent to Full Attention."
+   },
+   {
+    "w": "exceptional",
+    "ipa": "ɪkˈsɛpʃənəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "例外的",
+    "ex": "Notably, NSA demonstrates exceptional performance on tasks requiring complex reasoning over long contexts, achieving +0.087 and +0.051 improvements over Full Attention on multi-hop QA tasks (HPQ and 2Wiki), exceeding the …"
+   },
+   {
+    "w": "exclude",
+    "ipa": "ɪkˈsklud",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "排除，不包括",
+    "ex": "We exclude certain subsets from LongBench due to their low scores across all models, which may not provide meaningful comparisons."
+   },
+   {
+    "w": "extend",
+    "ipa": "ɪkˈstɛnd",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "延长；扩大；致",
+    "ex": "To validate the impact of reasoning depth, we conduct experiments with two generation context limits: 8k and 16k tokens, measuring whether extended reasoning chains improve accuracy."
+   },
+   {
+    "w": "facilitate",
+    "ipa": "fəˈsɪləˌteɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使便利，促进",
+    "ex": "This improvement arises from two key innovations: (1) our native sparse attention design, which enables end-to-end optimization of sparse patterns during pretraining, facilitates synchronized adaptation between the sparse …"
+   },
+   {
+    "w": "filter",
+    "ipa": "ˈfɪltər",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "过滤；滤纸",
+    "ex": "This sparse attention pretraining mechanism forces model to focus on the most important information, potentially enhancing performance by filtering out noise from irrelevant attention pathways."
+   },
+   {
+    "w": "fully",
+    "ipa": "ˈfʊli",
+    "pos": "adv.；n.",
+    "lv": "专四",
+    "m": "充分地；完全地；彻底地；(Fully)人名；(法)菲利",
+    "ex": "This indicates that although NSA may not fully leverage its efficiency advantages on shorter sequences, it shows strong performance."
+   },
+   {
+    "w": "general-purpose",
+    "ipa": "ˈʤɛnərəl ˈpərpəs",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "通用的，一般用途的（与专用 special-purpose 相对）",
+    "ex": "diverse evaluations also validates NSA’s robustness as a general-purpose architecture."
+   },
+   {
+    "w": "generate",
+    "ipa": "ˈʤɛnərˌeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "产生",
+    "ex": "We use a sampling temperature of 0.7 and a top-𝑝value of 0.95 to generate 16 responses for each question and obtain the average score."
+   },
+   {
+    "w": "haystack",
+    "ipa": "ˈheɪˌstæk",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "干草堆",
+    "ex": "As shown in Figure 5, NSA achieves perfect retrieval accuracy across all positions in 64k-context needle-in-a-haystack (Kamradt, 2023) test."
+   },
+   {
+    "w": "hidden",
+    "ipa": "ˈhɪdən",
+    "pos": "adj.；v.；n.",
+    "lv": "专四",
+    "m": "隐藏的；隐藏，躲藏（hide的过去分词）；(Hidden)人名；(英)希登",
+    "ex": "For each head, the hidden dimensions of the query, key, and value are configured as 𝑑𝑞= 𝑑𝑘= 192 and 𝑑𝑣= 128, respectively."
+   },
+   {
+    "w": "hop",
+    "ipa": "hɑp",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "（人）单足跳",
+    "ex": "Notably, NSA demonstrates exceptional performance on tasks requiring complex reasoning over long contexts, achieving +0.087 and +0.051 improvements over Full Attention on multi-hop QA tasks (HPQ and 2Wiki), exceeding the …"
+   },
+   {
+    "w": "impact",
+    "ipa": "ˌɪmˈpækt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "影响",
+    "ex": "To validate the impact of reasoning depth, we conduct experiments with two generation context limits: 8k and 16k tokens, measuring whether extended reasoning chains improve accuracy."
+   },
+   {
+    "w": "implementation",
+    "ipa": "ˌɪmpləmɛnˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "实现，履行",
+    "ex": "Our implementation significantly reduces latency across all context lengths, with the improvement becoming more pronounced as input length increases."
+   },
+   {
+    "w": "improvement",
+    "ipa": "ˌɪmˈpruvmənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "改进，改善；改进处",
+    "ex": "Our implementation significantly reduces latency across all context lengths, with the improvement becoming more pronounced as input length increases."
+   },
+   {
+    "w": "input",
+    "ipa": "ˈɪnˌpʊt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "输入；投入的资金",
+    "ex": "Our implementation significantly reduces latency across all context lengths, with the improvement becoming more pronounced as input length increases."
+   },
+   {
+    "w": "investigate",
+    "ipa": "ˌɪnˈvɛstəˌgeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "调查",
+    "ex": "To evaluate NSA’s compatibility with advanced downstream training paradigms, we investigate its capacity to acquire chain-of-thought mathematical reasoning abilities via post-training."
+   },
+   {
+    "w": "irrelevant",
+    "ipa": "ˌɪˈrɛləvənt",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "无关的",
+    "ex": "This sparse attention pretraining mechanism forces model to focus on the most important information, potentially enhancing performance by filtering out noise from irrelevant attention pathways."
+   },
+   {
+    "w": "kernel",
+    "ipa": "ˈkərnəl",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "（果实的）核；谷粒",
+    "ex": "Forward Time Comparison FlashAttention-2 Sparse Attention Kernel Compression and Window Attention Speedup Ratio 8k 16k 32k 64k"
+   },
+   {
+    "w": "layer",
+    "ipa": "leɪər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "层，层次；铺设者",
+    "ex": "To ensure training stability, the MoE in the first layer is replaced by an MLP in the form of SwiGLU."
+   },
+   {
+    "w": "leverage",
+    "ipa": "ˈlɛvərɪʤ",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "手段，影响力；杠杆作用；杠杆效率；利用；举债经营",
+    "ex": "This indicates that although NSA may not fully leverage its efficiency advantages on shorter sequences, it shows strong performance."
+   },
+   {
+    "w": "logical",
+    "ipa": "ˈlɑʤɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "逻辑的；符合逻辑的",
+    "ex": "These results validate two key benefits of native sparse attention: (1) The pretrained sparse attention patterns enable efficient capture of long-range logical dependencies critical for complex mathematical derivations; (2) Our …"
+   },
+   {
+    "w": "lower",
+    "ipa": "loʊər",
+    "pos": "adj.；v.",
+    "lv": "四级",
+    "m": "较低的；放下",
+    "ex": "Both models exhibit stable convergence, with NSA achieving lower loss values."
+   },
+   {
+    "w": "mathematical",
+    "ipa": "ˌmæθəˈmætɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "数学的，数学上的",
+    "ex": "To evaluate NSA’s compatibility with advanced downstream training paradigms, we investigate its capacity to acquire chain-of-thought mathematical reasoning abilities via post-training."
+   },
+   {
+    "w": "meaningful",
+    "ipa": "ˈminɪŋfəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "有目的的； 有意义的",
+    "ex": "We exclude certain subsets from LongBench due to their low scores across all models, which may not provide meaningful comparisons."
+   },
+   {
+    "w": "metric",
+    "ipa": "ˈmɛtrɪk",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "公制的，米制的",
+    "ex": "Despite its sparsity, NSA achieves superior overall performance, outperforming all baselines including Full Attention on 7 out of 9 metrics."
+   },
+   {
+    "w": "module",
+    "ipa": "ˈmɑʤul",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "模块；组件",
+    "ex": "This improvement arises from two key innovations: (1) our native sparse attention design, which enables end-to-end optimization of sparse patterns during pretraining, facilitates synchronized adaptation between the sparse …"
+   },
+   {
+    "w": "notably",
+    "ipa": "ˈnoʊtəbli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "显著地，尤其",
+    "ex": "Notably, NSA demonstrates significant gains in reasoning-related benchmarks (DROP: +0.042, GSM8K: +0.034), suggesting that our pretraining helps models to develop specialized attention mechanisms."
+   },
+   {
+    "w": "overall",
+    "ipa": "ˈoʊvərˌɔl",
+    "pos": "n.；adj.",
+    "lv": "四级",
+    "m": "工装裤；全面的",
+    "ex": "Despite its sparsity, NSA achieves superior overall performance, outperforming all baselines including Full Attention on 7 out of 9 metrics."
+   },
+   {
+    "w": "paradigm",
+    "ipa": "ˈpɛrəˌdaɪm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "典范; 范例; 示例",
+    "ex": "To evaluate NSA’s compatibility with advanced downstream training paradigms, we investigate its capacity to acquire chain-of-thought mathematical reasoning abilities via post-training."
+   },
+   {
+    "w": "pathway",
+    "ipa": "ˈpæθˌweɪ",
+    "pos": "n.",
+    "lv": "雅思",
+    "m": "路径， 途径",
+    "ex": "This sparse attention pretraining mechanism forces model to focus on the most important information, potentially enhancing performance by filtering out noise from irrelevant attention pathways."
+   },
+   {
+    "w": "persist",
+    "ipa": "pərˈsɪst",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "坚持，固执；持续",
+    "ex": "As shown in Table 3, NSA-R achieves significantly higher accuracy than Full Attention-R under the 8k context setting (+0.075), with this advantage persisting at 16k contexts (+0.054)."
+   },
+   {
+    "w": "pipeline",
+    "ipa": "ˈpaɪˌplaɪn",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "管道, 传递途径",
+    "ex": "The consistent outperformance across context lengths confirms sparse attention’s viability for advanced reasoning tasks when natively integrated into the training pipeline."
+   },
+   {
+    "w": "potentially",
+    "ipa": "pəˈtɛnʃəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "潜在地",
+    "ex": "This sparse attention pretraining mechanism forces model to focus on the most important information, potentially enhancing performance by filtering out noise from irrelevant attention pathways."
+   },
+   {
+    "w": "precision",
+    "ipa": "priˈsɪʒən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "精确，精密，精密度",
+    "ex": "This design enables NSA to maintain both global awareness and local precision."
+   },
+   {
+    "w": "preservation",
+    "ipa": "ˌprɛzərˈveɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "保存，保留",
+    "ex": "The coarse-grained compression identifies relevant context blocks at low computational cost, while the token-level attention on selected tokens ensures the preservation of critical fine-grained information."
+   },
+   {
+    "w": "pro",
+    "ipa": "proʊ",
+    "pos": "adv.；n.；prep.",
+    "lv": "专八",
+    "m": "赞成地；赞成者；赞成的意见；赞成",
+    "ex": "Model MMLU MMLU-PRO CMMLU BBH GSM8K MATH DROP MBPP HumanEval Avg."
+   },
+   {
+    "w": "propagation",
+    "ipa": "ˌprɑpəˈɡeɪʃn",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "传播",
+    "ex": "decoding, forward propagation, and backward propagation"
+   },
+   {
+    "w": "ratio",
+    "ipa": "ˈreɪʃioʊ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比值",
+    "ex": "the speedup ratio increasing for longer sequences"
+   },
+   {
+    "w": "respectively",
+    "ipa": "rɪˈspɛktɪvli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "各自地",
+    "ex": "For each head, the hidden dimensions of the query, key, and value are configured as 𝑑𝑞= 𝑑𝑘= 192 and 𝑑𝑣= 128, respectively."
+   },
+   {
+    "w": "response",
+    "ipa": "rɪˈspɑns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "反应",
+    "ex": "We use a sampling temperature of 0.7 and a top-𝑝value of 0.95 to generate 16 responses for each question and obtain the average score."
+   },
+   {
+    "w": "retrieval",
+    "ipa": "rɪˈtrivəl",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "检索；恢复；取回；拯救",
+    "ex": "As shown in Figure 5, NSA achieves perfect retrieval accuracy across all positions in 64k-context needle-in-a-haystack (Kamradt, 2023) test."
+   },
+   {
+    "w": "rout",
+    "ipa": "raʊt",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "溃退",
+    "ex": "DeepSeek-AI, 2024) structure, with 72 routed experts and 2 shared experts, and set the top-k experts to 6."
+   },
+   {
+    "w": "sample",
+    "ipa": "ˈsæmpəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "样品；实例，标本",
+    "ex": "We use a sampling temperature of 0.7 and a top-𝑝value of 0.95 to generate 16 responses for each question and obtain the average score."
+   },
+   {
+    "w": "scale",
+    "ipa": "skeɪl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "规模，比例",
+    "ex": "Given the limited effectiveness of reinforcement learning on smaller-scale models, we employ knowledge distillation from DeepSeek-R1, con-ducting supervised fine-tuning (SFT) with 10B tokens of 32k-length mathematical reasoning …"
+   },
+   {
+    "w": "setup",
+    "ipa": "ˈsɛˌtəp",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "装备, 安装,计划",
+    "ex": "Pretraining Setup Following the common practice in state-of-the-art LLMs, our experiments adopt a backbone combining Grouped-Query Attention (GQA) and Mixture-of-Experts (MoE), featuring 27B total parameters with 3B active …"
+   },
+   {
+    "w": "specialize",
+    "ipa": "ˈspɛʃəˌlaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "专业从事",
+    "ex": "Notably, NSA demonstrates significant gains in reasoning-related benchmarks (DROP: +0.042, GSM8K: +0.034), suggesting that our pretraining helps models to develop specialized attention mechanisms."
+   },
+   {
+    "w": "stability",
+    "ipa": "stəˈbɪlɪti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "稳定，稳定性，巩固",
+    "ex": "To ensure training stability, the MoE in the first layer is replaced by an MLP in the form of SwiGLU."
+   },
+   {
+    "w": "stem",
+    "ipa": "stɛm",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "茎，(树)干；起源",
+    "ex": "This performance stems from our hierarchical sparse attention design, which combines compression tokens for efficient global context scanning, and selection tokens for precise local information retrieval."
+   },
+   {
+    "w": "structure",
+    "ipa": "ˈstrəkʧər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "结构",
+    "ex": "DeepSeek-AI, 2024) structure, with 72 routed experts and 2 shared experts, and set the top-k experts to 6."
+   },
+   {
+    "w": "sufficient",
+    "ipa": "səˈfɪʃənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "足够的",
+    "ex": "These results validate two key benefits of native sparse attention: (1) The pretrained sparse attention patterns enable efficient capture of long-range logical dependencies critical for complex mathematical derivations; (2) Our …"
+   },
+   {
+    "w": "supervise",
+    "ipa": "ˈsupərˌvaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "监督，监视",
+    "ex": "For chain-of-thought reasoning evaluation, which requires long-text supervised fine-tuning, we limit our comparison to Full Attention, as sparse attention baselines do not support training."
+   },
+   {
+    "w": "synchronize",
+    "ipa": "ˈsɪŋkrəˌnaɪz",
+    "pos": "v.",
+    "lv": "雅思",
+    "m": "使同时发生，使同步发生",
+    "ex": "This improvement arises from two key innovations: (1) our native sparse attention design, which enables end-to-end optimization of sparse patterns during pretraining, facilitates synchronized adaptation between the sparse …"
+   },
+   {
+    "w": "synthetic",
+    "ipa": "sɪnˈθɛtɪk",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "合成的，人造的",
+    "ex": "subsets in single document QA, multi-document QA, synthetic and code task categories."
+   },
+   {
+    "w": "trace",
+    "ipa": "treɪs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "痕迹",
+    "ex": "Given the limited effectiveness of reinforcement learning on smaller-scale models, we employ knowledge distillation from DeepSeek-R1, con-ducting supervised fine-tuning (SFT) with 10B tokens of 32k-length mathematical reasoning …"
+   },
+   {
+    "w": "variant",
+    "ipa": "ˈvɛriənt",
+    "pos": "adj.；n.",
+    "lv": "六级",
+    "m": "不同的；多样的；变体；转化",
+    "ex": "This produces two comparable models: Full Attention-R (Full Attention baseline) and NSA-R (our sparse variant)."
+   },
+   {
+    "w": "yarn",
+    "ipa": "jɑrn",
+    "pos": "n.；v.",
+    "lv": "专四",
+    "m": "纱线；奇谈，故事；用纱线缠",
+    "ex": "Both Full Attention and sparse attention models are pretrained on 270B tokens of 8k-length texts, followed by continued training and supervised fine-tuning on 32k-length texts with YaRN (Peng et al., 2024) to achieve long-context …"
+   }
+  ]
+ },
+ {
+  "sec": "5. Conclusion · 结论",
+  "short": "Concl",
+  "icon": "5",
+  "words": [
+   {
+    "w": "accommodate",
+    "ipa": "əˈkɑməˌdeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "适合， 提供住宿",
+    "ex": "We maintain individual query granularity instead of block-averaged queries to accommodate efficient decoding."
+   },
+   {
+    "w": "adaptive",
+    "ipa": "əˈdæptɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "适合的, 适应的",
+    "ex": "H2O (Zhang et al., 2023b), BUZZ (Zhao et al., 2024), and Se-pLLM (Chen et al., 2024a) implement adaptive approaches to reduce KV-cache memory usage during decoding."
+   },
+   {
+    "w": "additional",
+    "ipa": "əˈdɪʃənəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "额外的",
+    "ex": "For the auxiliary loss-based selection method, we introduce additional queries for each token and representative keys for each block to estimate the block importance scores."
+   },
+   {
+    "w": "adjacent",
+    "ipa": "əˈʤeɪsənt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "毗连的；紧接着的",
+    "ex": "The blockwise clustering phenomenon indicates that tokens adjacent in the sequence may share certain semantic relationships with query tokens, though the exact nature of these relationships requires further investigation."
+   },
+   {
+    "w": "align",
+    "ipa": "əˈlaɪnd",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "对齐的",
+    "ex": "a hardware-aligned sparse attention architecture for efficient long-context modeling"
+   },
+   {
+    "w": "amplify",
+    "ipa": "ˈæmpləˌfaɪ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "放大，增强；扩大",
+    "ex": "This advantage in memory access efficiency also amplifies with longer sequences."
+   },
+   {
+    "w": "analyze",
+    "ipa": "ˈænəˌlaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "分析",
+    "ex": "While our approach demonstrates promising results, understanding the challenges encountered with alternative strategies and analyzing attention patterns provides valuable context for future research directions."
+   },
+   {
+    "w": "approach",
+    "ipa": "əˈproʊʧ",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "靠近；接近，方法",
+    "ex": "We evaluate both approaches on a 3B-parameter model with similar architecture and compare their loss curve with NSA and Full Attention."
+   },
+   {
+    "w": "assign",
+    "ipa": "əˈsaɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "分配，布置",
+    "ex": "FastGen Ge et al. (2023) and HeadKV (Fu et al., 2024b) optimize computation by assigning different strategies to individual attention heads."
+   },
+   {
+    "w": "automatically",
+    "ipa": "ˌɔtəˈmætɪkli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "自动地；不经思考地",
+    "ex": "Compared with them, our NSA does not rely on pre-defined sparse patterns, but learns the patterns automatically, unlocking the potential to utilize full context."
+   },
+   {
+    "w": "auxiliary",
+    "ipa": "ɑgˈzɪljəri",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "辅助的；附属的",
+    "ex": "This auxiliary loss-based importance estimation shares conceptual similarity with SeerAttention (Gao et al., 2024)."
+   },
+   {
+    "w": "bottleneck",
+    "ipa": "ˈbɑtəlˌnɛk",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "瓶颈；障碍物",
+    "ex": "These combined factors create substantial bottlenecks, significantly limiting their effectiveness for real-world deployment."
+   },
+   {
+    "w": "broadly",
+    "ipa": "ˈbrɔdli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "宽广地, 广泛",
+    "ex": "These methods can be broadly categorized into three groups based on their core strategies: (1) fixed sparse pattern, (2) dynamic token pruning, and (3) query-aware selection."
+   },
+   {
+    "w": "buzz",
+    "ipa": "bəz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "（蜂等）嗡嗡叫",
+    "ex": "H2O (Zhang et al., 2023b), BUZZ (Zhao et al., 2024), and Se-pLLM (Chen et al., 2024a) implement adaptive approaches to reduce KV-cache memory usage during decoding."
+   },
+   {
+    "w": "cache",
+    "ipa": "kæˈʃeɪ",
+    "pos": "n.；v.",
+    "lv": "专八",
+    "m": "电脑高速缓冲存储器；贮存物；隐藏处；隐藏；窖藏",
+    "ex": "Dynamic Token Pruning Some methods are designed to reduce memory and computation costs during inference through dynamic KV-cache pruning."
+   },
+   {
+    "w": "categorize",
+    "ipa": "ˈkætəgərˌaɪz",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "分类",
+    "ex": "These methods can be broadly categorized into three groups based on their core strategies: (1) fixed sparse pattern, (2) dynamic token pruning, and (3) query-aware selection."
+   },
+   {
+    "w": "chunk",
+    "ipa": "ʧəŋk",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "厚片， 大块； 相当大的部分",
+    "ex": "InfLLM (Xiao et al., 2024a) combines fixed patterns with retrieval by maintaining attention sinks, local context, and retrievable chunks."
+   },
+   {
+    "w": "closely",
+    "ipa": "ˈkloʊsli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "紧密地，接近地",
+    "ex": "Decoding Speed The decoding speed of Attention is primarily determined by the memory access bottleneck, which is closely tied to the amount of KV cache loading."
+   },
+   {
+    "w": "cluster",
+    "ipa": "ˈkləstər",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "串，束，簇；群，组；群聚；聚集",
+    "ex": "However, these attempts encountered various challenges, prompting us to design a different sparse attention architecture: Key-Clustering Based Strategies."
+   },
+   {
+    "w": "coalesce",
+    "ipa": "ˌkoʊəˈlɛs",
+    "pos": "v.",
+    "lv": "GRE",
+    "m": "接合",
+    "ex": "Due to the low arithmetic intensity and memory-bound nature of decoding, the expected speedup is approximately linear with the volume of memory access. hardware-aligned algorithm design to maximize the efficiency of sparse …"
+   },
+   {
+    "w": "commonly",
+    "ipa": "ˈkɑmənli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "普通地，一般地",
+    "ex": "Fixed Sparse Pattern SlidingWindow is a commonly used approach that allows the query to compute attention only within a fixed window."
+   },
+   {
+    "w": "computation",
+    "ipa": "ˌkɑmpjəˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "计算, 估计",
+    "ex": "FastGen Ge et al. (2023) and HeadKV (Fu et al., 2024b) optimize computation by assigning different strategies to individual attention heads."
+   },
+   {
+    "w": "compute",
+    "ipa": "kəmˈpjut",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "计算，估计，估算",
+    "ex": "Fixed Sparse Pattern SlidingWindow is a commonly used approach that allows the query to compute attention only within a fixed window."
+   },
+   {
+    "w": "conceptual",
+    "ipa": "kənˈsɛpʧuəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "概念上的",
+    "ex": "This auxiliary loss-based importance estimation shares conceptual similarity with SeerAttention (Gao et al., 2024)."
+   },
+   {
+    "w": "constraint",
+    "ipa": "kənˈstreɪnt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "限制，束缚，约束",
+    "ex": "While theoretically feasible for training and inference, they face three significant challenges: (1) Non-trivial computational overhead introduced by dynamic clustering mechanisms; (2) Operator optimization difficulties …"
+   },
+   {
+    "w": "contiguous",
+    "ipa": "kənˈtɪgjuəs",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "接壤的， 毗邻的； 不间断的",
+    "ex": "These methods store Keys and Values from the same cluster in contiguous memory regions."
+   },
+   {
+    "w": "continuity",
+    "ipa": "ˌkɑntəˈnuəti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "连续， 持续",
+    "ex": "This observation inspired our design of NSA, suggesting that selecting key blocks based on spatial continuity might be a promising approach."
+   },
+   {
+    "w": "coordinate",
+    "ipa": "koʊˈɔrdəˌneɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使协调，调节",
+    "ex": "Quest (Tang et al., 2024) employs a blockwise selection strategy where each chunk’s importance is estimated by product between query and coordinate-wise min-max of the key chunks."
+   },
+   {
+    "w": "core",
+    "ipa": "kɔr",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "果实的心，核心",
+    "ex": "These methods can be broadly categorized into three groups based on their core strategies: (1) fixed sparse pattern, (2) dynamic token pruning, and (3) query-aware selection."
+   },
+   {
+    "w": "curve",
+    "ipa": "kərv",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "曲线；弯；弄弯",
+    "ex": "We evaluate both approaches on a 3B-parameter model with similar architecture and compare their loss curve with NSA and Full Attention."
+   },
+   {
+    "w": "deem",
+    "ipa": "dim",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "认为",
+    "ex": "These methods dynamically evict tokens deemed less important for future predictions."
+   },
+   {
+    "w": "define",
+    "ipa": "dɪˈfaɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "下定义，确定",
+    "ex": "Compared with them, our NSA does not rely on pre-defined sparse patterns, but learns the patterns automatically, unlocking the potential to utilize full context."
+   },
+   {
+    "w": "degrade",
+    "ipa": "dɪˈgreɪd",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使降低；使堕落",
+    "ex": "However, existing methods face two critical issues: (1) Since the selection operation is non-differentiable, importance score computation based on neural networks relies on auxiliary loss, which increases operator overhead and …"
+   },
+   {
+    "w": "delicate",
+    "ipa": "ˈdɛləkət",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "纤细的；易碎的",
+    "ex": "Due to the low arithmetic intensity and memory-bound nature of decoding, the expected speedup is approximately linear with the volume of memory access. hardware-aligned algorithm design to maximize the efficiency of sparse …"
+   },
+   {
+    "w": "dependent",
+    "ipa": "dɪˈpɛndənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "依靠的，依赖的",
+    "ex": "Query-Aware Selection Other works focus on query-dependent token selection methods to reduce attention computation while preserving attention quality."
+   },
+   {
+    "w": "deployment",
+    "ipa": "dɪˈplɔɪmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "部署",
+    "ex": "These combined factors create substantial bottlenecks, significantly limiting their effectiveness for real-world deployment."
+   },
+   {
+    "w": "distribution",
+    "ipa": "ˌdɪstrəˈbjuʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "分发，分配；分布",
+    "ex": "We first examine challenges with alternative token selection strategies that motivated our design choices, followed by visualizations that offer insights into attention distribution patterns."
+   },
+   {
+    "w": "divergence",
+    "ipa": "dɪˈvərʤəns",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "分歧",
+    "ex": "We compute block-level supervision signals by mean-pooling attention scores within each key block, and use KL divergence to supervise block importance prediction."
+   },
+   {
+    "w": "effectiveness",
+    "ipa": "ˈifɛktɪvnəs",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "效力",
+    "ex": "These combined factors create substantial bottlenecks, significantly limiting their effectiveness for real-world deployment."
+   },
+   {
+    "w": "efficient",
+    "ipa": "ɪˈfɪʃənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "效率高的，有能力的",
+    "ex": "SeerAttention (Gao et al., 2024) separates queries and keys into spatial blocks and performs blockwise selection for efficient computation."
+   },
+   {
+    "w": "eliminate",
+    "ipa": "ɪˈlɪməˌneɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "消除",
+    "ex": "Due to the low arithmetic intensity and memory-bound nature of decoding, the expected speedup is approximately linear with the volume of memory access. hardware-aligned algorithm design to maximize the efficiency of sparse …"
+   },
+   {
+    "w": "encounter",
+    "ipa": "ɪnˈkaʊnər",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "遭遇，遇到；遭遇",
+    "ex": "However, these attempts encountered various challenges, prompting us to design a different sparse attention architecture: Key-Clustering Based Strategies."
+   },
+   {
+    "w": "estimate",
+    "ipa": "ˈɛstəˌmeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "估计",
+    "ex": "For the auxiliary loss-based selection method, we introduce additional queries for each token and representative keys for each block to estimate the block importance scores."
+   },
+   {
+    "w": "estimation",
+    "ipa": "ˌɛstəˈmeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "估计；尊重",
+    "ex": "This auxiliary loss-based importance estimation shares conceptual similarity with SeerAttention (Gao et al., 2024)."
+   },
+   {
+    "w": "evict",
+    "ipa": "ɪˈvɪkt",
+    "pos": "v.",
+    "lv": "专八",
+    "m": "驱逐",
+    "ex": "These methods dynamically evict tokens deemed less important for future predictions."
+   },
+   {
+    "w": "exacerbate",
+    "ipa": "ɪgˈzæsərˌbeɪt",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "使加剧；使恶化；激怒",
+    "ex": "While theoretically feasible for training and inference, they face three significant challenges: (1) Non-trivial computational overhead introduced by dynamic clustering mechanisms; (2) Operator optimization difficulties …"
+   },
+   {
+    "w": "exceed",
+    "ipa": "ɪkˈsiːd",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "超出",
+    "ex": "exceeding modeling capability in long-context evaluations"
+   },
+   {
+    "w": "execution",
+    "ipa": "ˌɛksəˈkjuʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "实行，执行；处死刑",
+    "ex": "While theoretically feasible for training and inference, they face three significant challenges: (1) Non-trivial computational overhead introduced by dynamic clustering mechanisms; (2) Operator optimization difficulties …"
+   },
+   {
+    "w": "exploration",
+    "ipa": "ˌɛksplərˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "考察；勘探；探查",
+    "ex": "Discussion In this section, we reflect on the development process of NSA and discuss key insights gained from our exploration of different sparse attention strategies."
+   },
+   {
+    "w": "factor",
+    "ipa": "ˈfæktər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "因素；因子，系数",
+    "ex": "These combined factors create substantial bottlenecks, significantly limiting their effectiveness for real-world deployment."
+   },
+   {
+    "w": "feasible",
+    "ipa": "ˈfizəbəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "可行的；可能的；可用的",
+    "ex": "While theoretically feasible for training and inference, they face three significant challenges: (1) Non-trivial computational overhead introduced by dynamic clustering mechanisms; (2) Operator optimization difficulties …"
+   },
+   {
+    "w": "feature",
+    "ipa": "ˈfiʧər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "特点",
+    "ex": "SnapKV (Li et al., 2024) introduces a token pruning strategy that reduces the KV-cache by selectively retaining only the most crucial features, enabling efficient memory usage."
+   },
+   {
+    "w": "firstly",
+    "ipa": "ˈfərstli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "首先，第一（列举论点用）",
+    "ex": "ClusterKV (Liu et al., 2024) achieves sparsity by firstly clustering keys and then selecting the most relevant clusters for attention computation based on query-cluster similarity."
+   },
+   {
+    "w": "global",
+    "ipa": "ˈgloʊbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "全球的， 全世界的； 总的， 完整的",
+    "ex": "Longformer (Beltagy et al., 2020) interleaves local windowed attention with global tokens to process long sequences."
+   },
+   {
+    "w": "imbalance",
+    "ipa": "ɪmˈbæləns",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "不平衡",
+    "ex": "While theoretically feasible for training and inference, they face three significant challenges: (1) Non-trivial computational overhead introduced by dynamic clustering mechanisms; (2) Operator optimization difficulties …"
+   },
+   {
+    "w": "incorporate",
+    "ipa": "ˌɪnˈkɔrpərˌeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "合并；体现",
+    "ex": "Unlike these inference-focused approaches, our NSA incorporates sparsity natively during the training phase."
+   },
+   {
+    "w": "individual",
+    "ipa": "ˌɪndəˈvɪʤəwəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "个人",
+    "ex": "FastGen Ge et al. (2023) and HeadKV (Fu et al., 2024b) optimize computation by assigning different strategies to individual attention heads."
+   },
+   {
+    "w": "inferior",
+    "ipa": "ˌɪnˈfɪriər",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "下等的；劣等的",
+    "ex": "As shown in Figure 7, both methods exhibited inferior loss."
+   },
+   {
+    "w": "insight",
+    "ipa": "ˈɪnˌsaɪt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "洞察力，洞悉",
+    "ex": "Discussion In this section, we reflect on the development process of NSA and discuss key insights gained from our exploration of different sparse attention strategies."
+   },
+   {
+    "w": "inspiration",
+    "ipa": "ˌɪnspərˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "灵感",
+    "ex": "Visualization To explore potential patterns in transformer attention distributions and seek inspiration for our design, we visualize the attention map from our pretrained 27B Full Attention model in"
+   },
+   {
+    "w": "inter",
+    "ipa": "ˌɪnˈtər",
+    "pos": "v.",
+    "lv": "托福",
+    "m": "埋葬",
+    "ex": "While theoretically feasible for training and inference, they face three significant challenges: (1) Non-trivial computational overhead introduced by dynamic clustering mechanisms; (2) Operator optimization difficulties …"
+   },
+   {
+    "w": "investigation",
+    "ipa": "ˌɪnˌvɛstəˈgeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "调查，调查研究",
+    "ex": "The blockwise clustering phenomenon indicates that tokens adjacent in the sequence may share certain semantic relationships with query tokens, though the exact nature of these relationships requires further investigation."
+   },
+   {
+    "w": "linear",
+    "ipa": "ˈlɪniər",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "线的；长度的",
+    "ex": "Due to the low arithmetic intensity and memory-bound nature of decoding, the expected speedup is approximately linear with the volume of memory access. hardware-aligned algorithm design to maximize the efficiency of sparse …"
+   },
+   {
+    "w": "maintain",
+    "ipa": "meɪnˈteɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "保持",
+    "ex": "achieves accelerated training and inference while maintaining Full Attention performance"
+   },
+   {
+    "w": "mandatory",
+    "ipa": "ˈmændəˌtɔri",
+    "pos": "adj.；n.",
+    "lv": "六级",
+    "m": "强制的；托管的；命令的；受托者（等于mandatary）",
+    "ex": "While theoretically feasible for training and inference, they face three significant challenges: (1) Non-trivial computational overhead introduced by dynamic clustering mechanisms; (2) Operator optimization difficulties …"
+   },
+   {
+    "w": "measurable",
+    "ipa": "ˈmeʒərəbl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "可测量的",
+    "ex": "accompanied by measurable reductions in computational latency"
+   },
+   {
+    "w": "motivate",
+    "ipa": "ˈmoʊtəˌveɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "促动，激发，诱导",
+    "ex": "We first examine challenges with alternative token selection strategies that motivated our design choices, followed by visualizations that offer insights into attention distribution patterns."
+   },
+   {
+    "w": "neural",
+    "ipa": "ˈnʊrəl",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "神经的",
+    "ex": "However, existing methods face two critical issues: (1) Since the selection operation is non-differentiable, importance score computation based on neural networks relies on auxiliary loss, which increases operator overhead and …"
+   },
+   {
+    "w": "observation",
+    "ipa": "ˌɑbzərˈveɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "注意；观察；观察力",
+    "ex": "This observation inspired our design of NSA, suggesting that selecting key blocks based on spatial continuity might be a promising approach."
+   },
+   {
+    "w": "optimize",
+    "ipa": "ˈɑptɪˌmaɪz",
+    "pos": "vt.",
+    "lv": "考博",
+    "m": "使最优化； 充分利用",
+    "ex": "FastGen Ge et al. (2023) and HeadKV (Fu et al., 2024b) optimize computation by assigning different strategies to individual attention heads."
+   },
+   {
+    "w": "parallelism",
+    "ipa": "ˈpɛrəˌlɛˌlɪzəm",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "平行， 类似",
+    "ex": "While theoretically feasible for training and inference, they face three significant challenges: (1) Non-trivial computational overhead introduced by dynamic clustering mechanisms; (2) Operator optimization difficulties …"
+   },
+   {
+    "w": "parameter",
+    "ipa": "pərˈæmətər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "参（变）数；参量",
+    "ex": "We evaluate both approaches on a 3B-parameter model with similar architecture and compare their loss curve with NSA and Full Attention."
+   },
+   {
+    "w": "periodic",
+    "ipa": "ˌpɪriˈɑdɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "周期的；一定时期的",
+    "ex": "While theoretically feasible for training and inference, they face three significant challenges: (1) Non-trivial computational overhead introduced by dynamic clustering mechanisms; (2) Operator optimization difficulties …"
+   },
+   {
+    "w": "persistent",
+    "ipa": "pərˈsɪstənt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "持续的，坚持的",
+    "ex": "While theoretically feasible for training and inference, they face three significant challenges: (1) Non-trivial computational overhead introduced by dynamic clustering mechanisms; (2) Operator optimization difficulties …"
+   },
+   {
+    "w": "pivotal",
+    "ipa": "ˈpɪvətəl",
+    "pos": "adj.；n.",
+    "lv": "专八",
+    "m": "关键的；中枢的；枢轴的；关键事物；中心事物",
+    "ex": "HashAttention (Desai et al., 2024) formulates pivotal token identification as a recommendation problem by mapping queries and keys to Hamming space using learned functions."
+   },
+   {
+    "w": "prediction",
+    "ipa": "priˈdɪkʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "预言，预告；预报",
+    "ex": "These methods dynamically evict tokens deemed less important for future predictions."
+   },
+   {
+    "w": "progressively",
+    "ipa": "prɑˈgrɛsɪvli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "日益增多地",
+    "ex": "As shown in Figure 6, our NSA achieves progressively greater speedups as context length increases,"
+   },
+   {
+    "w": "prompt",
+    "ipa": "prɑmpt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "敏捷的；v. 敦促",
+    "ex": "However, these attempts encountered various challenges, prompting us to design a different sparse attention architecture: Key-Clustering Based Strategies."
+   },
+   {
+    "w": "protocol",
+    "ipa": "ˈproʊtəˌkɔl",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "礼仪， 礼节； 草案， 议定书",
+    "ex": "While theoretically feasible for training and inference, they face three significant challenges: (1) Non-trivial computational overhead introduced by dynamic clustering mechanisms; (2) Operator optimization difficulties …"
+   },
+   {
+    "w": "prune",
+    "ipa": "prun",
+    "pos": "vt.",
+    "lv": "专四",
+    "m": "修剪， 修整； 删除， 削减",
+    "ex": "Dynamic Token Pruning Some methods are designed to reduce memory and computation costs during inference through dynamic KV-cache pruning."
+   },
+   {
+    "w": "query",
+    "ipa": "kˈwiri",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "疑问，质问；疑问号 ；[计] 查询；询问；对……表示疑问",
+    "ex": "Fixed Sparse Pattern SlidingWindow is a commonly used approach that allows the query to compute attention only within a fixed window."
+   },
+   {
+    "w": "quest",
+    "ipa": "kwɛst",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "寻找，追求",
+    "ex": "We also considered blockwise key, value selection strategies different from NSA, such as Quest (Tang et al., 2024) and InfLLM (Xiao et al., 2024a)."
+   },
+   {
+    "w": "recall",
+    "ipa": "ˈriˌkɔl",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "回想；叫回；收回",
+    "ex": "However, existing methods face two critical issues: (1) Since the selection operation is non-differentiable, importance score computation based on neural networks relies on auxiliary loss, which increases operator overhead and …"
+   },
+   {
+    "w": "recommendation",
+    "ipa": "ˌrɛkəmənˈdeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "推荐，介绍；劝告",
+    "ex": "HashAttention (Desai et al., 2024) formulates pivotal token identification as a recommendation problem by mapping queries and keys to Hamming space using learned functions."
+   },
+   {
+    "w": "reduction",
+    "ipa": "rɪˈdʌkʃn",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "减少",
+    "ex": "measurable reductions in computational latency"
+   },
+   {
+    "w": "region",
+    "ipa": "ˈriʤən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "地区，地带；领域",
+    "ex": "These methods store Keys and Values from the same cluster in contiguous memory regions."
+   },
+   {
+    "w": "retrievable",
+    "ipa": "rɪˈtrivəbl",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "可取回的；可补偿的；可检索的",
+    "ex": "InfLLM (Xiao et al., 2024a) combines fixed patterns with retrieval by maintaining attention sinks, local context, and retrievable chunks."
+   },
+   {
+    "w": "reveal",
+    "ipa": "rɪˈvil",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "揭露，揭示",
+    "ex": "The visualization reveals interesting patterns where attention scores tend to exhibit"
+   },
+   {
+    "w": "selection",
+    "ipa": "səˈlɛkʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "选择，挑选",
+    "ex": "SeerAttention (Gao et al., 2024) separates queries and keys into spatial blocks and performs blockwise selection for efficient computation."
+   },
+   {
+    "w": "sequence",
+    "ipa": "ˈsikwəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "连续，继续；次序",
+    "ex": "MoA (Fu et al., 2024a) and DuoAttention (Xiao et al., 2024b) also adopt similar local and sink information for long sequence modeling."
+   },
+   {
+    "w": "similarity",
+    "ipa": "ˌsɪməˈlɛrəti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "类似，相似；类似点",
+    "ex": "These methods rely on computing an importance score for each KV block and selecting the top-𝑛 blocks based on their similarity with 𝑞𝑡."
+   },
+   {
+    "w": "skew",
+    "ipa": "skju",
+    "pos": "adj.；vt.",
+    "lv": "雅思",
+    "m": "歪斜的；使偏；曲解",
+    "ex": "While theoretically feasible for training and inference, they face three significant challenges: (1) Non-trivial computational overhead introduced by dynamic clustering mechanisms; (2) Operator optimization difficulties …"
+   },
+   {
+    "w": "spatial",
+    "ipa": "ˈspeɪʃəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "空间的，占据空间的",
+    "ex": "This observation inspired our design of NSA, suggesting that selecting key blocks based on spatial continuity might be a promising approach."
+   },
+   {
+    "w": "strategy",
+    "ipa": "ˈstrætəʤi",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "策略，战略",
+    "ex": "FastGen Ge et al. (2023) and HeadKV (Fu et al., 2024b) optimize computation by assigning different strategies to individual attention heads."
+   },
+   {
+    "w": "substantial",
+    "ipa": "səbˈstænʃəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "大量的",
+    "ex": "These combined factors create substantial bottlenecks, significantly limiting their effectiveness for real-world deployment."
+   },
+   {
+    "w": "supervision",
+    "ipa": "ˌsupərˈvɪʒən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "监督",
+    "ex": "We compute block-level supervision signals by mean-pooling attention scores within each key block, and use KL divergence to supervise block importance prediction."
+   },
+   {
+    "w": "token",
+    "ipa": "ˈtoʊkən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "辅币；象征",
+    "ex": "MInference (Jiang et al., 2024) and TokenSelect (Wu et al., 2024) select KV pairs for computation based on token-level importance scoring."
+   },
+   {
+    "w": "transition",
+    "ipa": "trænˈzɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "过渡",
+    "ex": "We also explore a cold-start training approach where Full Attention is applied for the initial 1000 steps before transitioning to the heuristic blockwise selection."
+   },
+   {
+    "w": "trivial",
+    "ipa": "ˈtrɪviəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "琐碎的；平常的",
+    "ex": "While theoretically feasible for training and inference, they face three significant challenges: (1) Non-trivial computational overhead introduced by dynamic clustering mechanisms; (2) Operator optimization difficulties …"
+   },
+   {
+    "w": "unlock",
+    "ipa": "ənˈlɑk",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "开…的锁；开启",
+    "ex": "Compared with them, our NSA does not rely on pre-defined sparse patterns, but learns the patterns automatically, unlocking the potential to utilize full context."
+   },
+   {
+    "w": "usage",
+    "ipa": "ˈjusɪʤ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "使用，对待；惯用法",
+    "ex": "H2O (Zhang et al., 2023b), BUZZ (Zhao et al., 2024), and Se-pLLM (Chen et al., 2024a) implement adaptive approaches to reduce KV-cache memory usage during decoding."
+   },
+   {
+    "w": "utilize",
+    "ipa": "ˈjutəˌlaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "利用",
+    "ex": "Compared with them, our NSA does not rely on pre-defined sparse patterns, but learns the patterns automatically, unlocking the potential to utilize full context."
+   },
+   {
+    "w": "visualize",
+    "ipa": "ˈvɪʒwəˌlaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "想象",
+    "ex": "Visualization To explore potential patterns in transformer attention distributions and seek inspiration for our design, we visualize the attention map from our pretrained 27B Full Attention model in"
+   },
+   {
+    "w": "volume",
+    "ipa": "ˈvɑljum",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "卷，册；容积；音量",
+    "ex": "Table 4 | Memory access volume (in equivalent number of tokens) per attention operation during"
+   }
+  ]
+ },
+ {
+  "sec": "References · 参考文献区用词（正文未出现）",
+  "short": "文献区",
+  "icon": "R",
+  "words": [
+   {
+    "w": "beehive",
+    "ipa": "ˈbiˌhaɪv",
+    "pos": "n.",
+    "lv": "雅思",
+    "m": "蜂窝； 蜂箱",
+    "ex": "Buzz: Beehive-structured sparse kv cache with segmented heavy hitters for efficient llm inference. arXiv preprint arXiv:2410.23079, 2024."
+   },
+   {
+    "w": "bilingual",
+    "ipa": "baɪˈlɪŋgwəl",
+    "pos": "adj.；n.",
+    "lv": "专四",
+    "m": "双语的；通两种语言的人",
+    "ex": "Longbench: A bilingual, multitask benchmark for long context understanding. arXiv preprint arXiv:2308.14508, 2023."
+   },
+   {
+    "w": "checkpoint",
+    "ipa": "ˈʧɛkˌpɔɪnt",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "检查站，关卡",
+    "ex": "Gqa: Training generalized multi-query transformer models from multi-head checkpoints. arXiv preprint arXiv:2305.13245, 2023."
+   },
+   {
+    "w": "denominator",
+    "ipa": "dɪˈnɑməˌneɪtər",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "水平，标准",
+    "ex": "Converting to a common denominator (48):"
+   },
+   {
+    "w": "determinant",
+    "ipa": "dɪˈtərmənənt",
+    "pos": "adj.；n.",
+    "lv": "考博",
+    "m": "决定性的；决定因素",
+    "ex": "We solve this system using Cramer’s rule and matrix inversion. The determinant"
+   },
+   {
+    "w": "discard",
+    "ipa": "dɪˈskɑrd",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "丢弃，抛弃，遗弃",
+    "ex": "Model tells you what to discard: Adaptive kv cache compression for llms. arXiv preprint arXiv:2310.01801, 2023."
+   },
+   {
+    "w": "economical",
+    "ipa": "ˌɛkəˈnɑmɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "节约的；经济学的",
+    "ex": "Deepseek-v2: A strong, economical, and efficient mixture-of-experts language model."
+   },
+   {
+    "w": "elicit",
+    "ipa": "ɪˈlɪsɪt",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "诱出， 探出",
+    "ex": "Chain-of-thought prompting elicits reasoning in large language models."
+   },
+   {
+    "w": "empirical",
+    "ipa": "ˌɛmˈpɪrɪkəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "经验主义的",
+    "ex": "Bali, editors, Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing, EMNLP 2023, Singapore, December 6–10, 2023, pages 2471– 2484."
+   },
+   {
+    "w": "exponential",
+    "ipa": "ˌɛkspoʊˈnɛnʃəl",
+    "pos": "n.；adj.",
+    "lv": "考博",
+    "m": "指数；指数的, 幂数的",
+    "ex": "First, we convert the logarithmic equations to their exponential forms using the change of base formula."
+   },
+   {
+    "w": "formula",
+    "ipa": "ˈfɔrmjələ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "公式，式",
+    "ex": "First, we convert the logarithmic equations to their exponential forms using the change of base formula."
+   },
+   {
+    "w": "generalize",
+    "ipa": "ˈʤɛnərəˌlaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "概括出",
+    "ex": "Gqa: Training generalized multi-query transformer models from multi-head checkpoints. arXiv preprint arXiv:2305.13245, 2023."
+   },
+   {
+    "w": "generative",
+    "ipa": "ˈʤɛnərətɪv",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "生产的，有生产力的",
+    "ex": "H2o: Heavy-hitter oracle for efficient generative inference of large language models."
+   },
+   {
+    "w": "integer",
+    "ipa": "ˈɪntəʤər",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "[数] 整数；整体；完整的事物",
+    "ex": "𝑛where 𝑚and 𝑛are relatively prime positive integers."
+   },
+   {
+    "w": "interactive",
+    "ipa": "ˌɪnərˈæktɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "互相作用的，互相影响的",
+    "ex": "Generative agents: Interactive simulacra of human behavior."
+   },
+   {
+    "w": "interface",
+    "ipa": "ˈɪnərˌfeɪs",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "分界面",
+    "ex": "Riche, editors, Proceedings of the 36th Annual ACM Symposium on User Interface Software and Technology, UIST 2023, San Francisco, CA, USA, 29 October 2023– 1 November 2023, pages 2:1–2:22."
+   },
+   {
+    "w": "intrinsic",
+    "ipa": "ˌɪnˈtrɪnsɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "本质的，固有的",
+    "ex": "Seerattention: Learning intrinsic sparse attention in your llms. arXiv preprint arXiv:2410.13276, 2024."
+   },
+   {
+    "w": "inversion",
+    "ipa": "ˌɪnˈvərʒən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "倒置， 颠倒",
+    "ex": "We solve this system using Cramer’s rule and matrix inversion. The determinant"
+   },
+   {
+    "w": "kung",
+    "ipa": "kəŋ",
+    "pos": "—",
+    "lv": "专四",
+    "m": "fu [ˌkʊŋ ˈfʊ] n. 功夫，中国拳术",
+    "ex": "Kung, and D."
+   },
+   {
+    "w": "lean",
+    "ipa": "lin",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "倾斜，屈身；靠",
+    "ex": "Y. X. Wei1, Lean Wang1, Zhiping Xiao3, Yuqing Wang1, Chong Ruan1, Ming Zhang2, Wenfeng Liang1,"
+   },
+   {
+    "w": "linguistic",
+    "ipa": "lɪŋgˈwɪstɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "语言的；语言学的",
+    "ex": "Srikumar, editors, Proceedings of the 62nd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), ACL 2024, Bangkok, Thailand, August 11–16, 2024, pages 13643–13658."
+   },
+   {
+    "w": "log",
+    "ipa": "lɔg",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "原木，木料",
+    "ex": "Baseline Result: ⟨think⟩...⟨/think⟩(16223 tokens) Given the problem where real numbers 𝑥and 𝑦with 𝑥, 𝑦> 1 satisfy the equations log𝑥(𝑦𝑥) = 10 and log𝑦(𝑥4𝑦) = 10, we need to find the value of 𝑥𝑦."
+   },
+   {
+    "w": "logarithm",
+    "ipa": "ˈlɑgərˌɪðəm",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "对数",
+    "ex": "We start by applying the logarithm power rule to both equations."
+   },
+   {
+    "w": "manipulate",
+    "ipa": "məˈnɪpjəˌleɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "操纵",
+    "ex": "Clusterkv: Manipulating llm kv cache in semantic space for recallable compression. arXiv preprint arXiv:2412.03213, 2024."
+   },
+   {
+    "w": "massive",
+    "ipa": "ˈmæsɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "巨大的 大量的",
+    "ex": "Cmmlu: Measuring massive multitask language understanding in chinese. arXiv preprint arXiv:2306.09212, 2023."
+   },
+   {
+    "w": "multimedia",
+    "ipa": "ˌməltiˈmidiə",
+    "pos": "n.；adj.",
+    "lv": "专四",
+    "m": "多媒体；多媒体的",
+    "ex": "2Key Laboratory for Multimedia Information Processing, School of Computer Science, Peking"
+   },
+   {
+    "w": "oracle",
+    "ipa": "ˈɔrəkəl",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "神谕；预言；神谕处；圣人",
+    "ex": "H2o: Heavy-hitter oracle for efficient generative inference of large language models."
+   },
+   {
+    "w": "orleans",
+    "ipa": "ˌɔˈrlinz",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "奥尔良[法国]",
+    "ex": "Oh, editors, Advances in Neural Information Processing Systems 35: Annual Conference on Neural Information Processing Systems 2022, NeurIPS 2022, New Orleans, LA, USA, November 28 – December 9, 2022, 2022."
+   },
+   {
+    "w": "pose",
+    "ipa": "poʊz",
+    "pos": "v.；n.",
+    "lv": "六级",
+    "m": "摆姿势，装腔作势；姿势",
+    "ex": "Long-context modeling is crucial for next-generation language models, yet the high computational cost of standard attention mechanisms poses significant computational challenges."
+   },
+   {
+    "w": "prime",
+    "ipa": "praɪm",
+    "pos": "adj.；n.",
+    "lv": "四级",
+    "m": "首要的；春，青春",
+    "ex": "𝑛where 𝑚and 𝑛are relatively prime positive integers."
+   },
+   {
+    "w": "proceeding",
+    "ipa": "prəˈsidɪŋ",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "程序，行动，事项",
+    "ex": "In Proceedings of the 3rd ACM SIGPLAN International Workshop on Machine Learning and Programming Languages, pages 10–19, 2019."
+   },
+   {
+    "w": "robust",
+    "ipa": "roʊˈbəst",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "强健的",
+    "ex": "Mmlu-pro: A more robust and challenging multi-task language understanding benchmark. arXiv preprint arXiv:2406.01574, 2024."
+   },
+   {
+    "w": "segment",
+    "ipa": "ˌsɛgˈmɛnt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "部分， 片段； 瓣",
+    "ex": "Buzz: Beehive-structured sparse kv cache with segmented heavy hitters for efficient llm inference. arXiv preprint arXiv:2410.23079, 2024."
+   },
+   {
+    "w": "solution",
+    "ipa": "səˈluʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "解决，解答，解决办法",
+    "ex": "have a solution. Therefore, we use matrix inversion to solve the system:"
+   },
+   {
+    "w": "solve",
+    "ipa": "sɑlv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "解决",
+    "ex": "Training verifiers to solve math word problems, 2021."
+   },
+   {
+    "w": "symposium",
+    "ipa": "sɪmˈpoʊziəm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "座谈会",
+    "ex": "Riche, editors, Proceedings of the 36th Annual ACM Symposium on User Interface Software and Technology, UIST 2023, San Francisco, CA, USA, 29 October 2023– 1 November 2023, pages 2:1–2:22."
+   },
+   {
+    "w": "synthesis",
+    "ipa": "ˈsɪnθəsəs",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "综合，综合物；（化学或生物学物质的）合成；（用电子方式对声音、语音或音乐的）合成",
+    "ex": "Program synthesis with large language models. arXiv preprint arXiv:2108.07732, 2021."
+   },
+   {
+    "w": "tile",
+    "ipa": "taɪl",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "瓷砖；贴砖；瓦片",
+    "ex": "Triton: an intermediate language and compiler for tiled neural network computations."
+   },
+   {
+    "w": "ultimate",
+    "ipa": "ˈəltəmət",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "最后的，最终的",
+    "ex": "Deepseekmoe: Towards ultimate expert specialization in mixture-of-experts language models. arXiv preprint arXiv:2401.06066, 2024."
+   },
+   {
+    "w": "variable",
+    "ipa": "ˈvɛriəbəl",
+    "pos": "adj.；n.",
+    "lv": "四级",
+    "m": "易变的；变量",
+    "ex": "Expressing each variable in terms of 𝑥, 𝑦, and 𝑧:"
+   },
+   {
+    "w": "verify",
+    "ipa": "ˈvɛrəˌfaɪ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "证实，查证；证明",
+    "ex": "However, upon verifying the third equation, we realize the system might not"
+   },
+   {
+    "w": "washington",
+    "ipa": "ˈwɔʃɪŋtən",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "华盛顿",
+    "ex": "3University of Washington"
+   },
+   {
+    "w": "workshop",
+    "ipa": "ˈwərkˌʃɑp",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "车间，工场；创作室",
+    "ex": "In Proceedings of the 3rd ACM SIGPLAN International Workshop on Machine Learning and Programming Languages, pages 10–19, 2019."
+   },
+   {
+    "w": "yuan",
+    "ipa": "juɑn",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "元(中国货币单位)",
+    "ex": "Jingyang Yuan∗1,2, Huazuo Gao1, Damai Dai1, Junyu Luo2, Liang Zhao1, Zhengyan Zhang1, Zhenda Xie1,"
+   }
+  ]
+ }
+];
+// lv 一律写中文档名（十一档平级，2026-09-30 定案；旧短码由 build 脚本自动翻译）
+const LVCLS={"四级":"t4","六级":"t6","考研":"tk","考博":"tp","专四":"tm4","专八":"tm8","雅思":"ty","托福":"tt","GRE":"tg","超纲":"tsuper"};
+const LVNAME={"四级":"四级","六级":"六级","考研":"考研","考博":"考博","专四":"专业四级","专八":"专业八级","雅思":"雅思","托福":"托福","GRE":"GRE","超纲":"超纲（大纲未收）"};
+const LVSHORT={"四级":"4","六级":"6","考研":"考研","考博":"考博","专四":"专四","专八":"专八","雅思":"雅思","托福":"托福","GRE":"GRE","超纲":"★超纲"};
+const LVORDER=["四级","六级","考研","考博","专四","专八","雅思","托福","GRE","超纲"];
+
+let mode="sec";
+let theme="theme-mag"; // 章节视图固定杂志风；按级别视图固定暗色大页
+
+function cardHTML(x,sec){
+  const from = mode==="lv" ? `<div class="from">出自 ${sec}</div>` : "";
+  if(theme==="theme-paper"){
+    return `<div class="word"><span class="w">${x.w}<span class="ipa">/${x.ipa}/</span><i class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</i></span>
+      <span><span class="pos">${x.pos}</span><span class="m">${x.m}</span>${from}</span>
+      <span class="ex">${x.ex}</span></div>`;
+  }
+  if(theme==="theme-mag") return "";
+  return `<div class="card lv${x.lv}" data-say="${x.w}"><span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span><span class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</span>
+    <div class="m">${x.pos} ${x.m}</div><div class="ex">${x.ex}</div>${from}</div>`;
+}
+function magRow(x,sec){
+  return `<tr data-say="${x.w}"><td class="w"><span class="hwband">${x.w}</span><span class="ipa">/${x.ipa}/</span></td>
+    <td class="lv"><b class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</b></td>
+    <td class="m">${x.pos} ${x.m}${mode==="lv"?`<span class="from">出自 ${sec}</span>`:""}</td>
+    <td class="ex">${x.ex}</td></tr>`;
+}
+function groupHTML(title,icon,inner){
+  if(theme==="theme-mag") return `<div class="sec"><h2>${title}</h2><table>${inner}</table></div>`;
+  if(theme==="theme-dark"||theme==="theme-fresh")
+    return `<div class="sec"><h2>${theme==="theme-dark"?"":"<span class='n'>"+icon+"</span>"}${title}</h2><div class="grid">${inner}</div></div>`;
+  return `<div class="sec"><h2>${title}</h2>${inner}</div>`;
+}
+
+function render(){
+  document.body.classList.toggle("lv-mode",mode==="lv");
+  // 注意：必须用 classList.add，不能整体赋值 className —— 否则会抹掉 body.night，
+  // 而夜晚章节视图依赖 body.night.theme-mag 这条 CSS，抹掉后点「按章节」会静默退回白天。
+  if(mode==="sec")document.body.classList.add("theme-mag");
+  const app=document.getElementById("app");
+  let html="";
+  if(mode==="sec"){
+    for(const s of DATA){
+      html += theme==="theme-mag"
+        ? groupHTML(s.sec,s.icon,s.words.map(x=>magRow(x,s.short)).join(""))
+        : groupHTML(s.sec,s.icon,s.words.map(x=>cardHTML(x,s.short)).join(""));
+    }
+  }else{
+    // 学习模式同款暗色大页：每个级别一块
+    const dot={"四级":"var(--c4)","六级":"var(--c6)","考研":"var(--ckaon)","考博":"var(--cphd)","专四":"var(--cm4)","专八":"var(--cm8)","雅思":"var(--cy)","托福":"var(--ct)","GRE":"var(--cg)","超纲":"var(--csuper)"};
+    html=LVORDER.map(lv=>{
+      const items=[];
+      DATA.forEach(s=>s.words.forEach(x=>{if(x.lv===lv)items.push([x,s.short])}));   // ov 已废除（2026-09-30）
+      if(!items.length)return"";   // 本词表里没有这一档 → 不出空面板
+      items.sort((a,b)=>a[0].w.localeCompare(b[0].w));
+      const cls={"六级":"l6","考研":"lk","考博":"lp","专四":"lm4","专八":"lm8","雅思":"ly","托福":"lt","GRE":"lg","超纲":"lsuper"}[lv]||"";
+      return `<div class="lvslide ${cls}">
+        <div class="ltitle"><span style="color:${dot[lv]}">${LVNAME[lv]}</span>词汇<small>${items.length} words · 按字母排序 · 悬停看原文例句 · 点击发音</small></div>
+        <div class="sgrid">${items.map(([x,sec])=>`
+          <div class="lcard" data-say="${x.w}">
+            <span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span>
+            <div class="m">${x.pos} ${x.m}</div>
+            <div class="ex">${x.ex}</div>
+            <div class="from">出自 ${sec}</div>
+          </div>`).join("")}</div></div>`;
+    }).join("");
+  }
+  app.innerHTML=html;
+}
+function syncToolbar(){
+  document.getElementById("v-sec").classList.toggle("on",mode==="sec");
+  document.getElementById("v-lv").classList.toggle("on",mode==="lv");
+}
+document.getElementById("v-sec").onclick=()=>{mode="sec";theme="theme-mag";syncToolbar();render();};
+document.getElementById("v-lv").onclick=()=>{mode="lv";syncToolbar();render();};
+
+// 朗读：多引擎在线 TTS 自动降级（有道 / Polly / 百度 / 谷歌），可按下拉切换主音色
+// 合并自 .agents 有道源版 与 workbuddy Polly 源版 —— 单文件同时支持两套引擎
+const VOICE_MAP={
+  yd1:{src:"yd",label:"美式 · 有道（推荐）"},
+  yd0:{src:"yd",label:"英式 · 有道"},
+  Brian:{src:"se",label:"Brian · 英式男声"},
+  Amy:{src:"se",label:"Amy · 英式女声"},
+  Matthew:{src:"se",label:"Matthew · 美式男声"},
+  Joanna:{src:"se",label:"Joanna · 美式女声"},
+  Salli:{src:"se",label:"Salli · 美式女声"},
+  Ivy:{src:"se",label:"Ivy · 美式童声"},
+  bd:{src:"bd",label:"百度翻译 · 女声"},
+  gg:{src:"gg",label:"谷歌翻译"},
+  mute:{src:"mute",label:"🔇 不朗读"}
+};
+const VOICE_ORDER=["yd1","yd0","Brian","Amy","Matthew","Joanna","Salli","Ivy","bd","gg","mute"];
+let ONLINE="yd1"; // 默认有道 · 美音（保留 .agents 版行为）
+try{const sv=localStorage.getItem("vocab_voice");if(sv&&VOICE_MAP[sv])ONLINE=sv;}catch(e){}
+const ENG=["yd","se","bd","gg"];               // 全部可选引擎
+const ENG_NAME={yd:"有道",se:"Polly",bd:"百度",gg:"谷歌"};
+const POLLY_VOICES={Brian:1,Amy:1,Matthew:1,Joanna:1,Salli:1,Ivy:1};
+let SRC_ORDER=ENG.slice(),srcIdx=0;           // 降级顺序：按所选音色的主引擎优先
+function applyVoiceOrder(){
+  const want=VOICE_MAP[ONLINE].src;
+  const i=ENG.indexOf(want);
+  SRC_ORDER=i<0?ENG.slice():ENG.slice(i).concat(ENG.slice(0,i));
+}
+applyVoiceOrder();
+let audio=null;
+function ttsURL(src,t){
+  const q=encodeURIComponent(t);
+  if(src==="yd")return `https://dict.youdao.com/dictvoice?type=${ONLINE==="yd0"?"0":"1"}&audio=${q}`;
+  if(src==="se")return `https://api.streamelements.com/kappa/v2/speech?voice=${POLLY_VOICES[ONLINE]?ONLINE:"Brian"}&text=${q}`;
+  if(src==="bd")return `https://fanyi.baidu.com/gettts?lan=en&text=${q}&spd=5&source=web`;
+  return `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q=${q}`;
+}
+function fillVoiceSel(){
+  const sel=document.getElementById("voiceSel");if(!sel)return;
+  sel.innerHTML=VOICE_ORDER.map(v=>`<option value="${v}" ${ONLINE===v?"selected":""}>${VOICE_MAP[v].label}</option>`).join("");
+  const st=document.getElementById("srcState");
+  if(st)st.textContent=ENG_NAME[SRC_ORDER[srcIdx]]||"";
+}
+fillVoiceSel();
+let saying=0; // 防并发
+function say(t){
+  if(ONLINE==="mute"){try{if(audio){audio.pause();audio=null}}catch(e){}return}
+  const my=++saying;
+  trySrc(0,t,my);
+}
+function trySrc(i,t,my){
+  if(my!==saying)return;
+  if(i>=SRC_ORDER.length){const st=document.getElementById("srcState");if(st)st.textContent="无可用源";return}
+  const src=SRC_ORDER[i];
+  const st=document.getElementById("srcState");
+  if(st)st.textContent="尝试 "+ENG_NAME[src];
+  try{if(audio){audio.pause();audio=null}}catch(e){}
+  const a=new Audio(ttsURL(src,t));
+  let ok=false,advanced=false;
+  const advance=()=>{ if(!ok&&!advanced&&my===saying){advanced=true;trySrc(i+1,t,my);} };
+  a.addEventListener("playing",()=>{ok=true;
+    if(srcIdx!==i){srcIdx=i;fillVoiceSel();} // 记住能用的源
+  });
+  a.addEventListener("error",advance);
+  audio=a;
+  a.play().catch(advance);
+  setTimeout(()=>{ if(!ok&&my===saying&&a.paused)advance(); },2500);
+}
+document.getElementById("voiceSel").addEventListener("change",e=>{
+  ONLINE=e.target.value; applyVoiceOrder(); srcIdx=0; // 换音色重新从头试源
+  try{localStorage.setItem("vocab_voice",ONLINE);}catch(e){}
+  if(ONLINE!=="mute") say("Hello, let us learn new words together.");
+});
+/* ---- 白天 / 夜晚 ---- */
+let style="day";
+try{const s=localStorage.getItem("vocab_style");if(["day","night","paper"].indexOf(s)>=0)style=s;}catch(e){}
+function applyStyle(){
+  document.body.classList.toggle("night",style==="night");
+  document.body.classList.toggle("paper",style==="paper");
+  ["day","night","paper"].forEach(k=>{const b=document.getElementById("st-"+k);if(b)b.classList.toggle("on",style===k);});
+  if(typeof studyEl!=="undefined"&&studyEl)studyEl.classList.toggle("day",style!=="night");
+}
+document.getElementById("st-day").onclick=()=>{style="day";try{localStorage.setItem("vocab_style","day")}catch(e){};applyStyle();};
+document.getElementById("st-night").onclick=()=>{style="night";try{localStorage.setItem("vocab_style","night")}catch(e){};applyStyle();};
+document.getElementById("st-paper").onclick=()=>{style="paper";try{localStorage.setItem("vocab_style","paper")}catch(e){};applyStyle();};
+document.getElementById("app").addEventListener("click",e=>{
+  const el=e.target.closest("[data-say]"); if(el) say(el.dataset.say);
+});
+
+/* ---------- 学习模式：按章节分页的 PPT 翻页 ---------- */
+const PER_PAGE = 12; // 每页最多词数，放不下自动续页
+let slides=[],si=0;
+function buildSlides(){
+  slides=[];
+  for(const s of DATA){
+    for(let i=0;i<s.words.length;i+=PER_PAGE){
+      slides.push({sec:s.sec,page:Math.floor(i/PER_PAGE)+1,
+        pages:Math.ceil(s.words.length/PER_PAGE),words:s.words.slice(i,i+PER_PAGE)});
+    }
+  }
+}
+const studyEl=document.getElementById("study");
+let open=false;
+function showSlide(){
+  const sl=slides[si];
+  const title=sl.pages>1 ? `${sl.sec}（第 ${sl.page}/${sl.pages} 页）` : sl.sec;
+  document.getElementById("sPage").innerHTML =
+    `<div class="stitle">${title}<small>${sl.words.length} words</small></div>
+     <div class="sgrid">${sl.words.map(x=>`
+       <div class="scard" data-say="${x.w}">
+         <span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span><span class="tag ${LVCLS[x.lv]}" style="font-size:11px;padding:2px 8px">${LVSHORT[x.lv]}</span>
+         <div class="m">${x.pos} ${x.m}</div>
+         <div class="ex">${x.ex}</div>
+       </div>`).join("")}</div>`;
+  document.getElementById("sIdx").textContent=(si+1)+" / "+slides.length;
+  document.getElementById("sbar").style.width=((si+1)/slides.length*100)+"%";
+  document.getElementById("sPrev").disabled=si===0;
+  document.getElementById("sNext").disabled=si===slides.length-1;
+  studyEl.querySelector(".sbody").scrollTop=0;
+}
+function studyOpen(){ buildSlides(); si=0; open=true; studyEl.classList.add("on"); applyStyle(); showSlide(); }
+function studyClose(){ open=false; studyEl.classList.remove("on"); }
+function next(){ if(si<slides.length-1){ si++; showSlide(); } }
+function prev(){ if(si>0){ si--; showSlide(); } }
+document.getElementById("v-study").onclick=()=>open?studyClose():studyOpen();
+document.getElementById("sClose").onclick=studyClose;
+document.getElementById("sExit").onclick=studyClose;
+document.getElementById("sNext").onclick=next;
+document.getElementById("sPrev").onclick=prev;
+studyEl.addEventListener("click",e=>{
+  const el=e.target.closest("[data-say]"); if(el) say(el.dataset.say);
+});
+document.addEventListener("keydown",e=>{
+  if(!open) return;
+  if(e.code==="Space"||e.key==="ArrowRight"||e.key==="PageDown"){ e.preventDefault(); next(); }
+  else if(e.key==="ArrowLeft"||e.key==="PageUp"){ prev(); }
+  else if(e.key==="Escape"){ studyClose(); }
+});
+applyStyle(); syncToolbar(); render();
+</script>
+<a href="../../vocab.html" target="_self" style="position:fixed;left:14px;bottom:14px;z-index:9999;font:600 13px/1 -apple-system,system-ui,sans-serif;color:#fff;background:rgba(0,0,0,.55);padding:8px 12px;border-radius:20px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.25)">← 返回索引</a></body>
+</html>

@@ -1,0 +1,5383 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Engram 论文核心词汇</title>
+<style>
+:root{--c4:#3b82f6;--c6:#8b5cf6;--ckaon:#f59e0b;--cphd:#ef4444;--ct:#0d9488;--cg:#d946ef;--cm4:#0ea5e9;--cm8:#f43f5e;--cy:#10b981;--csuper:#facc15}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;transition:background .3s,color .3s}
+.tag{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:4px;color:#fff;vertical-align:2px;margin-left:6px;font-style:normal;flex:none;white-space:nowrap}
+.tag.t4{background:var(--c4)}.tag.t6{background:var(--c6)}.tag.tk{background:var(--ckaon)}.tag.tp{background:var(--cphd)}.tag.tm4{background:var(--cm4)}.tag.tm8{background:var(--cm8)}
+.tag.tt{background:var(--ct)}.tag.tg{background:var(--cg)}.tag.ty{background:var(--cy)}.tag.tsuper{background:var(--csuper);color:#3a2f00}
+.ipa{font-family:"SF Mono",Menlo,monospace;font-size:.82em;font-weight:400;opacity:.62;margin-left:6px}
+
+
+/* 论文原标题小字 */
+.ptitle{font-size:12.5px;letter-spacing:.3px;margin-top:6px}
+.ptitle i{font-family:Georgia,serif}
+.theme-mag .ptitle{color:#999;text-transform:none}
+.theme-dark .ptitle{color:#6e7681}
+.theme-paper .ptitle{color:#a09578}
+.theme-fresh .ptitle{color:#9ca3af}
+body.lv-mode .ptitle{color:#7d8590}
+
+/* 预览工具条 */
+.toolbar{position:fixed;right:16px;bottom:16px;z-index:99;display:flex;flex-direction:column;gap:8px;background:rgba(20,22,30,.88);padding:12px;border-radius:14px;backdrop-filter:blur(8px);box-shadow:0 6px 24px rgba(0,0,0,.35)}
+.toolbar .row{display:flex;gap:6px}
+.toolbar button{border:none;cursor:pointer;padding:7px 12px;border-radius:8px;font-size:12.5px;background:#3a3f4d;color:#cbd2e0;transition:.15s}
+.toolbar button:hover{background:#4a5164}
+.toolbar button.on{background:#fff;color:#111;font-weight:600}
+.toolbar .lbl{font-size:10px;color:#8a93a6;text-align:left;margin:2px 0 -2px 2px}
+
+/* ---------- A 纸质阅读 ---------- */
+body.theme-paper{background:#faf6ee;color:#2c2a25}
+.theme-paper .wrap{max-width:880px;margin:0 auto;padding:56px 24px 140px}
+.theme-paper .hero h1{font-family:Georgia,"Songti SC",serif;font-size:34px}
+.theme-paper .hero p{color:#8a8272;margin:10px 0 42px;font-size:14px}
+.theme-paper .sec{margin-bottom:44px}
+.theme-paper .sec>h2{font-family:Georgia,"Songti SC",serif;font-size:20px;padding-left:14px;border-left:4px solid #b08d4f;margin-bottom:18px}
+.theme-paper .word{display:flex;gap:14px;padding:14px 16px;border-bottom:1px dashed #ddd2bc;align-items:baseline}
+.theme-paper .word:hover{background:#f3ecdc}
+.theme-paper .w{font-family:Georgia,serif;font-size:19px;font-weight:700;min-width:250px}
+.theme-paper .pos{color:#a09578;font-size:13px;margin-right:6px}
+.theme-paper .m{color:#4a463c;font-size:15px}
+.theme-paper .ex{margin-left:auto;max-width:270px;font-size:12.5px;color:#9a8f76;font-style:italic;text-align:right}
+.theme-paper .from{display:block;font-size:11px;color:#b3a888;font-style:normal;margin-top:3px}
+
+/* ---------- B 暗色科技 ---------- */
+body.theme-dark{background:#0d1117;color:#e6edf3}
+.theme-dark .wrap{max-width:1000px;margin:0 auto;padding:56px 24px 140px}
+.theme-dark .hero h1{font-family:"SF Mono",Menlo,monospace;font-size:26px}
+.theme-dark .hero h1::before{content:"$ ";color:#3fb950}
+.theme-dark .hero p{color:#7d8590;margin:10px 0 40px;font-size:14px;font-family:Menlo,monospace}
+.theme-dark .sec>h2{font-size:15px;font-family:Menlo,monospace;color:#58a6ff;padding:10px 16px;background:#161b22;border:1px solid #30363d;border-radius:8px 8px 0 0;margin-bottom:-1px}
+.theme-dark .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;padding:20px;background:#161b22;border:1px solid #30363d;border-radius:0 0 8px 8px}
+.theme-dark .card{background:#0d1117;border:1px solid #30363d;border-left:4px solid #58a6ff;border-radius:6px;padding:15px 17px;transition:.2s;cursor:pointer;font-family:Menlo,monospace}
+.theme-dark .card:hover{border-color:#58a6ff;box-shadow:0 0 14px rgba(88,166,255,.25);transform:translateY(-2px)}
+.theme-dark .w{font-family:Menlo,monospace;font-size:17px;color:#79c0ff}
+.theme-dark .ipa{color:#7ee787;opacity:.9}
+.theme-dark .m{color:#8b949e;font-size:13.5px;margin-top:7px;line-height:1.55}
+.theme-dark .ex{font-size:12px;color:#6e7681;margin-top:8px;border-top:1px solid #21262d;padding-top:8px;font-style:italic}
+.theme-dark .from{color:#484f58;font-size:11px;margin-top:4px}
+
+/* ---------- C 清新卡片 ---------- */
+body.theme-fresh{background:linear-gradient(160deg,#eef4ff 0%,#f6f0ff 50%,#fff7ec 100%);color:#1f2430}
+.theme-fresh .wrap{max-width:1020px;margin:0 auto;padding:56px 24px 140px}
+.theme-fresh .hero h1{font-size:32px;font-weight:800;background:linear-gradient(90deg,#3b82f6,#8b5cf6,#f59e0b);-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block}
+.theme-fresh .hero p{color:#6b7280;margin:10px 0 40px;font-size:14px}
+.theme-fresh .sec>h2{font-size:19px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.theme-fresh .sec>h2 .n{width:30px;height:30px;border-radius:10px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.08);display:inline-flex;align-items:center;justify-content:center;font-size:13px}
+.theme-fresh .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+.theme-fresh .card{background:rgba(255,255,255,.82);backdrop-filter:blur(6px);border-radius:18px;padding:17px 19px 15px;box-shadow:0 3px 14px rgba(80,80,140,.09);transition:.2s;cursor:pointer;border-top:5px solid #dbe3f5}
+.theme-fresh .card.lv四级{border-top-color:#3b82f6}.theme-fresh .card.lv六级{border-top-color:#8b5cf6}
+.theme-fresh .card.lv考研{border-top-color:#f59e0b}.theme-fresh .card.lv考博{border-top-color:#ef4444}
+.theme-fresh .card.lv专四{border-top-color:#0ea5e9}.theme-fresh .card.lv专八{border-top-color:#f43f5e}
+.theme-fresh .card.lv雅思{border-top-color:#10b981}.theme-fresh .card.lv托福{border-top-color:#0d9488}
+.theme-fresh .card.lvGRE{border-top-color:#d946ef}.theme-fresh .card.lv超纲{border-top-color:#facc15}
+.theme-fresh .card .w{display:inline-block;background:#f3f5fb;border-radius:8px;padding:2px 10px}
+.theme-fresh .card:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(80,80,140,.16)}
+.theme-fresh .w{font-size:18px;font-weight:700}
+.theme-fresh .m{color:#4b5563;font-size:14px;margin-top:6px;line-height:1.55}
+.theme-fresh .ex{color:#9ca3af;font-size:12.5px;margin-top:8px}
+.theme-fresh .from{color:#b6bcc9;font-size:11.5px;margin-top:4px}
+
+/* ---------- D 杂志表格（宽松版） ---------- */
+body.theme-mag{background:#fff;color:#111}
+.theme-mag .wrap{max-width:960px;margin:0 auto;padding:52px 28px 140px}
+.theme-mag .hero{border-bottom:3px solid #111;padding-bottom:16px;margin-bottom:10px}
+.theme-mag .hero h1{font-family:"Songti SC",Georgia,serif;font-size:38px;font-weight:900}
+.theme-mag .hero p{color:#888;font-size:13.5px;margin-top:8px}
+.theme-mag .sec>h2{font-size:14px;letter-spacing:3px;text-transform:uppercase;color:#c2410c;margin:44px 0 8px;border-bottom:1px solid #e5e5e5;padding-bottom:8px}
+.theme-mag table{width:100%;border-collapse:collapse}
+.theme-mag td{padding:16px 12px;border-bottom:1px solid #f0f0f0;font-size:15.5px;line-height:1.65;vertical-align:top}
+.theme-mag tr:hover td{background:#fff8f3}
+.theme-mag .w{font-weight:700;font-size:17px;width:300px}
+.theme-mag .lv{width:60px}
+.theme-mag .lv b{font-size:11.5px;padding:3px 0;display:block;text-align:center;border-radius:3px;color:#fff;font-weight:600}
+.theme-mag .m{color:#3d3d3d}
+.theme-mag .ex{color:#9a9a9a;font-size:13px;font-style:italic}
+.theme-mag .from{display:block;color:#c9c9c9;font-size:11.5px;font-style:normal;margin-top:4px}
+
+/* ---------- 按级别：学习模式同款暗色大页 ---------- */
+body.lv-mode{background:#0b0e13 !important}
+body.lv-mode .hero h1,body.lv-mode .hero p{color:#e8ecf3}
+body.lv-mode .hero p{color:#7d8590}
+.lvslide{background:#101318;color:#e8ecf3;border-radius:20px;padding:26px 32px 22px;margin-bottom:26px;border-top:6px solid var(--c4)}
+.lvslide.l6{border-top-color:var(--c6)}.lvslide.lk{border-top-color:var(--ckaon)}.lvslide.lp{border-top-color:var(--cphd)}
+.lvslide.lt{border-top-color:var(--ct)}.lvslide.lg{border-top-color:var(--cg)}.lvslide.lm4{border-top-color:var(--cm4)}.lvslide.lm8{border-top-color:var(--cm8)}.lvslide.ly{border-top-color:var(--cy)}.lvslide.lsuper{border-top-color:var(--csuper)}
+.lvslide .ltitle{font-size:26px;font-weight:800;font-family:Georgia,serif;display:flex;align-items:baseline;gap:14px}
+.lvslide .ltitle small{font-size:14px;color:#7d8590;font-family:Menlo,monospace;font-weight:400}
+.lvslide .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;padding:20px 0 8px}
+.lvslide .lcard{background:#171c26;border:1px solid #2b3342;border-radius:14px;padding:15px 17px;cursor:pointer;transition:.15s}
+.lvslide .lcard:hover{border-color:#79c0ff;transform:translateY(-2px)}
+.lvslide .lcard .w{font-size:19px;font-weight:700;font-family:Georgia,serif}
+.lvslide .lcard .ipa{font-family:Menlo,monospace;font-size:13px;color:#7ee787;margin-left:8px}
+.lvslide .lcard .m{color:#aeb6c4;font-size:14px;margin-top:7px;line-height:1.55}
+.lvslide .lcard .ex{color:#646d7d;font-size:12px;font-style:italic;margin-top:7px}
+.lvslide .lcard .from{color:#4d5563;font-size:11px;margin-top:6px}
+
+
+/* ---------- 白天 / 夜晚 ---------- */
+body.lv-mode:not(.night){background:#eef1f6 !important}
+body.lv-mode:not(.night) .hero h1{color:#1f2430}
+body.lv-mode:not(.night) .hero p{color:#6b7280}
+body.lv-mode:not(.night) .lvslide{background:#fff;color:#1f2430;box-shadow:0 4px 18px rgba(80,80,140,.10)}
+body.lv-mode:not(.night) .lvslide .lcard{background:#f7f9fd;border-color:#e4e9f3}
+body.lv-mode:not(.night) .lvslide .lcard:hover{border-color:#3b82f6}
+body.lv-mode:not(.night) .lvslide .lcard .m{color:#4b5563}
+body.lv-mode:not(.night) .lvslide .lcard .ex{color:#98a0ae}
+body.lv-mode:not(.night) .lvslide .lcard .from{color:#b3bac6}
+body.lv-mode:not(.night) .lvslide .lcard .ipa{color:#0a7d33}
+body.night.theme-mag{background:#0d1117;color:#e6edf3}
+body.night.theme-mag .hero{border-bottom-color:#e6edf3}
+body.night.theme-mag .hero p{color:#8b949e}
+body.night.theme-mag .sec>h2{color:#fbbf24;border-bottom-color:#30363d}
+body.night.theme-mag td{border-bottom-color:#1c2230}
+body.night.theme-mag tr:hover td{background:#161b22}
+body.night.theme-mag .m{color:#c9d1d9}
+body.night.theme-mag .ex{color:#8b949e}
+body.night.theme-mag .from{color:#57606a}
+body.night.theme-mag .w{color:#e6edf3}
+body.night.theme-mag .ptitle{color:#8b949e}
+body.night.theme-mag .ipa{opacity:.55}
+#study.day{background:#f5f7fa;color:#1f2430}
+#study.day .scard{background:#fff;border-color:#e4e9f3}
+#study.day .scard .m{color:#4b5563}
+#study.day .scard .ex{color:#98a0ae}
+#study.day .scard:hover{border-color:#3b82f6}
+#study.day .sfoot{color:#98a0ae;border-top-color:#e6e9f0}
+#study.day .snav button,#study.day #sClose{background:#fff;color:#1f2430;border-color:#d7dce6}
+#study.day .sfoot kbd{background:#e8ecf3;color:#1f2430}
+
+/* ---------- 学习模式（PPT 按章节翻页） ---------- */
+#study{position:fixed;inset:0;z-index:200;display:none;background:#101318;color:#e8ecf3;flex-direction:column}
+#study.on{display:flex}
+#study .sprog{height:4px;background:#262c38}
+#study .sprog i{display:block;height:100%;background:linear-gradient(90deg,#58a6ff,#8b5cf6);width:0;transition:width .25s}
+#study .sbody{flex:1;overflow:auto;padding:20px 40px}
+#study .stitle{font-size:24px;font-weight:800;font-family:Georgia,serif;padding:6px 4px 2px}
+#study .stitle small{color:#5b6472;font-size:14px;font-family:Menlo,monospace;font-weight:400;margin-left:12px}
+#study .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;padding:16px 2px 30px}
+#study .scard{background:#171c26;border:1px solid #2b3342;border-radius:14px;padding:16px 18px;cursor:pointer;transition:.15s}
+#study .scard:hover{border-color:#58a6ff;transform:translateY(-2px)}
+#study .scard .w{font-size:22px;font-weight:700;font-family:Georgia,serif}
+#study .scard .ipa{color:#7ee787;font-size:14px;margin-left:8px}
+#study .scard .m{color:#aeb6c4;font-size:14.5px;margin-top:8px;line-height:1.55}
+#study .scard .ex{color:#646d7d;font-size:12px;font-style:italic;margin-top:6px}
+#study .sfoot{display:flex;justify-content:space-between;align-items:center;padding:14px 28px;color:#5b6472;font-size:13px;border-top:1px solid #1d232e}
+#study .sfoot kbd{background:#262c38;border-radius:5px;padding:2px 8px;margin:0 2px;font-family:Menlo,monospace;font-size:12px}
+#study .snav{display:flex;gap:10px;align-items:center}
+#study .snav button{border:1px solid #333b4a;background:#1a2029;color:#cbd2e0;border-radius:8px;padding:8px 18px;cursor:pointer;font-size:14px}
+#study .snav button:hover{border-color:#58a6ff}
+#study .snav button:disabled{opacity:.35;cursor:default}
+
+
+
+/* —— 样式·暖白（暖白纸底） —— */
+
+body.theme-mag.paper{background:#f4f2ea!important;color:#23211c!important}
+body.theme-mag.paper .hero{border-bottom-color:#23211c}
+body.theme-mag.paper .hero h1{color:#1c1a12}
+body.theme-mag.paper .hero p{color:#6b6a5c}
+body.theme-mag.paper .ptitle{color:#8a8878}
+body.theme-mag.paper .sec>h2{color:#5f7a3f;border-bottom-color:#ddd8ca}
+body.theme-mag.paper td{border-bottom-color:#e6e1d3}
+body.theme-mag.paper tr:hover td{background:#ece7da}
+body.theme-mag.paper .m{color:#33312a}
+body.theme-mag.paper .ex{color:#8a8878}
+body.theme-mag.paper .from{color:#b3b0a0}
+body.theme-mag.paper .ipa{color:#6b6a5c}
+.theme-mag .hwband{padding:0 3px;font-weight:700}
+body.theme-mag.paper .hwband{background:linear-gradient(transparent 16%,#cdddb8 16%,#cdddb8 84%,transparent 84%);color:#1c1a12}
+
+
+</style>
+</head>
+<body class="theme-mag">
+<div class="wrap">
+  <div class="hero">
+    <h1>Engram 论文核心词汇</h1>
+    <div class="ptitle"><i>Conditional Memory via Scalable Lookup: A New Axis of Sparsity for LLMs (Engram) · arXiv:2601.07372 · DeepSeek-AI, 2026</i></div>
+    <p>全量口径重做 · 4 节 611 词 · 十一档 + 超纲（2026-10-08）</p>
+  </div>
+  <div id="app"></div>
+</div>
+
+<div class="toolbar">
+  <div class="lbl">视图</div>
+  <div class="row">
+    <button id="v-sec" class="on">按章节</button>
+    <button id="v-lv">按级别综合</button>
+    <button id="v-study">▶ 学习模式</button>
+  </div>
+  <div class="lbl">样式</div>
+  <div class="row">
+    <button id="st-day" class="on">☀ 白天</button>
+    <button id="st-night">🌙 夜晚</button>
+    <button id="st-paper">暖白</button>
+  </div>
+  <div class="lbl">朗读声音 · 多引擎</div>
+  <div class="row"><select id="voiceSel" style="flex:1;border:none;border-radius:8px;padding:7px 8px;background:#3a3f4d;color:#cbd2e0;font-size:12.5px;outline:none"></select><span id="srcState" style="align-self:center;font-size:10.5px;color:#8a93a6;min-width:34px;text-align:center"></span></div>
+</div>
+
+<div id="study">
+  <div class="sprog"><i id="sbar"></i></div>
+  <button id="sClose" title="退出学习模式 (Esc)" style="position:absolute;top:14px;right:18px;z-index:5;border:1px solid #333b4a;background:#1a2029;color:#cbd2e0;border-radius:8px;width:34px;height:34px;font-size:16px;cursor:pointer">✕</button>
+  <div class="sbody"><div id="sPage"></div></div>
+  <div class="sfoot">
+    <span><kbd>空格</kbd>/<kbd>→</kbd> 下一页 &nbsp; <kbd>←</kbd> 上一页 &nbsp; 点单词发音 &nbsp; <kbd>Esc</kbd> 退出</span>
+    <div class="snav">
+      <span id="sIdx">0 / 0</span>
+      <button id="sPrev">← 上一页</button>
+      <button id="sNext">下一页 →</button>
+      <button id="sExit" style="border-color:#5b3a3a">退出</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// lv: 4=四级 6=六级 k=考研 p=考博；ipa 为美式音标
+const DATA = [
+ {
+  "sec": "1. Introduction · 引言",
+  "short": "Intro",
+  "icon": "1",
+  "words": [
+   {
+    "w": "axis",
+    "ipa": "ˈæksəs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "轴，轴线；中心线",
+    "ex": "To align model architecture with this linguistic duality, we advocate for a complementary axis of sparsity: conditional memory."
+   },
+   {
+    "w": "biological",
+    "ipa": "ˌbaɪəˈlɑʤɪkəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "生物的",
+    "ex": "Introduction Sparsity is a recurring design principle for intelligent systems, spanning from biological neural circuits (Lennie, 2003;"
+   },
+   {
+    "w": "bypass",
+    "ipa": "ˈbaɪˌpæs",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "旁通管；绕过",
+    "ex": "This demonstrates that Engram effectively bypasses GPU memory constraints, facilitating aggressive parameter expansion."
+   },
+   {
+    "w": "canonical",
+    "ipa": "kəˈnɑnɪkl",
+    "pos": "adj.",
+    "lv": "GRE",
+    "m": "典型的，规范的",
+    "g": "g",
+    "ex": "as a canonical instantiation"
+   },
+   {
+    "w": "capacity",
+    "ipa": "kəˈpæsɪti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "容量；能力；能量",
+    "ex": "MMLU-Pro: +1.8), where memory capacity is intuitively beneficial; we observe even more significant improvements in general reasoning (e.g., BBH: +5.0;"
+   },
+   {
+    "w": "capture",
+    "ipa": "ˈkæpʧər",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "捕获，俘获；夺得",
+    "ex": "Nguyen, 2024) in capturing such local dependencies implies that these regularities are naturally represented as computationally inexpensive lookups."
+   },
+   {
+    "w": "classical",
+    "ipa": "ˈklæsɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "古典的；经典的",
+    "ex": "The effectiveness of classical 𝑁-gram models (Brants et al., 2007;"
+   },
+   {
+    "w": "complementary",
+    "ipa": "ˌkɑmpləˈmɛnʧi",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "补充的； 辅助的",
+    "ex": "To align model architecture with this linguistic duality, we advocate for a complementary axis of sparsity: conditional memory."
+   },
+   {
+    "w": "compositional",
+    "ipa": "ˌkɑmpəˈzɪʃənl",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "组合的",
+    "ex": "compositional reasoning and knowledge retrieval"
+   },
+   {
+    "w": "constraint",
+    "ipa": "kənˈstreɪnt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "限制，束缚，约束",
+    "ex": "This demonstrates that Engram effectively bypasses GPU memory constraints, facilitating aggressive parameter expansion."
+   },
+   {
+    "w": "currently",
+    "ipa": "ˈkərəntli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "当前；一般地",
+    "ex": "Currently, this principle is primarily realized through Mixture-of-Experts (MoE) (Dai et al., 2024;"
+   },
+   {
+    "w": "domain",
+    "ipa": "doʊˈmeɪn",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "领域",
+    "ex": "Compared to a strictly iso-parameter and iso-FLOPs MoE-27B baseline, Engram-27B achieves superior efficiency across diverse domains."
+   },
+   {
+    "w": "drastically",
+    "ipa": "ˈdræstɪkli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "大幅地，剧烈地",
+    "ex": "drastically increase model size without proportional increases in compute"
+   },
+   {
+    "w": "duality",
+    "ipa": "duˈæləti",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "二元性",
+    "ex": "To align model architecture with this linguistic duality"
+   },
+   {
+    "w": "effectively",
+    "ipa": "ˈifɛktɪvli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "有效地",
+    "ex": "This demonstrates that Engram effectively bypasses GPU memory constraints, facilitating aggressive parameter expansion."
+   },
+   {
+    "w": "empirical",
+    "ipa": "ˌɛmˈpɪrɪkəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "经验主义的",
+    "ex": "Empirical results show that offloading a 100B-parameter table to host memory incurs negligible overhead (< 3%)."
+   },
+   {
+    "w": "entail",
+    "ipa": "ɪnˈteɪl",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "包含，涉及",
+    "g": "g",
+    "ex": "language modeling entails two qualitatively different sub-tasks"
+   },
+   {
+    "w": "entity",
+    "ipa": "ˈɛntɪti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "实体， 独立存在体， 实际存在物",
+    "ex": "For instance, resolving a common multi-token entity requires consuming multiple early layers of attention and feed-forward networks (Ghandeharioun et al., 2024;"
+   },
+   {
+    "w": "equipped",
+    "ipa": "ɪkˈwɪpt",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "装备；预备（equip的过去分词）；整装",
+    "ex": "In this paper, we propose Engram, a conditional memory module grounded in the classic 𝑁-gram structure but equipped with modern adaptations such as tokenizer compression, multi-head hashing, contextualized gating, and …"
+   },
+   {
+    "w": "essentially",
+    "ipa": "ɛˈsɛnʃəli",
+    "pos": "adv.",
+    "lv": "GRE",
+    "m": "本质上地；必须的",
+    "ex": "This process essentially amounts to an expensive runtime reconstruction of a static lookup table, wasting valuable sequential depth on trivial operations that could otherwise be allocated to higher-level reasoning."
+   },
+   {
+    "w": "exploration",
+    "ipa": "ˌɛksplərˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "考察；勘探；探查",
+    "ex": "As a preliminary exploration of this paradigm, we revisit 𝑁-gram embeddings (Bojanowski et al., 2017) as a canonical instantiation: local context serves as a key to index a massive embedding table via constant-time O(1) lookups …"
+   },
+   {
+    "w": "flop",
+    "ipa": "flɑp",
+    "pos": "v.；n.；adv.",
+    "lv": "专八",
+    "m": "笨拙地抛下；扑通放下；拍（翅）；失败；砰然落下；拍击声；扑通一声；恰巧",
+    "ex": "Compared to a strictly iso-parameter and iso-FLOPs MoE-27B baseline, Engram-27B achieves superior efficiency across diverse domains."
+   },
+   {
+    "w": "heterogeneity",
+    "ipa": "ˌhetərədʒəˈniːəti",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "异质性",
+    "g": "g",
+    "ex": "the intrinsic heterogeneity of linguistic signals suggests significant room"
+   },
+   {
+    "w": "highly",
+    "ipa": "ˈhaɪli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "高度地，很，非常",
+    "ex": "While the former demands deep, dynamic computation, a substantial portion of text—such as named entities and formulaic patterns—is local, static, and highly stereotyped (Constant et al., 2017;"
+   },
+   {
+    "w": "ideal",
+    "ipa": "aɪˈdil",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "理想的；观念的",
+    "ex": "Our investigation reveals that, perhaps surprisingly, this static retrieval mechanism can serve as an ideal complement to modern MoE architecture—but only if it is properly designed."
+   },
+   {
+    "w": "imply",
+    "ipa": "ˌɪmˈplaɪ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "意味；暗示",
+    "ex": "Nguyen, 2024) in capturing such local dependencies implies that these regularities are naturally represented as computationally inexpensive lookups."
+   },
+   {
+    "w": "inexpensive",
+    "ipa": "ˌɪnɪkˈspɛnsɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "花费不多的，廉价的",
+    "ex": "Nguyen, 2024) in capturing such local dependencies implies that these regularities are naturally represented as computationally inexpensive lookups."
+   },
+   {
+    "w": "input",
+    "ipa": "ˈɪnˌpʊt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "输入；投入的资金",
+    "ex": "This module is applied only to specific layers to decouple memory from compute, leaving the standard input embedding and un-embedding module intact."
+   },
+   {
+    "w": "instantiation",
+    "ipa": "ɪnˌstænʃiˈeɪʃn",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "实例化",
+    "ex": "as a canonical instantiation"
+   },
+   {
+    "w": "intact",
+    "ipa": "ˌɪnˈtækt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "完整无缺的； 未经触动的； 未受损伤的",
+    "ex": "This module is applied only to specific layers to decouple memory from compute, leaving the standard input embedding and un-embedding module intact."
+   },
+   {
+    "w": "intelligent",
+    "ipa": "ˌɪnˈtɛləʤənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "智能的",
+    "ex": "Introduction Sparsity is a recurring design principle for intelligent systems, spanning from biological neural circuits (Lennie, 2003;"
+   },
+   {
+    "w": "intrinsic",
+    "ipa": "ɪnˈtrɪnzɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "内在的",
+    "g": "g",
+    "ex": "the intrinsic heterogeneity of linguistic signals"
+   },
+   {
+    "w": "linguistic",
+    "ipa": "lɪŋgˈwɪstɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "语言的；语言学的",
+    "ex": "To align model architecture with this linguistic duality, we advocate for a complementary axis of sparsity: conditional memory."
+   },
+   {
+    "w": "logic",
+    "ipa": "ˈlɑʤɪk",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "逻辑",
+    "ex": "Whereas conditional computation sparsely activates parameters to process dynamic logic (Bengio et al., 2013;"
+   },
+   {
+    "w": "multiple",
+    "ipa": "ˈməltəpəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "复合的；并联的",
+    "ex": "For instance, resolving a common multi-token entity requires consuming multiple early layers of attention and feed-forward networks (Ghandeharioun et al., 2024;"
+   },
+   {
+    "w": "naturally",
+    "ipa": "ˈnæʧərəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "自然地；天然地",
+    "ex": "Nguyen, 2024) in capturing such local dependencies implies that these regularities are naturally represented as computationally inexpensive lookups."
+   },
+   {
+    "w": "neural",
+    "ipa": "ˈnʊrəl",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "神经的",
+    "ex": "Introduction Sparsity is a recurring design principle for intelligent systems, spanning from biological neural circuits (Lennie, 2003;"
+   },
+   {
+    "w": "owing to",
+    "ipa": "ˈoʊɪŋ tu",
+    "pos": "prep.",
+    "lv": "超纲",
+    "m": "由于",
+    "ex": "Owing to its ability to drastically increase model size"
+   },
+   {
+    "w": "portion",
+    "ipa": "ˈpɔrʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "一部分；一分",
+    "ex": "While the former demands deep, dynamic computation, a substantial portion of text—such as named entities and formulaic patterns—is local, static, and highly stereotyped (Constant et al., 2017;"
+   },
+   {
+    "w": "preliminary",
+    "ipa": "prɪˈlɪməˌnɛri",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "预备的，初步的",
+    "ex": "As a preliminary exploration of this paradigm, we revisit 𝑁-gram embeddings (Bojanowski et al., 2017) as a canonical instantiation: local context serves as a key to index a massive embedding table via constant-time O(1) lookups …"
+   },
+   {
+    "w": "primarily",
+    "ipa": "praɪˈmɛrəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "主要地，首先",
+    "ex": "Currently, this principle is primarily realized through Mixture-of-Experts (MoE) (Dai et al., 2024;"
+   },
+   {
+    "w": "pro",
+    "ipa": "proʊ",
+    "pos": "adv.；n.；prep.",
+    "lv": "专八",
+    "m": "赞成地；赞成者；赞成的意见；赞成",
+    "ex": "MMLU-Pro: +1.8), where memory capacity is intuitively beneficial; we observe even more significant improvements in general reasoning (e.g., BBH: +5.0;"
+   },
+   {
+    "w": "proportional",
+    "ipa": "prəˈpɔrʃənl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "成比例的",
+    "ex": "without proportional increases in compute"
+   },
+   {
+    "w": "propose",
+    "ipa": "prəˈpoʊz",
+    "pos": "v.；v.",
+    "lv": "四级",
+    "m": "提议；求婚",
+    "ex": "In this paper, we propose Engram, a conditional memory module grounded in the classic 𝑁-gram structure but equipped with modern adaptations such as tokenizer compression, multi-head hashing, contextualized gating, and …"
+   },
+   {
+    "w": "qualitatively",
+    "ipa": "ˈkwɑlɪteɪtɪvli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "性质上地",
+    "ex": "two qualitatively different sub-tasks: compositional reasoning and knowledge retrieval"
+   },
+   {
+    "w": "reconstruct",
+    "ipa": "ˌrikənˈstrəkt",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "重建；改造；修复；重现",
+    "ex": "Mechanistic analysis via LogitLens (nostalgebraist, 2020) and CKA (Hendrycks et al., 2021a) reveals the source of these gains: Engram relieves the backbone from reconstructing static knowledge in early layers, thereby increasing …"
+   },
+   {
+    "w": "reconstruction",
+    "ipa": "ˌriːkənˈstrʌkʃn",
+    "pos": "n.",
+    "lv": "雅思",
+    "m": "重建",
+    "ex": "an expensive runtime reconstruction of a static lookup table"
+   },
+   {
+    "w": "recur",
+    "ipa": "rɪˈkɜrɪŋ",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "反复出现的",
+    "ex": "Sparsity is a recurring design principle for intelligent systems"
+   },
+   {
+    "w": "regularity",
+    "ipa": "ˌreɡjuˈlærəti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "规律性",
+    "ex": "these regularities are naturally represented as computationally inexpensive lookups"
+   },
+   {
+    "w": "retrieve",
+    "ipa": "rɪˈtriːv",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "检索，取回",
+    "ex": "conditional memory relies on sparse lookup operations to retrieve static embeddings"
+   },
+   {
+    "w": "reveal",
+    "ipa": "rɪˈvil",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "揭露，揭示",
+    "ex": "Our investigation reveals that, perhaps surprisingly, this static retrieval mechanism can serve as an ideal complement to modern MoE architecture—but only if it is properly designed."
+   },
+   {
+    "w": "sequential",
+    "ipa": "səkˈwɛnʃəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "序列的； 连续的； 随之而来的",
+    "ex": "This process essentially amounts to an expensive runtime reconstruction of a static lookup table, wasting valuable sequential depth on trivial operations that could otherwise be allocated to higher-level reasoning."
+   },
+   {
+    "w": "simulate",
+    "ipa": "ˈsɪmjəleɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "模拟",
+    "ex": "current LLMs are forced to simulate retrieval through computation"
+   },
+   {
+    "w": "source",
+    "ipa": "sɔrs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "来源",
+    "ex": "Mechanistic analysis via LogitLens (nostalgebraist, 2020) and CKA (Hendrycks et al., 2021a) reveals the source of these gains: Engram relieves the backbone from reconstructing static knowledge in early layers, thereby increasing …"
+   },
+   {
+    "w": "span",
+    "ipa": "spæn",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "跨距；一段时间",
+    "ex": "Introduction Sparsity is a recurring design principle for intelligent systems, spanning from biological neural circuits (Lennie, 2003;"
+   },
+   {
+    "w": "sparsely",
+    "ipa": "ˈspɑrsli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "稀疏地；贫乏地",
+    "ex": "Whereas conditional computation sparsely activates parameters to process dynamic logic (Bengio et al., 2013;"
+   },
+   {
+    "w": "specifically",
+    "ipa": "spəˈsɪfɪkli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "特别地， 特定地； 明确地， 具体地",
+    "ex": "Specifically, language modeling entails two qualitatively different sub-tasks: compositional reasoning and knowledge retrieval."
+   },
+   {
+    "w": "stereotype",
+    "ipa": "ˈsteriətaɪpt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "程式化的",
+    "ex": "local, static, and highly stereotyped"
+   },
+   {
+    "w": "substantially",
+    "ipa": "səbˈstænʃəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "大体上；本质上",
+    "ex": "Furthermore, by delegating local dependencies to lookups, Engram frees up attention capacity to focus on global context, enabling exceptional performance in long-context scenar-ios—substantially outperforming baselines on LongPPL …"
+   },
+   {
+    "w": "surprisingly",
+    "ipa": "səˈpraɪzɪŋli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "惊人地",
+    "ex": "Our investigation reveals that, perhaps surprisingly, this static retrieval mechanism can serve as an ideal complement to modern MoE architecture—but only if it is properly designed."
+   },
+   {
+    "w": "synergy",
+    "ipa": "ˈsɪnərdʒi",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "协同",
+    "g": "g",
+    "ex": "To quantify the synergy between these two primitives"
+   },
+   {
+    "w": "tame",
+    "ipa": "teɪm",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "驯服的；顺从的",
+    "ex": "Vocab Embedding Alexander the Great Only could tame the horse Bucephalus Transformer Block ."
+   },
+   {
+    "w": "trivial",
+    "ipa": "ˈtrɪviəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "琐碎的",
+    "g": "g",
+    "ex": "wasting valuable sequential depth on trivial operations"
+   },
+   {
+    "w": "uncover",
+    "ipa": "ənˈkəvər",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "揭开…的盖子",
+    "ex": "Our experiments uncover a distinct U-shaped scaling law, revealing that even simple lookup mechanisms, when treated as a first-class modeling primitive, act as essential complements to neural computation."
+   },
+   {
+    "w": "whereas",
+    "ipa": "wɛˈræz",
+    "pos": "conj.",
+    "lv": "六级",
+    "m": "然而， 但是， 尽管",
+    "ex": "Whereas conditional computation sparsely activates parameters to process dynamic logic (Bengio et al., 2013;"
+   }
+  ]
+ },
+ {
+  "sec": "2. Method · Engram 模块",
+  "short": "Method",
+  "icon": "2",
+  "words": [
+   {
+    "w": "accommodate",
+    "ipa": "əˈkɑməˌdeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "适合， 提供住宿",
+    "ex": "During training, to accommodate large-scale embedding tables, we employ standard model parallelism by sharding the tables across available GPUs."
+   },
+   {
+    "w": "adaptability",
+    "ipa": "əˌdæptəˈbɪləti",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "适应性",
+    "ex": "Being static, however, they inherently lack contextual adaptability and may suffer from noise due to hash collisions or polysemy (Haber and Poesio, 2024)."
+   },
+   {
+    "w": "agnostic",
+    "ipa": "ægˈnɑstɪk",
+    "pos": "n.；adj.",
+    "lv": "专八",
+    "m": "不可知论者；不可知论的",
+    "ex": "Although the Engram module is inherently topology-agnostic, adapting it to this multi-branch framework necessitates structural optimization to balance efficiency and expressivity."
+   },
+   {
+    "w": "alignment",
+    "ipa": "əˈlaɪnmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "排成直线；结盟，联合",
+    "ex": "This design enforces semantic alignment: if the retrieved memory e𝑡contradicts the current context h𝑡, the gate 𝛼𝑡tends toward zero, effectively suppressing the noise."
+   },
+   {
+    "w": "allocation",
+    "ipa": "ˌæləˈkeɪʃn",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "分配",
+    "ex": "we formulate the Sparsity Allocation problem"
+   },
+   {
+    "w": "ambiguity",
+    "ipa": "ˌæmbɪˈgjuəti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "含糊；不明确；暧昧；模棱两可的话",
+    "ex": "To enhance expressivity and resolve this ambiguity, we employ a context-aware gating mechanism inspired by Attention (Bahdanau et al., 2015;"
+   },
+   {
+    "w": "assign",
+    "ipa": "əˈsaɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "分配，布置",
+    "ex": "Tokenizer Compression While 𝑁-gram models typically operate directly on tokenizer outputs, standard subword tokenizers prioritize lossless reconstruction, often assigning disjoint IDs to semantically equivalent terms (e.g., Apple …"
+   },
+   {
+    "w": "buffer",
+    "ipa": "ˈbəfər",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "[计] 缓冲区；缓冲器，[车辆] 减震器；缓冲",
+    "ex": "To effectively mask communication latency, the Engram module is placed at specific layers within the backbone, leveraging the computation of preceding layers as a buffer to prevent GPU stalls."
+   },
+   {
+    "w": "complement",
+    "ipa": "ˈkɑmplɪment",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "互补物",
+    "ex": "this static retrieval mechanism can serve as an ideal complement"
+   },
+   {
+    "w": "compress",
+    "ipa": "ˈkɑmprɛs",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "压紧，压缩",
+    "ex": "First, as detailed in Section 2.2, we extract and compress suffix 𝑁-grams to deterministically retrieve static embedding vectors via hashing."
+   },
+   {
+    "w": "concatenate",
+    "ipa": "kənˈkætəˌneɪt",
+    "pos": "v.",
+    "lv": "GRE",
+    "m": "连接",
+    "ex": "final memory vector e𝑡∈R𝑑mem by concatenating all retrieved embeddings:"
+   },
+   {
+    "w": "constrain",
+    "ipa": "kənˈstreɪn",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "限制",
+    "ex": "Unless otherwise stated, all experiments utilize this integration with Manifold-Constrained Hyper-Connections (𝑀= 4) (Xie et al., 2025)."
+   },
+   {
+    "w": "context",
+    "ipa": "ˈkɑntɛkst",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "背景，环境",
+    "ex": "To enhance expressivity and resolve this ambiguity, we employ a context-aware gating mechanism inspired by Attention (Bahdanau et al., 2015;"
+   },
+   {
+    "w": "contextual",
+    "ipa": "ˌkɑnˈtɛksˌʧuəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "上下文的",
+    "ex": "Being static, however, they inherently lack contextual adaptability and may suffer from noise due to hash collisions or polysemy (Haber and Poesio, 2024)."
+   },
+   {
+    "w": "contextualized",
+    "ipa": "kənˈtekstʃuəlaɪzd",
+    "pos": "adj.",
+    "lv": "超纲",
+    "m": "情境化的",
+    "ex": "modern adaptations such as tokenizer compression, multi-head hashing, contextualized gating"
+   },
+   {
+    "w": "current",
+    "ipa": "ˈkɑrənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "当前的",
+    "ex": "Subsequently, in Section 2.3, these retrieved embeddings are dynamically modulated by the current hidden state and refined via a lightweight convolution."
+   },
+   {
+    "w": "delegate",
+    "ipa": "ˈdelɪɡeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "委托，下放",
+    "g": "g",
+    "ex": "by delegating local dependencies to lookups"
+   },
+   {
+    "w": "density",
+    "ipa": "ˈdɛnsɪti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "密度",
+    "ex": "To maximize semantic density, we implement a vocabulary projection layer."
+   },
+   {
+    "w": "detail",
+    "ipa": "ˈditeɪl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "细节",
+    "ex": "First, as detailed in Section 2.2, we extract and compress suffix 𝑁-grams to deterministically retrieve static embedding vectors via hashing."
+   },
+   {
+    "w": "device",
+    "ipa": "dɪˈvaɪs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "装置，设备",
+    "ex": "An All-to-All communication primitive is employed to retrieve active embedding rows across devices. (b) Inference Phase: Engram tables are offloaded to host memory."
+   },
+   {
+    "w": "dilation",
+    "ipa": "ˌdaɪˈleɪʃən",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "扩张，放大；（瞳孔等的）扩大",
+    "ex": "the sequence of gated values. Using a kernel size 𝑤(set to 4), dilation 𝛿(set to the max 𝑁-gram"
+   },
+   {
+    "w": "directly",
+    "ipa": "dɪˈrɛkli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "直接地；立即",
+    "ex": "Directly parameterizing the combinatorial space of all possible 𝑁-grams is intractable."
+   },
+   {
+    "w": "dispatch",
+    "ipa": "dɪˈspæʧ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "发送，派遣",
+    "ex": "An All-to-All communication primitive is used to gather active rows in the forward pass and dispatch gradients in the backward pass, enabling the total memory capacity to scale linearly with the number of accelerators."
+   },
+   {
+    "w": "distinct",
+    "ipa": "dɪˈstɪŋkt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "独特的",
+    "ex": "Our experiments uncover a distinct U-shaped scaling law"
+   },
+   {
+    "w": "enforce",
+    "ipa": "ɛnˈfɔrs",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "实施，执行；强制",
+    "ex": "This design enforces semantic alignment: if the retrieved memory e𝑡contradicts the current context h𝑡, the gate 𝛼𝑡tends toward zero, effectively suppressing the noise."
+   },
+   {
+    "w": "enhance",
+    "ipa": "ɛnˈhæns",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "提高；加强；增加",
+    "ex": "To enhance expressivity and resolve this ambiguity, we employ a context-aware gating mechanism inspired by Attention (Bahdanau et al., 2015;"
+   },
+   {
+    "w": "equivalence",
+    "ipa": "ɪkˈwɪvələns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "等值，相等",
+    "ex": "identifiers based on normalized textual equivalence (using NFKC (Whistler, 2025), lowercasing, etc.)."
+   },
+   {
+    "w": "essential",
+    "ipa": "ɪˈsenʃl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "必不可少的",
+    "ex": "act as essential complements to neural computation"
+   },
+   {
+    "w": "exceptional",
+    "ipa": "ɪkˈsepʃənl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "卓越的",
+    "ex": "Furthermore, by delegating local dependencies to lookups, Engram frees up attention capacity to focus on global context, enabling exceptional performance in long-context scenar-ios—substantially outperforming baselines on LongPPL …"
+   },
+   {
+    "w": "extend",
+    "ipa": "ɪkˈstɛnd",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "延长；扩大；致",
+    "ex": "This necessitates a hardware-algorithm co-design strategy: while placing Engram deeper extends the compute window available for hiding latency, our ablation in Section 6.2 shows that modeling performance favors early intervention …"
+   },
+   {
+    "w": "extract",
+    "ipa": "ˈɛkˌstrækt",
+    "pos": "v.；n.",
+    "lv": "六级",
+    "m": "取出；提取；摘录",
+    "ex": "First, as detailed in Section 2.2, we extract and compress suffix 𝑁-grams to deterministically retrieve static embedding vectors via hashing."
+   },
+   {
+    "w": "facilitate",
+    "ipa": "fəˈsɪləˌteɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使便利，促进",
+    "ex": "This predictability facilitates specialized optimization strategies for both training and inference, as illustrated in Figure 2."
+   },
+   {
+    "w": "finally",
+    "ipa": "ˈfaɪnəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "最后；不可更改的",
+    "ex": "Finally, we discuss the integration with multi-branch architectures in Section 2.4 and the system-level design in Section 2.5."
+   },
+   {
+    "w": "formally",
+    "ipa": "ˈfɔrməli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "正式地, 形式上",
+    "ex": "Formally, for a token at position 𝑡, we map its raw ID 𝑥𝑡to a canonical ID 𝑥′ 𝑡= P(𝑥𝑡) to form the suffix 𝑁-gram 𝑔𝑡,𝑛= (𝑥′ 𝑡−𝑛+1, . . . , 𝑥′ 𝑡)."
+   },
+   {
+    "w": "fraction",
+    "ipa": "ˈfrækʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "小部分；片断；分数",
+    "ex": "Piantadosi, 2014), where a small fraction of patterns accounts for the vast majority of memory accesses."
+   },
+   {
+    "w": "frequently",
+    "ipa": "ˈfrikwɛntli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "时常，常常",
+    "ex": "This statistical property motivates a Multi-Level Cache Hierarchy: frequently accessed embeddings can be cached in faster storage tiers (e.g., GPU HBM or Host DRAM), while the long tail of rare patterns resides in slower …"
+   },
+   {
+    "w": "fuse",
+    "ipa": "fjuz",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "保险丝；导火线",
+    "ex": "This design allows the linear projections (one W𝑉and 𝑀 distinct W(𝑚) 𝐾 ) to be fused into a single dense FP8 matrix multiplication, maximizing the compute utilization of modern GPUs."
+   },
+   {
+    "w": "gradient",
+    "ipa": "ˈgreɪdiənt",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "斜坡",
+    "ex": "An All-to-All communication primitive is used to gather active rows in the forward pass and dispatch gradients in the backward pass, enabling the total memory capacity to scale linearly with the number of accelerators."
+   },
+   {
+    "w": "hash",
+    "ipa": "hæʃ",
+    "pos": "n.；v.",
+    "lv": "专八",
+    "m": "剁碎的食物；混杂，拼凑；重新表述；搞糟，把…弄乱；切细；推敲",
+    "ex": "First, as detailed in Section 2.2, we extract and compress suffix 𝑁-grams to deterministically retrieve static embedding vectors via hashing."
+   },
+   {
+    "w": "hidden",
+    "ipa": "ˈhɪdən",
+    "pos": "adj.；v.；n.",
+    "lv": "专四",
+    "m": "隐藏的；隐藏，躲藏（hide的过去分词）；(Hidden)人名；(英)希登",
+    "ex": "Subsequently, in Section 2.3, these retrieved embeddings are dynamically modulated by the current hidden state and refined via a lightweight convolution."
+   },
+   {
+    "w": "hyper",
+    "ipa": "ˈhaɪpər",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "亢奋的,高度紧张的",
+    "ex": "Unless otherwise stated, all experiments utilize this integration with Manifold-Constrained Hyper-Connections (𝑀= 4) (Xie et al., 2025)."
+   },
+   {
+    "w": "inherently",
+    "ipa": "ˌɪnˈhɛrəntli",
+    "pos": "adv.",
+    "lv": "GRE",
+    "m": "固有地， 天性地",
+    "ex": "Being static, however, they inherently lack contextual adaptability and may suffer from noise due to hash collisions or polysemy (Haber and Poesio, 2024)."
+   },
+   {
+    "w": "integration",
+    "ipa": "ˌɪntɪˈɡreɪʃn",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "整合",
+    "ex": "multi-branch integration"
+   },
+   {
+    "w": "intractable",
+    "ipa": "ˌɪnˈtræktəbəl",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "棘手的；难治的；倔强的；不听话的",
+    "ex": "Directly parameterizing the combinatorial space of all possible 𝑁-grams is intractable."
+   },
+   {
+    "w": "intuitively",
+    "ipa": "ɪnˈtuɪtɪvli",
+    "pos": "adv.",
+    "lv": "超纲",
+    "m": "凭直觉地",
+    "ex": "where memory capacity is intuitively beneficial"
+   },
+   {
+    "w": "involve",
+    "ipa": "ˌɪnˈvɑlv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "卷入，包含",
+    "ex": "Sparse Retrieval via Hashed 𝑁-grams The first phase maps local contexts to static memory entries, involving tokenizer compression and retrieving embeddings via deterministic hashing."
+   },
+   {
+    "w": "known",
+    "ipa": "noʊn",
+    "pos": "adj.；v.",
+    "lv": "专四",
+    "m": "已知的；知名的；大家知道的；知道（know的过去分词）",
+    "ex": "Since memory indices are known prior to the forward pass, the system can asynchronously retrieve embeddings from abundant host memory via PCIe."
+   },
+   {
+    "w": "leverage",
+    "ipa": "ˈlɛvərɪʤ",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "手段，影响力；杠杆作用；杠杆效率；利用；举债经营",
+    "ex": "To effectively mask communication latency, the Engram module is placed at specific layers within the backbone, leveraging the computation of preceding layers as a buffer to prevent GPU stalls."
+   },
+   {
+    "w": "lightweight",
+    "ipa": "ˈlaɪtˈweɪt",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "轻量级选手, 不能胜任者",
+    "ex": "Subsequently, in Section 2.3, these retrieved embeddings are dynamically modulated by the current hidden state and refined via a lightweight convolution."
+   },
+   {
+    "w": "linear",
+    "ipa": "ˈlɪniər",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "线的；长度的",
+    "ex": "This design allows the linear projections (one W𝑉and 𝑀 distinct W(𝑚) 𝐾 ) to be fused into a single dense FP8 matrix multiplication, maximizing the compute utilization of modern GPUs."
+   },
+   {
+    "w": "manifold",
+    "ipa": "ˈmænɪˌfoʊld",
+    "pos": "v.；adj.；n.",
+    "lv": "专四",
+    "m": "复写，复印；增多；使……多样化；多方面的，有许多部分的；各式各样的；多种；复印本",
+    "ex": "Unless otherwise stated, all experiments utilize this integration with Manifold-Constrained Hyper-Connections (𝑀= 4) (Xie et al., 2025)."
+   },
+   {
+    "w": "matrix",
+    "ipa": "ˈmeɪtrɪks",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "[数] 矩阵；模型；[生物][地质] 基质；母体；子宫；[地质] 脉石",
+    "ex": "Specifically, we implement a parameter-sharing strategy: a single sparse embedding table and a Value projection matrix W𝑉are shared across all 𝑀branches, whereas 𝑀distinct Key projection matrices {W(𝑚) 𝐾 }𝑀 𝑚=1 are employed to …"
+   },
+   {
+    "w": "mechanism",
+    "ipa": "ˈmɛkəˌnɪzəm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "机制，机能",
+    "ex": "To enhance expressivity and resolve this ambiguity, we employ a context-aware gating mechanism inspired by Attention (Bahdanau et al., 2015;"
+   },
+   {
+    "w": "mechanistic",
+    "ipa": "ˌmekəˈnɪstɪk",
+    "pos": "adj.",
+    "lv": "超纲",
+    "m": "机理的",
+    "ex": "Mechanistic analysis via LogitLens"
+   },
+   {
+    "w": "modulate",
+    "ipa": "ˈmɔʤuleɪt",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "调整，调节（声音）",
+    "ex": "Subsequently, in Section 2.3, these retrieved embeddings are dynamically modulated by the current hidden state and refined via a lightweight convolution."
+   },
+   {
+    "w": "multiplication",
+    "ipa": "ˌməltəpləˈkeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "乘法；增加",
+    "ex": "This design allows the linear projections (one W𝑉and 𝑀 distinct W(𝑚) 𝐾 ) to be fused into a single dense FP8 matrix multiplication, maximizing the compute utilization of modern GPUs."
+   },
+   {
+    "w": "multiplicative",
+    "ipa": "ˈmʌltɪplɪketɪv",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "倍增的； 乘法的",
+    "ex": "Each head 𝑘maps the compressed context to an index within an embedding table E𝑛,𝑘(of prime size 𝑀𝑛,𝑘) via a deterministic function 𝜑𝑛,𝑘: 𝑧𝑡,𝑛,𝑘≜𝜑𝑛,𝑘(𝑔𝑡,𝑛), e𝑡,𝑛,𝑘= E𝑛,𝑘[𝑧𝑡,𝑛,𝑘]. (1) In practice, 𝜑𝑛,𝑘is implemented as a …"
+   },
+   {
+    "w": "necessitate",
+    "ipa": "nəˈsɛsəˌteɪt",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "成为必要， 需要",
+    "ex": "Although the Engram module is inherently topology-agnostic, adapting it to this multi-branch framework necessitates structural optimization to balance efficiency and expressivity."
+   },
+   {
+    "w": "normalize",
+    "ipa": "ˈnɔrməˌlaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使标准化，使正规化；归一化",
+    "ex": "identifiers based on normalized textual equivalence (using NFKC (Whistler, 2025), lowercasing, etc.)."
+   },
+   {
+    "w": "optimization",
+    "ipa": "ɑptɪmɪˈzeɪʃən",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "最佳化, 最优化",
+    "ex": "This predictability facilitates specialized optimization strategies for both training and inference, as illustrated in Figure 2."
+   },
+   {
+    "w": "overview",
+    "ipa": "ˈoʊvərvˌju",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "[图情] 综述；概观",
+    "ex": "Overview As shown in Figure 1, Engram is a conditional memory module designed to augment the Transformer backbone by structurally separating static pattern storage from dynamic computation."
+   },
+   {
+    "w": "parallelism",
+    "ipa": "ˈpɛrəˌlɛˌlɪzəm",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "平行， 类似",
+    "ex": "During training, to accommodate large-scale embedding tables, we employ standard model parallelism by sharding the tables across available GPUs."
+   },
+   {
+    "w": "phase",
+    "ipa": "feɪz",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "阶段；方面；相位",
+    "ex": "An All-to-All communication primitive is employed to retrieve active embedding rows across devices. (b) Inference Phase: Engram tables are offloaded to host memory."
+   },
+   {
+    "w": "precede",
+    "ipa": "prɪˈsid",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "先于…，领先",
+    "ex": "To effectively mask communication latency, the Engram module is placed at specific layers within the backbone, leveraging the computation of preceding layers as a buffer to prevent GPU stalls."
+   },
+   {
+    "w": "predictability",
+    "ipa": "prɪˌdɪktəˈbɪlɪti",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "可预见性",
+    "ex": "This predictability facilitates specialized optimization strategies for both training and inference, as illustrated in Figure 2."
+   },
+   {
+    "w": "prime",
+    "ipa": "praɪm",
+    "pos": "adj.；n.",
+    "lv": "四级",
+    "m": "首要的；春，青春",
+    "ex": "Each head 𝑘maps the compressed context to an index within an embedding table E𝑛,𝑘(of prime size 𝑀𝑛,𝑘) via a deterministic function 𝜑𝑛,𝑘: 𝑧𝑡,𝑛,𝑘≜𝜑𝑛,𝑘(𝑔𝑡,𝑛), e𝑡,𝑛,𝑘= E𝑛,𝑘[𝑧𝑡,𝑛,𝑘]. (1) In practice, 𝜑𝑛,𝑘is implemented as a …"
+   },
+   {
+    "w": "prior",
+    "ipa": "praɪər",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "在先的；优先的",
+    "ex": "Since memory indices are known prior to the forward pass, the system can asynchronously retrieve embeddings from abundant host memory via PCIe."
+   },
+   {
+    "w": "projection",
+    "ipa": "prɑˈʤɛkʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "投射；规划；突出；发射；推测",
+    "ex": "This design allows the linear projections (one W𝑉and 𝑀 distinct W(𝑚) 𝐾 ) to be fused into a single dense FP8 matrix multiplication, maximizing the compute utilization of modern GPUs."
+   },
+   {
+    "w": "query",
+    "ipa": "kˈwiri",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "疑问，质问；疑问号 ；[计] 查询；询问；对……表示疑问",
+    "ex": "To ensure gradient stability (Dehghani et al., 2023), we apply RMSNorm (Zhang and Sennrich, 2019) to the Query and Key before computing"
+   },
+   {
+    "w": "receptive",
+    "ipa": "rɪˈsɛptɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "善于接受的；能容纳的",
+    "ex": "Finally, to expand the receptive field and enhance the model’s non-linearity, we introduce"
+   },
+   {
+    "w": "reduction",
+    "ipa": "rɪˈdəkʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "减少，减小，缩减",
+    "ex": "In practice, this process achieves a 23% reduction in the effective vocabulary size for a 128k tokenizer (see Appendix C)."
+   },
+   {
+    "w": "refine",
+    "ipa": "rɪˈfaɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "改善，精炼",
+    "ex": "Subsequently, in Section 2.3, these retrieved embeddings are dynamically modulated by the current hidden state and refined via a lightweight convolution."
+   },
+   {
+    "w": "relieve",
+    "ipa": "rɪˈliːv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "解除，减轻",
+    "ex": "Engram relieves the backbone from reconstructing static knowledge"
+   },
+   {
+    "w": "reside",
+    "ipa": "rɪˈzaɪd",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "居住，驻扎；属于",
+    "ex": "This statistical property motivates a Multi-Level Cache Hierarchy: frequently accessed embeddings can be cached in faster storage tiers (e.g., GPU HBM or Host DRAM), while the long tail of rare patterns resides in slower …"
+   },
+   {
+    "w": "resolve",
+    "ipa": "riˈzɑlv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "解决，下决心",
+    "ex": "To enhance expressivity and resolve this ambiguity, we employ a context-aware gating mechanism inspired by Attention (Bahdanau et al., 2015;"
+   },
+   {
+    "w": "semantic",
+    "ipa": "sɪˈmæntɪk",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "语义的；语义学的（等于semantical）",
+    "ex": "This design enforces semantic alignment: if the retrieved memory e𝑡contradicts the current context h𝑡, the gate 𝛼𝑡tends toward zero, effectively suppressing the noise."
+   },
+   {
+    "w": "shard",
+    "ipa": "ʃɑrd",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "[瓷]碎片破片",
+    "ex": "During training, to accommodate large-scale embedding tables, we employ standard model parallelism by sharding the tables across available GPUs."
+   },
+   {
+    "w": "simultaneously",
+    "ipa": "ˌsaɪməlˈteɪniəsli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "同步地，同时地",
+    "ex": "Therefore, the optimal placement must simultaneously satisfy both modeling and system latency constraints."
+   },
+   {
+    "w": "solely",
+    "ipa": "ˈsoʊəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "单独地，唯一地",
+    "ex": "However, unlike MoE which relies on runtime hidden states for dynamic routing, Engram employs a deterministic retrieval mechanism based solely on input token IDs, naturally decoupling parameter storage from computation."
+   },
+   {
+    "w": "specialize",
+    "ipa": "ˈspɛʃəˌlaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "专业从事",
+    "ex": "This predictability facilitates specialized optimization strategies for both training and inference, as illustrated in Figure 2."
+   },
+   {
+    "w": "stability",
+    "ipa": "stəˈbɪlɪti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "稳定，稳定性，巩固",
+    "ex": "To ensure gradient stability (Dehghani et al., 2023), we apply RMSNorm (Zhang and Sennrich, 2019) to the Query and Key before computing"
+   },
+   {
+    "w": "stall",
+    "ipa": "stɔl",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "货摊，书摊；马厩",
+    "ex": "To effectively mask communication latency, the Engram module is placed at specific layers within the backbone, leveraging the computation of preceding layers as a buffer to prevent GPU stalls."
+   },
+   {
+    "w": "static",
+    "ipa": "ˈstætɪk",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "静的；静态的",
+    "ex": "First, as detailed in Section 2.2, we extract and compress suffix 𝑁-grams to deterministically retrieve static embedding vectors via hashing."
+   },
+   {
+    "w": "stratification",
+    "ipa": ",strætɪfɪˈkeʃən",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "分层, 成层法",
+    "ex": "This stratification allows Engram to scale to massive memory capacities with minimal impact on effective latency."
+   },
+   {
+    "w": "strictly",
+    "ipa": "ˈstrɪktli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "严格地",
+    "ex": "Compared to a strictly iso-parameter and iso-FLOPs MoE-27B baseline"
+   },
+   {
+    "w": "subsequently",
+    "ipa": "ˈsəbsəkwəntli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "随后",
+    "ex": "Subsequently, in Section 2.3, these retrieved embeddings are dynamically modulated by the current hidden state and refined via a lightweight convolution."
+   },
+   {
+    "w": "suffix",
+    "ipa": "ˈsəfɪks",
+    "pos": "v.；n.",
+    "lv": "专四",
+    "m": "添后缀；后缀；下标",
+    "ex": "First, as detailed in Section 2.2, we extract and compress suffix 𝑁-grams to deterministically retrieve static embedding vectors via hashing."
+   },
+   {
+    "w": "suppress",
+    "ipa": "səˈprɛs",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "镇压，压制",
+    "ex": "This design enforces semantic alignment: if the retrieved memory e𝑡contradicts the current context h𝑡, the gate 𝛼𝑡tends toward zero, effectively suppressing the noise."
+   },
+   {
+    "w": "tier",
+    "ipa": "tir",
+    "pos": "n.；vt.；vi.",
+    "lv": "专四",
+    "m": "层，排；行，列；等级；使层叠；成递升排列",
+    "ex": "This statistical property motivates a Multi-Level Cache Hierarchy: frequently accessed embeddings can be cached in faster storage tiers (e.g., GPU HBM or Host DRAM), while the long tail of rare patterns resides in slower …"
+   },
+   {
+    "w": "token",
+    "ipa": "ˈtoʊkən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "辅币；象征",
+    "ex": "Formally, for a token at position 𝑡, we map its raw ID 𝑥𝑡to a canonical ID 𝑥′ 𝑡= P(𝑥𝑡) to form the suffix 𝑁-gram 𝑔𝑡,𝑛= (𝑥′ 𝑡−𝑛+1, . . . , 𝑥′ 𝑡)."
+   },
+   {
+    "w": "utilize",
+    "ipa": "ˈjutəˌlaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "利用",
+    "ex": "Unless otherwise stated, all experiments utilize this integration with Manifold-Constrained Hyper-Connections (𝑀= 4) (Xie et al., 2025)."
+   },
+   {
+    "w": "vector",
+    "ipa": "ˈvɛktər",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "矢量；飞机航线",
+    "ex": "First, as detailed in Section 2.2, we extract and compress suffix 𝑁-grams to deterministically retrieve static embedding vectors via hashing."
+   }
+  ]
+ },
+ {
+  "sec": "3. Conclusion · 结论",
+  "short": "Concl",
+  "icon": "3",
+  "words": [
+   {
+    "w": "ablate",
+    "ipa": "æbˈlet",
+    "pos": "v.",
+    "lv": "GRE",
+    "m": "融化",
+    "ex": "Starting from the reference configuration, we ablate individual design choices while keeping the Engram parameter budget fixed."
+   },
+   {
+    "w": "activate",
+    "ipa": "ˈæktəˌveɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "激活",
+    "ex": "Crucially, the effective communication volume per step scales with the number of activated slots rather than the total embedding table size."
+   },
+   {
+    "w": "adaptive",
+    "ipa": "əˈdæptɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "适合的, 适应的",
+    "ex": "Zhang et al., 2020, 2024), frequency-or importance-adaptive capacity allocation (Ginart et al., 2021;"
+   },
+   {
+    "w": "additional",
+    "ipa": "əˈdɪʃənəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "额外的",
+    "ex": "For instance, SCONE (Yu et al., 2025) is inference-focused and relies on auxiliary modules that incur additional training FLOPs."
+   },
+   {
+    "w": "additionally",
+    "ipa": "əˈdɪʃəˌnəli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "此外；又，加之",
+    "ex": "Additionally, to rigorously benchmark architectural efficiency, we select two intermediate checkpoints for Engram-27B at 41k and 46k steps."
+   },
+   {
+    "w": "adhere",
+    "ipa": "əˈdhɪr",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "粘附；追随；坚持",
+    "ex": "For modeling, to ensure a controlled comparison, we adhere to a consistent default setting across all models unless explicitly stated otherwise."
+   },
+   {
+    "w": "aggregate",
+    "ipa": "ˈægrəgət",
+    "pos": "adj.；n.；vt.",
+    "lv": "六级",
+    "m": "总计的， 合计的；总数，合计；总计达， 合计； 使聚集， 使积聚",
+    "ex": "For RULER, we evaluate on 14 subsets aggregated into 8 categories: Single (S), Multi-keys (MK), Multi-values (MV) and Multi-queries (MQ) Needle-in-a-Haystack;"
+   },
+   {
+    "w": "aggregation",
+    "ipa": "ˌægrəˈgeɪʃən",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "集合,集合体",
+    "ex": "This indicates that one round of attention is already sufficient to provide a meaningfully contextualized h𝑡for gating, while still being early enough to replace the backbone’s bottom-layer local aggregation."
+   },
+   {
+    "w": "align",
+    "ipa": "əˈlaɪn",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使结盟；使成一行；匹配",
+    "ex": "For instance, the representations formed at layer 5 of Engram-27B align most closely with those at approximately layer 12 of the MoE baseline."
+   },
+   {
+    "w": "analyze",
+    "ipa": "ˈænəˌlaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "分析",
+    "ex": "Accelerated Prediction Convergence We first analyze the evolution of predictions across layers using LogitLens (nostalgebraist, 2020)."
+   },
+   {
+    "w": "approach",
+    "ipa": "əˈproʊʧ",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "靠近；接近，方法",
+    "ex": "Prior approaches often treat 𝑁-gram embeddings as external augmentations without validating their efficiency under strictly fair comparison protocols."
+   },
+   {
+    "w": "arc",
+    "ipa": "ɑrk",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "弧，弓形物；弧光",
+    "ex": "We observe even more significant improvements in general-reasoning domains (e.g., BBH: +5.0, ARC-Challenge: +3.7, DROP: +3.3), as well as code and mathematical reasoning (e.g., HumanEval: +3.0, MBPP: +1.6, GSM8K: +2.2, MATH …"
+   },
+   {
+    "w": "architectural",
+    "ipa": "ˌɑrkəˈtɛkʧərəl",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "建筑上的； 建筑学的",
+    "ex": "Additionally, to rigorously benchmark architectural efficiency, we select two intermediate checkpoints for Engram-27B at 41k and 46k steps."
+   },
+   {
+    "w": "artifact",
+    "ipa": "ˈɑrtəˌfækt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "人工制品；手工艺品",
+    "ex": "Although it does not yet strictly dominate Engram-27B on every task, this is likely an artifact of under-training."
+   },
+   {
+    "w": "attributable",
+    "ipa": "əˈtrɪbjətəbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "可归因于的",
+    "ex": "This creates a controlled \"Iso-Loss\" setting, ensuring that any performance divergence during context extension is attributable to the architecture rather than the starting quality of the model."
+   },
+   {
+    "w": "augment",
+    "ipa": "ɔgˈmɛnt",
+    "pos": "v.；n.",
+    "lv": "六级",
+    "m": "增加；增大；增加；增大",
+    "ex": "Research on memory-augmented networks aims to expand model capacity without a proportional increase in computational cost, broadly categorized into parametric and non-parametric approaches."
+   },
+   {
+    "w": "augmentation",
+    "ipa": "ˌɑgmɛnˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "增加",
+    "ex": "Prior approaches often treat 𝑁-gram embeddings as external augmentations without validating their efficiency under strictly fair comparison protocols."
+   },
+   {
+    "w": "automatically",
+    "ipa": "ˌɔtəˈmætɪkli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "自动地；不经思考地",
+    "ex": "The “Latent State Translation” column displays the automatically generated text for the last token: “Wales” by PatchScope (Ghandeharioun et al., 2024), while the “Explanation” column presents the manual interpretation provided by …"
+   },
+   {
+    "w": "auxiliary",
+    "ipa": "ɑgˈzɪljəri",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "辅助的；附属的",
+    "ex": "For instance, SCONE (Yu et al., 2025) is inference-focused and relies on auxiliary modules that incur additional training FLOPs."
+   },
+   {
+    "w": "backbone",
+    "ipa": "ˈbækˌboʊn",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "支柱；主干网；决心，毅力；脊椎",
+    "ex": "As detailed in Table 4, offloading a 100B-parameter embedding table incurs a negligible throughput penalty, peaking at only 2.8% on the 8B backbone."
+   },
+   {
+    "w": "benchmark",
+    "ipa": "ˈbɛnʧˌmɑrk",
+    "pos": "n.；v.",
+    "lv": "专八",
+    "m": "基准；标准检查程序；用基准问题测试（计算机系统等）",
+    "ex": "Additionally, to rigorously benchmark architectural efficiency, we select two intermediate checkpoints for Engram-27B at 41k and 46k steps."
+   },
+   {
+    "w": "bold",
+    "ipa": "boʊld",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "大胆的；冒失的",
+    "ex": "Bold indicates the best and underline the second."
+   },
+   {
+    "w": "broadly",
+    "ipa": "ˈbrɔdli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "宽广地, 广泛",
+    "ex": "Research on memory-augmented networks aims to expand model capacity without a proportional increase in computational cost, broadly categorized into parametric and non-parametric approaches."
+   },
+   {
+    "w": "byte",
+    "ipa": "baɪt",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "字节； 位元组",
+    "ex": "In parallel, OverEncoding (Huang et al., 2025a) and Byte Latent Transformer (BLT) (Pagnoni et al., 2025) adopt hash 𝑁-gram embeddings to capture local dependencies at the token and byte levels, respectively."
+   },
+   {
+    "w": "cache",
+    "ipa": "kæˈʃeɪ",
+    "pos": "n.；v.",
+    "lv": "专八",
+    "m": "电脑高速缓冲存储器；贮存物；隐藏处；隐藏；窖藏",
+    "ex": "While the hierarchical design in Section 2.5 exploits Zipfian locality to cache frequent items in HBM, our experimental setup forces all retrievals to traverse the PCIe bus from host memory."
+   },
+   {
+    "w": "cannot",
+    "ipa": "ˈkænɑt",
+    "pos": "conj.",
+    "lv": "托福",
+    "m": "不能",
+    "ex": "tasks that require dynamic, context-dependent reasoning; memory cannot replace computation in this regime."
+   },
+   {
+    "w": "capability",
+    "ipa": "ˌkeɪpəˈbɪləti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "能力，才能",
+    "ex": "Crucially, this post-hoc ablation induces a training–inference inconsistency, potentially introducing noise in complex, mixed-capability tasks."
+   },
+   {
+    "w": "carefully",
+    "ipa": "ˈkɛrfəli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "小心地",
+    "ex": "In contrast, we treat conditional memory as a first-class modeling primitive instantiated via the carefully designed Engram module."
+   },
+   {
+    "w": "catastrophic",
+    "ipa": "ˌkætəˈstrɑfɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "悲惨的； 灾难性的",
+    "ex": "Factual knowledge benchmarks suffer a catastrophic collapse, retaining only 29–44% of the original performance (e.g., TriviaQA at 29%), confirming that the Engram module acts as the primary repository for parametric knowledge."
+   },
+   {
+    "w": "categorical",
+    "ipa": "ˌkætəˈgɔrɪkəl",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "绝对的（名词categoricalness，副词categorically，异体字categoric）；直截了当的；无条件的；属于某一范畴的",
+    "ex": "A closely related representation problem arises in large-scale recommender systems, where models learn embeddings for hundreds of categorical features whose vocabularies may contain millions to billions of IDs (Coleman et al. …"
+   },
+   {
+    "w": "categorize",
+    "ipa": "ˈkætəgərˌaɪz",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "分类",
+    "ex": "Research on memory-augmented networks aims to expand model capacity without a proportional increase in computational cost, broadly categorized into parametric and non-parametric approaches."
+   },
+   {
+    "w": "causal",
+    "ipa": "ˈkɔzəl",
+    "pos": "adj.；n.",
+    "lv": "考博",
+    "m": "因果关系的；有原因的；表示原因的连词",
+    "ex": "Further validation is provided by causal tracing methodologies, which map the information flow of factual recall to specific FFN layers (Meng et al., 2022)."
+   },
+   {
+    "w": "characterize",
+    "ipa": "ˈkɛrɪktərˌaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "以……特点",
+    "ex": "Sensitivity Analysis To characterize the functional contribution of the Engram module, we evaluate the model by completely suppressing the sparse embedding output during inference while keeping the backbone unchanged."
+   },
+   {
+    "w": "checkpoint",
+    "ipa": "ˈʧɛkˌpɔɪnt",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "检查站，关卡",
+    "ex": "Additionally, to rigorously benchmark architectural efficiency, we select two intermediate checkpoints for Engram-27B at 41k and 46k steps."
+   },
+   {
+    "w": "clarity",
+    "ipa": "ˈklɛrɪti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "清晰，清楚",
+    "ex": "not every branch encodes interpretable activation patterns. For the clarity of this visualization, we select and display"
+   },
+   {
+    "w": "closely",
+    "ipa": "ˈkloʊsli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "紧密地，接近地",
+    "ex": "For instance, the representations formed at layer 5 of Engram-27B align most closely with those at approximately layer 12 of the MoE baseline."
+   },
+   {
+    "w": "cog",
+    "ipa": "kɔg",
+    "pos": "v.；n.",
+    "lv": "专八",
+    "m": "给…装配齿轮；以雄榫连接；钝齿；雄榫",
+    "ex": "Wang et al., 2023), CoG (Cao et al.;"
+   },
+   {
+    "w": "collapse",
+    "ipa": "kəˈlæps",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "倒坍；崩溃，瓦解",
+    "ex": "Factual knowledge benchmarks suffer a catastrophic collapse, retaining only 29–44% of the original performance (e.g., TriviaQA at 29%), confirming that the Engram module acts as the primary repository for parametric knowledge."
+   },
+   {
+    "w": "column",
+    "ipa": "ˈkɑləm",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "专栏",
+    "ex": "The “Latent State Translation” column displays the automatically generated text for the last token: “Wales” by PatchScope (Ghandeharioun et al., 2024), while the “Explanation” column presents the manual interpretation provided by …"
+   },
+   {
+    "w": "comparable",
+    "ipa": "ˈkɑmprəbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "可比较的； 类似的； 比得上的",
+    "ex": "Remarkably, the Engram model achieves comparable performance to the pure MoE baseline (𝜌= 100%) even when the MoE allocation is reduced to"
+   },
+   {
+    "w": "comparison",
+    "ipa": "kəmˈpɛrəsən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比较，对照；比似",
+    "ex": "For modeling, to ensure a controlled comparison, we adhere to a consistent default setting across all models unless explicitly stated otherwise."
+   },
+   {
+    "w": "competitive",
+    "ipa": "kəmˈpɛtɪtɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "竞争的， 比赛的； 好竞争的， 求胜心切的； 有竞争力的",
+    "ex": "highly competitive against the fully trained MoE-27B (50k)."
+   },
+   {
+    "w": "completely",
+    "ipa": "kəmˈplitli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "十分，完全地",
+    "ex": "Sensitivity Analysis To characterize the functional contribution of the Engram module, we evaluate the model by completely suppressing the sparse embedding output during inference while keeping the backbone unchanged."
+   },
+   {
+    "w": "compose",
+    "ipa": "kəmˈpoʊz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "组成，构成；创作",
+    "ex": "As shown in Table 3, to recognize the entity \"Diana, Princess of Wales\", an LLM must consume multiple layers of Attention and FFNs to progressively compose features (Ghandeharioun et al., 2024;"
+   },
+   {
+    "w": "compression",
+    "ipa": "kəmˈprɛʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "压缩，压紧，浓缩",
+    "ex": "Liu et al., 2021), and structured compression based on quantization, tensor decomposition, or shared memory layouts (Desai et al., 2022;"
+   },
+   {
+    "w": "computation",
+    "ipa": "ˌkɑmpjəˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "计算, 估计",
+    "ex": "During inference, the system prefetches embeddings for the Engram layer asynchronously, overlapping the PCIe transfer with the computation of the first block."
+   },
+   {
+    "w": "compute",
+    "ipa": "kəmˈpjut",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "计算，估计，估算",
+    "ex": "Baseline): Under the standard iso-compute budget, Engram- 27B (50k) further widens this gap, establishing the highest performance across the board."
+   },
+   {
+    "w": "conditional",
+    "ipa": "kənˈdɪʃənəl",
+    "pos": "adj.；n.",
+    "lv": "六级",
+    "m": "有条件的；假定的；条件句；条件语",
+    "ex": "In contrast, we treat conditional memory as a first-class modeling primitive instantiated via the carefully designed Engram module."
+   },
+   {
+    "w": "confidence",
+    "ipa": "ˈkɑnfədɛns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "信心",
+    "ex": "This observation aligns with our hypothesis: by accessing external knowledge explicitly, Engram reduces the computational steps required, thereby reaching high-confidence, valid predictions earlier in the network hierarchy."
+   },
+   {
+    "w": "configuration",
+    "ipa": "kənˌfɪgjərˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "配置， 布局， 构造",
+    "ex": "Starting from the reference configuration, we ablate individual design choices while keeping the Engram parameter budget fixed."
+   },
+   {
+    "w": "confound",
+    "ipa": "ˈkɑnˌfaʊnd",
+    "pos": "v.",
+    "lv": "GRE",
+    "m": "使迷惑， 搞混",
+    "ex": "Consequently, a rigorous architectural comparison must control for this confounding variable by aligning base model loss, rather than merely aligning training steps."
+   },
+   {
+    "w": "consequently",
+    "ipa": "ˈkɑnsəkˌwɛntli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "结果",
+    "ex": "Consequently, optimal placement requires balancing (i) offloading static local patterns early and (ii) utilizing stronger contextual queries for gating later."
+   },
+   {
+    "w": "consistently",
+    "ipa": "kənˈsɪstəntli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "一贯地；一致地；坚实地",
+    "ex": "The consistently lower divergence in early layers indicates that Engram accelerates prediction convergence. (b-c) Similarity heatmap computed by CKA (Kornblith et al., 2019)."
+   },
+   {
+    "w": "consolidate",
+    "ipa": "kənˈsɑlɪˌdeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "巩固；合并",
+    "ex": "To study depth sensitivity, we keep the Engram budget fixed (1.6B) but consolidate it into a single Engram module, and sweep its insertion layer from 1 to 12 (dark blue “Layer Sweep” curve in Figure 5)."
+   },
+   {
+    "w": "consort",
+    "ipa": "kənˈsɔrt",
+    "pos": "v.；n.",
+    "lv": "考博",
+    "m": "结交,符合；配偶",
+    "ex": "own right or by queens consort"
+   },
+   {
+    "w": "contrast",
+    "ipa": "ˈkɑntræst",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "对比，反差；对比",
+    "ex": "In contrast, we treat conditional memory as a first-class modeling primitive instantiated via the carefully designed Engram module."
+   },
+   {
+    "w": "convergence",
+    "ipa": "kənˈvərʤəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "集中",
+    "ex": "Accelerated Prediction Convergence We first analyze the evolution of predictions across layers using LogitLens (nostalgebraist, 2020)."
+   },
+   {
+    "w": "conversely",
+    "ipa": "ˈkɑnvərsli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "相反地",
+    "ex": "Engram, conversely, strategically injects memory into deeper layers to enable communication-computation overlap."
+   },
+   {
+    "w": "core",
+    "ipa": "kɔr",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "果实的心，核心",
+    "ex": "Analysis In this section, we investigate the internal mechanisms of Engram, including its effective depth (Section 6.1), core module design (Section 6.2), and parametric sensitivity (Section 6.3)."
+   },
+   {
+    "w": "corpus",
+    "ipa": "ˈkɔrpəs",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "[计] 语料库；文集；本金",
+    "ex": "Experimental Setup Training Data and Model Configurations All models are pre-trained on a corpus of 262 billion tokens and we utilize the tokenizer from DeepSeek-v3 (Liu et al., 2024a) with a vocabulary size of 128k."
+   },
+   {
+    "w": "correlate",
+    "ipa": "ˈkɔrəˌleɪt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "互相关联的事物",
+    "ex": "the gating values most strongly correlated with semantic pattern matching."
+   },
+   {
+    "w": "correspondence",
+    "ipa": "ˌkɔrəˈspɑndəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "信件， 函件； 通信， 通信联系； 符合， 一致， 相似",
+    "ex": "To rigorously quantify the layer-wise correspondence, we first compute the pairwise CKA"
+   },
+   {
+    "w": "cot",
+    "ipa": "kɑt",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "简易床；小屋；轻便小床",
+    "ex": "For LongPPL, we construct evaluation sets spanning four categories: long books, research papers, code repositories, and long chain-of-thought (CoT) trajectories."
+   },
+   {
+    "w": "culminate",
+    "ipa": "ˈkəlmɪˌneɪt",
+    "pos": "vi.",
+    "lv": "六级",
+    "m": "告终",
+    "ex": "Because Engram operates on suffix 𝑁-grams (here 𝑁= 3), a high activation on a specific token 𝑥𝑡implies that the preceding tokens culminating in that token (e.g., the phrase ending at 𝑡) are recognized as a static pattern …"
+   },
+   {
+    "w": "curve",
+    "ipa": "kərv",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "曲线；弯；弄弯",
+    "ex": "The steeper descent in the Engram curves indicates that the model finishes feature composition much faster."
+   },
+   {
+    "w": "decay",
+    "ipa": "dɪˈkeɪ",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "腐烂；衰败；腐烂",
+    "ex": "2014) with a learning rate scaled by 5× and no weight decay, while the convolution"
+   },
+   {
+    "w": "decomposition",
+    "ipa": "ˌdikəmpəˈzɪʃən",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "分解, 腐烂",
+    "ex": "Liu et al., 2021), and structured compression based on quantization, tensor decomposition, or shared memory layouts (Desai et al., 2022;"
+   },
+   {
+    "w": "decouple",
+    "ipa": "diːˈkʌplɪŋ",
+    "pos": "n.",
+    "lv": "雅思",
+    "m": "解耦",
+    "ex": "allows for the decoupling of storage and compute"
+   },
+   {
+    "w": "deepen",
+    "ipa": "ˈdipən",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使加深，加剧",
+    "ex": "Our mechanistic analysis reveals that Engram effectively “deepen” the network by relieving early layers from static reconstruction tasks, thereby freeing up attention capacity to focus on global context and complex reasoning."
+   },
+   {
+    "w": "default",
+    "ipa": "dɪˈfɔlt",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "不履行义务；不履行义务",
+    "ex": "For modeling, to ensure a controlled comparison, we adhere to a consistent default setting across all models unless explicitly stated otherwise."
+   },
+   {
+    "w": "define",
+    "ipa": "dɪˈfaɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "下定义，确定",
+    "ex": "All structural ablations below are defined relative to this reference."
+   },
+   {
+    "w": "degrade",
+    "ipa": "dɪˈgreɪd",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使降低；使堕落",
+    "ex": "Other changes have smaller effects: removing the lightweight depthwise convolution only marginally degrades performance."
+   },
+   {
+    "w": "demon",
+    "ipa": "ˈdimən",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "恶魔；魔鬼；精力充沛的人；邪恶的事物",
+    "ex": "By formulating the Sparsity Allocation problem, we uncover a U-shaped scaling law, demon-strating that a hybrid allocation of sparse capacity between MoE experts and Engram memory strictly outperforms pure MoE baselines."
+   },
+   {
+    "w": "demonstrate",
+    "ipa": "ˈdɛmənˌstreɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "证明；展示",
+    "ex": "When comparing Engram-27B (46k) against the fully trained MoE-27B (50k)—models aligned on pre-training loss—Engram demonstrates significant gains."
+   },
+   {
+    "w": "denote",
+    "ipa": "dɪˈnoʊt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "指示，意味着",
+    "ex": "The dashed orange line denotes the 3B MoE baseline (Val Loss = 1.808)."
+   },
+   {
+    "w": "dense",
+    "ipa": "dɛns",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "密集的；浓厚的",
+    "ex": "This confirms that the compute intensity of early dense blocks provides a sufficient temporal window to mask the retrieval latency."
+   },
+   {
+    "w": "dependent",
+    "ipa": "dɪˈpɛndənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "依靠的，依赖的",
+    "ex": "tasks that require dynamic, context-dependent reasoning; memory cannot replace computation in this regime."
+   },
+   {
+    "w": "derive",
+    "ipa": "dəraɪv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "得到，导出",
+    "ex": "Configured with 72 routed experts and 2 shared experts (activating the top-𝑘= 6 routed experts per token), this model scales to 26.7B total parameters while maintaining the same activated parameters as Dense-4B. • Engram-27B is …"
+   },
+   {
+    "w": "descent",
+    "ipa": "dɪˈsɛnt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "血统, 后裔",
+    "ex": "The steeper descent in the Engram curves indicates that the model finishes feature composition much faster."
+   },
+   {
+    "w": "despite",
+    "ipa": "dɪˈspaɪt",
+    "pos": "prep.",
+    "lv": "四级",
+    "m": "不管",
+    "ex": "Despite differing initialization stages, all variants undergo the exact same context extension training protocol."
+   },
+   {
+    "w": "detector",
+    "ipa": "dɪˈtɛktər",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "发觉者，探测器",
+    "ex": "Under this framework, the first layer acts as a pattern detector (\"keys\") while the second layer projects specific information into the residual stream (\"values\")."
+   },
+   {
+    "w": "deterministic",
+    "ipa": "dɪˌtɜrməˈnɪstɪk",
+    "pos": "adj.",
+    "lv": "超纲",
+    "m": "确定性的",
+    "ex": "Its deterministic addressing allows for the decoupling of storage and compute"
+   },
+   {
+    "w": "diagonal",
+    "ipa": "daɪˈægənəl",
+    "pos": "adj.；n.",
+    "lv": "考博",
+    "m": "斜的；对角线的；斜纹的；对角线；斜线",
+    "ex": "The consistent off-diagonal shift, which aligns with the LogitLens results (Section 6.1.1), confirms that Engram achieves deeper representations at earlier layers."
+   },
+   {
+    "w": "dichotomy",
+    "ipa": "daɪˈkɑtəmi",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "二分法；两分；分裂；双歧分枝",
+    "ex": "As shown in Figure 6, the results reveal a sharp functional dichotomy."
+   },
+   {
+    "w": "dilute",
+    "ipa": "dɪˈlut",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "稀释，冲淡",
+    "ex": "Allocating capacity to 4-grams is slightly suboptimal under a fixed 1.6B budget—likely because it dilutes capacity from the more frequent 2/3-gram patterns—though we do not rule out that higher-order 𝑁-grams become beneficial at …"
+   },
+   {
+    "w": "discrete",
+    "ipa": "dɪˈskrit",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "分离的， 不相关联的",
+    "ex": "N-Grammer (Roy et al., 2022) directly augments the transformer architecture with 𝑁-gram that are constructed from a discrete latent text representation, while Feng et al. (2023) demonstrates the effectiveness of 𝑁-gram for speech …"
+   },
+   {
+    "w": "distribution",
+    "ipa": "ˌdɪstrəˈbjuʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "分发，分配；分布",
+    "ex": "Furthermore, by exploiting the inherent Zipfian distribution of 𝑁-grams, we could maximize the utility of the hardware memory hierarchy."
+   },
+   {
+    "w": "diverge",
+    "ipa": "dɪˈvərʤ",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "分岔；分歧",
+    "ex": "While these approaches offer significant gains in their respective settings, our work diverges fundamentally in two key dimensions. • First, regarding modeling and evaluation protocols."
+   },
+   {
+    "w": "divergence",
+    "ipa": "dɪˈvərʤəns",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "分歧",
+    "ex": "Engram variants exhibit systematically smaller KL divergence, with the most pronounced gap appearing in the early blocks."
+   },
+   {
+    "w": "dominate",
+    "ipa": "ˈdɑməˌneɪt",
+    "pos": "vi.；vt.",
+    "lv": "六级",
+    "m": "拥有优势；在…中占首要地位；支配，统治，控制；耸立于，俯视",
+    "ex": "Although it does not yet strictly dominate Engram-27B on every task, this is likely an artifact of under-training."
+   },
+   {
+    "w": "dram",
+    "ipa": "ˈdiˌræm",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "液量特兰(药衡系统中的容量单位), 少量",
+    "ex": "We insert a massive 100B-parameter Engram layer into the second Transformer block, with the entire embedding table resident in host DRAM."
+   },
+   {
+    "w": "drawn",
+    "ipa": "drɔn",
+    "pos": "adj.",
+    "lv": "GRE",
+    "m": "憔悴的",
+    "ex": "For each benchmark, we follow standard prompting protocols and evaluation metrics. • Language Modeling: We report loss on the test set of The Pile (Gao et al., 2020) and an validation set drawn from the same distribution as the …"
+   },
+   {
+    "w": "edit",
+    "ipa": "ˈɛdət",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "剪辑，编辑",
+    "ex": "These insights have enabled precise model editing algorithms such as ROME (Meng et al., 2022) and MEMIT (Meng et al., 2023), which allow for the direct update of factual associations without retraining."
+   },
+   {
+    "w": "effective",
+    "ipa": "ˈifɛktɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "有效的；有影响的",
+    "ex": "Crucially, the effective communication volume per step scales with the number of activated slots rather than the total embedding table size."
+   },
+   {
+    "w": "effectiveness",
+    "ipa": "ˈifɛktɪvnəs",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "效力",
+    "ex": "Structural Ablation and Layer Sensitivity In this section, we ablate Engram under a controlled setting to investigate the effectiveness of each key module design."
+   },
+   {
+    "w": "efficacy",
+    "ipa": "ˈɛfɪˌkæsi",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "功效，效力",
+    "ex": "These studies collectively demonstrate the efficacy of scaling parameters through 𝑁-gram representations with minimal computational overhead."
+   },
+   {
+    "w": "efficiency",
+    "ipa": "ɪˈfɪʃənsi",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "效率；功效，效能",
+    "ex": "Additionally, to rigorously benchmark architectural efficiency, we select two intermediate checkpoints for Engram-27B at 41k and 46k steps."
+   },
+   {
+    "w": "embed",
+    "ipa": "ɪmˈbɛd",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "把…嵌入， 扎牢； 使深留脑中",
+    "ex": "Crucially, the effective communication volume per step scales with the number of activated slots rather than the total embedding table size."
+   },
+   {
+    "w": "emergence",
+    "ipa": "ˈimərʤəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "出现，发生",
+    "ex": "Moreover, investigations into internal representations, such as those in Othello-GPT (Li et al., 2023a), suggest that these storage mechanisms may facilitate the emergence of structured “world models” rather than mere statistical …"
+   },
+   {
+    "w": "empirically",
+    "ipa": "ɛmˈpɪrɪkəli",
+    "pos": "adv.",
+    "lv": "GRE",
+    "m": "凭经验地",
+    "ex": "To empirically validate whether Engram behaves as intended, we visualize the gating scalar 𝛼𝑡of Engram-27B2 across various samples in Figure 7."
+   },
+   {
+    "w": "enable",
+    "ipa": "ɪˈneɪbəl",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使能够……",
+    "ex": "To enable long-context capabilities, we adopt the context expansion strategy introduced in DeepSeek-V3 (Liu et al., 2024a)."
+   },
+   {
+    "w": "encode",
+    "ipa": "ɛnˈkoʊd",
+    "pos": "vt.",
+    "lv": "考博",
+    "m": "把译成电码， 把…编码",
+    "ex": "While attention mechanisms and positional encoding provide the structural basis for context processing (Press et al., 2022;"
+   },
+   {
+    "w": "engine",
+    "ipa": "ˈɪnʤən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "引擎，发动机",
+    "ex": "We implemented an inference harness based on nano-vLLM1—a stream-lined prototype of the industry-standard vLLM engine (Kwon et al., 2023)."
+   },
+   {
+    "w": "ensure",
+    "ipa": "ɪnˈʃʊr",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "确保",
+    "ex": "For modeling, to ensure a controlled comparison, we adhere to a consistent default setting across all models unless explicitly stated otherwise."
+   },
+   {
+    "w": "entirely",
+    "ipa": "ɪnˈtaɪərli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "完全地，彻底地",
+    "ex": "We measure infernece throughput with a 100B-parameter Engram layer entirely offloaded to host memory."
+   },
+   {
+    "w": "envision",
+    "ipa": "ɪnˈvɪʒn",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "展望，设想",
+    "ex": "We envision conditional memory functions as an indispensable modeling primitive"
+   },
+   {
+    "w": "equivalent",
+    "ipa": "ɪkˈwɪvələnt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "相等的，相当的",
+    "ex": "This validates our central hypothesis: by bypassing early-stage feature composition via explicit lookups, Engram is functionally equivalent to increasing the model’s effective depth."
+   },
+   {
+    "w": "establish",
+    "ipa": "ɪˈstæblɪʃ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "建立，创办，设立",
+    "ex": "Baseline): Under the standard iso-compute budget, Engram- 27B (50k) further widens this gap, establishing the highest performance across the board."
+   },
+   {
+    "w": "evaluation",
+    "ipa": "ɪˌvæljuˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "评价，评估",
+    "ex": "Evaluation Protocol We evaluate models on a diverse suite of benchmarks spanning language modeling, knowledge, reasoning, reading comprehension, and code/math."
+   },
+   {
+    "w": "evolve",
+    "ipa": "ɪˈvɑlv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使发展",
+    "ex": "Lan et al., 2023) and PlugLM (Cheng et al., 2023a) decouple knowledge storage from model processing, treating the external memory as an editable and scalable key-value store that allows the model to adapt to evolving information …"
+   },
+   {
+    "w": "exclude",
+    "ipa": "ɪkˈsklud",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "排除，不包括",
+    "ex": "We analyze the trade-off using three parameter metrics: • 𝑃tot: total trainable parameters, excluding vocabulary embedding and LM head. • 𝑃act: activated parameters per token."
+   },
+   {
+    "w": "execute",
+    "ipa": "ˈɛksəˌkjut",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "将…处死；实施",
+    "ex": "This yields a strictly deterministic memory access pattern: indices for the next Engram lookup are fixed once the token sequence is known and can be computed before the corresponding layer executes."
+   },
+   {
+    "w": "exemplify",
+    "ipa": "ɪgˈzɛmpləˌfaɪ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "举例证明（解释）",
+    "ex": "Despite the paradigm shift toward neural architectures (Bengio et al., 2003) for capturing long-range dependencies, the computational efficiency of 𝑁-gram lookups has been preserved in modern representation learning, as …"
+   },
+   {
+    "w": "exhibit",
+    "ipa": "ɪgˈzɪbɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "显示；陈列，展览",
+    "ex": "Crucially, Engram-27B (46k) is selected because it exhibits the same pre-training loss as the fully trained MoE-27B (50k)."
+   },
+   {
+    "w": "expansion",
+    "ipa": "ɪkˈspænʧən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "扩大，扩充；扩张",
+    "ex": "To enable long-context capabilities, we adopt the context expansion strategy introduced in DeepSeek-V3 (Liu et al., 2024a)."
+   },
+   {
+    "w": "expend",
+    "ipa": "ɪkˈspɛnd",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "花费， 消费； 消耗",
+    "ex": "Injecting Engram early allows it to offload local pattern reconstruction before the backbone expends computational depth, aligning with the backbone’s natural hierarchical processing (Ghandeharioun et al., 2024;"
+   },
+   {
+    "w": "experimental",
+    "ipa": "ɪkˌspɛrɪˈmɛntəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "实验的，试验的",
+    "ex": "While the hierarchical design in Section 2.5 exploits Zipfian locality to cache frequent items in HBM, our experimental setup forces all retrievals to traverse the PCIe bus from host memory."
+   },
+   {
+    "w": "explicitly",
+    "ipa": "ɪkˈsplɪsətli",
+    "pos": "adv.",
+    "lv": "GRE",
+    "m": "直接地，明确地",
+    "ex": "For modeling, to ensure a controlled comparison, we adhere to a consistent default setting across all models unless explicitly stated otherwise."
+   },
+   {
+    "w": "exploit",
+    "ipa": "ˌɛkˈsplɔɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "开采",
+    "ex": "Furthermore, by exploiting the inherent Zipfian distribution of 𝑁-grams, we could maximize the utility of the hardware memory hierarchy."
+   },
+   {
+    "w": "external",
+    "ipa": "ɪkˈstərnəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "外部的，外面的",
+    "ex": "Prior approaches often treat 𝑁-gram embeddings as external augmentations without validating their efficiency under strictly fair comparison protocols."
+   },
+   {
+    "w": "extraction",
+    "ipa": "ɛkˈstrækʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "抽出；提取法",
+    "ex": "Multi-hop Variable Tracking (VT), Common Words Extraction (CWE), Frequent Words Extraction (FWE), and Question Answering (QA)."
+   },
+   {
+    "w": "extremely",
+    "ipa": "ɪkˈstrimli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "极端，极其，非常",
+    "ex": "Engram shares with this literature the challenge of representing an extremely large discrete key space under a highly skewed access distribution, but differs in constructing keys from ordered textual 𝑁-grams and injecting the …"
+   },
+   {
+    "w": "factor",
+    "ipa": "ˈfæktər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "因素；因子，系数",
+    "ex": "The hyper-parameters are scale 𝑠= 10, 𝛼= 1, 𝛽= 32 and the scaling factor 𝑓= 0.707."
+   },
+   {
+    "w": "factual",
+    "ipa": "ˈfækʧuəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "事实的；真实的",
+    "ex": "Parallel to capacity scaling, substantial research has scrutinized the internal mechanisms governing how Transformers encode and retrieve factual knowledge."
+   },
+   {
+    "w": "feature",
+    "ipa": "ˈfiʧər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "特点",
+    "ex": "The steeper descent in the Engram curves indicates that the model finishes feature composition much faster."
+   },
+   {
+    "w": "filter",
+    "ipa": "ˈfɪltər",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "过滤；滤纸",
+    "ex": "The index 𝑎𝑗 serves as a robust proxy for the “effective MoE depth” corresponding to Engram layer 𝑗, utilizing top-𝑘filtering (with 𝑘= 5) to mitigate low-similarity noise."
+   },
+   {
+    "w": "finite",
+    "ipa": "ˈfaɪˌnaɪt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "有限的；有尽的",
+    "ex": "Allocation under Finite Constraints."
+   },
+   {
+    "w": "formulaic",
+    "ipa": "ˌfɔrmjəˈleɪɪk",
+    "pos": "adj.",
+    "lv": "GRE",
+    "m": "公式的， 刻板的",
+    "ex": "In English, we observe strong activations on multi-token named entities (e.g., “Alexander the Great”, “the Milky Way”) and formulaic phrases (e.g., “By the way”, “Princess of Wales”)."
+   },
+   {
+    "w": "formulate",
+    "ipa": "ˈfɔrmjuleɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "表述，制定",
+    "ex": "By formulating the Sparsity Allocation problem"
+   },
+   {
+    "w": "formulation",
+    "ipa": "ˌfɔrmjəˈleɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "表述方式",
+    "ex": "Optimal Allocation Ratio Between MoE and Engram Compute-matched formulation."
+   },
+   {
+    "w": "frequency",
+    "ipa": "ˈfrikwənsi",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "屡次；次数；频率",
+    "ex": "Tito Svenstrup et al., 2017), frequency-aware hashing and collision management (Tsang and Ahle, 2022;"
+   },
+   {
+    "w": "fully",
+    "ipa": "ˈfʊli",
+    "pos": "adv.；n.",
+    "lv": "专四",
+    "m": "充分地；完全地；彻底地；(Fully)人名；(法)菲利",
+    "ex": "When comparing Engram-27B (46k) against the fully trained MoE-27B (50k)—models aligned on pre-training loss—Engram demonstrates significant gains."
+   },
+   {
+    "w": "functional",
+    "ipa": "ˈfəŋkʃənəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "功能的",
+    "ex": "As shown in Figure 6, the results reveal a sharp functional dichotomy."
+   },
+   {
+    "w": "fundamentally",
+    "ipa": "ˌfəndəˈmɛnəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "根本上",
+    "ex": "While these approaches offer significant gains in their respective settings, our work diverges fundamentally in two key dimensions. • First, regarding modeling and evaluation protocols."
+   },
+   {
+    "w": "furthermore",
+    "ipa": "ˈfərðərˌmɔr",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "而且，此外",
+    "ex": "Furthermore, by exploiting the inherent Zipfian distribution of 𝑁-grams, we could maximize the utility of the hardware memory hierarchy."
+   },
+   {
+    "w": "fusion",
+    "ipa": "fˈjuʒən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "联合， 合并； 核聚变",
+    "ex": "We find that three components yield the most significant gains: (i) branch-specific fusion within the multi-branch backbone, (ii) context-aware gating, and (iii) tokenizer compression."
+   },
+   {
+    "w": "gap",
+    "ipa": "gæp",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "差距;缝隙缺口",
+    "ex": "Baseline): Under the standard iso-compute budget, Engram- 27B (50k) further widens this gap, establishing the highest performance across the board."
+   },
+   {
+    "w": "generalize",
+    "ipa": "ˈʤɛnərəˌlaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "概括出",
+    "ex": "This behavior generalizes effectively across languages."
+   },
+   {
+    "w": "generate",
+    "ipa": "ˈʤɛnərˌeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "产生",
+    "ex": "Other approaches share representations across multiple categorical fields (Coleman et al., 2023), generate embeddings without explicit tables (Kang et al., 2021), or replace arbitrary item IDs with learned semantic identifiers …"
+   },
+   {
+    "w": "global",
+    "ipa": "ˈgloʊbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "全球的， 全世界的； 总的， 完整的",
+    "ex": "Long Context Training By offloading local dependency modeling to static lookups, the Engram architecture preserves valuable attention capacity for managing global context."
+   },
+   {
+    "w": "hardware",
+    "ipa": "ˈhɑrdˌwɛr",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "五金器具；硬件",
+    "ex": "Furthermore, by exploiting the inherent Zipfian distribution of 𝑁-grams, we could maximize the utility of the hardware memory hierarchy."
+   },
+   {
+    "w": "harness",
+    "ipa": "ˈhɑrnɪs",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "治理；马具，挽具",
+    "ex": "We implemented an inference harness based on nano-vLLM1—a stream-lined prototype of the industry-standard vLLM engine (Kwon et al., 2023)."
+   },
+   {
+    "w": "haystack",
+    "ipa": "ˈheɪˌstæk",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "干草堆",
+    "ex": "For RULER, we evaluate on 14 subsets aggregated into 8 categories: Single (S), Multi-keys (MK), Multi-values (MV) and Multi-queries (MQ) Needle-in-a-Haystack;"
+   },
+   {
+    "w": "hierarchical",
+    "ipa": "ˌhaɪˈrɑrkəkəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "分层的；等级体系的",
+    "ex": "While the hierarchical design in Section 2.5 exploits Zipfian locality to cache frequent items in HBM, our experimental setup forces all retrievals to traverse the PCIe bus from host memory."
+   },
+   {
+    "w": "hierarchy",
+    "ipa": "ˈhaɪˌrɑrki",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "等级制度； 统治集团， 领导层",
+    "ex": "Furthermore, by exploiting the inherent Zipfian distribution of 𝑁-grams, we could maximize the utility of the hardware memory hierarchy."
+   },
+   {
+    "w": "historical",
+    "ipa": "hɪˈstɔrɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "历史的，有关历史的",
+    "ex": "In the Chinese examples, Engram identifies and retrieves distinct idiomatic expressions and historical entities, such as “Four Great Inventions” (四大发明) and “Zhang Zhongjing” (张仲景)."
+   },
+   {
+    "w": "holistic",
+    "ipa": "hoʊˈlɪstɪk",
+    "pos": "adj.",
+    "lv": "雅思",
+    "m": "整体的， 全面的； 功能整体性的",
+    "ex": "This holistic design allows Engram to scale to massive parameters with negligible inference overhead."
+   },
+   {
+    "w": "hop",
+    "ipa": "hɑp",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "（人）单足跳",
+    "ex": "Multi-hop Variable Tracking (VT), Common Words Extraction (CWE), Frequent Words Extraction (FWE), and Question Answering (QA)."
+   },
+   {
+    "w": "humanitarian",
+    "ipa": "ˌjuˌmænəˈtɛriən",
+    "pos": "adj.；n.",
+    "lv": "六级",
+    "m": "博爱的；慈善家",
+    "ex": "who was famous for her beauty and humanitarian work"
+   },
+   {
+    "w": "hybrid",
+    "ipa": "ˈhaɪbrɪd",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "混合的",
+    "ex": "a hybrid allocation of sparse capacity between MoE experts and Engram"
+   },
+   {
+    "w": "hypothesis",
+    "ipa": "haɪˈpɑθəsəs",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "假设，假说",
+    "ex": "This validates our central hypothesis: by bypassing early-stage feature composition via explicit lookups, Engram is functionally equivalent to increasing the model’s effective depth."
+   },
+   {
+    "w": "hypothesize",
+    "ipa": "haɪˈpɑθəˌsaɪz",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "假设,猜测",
+    "ex": "The Feed-Forward Networks (FFNs) are widely hypothesized to function as Key-Value memories (Geva et al., 2021)."
+   },
+   {
+    "w": "identical",
+    "ipa": "aɪˈdɛntɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "相同的",
+    "ex": "All models are trained using an identical data curriculum (same token budget and order) and are strictly matched in the number of activated parameters."
+   },
+   {
+    "w": "identity",
+    "ipa": "aɪˈdɛntəˌti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "身份",
+    "ex": "parameters are initialized to zero to strictly preserve the identity mapping at the start of training. • Engram-40B retains the same backbone and computation budget as Engram-27B but scales the sparse embedding module to 18.5B …"
+   },
+   {
+    "w": "idiomatic",
+    "ipa": "ˌɪdiəˈmætɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "惯用的；符合语言习惯的；通顺的",
+    "ex": "In the Chinese examples, Engram identifies and retrieves distinct idiomatic expressions and historical entities, such as “Four Great Inventions” (四大发明) and “Zhang Zhongjing” (张仲景)."
+   },
+   {
+    "w": "illustrate",
+    "ipa": "ˈɪləˌstreɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "说明,阐明",
+    "ex": "illustrates how LLMs gradually integrate context tokens through layers of attention and FFNs to construct the internal representation of the entity: “Diana, Princess of Wales”."
+   },
+   {
+    "w": "impact",
+    "ipa": "ˌɪmˈpækt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "影响",
+    "ex": "To reduce the impact of benchmark noise and to visualize training dynamics, we provide full benchmark trajectories during pretraining in Appendix B."
+   },
+   {
+    "w": "implement",
+    "ipa": "ˈɪmpləmənt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "实施，执行",
+    "ex": "We implemented an inference harness based on nano-vLLM1—a stream-lined prototype of the industry-standard vLLM engine (Kwon et al., 2023)."
+   },
+   {
+    "w": "implementation",
+    "ipa": "ˌɪmpləmɛnˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "实现，履行",
+    "ex": "The fact that this baseline retrieval strategy yields minimal overhead strongly suggests that a fully optimized, locality-aware implementation would incur negligible throughput penalty."
+   },
+   {
+    "w": "improvement",
+    "ipa": "ˌɪmˈpruvmənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "改进，改善；改进处",
+    "ex": "Similarly, OverEncoding (Huang et al., 2025a) fails to yield meaningful improvements on sparse MoE backbones even under a non-isoparametric setting."
+   },
+   {
+    "w": "inactive",
+    "ipa": "ˌɪˈnæktɪv",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "不活跃的，停滞的",
+    "ex": "𝑃(sparse) MoE = 𝜌𝑃sparse, 𝑃Engram = (1 −𝜌) 𝑃sparse. (7) Intuitively: • 𝜌= 1 corresponds to a pure MoE model (all inactive parameters are routed experts). • 𝜌< 1 reduces the number of routed experts and reallocates the freed …"
+   },
+   {
+    "w": "incompatible",
+    "ipa": "ˌɪnkəmˈpætəbəl",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "不相容的",
+    "ex": "We note that while other work such as SCONE (Yu et al., 2025) also investigates large-scale embeddings, it is primarily inference-focused and includes extra module (f-gram model) and additional training FLOPs, rendering it …"
+   },
+   {
+    "w": "inconsistency",
+    "ipa": "ˌɪnkənˈsɪstənsi",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "矛盾",
+    "ex": "Crucially, this post-hoc ablation induces a training–inference inconsistency, potentially introducing noise in complex, mixed-capability tasks."
+   },
+   {
+    "w": "incorporate",
+    "ipa": "ˌɪnˈkɔrpərˌeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "合并；体现",
+    "ex": "It utilizes the backbone architecture described above, incorporating a standard dense FFN into every block. • MoE-27B replaces the standard dense FFN with a DeepSeekMoE module (Dai et al., 2024)."
+   },
+   {
+    "w": "incur",
+    "ipa": "ˌɪnˈkər",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "引起，导致",
+    "ex": "As detailed in Table 4, offloading a 100B-parameter embedding table incurs a negligible throughput penalty, peaking at only 2.8% on the 8B backbone."
+   },
+   {
+    "w": "index",
+    "ipa": "ˈɪndɛks",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "索引；指数；指标",
+    "ex": "The index 𝑎𝑗 serves as a robust proxy for the “effective MoE depth” corresponding to Engram layer 𝑗, utilizing top-𝑘filtering (with 𝑘= 5) to mitigate low-similarity noise."
+   },
+   {
+    "w": "indispensable",
+    "ipa": "ˌɪndɪˈspɛnsəbəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "必不可少的",
+    "ex": "We envision conditional memory functions as an indispensable modeling primitive for next-generation sparse models."
+   },
+   {
+    "w": "individual",
+    "ipa": "ˌɪndəˈvɪʤəwəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "个人",
+    "ex": "Starting from the reference configuration, we ablate individual design choices while keeping the Engram parameter budget fixed."
+   },
+   {
+    "w": "induce",
+    "ipa": "ˌɪnˈdus",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "引诱",
+    "ex": "Crucially, this post-hoc ablation induces a training–inference inconsistency, potentially introducing noise in complex, mixed-capability tasks."
+   },
+   {
+    "w": "inefficiency",
+    "ipa": "ˌɪnɪˈfɪʃnsi",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "低效",
+    "ex": "aiming to resolve the inefficiency of simulating knowledge retrieval"
+   },
+   {
+    "w": "inference",
+    "ipa": "ˈɪnfərəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "推断结果， 结论； 推论， 推理， 推断",
+    "ex": "We implemented an inference harness based on nano-vLLM1—a stream-lined prototype of the industry-standard vLLM engine (Kwon et al., 2023)."
+   },
+   {
+    "w": "infinite",
+    "ipa": "ˈɪnfənət",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "无限的",
+    "ex": "Engram under Infinite Memory Regime In Section 3.1, we optimized the allocation under a fixed parameter budget."
+   },
+   {
+    "w": "infrastructure",
+    "ipa": "ˌɪnfrəˈstrəkʧər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "基础设施；公共建设；下部构造",
+    "ex": "Finally, Engram advocates for infrastructure-aware efficiency as a first-class design principle."
+   },
+   {
+    "w": "inherent",
+    "ipa": "ˌɪnˈhɛrənt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "固有的",
+    "ex": "Furthermore, by exploiting the inherent Zipfian distribution of 𝑁-grams, we could maximize the utility of the hardware memory hierarchy."
+   },
+   {
+    "w": "inject",
+    "ipa": "ˌɪnˈʤɛkt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "注射；注满；喷射",
+    "ex": "Injecting Engram early allows it to offload local pattern reconstruction before the backbone expends computational depth, aligning with the backbone’s natural hierarchical processing (Ghandeharioun et al., 2024;"
+   },
+   {
+    "w": "injection",
+    "ipa": "ˌɪnˈʤɛkʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "注射，注入；充满",
+    "ex": "While Layer 2 is optimal under a single injection constraint, we find that dividing the same 1.6B memory into two smaller modules (achieved by reducing the embedding dimension 𝑑mem) and placing them at Layers 2 and 6 performs …"
+   },
+   {
+    "w": "innovation",
+    "ipa": "ˌɪnəˈveɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "改革，创新",
+    "ex": "Subsequent innovations such as GShard (Lepikhin et al., 2020), BASE (Lewis et al., 2021), Switch Transformer (Fedus et al., 2022) and GLaM (Du et al., 2022) enabled super-linear parameter scaling while maintaining constant …"
+   },
+   {
+    "w": "insertion",
+    "ipa": "ˌɪnˈsərʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "插入",
+    "ex": "More importantly, layered insertion also provides a practical system advantage, enabling better utilization of the memory hierarchy as discussed in Section 2.5."
+   },
+   {
+    "w": "insight",
+    "ipa": "ˈɪnˌsaɪt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "洞察力，洞悉",
+    "ex": "These insights have enabled precise model editing algorithms such as ROME (Meng et al., 2022) and MEMIT (Meng et al., 2023), which allow for the direct update of factual associations without retraining."
+   },
+   {
+    "w": "instance",
+    "ipa": "ˈɪnstəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "情况，例子",
+    "ex": "For instance, the representations formed at layer 5 of Engram-27B align most closely with those at approximately layer 12 of the MoE baseline."
+   },
+   {
+    "w": "instantiate",
+    "ipa": "ɪnˈstænʃieɪt",
+    "pos": "v.",
+    "lv": "GRE",
+    "m": "实例化",
+    "ex": "We instantiate this concept via Engram"
+   },
+   {
+    "w": "integrate",
+    "ipa": "ˈɪnəˌgreɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "成为一体， 合并",
+    "ex": "For baselines, we compare against OverEncoding (Huang et al., 2025a), which integrates 𝑁-gram embeddings via averaging with the vocabulary embedding."
+   },
+   {
+    "w": "intensity",
+    "ipa": "ˌɪnˈtɛnsɪti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "强烈，剧烈；强度",
+    "ex": "This confirms that the compute intensity of early dense blocks provides a sufficient temporal window to mask the retrieval latency."
+   },
+   {
+    "w": "intensive",
+    "ipa": "ˌɪnˈtɛnsɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "加强的；精耕细作的",
+    "ex": "Interestingly, these gains are not limited to knowledge-intensive tasks (e.g., MMLU: +3.0, MMLU-Pro: +1.8, CMMLU: +4.0), where memory capacity is intuitively beneficial."
+   },
+   {
+    "w": "interestingly",
+    "ipa": "ˈɪntəˌrɛstɪŋli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "有趣地",
+    "ex": "Interestingly, these gains are not limited to knowledge-intensive tasks (e.g., MMLU: +3.0, MMLU-Pro: +1.8, CMMLU: +4.0), where memory capacity is intuitively beneficial."
+   },
+   {
+    "w": "intermediate",
+    "ipa": "ˌɪnərˈmidiɪt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "中间的；中级的",
+    "ex": "Additionally, to rigorously benchmark architectural efficiency, we select two intermediate checkpoints for Engram-27B at 41k and 46k steps."
+   },
+   {
+    "w": "internal",
+    "ipa": "ˌɪnˈtərnəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "内的；国内的",
+    "ex": "Parallel to capacity scaling, substantial research has scrutinized the internal mechanisms governing how Transformers encode and retrieve factual knowledge."
+   },
+   {
+    "w": "interpretable",
+    "ipa": "ɪnˈtɜːrprətəbəl",
+    "pos": "adj.",
+    "lv": "超纲",
+    "m": "可解释的，可理解的",
+    "ex": "We observe that not every branch encodes interpretable activation patterns."
+   },
+   {
+    "w": "interpretation",
+    "ipa": "ˌɪnˌtərprɪˈteɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "阐释，说明",
+    "ex": "The “Latent State Translation” column displays the automatically generated text for the last token: “Wales” by PatchScope (Ghandeharioun et al., 2024), while the “Explanation” column presents the manual interpretation provided by …"
+   },
+   {
+    "w": "intervention",
+    "ipa": "ˌɪntərˈvɛnʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "干涉",
+    "ex": "This layered design reconciles the trade-off by combining early intervention with rich, late-stage contextual gating."
+   },
+   {
+    "w": "intrinsically",
+    "ipa": "ˌɪnˈtrɪnsɪkəli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "内在地, 固有地",
+    "ex": "This suggests that long-context performance is intrinsically coupled with the general modeling ability of the base model."
+   },
+   {
+    "w": "investigate",
+    "ipa": "ˌɪnˈvɛstəˌgeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "调查",
+    "ex": "Structural Ablation and Layer Sensitivity In this section, we ablate Engram under a controlled setting to investigate the effectiveness of each key module design."
+   },
+   {
+    "w": "investigation",
+    "ipa": "ˌɪnˌvɛstəˈgeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "调查，调查研究",
+    "ex": "This investigation is motivated by Engram’s unique ability to decouple storage from compute detailed in Section 2.5."
+   },
+   {
+    "w": "isolate",
+    "ipa": "ˈaɪsəˌleɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使隔离，使孤立",
+    "ex": "Through a rigorous evaluation protocol that isolates architectural contributions from base model capabilities, we demonstrate that Engram yields significant gains in long-range retrieval and reasoning tasks."
+   },
+   {
+    "w": "isolation",
+    "ipa": "ˌaɪsəˈleɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "隔绝，隔离",
+    "ex": "More recently, DeepSeek-MoE (Dai et al., 2024) demonstrated superior efficiency, significantly outperforming dense models with equivalent active parameters via fine-grained expert segmentation and shared expert isolation."
+   },
+   {
+    "w": "item",
+    "ipa": "ˈaɪtəm",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "条，条款",
+    "ex": "While the hierarchical design in Section 2.5 exploits Zipfian locality to cache frequent items in HBM, our experimental setup forces all retrievals to traverse the PCIe bus from host memory."
+   },
+   {
+    "w": "kernel",
+    "ipa": "ˈkərnəl",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "（果实的）核；谷粒",
+    "ex": "To validate this hypothesis, we employ two mechanistic interpretability tools: LogitLens (Belrose et al., 2023; nostalgebraist, 2020) and Centered Kernel Alignment analysis (CKA) (Davari et al., 2023;"
+   },
+   {
+    "w": "knob",
+    "ipa": "nɑb",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "门把，拉手；旋纽",
+    "ex": "Across the explored range, the curve follows a strict power law (linear in log-space), indicating that Engram provides a predictable scaling knob: larger memory continues to pay off without requiring additional computation."
+   },
+   {
+    "w": "large-scale",
+    "ipa": "ˈlɑrʤˌskeɪl",
+    "pos": "adj.",
+    "lv": "雅思",
+    "m": "大规模的， 大范围的",
+    "ex": "Mem (Huang et al., 2025b,c), integrate large-scale, sparse key-value stores directly into the model"
+   },
+   {
+    "w": "largely",
+    "ipa": "ˈlɑrʤli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "大部分；大量地",
+    "ex": "the Engram module, whereas reading comprehension is largely preserved by the backbone."
+   },
+   {
+    "w": "latency",
+    "ipa": "ˈleɪtənsi",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "潜伏, 潜在, 潜伏物, 性潜伏期（ 岁或 岁至青春期）, [生理]（肌肉等的）反应时间（介于刺激与反应之间的时间）",
+    "ex": "This confirms that the compute intensity of early dense blocks provides a sufficient temporal window to mask the retrieval latency."
+   },
+   {
+    "w": "latent",
+    "ipa": "ˈleɪtənt",
+    "pos": "adj.",
+    "lv": "考研",
+    "m": "存在但看不见的",
+    "ex": "Each block integrates a Multi-head Latent Attention (MLA) (DeepSeek-AI, 2024) with 32 heads, connected to FFNs via mHC (Xie et al., 2025) with an expansion rate of 4."
+   },
+   {
+    "w": "layer",
+    "ipa": "leɪər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "层，层次；铺设者",
+    "ex": "For instance, the representations formed at layer 5 of Engram-27B align most closely with those at approximately layer 12 of the MoE baseline."
+   },
+   {
+    "w": "layout",
+    "ipa": "leɪaʊt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "布局，安排，设计",
+    "ex": "Liu et al., 2021), and structured compression based on quantization, tensor decomposition, or shared memory layouts (Desai et al., 2022;"
+   },
+   {
+    "w": "locality",
+    "ipa": "loʊˈkæləti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "位置，地点，发生地",
+    "ex": "The fact that this baseline retrieval strategy yields minimal overhead strongly suggests that a fully optimized, locality-aware implementation would incur negligible throughput penalty."
+   },
+   {
+    "w": "location",
+    "ipa": "loʊˈkeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "位置，场所",
+    "ex": "Crucially, the location of this optimum is stable across regimes"
+   },
+   {
+    "w": "log",
+    "ipa": "lɔg",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "原木，木料",
+    "ex": "Validation loss exhibits a log-linear trend with respect to the number of embeddings."
+   },
+   {
+    "w": "lower",
+    "ipa": "loʊər",
+    "pos": "adj.；v.",
+    "lv": "四级",
+    "m": "较低的；放下",
+    "ex": "The consistently lower divergence in early layers indicates that Engram accelerates prediction convergence. (b-c) Similarity heatmap computed by CKA (Kornblith et al., 2019)."
+   },
+   {
+    "w": "magnitude",
+    "ipa": "ˈmægnəˌtud",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "重大；星等",
+    "ex": "The heatmap intensity corresponds to the magnitude of the gating scalar 𝛼𝑡∈[0, 1], where darker red indicates stronger"
+   },
+   {
+    "w": "maintain",
+    "ipa": "meɪnˈteɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "维持，主张",
+    "ex": "Subsequent innovations such as GShard (Lepikhin et al., 2020), BASE (Lewis et al., 2021), Switch Transformer (Fedus et al., 2022) and GLaM (Du et al., 2022) enabled super-linear parameter scaling while maintaining constant …"
+   },
+   {
+    "w": "management",
+    "ipa": "ˈmænɪʤmənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "管理；经营，处理",
+    "ex": "Tito Svenstrup et al., 2017), frequency-aware hashing and collision management (Tsang and Ahle, 2022;"
+   },
+   {
+    "w": "manual",
+    "ipa": "ˈmænjuəl",
+    "pos": "adj.；n.",
+    "lv": "四级",
+    "m": "体力的；手册",
+    "ex": "The “Latent State Translation” column displays the automatically generated text for the last token: “Wales” by PatchScope (Ghandeharioun et al., 2024), while the “Explanation” column presents the manual interpretation provided by …"
+   },
+   {
+    "w": "marginally",
+    "ipa": "ˈmɑrʤənəli",
+    "pos": "adv.",
+    "lv": "雅思",
+    "m": "稍微， 些微",
+    "ex": "Other changes have smaller effects: removing the lightweight depthwise convolution only marginally degrades performance."
+   },
+   {
+    "w": "marker",
+    "ipa": "ˈmɑrkər",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "记分员；书签；标识物；作记号的人",
+    "ex": "Results are denoted by markers in Figure 5."
+   },
+   {
+    "w": "massive",
+    "ipa": "ˈmæsɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "巨大的 大量的",
+    "ex": "We insert a massive 100B-parameter Engram layer into the second Transformer block, with the entire embedding table resident in host DRAM."
+   },
+   {
+    "w": "mathematical",
+    "ipa": "ˌmæθəˈmætɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "数学的，数学上的",
+    "ex": "We observe even more significant improvements in general-reasoning domains (e.g., BBH: +5.0, ARC-Challenge: +3.7, DROP: +3.3), as well as code and mathematical reasoning (e.g., HumanEval: +3.0, MBPP: +1.6, GSM8K: +2.2, MATH …"
+   },
+   {
+    "w": "maximize",
+    "ipa": "ˈmæksəˌmaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "取最大值, 最佳化",
+    "ex": "Furthermore, by exploiting the inherent Zipfian distribution of 𝑁-grams, we could maximize the utility of the hardware memory hierarchy."
+   },
+   {
+    "w": "meaningful",
+    "ipa": "ˈminɪŋfəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "有目的的； 有意义的",
+    "ex": "Similarly, OverEncoding (Huang et al., 2025a) fails to yield meaningful improvements on sparse MoE backbones even under a non-isoparametric setting."
+   },
+   {
+    "w": "mechanic",
+    "ipa": "mɪˈkænɪk",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "机械师",
+    "ex": "Long-Context Capability Beyond Attention Mechanics."
+   },
+   {
+    "w": "memorize",
+    "ipa": "ˈmɛmərˌaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "熟记，牢记",
+    "ex": "These qualitative results confirm that Engram successfully identifies and handles stereotyped linguistic dependencies, effectively relieving the Transformer backbone from memorizing these static associations."
+   },
+   {
+    "w": "mere",
+    "ipa": "mɪr",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "仅仅的；纯粹的",
+    "ex": "Moreover, investigations into internal representations, such as those in Othello-GPT (Li et al., 2023a), suggest that these storage mechanisms may facilitate the emergence of structured “world models” rather than mere statistical …"
+   },
+   {
+    "w": "merge",
+    "ipa": "mərʤ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "合并",
+    "ex": "SuperBPE (Liu et al., 2025a) and SCONE (Yu et al., 2025) explicitly target high-frequency patterns: the former by merging multi-word expressions into “superword” tokens, and the latter via an auxiliary encoding model."
+   },
+   {
+    "w": "methodology",
+    "ipa": "ˌmɛθəˈdɑləʤi",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "方法学，方法论",
+    "ex": "Further validation is provided by causal tracing methodologies, which map the information flow of factual recall to specific FFN layers (Meng et al., 2022)."
+   },
+   {
+    "w": "metric",
+    "ipa": "ˈmɛtrɪk",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "公制的，米制的",
+    "ex": "This metric quantifies how close a latent representation is to being “prediction-ready” (Belrose et al., 2023;"
+   },
+   {
+    "w": "milky",
+    "ipa": "ˈmɪlki",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "牛奶的；乳白色的",
+    "ex": "In English, we observe strong activations on multi-token named entities (e.g., “Alexander the Great”, “the Milky Way”) and formulaic phrases (e.g., “By the way”, “Princess of Wales”)."
+   },
+   {
+    "w": "mimic",
+    "ipa": "ˈmɪmɪk",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "模仿",
+    "ex": "Given this, we posit that by equipping the model with an explicit knowledge lookup capability, Engram effectively mimics an increase in model depth by relieving the model of the early stages of feature composition."
+   },
+   {
+    "w": "minimal",
+    "ipa": "ˈmɪnəməl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "最低的，最小限度的",
+    "ex": "These studies collectively demonstrate the efficacy of scaling parameters through 𝑁-gram representations with minimal computational overhead."
+   },
+   {
+    "w": "mitigate",
+    "ipa": "ˈmɪtəˌgeɪt",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "使缓和，使减轻",
+    "ex": "The index 𝑎𝑗 serves as a robust proxy for the “effective MoE depth” corresponding to Engram layer 𝑗, utilizing top-𝑘filtering (with 𝑘= 5) to mitigate low-similarity noise."
+   },
+   {
+    "w": "modernize",
+    "ipa": "ˈmɑdərˌnaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "现代化",
+    "ex": "We instantiate this concept via Engram, a module that modernizes classic 𝑁-gram embeddings to enable scalable, constant-time 𝑂(1) lookups for static patterns."
+   },
+   {
+    "w": "modulation",
+    "ipa": "ˌmɑʤəˈleɪʃən",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "调制",
+    "ex": "However, this incurs a cost in gating precision: early hidden states have not yet aggregated sufficient global context via attention, and the parallel branches lack the representational divergence required for fine-grained …"
+   },
+   {
+    "w": "module",
+    "ipa": "ˈmɑʤul",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "模块；组件",
+    "ex": "Notably, while the memory module intuitively aids knowledge retrieval, we observe even larger gains in general reasoning, code, and mathematics."
+   },
+   {
+    "w": "moreover",
+    "ipa": "mɔˈroʊvər",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "再者，加之，此外",
+    "ex": "Moreover, investigations into internal representations, such as those in Othello-GPT (Li et al., 2023a), suggest that these storage mechanisms may facilitate the emergence of structured “world models” rather than mere statistical …"
+   },
+   {
+    "w": "motivate",
+    "ipa": "ˈmoʊtəˌveɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "促动，激发，诱导",
+    "ex": "This investigation is motivated by Engram’s unique ability to decouple storage from compute detailed in Section 2.5."
+   },
+   {
+    "w": "negligible",
+    "ipa": "ˈneɡlɪdʒəbl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "可忽略的",
+    "g": "g",
+    "ex": "with negligible inference overhead"
+   },
+   {
+    "w": "neuron",
+    "ipa": "ˈnʊrɑn",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "[解]神经细胞,神经元",
+    "ex": "This modularity is evidenced by the identification of specific “knowledge neurons” responsible for storing distinct facts (Dai et al., 2022)."
+   },
+   {
+    "w": "notably",
+    "ipa": "ˈnoʊtəbli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "显著地，尤其",
+    "ex": "Notably, while the memory module intuitively aids knowledge retrieval, we observe even larger gains in general reasoning, code, and mathematics."
+   },
+   {
+    "w": "observation",
+    "ipa": "ˌɑbzərˈveɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "注意；观察；观察力",
+    "ex": "This observation aligns with our hypothesis: by accessing external knowledge explicitly, Engram reduces the computational steps required, thereby reaching high-confidence, valid predictions earlier in the network hierarchy."
+   },
+   {
+    "w": "offload",
+    "ipa": "ˈɔfloʊd",
+    "pos": "v.",
+    "lv": "超纲",
+    "m": "卸载",
+    "ex": "enabling the offloading of massive parameter tables to host memory"
+   },
+   {
+    "w": "optimal",
+    "ipa": "ˈɑptɪməl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "最佳的；最理想的",
+    "ex": "Consequently, optimal placement requires balancing (i) offloading static local patterns early and (ii) utilizing stronger contextual queries for gating later."
+   },
+   {
+    "w": "optimize",
+    "ipa": "ˈɑptɪˌmaɪz",
+    "pos": "vt.",
+    "lv": "考博",
+    "m": "使最优化； 充分利用",
+    "ex": "Engram under Infinite Memory Regime In Section 3.1, we optimized the allocation under a fixed parameter budget."
+   },
+   {
+    "w": "optimum",
+    "ipa": "ˈɑptɪməm",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "最优的，最适宜的",
+    "ex": "Crucially, the location of this optimum is stable across regimes"
+   },
+   {
+    "w": "original",
+    "ipa": "ərˈɪʤənəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "原始的，最初的",
+    "ex": "Factual knowledge benchmarks suffer a catastrophic collapse, retaining only 29–44% of the original performance (e.g., TriviaQA at 29%), confirming that the Engram module acts as the primary repository for parametric knowledge."
+   },
+   {
+    "w": "originate",
+    "ipa": "ərˈɪʤəˌneɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "开始",
+    "ex": "Originating from Shannon’s framework (Shannon, 1948), 𝑁-gram models rely on local history to predict tokens, traditionally employing smoothing techniques (Katz, 1987;"
+   },
+   {
+    "w": "overlap",
+    "ipa": "ˈoʊvərˌlæp",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "重叠",
+    "ex": "During inference, the system prefetches embeddings for the Engram layer asynchronously, overlapping the PCIe transfer with the computation of the first block."
+   },
+   {
+    "w": "paradigm",
+    "ipa": "ˈpɛrəˌdaɪm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "典范; 范例; 示例",
+    "ex": "MoE architectures decouple model capacity from computational cost by conditionally activating a sparse subset of experts per token, a paradigm introduced by Shazeer et al. (2017)."
+   },
+   {
+    "w": "parameter",
+    "ipa": "pərˈæmətər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "参（变）数；参量",
+    "ex": "These studies collectively demonstrate the efficacy of scaling parameters through 𝑁-gram representations with minimal computational overhead."
+   },
+   {
+    "w": "parenthetical",
+    "ipa": "pərɛnˈθɛtɪkəl",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "插句的；附加说明的；放在括号里的",
+    "ex": "Parenthetical values (e.g. (50k, 1.62)) denote"
+   },
+   {
+    "w": "peak",
+    "ipa": "pik",
+    "pos": "n.；adj.",
+    "lv": "四级",
+    "m": "山顶，巅；最高的",
+    "ex": "As detailed in Table 4, offloading a 100B-parameter embedding table incurs a negligible throughput penalty, peaking at only 2.8% on the 8B backbone."
+   },
+   {
+    "w": "peer",
+    "ipa": "pɪr",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "同龄人",
+    "ex": "Parametric memory methods, such as PKM (Lample et al., 2019), PEER (He, 2024), Selfmem (Cheng et al., 2023b), Memory+ (Berges et al., 2025) and Ultra-Mem (Huang et al., 2025b,c), integrate large-scale, sparse key-value stores …"
+   },
+   {
+    "w": "penalty",
+    "ipa": "ˈpɛnəlti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "惩罚",
+    "ex": "As detailed in Table 4, offloading a 100B-parameter embedding table incurs a negligible throughput penalty, peaking at only 2.8% on the 8B backbone."
+   },
+   {
+    "w": "perplexity",
+    "ipa": "pərˈplɛksəti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "(正式用语)困惑，窘困，令人困惑的事或物",
+    "ex": "Model LongPPL (32k) RULER (32k) Perplexity (↓) NIAH Accuracy (↑) Other Tasks (↑) Book Paper Code L-CoT S MK MV MQ VT CWE FWE QA MoE-27B (50k, 1.63) 4.38 2.91 2.49 14.16 100.0 88.0 92.7 84.2 77.0 4.5 73.0 34.5 Engram-27B (41k …"
+   },
+   {
+    "w": "perspective",
+    "ipa": "pərˈspɛktɪv",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "视角，观点；远景",
+    "ex": "By rigorously evaluating this design within our Sparsity Allocation framework, we demonstrate its clear advantage over strictly iso-parameter and iso-FLOPs MoE baselines. • Second, from a system perspective, we advocate for …"
+   },
+   {
+    "w": "pipeline",
+    "ipa": "ˈpaɪˌplaɪn",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "管道, 传递途径",
+    "ex": "All runs use the identical training pipeline and optimization hyperparameters."
+   },
+   {
+    "w": "pivotal",
+    "ipa": "ˈpɪvətəl",
+    "pos": "adj.；n.",
+    "lv": "专八",
+    "m": "关键的；中枢的；枢轴的；关键事物；中心事物",
+    "ex": "System Efficiency A pivotal system advantage of Engram over routing-based MoE is that its sparse activations are addressed by explicit, static hash IDs."
+   },
+   {
+    "w": "placement",
+    "ipa": "ˈpleɪsmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "放置，安排；位置；实习安置",
+    "ex": "Consequently, optimal placement requires balancing (i) offloading static local patterns early and (ii) utilizing stronger contextual queries for gating later."
+   },
+   {
+    "w": "posit",
+    "ipa": "ˈpɑzət",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "安置",
+    "ex": "Given this, we posit that by equipping the model with an explicit knowledge lookup capability, Engram effectively mimics an increase in model depth by relieving the model of the early stages of feature composition."
+   },
+   {
+    "w": "potentially",
+    "ipa": "pəˈtɛnʃəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "潜在地",
+    "ex": "Crucially, this post-hoc ablation induces a training–inference inconsistency, potentially introducing noise in complex, mixed-capability tasks."
+   },
+   {
+    "w": "precision",
+    "ipa": "priˈsɪʒən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "精确，精密，精密度",
+    "ex": "However, this incurs a cost in gating precision: early hidden states have not yet aggregated sufficient global context via attention, and the parallel branches lack the representational divergence required for fine-grained …"
+   },
+   {
+    "w": "predictable",
+    "ipa": "prɪˈdɪktəbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "可预料的",
+    "ex": "Across the explored range, the curve follows a strict power law (linear in log-space), indicating that Engram provides a predictable scaling knob: larger memory continues to pay off without requiring additional computation."
+   },
+   {
+    "w": "prediction",
+    "ipa": "priˈdɪkʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "预言，预告；预报",
+    "ex": "Accelerated Prediction Convergence We first analyze the evolution of predictions across layers using LogitLens (nostalgebraist, 2020)."
+   },
+   {
+    "w": "prevail",
+    "ipa": "prɪˈveɪlɪŋ",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "主流的",
+    "ex": "a complementary sparsity axis to the prevailing conditional computation paradigm"
+   },
+   {
+    "w": "prince",
+    "ipa": "prɪns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "王子，亲王",
+    "ex": "first wife of Prince Charles, Prince of Wales,"
+   },
+   {
+    "w": "princess",
+    "ipa": "ˈprɪnsɛs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "公主，王妃",
+    "ex": "In English, we observe strong activations on multi-token named entities (e.g., “Alexander the Great”, “the Milky Way”) and formulaic phrases (e.g., “By the way”, “Princess of Wales”)."
+   },
+   {
+    "w": "prioritize",
+    "ipa": "praɪˈɔrəˌtaɪz",
+    "pos": "v.",
+    "lv": "托福",
+    "m": "优先",
+    "ex": "Consequently, we prioritize the analysis of Factual Knowledge and Reading Comprehension—the two extremes of the sensitivity spectrum—which exhibit the highest signal-to-noise ratio under this stress test."
+   },
+   {
+    "w": "proceed",
+    "ipa": "pərˈsid",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "进行；继续进行",
+    "ex": "To accurately assess the contribution of the Engram architecture, our analysis proceeds in two steps: first, decoupling the impact of base model capability from architectural design, and second, conducting a controlled analysis."
+   },
+   {
+    "w": "progression",
+    "ipa": "prəˈgrɛʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "行进, 级数",
+    "ex": "we find that long-context performance improves monotonically with pre-training progression, even when controlling for identical model architecture and a fixed computational budget during the context extension stage."
+   },
+   {
+    "w": "progressively",
+    "ipa": "prɑˈgrɛsɪvli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "日益增多地",
+    "ex": "As shown in Table 3, to recognize the entity \"Diana, Princess of Wales\", an LLM must consume multiple layers of Attention and FFNs to progressively compose features (Ghandeharioun et al., 2024;"
+   },
+   {
+    "w": "prompt",
+    "ipa": "prɑmpt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "敏捷的；v. 敦促",
+    "ex": "For each benchmark, we follow standard prompting protocols and evaluation metrics. • Language Modeling: We report loss on the test set of The Pile (Gao et al., 2020) and an validation set drawn from the same distribution as the …"
+   },
+   {
+    "w": "property",
+    "ipa": "ˈprɑpərti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "财产，资产；性质",
+    "ex": "This section investigates the scaling properties of this duality and how to optimally allocate sparse capacity."
+   },
+   {
+    "w": "protocol",
+    "ipa": "ˈproʊtəˌkɔl",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "礼仪， 礼节； 草案， 议定书",
+    "ex": "Prior approaches often treat 𝑁-gram embeddings as external augmentations without validating their efficiency under strictly fair comparison protocols."
+   },
+   {
+    "w": "prototype",
+    "ipa": "ˈproʊtoʊˌtaɪp",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "原型；典型，范例",
+    "ex": "We implemented an inference harness based on nano-vLLM1—a stream-lined prototype of the industry-standard vLLM engine (Kwon et al., 2023)."
+   },
+   {
+    "w": "proxy",
+    "ipa": "ˈprɑksi",
+    "pos": "n.",
+    "lv": "雅思",
+    "m": "代理权，代表权；代理人",
+    "ex": "The index 𝑎𝑗 serves as a robust proxy for the “effective MoE depth” corresponding to Engram layer 𝑗, utilizing top-𝑘filtering (with 𝑘= 5) to mitigate low-similarity noise."
+   },
+   {
+    "w": "qualitative",
+    "ipa": "kˈwɑləˌteɪtɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "质的；定性的",
+    "ex": "These qualitative results confirm that Engram successfully identifies and handles stereotyped linguistic dependencies, effectively relieving the Transformer backbone from memorizing these static associations."
+   },
+   {
+    "w": "quantify",
+    "ipa": "kˈwɑntɪˌfaɪ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "确定…的数量",
+    "ex": "To rigorously quantify the layer-wise correspondence, we first compute the pairwise CKA"
+   },
+   {
+    "w": "ratio",
+    "ipa": "ˈreɪʃiˌoʊ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比，比率",
+    "ex": "Optimal Allocation Ratio Between MoE and Engram Compute-matched formulation."
+   },
+   {
+    "w": "realm",
+    "ipa": "rɛlm",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "王国，国土；领域",
+    "ex": "Conversely, non-parametric memory approaches like REALM (Guu et al., 2020), RETRO (Borgeaud et al., 2022;"
+   },
+   {
+    "w": "recall",
+    "ipa": "ˈriˌkɔl",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "回想；叫回；收回",
+    "ex": "Further validation is provided by causal tracing methodologies, which map the information flow of factual recall to specific FFN layers (Meng et al., 2022)."
+   },
+   {
+    "w": "recently",
+    "ipa": "ˈrisəntli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "最近，新近",
+    "ex": "Recently, this paradigm has resurged as embedding scaling."
+   },
+   {
+    "w": "recognition",
+    "ipa": "ˌrɛkɪgˈnɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "认出，识别；承认",
+    "ex": "N-Grammer (Roy et al., 2022) directly augments the transformer architecture with 𝑁-gram that are constructed from a discrete latent text representation, while Feng et al. (2023) demonstrates the effectiveness of 𝑁-gram for speech …"
+   },
+   {
+    "w": "reconcile",
+    "ipa": "ˈrɛkənˌsaɪl",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使和解，使一致；调解",
+    "ex": "This layered design reconciles the trade-off by combining early intervention with rich, late-stage contextual gating."
+   },
+   {
+    "w": "regime",
+    "ipa": "rəˈʒim",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "制度，管理体制",
+    "ex": "Engram under Infinite Memory Regime In Section 3.1, we optimized the allocation under a fixed parameter budget."
+   },
+   {
+    "w": "regression",
+    "ipa": "rəˈgrɛʃən",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "回归；退化；逆行；复原",
+    "ex": "Removing any of these causes the largest regressions in validation loss."
+   },
+   {
+    "w": "remarkably",
+    "ipa": "rɪˈmɑrkəbli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "非凡地；显著地",
+    "ex": "Remarkably, the Engram model achieves comparable performance to the pure MoE baseline (𝜌= 100%) even when the MoE allocation is reduced to"
+   },
+   {
+    "w": "render",
+    "ipa": "ˈrɛndər",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "给予",
+    "ex": "We note that while other work such as SCONE (Yu et al., 2025) also investigates large-scale embeddings, it is primarily inference-focused and includes extra module (f-gram model) and additional training FLOPs, rendering it …"
+   },
+   {
+    "w": "repository",
+    "ipa": "riˈpɑzəˌtɔri",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "贮藏室，仓库；知识库；智囊团",
+    "ex": "For LongPPL, we construct evaluation sets spanning four categories: long books, research papers, code repositories, and long chain-of-thought (CoT) trajectories."
+   },
+   {
+    "w": "representation",
+    "ipa": "ˌrɛprəzɛnˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "描写；陈述；代表",
+    "ex": "These studies collectively demonstrate the efficacy of scaling parameters through 𝑁-gram representations with minimal computational overhead."
+   },
+   {
+    "w": "reproduce",
+    "ipa": "ˌriprəˈdus",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "复制, 再生",
+    "ex": "Table 3 | Entity resolution example reproduced from Ghandeharioun et al. (2024)."
+   },
+   {
+    "w": "resident",
+    "ipa": "ˈrɛzɪdənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "居民",
+    "ex": "We insert a massive 100B-parameter Engram layer into the second Transformer block, with the entire embedding table resident in host DRAM."
+   },
+   {
+    "w": "residual",
+    "ipa": "rɪˈzɪʤuəl",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "剩余的；残余的",
+    "ex": "Under this framework, the first layer acts as a pattern detector (\"keys\") while the second layer projects specific information into the residual stream (\"values\")."
+   },
+   {
+    "w": "resilient",
+    "ipa": "rɪˈzɪljənt",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "有复原力的；适应力强的",
+    "ex": "Conversely, reading comprehension tasks are remarkably resilient, retaining 81–93% (e.g., C3 at 93%), suggesting that context-grounded tasks rely primarily on the backbone’s attention mechanism rather than Engram."
+   },
+   {
+    "w": "resolution",
+    "ipa": "ˌrɛzəˈluʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "坚决，坚定；决定",
+    "ex": "Table 3 | Entity resolution example reproduced from Ghandeharioun et al. (2024)."
+   },
+   {
+    "w": "respective",
+    "ipa": "rɪˈspɛktɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "各自的，各个的",
+    "ex": "While these approaches offer significant gains in their respective settings, our work diverges fundamentally in two key dimensions. • First, regarding modeling and evaluation protocols."
+   },
+   {
+    "w": "respectively",
+    "ipa": "rɪˈspɛktɪvli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "各自地",
+    "ex": "In parallel, OverEncoding (Huang et al., 2025a) and Byte Latent Transformer (BLT) (Pagnoni et al., 2025) adopt hash 𝑁-gram embeddings to capture local dependencies at the token and byte levels, respectively."
+   },
+   {
+    "w": "responsible",
+    "ipa": "riˈspɑnsəbəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "负责的，有责任的",
+    "ex": "This modularity is evidenced by the identification of specific “knowledge neurons” responsible for storing distinct facts (Dai et al., 2022)."
+   },
+   {
+    "w": "resurge",
+    "ipa": "riˈsɝdʒ",
+    "pos": "v.",
+    "lv": "GRE",
+    "m": "复活",
+    "ex": "Recently, this paradigm has resurged as embedding scaling."
+   },
+   {
+    "w": "retain",
+    "ipa": "rɪˈteɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "保留,留用",
+    "ex": "Figure 6 | Retained performance under Engram ablation."
+   },
+   {
+    "w": "retrain",
+    "ipa": "riˈtreɪn",
+    "pos": "v.",
+    "lv": "托福",
+    "m": "再教育；再训练",
+    "ex": "These insights have enabled precise model editing algorithms such as ROME (Meng et al., 2022) and MEMIT (Meng et al., 2023), which allow for the direct update of factual associations without retraining."
+   },
+   {
+    "w": "retrieval",
+    "ipa": "rɪˈtrivəl",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "检索；恢复；取回；拯救",
+    "ex": "Notably, while the memory module intuitively aids knowledge retrieval, we observe even larger gains in general reasoning, code, and mathematics."
+   },
+   {
+    "w": "rigorous",
+    "ipa": "ˈrɪgərəs",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "严格的",
+    "ex": "Consequently, a rigorous architectural comparison must control for this confounding variable by aligning base model loss, rather than merely aligning training steps."
+   },
+   {
+    "w": "rigorously",
+    "ipa": "ˈrɪgərəsli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "严格地",
+    "ex": "Additionally, to rigorously benchmark architectural efficiency, we select two intermediate checkpoints for Engram-27B at 41k and 46k steps."
+   },
+   {
+    "w": "robust",
+    "ipa": "roʊˈbəst",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "强健的",
+    "ex": "The index 𝑎𝑗 serves as a robust proxy for the “effective MoE depth” corresponding to Engram layer 𝑗, utilizing top-𝑘filtering (with 𝑘= 5) to mitigate low-similarity noise."
+   },
+   {
+    "w": "rome",
+    "ipa": "roʊm",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "罗马（意大利首都）",
+    "ex": "These insights have enabled precise model editing algorithms such as ROME (Meng et al., 2022) and MEMIT (Meng et al., 2023), which allow for the direct update of factual associations without retraining."
+   },
+   {
+    "w": "roughly",
+    "ipa": "ˈrəfli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "粗糙地；概略地",
+    "ex": "Furthermore, the pure MoE baseline proves suboptimal: reallocating roughly 20%–25% of the sparse parameter budget to Engram yields the best performance."
+   },
+   {
+    "w": "rout",
+    "ipa": "raʊt",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "溃退",
+    "ex": "For different 𝜌, we construct the corresponding model only by adjusting the number of routed experts and the number of Engram embedding slots."
+   },
+   {
+    "w": "sample",
+    "ipa": "ˈsæmpəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "样品；实例，标本",
+    "ex": "To empirically validate whether Engram behaves as intended, we visualize the gating scalar 𝛼𝑡of Engram-27B2 across various samples in Figure 7."
+   },
+   {
+    "w": "saturate",
+    "ipa": "ˈsæʧərˌeɪt",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "使湿透， 浸透； 使充满， 使饱和",
+    "ex": "We observe that the training loss gap between Engram-40B and the baselines continues to widen towards the end of training, suggesting that the expanded memory capacity has not yet fully saturated within the current token budget."
+   },
+   {
+    "w": "scalar",
+    "ipa": "ˈskeɪlər",
+    "pos": "adj.；n.",
+    "lv": "专四",
+    "m": "标量的；数量的；梯状的，分等级的；[数] 标量；[数] 数量",
+    "ex": "To empirically validate whether Engram behaves as intended, we visualize the gating scalar 𝛼𝑡of Engram-27B2 across various samples in Figure 7."
+   },
+   {
+    "w": "scale",
+    "ipa": "skeɪl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "规模，比例",
+    "ex": "These studies collectively demonstrate the efficacy of scaling parameters through 𝑁-gram representations with minimal computational overhead."
+   },
+   {
+    "w": "scrutinize",
+    "ipa": "ˈskrutəˌnaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "仔细检查， 细察",
+    "ex": "Parallel to capacity scaling, substantial research has scrutinized the internal mechanisms governing how Transformers encode and retrieve factual knowledge."
+   },
+   {
+    "w": "seminal",
+    "ipa": "ˈsɛmənəl",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "种子的；精液的；生殖的",
+    "ex": "Despite the paradigm shift toward neural architectures (Bengio et al., 2003) for capturing long-range dependencies, the computational efficiency of 𝑁-gram lookups has been preserved in modern representation learning, as …"
+   },
+   {
+    "w": "sensitivity",
+    "ipa": "ˌsɛnsɪˈtɪvɪti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "敏感（性）；灵敏性",
+    "ex": "Structural Ablation and Layer Sensitivity In this section, we ablate Engram under a controlled setting to investigate the effectiveness of each key module design."
+   },
+   {
+    "w": "sequence",
+    "ipa": "ˈsikwəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "连续，继续；次序",
+    "ex": "This yields a strictly deterministic memory access pattern: indices for the next Engram lookup are fixed once the token sequence is known and can be computed before the corresponding layer executes."
+   },
+   {
+    "w": "setup",
+    "ipa": "ˈsɛˌtəp",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "装备, 安装,计划",
+    "ex": "While the hierarchical design in Section 2.5 exploits Zipfian locality to cache frequent items in HBM, our experimental setup forces all retrievals to traverse the PCIe bus from host memory."
+   },
+   {
+    "w": "shift",
+    "ipa": "ʃɪft",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "替换，转移；转换",
+    "ex": "This architectural shift translates into substantial improvements in long-context capabilities, as evidenced by performance gains in LongPPL and RULER."
+   },
+   {
+    "w": "significant",
+    "ipa": "sɪgˈnɪfɪkənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "重要的",
+    "ex": "When comparing Engram-27B (46k) against the fully trained MoE-27B (50k)—models aligned on pre-training loss—Engram demonstrates significant gains."
+   },
+   {
+    "w": "similarity",
+    "ipa": "ˌsɪməˈlɛrəti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "类似，相似；类似点",
+    "ex": "The index 𝑎𝑗 serves as a robust proxy for the “effective MoE depth” corresponding to Engram layer 𝑗, utilizing top-𝑘filtering (with 𝑘= 5) to mitigate low-similarity noise."
+   },
+   {
+    "w": "similarly",
+    "ipa": "ˈsɪmələrli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "类似地，相似地",
+    "ex": "Similarly, OverEncoding (Huang et al., 2025a) fails to yield meaningful improvements on sparse MoE backbones even under a non-isoparametric setting."
+   },
+   {
+    "w": "skew",
+    "ipa": "skju",
+    "pos": "adj.；vt.",
+    "lv": "雅思",
+    "m": "歪斜的；使偏；曲解",
+    "ex": "Engram shares with this literature the challenge of representing an extremely large discrete key space under a highly skewed access distribution, but differs in constructing keys from ordered textual 𝑁-grams and injecting the …"
+   },
+   {
+    "w": "slightly",
+    "ipa": "sˈlaɪtli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "轻微地",
+    "ex": "Allocating capacity to 4-grams is slightly suboptimal under a fixed 1.6B budget—likely because it dilutes capacity from the more frequent 2/3-gram patterns—though we do not rule out that higher-order 𝑁-grams become beneficial at …"
+   },
+   {
+    "w": "slot",
+    "ipa": "slɑt",
+    "pos": "n.；vt.",
+    "lv": "六级",
+    "m": "狭缝，狭槽；位置，空位；把…放入狭长开口中； 把…纳入其中， 使有位置",
+    "ex": "Crucially, the effective communication volume per step scales with the number of activated slots rather than the total embedding table size."
+   },
+   {
+    "w": "sovereign",
+    "ipa": "ˈsɑvrən",
+    "pos": "n.；adj.",
+    "lv": "六级",
+    "m": "君主；统治的",
+    "ex": "Title held by female sovereigns in their"
+   },
+   {
+    "w": "sparse",
+    "ipa": "spɑrs",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "稀疏的；稀少的",
+    "ex": "Similarly, OverEncoding (Huang et al., 2025a) fails to yield meaningful improvements on sparse MoE backbones even under a non-isoparametric setting."
+   },
+   {
+    "w": "specify",
+    "ipa": "ˈspɛsəˌfaɪ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "指定，具体说明",
+    "ex": "Unless otherwise specified, the backbone is a 12-layer 3B MoE model (0.56B activated parameters) trained for 100B tokens."
+   },
+   {
+    "w": "spectrum",
+    "ipa": "ˈspɛktrəm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "系列，范围；波谱",
+    "ex": "Consequently, we prioritize the analysis of Factual Knowledge and Reading Comprehension—the two extremes of the sensitivity spectrum—which exhibit the highest signal-to-noise ratio under this stress test."
+   },
+   {
+    "w": "statistical",
+    "ipa": "stəˈtɪstɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "统计的，统计学的",
+    "ex": "Moreover, investigations into internal representations, such as those in Othello-GPT (Li et al., 2023a), suggest that these storage mechanisms may facilitate the emergence of structured “world models” rather than mere statistical …"
+   },
+   {
+    "w": "stem",
+    "ipa": "stɛm",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "茎，(树)干；起源",
+    "ex": "While architectures such as Per-Layer Embeddings (Team, 2025), STEM (Sadhukhan et al., 2026), L3 (Tseng and Sa, 2026) and DeepEmbed (RWKV Team, 2025) expand capacity via massive tables, a distinct line of pioneering research—most …"
+   },
+   {
+    "w": "strategy",
+    "ipa": "ˈstrætəʤi",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "策略，战略",
+    "ex": "To enable long-context capabilities, we adopt the context expansion strategy introduced in DeepSeek-V3 (Liu et al., 2024a)."
+   },
+   {
+    "w": "strongly",
+    "ipa": "ˈstrɔŋli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "强烈地；强有力地",
+    "ex": "The fact that this baseline retrieval strategy yields minimal overhead strongly suggests that a fully optimized, locality-aware implementation would incur negligible throughput penalty."
+   },
+   {
+    "w": "structural",
+    "ipa": "ˈstrəkʧərəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "结构的，构造的",
+    "ex": "In this section, we empirically verify this structural advantage by conducting long-context extension training (Gao et al., 2025;"
+   },
+   {
+    "w": "structurally",
+    "ipa": "ˈstrəkʧərəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "在结构上",
+    "ex": "Scaling Laws and Sparsity Allocation Engram, as an instantiation of conditional memory, is structurally complementary to the conditional computation provided by MoE experts."
+   },
+   {
+    "w": "structure",
+    "ipa": "ˈstrəkʧər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "结构",
+    "ex": "Liu et al., 2021), and structured compression based on quantization, tensor decomposition, or shared memory layouts (Desai et al., 2022;"
+   },
+   {
+    "w": "subsequent",
+    "ipa": "ˈsəbsəkwənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "随后的，后来的",
+    "ex": "Subsequent innovations such as GShard (Lepikhin et al., 2020), BASE (Lewis et al., 2021), Switch Transformer (Fedus et al., 2022) and GLaM (Du et al., 2022) enabled super-linear parameter scaling while maintaining constant …"
+   },
+   {
+    "w": "substantial",
+    "ipa": "səbˈstænʃəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "大量的",
+    "ex": "This architectural shift translates into substantial improvements in long-context capabilities, as evidenced by performance gains in LongPPL and RULER."
+   },
+   {
+    "w": "successfully",
+    "ipa": "səkˈsɛsfəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "成功地",
+    "ex": "These qualitative results confirm that Engram successfully identifies and handles stereotyped linguistic dependencies, effectively relieving the Transformer backbone from memorizing these static associations."
+   },
+   {
+    "w": "sufficient",
+    "ipa": "səˈfɪʃənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "足够的",
+    "ex": "This confirms that the compute intensity of early dense blocks provides a sufficient temporal window to mask the retrieval latency."
+   },
+   {
+    "w": "summarize",
+    "ipa": "ˈsəmərˌaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "概括，概述，总结",
+    "ex": "Experimental Results The evaluation results are summarized in Table 2."
+   },
+   {
+    "w": "superiority",
+    "ipa": "ˌsupɪriˈɔrɪti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "优越（性），优势",
+    "ex": "It matches the baseline on LongPPL and surpasses it on RULER, underscoring the intrinsic superiority of the Engram architecture."
+   },
+   {
+    "w": "surpass",
+    "ipa": "sərˈpæs",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "超过",
+    "ex": "It matches the baseline on LongPPL and surpasses it on RULER, underscoring the intrinsic superiority of the Engram architecture."
+   },
+   {
+    "w": "systematically",
+    "ipa": "ˌsɪstəˈmætɪkli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "系统地，有规则地",
+    "ex": "Engram variants exhibit systematically smaller KL divergence, with the most pronounced gap appearing in the early blocks."
+   },
+   {
+    "w": "temporal",
+    "ipa": "ˈtɛmpərəl",
+    "pos": "adj.；n.",
+    "lv": "六级",
+    "m": "暂时的；当时的；现世的；世间万物；暂存的事物",
+    "ex": "This confirms that the compute intensity of early dense blocks provides a sufficient temporal window to mask the retrieval latency."
+   },
+   {
+    "w": "textual",
+    "ipa": "ˈtɛksˌʧuəl",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "本文的；按原文的",
+    "ex": "Engram shares with this literature the challenge of representing an extremely large discrete key space under a highly skewed access distribution, but differs in constructing keys from ordered textual 𝑁-grams and injecting the …"
+   },
+   {
+    "w": "thereby",
+    "ipa": "ˈðɛrˈbaɪ",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "因此，从而，由此",
+    "ex": "This observation aligns with our hypothesis: by accessing external knowledge explicitly, Engram reduces the computational steps required, thereby reaching high-confidence, valid predictions earlier in the network hierarchy."
+   },
+   {
+    "w": "throughput",
+    "ipa": "θˈruˌpʊt",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "生产量，生产能力",
+    "ex": "As detailed in Table 4, offloading a 100B-parameter embedding table incurs a negligible throughput penalty, peaking at only 2.8% on the 8B backbone."
+   },
+   {
+    "w": "trace",
+    "ipa": "treɪs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "痕迹",
+    "ex": "Further validation is provided by causal tracing methodologies, which map the information flow of factual recall to specific FFN layers (Meng et al., 2022)."
+   },
+   {
+    "w": "traditionally",
+    "ipa": "trəˈdɪʃənəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "传统上, 照惯例",
+    "ex": "Originating from Shannon’s framework (Shannon, 1948), 𝑁-gram models rely on local history to predict tokens, traditionally employing smoothing techniques (Katz, 1987;"
+   },
+   {
+    "w": "trajectory",
+    "ipa": "trəˈʤɛktəri",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "[物](射线的) 轨道, 弹道, 轨线",
+    "ex": "To reduce the impact of benchmark noise and to visualize training dynamics, we provide full benchmark trajectories during pretraining in Appendix B."
+   },
+   {
+    "w": "transfer",
+    "ipa": "ˈtrænsfər",
+    "pos": "—",
+    "lv": "四级",
+    "m": "转换，调换",
+    "ex": "During inference, the system prefetches embeddings for the Engram layer asynchronously, overlapping the PCIe transfer with the computation of the first block."
+   },
+   {
+    "w": "transformer",
+    "ipa": "trænsˈfɔrmər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "变压器，转换器",
+    "ex": "We insert a massive 100B-parameter Engram layer into the second Transformer block, with the entire embedding table resident in host DRAM."
+   },
+   {
+    "w": "traverse",
+    "ipa": "ˈtrævərs",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "横越",
+    "ex": "While the hierarchical design in Section 2.5 exploits Zipfian locality to cache frequent items in HBM, our experimental setup forces all retrievals to traverse the PCIe bus from host memory."
+   },
+   {
+    "w": "ultra",
+    "ipa": "ˈəltrə",
+    "pos": "adj./n.",
+    "lv": "六级",
+    "m": "超前的，极端的；超…（前缀用法）",
+    "ex": "Parametric memory methods, such as PKM (Lample et al., 2019), PEER (He, 2024), Selfmem (Cheng et al., 2023b), Memory+ (Berges et al., 2025) and Ultra-Mem (Huang et al., 2025b,c), integrate large-scale, sparse key-value stores …"
+   },
+   {
+    "w": "unbiased",
+    "ipa": "ˌənˈbaɪəst",
+    "pos": "adj.",
+    "lv": "雅思",
+    "m": "公正的",
+    "ex": "implementation with an unbiased estimator of HSIC (Davari et al., 2023) and evaluate on the"
+   },
+   {
+    "w": "undergo",
+    "ipa": "ˌəndərˈgoʊ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "承受",
+    "ex": "Despite differing initialization stages, all variants undergo the exact same context extension training protocol."
+   },
+   {
+    "w": "underscore",
+    "ipa": "ˌəndərˈskɔr",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "强调",
+    "ex": "It matches the baseline on LongPPL and surpasses it on RULER, underscoring the intrinsic superiority of the Engram architecture."
+   },
+   {
+    "w": "unlock",
+    "ipa": "ənˈlɑk",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "开…的锁；开启",
+    "ex": "Crucially, regarding scaling efficiency: while the direct averaging approach of OverEncoding benefits from larger memory tables, Engram unlocks much larger scaling potential from the same memory budget."
+   },
+   {
+    "w": "utility",
+    "ipa": "juˈtɪləti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "使用，公共设施",
+    "ex": "Furthermore, by exploiting the inherent Zipfian distribution of 𝑁-grams, we could maximize the utility of the hardware memory hierarchy."
+   },
+   {
+    "w": "utilization",
+    "ipa": "ˌjutələˈzeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "利用",
+    "ex": "More importantly, layered insertion also provides a practical system advantage, enabling better utilization of the memory hierarchy as discussed in Section 2.5."
+   },
+   {
+    "w": "validate",
+    "ipa": "ˈvælədeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "证实，验证；确认；使生效",
+    "ex": "To empirically validate whether Engram behaves as intended, we visualize the gating scalar 𝛼𝑡of Engram-27B2 across various samples in Figure 7."
+   },
+   {
+    "w": "variable",
+    "ipa": "ˈvɛriəbəl",
+    "pos": "adj.；n.",
+    "lv": "四级",
+    "m": "易变的；变量",
+    "ex": "Multi-hop Variable Tracking (VT), Common Words Extraction (CWE), Frequent Words Extraction (FWE), and Question Answering (QA)."
+   },
+   {
+    "w": "variant",
+    "ipa": "ˈvɛriənt",
+    "pos": "adj.；n.",
+    "lv": "六级",
+    "m": "不同的；多样的；变体；转化",
+    "ex": "Engram variants exhibit systematically smaller KL divergence, with the most pronounced gap appearing in the early blocks."
+   },
+   {
+    "w": "variation",
+    "ipa": "ˌvɛriˈeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "变化，变动；变异",
+    "ex": "variations in two settings: (1) Layer Sensitivity (dark blue curve): Sweeping the insertion depth of a single Engram module confirms that early injection (Layer 2) is optimal, whereas efficacy degrades in deeper layers. (2) …"
+   },
+   {
+    "w": "verify",
+    "ipa": "ˈvɛrəˌfaɪ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "证实，查证；证明",
+    "ex": "In this section, we empirically verify this structural advantage by conducting long-context extension training (Gao et al., 2025;"
+   },
+   {
+    "w": "visualize",
+    "ipa": "ˈvɪʒwəˌlaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "想象",
+    "ex": "To empirically validate whether Engram behaves as intended, we visualize the gating scalar 𝛼𝑡of Engram-27B2 across various samples in Figure 7."
+   },
+   {
+    "w": "volume",
+    "ipa": "ˈvɑljum",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "卷，册；容积；音量",
+    "ex": "Crucially, the effective communication volume per step scales with the number of activated slots rather than the total embedding table size."
+   },
+   {
+    "w": "wale",
+    "ipa": "weɪl",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "条痕",
+    "ex": "In English, we observe strong activations on multi-token named entities (e.g., “Alexander the Great”, “the Milky Way”) and formulaic phrases (e.g., “By the way”, “Princess of Wales”)."
+   },
+   {
+    "w": "widely",
+    "ipa": "ˈwaɪdli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "大大地",
+    "ex": "The Feed-Forward Networks (FFNs) are widely hypothesized to function as Key-Value memories (Geva et al., 2021)."
+   },
+   {
+    "w": "widen",
+    "ipa": "ˈwaɪdən",
+    "pos": "v.；v.",
+    "lv": "四级",
+    "m": "加宽；变宽",
+    "ex": "Baseline): Under the standard iso-compute budget, Engram- 27B (50k) further widens this gap, establishing the highest performance across the board."
+   },
+   {
+    "w": "workload",
+    "ipa": "ˈwərˌkloʊd",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "工作量",
+    "ex": "Experimental Setup Hardware NVIDIA H800 Workload 512 Sequences Sequence Length Uniform(100, 1024) Throughput Results Base Model Configuration Throughput (tok/s) 4B-Dense Baseline 9,031.62 + 100B Engram (CPU Offload) 8,858.28 …"
+   },
+   {
+    "w": "yarn",
+    "ipa": "jɑrn",
+    "pos": "n.；v.",
+    "lv": "专四",
+    "m": "纱线；奇谈，故事；用纱线缠",
+    "ex": "Following the pre-training stage, we apply YaRN (Peng et al., 2024) for context window extension in a 32768-token context training stage for 5,000 steps (30B tokens of high-quality, long-context data)."
+   },
+   {
+    "w": "yield",
+    "ipa": "jild",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "屈服，产出；产量",
+    "ex": "Furthermore, the pure MoE baseline proves suboptimal: reallocating roughly 20%–25% of the sparse parameter budget to Engram yields the best performance."
+   }
+  ]
+ },
+ {
+  "sec": "References · 参考文献区用词（正文未出现）",
+  "short": "文献区",
+  "icon": "R",
+  "words": [
+   {
+    "w": "acoustic",
+    "ipa": "əˈkustɪk",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "原声的； 声音的； 听觉的",
+    "ex": "In 1995 international conference on acoustics, speech, and signal processing, volume 1, pages 181– 184."
+   },
+   {
+    "w": "adversarial",
+    "ipa": "ˌædvərˈsɛriəl",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "敌手的，对手的",
+    "ex": "Winogrande: An adversarial winograd schema challenge at scale."
+   },
+   {
+    "w": "annals",
+    "ipa": "ˈænəlz",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "年报；编年史；年鉴",
+    "ex": "The annals of mathematical statistics, 22(1):79–86, 1951."
+   },
+   {
+    "w": "annex",
+    "ipa": "ˈæˌnɛks",
+    "pos": "v.；n.",
+    "lv": "六级",
+    "m": "附加；获得；并吞；附加物；附属建筑物",
+    "ex": "Unicode Standard Annex 15, The Unicode Consortium, July 2025."
+   },
+   {
+    "w": "approximation",
+    "ipa": "əˌprɑksəˈmeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "接近； 近似值",
+    "ex": "Sigmoid-weighted linear units for neural network function approximation in reinforcement learning."
+   },
+   {
+    "w": "array",
+    "ipa": "əreɪ",
+    "pos": "v.；n.",
+    "lv": "六级",
+    "m": "（美观地）排列；陈列",
+    "ex": "Random offset block embedding array (robe) for criteotb"
+   },
+   {
+    "w": "behavioral",
+    "ipa": "bɪˈheɪvjərəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "行为的",
+    "ex": "Polysemy—Evidence from linguistics, behavioral science, and contextualized language models."
+   },
+   {
+    "w": "boost",
+    "ipa": "bust",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "推动,宣扬；促使，促进",
+    "ex": "attention capacity for global context, substantially boosting long-context retrieval (e.g., Multi-"
+   },
+   {
+    "w": "bulletin",
+    "ipa": "ˈbʊlɪtən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "告示，公告，公报",
+    "ex": "Psychonomic bulletin & review, 21(5):1112–1130, 2014."
+   },
+   {
+    "w": "centric",
+    "ipa": "ˈsɛntrɪk",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "以…为中心的",
+    "ex": "Agieval: A human-centric benchmark for evaluating foundation models."
+   },
+   {
+    "w": "cluster",
+    "ipa": "ˈkləstər",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "串，束，簇；群，组；群聚；聚集",
+    "ex": "Clustering the sketch: A novel approach to embedding table compression. arXiv preprint arXiv:2210.05974, 2022."
+   },
+   {
+    "w": "cole",
+    "ipa": "koʊl",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "油菜, 小菜",
+    "ex": "Schockaert, editors, Proceedings of the 31st International Conference on Computational Linguistics, COLING 2025, Abu Dhabi, UAE, January 19-24, 2025, pages 558–573."
+   },
+   {
+    "w": "commonsense",
+    "ipa": "ˌkɑmənˈsɛns",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "有常识的",
+    "ex": "Piqa: Reasoning about physical commonsense in natural language."
+   },
+   {
+    "w": "compact",
+    "ipa": "ˈkɑmpækt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "紧密的，紧凑的",
+    "ex": "Cafe: Towards compact, adaptive, and fast embedding for large-scale recommendation models."
+   },
+   {
+    "w": "comprehensive",
+    "ipa": "ˌkɑmpriˈhɛnsɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "综合的，全面的",
+    "ex": "Shall we pretrain autoregressive language models with retrieval? a comprehensive study."
+   },
+   {
+    "w": "consortium",
+    "ipa": "kənˈsɔrʃjəm",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "财团；联合；合伙",
+    "ex": "Unicode Standard Annex 15, The Unicode Consortium, July 2025."
+   },
+   {
+    "w": "critical",
+    "ipa": "ˈkrɪtɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "批评的，爱挑剔的",
+    "ex": "Zipf’s word frequency law in natural language: A critical review and future directions."
+   },
+   {
+    "w": "demonstration",
+    "ipa": "ˌdɛmənˈstreɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "展示；游行",
+    "ex": "Lu, editors, Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing, EMNLP 2018: System Demonstrations, Brussels, Belgium, October 31 - November 4, 2018, pages 66–71."
+   },
+   {
+    "w": "dependence",
+    "ipa": "dɪˈpɛndəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "依靠， 依赖； 信任",
+    "ex": "Measuring statistical dependence with hilbert-schmidt norms."
+   },
+   {
+    "w": "discipline",
+    "ipa": "ˈdɪsəplən",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "纪律；训练；训练",
+    "ex": "C-eval: A multi-level multi-discipline chinese evaluation suite for foundation models."
+   },
+   {
+    "w": "discourse",
+    "ipa": "ˈdɪskɔrs",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "讲话，演说，讲道",
+    "ex": "Text-Interdisciplinary Journal for the Study of Discourse, 2000."
+   },
+   {
+    "w": "distantly",
+    "ipa": "ˈdistəntli",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "疏远的, 遥远的",
+    "ex": "Triviaqa: A large scale distantly supervised challenge dataset for reading comprehension."
+   },
+   {
+    "w": "economical",
+    "ipa": "ˌɛkəˈnɑmɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "节约的；经济学的",
+    "ex": "Deepseek-v2: A strong, economical, and efficient mixture-of-experts language model, 2024."
+   },
+   {
+    "w": "efficient",
+    "ipa": "ɪˈfɪʃənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "效率高的，有能力的",
+    "ex": "Compositional embeddings using complementary partitions for memory-efficient recommendation systems."
+   },
+   {
+    "w": "efficiently",
+    "ipa": "ɪˈfɪʃəntli",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "有效地",
+    "ex": "Efficiently modeling long sequences with structured state spaces."
+   },
+   {
+    "w": "eleventh",
+    "ipa": "ˈilɛvənθ",
+    "pos": "num.",
+    "lv": "四级",
+    "m": "第十一(个)",
+    "ex": "In The Eleventh International Conference on Learning Representations, ICLR 2023, Kigali, Rwanda, May 1-5, 2023."
+   },
+   {
+    "w": "elicit",
+    "ipa": "ɪˈlɪsɪt",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "诱出， 探出",
+    "ex": "Eliciting latent predictions from transformers with the tuned lens. arXiv preprint arXiv:2303.08112, 2023."
+   },
+   {
+    "w": "emergent",
+    "ipa": "ˈimərʤənt",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "紧急的；浮现的；意外的；自然发生的",
+    "ex": "Emergent world representations: Exploring a sequence model trained on a synthetic task."
+   },
+   {
+    "w": "enrich",
+    "ipa": "ɪnˈrɪʧ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "丰富；使富有",
+    "ex": "Enriching word vectors with subword information."
+   },
+   {
+    "w": "era",
+    "ipa": "ˈɪrə",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "纪元，年代",
+    "ex": "RWKV: reinventing rnns for the transformer era."
+   },
+   {
+    "w": "estimate",
+    "ipa": "ˈɛstəˌmeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "估计",
+    "ex": "Estimating or propagating gradients through stochastic neurons for conditional computation, 2013."
+   },
+   {
+    "w": "estimation",
+    "ipa": "ˌɛstəˈmeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "估计；尊重",
+    "ex": "Estimation of probabilities from sparse data for the language model component of a speech recognizer."
+   },
+   {
+    "w": "execution",
+    "ipa": "ˌɛksəˈkjuʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "实行，执行；处死刑",
+    "ex": "Cruxeval: A benchmark for code reasoning, understanding and execution."
+   },
+   {
+    "w": "forum",
+    "ipa": "ˈfɔrəm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "论坛",
+    "ex": "URL https://openreview.net/forum?id=uY LFoz1vlAC."
+   },
+   {
+    "w": "generalization",
+    "ipa": "ˌʤɛnərəlɪˈzeɪʃən",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "一般化",
+    "ex": "Better generalization with semantic ids: A case study in ranking for recommendations."
+   },
+   {
+    "w": "generally",
+    "ipa": "ˈʤɛnərəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "一般地；通常地",
+    "ex": "Over-tokenized transformer: Vocabulary is generally worth scaling."
+   },
+   {
+    "w": "generative",
+    "ipa": "ˈʤɛnərətɪv",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "生产的，有生产力的",
+    "ex": "Recommender systems with generative retrieval."
+   },
+   {
+    "w": "giant",
+    "ipa": "ʤaɪənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "巨人；巨物",
+    "ex": "Gshard: Scaling giant models with conditional computation and automatic sharding. arXiv preprint arXiv:2006.16668, 2020."
+   },
+   {
+    "w": "granular",
+    "ipa": "ˈgrænjələr",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "颗粒的；粒状的",
+    "ex": "Learning multi-granular quantized embeddings for large-vocab categorical features in recommender systems."
+   },
+   {
+    "w": "householder",
+    "ipa": "ˈhaʊsˌhoʊldər",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "户主，家长；房主",
+    "ex": "Path attention: Position encoding via accumulating householder transformations. arXiv preprint arXiv:2505.16381, 2025."
+   },
+   {
+    "w": "image",
+    "ipa": "ˈɪmɪʤ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "形象，声誉，印象",
+    "ex": "Deep residual learning for image recognition."
+   },
+   {
+    "w": "interdisciplinary",
+    "ipa": "ˌɪntərˈdɪsəpləˌnɛri",
+    "pos": "adj.",
+    "lv": "GRE",
+    "m": "跨学科的",
+    "ex": "Text-Interdisciplinary Journal for the Study of Discourse, 2000."
+   },
+   {
+    "w": "interpret",
+    "ipa": "ˌɪnˈtərprət",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "解释",
+    "ex": "Advances in neural information processing systems, 37:98049–98082, 2024. nostalgebraist. interpreting gpt: the logit lens."
+   },
+   {
+    "w": "joint",
+    "ipa": "ʤɔɪnt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "联合的",
+    "ex": "In Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing (Volume 1: Long Papers), pages 3198–3213, 2021."
+   },
+   {
+    "w": "journal",
+    "ipa": "ˈʤərnəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "日报，杂志；日志",
+    "ex": "Text-Interdisciplinary Journal for the Study of Discourse, 2000."
+   },
+   {
+    "w": "lens",
+    "ipa": "lɛnz",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "透镜，镜片；镜头",
+    "ex": "Advances in neural information processing systems, 37:98049–98082, 2024. nostalgebraist. interpreting gpt: the logit lens."
+   },
+   {
+    "w": "locate",
+    "ipa": "ˈloʊˌkeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "位于，定位",
+    "ex": "Locating and editing factual associations in gpt."
+   },
+   {
+    "w": "norm",
+    "ipa": "nɔrm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "标准，规范；平均数",
+    "ex": "Measuring statistical dependence with hilbert-schmidt norms."
+   },
+   {
+    "w": "normalization",
+    "ipa": "ˌnɔrməlɪˈzeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "正常化，标准化",
+    "ex": "Unicode standard annex #15: Unicode normalization forms."
+   },
+   {
+    "w": "offset",
+    "ipa": "ˈɔfˌsɛt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "抵销",
+    "ex": "Random offset block embedding array (robe) for criteotb"
+   },
+   {
+    "w": "outrageously",
+    "ipa": "ˌaʊˈtreɪʤəsli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "令人不能容忍地； 肆无忌惮地",
+    "ex": "Outrageously large neural networks: The sparsely-gated mixture-of-experts layer. arXiv preprint arXiv:1701.06538, 2017."
+   },
+   {
+    "w": "overall",
+    "ipa": "ˈoʊvərˌɔl",
+    "pos": "n.；adj.",
+    "lv": "四级",
+    "m": "工装裤；全面的",
+    "ex": "Table 6 | The table illustrates Top-5 merged tokens by Tokenizer Compression and the overall"
+   },
+   {
+    "w": "partition",
+    "ipa": "pɑrˈtɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "分开，分割；隔墙",
+    "ex": "Compositional embeddings using complementary partitions for memory-efficient recommendation systems."
+   },
+   {
+    "w": "patch",
+    "ipa": "pæʧ",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "补钉；碎片；补缀",
+    "ex": "Byte latent transformer: Patches scale better than tokens."
+   },
+   {
+    "w": "poetry",
+    "ipa": "ˈpoʊətri",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "诗，诗歌，诗作",
+    "ex": "Ccpm: A chinese classical poetry matching dataset. arXiv preprint arXiv:2106.01979, 2021."
+   },
+   {
+    "w": "probability",
+    "ipa": "ˌprɑbəˈbɪləˌti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "可能性；概率",
+    "ex": "Estimation of probabilities from sparse data for the language model component of a speech recognizer."
+   },
+   {
+    "w": "proceeding",
+    "ipa": "prəˈsidɪŋ",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "程序，行动，事项",
+    "ex": "In Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), pages 8493–8502, 2022."
+   },
+   {
+    "w": "propagate",
+    "ipa": "ˈprɑpəˌgeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "传播，普及；繁殖",
+    "ex": "Estimating or propagating gradients through stochastic neurons for conditional computation, 2013."
+   },
+   {
+    "w": "recommendation",
+    "ipa": "ˌrɛkəmənˈdeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "推荐，介绍；劝告",
+    "ex": "Compositional embeddings using complementary partitions for memory-efficient recommendation systems."
+   },
+   {
+    "w": "rediscover",
+    "ipa": "ridɪˈskəvər",
+    "pos": "v.",
+    "lv": "托福",
+    "m": "重新发现",
+    "ex": "Echoes of bert: Do modern language models rediscover the classical nlp pipeline?, 2025."
+   },
+   {
+    "w": "reinforcement",
+    "ipa": "ˌriɪnˈfɔrsmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "加固；增援；援军；加强",
+    "ex": "Sigmoid-weighted linear units for neural network function approximation in reinforcement learning."
+   },
+   {
+    "w": "reliability",
+    "ipa": "riˌlaɪəˈbɪləti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "可靠性",
+    "ex": "Reliability of CKA as a similarity measure in deep learning."
+   },
+   {
+    "w": "robe",
+    "ipa": "roʊb",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "长袍，礼服；制服；穿长袍",
+    "ex": "Random offset block embedding array (robe) for criteotb"
+   },
+   {
+    "w": "rotary",
+    "ipa": "ˈroʊtəri",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "旋转的，转动的",
+    "ex": "Roformer: Enhanced transformer with rotary position embedding."
+   },
+   {
+    "w": "schema",
+    "ipa": "ˈskimə",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "[计][心理] 模式；计划；图解；概要",
+    "ex": "Winogrande: An adversarial winograd schema challenge at scale."
+   },
+   {
+    "w": "self",
+    "ipa": "sɛlf",
+    "pos": "n.；adj.；vt.；vi.",
+    "lv": "四级",
+    "m": "自己，自我；本质；私心；同一的；使自花授精；使近亲繁殖；自花授精",
+    "ex": "Lift yourself up: Retrieval-augmented text generation with self-memory."
+   },
+   {
+    "w": "sigmoid",
+    "ipa": "ˈsɪɡmɔɪd",
+    "pos": "adj./n.",
+    "lv": "考博",
+    "m": "S 形的；sigmoid function 逻辑斯谛/乙状函数",
+    "ex": "Sigmoid-weighted linear units for neural network function approximation in reinforcement learning."
+   },
+   {
+    "w": "sketch",
+    "ipa": "skɛʧ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "略图；速写；概略",
+    "ex": "Clustering the sketch: A novel approach to embedding table compression. arXiv preprint arXiv:2210.05974, 2022."
+   },
+   {
+    "w": "solve",
+    "ipa": "sɑlv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "解决",
+    "ex": "Challenging big-bench tasks and whether chain-of-thought can solve them."
+   },
+   {
+    "w": "specialization",
+    "ipa": "ˌspɛʃələˈzeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "特殊化, 专门化",
+    "ex": "Deepseekmoe: Towards ultimate expert specialization in mixture-of-experts language models. arXiv preprint arXiv:2401.06066, 2024."
+   },
+   {
+    "w": "sufficiency",
+    "ipa": "səˈfɪʃənsi",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "足量，充足；自满",
+    "ex": "On information and sufficiency."
+   },
+   {
+    "w": "supervise",
+    "ipa": "ˈsupərˌvaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "监督，监视",
+    "ex": "Triviaqa: A large scale distantly supervised challenge dataset for reading comprehension."
+   },
+   {
+    "w": "survey",
+    "ipa": "ˈsərˌveɪ",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "调查，审视，仔细考虑；勘测，测量，测绘，调查",
+    "ex": "Survey: multiword expression processing: a survey."
+   },
+   {
+    "w": "symposium",
+    "ipa": "sɪmˈpoʊziəm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "座谈会",
+    "ex": "In Proceedings of the 29th symposium on operating systems principles, pages 611–626, 2023."
+   },
+   {
+    "w": "synthesis",
+    "ipa": "ˈsɪnθəsəs",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "综合，综合物；（化学或生物学物质的）合成；（用电子方式对声音、语音或音乐的）合成",
+    "ex": "Program synthesis with large language models. arXiv preprint arXiv:2108.07732, 2021."
+   },
+   {
+    "w": "synthetic",
+    "ipa": "sɪnˈθɛtɪk",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "合成的，人造的",
+    "ex": "Emergent world representations: Exploring a sequence model trained on a synthetic task."
+   },
+   {
+    "w": "tenth",
+    "ipa": "tɛnθ",
+    "pos": "num.；adj.",
+    "lv": "四级",
+    "m": "第十；十分之一；十分之一的；第十个的",
+    "ex": "In The Tenth International Conference on Learning Representations, ICLR 2022, Virtual Event, April 25-29, 2022."
+   },
+   {
+    "w": "thirteenth",
+    "ipa": "ˈθərˈtinθ",
+    "pos": "adj.；n.",
+    "lv": "专四",
+    "m": "第十三的；十三分之一的；第十三；十三分之一",
+    "ex": "In The Thirteenth International Conference on Learning Representations, ICLR 2025, Singapore, April 24-28, 2025."
+   },
+   {
+    "w": "transaction",
+    "ipa": "trænˈzækʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "交易，业务，事务",
+    "ex": "Transactions of the association for computational linguistics, 5:135–146, 2017."
+   },
+   {
+    "w": "transformation",
+    "ipa": "ˌtrænsfərˈmeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "变化；改造；转变",
+    "ex": "Path attention: Position encoding via accumulating householder transformations. arXiv preprint arXiv:2505.16381, 2025."
+   },
+   {
+    "w": "trillion",
+    "ipa": "ˈtrɪljən",
+    "pos": "num.",
+    "lv": "六级",
+    "m": "万亿",
+    "ex": "Switch transformers: Scaling to trillion parameter models with simple and efficient sparsity."
+   },
+   {
+    "w": "ultimate",
+    "ipa": "ˈəltəmət",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "最后的，最终的",
+    "ex": "Deepseekmoe: Towards ultimate expert specialization in mixture-of-experts language models. arXiv preprint arXiv:2401.06066, 2024."
+   },
+   {
+    "w": "unify",
+    "ipa": "ˈjunəˌfaɪ",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "使联合， 统一； 使相同， 使一致",
+    "ex": "Unified embedding: Battle-tested feature representations for web-scale ml systems."
+   },
+   {
+    "w": "virtual",
+    "ipa": "ˈvərʧuəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "虚拟的",
+    "ex": "In The Tenth International Conference on Learning Representations, ICLR 2022, Virtual Event, April 25-29, 2022."
+   },
+   {
+    "w": "vision",
+    "ipa": "ˈvɪʒən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "视；想象力；梦幻",
+    "ex": "In Proceedings of the IEEE conference on computer vision and pattern recognition, pages 770–778, 2016."
+   }
+  ]
+ }
+];
+// lv 一律写中文档名（十一档平级，2026-09-30 定案；旧短码由 build 脚本自动翻译）
+const LVCLS={"四级":"t4","六级":"t6","考研":"tk","考博":"tp","专四":"tm4","专八":"tm8","雅思":"ty","托福":"tt","GRE":"tg","超纲":"tsuper"};
+const LVNAME={"四级":"四级","六级":"六级","考研":"考研","考博":"考博","专四":"专业四级","专八":"专业八级","雅思":"雅思","托福":"托福","GRE":"GRE","超纲":"超纲（大纲未收）"};
+const LVSHORT={"四级":"4","六级":"6","考研":"考研","考博":"考博","专四":"专四","专八":"专八","雅思":"雅思","托福":"托福","GRE":"GRE","超纲":"★超纲"};
+const LVORDER=["四级","六级","考研","考博","专四","专八","雅思","托福","GRE","超纲"];
+
+let mode="sec";
+let theme="theme-mag"; // 章节视图固定杂志风；按级别视图固定暗色大页
+
+function cardHTML(x,sec){
+  const from = mode==="lv" ? `<div class="from">出自 ${sec}</div>` : "";
+  if(theme==="theme-paper"){
+    return `<div class="word"><span class="w">${x.w}<span class="ipa">/${x.ipa}/</span><i class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</i></span>
+      <span><span class="pos">${x.pos}</span><span class="m">${x.m}</span>${from}</span>
+      <span class="ex">${x.ex}</span></div>`;
+  }
+  if(theme==="theme-mag") return "";
+  return `<div class="card lv${x.lv}" data-say="${x.w}"><span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span><span class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</span>
+    <div class="m">${x.pos} ${x.m}</div><div class="ex">${x.ex}</div>${from}</div>`;
+}
+function magRow(x,sec){
+  return `<tr data-say="${x.w}"><td class="w"><span class="hwband">${x.w}</span><span class="ipa">/${x.ipa}/</span></td>
+    <td class="lv"><b class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</b></td>
+    <td class="m">${x.pos} ${x.m}${mode==="lv"?`<span class="from">出自 ${sec}</span>`:""}</td>
+    <td class="ex">${x.ex}</td></tr>`;
+}
+function groupHTML(title,icon,inner){
+  if(theme==="theme-mag") return `<div class="sec"><h2>${title}</h2><table>${inner}</table></div>`;
+  if(theme==="theme-dark"||theme==="theme-fresh")
+    return `<div class="sec"><h2>${theme==="theme-dark"?"":"<span class='n'>"+icon+"</span>"}${title}</h2><div class="grid">${inner}</div></div>`;
+  return `<div class="sec"><h2>${title}</h2>${inner}</div>`;
+}
+
+function render(){
+  document.body.classList.toggle("lv-mode",mode==="lv");
+  // 注意：必须用 classList.add，不能整体赋值 className —— 否则会抹掉 body.night，
+  // 而夜晚章节视图依赖 body.night.theme-mag 这条 CSS，抹掉后点「按章节」会静默退回白天。
+  if(mode==="sec")document.body.classList.add("theme-mag");
+  const app=document.getElementById("app");
+  let html="";
+  if(mode==="sec"){
+    for(const s of DATA){
+      html += theme==="theme-mag"
+        ? groupHTML(s.sec,s.icon,s.words.map(x=>magRow(x,s.short)).join(""))
+        : groupHTML(s.sec,s.icon,s.words.map(x=>cardHTML(x,s.short)).join(""));
+    }
+  }else{
+    // 学习模式同款暗色大页：每个级别一块
+    const dot={"四级":"var(--c4)","六级":"var(--c6)","考研":"var(--ckaon)","考博":"var(--cphd)","专四":"var(--cm4)","专八":"var(--cm8)","雅思":"var(--cy)","托福":"var(--ct)","GRE":"var(--cg)","超纲":"var(--csuper)"};
+    html=LVORDER.map(lv=>{
+      const items=[];
+      DATA.forEach(s=>s.words.forEach(x=>{if(x.lv===lv)items.push([x,s.short])}));   // ov 已废除（2026-09-30）
+      if(!items.length)return"";   // 本词表里没有这一档 → 不出空面板
+      items.sort((a,b)=>a[0].w.localeCompare(b[0].w));
+      const cls={"六级":"l6","考研":"lk","考博":"lp","专四":"lm4","专八":"lm8","雅思":"ly","托福":"lt","GRE":"lg","超纲":"lsuper"}[lv]||"";
+      return `<div class="lvslide ${cls}">
+        <div class="ltitle"><span style="color:${dot[lv]}">${LVNAME[lv]}</span>词汇<small>${items.length} words · 按字母排序 · 悬停看原文例句 · 点击发音</small></div>
+        <div class="sgrid">${items.map(([x,sec])=>`
+          <div class="lcard" data-say="${x.w}">
+            <span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span>
+            <div class="m">${x.pos} ${x.m}</div>
+            <div class="ex">${x.ex}</div>
+            <div class="from">出自 ${sec}</div>
+          </div>`).join("")}</div></div>`;
+    }).join("");
+  }
+  app.innerHTML=html;
+}
+function syncToolbar(){
+  document.getElementById("v-sec").classList.toggle("on",mode==="sec");
+  document.getElementById("v-lv").classList.toggle("on",mode==="lv");
+}
+document.getElementById("v-sec").onclick=()=>{mode="sec";theme="theme-mag";syncToolbar();render();};
+document.getElementById("v-lv").onclick=()=>{mode="lv";syncToolbar();render();};
+
+// 朗读：多引擎在线 TTS 自动降级（有道 / Polly / 百度 / 谷歌），可按下拉切换主音色
+// 合并自 .agents 有道源版 与 workbuddy Polly 源版 —— 单文件同时支持两套引擎
+const VOICE_MAP={
+  yd1:{src:"yd",label:"美式 · 有道（推荐）"},
+  yd0:{src:"yd",label:"英式 · 有道"},
+  Brian:{src:"se",label:"Brian · 英式男声"},
+  Amy:{src:"se",label:"Amy · 英式女声"},
+  Matthew:{src:"se",label:"Matthew · 美式男声"},
+  Joanna:{src:"se",label:"Joanna · 美式女声"},
+  Salli:{src:"se",label:"Salli · 美式女声"},
+  Ivy:{src:"se",label:"Ivy · 美式童声"},
+  bd:{src:"bd",label:"百度翻译 · 女声"},
+  gg:{src:"gg",label:"谷歌翻译"},
+  mute:{src:"mute",label:"🔇 不朗读"}
+};
+const VOICE_ORDER=["yd1","yd0","Brian","Amy","Matthew","Joanna","Salli","Ivy","bd","gg","mute"];
+let ONLINE="yd1"; // 默认有道 · 美音（保留 .agents 版行为）
+try{const sv=localStorage.getItem("vocab_voice");if(sv&&VOICE_MAP[sv])ONLINE=sv;}catch(e){}
+const ENG=["yd","se","bd","gg"];               // 全部可选引擎
+const ENG_NAME={yd:"有道",se:"Polly",bd:"百度",gg:"谷歌"};
+const POLLY_VOICES={Brian:1,Amy:1,Matthew:1,Joanna:1,Salli:1,Ivy:1};
+let SRC_ORDER=ENG.slice(),srcIdx=0;           // 降级顺序：按所选音色的主引擎优先
+function applyVoiceOrder(){
+  const want=VOICE_MAP[ONLINE].src;
+  const i=ENG.indexOf(want);
+  SRC_ORDER=i<0?ENG.slice():ENG.slice(i).concat(ENG.slice(0,i));
+}
+applyVoiceOrder();
+let audio=null;
+function ttsURL(src,t){
+  const q=encodeURIComponent(t);
+  if(src==="yd")return `https://dict.youdao.com/dictvoice?type=${ONLINE==="yd0"?"0":"1"}&audio=${q}`;
+  if(src==="se")return `https://api.streamelements.com/kappa/v2/speech?voice=${POLLY_VOICES[ONLINE]?ONLINE:"Brian"}&text=${q}`;
+  if(src==="bd")return `https://fanyi.baidu.com/gettts?lan=en&text=${q}&spd=5&source=web`;
+  return `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q=${q}`;
+}
+function fillVoiceSel(){
+  const sel=document.getElementById("voiceSel");if(!sel)return;
+  sel.innerHTML=VOICE_ORDER.map(v=>`<option value="${v}" ${ONLINE===v?"selected":""}>${VOICE_MAP[v].label}</option>`).join("");
+  const st=document.getElementById("srcState");
+  if(st)st.textContent=ENG_NAME[SRC_ORDER[srcIdx]]||"";
+}
+fillVoiceSel();
+let saying=0; // 防并发
+function say(t){
+  if(ONLINE==="mute"){try{if(audio){audio.pause();audio=null}}catch(e){}return}
+  const my=++saying;
+  trySrc(0,t,my);
+}
+function trySrc(i,t,my){
+  if(my!==saying)return;
+  if(i>=SRC_ORDER.length){const st=document.getElementById("srcState");if(st)st.textContent="无可用源";return}
+  const src=SRC_ORDER[i];
+  const st=document.getElementById("srcState");
+  if(st)st.textContent="尝试 "+ENG_NAME[src];
+  try{if(audio){audio.pause();audio=null}}catch(e){}
+  const a=new Audio(ttsURL(src,t));
+  let ok=false,advanced=false;
+  const advance=()=>{ if(!ok&&!advanced&&my===saying){advanced=true;trySrc(i+1,t,my);} };
+  a.addEventListener("playing",()=>{ok=true;
+    if(srcIdx!==i){srcIdx=i;fillVoiceSel();} // 记住能用的源
+  });
+  a.addEventListener("error",advance);
+  audio=a;
+  a.play().catch(advance);
+  setTimeout(()=>{ if(!ok&&my===saying&&a.paused)advance(); },2500);
+}
+document.getElementById("voiceSel").addEventListener("change",e=>{
+  ONLINE=e.target.value; applyVoiceOrder(); srcIdx=0; // 换音色重新从头试源
+  try{localStorage.setItem("vocab_voice",ONLINE);}catch(e){}
+  if(ONLINE!=="mute") say("Hello, let us learn new words together.");
+});
+/* ---- 白天 / 夜晚 ---- */
+let style="day";
+try{const s=localStorage.getItem("vocab_style");if(["day","night","paper"].indexOf(s)>=0)style=s;}catch(e){}
+function applyStyle(){
+  document.body.classList.toggle("night",style==="night");
+  document.body.classList.toggle("paper",style==="paper");
+  ["day","night","paper"].forEach(k=>{const b=document.getElementById("st-"+k);if(b)b.classList.toggle("on",style===k);});
+  if(typeof studyEl!=="undefined"&&studyEl)studyEl.classList.toggle("day",style!=="night");
+}
+document.getElementById("st-day").onclick=()=>{style="day";try{localStorage.setItem("vocab_style","day")}catch(e){};applyStyle();};
+document.getElementById("st-night").onclick=()=>{style="night";try{localStorage.setItem("vocab_style","night")}catch(e){};applyStyle();};
+document.getElementById("st-paper").onclick=()=>{style="paper";try{localStorage.setItem("vocab_style","paper")}catch(e){};applyStyle();};
+document.getElementById("app").addEventListener("click",e=>{
+  const el=e.target.closest("[data-say]"); if(el) say(el.dataset.say);
+});
+
+/* ---------- 学习模式：按章节分页的 PPT 翻页 ---------- */
+const PER_PAGE = 12; // 每页最多词数，放不下自动续页
+let slides=[],si=0;
+function buildSlides(){
+  slides=[];
+  for(const s of DATA){
+    for(let i=0;i<s.words.length;i+=PER_PAGE){
+      slides.push({sec:s.sec,page:Math.floor(i/PER_PAGE)+1,
+        pages:Math.ceil(s.words.length/PER_PAGE),words:s.words.slice(i,i+PER_PAGE)});
+    }
+  }
+}
+const studyEl=document.getElementById("study");
+let open=false;
+function showSlide(){
+  const sl=slides[si];
+  const title=sl.pages>1 ? `${sl.sec}（第 ${sl.page}/${sl.pages} 页）` : sl.sec;
+  document.getElementById("sPage").innerHTML =
+    `<div class="stitle">${title}<small>${sl.words.length} words</small></div>
+     <div class="sgrid">${sl.words.map(x=>`
+       <div class="scard" data-say="${x.w}">
+         <span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span><span class="tag ${LVCLS[x.lv]}" style="font-size:11px;padding:2px 8px">${LVSHORT[x.lv]}</span>
+         <div class="m">${x.pos} ${x.m}</div>
+         <div class="ex">${x.ex}</div>
+       </div>`).join("")}</div>`;
+  document.getElementById("sIdx").textContent=(si+1)+" / "+slides.length;
+  document.getElementById("sbar").style.width=((si+1)/slides.length*100)+"%";
+  document.getElementById("sPrev").disabled=si===0;
+  document.getElementById("sNext").disabled=si===slides.length-1;
+  studyEl.querySelector(".sbody").scrollTop=0;
+}
+function studyOpen(){ buildSlides(); si=0; open=true; studyEl.classList.add("on"); applyStyle(); showSlide(); }
+function studyClose(){ open=false; studyEl.classList.remove("on"); }
+function next(){ if(si<slides.length-1){ si++; showSlide(); } }
+function prev(){ if(si>0){ si--; showSlide(); } }
+document.getElementById("v-study").onclick=()=>open?studyClose():studyOpen();
+document.getElementById("sClose").onclick=studyClose;
+document.getElementById("sExit").onclick=studyClose;
+document.getElementById("sNext").onclick=next;
+document.getElementById("sPrev").onclick=prev;
+studyEl.addEventListener("click",e=>{
+  const el=e.target.closest("[data-say]"); if(el) say(el.dataset.say);
+});
+document.addEventListener("keydown",e=>{
+  if(!open) return;
+  if(e.code==="Space"||e.key==="ArrowRight"||e.key==="PageDown"){ e.preventDefault(); next(); }
+  else if(e.key==="ArrowLeft"||e.key==="PageUp"){ prev(); }
+  else if(e.key==="Escape"){ studyClose(); }
+});
+applyStyle(); syncToolbar(); render();
+</script>
+<a href="../../vocab.html" target="_self" style="position:fixed;left:14px;bottom:14px;z-index:9999;font:600 13px/1 -apple-system,system-ui,sans-serif;color:#fff;background:rgba(0,0,0,.55);padding:8px 12px;border-radius:20px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.25)">← 返回索引</a></body>
+</html>

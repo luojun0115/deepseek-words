@@ -1,0 +1,4480 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DeepSeek-VL2 论文核心词汇</title>
+<style>
+:root{--c4:#3b82f6;--c6:#8b5cf6;--ckaon:#f59e0b;--cphd:#ef4444;--ct:#0d9488;--cg:#d946ef;--cm4:#0ea5e9;--cm8:#f43f5e;--cy:#10b981;--csuper:#facc15}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;transition:background .3s,color .3s}
+.tag{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:4px;color:#fff;vertical-align:2px;margin-left:6px;font-style:normal;flex:none;white-space:nowrap}
+.tag.t4{background:var(--c4)}.tag.t6{background:var(--c6)}.tag.tk{background:var(--ckaon)}.tag.tp{background:var(--cphd)}.tag.tm4{background:var(--cm4)}.tag.tm8{background:var(--cm8)}
+.tag.tt{background:var(--ct)}.tag.tg{background:var(--cg)}.tag.ty{background:var(--cy)}.tag.tsuper{background:var(--csuper);color:#3a2f00}
+.ipa{font-family:"SF Mono",Menlo,monospace;font-size:.82em;font-weight:400;opacity:.62;margin-left:6px}
+
+
+/* 论文原标题小字 */
+.ptitle{font-size:12.5px;letter-spacing:.3px;margin-top:6px}
+.ptitle i{font-family:Georgia,serif}
+.theme-mag .ptitle{color:#999;text-transform:none}
+.theme-dark .ptitle{color:#6e7681}
+.theme-paper .ptitle{color:#a09578}
+.theme-fresh .ptitle{color:#9ca3af}
+body.lv-mode .ptitle{color:#7d8590}
+
+/* 预览工具条 */
+.toolbar{position:fixed;right:16px;bottom:16px;z-index:99;display:flex;flex-direction:column;gap:8px;background:rgba(20,22,30,.88);padding:12px;border-radius:14px;backdrop-filter:blur(8px);box-shadow:0 6px 24px rgba(0,0,0,.35)}
+.toolbar .row{display:flex;gap:6px}
+.toolbar button{border:none;cursor:pointer;padding:7px 12px;border-radius:8px;font-size:12.5px;background:#3a3f4d;color:#cbd2e0;transition:.15s}
+.toolbar button:hover{background:#4a5164}
+.toolbar button.on{background:#fff;color:#111;font-weight:600}
+.toolbar .lbl{font-size:10px;color:#8a93a6;text-align:left;margin:2px 0 -2px 2px}
+
+/* ---------- A 纸质阅读 ---------- */
+body.theme-paper{background:#faf6ee;color:#2c2a25}
+.theme-paper .wrap{max-width:880px;margin:0 auto;padding:56px 24px 140px}
+.theme-paper .hero h1{font-family:Georgia,"Songti SC",serif;font-size:34px}
+.theme-paper .hero p{color:#8a8272;margin:10px 0 42px;font-size:14px}
+.theme-paper .sec{margin-bottom:44px}
+.theme-paper .sec>h2{font-family:Georgia,"Songti SC",serif;font-size:20px;padding-left:14px;border-left:4px solid #b08d4f;margin-bottom:18px}
+.theme-paper .word{display:flex;gap:14px;padding:14px 16px;border-bottom:1px dashed #ddd2bc;align-items:baseline}
+.theme-paper .word:hover{background:#f3ecdc}
+.theme-paper .w{font-family:Georgia,serif;font-size:19px;font-weight:700;min-width:250px}
+.theme-paper .pos{color:#a09578;font-size:13px;margin-right:6px}
+.theme-paper .m{color:#4a463c;font-size:15px}
+.theme-paper .ex{margin-left:auto;max-width:270px;font-size:12.5px;color:#9a8f76;font-style:italic;text-align:right}
+.theme-paper .from{display:block;font-size:11px;color:#b3a888;font-style:normal;margin-top:3px}
+
+/* ---------- B 暗色科技 ---------- */
+body.theme-dark{background:#0d1117;color:#e6edf3}
+.theme-dark .wrap{max-width:1000px;margin:0 auto;padding:56px 24px 140px}
+.theme-dark .hero h1{font-family:"SF Mono",Menlo,monospace;font-size:26px}
+.theme-dark .hero h1::before{content:"$ ";color:#3fb950}
+.theme-dark .hero p{color:#7d8590;margin:10px 0 40px;font-size:14px;font-family:Menlo,monospace}
+.theme-dark .sec>h2{font-size:15px;font-family:Menlo,monospace;color:#58a6ff;padding:10px 16px;background:#161b22;border:1px solid #30363d;border-radius:8px 8px 0 0;margin-bottom:-1px}
+.theme-dark .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;padding:20px;background:#161b22;border:1px solid #30363d;border-radius:0 0 8px 8px}
+.theme-dark .card{background:#0d1117;border:1px solid #30363d;border-left:4px solid #58a6ff;border-radius:6px;padding:15px 17px;transition:.2s;cursor:pointer;font-family:Menlo,monospace}
+.theme-dark .card:hover{border-color:#58a6ff;box-shadow:0 0 14px rgba(88,166,255,.25);transform:translateY(-2px)}
+.theme-dark .w{font-family:Menlo,monospace;font-size:17px;color:#79c0ff}
+.theme-dark .ipa{color:#7ee787;opacity:.9}
+.theme-dark .m{color:#8b949e;font-size:13.5px;margin-top:7px;line-height:1.55}
+.theme-dark .ex{font-size:12px;color:#6e7681;margin-top:8px;border-top:1px solid #21262d;padding-top:8px;font-style:italic}
+.theme-dark .from{color:#484f58;font-size:11px;margin-top:4px}
+
+/* ---------- C 清新卡片 ---------- */
+body.theme-fresh{background:linear-gradient(160deg,#eef4ff 0%,#f6f0ff 50%,#fff7ec 100%);color:#1f2430}
+.theme-fresh .wrap{max-width:1020px;margin:0 auto;padding:56px 24px 140px}
+.theme-fresh .hero h1{font-size:32px;font-weight:800;background:linear-gradient(90deg,#3b82f6,#8b5cf6,#f59e0b);-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block}
+.theme-fresh .hero p{color:#6b7280;margin:10px 0 40px;font-size:14px}
+.theme-fresh .sec>h2{font-size:19px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.theme-fresh .sec>h2 .n{width:30px;height:30px;border-radius:10px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.08);display:inline-flex;align-items:center;justify-content:center;font-size:13px}
+.theme-fresh .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+.theme-fresh .card{background:rgba(255,255,255,.82);backdrop-filter:blur(6px);border-radius:18px;padding:17px 19px 15px;box-shadow:0 3px 14px rgba(80,80,140,.09);transition:.2s;cursor:pointer;border-top:5px solid #dbe3f5}
+.theme-fresh .card.lv四级{border-top-color:#3b82f6}.theme-fresh .card.lv六级{border-top-color:#8b5cf6}
+.theme-fresh .card.lv考研{border-top-color:#f59e0b}.theme-fresh .card.lv考博{border-top-color:#ef4444}
+.theme-fresh .card.lv专四{border-top-color:#0ea5e9}.theme-fresh .card.lv专八{border-top-color:#f43f5e}
+.theme-fresh .card.lv雅思{border-top-color:#10b981}.theme-fresh .card.lv托福{border-top-color:#0d9488}
+.theme-fresh .card.lvGRE{border-top-color:#d946ef}.theme-fresh .card.lv超纲{border-top-color:#facc15}
+.theme-fresh .card .w{display:inline-block;background:#f3f5fb;border-radius:8px;padding:2px 10px}
+.theme-fresh .card:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(80,80,140,.16)}
+.theme-fresh .w{font-size:18px;font-weight:700}
+.theme-fresh .m{color:#4b5563;font-size:14px;margin-top:6px;line-height:1.55}
+.theme-fresh .ex{color:#9ca3af;font-size:12.5px;margin-top:8px}
+.theme-fresh .from{color:#b6bcc9;font-size:11.5px;margin-top:4px}
+
+/* ---------- D 杂志表格（宽松版） ---------- */
+body.theme-mag{background:#fff;color:#111}
+.theme-mag .wrap{max-width:960px;margin:0 auto;padding:52px 28px 140px}
+.theme-mag .hero{border-bottom:3px solid #111;padding-bottom:16px;margin-bottom:10px}
+.theme-mag .hero h1{font-family:"Songti SC",Georgia,serif;font-size:38px;font-weight:900}
+.theme-mag .hero p{color:#888;font-size:13.5px;margin-top:8px}
+.theme-mag .sec>h2{font-size:14px;letter-spacing:3px;text-transform:uppercase;color:#c2410c;margin:44px 0 8px;border-bottom:1px solid #e5e5e5;padding-bottom:8px}
+.theme-mag table{width:100%;border-collapse:collapse}
+.theme-mag td{padding:16px 12px;border-bottom:1px solid #f0f0f0;font-size:15.5px;line-height:1.65;vertical-align:top}
+.theme-mag tr:hover td{background:#fff8f3}
+.theme-mag .w{font-weight:700;font-size:17px;width:300px}
+.theme-mag .lv{width:60px}
+.theme-mag .lv b{font-size:11.5px;padding:3px 0;display:block;text-align:center;border-radius:3px;color:#fff;font-weight:600}
+.theme-mag .m{color:#3d3d3d}
+.theme-mag .ex{color:#9a9a9a;font-size:13px;font-style:italic}
+.theme-mag .from{display:block;color:#c9c9c9;font-size:11.5px;font-style:normal;margin-top:4px}
+
+/* ---------- 按级别：学习模式同款暗色大页 ---------- */
+body.lv-mode{background:#0b0e13 !important}
+body.lv-mode .hero h1,body.lv-mode .hero p{color:#e8ecf3}
+body.lv-mode .hero p{color:#7d8590}
+.lvslide{background:#101318;color:#e8ecf3;border-radius:20px;padding:26px 32px 22px;margin-bottom:26px;border-top:6px solid var(--c4)}
+.lvslide.l6{border-top-color:var(--c6)}.lvslide.lk{border-top-color:var(--ckaon)}.lvslide.lp{border-top-color:var(--cphd)}
+.lvslide.lt{border-top-color:var(--ct)}.lvslide.lg{border-top-color:var(--cg)}.lvslide.lm4{border-top-color:var(--cm4)}.lvslide.lm8{border-top-color:var(--cm8)}.lvslide.ly{border-top-color:var(--cy)}.lvslide.lsuper{border-top-color:var(--csuper)}
+.lvslide .ltitle{font-size:26px;font-weight:800;font-family:Georgia,serif;display:flex;align-items:baseline;gap:14px}
+.lvslide .ltitle small{font-size:14px;color:#7d8590;font-family:Menlo,monospace;font-weight:400}
+.lvslide .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;padding:20px 0 8px}
+.lvslide .lcard{background:#171c26;border:1px solid #2b3342;border-radius:14px;padding:15px 17px;cursor:pointer;transition:.15s}
+.lvslide .lcard:hover{border-color:#79c0ff;transform:translateY(-2px)}
+.lvslide .lcard .w{font-size:19px;font-weight:700;font-family:Georgia,serif}
+.lvslide .lcard .ipa{font-family:Menlo,monospace;font-size:13px;color:#7ee787;margin-left:8px}
+.lvslide .lcard .m{color:#aeb6c4;font-size:14px;margin-top:7px;line-height:1.55}
+.lvslide .lcard .ex{color:#646d7d;font-size:12px;font-style:italic;margin-top:7px}
+.lvslide .lcard .from{color:#4d5563;font-size:11px;margin-top:6px}
+
+
+/* ---------- 白天 / 夜晚 ---------- */
+body.lv-mode:not(.night){background:#eef1f6 !important}
+body.lv-mode:not(.night) .hero h1{color:#1f2430}
+body.lv-mode:not(.night) .hero p{color:#6b7280}
+body.lv-mode:not(.night) .lvslide{background:#fff;color:#1f2430;box-shadow:0 4px 18px rgba(80,80,140,.10)}
+body.lv-mode:not(.night) .lvslide .lcard{background:#f7f9fd;border-color:#e4e9f3}
+body.lv-mode:not(.night) .lvslide .lcard:hover{border-color:#3b82f6}
+body.lv-mode:not(.night) .lvslide .lcard .m{color:#4b5563}
+body.lv-mode:not(.night) .lvslide .lcard .ex{color:#98a0ae}
+body.lv-mode:not(.night) .lvslide .lcard .from{color:#b3bac6}
+body.lv-mode:not(.night) .lvslide .lcard .ipa{color:#0a7d33}
+body.night.theme-mag{background:#0d1117;color:#e6edf3}
+body.night.theme-mag .hero{border-bottom-color:#e6edf3}
+body.night.theme-mag .hero p{color:#8b949e}
+body.night.theme-mag .sec>h2{color:#fbbf24;border-bottom-color:#30363d}
+body.night.theme-mag td{border-bottom-color:#1c2230}
+body.night.theme-mag tr:hover td{background:#161b22}
+body.night.theme-mag .m{color:#c9d1d9}
+body.night.theme-mag .ex{color:#8b949e}
+body.night.theme-mag .from{color:#57606a}
+body.night.theme-mag .w{color:#e6edf3}
+body.night.theme-mag .ptitle{color:#8b949e}
+body.night.theme-mag .ipa{opacity:.55}
+#study.day{background:#f5f7fa;color:#1f2430}
+#study.day .scard{background:#fff;border-color:#e4e9f3}
+#study.day .scard .m{color:#4b5563}
+#study.day .scard .ex{color:#98a0ae}
+#study.day .scard:hover{border-color:#3b82f6}
+#study.day .sfoot{color:#98a0ae;border-top-color:#e6e9f0}
+#study.day .snav button,#study.day #sClose{background:#fff;color:#1f2430;border-color:#d7dce6}
+#study.day .sfoot kbd{background:#e8ecf3;color:#1f2430}
+
+/* ---------- 学习模式（PPT 按章节翻页） ---------- */
+#study{position:fixed;inset:0;z-index:200;display:none;background:#101318;color:#e8ecf3;flex-direction:column}
+#study.on{display:flex}
+#study .sprog{height:4px;background:#262c38}
+#study .sprog i{display:block;height:100%;background:linear-gradient(90deg,#58a6ff,#8b5cf6);width:0;transition:width .25s}
+#study .sbody{flex:1;overflow:auto;padding:20px 40px}
+#study .stitle{font-size:24px;font-weight:800;font-family:Georgia,serif;padding:6px 4px 2px}
+#study .stitle small{color:#5b6472;font-size:14px;font-family:Menlo,monospace;font-weight:400;margin-left:12px}
+#study .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;padding:16px 2px 30px}
+#study .scard{background:#171c26;border:1px solid #2b3342;border-radius:14px;padding:16px 18px;cursor:pointer;transition:.15s}
+#study .scard:hover{border-color:#58a6ff;transform:translateY(-2px)}
+#study .scard .w{font-size:22px;font-weight:700;font-family:Georgia,serif}
+#study .scard .ipa{color:#7ee787;font-size:14px;margin-left:8px}
+#study .scard .m{color:#aeb6c4;font-size:14.5px;margin-top:8px;line-height:1.55}
+#study .scard .ex{color:#646d7d;font-size:12px;font-style:italic;margin-top:6px}
+#study .sfoot{display:flex;justify-content:space-between;align-items:center;padding:14px 28px;color:#5b6472;font-size:13px;border-top:1px solid #1d232e}
+#study .sfoot kbd{background:#262c38;border-radius:5px;padding:2px 8px;margin:0 2px;font-family:Menlo,monospace;font-size:12px}
+#study .snav{display:flex;gap:10px;align-items:center}
+#study .snav button{border:1px solid #333b4a;background:#1a2029;color:#cbd2e0;border-radius:8px;padding:8px 18px;cursor:pointer;font-size:14px}
+#study .snav button:hover{border-color:#58a6ff}
+#study .snav button:disabled{opacity:.35;cursor:default}
+
+
+
+/* —— 样式·暖白（暖白纸底） —— */
+
+body.theme-mag.paper{background:#f4f2ea!important;color:#23211c!important}
+body.theme-mag.paper .hero{border-bottom-color:#23211c}
+body.theme-mag.paper .hero h1{color:#1c1a12}
+body.theme-mag.paper .hero p{color:#6b6a5c}
+body.theme-mag.paper .ptitle{color:#8a8878}
+body.theme-mag.paper .sec>h2{color:#5f7a3f;border-bottom-color:#ddd8ca}
+body.theme-mag.paper td{border-bottom-color:#e6e1d3}
+body.theme-mag.paper tr:hover td{background:#ece7da}
+body.theme-mag.paper .m{color:#33312a}
+body.theme-mag.paper .ex{color:#8a8878}
+body.theme-mag.paper .from{color:#b3b0a0}
+body.theme-mag.paper .ipa{color:#6b6a5c}
+.theme-mag .hwband{padding:0 3px;font-weight:700}
+body.theme-mag.paper .hwband{background:linear-gradient(transparent 16%,#cdddb8 16%,#cdddb8 84%,transparent 84%);color:#1c1a12}
+
+
+</style>
+</head>
+<body class="theme-mag">
+<div class="wrap">
+  <div class="hero">
+    <h1>DeepSeek-VL2 论文核心词汇</h1>
+    <div class="ptitle"><i>DeepSeek-VL2: Mixture-of-Experts Vision-Language Models for Advanced Multimodal Understanding · arXiv:2412.10302 · DeepSeek-AI, 2024</i></div>
+    <p>全量口径重做 · 6 节 497 词 · 十一档 + 超纲（2026-10-08）</p>
+  </div>
+  <div id="app"></div>
+</div>
+
+<div class="toolbar">
+  <div class="lbl">视图</div>
+  <div class="row">
+    <button id="v-sec" class="on">按章节</button>
+    <button id="v-lv">按级别综合</button>
+    <button id="v-study">▶ 学习模式</button>
+  </div>
+  <div class="lbl">样式</div>
+  <div class="row">
+    <button id="st-day" class="on">☀ 白天</button>
+    <button id="st-night">🌙 夜晚</button>
+    <button id="st-paper">暖白</button>
+  </div>
+  <div class="lbl">朗读声音 · 多引擎</div>
+  <div class="row"><select id="voiceSel" style="flex:1;border:none;border-radius:8px;padding:7px 8px;background:#3a3f4d;color:#cbd2e0;font-size:12.5px;outline:none"></select><span id="srcState" style="align-self:center;font-size:10.5px;color:#8a93a6;min-width:34px;text-align:center"></span></div>
+</div>
+
+<div id="study">
+  <div class="sprog"><i id="sbar"></i></div>
+  <button id="sClose" title="退出学习模式 (Esc)" style="position:absolute;top:14px;right:18px;z-index:5;border:1px solid #333b4a;background:#1a2029;color:#cbd2e0;border-radius:8px;width:34px;height:34px;font-size:16px;cursor:pointer">✕</button>
+  <div class="sbody"><div id="sPage"></div></div>
+  <div class="sfoot">
+    <span><kbd>空格</kbd>/<kbd>→</kbd> 下一页 &nbsp; <kbd>←</kbd> 上一页 &nbsp; 点单词发音 &nbsp; <kbd>Esc</kbd> 退出</span>
+    <div class="snav">
+      <span id="sIdx">0 / 0</span>
+      <button id="sPrev">← 上一页</button>
+      <button id="sNext">下一页 →</button>
+      <button id="sExit" style="border-color:#5b3a3a">退出</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// lv: 4=四级 6=六级 k=考研 p=考博；ipa 为美式音标
+const DATA = [
+ {
+  "sec": "1. Introduction · 引言",
+  "short": "Intro",
+  "icon": "1",
+  "words": [
+   {
+    "w": "boost",
+    "ipa": "buːst",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "提升",
+    "ex": "not only boosts overall performance but also extends model capabilities"
+   },
+   {
+    "w": "collaborative",
+    "ipa": "kəˈlæbərətɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "协作的",
+    "ex": "promote collaborative research advancement"
+   },
+   {
+    "w": "competitive",
+    "ipa": "kəmˈpetətɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "有竞争力的",
+    "ex": "DeepSeek-VL2 achieves competitive or state-of-the-art performance"
+   },
+   {
+    "w": "compress",
+    "ipa": "kəmˈpres",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "压缩",
+    "ex": "compresses Key-Value cache into latent vectors"
+   },
+   {
+    "w": "computation",
+    "ipa": "ˌkɑmpjəˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "计算, 估计",
+    "ex": "We further enhance efficiency through the DeepSeekMoE framework [20, 86], which employs sparse computation techniques."
+   },
+   {
+    "w": "dramatically",
+    "ipa": "drəˈmætɪkli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "大幅地",
+    "ex": "has dramatically expanded the potential for AI systems"
+   },
+   {
+    "w": "efficiency",
+    "ipa": "ɪˈfɪʃənsi",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "效率；功效，效能",
+    "ex": "Through a new visual processing strategy and an optimized language model, we develop a series of models that balances performance with efficiency."
+   },
+   {
+    "w": "emerge",
+    "ipa": "ˈimərʤ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "出现",
+    "ex": "Introduction Large Vision-Language Models (VLMs) have emerged as a transformative force in artificial intelligence [15, 54, 59, 63, 83, 88, 94], extending the remarkable capabilities of Large Language Models (LLMs) to seamlessly …"
+   },
+   {
+    "w": "excel",
+    "ipa": "ɪkˈsel",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "擅长",
+    "ex": "excels in tasks requiring ultra-high resolution"
+   },
+   {
+    "w": "extraction",
+    "ipa": "ɛkˈstrækʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "抽出；提取法",
+    "ex": "This design preserves the advantages of vision transformers with local attention, enabling rich feature extraction without the quadratic computational scaling typically associated with increasing image resolutions."
+   },
+   {
+    "w": "greatly",
+    "ipa": "ˈgreɪtli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "大大地，非常",
+    "ex": "We also greatly enhance our vision-language training data in terms of quality, quantity, and diversity."
+   },
+   {
+    "w": "hybrid",
+    "ipa": "ˈhaɪbrɪd",
+    "pos": "n.；adj.",
+    "lv": "六级",
+    "m": "杂种，混血儿；混合物；混合的；杂种的",
+    "ex": "This approach improves over DeepSeek-VL’s hybrid vision encoder, which extracted features from images at two fixed"
+   },
+   {
+    "w": "inspiration",
+    "ipa": "ˌɪnspəˈreɪʃn",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "启发",
+    "ex": "Drawing inspiration from established slicing-tile methods"
+   },
+   {
+    "w": "integrate",
+    "ipa": "ˈɪntɪɡreɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "整合",
+    "ex": "seamlessly integrates the extracted features within the language model"
+   },
+   {
+    "w": "interface",
+    "ipa": "ˈɪnərˌfeɪs",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "分界面",
+    "ex": "The improved training data has also enabled new abilities such as visual grounding and Graphical User Interface (GUI) perception."
+   },
+   {
+    "w": "latent",
+    "ipa": "ˈleɪtənt",
+    "pos": "adj.",
+    "lv": "考研",
+    "m": "存在但看不见的",
+    "ex": "For the language component, we leverage DeepSeek language models [20, 53], featuring the Multi-head Latent Attention (MLA) mechanism."
+   },
+   {
+    "w": "leap",
+    "ipa": "liːp",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "跃升",
+    "g": "g",
+    "ex": "DeepSeek-VL2 marks a substantial leap forward"
+   },
+   {
+    "w": "limitation",
+    "ipa": "ˌlɪmɪˈteɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "限制；限度，局限",
+    "ex": "Our approach avoids the limitations of the old fixed-size encoder and excels in tasks requiring ultra-high resolution, including visual grounding,"
+   },
+   {
+    "w": "manageable",
+    "ipa": "ˈmænɪdʒəbl",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "可控的",
+    "ex": "maintaining a manageable number of visual tokens"
+   },
+   {
+    "w": "optimize",
+    "ipa": "ˈɑptɪˌmaɪz",
+    "pos": "vt.",
+    "lv": "考博",
+    "m": "使最优化； 充分利用",
+    "ex": "Through a new visual processing strategy and an optimized language model, we develop a series of models that balances performance with efficiency."
+   },
+   {
+    "w": "overview",
+    "ipa": "ˈoʊvərvˌju",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "[图情] 综述；概观",
+    "ex": "Figure 2 | Overview of DeepSeek-VL2."
+   },
+   {
+    "w": "perception",
+    "ipa": "pərˈsepʃn",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "感知",
+    "ex": "new abilities such as visual grounding and Graphical User Interface (GUI) perception"
+   },
+   {
+    "w": "quadratic",
+    "ipa": "kwɑˈdrætɪk",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "二次的",
+    "ex": "without the quadratic computational scaling"
+   },
+   {
+    "w": "refine",
+    "ipa": "rɪˈfaɪnd",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "改进的，精炼的",
+    "ex": "a refined vision-language data construction pipeline"
+   },
+   {
+    "w": "remarkable",
+    "ipa": "rɪˈmɑrkəbəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "异常的，非凡的",
+    "ex": "Introduction Large Vision-Language Models (VLMs) have emerged as a transformative force in artificial intelligence [15, 54, 59, 63, 83, 88, 94], extending the remarkable capabilities of Large Language Models (LLMs) to seamlessly …"
+   },
+   {
+    "w": "seamlessly",
+    "ipa": "ˈsiːmləsli",
+    "pos": "adv.",
+    "lv": "超纲",
+    "m": "无缝地",
+    "ex": "to seamlessly process both visual and textual information"
+   },
+   {
+    "w": "segment",
+    "ipa": "ˈseɡmənt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "分割",
+    "ex": "dynamically segments high-resolution inputs into local tiles"
+   },
+   {
+    "w": "series",
+    "ipa": "ˈsɪriz",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "连续，系列；丛书",
+    "ex": "Through a new visual processing strategy and an optimized language model, we develop a series of models that balances performance with efficiency."
+   },
+   {
+    "w": "substantial",
+    "ipa": "səbˈstænʃl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "重大的",
+    "ex": "achieve substantial improvements in both performance and efficiency"
+   },
+   {
+    "w": "tackle",
+    "ipa": "ˈtækl",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "应对，处理",
+    "ex": "to tackle complex real-world applications that require multimodal understanding"
+   },
+   {
+    "w": "throughput",
+    "ipa": "ˈθruːpʊt",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "吞吐量",
+    "ex": "to enable efficient inference and high throughput"
+   },
+   {
+    "w": "transformative",
+    "ipa": "trænsˈfɔrmətɪv",
+    "pos": "adj.",
+    "lv": "超纲",
+    "m": "变革性的",
+    "g": "g",
+    "ex": "have emerged as a transformative force in artificial intelligence"
+   },
+   {
+    "w": "transformer",
+    "ipa": "trænsˈfɔrmər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "变压器，转换器",
+    "ex": "This design preserves the advantages of vision transformers with local attention, enabling rich feature extraction without the quadratic computational scaling typically associated with increasing image resolutions."
+   },
+   {
+    "w": "ultra",
+    "ipa": "ˈəltrə",
+    "pos": "adj./n.",
+    "lv": "六级",
+    "m": "超前的，极端的；超…（前缀用法）",
+    "ex": "Our approach avoids the limitations of the old fixed-size encoder and excels in tasks requiring ultra-high resolution, including visual grounding,"
+   }
+  ]
+ },
+ {
+  "sec": "2. Model Architecture · 模型架构",
+  "short": "Arch",
+  "icon": "2",
+  "words": [
+   {
+    "w": "additionally",
+    "ipa": "əˈdɪʃəˌnəli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "此外；又，加之",
+    "ex": "Additionally, a <view_separator> token is inserted between the global thumbnail tile and the local tiles."
+   },
+   {
+    "w": "append",
+    "ipa": "əˈpɛnd",
+    "pos": "v.；n.",
+    "lv": "专八",
+    "m": "附加；贴上；盖章；设置数据文件的搜索路径",
+    "ex": "grid of shape (𝑚𝑖· 14, 𝑛𝑖· 14), we append 𝑚𝑖· 14 <tile_newline> tokens at the end of the final column to indicate the end of a row of all the local tiles."
+   },
+   {
+    "w": "approach",
+    "ipa": "əˈproʊʧ",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "靠近；接近，方法",
+    "ex": "This approach enables the efficient processing of different high-resolution images with varying aspect ratios using a single SigLIP-SO400M-384"
+   },
+   {
+    "w": "architectural",
+    "ipa": "ˌɑrkəˈtɛkʧərəl",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "建筑上的； 建筑学的",
+    "ex": "Complete architectural specifications can be found in Table 1."
+   },
+   {
+    "w": "bias",
+    "ipa": "baɪəs",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "偏见",
+    "ex": "During MoE training, we introduce a global bias term [86] for each expert to cost-effectively improve load balancing between experts."
+   },
+   {
+    "w": "cache",
+    "ipa": "kæˈʃeɪ",
+    "pos": "n.；v.",
+    "lv": "专八",
+    "m": "电脑高速缓冲存储器；贮存物；隐藏处；隐藏；窖藏",
+    "ex": "MLA enhances inference efficiency by compressing the Key-Value cache into a latent vector, enabling increased throughput capacity."
+   },
+   {
+    "w": "capacity",
+    "ipa": "kəˈpæsɪti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "容量；能力；能量",
+    "ex": "MLA enhances inference efficiency by compressing the Key-Value cache into a latent vector, enabling increased throughput capacity."
+   },
+   {
+    "w": "coarse",
+    "ipa": "kɔrs",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "粗的，粗糙的",
+    "ex": "combining SigLIP [106] for coarse-grained feature extraction at 384 × 384 resolution and SAM-"
+   },
+   {
+    "w": "column",
+    "ipa": "ˈkɑləm",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "专栏",
+    "ex": "grid of shape (𝑚𝑖· 14, 𝑛𝑖· 14), we append 𝑚𝑖· 14 <tile_newline> tokens at the end of the final column to indicate the end of a row of all the local tiles."
+   },
+   {
+    "w": "constraint",
+    "ipa": "kənˈstreɪnt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "限制，束缚，约束",
+    "ex": "by the fixed 1024 × 1024 resolution constraint."
+   },
+   {
+    "w": "core",
+    "ipa": "kɔr",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "果实的心，核心",
+    "ex": "Model Architecture DeepSeek-VL2 consists of three core modules: (1) a vision encoder, (2) a vision-language adaptor, and (3) a Mixture-of-Experts language model."
+   },
+   {
+    "w": "define",
+    "ipa": "dɪˈfaɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "下定义，确定",
+    "ex": "accommodate different aspect ratios, we define a set of candidate resolutions: 𝐶𝑅= {(𝑚· 384, 𝑛·"
+   },
+   {
+    "w": "disable",
+    "ipa": "dɪˈseɪbəl",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使无能，使伤残",
+    "ex": "context length management, we disable the dynamic tiling strategy when processing multiple (> 2) images."
+   },
+   {
+    "w": "effectively",
+    "ipa": "ˈifɛktɪvli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "有效地",
+    "ex": "During MoE training, we introduce a global bias term [86] for each expert to cost-effectively improve load balancing between experts."
+   },
+   {
+    "w": "efficient",
+    "ipa": "ɪˈfɪʃənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "效率高的，有能力的",
+    "ex": "This approach enables the efficient processing of different high-resolution images with varying aspect ratios using a single SigLIP-SO400M-384"
+   },
+   {
+    "w": "enable",
+    "ipa": "ɪˈneɪbəl",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使能够……",
+    "ex": "MLA enhances inference efficiency by compressing the Key-Value cache into a latent vector, enabling increased throughput capacity."
+   },
+   {
+    "w": "encoder",
+    "ipa": "ɪnˈkoʊdər",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "编码器",
+    "ex": "includes a vision encoder, a VL adaptor, and a MoE-based LLM"
+   },
+   {
+    "w": "fusion",
+    "ipa": "fˈjuʒən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "联合， 合并； 核聚变",
+    "ex": "While this fusion approach"
+   },
+   {
+    "w": "global",
+    "ipa": "ˈgloʊbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "全球的， 全世界的； 总的， 完整的",
+    "ex": "During MoE training, we introduce a global bias term [86] for each expert to cost-effectively improve load balancing between experts."
+   },
+   {
+    "w": "grid",
+    "ipa": "grɪd",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "输电网",
+    "ex": "grid of shape (𝑚𝑖· 14, 𝑛𝑖· 14), we append 𝑚𝑖· 14 <tile_newline> tokens at the end of the final column to indicate the end of a row of all the local tiles."
+   },
+   {
+    "w": "illustration",
+    "ipa": "ˌɪləˈstreɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "说明，图解；例证",
+    "ex": "A visual illustration of our dynamic tiling strategy is shown in Figure 3."
+   },
+   {
+    "w": "image",
+    "ipa": "ˈɪmɪʤ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "形象，声誉，印象",
+    "ex": "This approach enables the efficient processing of different high-resolution images with varying aspect ratios using a single SigLIP-SO400M-384"
+   },
+   {
+    "w": "implement",
+    "ipa": "ˈɪmpləmənt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "实施，执行",
+    "ex": "Inspired by recent advances in VLMs [16, 21, 55], we implement a dynamic tiling strategy by splitting a high-resolution image into tiles."
+   },
+   {
+    "w": "inference",
+    "ipa": "ˈɪnfərəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "推断结果， 结论； 推论， 推理， 推断",
+    "ex": "MLA enhances inference efficiency by compressing the Key-Value cache into a latent vector, enabling increased throughput capacity."
+   },
+   {
+    "w": "innovation",
+    "ipa": "ˌɪnəˈveɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "改革，创新",
+    "ex": "These innovations enable more efficient processing of both high-resolution visual inputs and text data."
+   },
+   {
+    "w": "input",
+    "ipa": "ˈɪnˌpʊt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "输入；投入的资金",
+    "ex": "These innovations enable more efficient processing of both high-resolution visual inputs and text data."
+   },
+   {
+    "w": "management",
+    "ipa": "ˈmænɪʤmənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "管理；经营，处理",
+    "ex": "context length management, we disable the dynamic tiling strategy when processing multiple (> 2) images."
+   },
+   {
+    "w": "mechanism",
+    "ipa": "ˈmekənɪzəm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "机制",
+    "ex": "featuring the Multi-head Latent Attention (MLA) mechanism"
+   },
+   {
+    "w": "minimize",
+    "ipa": "ˈmɪnəˌmaɪz",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "将…减少； 最小化",
+    "ex": "We select the resolution (𝑚𝑖· 384, 𝑛𝑖· 384) that minimizes the padding area."
+   },
+   {
+    "w": "module",
+    "ipa": "ˈmɑʤul",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "模块；组件",
+    "ex": "Model Architecture DeepSeek-VL2 consists of three core modules: (1) a vision encoder, (2) a vision-language adaptor, and (3) a Mixture-of-Experts language model."
+   },
+   {
+    "w": "pad",
+    "ipa": "pæd",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "垫；本子；填塞",
+    "ex": "We select the resolution (𝑚𝑖· 384, 𝑛𝑖· 384) that minimizes the padding area."
+   },
+   {
+    "w": "predecessor",
+    "ipa": "ˈprɛdəˌsɛsər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "前辈，前任者",
+    "ex": "Building upon the decoder-only LLaVA-style [54] architecture of its predecessor, DeepSeek-VL2 introduces two major advancements: a dynamic tiling strategy and a DeepSeekMOE [20, 86] language model featuring Multi-head Latent …"
+   },
+   {
+    "w": "ratio",
+    "ipa": "ˈreɪʃiˌoʊ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比，比率",
+    "ex": "This approach enables the efficient processing of different high-resolution images with varying aspect ratios using a single SigLIP-SO400M-384"
+   },
+   {
+    "w": "representation",
+    "ipa": "ˌrɛprəzɛnˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "描写；陈述；代表",
+    "ex": "generated rich visual representations suitable for various vision-language tasks, it was limited"
+   },
+   {
+    "w": "resolution",
+    "ipa": "ˌrɛzəˈluʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "坚决，坚定；决定",
+    "ex": "This approach enables the efficient processing of different high-resolution images with varying aspect ratios using a single SigLIP-SO400M-384"
+   },
+   {
+    "w": "selection",
+    "ipa": "səˈlɛkʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "选择，挑选",
+    "ex": "Top-K for expert selection"
+   },
+   {
+    "w": "sequence",
+    "ipa": "ˈsikwəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "连续，继续；次序",
+    "ex": "sequence contains 210 + 1 + 𝑚𝑖· 14 × (𝑛𝑖· 14 + 1) visual tokens, which are subsequently projected"
+   },
+   {
+    "w": "shuffle",
+    "ipa": "ˈʃəfəl",
+    "pos": "v.",
+    "lv": "专八",
+    "m": "拖着脚走；洗牌",
+    "ex": "shuffle operation to compress each tile’s visual tokens from 27 × 27 to 14 × 14 = 196 tokens."
+   },
+   {
+    "w": "sparse",
+    "ipa": "spɑrs",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "稀疏的",
+    "ex": "which employs sparse computation techniques"
+   },
+   {
+    "w": "specification",
+    "ipa": "ˌspɛsɪfɪˈkeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "说明书",
+    "ex": "Complete architectural specifications can be found in Table 1."
+   },
+   {
+    "w": "strategy",
+    "ipa": "ˈstrætəʤi",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "策略，战略",
+    "ex": "Inspired by recent advances in VLMs [16, 21, 55], we implement a dynamic tiling strategy by splitting a high-resolution image into tiles."
+   },
+   {
+    "w": "subsequently",
+    "ipa": "ˈsəbsəkwəntli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "随后",
+    "ex": "sequence contains 210 + 1 + 𝑚𝑖· 14 × (𝑛𝑖· 14 + 1) visual tokens, which are subsequently projected"
+   },
+   {
+    "w": "thumbnail",
+    "ipa": "ˈθəmˌneɪl",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "缩略图；短小的指甲",
+    "ex": "Additionally, a <view_separator> token is inserted between the global thumbnail tile and the local tiles."
+   },
+   {
+    "w": "tile",
+    "ipa": "taɪl",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "瓷砖；贴砖；瓦片",
+    "ex": "Inspired by recent advances in VLMs [16, 21, 55], we implement a dynamic tiling strategy by splitting a high-resolution image into tiles."
+   },
+   {
+    "w": "variant",
+    "ipa": "ˈveriənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "变体，版本",
+    "ex": "Our model series adopt three MoE variants, 3B, 16B, and 27B"
+   },
+   {
+    "w": "vary",
+    "ipa": "ˈvɛri",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "变化；不同",
+    "ex": "This approach enables the efficient processing of different high-resolution images with varying aspect ratios using a single SigLIP-SO400M-384"
+   },
+   {
+    "w": "vector",
+    "ipa": "ˈvɛktər",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "矢量；飞机航线",
+    "ex": "MLA enhances inference efficiency by compressing the Key-Value cache into a latent vector, enabling increased throughput capacity."
+   },
+   {
+    "w": "yield",
+    "ipa": "jild",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "屈服，产出；产量",
+    "ex": "The SigLIP-SO400M-384 vision encoder processes all (1 + 𝑚𝑖× 𝑛𝑖) tiles, yielding"
+   }
+  ]
+ },
+ {
+  "sec": "3. Data & Training · 数据与训练",
+  "short": "Data",
+  "icon": "3",
+  "words": [
+   {
+    "w": "accord",
+    "ipa": "əˈkɔrd",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使一致；给予",
+    "ex": "The coordinates x1, y1 and x2, y2 specify the top-left and bottom-right corners respectively, normalized to values between 0 and 999 according to the resolution of the image."
+   },
+   {
+    "w": "additional",
+    "ipa": "əˈdɪʃənəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "额外的",
+    "ex": "Similar to our OCR capabilities developed during VL pretraining, our model demonstrated strong performance in chart understanding without requiring additional efforts."
+   },
+   {
+    "w": "alignment",
+    "ipa": "əˈlaɪnmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "排成直线；结盟，联合",
+    "ex": "Vision-Language Alignment Data The alignment stage focuses on training the MLP connector to bridge the pretrained visual encoder and the LLM."
+   },
+   {
+    "w": "annotation",
+    "ipa": "ˌænəˈteɪʃən",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "注释， 注解",
+    "ex": "Despite the overall improvement in caption quality, we observed repetition issues in the large-scale annotation pipelines."
+   },
+   {
+    "w": "categorize",
+    "ipa": "ˈkætəgərˌaɪz",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "分类",
+    "ex": "In the following, we categorize the VL data into several groups and describe their details."
+   },
+   {
+    "w": "cauldron",
+    "ipa": "ˈkɔldrən",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "大锅",
+    "ex": "We enhanced table-based QA data by regenerating responses for all public datasets [14, 49] based on their original questions except Cauldron [43], which already exhibits high quality."
+   },
+   {
+    "w": "complement",
+    "ipa": "ˈkɑmpləmənt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "补充",
+    "ex": "Furthermore, we created an extra in-house dataset to complement real-world and cultural visual knowledge, including anime, memes, cuisine and art."
+   },
+   {
+    "w": "comprehensive",
+    "ipa": "ˌkɑmprɪˈhensɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "全面的",
+    "ex": "This comprehensive dataset enables better generalization and performance"
+   },
+   {
+    "w": "concise",
+    "ipa": "kənˈsaɪs",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "简明的， 简要的",
+    "ex": "In our exploration, DeepSeek-VL2-Tiny shows better performance with more concise responses."
+   },
+   {
+    "w": "consequently",
+    "ipa": "ˈkɑnsəkˌwɛntli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "结果",
+    "ex": "Consequently, we developed a comprehensive visual QA dataset consisting of the following categories: • General VQA."
+   },
+   {
+    "w": "coordinate",
+    "ipa": "koʊˈɔrdəˌneɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使协调，调节",
+    "ex": "The coordinates x1, y1 and x2, y2 specify the top-left and bottom-right corners respectively, normalized to values between 0 and 999 according to the resolution of the image."
+   },
+   {
+    "w": "corpus",
+    "ipa": "ˈkɔrpəs",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "[计] 语料库；文集；本金",
+    "ex": "For DeepSeek-VL2, we maintain a ratio of around 70% VL data to 30% text-only data, with the latter sourced directly from our base LLM pretraining corpus."
+   },
+   {
+    "w": "coverage",
+    "ipa": "ˈkəvərɪʤ",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "报道",
+    "ex": "Additionally, we developed an in-house collection to expand coverage of general real-world knowledge."
+   },
+   {
+    "w": "cultural",
+    "ipa": "ˈkəlʧərəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "文化的；教养的",
+    "ex": "Furthermore, we created an extra in-house dataset to complement real-world and cultural visual knowledge, including anime, memes, cuisine and art."
+   },
+   {
+    "w": "derive",
+    "ipa": "dəraɪv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "得到，导出",
+    "ex": "We derived our grounded conversation dataset from [71], structured in the following format: • Prompt: <|grounding|>Can you describe the content of the image? • Response: Two <|ref|>dogs<|/ref|><|det|>[[x1, y1, x2 …"
+   },
+   {
+    "w": "despite",
+    "ipa": "dɪˈspaɪt",
+    "pos": "prep.",
+    "lv": "四级",
+    "m": "不管",
+    "ex": "Despite the overall improvement in caption quality, we observed repetition issues in the large-scale annotation pipelines."
+   },
+   {
+    "w": "detect",
+    "ipa": "dɪˈtɛkt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "觉察;检测",
+    "ex": "The <object> placeholder represents phrases like “an object within the red bounding box” while <description> is the model’s description of the detected object (e.g., “cat”)."
+   },
+   {
+    "w": "detection",
+    "ipa": "dɪˈtɛkʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "侦查；察觉",
+    "ex": "For each image’s object detection annotations, we structure the data as follows: • Prompt: Locate <|ref|><query><|/ref|> in the given image. • Response: <|ref|><query><|/ref|><|det|>[[x1, y1, x2, y2],...]<|/det|> during training …"
+   },
+   {
+    "w": "directly",
+    "ipa": "dɪˈrɛkli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "直接地；立即",
+    "ex": "For DeepSeek-VL2, we maintain a ratio of around 70% VL data to 30% text-only data, with the latter sourced directly from our base LLM pretraining corpus."
+   },
+   {
+    "w": "discipline",
+    "ipa": "ˈdɪsəplən",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "纪律；训练；训练",
+    "ex": "This dataset primarily emphasizes college-level contents across multiple academic disciplines."
+   },
+   {
+    "w": "distinct",
+    "ipa": "dɪˈstɪŋkt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "明显的；有区别的",
+    "ex": "The training process is structured into three distinct stages: (1) VL alignment, (2) VL pretraining, and (3) supervised fine-tuning (SFT)."
+   },
+   {
+    "w": "diversity",
+    "ipa": "daɪˈvɜrsəti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "多样性",
+    "ex": "enhance our vision-language training data in terms of quality, quantity, and diversity"
+   },
+   {
+    "w": "effective",
+    "ipa": "ˈifɛktɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "有效的；有影响的",
+    "ex": "In practice, this approach is both efficient and effective in filtering out low-quality captions."
+   },
+   {
+    "w": "ellipse",
+    "ipa": "ɪˈlɪps",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "[数] 椭圆形，[数] 椭圆",
+    "ex": "We also add in-context visual grounding data, where the task involves locating objects of the same category across multiple images, given a reference object highlighted by a rectangle or ellipse in a reference image."
+   },
+   {
+    "w": "establish",
+    "ipa": "ɪˈstæblɪʃ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "建立，创办，设立",
+    "ex": "We construct our grounded conversation data using [62, 72] to further enhance the model’s capabilities established during the pretraining phase."
+   },
+   {
+    "w": "exploit",
+    "ipa": "ˌɛkˈsplɔɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "开采",
+    "ex": "We also exploit Python plot codes generated by DeepSeek V2.5 to mitigate the noises in the plot-to-code data. • QA with visual prompt."
+   },
+   {
+    "w": "exploration",
+    "ipa": "ˌɛksplərˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "考察；勘探；探查",
+    "ex": "In our exploration, DeepSeek-VL2-Tiny shows better performance with more concise responses."
+   },
+   {
+    "w": "extensive",
+    "ipa": "ɪkˈstɛnsɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "广阔的；广泛的",
+    "ex": "We combined these datasets with an extensive in-house OCR dataset covering diverse document types."
+   },
+   {
+    "w": "extract",
+    "ipa": "ˈɛkˌstrækt",
+    "pos": "v.；n.",
+    "lv": "六级",
+    "m": "取出；提取；摘录",
+    "ex": "To enhance multilingual capabilities, we supplemented the predominantly English datasets with Chinese content extracted from Wanjuan [29]."
+   },
+   {
+    "w": "filter",
+    "ipa": "ˈfɪltər",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "过滤；滤纸",
+    "ex": "In practice, this approach is both efficient and effective in filtering out low-quality captions."
+   },
+   {
+    "w": "furthermore",
+    "ipa": "ˈfərðərˌmɔr",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "而且，此外",
+    "ex": "Furthermore, we created an extra in-house dataset to complement real-world and cultural visual knowledge, including anime, memes, cuisine and art."
+   },
+   {
+    "w": "generalization",
+    "ipa": "ˌdʒenrələˈzeɪʃn",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "泛化",
+    "ex": "enables better generalization and performance across a broad spectrum of tasks"
+   },
+   {
+    "w": "generate",
+    "ipa": "ˈʤɛnərˌeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "产生",
+    "ex": "We also exploit Python plot codes generated by DeepSeek V2.5 to mitigate the noises in the plot-to-code data. • QA with visual prompt."
+   },
+   {
+    "w": "hallucinate",
+    "ipa": "həˈlusəneɪt",
+    "pos": "v.",
+    "lv": "专八",
+    "m": "使产生幻觉",
+    "ex": "While public visual QA datasets are diverse [9, 10, 27, 31, 43, 47, 74], they often suffer from three main limitations: (1) short responses, (2) poor OCR quality, and (3) hallucinated content."
+   },
+   {
+    "w": "hallucination",
+    "ipa": "həˌlusəˈneɪʃən",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "幻觉，幻想",
+    "ex": "However, our preliminary analysis revealed severe quality variations across these datasets, ranging from dense, accurate captions generated by advanced VLMs to problematic cases with brief descriptions, mismatched text pairs, or …"
+   },
+   {
+    "w": "highlight",
+    "ipa": "ˈhaɪˌlaɪt",
+    "pos": "—",
+    "lv": "六级",
+    "m": "照亮；突出；强调",
+    "ex": "We then created QA pairs focusing on objects highlighted by these visual prompts."
+   },
+   {
+    "w": "imbalance",
+    "ipa": "ɪmˈbæləns",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "不平衡",
+    "ex": "This issue was not present in our larger models, suggesting it stemmed from limited model capacity and an imbalance between English and Chinese data in the visual-language pretraining stage."
+   },
+   {
+    "w": "inconsistency",
+    "ipa": "ˌɪnkənˈsɪstənsi",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "矛盾",
+    "ex": "To address these quality inconsistencies, we developed a comprehensive image captioning pipeline that considers: (1) OCR hints, (2) meta information (e.g., location, camera settings), and (3) relevant original captions as prompts."
+   },
+   {
+    "w": "indicator",
+    "ipa": "ˈɪndəˌkeɪtər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "指示器；[试剂] 指示剂；[计] 指示符；压力计",
+    "ex": "We follow [9] to construct visual prompt understanding data by overlaying various visual indicators (arrows, boxes, circles, and scribbles) onto images from [9, 89, 90]."
+   },
+   {
+    "w": "inherit",
+    "ipa": "ˌɪnˈhɛrət",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "继承",
+    "ex": "We inherit the general VQA data from DeepSeek-VL."
+   },
+   {
+    "w": "initially",
+    "ipa": "ˌɪˈnɪʃəli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "最初，起初",
+    "ex": "We initially leveraged diverse open-source datasets [8, 25, 28, 36, 37, 39, 40, 48, 50, 51, 73, 78, 80, 82]."
+   },
+   {
+    "w": "intentionally",
+    "ipa": "ˌɪnˈtɛnʃənəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "有意地,故意地",
+    "ex": "We also construct negative samples where queried objects are intentionally absent from the images to enhance the robustness of the model."
+   },
+   {
+    "w": "internal",
+    "ipa": "ˌɪnˈtərnəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "内的；国内的",
+    "ex": "We build an internal dataset focused on textbooks from our document collection."
+   },
+   {
+    "w": "involve",
+    "ipa": "ˌɪnˈvɑlv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "卷入，包含",
+    "ex": "We also add in-context visual grounding data, where the task involves locating objects of the same category across multiple images, given a reference object highlighted by a rectangle or ellipse in a reference image."
+   },
+   {
+    "w": "issue",
+    "ipa": "ˈɪʃu",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "发行；问题",
+    "ex": "To address these issues, we regenerate responses by jointly considering the original questions, images, and OCR information."
+   },
+   {
+    "w": "leverage",
+    "ipa": "ˈlɛvərɪʤ",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "手段，影响力；杠杆作用；杠杆效率；利用；举债经营",
+    "ex": "We leverage Websight [44] for webpage-to-code abilities and Python plots obtained from public Jupyter notebooks, following DeepSeek-VL."
+   },
+   {
+    "w": "logic",
+    "ipa": "ˈlɑʤɪk",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "逻辑",
+    "ex": "Reasoning, logic, and mathematics."
+   },
+   {
+    "w": "mainly",
+    "ipa": "ˈmeɪnli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "主要地，大体上",
+    "ex": "dataset mainly focuses on English and Chinese character recognition. We plan to expand to"
+   },
+   {
+    "w": "maintain",
+    "ipa": "meɪnˈteɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "维持，主张",
+    "ex": "To maintain the language ability of the model, we also use text-only instruction-tuning datasets [4, 6, 18, 19, 68, 70, 84, 91, 98] during the SFT stage."
+   },
+   {
+    "w": "mismatch",
+    "ipa": "ˈmɪsˌmæʧ",
+    "pos": "—",
+    "lv": "考博",
+    "m": "配错, 不相匹配",
+    "ex": "However, our preliminary analysis revealed severe quality variations across these datasets, ranging from dense, accurate captions generated by advanced VLMs to problematic cases with brief descriptions, mismatched text pairs, or …"
+   },
+   {
+    "w": "mitigate",
+    "ipa": "ˈmɪtəˌgeɪt",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "使缓和，使减轻",
+    "ex": "To mitigate this, we implemented a quality control pipeline using DeepSeek Chat [53] to score all captions simply based on their writing quality."
+   },
+   {
+    "w": "negative",
+    "ipa": "ˈnɛgətɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "否定的；消积的",
+    "ex": "We also construct negative samples where queried objects are intentionally absent from the images to enhance the robustness of the model."
+   },
+   {
+    "w": "normalization",
+    "ipa": "ˌnɔrməlɪˈzeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "正常化，标准化",
+    "ex": "As in other visual grounding data, <|grounding|>, <|ref|>, <|/ref|>, <|det|>, <|/det|> are special tokens and x1, y1, x2, y2 is subject to the same normalization scheme."
+   },
+   {
+    "w": "normalize",
+    "ipa": "ˈnɔrməˌlaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使标准化，使正规化；归一化",
+    "ex": "The coordinates x1, y1 and x2, y2 specify the top-left and bottom-right corners respectively, normalized to values between 0 and 999 according to the resolution of the image."
+   },
+   {
+    "w": "optical",
+    "ipa": "ˈɑptɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "眼的；光学的",
+    "ex": "Optical character recognition data."
+   },
+   {
+    "w": "original",
+    "ipa": "ərˈɪʤənəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "原始的，最初的",
+    "ex": "To address these issues, we regenerate responses by jointly considering the original questions, images, and OCR information."
+   },
+   {
+    "w": "overall",
+    "ipa": "ˈoʊvərˌɔl",
+    "pos": "n.；adj.",
+    "lv": "四级",
+    "m": "工装裤；全面的",
+    "ex": "Despite the overall improvement in caption quality, we observed repetition issues in the large-scale annotation pipelines."
+   },
+   {
+    "w": "particularly",
+    "ipa": "ˌpɑrˈtɪkjələrli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "特别，尤其，格外",
+    "ex": "During development, we observed that an early version of DeepSeek-VL2, particularly the Tiny variant, occasionally inserted English words inappropriately in Chinese responses."
+   },
+   {
+    "w": "phase",
+    "ipa": "feɪz",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "阶段；方面；相位",
+    "ex": "We construct our grounded conversation data using [62, 72] to further enhance the model’s capabilities established during the pretraining phase."
+   },
+   {
+    "w": "pipeline",
+    "ipa": "ˈpaɪˌplaɪn",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "管道, 传递途径",
+    "ex": "To mitigate this, we implemented a quality control pipeline using DeepSeek Chat [53] to score all captions simply based on their writing quality."
+   },
+   {
+    "w": "portion",
+    "ipa": "ˈpɔrʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "一部分；一分",
+    "ex": "We enhance this dataset by replicating a portion of Websight using DeepSeek V2.5."
+   },
+   {
+    "w": "predominantly",
+    "ipa": "ˌprɪˈdɑmənənˌtli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "占主导地位地",
+    "ex": "To enhance multilingual capabilities, we supplemented the predominantly English datasets with Chinese content extracted from Wanjuan [29]."
+   },
+   {
+    "w": "preliminary",
+    "ipa": "prɪˈlɪməˌnɛri",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "预备的，初步的",
+    "ex": "This specific mixing ratio was determined through preliminary experiments with DeepSeek-VL2-Tiny."
+   },
+   {
+    "w": "primarily",
+    "ipa": "praɪˈmɛrəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "主要地，首先",
+    "ex": "This dataset primarily emphasizes college-level contents across multiple academic disciplines."
+   },
+   {
+    "w": "problematic",
+    "ipa": "ˌprɑbləˈmætɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "问题的；有疑问的；不确定的",
+    "ex": "However, our preliminary analysis revealed severe quality variations across these datasets, ranging from dense, accurate captions generated by advanced VLMs to problematic cases with brief descriptions, mismatched text pairs, or …"
+   },
+   {
+    "w": "prompt",
+    "ipa": "prɑmpt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "敏捷的；v. 敦促",
+    "ex": "We also exploit Python plot codes generated by DeepSeek V2.5 to mitigate the noises in the plot-to-code data. • QA with visual prompt."
+   },
+   {
+    "w": "python",
+    "ipa": "ˈpaɪθɑn",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "巨蟒；大蟒",
+    "ex": "We leverage Websight [44] for webpage-to-code abilities and Python plots obtained from public Jupyter notebooks, following DeepSeek-VL."
+   },
+   {
+    "w": "query",
+    "ipa": "kˈwiri",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "疑问，质问；疑问号 ；[计] 查询；询问；对……表示疑问",
+    "ex": "To boost model capabilities, we translate query phrases into Chinese and create additional negative samples."
+   },
+   {
+    "w": "randomly",
+    "ipa": "ˈrændəmli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "随机地",
+    "ex": "For each image’s object detection annotations, we structure the data as follows: • Prompt: Locate <|ref|><query><|/ref|> in the given image. • Response: <|ref|><query><|/ref|><|det|>[[x1, y1, x2, y2],...]<|/det|> during training …"
+   },
+   {
+    "w": "regenerate",
+    "ipa": "riˈʤɛnərˌeɪt",
+    "pos": "vi.；vt.",
+    "lv": "托福",
+    "m": "新生， 再生， 起革新作用；使新生，重建，改革，革新",
+    "ex": "We enhanced table-based QA data by regenerating responses for all public datasets [14, 49] based on their original questions except Cauldron [43], which already exhibits high quality."
+   },
+   {
+    "w": "repetition",
+    "ipa": "ˌrɛpəˈtɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "重复，反复",
+    "ex": "Despite the overall improvement in caption quality, we observed repetition issues in the large-scale annotation pipelines."
+   },
+   {
+    "w": "replicate",
+    "ipa": "ˈrɛplɪˌkeɪt",
+    "pos": "v.；adj.；n.",
+    "lv": "考博",
+    "m": "复制；折叠；复制的；折叠的；复制品；八音阶间隔的反覆音",
+    "ex": "We enhance this dataset by replicating a portion of Websight using DeepSeek V2.5."
+   },
+   {
+    "w": "response",
+    "ipa": "rɪˈspɑns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "反应",
+    "ex": "To address these issues, we regenerate responses by jointly considering the original questions, images, and OCR information."
+   },
+   {
+    "w": "reveal",
+    "ipa": "rɪˈvil",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "揭露，揭示",
+    "ex": "However, our preliminary analysis revealed severe quality variations across these datasets, ranging from dense, accurate captions generated by advanced VLMs to problematic cases with brief descriptions, mismatched text pairs, or …"
+   },
+   {
+    "w": "sample",
+    "ipa": "ˈsæmpəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "样品；实例，标本",
+    "ex": "Our data collection begins with several open-sourced datasets, including WIT [79], WikiHow [38], and 30% random samples from OBELICS [41]."
+   },
+   {
+    "w": "scale",
+    "ipa": "skeɪl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "规模，比例",
+    "ex": "Despite the overall improvement in caption quality, we observed repetition issues in the large-scale annotation pipelines."
+   },
+   {
+    "w": "scheme",
+    "ipa": "skim",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "计划，规划；诡计",
+    "ex": "As in other visual grounding data, <|grounding|>, <|ref|>, <|/ref|>, <|det|>, <|/det|> are special tokens and x1, y1, x2, y2 is subject to the same normalization scheme."
+   },
+   {
+    "w": "scribble",
+    "ipa": "ˈskrɪbəl",
+    "pos": "n.；v.",
+    "lv": "专四",
+    "m": "潦草写成的东西；潦草的写法；杂文；乱写；滥写；潦草地书写",
+    "ex": "We follow [9] to construct visual prompt understanding data by overlaying various visual indicators (arrows, boxes, circles, and scribbles) onto images from [9, 89, 90]."
+   },
+   {
+    "w": "simply",
+    "ipa": "ˈsɪmpli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "简单地；朴素地",
+    "ex": "To mitigate this, we implemented a quality control pipeline using DeepSeek Chat [53] to score all captions simply based on their writing quality."
+   },
+   {
+    "w": "source",
+    "ipa": "sɔrs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "来源",
+    "ex": "Our data collection begins with several open-sourced datasets, including WIT [79], WikiHow [38], and 30% random samples from OBELICS [41]."
+   },
+   {
+    "w": "specify",
+    "ipa": "ˈspɛsəˌfaɪ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "指定，具体说明",
+    "ex": "The coordinates x1, y1 and x2, y2 specify the top-left and bottom-right corners respectively, normalized to values between 0 and 999 according to the resolution of the image."
+   },
+   {
+    "w": "spectrum",
+    "ipa": "ˈspektrəm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "范围，光谱",
+    "ex": "better generalization and performance across a broad spectrum of tasks"
+   },
+   {
+    "w": "standardize",
+    "ipa": "ˈstændərˌdaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使标准化",
+    "ex": "We enhance public reasoning-focused datasets [17, 43, 61, 76, 102, 109] with more detailed reasoning processes and standardize response formats which puts the final answer at the end of the response."
+   },
+   {
+    "w": "structure",
+    "ipa": "ˈstrəkʧər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "结构",
+    "ex": "The training process is structured into three distinct stages: (1) VL alignment, (2) VL pretraining, and (3) supervised fine-tuning (SFT)."
+   },
+   {
+    "w": "supplement",
+    "ipa": "ˌsəpləˈmɛnt",
+    "pos": "—",
+    "lv": "四级",
+    "m": "增补，补充",
+    "ex": "To enhance multilingual capabilities, we supplemented the predominantly English datasets with Chinese content extracted from Wanjuan [29]."
+   },
+   {
+    "w": "textual",
+    "ipa": "ˈtɛksˌʧuəl",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "本文的；按原文的",
+    "ex": "Image captions represent fundamental data in VLM training, providing direct alignment between visual and textual information."
+   },
+   {
+    "w": "utilize",
+    "ipa": "ˈjutəˌlaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "利用",
+    "ex": "For this initial warmup phase, we utilize ShareGPT4V [12], a dataset containing approximately 1.2M caption and conversation samples."
+   },
+   {
+    "w": "variation",
+    "ipa": "ˌvɛriˈeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "变化，变动；变异",
+    "ex": "However, our preliminary analysis revealed severe quality variations across these datasets, ranging from dense, accurate captions generated by advanced VLMs to problematic cases with brief descriptions, mismatched text pairs, or …"
+   },
+   {
+    "w": "vision",
+    "ipa": "ˈvɪʒən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "视；想象力；梦幻",
+    "ex": "Vision-Language Alignment Data The alignment stage focuses on training the MLP connector to bridge the pretrained visual encoder and the LLM."
+   },
+   {
+    "w": "wit",
+    "ipa": "wɪt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "智力，才智，智能",
+    "ex": "Our data collection begins with several open-sourced datasets, including WIT [79], WikiHow [38], and 30% random samples from OBELICS [41]."
+   }
+  ]
+ },
+ {
+  "sec": "4. Evaluation · 评测",
+  "short": "Eval",
+  "icon": "4",
+  "words": [
+   {
+    "w": "accommodate",
+    "ipa": "əˈkɑməˌdeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "适合， 提供住宿",
+    "ex": "Unlike previous approaches [54, 59], which maintain fixed pretrained vision encoders and language models, we adapt the fixed-resolution vision encoder to accommodate dynamic high-resolution images."
+   },
+   {
+    "w": "alleviate",
+    "ipa": "əˈliviˌeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "减轻，缓解",
+    "ex": "Moreover, we perform image tile load balancing across different data parallel ranks during the forward and backward processes to alleviate the imbalance in the number of image tiles caused by the dynamic resolution strategy."
+   },
+   {
+    "w": "batch",
+    "ipa": "bæʧ",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "一批， 一组， 一群； 一批生产量",
+    "ex": "Since some data batches have only text data while others include image data, we introduce two different pipeline strategies"
+   },
+   {
+    "w": "bubble",
+    "ipa": "ˈbəbəl",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "泡；冒泡，沸腾",
+    "ex": "As the first component in the model pipeline, the vision encoder requires careful load balancing across GPUs to prevent pipeline bubbles and optimize GPU utilization."
+   },
+   {
+    "w": "capability",
+    "ipa": "ˌkeɪpəˈbɪləti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "能力，才能",
+    "ex": "In the final stage, we enhance the pre-trained model’s instruction-following and conversational capabilities through supervised fine-tuning."
+   },
+   {
+    "w": "clip",
+    "ipa": "klɪp",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "剪；剪辑报刊",
+    "ex": "LR scheduler Cosine Step Constant Cosine Step Constant Cosine Step Constant Weight decay 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 Gradient clip 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 Optimizer AdamW(𝛽1 = 0.9, 𝛽2 = 0.95) AdamW(𝛽1 = 0.9 …"
+   },
+   {
+    "w": "cluster",
+    "ipa": "ˈkləstər",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "串，束，簇；群，组；群聚；聚集",
+    "ex": "The training of DeepSeek-VL2 was completed in 7/10/14 days using a cluster of 16/33/42 nodes, with each node equipped with 8 NVIDIA A100 GPUs."
+   },
+   {
+    "w": "compute",
+    "ipa": "kəmˈpjut",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "计算，估计，估算",
+    "ex": "Throughout all stages, we emphasize visual understanding capabilities and compute the next token prediction loss exclusively on the text tokens."
+   },
+   {
+    "w": "conversational",
+    "ipa": "ˌkɑnvərˈseɪʃənəl",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "会话的, 对话的",
+    "ex": "In the final stage, we enhance the pre-trained model’s instruction-following and conversational capabilities through supervised fine-tuning."
+   },
+   {
+    "w": "decay",
+    "ipa": "dɪˈkeɪ",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "腐烂；衰败；腐烂",
+    "ex": "LR scheduler Cosine Step Constant Cosine Step Constant Cosine Step Constant Weight decay 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 Gradient clip 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 Optimizer AdamW(𝛽1 = 0.9, 𝛽2 = 0.95) AdamW(𝛽1 = 0.9 …"
+   },
+   {
+    "w": "detail",
+    "ipa": "ˈditeɪl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "细节",
+    "ex": "Hyperparameters and Infrastructures Detailed hyperparameters for DeepSeek-VL2 training are listed in Table 2."
+   },
+   {
+    "w": "embed",
+    "ipa": "ɪmˈbɛd",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "把…嵌入， 扎牢； 使深留脑中",
+    "ex": "After establishing the vision-language alignment in the embedding space, we dedicate the majority of our computational resources to vision-language pre-training."
+   },
+   {
+    "w": "emphasize",
+    "ipa": "ˈɛmfəˌsaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "强调",
+    "ex": "Throughout all stages, we emphasize visual understanding capabilities and compute the next token prediction loss exclusively on the text tokens."
+   },
+   {
+    "w": "enhance",
+    "ipa": "ɛnˈhæns",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "提高；加强；增加",
+    "ex": "In the final stage, we enhance the pre-trained model’s instruction-following and conversational capabilities through supervised fine-tuning."
+   },
+   {
+    "w": "ensure",
+    "ipa": "ɪnˈʃʊr",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "确保",
+    "ex": "This approach ensures robust performance across diverse vision-language tasks, including dense image captioning, general VQA, OCR, table/chart/document/figure understanding, visual-to-code, visual reasoning, visual grounding, and …"
+   },
+   {
+    "w": "equipped",
+    "ipa": "ɪkˈwɪpt",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "装备；预备（equip的过去分词）；整装",
+    "ex": "The training of DeepSeek-VL2 was completed in 7/10/14 days using a cluster of 16/33/42 nodes, with each node equipped with 8 NVIDIA A100 GPUs."
+   },
+   {
+    "w": "evaluation",
+    "ipa": "ɪˌvæljuˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "评价，评估",
+    "ex": "We conducted our training and evaluation using HAI-LLM [30], an efficient and lightweight platform designed for large models."
+   },
+   {
+    "w": "exclusively",
+    "ipa": "ɪkˈsklusɪvli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "专门地",
+    "ex": "Throughout all stages, we emphasize visual understanding capabilities and compute the next token prediction loss exclusively on the text tokens."
+   },
+   {
+    "w": "frozen",
+    "ipa": "ˈfroʊzən",
+    "pos": "adj.；v.",
+    "lv": "专四",
+    "m": "冻结的；冷酷的；结冰（freeze的过去分词）；凝固；变得刻板",
+    "ex": "In this stage, we optimize both the vision encoder and vision-language adaptor while keeping the language model frozen."
+   },
+   {
+    "w": "gradient",
+    "ipa": "ˈgreɪdiənt",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "斜坡",
+    "ex": "LR scheduler Cosine Step Constant Cosine Step Constant Cosine Step Constant Weight decay 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 0.1 Gradient clip 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 1.0 Optimizer AdamW(𝛽1 = 0.9, 𝛽2 = 0.95) AdamW(𝛽1 = 0.9 …"
+   },
+   {
+    "w": "incorporate",
+    "ipa": "ˌɪnˈkɔrpərˌeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "合并；体现",
+    "ex": "Our training process also incorporates tensor parallelism and expert parallelism approaches to achieve the highest efficiency."
+   },
+   {
+    "w": "infrastructure",
+    "ipa": "ˌɪnfrəˈstrəkʧər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "基础设施；公共建设；下部构造",
+    "ex": "Hyperparameters and Infrastructures Detailed hyperparameters for DeepSeek-VL2 training are listed in Table 2."
+   },
+   {
+    "w": "joint",
+    "ipa": "ʤɔɪnt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "联合的",
+    "ex": "This stage focuses on developing comprehensive joint vision-language knowledge across diverse tasks."
+   },
+   {
+    "w": "layer",
+    "ipa": "leɪər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "层，层次；铺设者",
+    "ex": "To address this, we implemented fine-grained layer division of the vision encoder within our pipeline parallel strategy."
+   },
+   {
+    "w": "lightweight",
+    "ipa": "ˈlaɪtˈweɪt",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "轻量级选手, 不能胜任者",
+    "ex": "We conducted our training and evaluation using HAI-LLM [30], an efficient and lightweight platform designed for large models."
+   },
+   {
+    "w": "methodology",
+    "ipa": "ˌmɛθəˈdɑləʤi",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "方法学，方法论",
+    "ex": "Training Methodology 4.1."
+   },
+   {
+    "w": "node",
+    "ipa": "noʊd",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "节点；瘤；[数] 叉点",
+    "ex": "The training of DeepSeek-VL2 was completed in 7/10/14 days using a cluster of 16/33/42 nodes, with each node equipped with 8 NVIDIA A100 GPUs."
+   },
+   {
+    "w": "objective",
+    "ipa": "əˈbʤɛktɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "客观的；无偏见的",
+    "ex": "Building upon pre-trained language models (DeepSeekMoE 3B/16B/27B), our primary objective is to establish robust connections between visual features and language features."
+   },
+   {
+    "w": "optimization",
+    "ipa": "ɑptɪmɪˈzeɪʃən",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "最佳化, 最优化",
+    "ex": "✓ ✓ ✓ ✓ ✓ ✓ ✓ ✓ adaptor MLP, and DeepSeekMoE LLM, to enable full model optimization."
+   },
+   {
+    "w": "parallelism",
+    "ipa": "ˈpɛrəˌlɛˌlɪzəm",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "平行， 类似",
+    "ex": "Our training process also incorporates tensor parallelism and expert parallelism approaches to achieve the highest efficiency."
+   },
+   {
+    "w": "prediction",
+    "ipa": "priˈdɪkʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "预言，预告；预报",
+    "ex": "Throughout all stages, we emphasize visual understanding capabilities and compute the next token prediction loss exclusively on the text tokens."
+   },
+   {
+    "w": "previous",
+    "ipa": "ˈpriviəs",
+    "pos": "adj.；adv.",
+    "lv": "四级",
+    "m": "之前的；先前地",
+    "ex": "Unlike previous approaches [54, 59], which maintain fixed pretrained vision encoders and language models, we adapt the fixed-resolution vision encoder to accommodate dynamic high-resolution images."
+   },
+   {
+    "w": "resource",
+    "ipa": "ˈrisɔrs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "资源； 财力； 应付办法， 谋略",
+    "ex": "After establishing the vision-language alignment in the embedding space, we dedicate the majority of our computational resources to vision-language pre-training."
+   },
+   {
+    "w": "robust",
+    "ipa": "roʊˈbəst",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "强健的",
+    "ex": "Building upon pre-trained language models (DeepSeekMoE 3B/16B/27B), our primary objective is to establish robust connections between visual features and language features."
+   },
+   {
+    "w": "significant",
+    "ipa": "sɪgˈnɪfɪkənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "重要的",
+    "ex": "A significant challenge in our pipeline parallel strategy arose from the vision encoder’s unique computational characteristics compared to LLM blocks."
+   },
+   {
+    "w": "simultaneously",
+    "ipa": "ˌsaɪməlˈteɪniəsli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "同步地，同时地",
+    "ex": "In both the pretraining and fine-tuning stages, all model parameters, including the vision encoder, vision-language adaptor, and language model, are unlocked and trained simultaneously."
+   },
+   {
+    "w": "supervise",
+    "ipa": "ˈsupərˌvaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "监督，监视",
+    "ex": "In the final stage, we enhance the pre-trained model’s instruction-following and conversational capabilities through supervised fine-tuning."
+   },
+   {
+    "w": "token",
+    "ipa": "ˈtoʊkən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "辅币；象征",
+    "ex": "Throughout all stages, we emphasize visual understanding capabilities and compute the next token prediction loss exclusively on the text tokens."
+   },
+   {
+    "w": "unlock",
+    "ipa": "ənˈlɑk",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "开…的锁；开启",
+    "ex": "In both the pretraining and fine-tuning stages, all model parameters, including the vision encoder, vision-language adaptor, and language model, are unlocked and trained simultaneously."
+   },
+   {
+    "w": "utilization",
+    "ipa": "ˌjutələˈzeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "利用",
+    "ex": "As the first component in the model pipeline, the vision encoder requires careful load balancing across GPUs to prevent pipeline bubbles and optimize GPU utilization."
+   }
+  ]
+ },
+ {
+  "sec": "5. Conclusion · 结论",
+  "short": "Concl",
+  "icon": "5",
+  "words": [
+   {
+    "w": "activate",
+    "ipa": "ˈæktəˌveɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "激活",
+    "ex": "Benefited from our MoE architecture, DeepSeek-VL2 achieves similar or better performance with fewer activated parameters."
+   },
+   {
+    "w": "actually",
+    "ipa": "ˈæˌkʧuəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "实际上；竟然",
+    "ex": "On the right, the student is actually at the beach, but their mind is still consumed by thoughts of work, represented by stacks of papers and a laptop."
+   },
+   {
+    "w": "advancement",
+    "ipa": "ədˈvænsmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "进步，提升",
+    "ex": "By making codes and pre-trained models publicly available, we aim to stimulate further advancements and applications at the intersection of vision and language."
+   },
+   {
+    "w": "align",
+    "ipa": "əˈlaɪn",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使结盟；使成一行；匹配",
+    "ex": "In addition, since the story writing ability is originally from the text-only DeepSeek Chat model, which is already aligned with good safety, we do not observe significant harmful and NSFW output from DeepSeek-VL2 during our …"
+   },
+   {
+    "w": "amidst",
+    "ipa": "əˈmɪdst",
+    "pos": "prep.",
+    "lv": "六级",
+    "m": "在…当中",
+    "ex": "Vegetation can also be seen at various points including atop certain stacks providing hints of greenery amidst predominantly earth-toned rock structures."
+   },
+   {
+    "w": "amplify",
+    "ipa": "ˈæmpləˌfaɪ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "放大，增强；扩大",
+    "ex": "In short, this image humorously captures the playful defiance of childhood, using the visual of a child taking a bite of an untouchable cake to amplify the humor and relatability. 这张图为什么好笑 …"
+   },
+   {
+    "w": "analyze",
+    "ipa": "ˈænəˌlaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "分析",
+    "ex": "Our model can analyze the associations and differences among multiple images, while also enabling simple reasoning by integrating the content of several images."
+   },
+   {
+    "w": "animate",
+    "ipa": "ˈænəˌmeɪt",
+    "pos": "v.；adj.",
+    "lv": "六级",
+    "m": "使有生气；使活泼；鼓舞；推动；有生命的",
+    "ex": "This serene but powerful seascape captures nature’s grandeur through its interplay between landforms, water bodies, light conditions, and vegetation all harmoniously coexisting within the same visual space. …"
+   },
+   {
+    "w": "anticipation",
+    "ipa": "ænˌtɪsəˈpeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "希望；预感；先发制人；预支",
+    "ex": "Title: \"A Voyage Through Time and Light” The wait was a symphony of anticipation, each note a silent prayer to the gods of travel."
+   },
+   {
+    "w": "arabic",
+    "ipa": "ˈɛrəbɪk",
+    "pos": "adj.；n.",
+    "lv": "专四",
+    "m": "阿拉伯的；阿拉伯人的；阿拉伯语",
+    "ex": "The chart shows a comparison of multilingual datasets based on the average normalized score across six languages: Arabic (ar), French (fr), Russian (ru), Thai (th), Turkish (tr), and Chinese (zh)."
+   },
+   {
+    "w": "arc",
+    "ipa": "ɑrk",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "弧，弓形物；弧光",
+    "ex": "Then, the familiar spire of the Arc de Triomphe appeared, its grandeur a testament to human ambition."
+   },
+   {
+    "w": "archway",
+    "ipa": "ˈɑrʧˌweɪ",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "拱门；拱道",
+    "ex": "I watched, entranced, as the plane descended, the iconic archway a beacon of hope and history."
+   },
+   {
+    "w": "atmospheric",
+    "ipa": "ˌætməsˈfɛrɪk",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "大气的；大气层的",
+    "ex": "In the foreground stands a prominent stack closest to the viewer's perspective; it is flanked by smaller stacks extending into the distance towards the horizon where they gradually diminish due to atmospheric haze or mist …"
+   },
+   {
+    "w": "atop",
+    "ipa": "əˈtɑp",
+    "pos": "prep.",
+    "lv": "六级",
+    "m": "在……顶上；胜过",
+    "ex": "Vegetation can also be seen at various points including atop certain stacks providing hints of greenery amidst predominantly earth-toned rock structures."
+   },
+   {
+    "w": "attribute",
+    "ipa": "əˈtrɪˌbjut",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "归因于",
+    "ex": "It also performs favorably on chart understanding with accurate attributes recognition."
+   },
+   {
+    "w": "axis",
+    "ipa": "ˈæksəs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "轴，轴线；中心线",
+    "ex": "The x-axis represents the number of training tokens in billions, while the y-axis shows the average normalized score, which is a measure of model performance. ### Key Points: 1. **Datasets Compared**: - FineWeb 2 (Ours) - …"
+   },
+   {
+    "w": "backdrop",
+    "ipa": "ˈbækˌdrɑp",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "背景；背景幕；交流声",
+    "ex": "To the right side of the frame lies a sandy beach that curves gently around as if embracing the rugged cliffs which form the backdrop for this scene."
+   },
+   {
+    "w": "beacon",
+    "ipa": "ˈbikən",
+    "pos": "n.；v.",
+    "lv": "专四",
+    "m": "灯塔，信号浮标；烽火；指路明灯；照亮，指引",
+    "ex": "I watched, entranced, as the plane descended, the iconic archway a beacon of hope and history."
+   },
+   {
+    "w": "beholder",
+    "ipa": "biˈhoʊldər",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "目睹者, 旁观者",
+    "ex": "The reflection in the glass showed me a different perspective, a reminder that beauty is in the eye of the beholder."
+   },
+   {
+    "w": "benchmark",
+    "ipa": "ˈbɛnʧˌmɑrk",
+    "pos": "n.；v.",
+    "lv": "专八",
+    "m": "基准；标准检查程序；用基准问题测试（计算机系统等）",
+    "ex": "To evaluate the grounding capability of our models, we test DeepSeek-VL2 on the RefCOCO, RefCOCO+ and RefCOCOg benchmarks [33, 64]."
+   },
+   {
+    "w": "blur",
+    "ipa": "blər",
+    "pos": "v.；n.",
+    "lv": "六级",
+    "m": "变模糊；模糊，模糊的东西",
+    "ex": "I walked through the glass doors, the world outside a blur of green and grey."
+   },
+   {
+    "w": "blurry",
+    "ipa": "ˈblɜri",
+    "pos": "adj.",
+    "lv": "超纲",
+    "m": "模糊的",
+    "ex": "challenges with blurry images or unseen objects"
+   },
+   {
+    "w": "bold",
+    "ipa": "boʊld",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "大胆的；冒失的",
+    "ex": "I sat in the Paris Airport terminal, the word \"BIENVENUE\" etched in bold, inviting letters above me."
+   },
+   {
+    "w": "broaden",
+    "ipa": "ˈbrɔdən",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "放宽，变阔",
+    "ex": "We aim to explore solutions to broaden the scope of storytelling while considering these challenges."
+   },
+   {
+    "w": "buzz",
+    "ipa": "bəz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "（蜂等）嗡嗡叫",
+    "ex": "The ceiling lights buzzed softly, casting a sterile glow that neither cheered nor soothed my nerves."
+   },
+   {
+    "w": "cacophony",
+    "ipa": "kæˈkɑfəni",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "刺耳的音调, 不协和音, 杂音",
+    "ex": "The terminal buzzed with life, a cacophony of languages and laughter."
+   },
+   {
+    "w": "cannot",
+    "ipa": "ˈkænɑt",
+    "pos": "conj.",
+    "lv": "托福",
+    "m": "不能",
+    "ex": "3. **Relatable scenario**: This image humorously captures a widely understood, everyday behavior— children wanting things they are told they cannot have, leading to playful and sometimes rebellious actions."
+   },
+   {
+    "w": "canvas",
+    "ipa": "ˈkænvəs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "粗帆布；一块油画布",
+    "ex": "The sky, a canvas of blue, welcomed us with a smile."
+   },
+   {
+    "w": "capable",
+    "ipa": "ˈkeɪpəbəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "能干的，有能力的",
+    "ex": "Interestingly, although the majority of images in our training set come from natural scenes, and the referring expressions are object category names or specific descriptions of objects, we find that the model is capable of …"
+   },
+   {
+    "w": "capture",
+    "ipa": "ˈkæpʧər",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "捕获，俘获；夺得",
+    "ex": "This cake captures the essence of their playful and chaotic relationship through its design and decoration."
+   },
+   {
+    "w": "celebrity",
+    "ipa": "səˈlɛbrɪti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "名人，名流；著名，名声，名望",
+    "ex": "Interestingly, although the majority of images in our training set come from natural scenes, and the referring expressions are object category names or specific descriptions of objects, we find that the model is capable of …"
+   },
+   {
+    "w": "chaotic",
+    "ipa": "keɪˈɑtɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "混沌的；混乱的，无秩序的",
+    "ex": "This cake captures the essence of their playful and chaotic relationship through its design and decoration."
+   },
+   {
+    "w": "chase",
+    "ipa": "ʧeɪs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "追逐，追赶，追求",
+    "ex": "The story revolves around the never-ending chase between the cunning Tom the Cat and Jerry the Mouse."
+   },
+   {
+    "w": "cleverness",
+    "ipa": "ˈklɛvərnəs",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "聪明, 机灵",
+    "ex": "Each episode typically features Tom making various plans to catch Jerry, only to be outsmarted or thwarted by Jerry's cleverness and cunning."
+   },
+   {
+    "w": "cliff",
+    "ipa": "klɪf",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "悬崖，峭壁",
+    "ex": "To the right side of the frame lies a sandy beach that curves gently around as if embracing the rugged cliffs which form the backdrop for this scene."
+   },
+   {
+    "w": "coastal",
+    "ipa": "ˈkoʊstəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "海滨的",
+    "ex": "An expansive coastal landscape dominated by towering limestone stacks rising dramatically from turquoise waters of the ocean."
+   },
+   {
+    "w": "coexist",
+    "ipa": "ˌkoʊəgˈzɪst",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "共存；和平共处",
+    "ex": "This serene but powerful seascape captures nature’s grandeur through its interplay between landforms, water bodies, light conditions, and vegetation all harmoniously coexisting within the same visual space. …"
+   },
+   {
+    "w": "commonly",
+    "ipa": "ˈkɑmənli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "普通地，一般地",
+    "ex": "Multimodal Performance Benchmarks We perform a holistic evaluation of DeepSeek-VL2 across a collection of commonly used benchmarks, including DocVQA [66], ChartQA [65], InfoVQA 2 [67], TextVQA [77], RealWorldQA [95], OCRBench …"
+   },
+   {
+    "w": "comparison",
+    "ipa": "kəmˈpɛrəsən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比较，对照；比似",
+    "ex": "Table 4 | Comparison with state-of-the-art models on general QA and math-related multimodal"
+   },
+   {
+    "w": "configuration",
+    "ipa": "kənˌfɪgjərˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "配置， 布局， 构造",
+    "ex": "This configuration facilitates efficient computational consumption during both training and inference stages."
+   },
+   {
+    "w": "consistently",
+    "ipa": "kənˈsɪstəntli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "一贯地；一致地；坚实地",
+    "ex": "The x-axis represents the number of training tokens in billions, while the y-axis shows the average normalized score, which is a measure of model performance. ### Key Points: 1. **Datasets Compared**: - FineWeb 2 (Ours) - …"
+   },
+   {
+    "w": "consumption",
+    "ipa": "kənˈsʌmpʃn",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "消耗",
+    "ex": "efficient computational consumption during both training and inference stages"
+   },
+   {
+    "w": "context",
+    "ipa": "ˈkɑntɛkst",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "背景，环境",
+    "ex": "In-context Visual Grounding <|grounding|>In the first image, an object within the red rectangle is marked."
+   },
+   {
+    "w": "contrast",
+    "ipa": "ˈkɑntræst",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "对比，反差；对比",
+    "ex": "Small waves break against both the base of the stacks and nearer shoreline creating white foam patterns contrasting sharply with the deep blue-green sea water below."
+   },
+   {
+    "w": "converge",
+    "ipa": "kənˈvərʤ",
+    "pos": "vi.",
+    "lv": "六级",
+    "m": "会合， 互相靠拢； 聚集， 集中； 趋近",
+    "ex": "The x-axis represents the number of training tokens in billions, while the y-axis shows the average normalized score, which is a measure of model performance. ### Key Points: 1. **Datasets Compared**: - FineWeb 2 (Ours) - …"
+   },
+   {
+    "w": "creative",
+    "ipa": "kriˈeɪtɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "创造性的，创作的",
+    "ex": "In Figure 7, we show DeepSeek-VL2 is able to write a creative story given a few images."
+   },
+   {
+    "w": "cue",
+    "ipa": "kju",
+    "pos": "n.；vt.",
+    "lv": "六级",
+    "m": "暗示，信号；提示；提示； 暗示",
+    "ex": "4. **Visual cue**: The child's action of taking a bite adds a dynamic and engaging element to the humor, amplifying the sense of mischief and delight in the moment."
+   },
+   {
+    "w": "cunning",
+    "ipa": "ˈkənɪŋ",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "狡猾的，狡诈的",
+    "ex": "Each episode typically features Tom making various plans to catch Jerry, only to be outsmarted or thwarted by Jerry's cleverness and cunning."
+   },
+   {
+    "w": "current",
+    "ipa": "ˈkɑrənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "当前的",
+    "ex": "Moreover, like other current VLMs, the model occasionally faces challenges with blurry images or unseen objects, presenting opportunities for improved robustness in future versions."
+   },
+   {
+    "w": "currently",
+    "ipa": "ˈkərəntli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "当前；一般地",
+    "ex": "Currently, DeepSeek-VL2’s context window only allows for a few images per chat session."
+   },
+   {
+    "w": "curve",
+    "ipa": "kərv",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "曲线；弯；弄弯",
+    "ex": "To the right side of the frame lies a sandy beach that curves gently around as if embracing the rugged cliffs which form the backdrop for this scene."
+   },
+   {
+    "w": "defiance",
+    "ipa": "dɪˈfaɪəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "违抗； 藐视",
+    "ex": "In short, this image humorously captures the playful defiance of childhood, using the visual of a child taking a bite of an untouchable cake to amplify the humor and relatability. 这张图为什么好笑 …"
+   },
+   {
+    "w": "definitely",
+    "ipa": "ˈdɛfənətli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "一定地，明确地",
+    "ex": "If you're a fig lover, you should definitely try <|ref|>the green cake<|/ref|><|det|>[[635, 299, 951, 690]]<|/det|> ."
+   },
+   {
+    "w": "demonstrate",
+    "ipa": "ˈdɛmənˌstreɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "证明；展示",
+    "ex": "DeepSeek-VL2 demonstrated significantly improved ability on general visual question answering, as shown in Figure 4."
+   },
+   {
+    "w": "dense",
+    "ipa": "dɛns",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "密集的；浓厚的",
+    "ex": "Overall, this model excels at dense image description and it is able to recognize common landmarks, general visual knowledge, and rich-texts in both English and Chinese."
+   },
+   {
+    "w": "depict",
+    "ipa": "dɪˈpɪkt",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "描绘， 描述",
+    "ex": "This image depicts a humorous situation involving a young child and a cake."
+   },
+   {
+    "w": "deploy",
+    "ipa": "dɪˈplɔɪ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "部署",
+    "ex": "can be deployed on a single GPU with 10 GB, 40GB and 80GB memory"
+   },
+   {
+    "w": "descend",
+    "ipa": "dɪˈsɛnd",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "下来，下降；下倾",
+    "ex": "I watched, entranced, as the plane descended, the iconic archway a beacon of hope and history."
+   },
+   {
+    "w": "destructive",
+    "ipa": "dɪˈstrəktɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "破坏性的，毁灭性的",
+    "ex": "It's a big question, but one way could be by not having destructive weapons like </ref|>the big bomb</ref|><|det|>[[53, 997,932]]</det> on display in museums."
+   },
+   {
+    "w": "diffuse",
+    "ipa": "dɪfˈjuz",
+    "pos": "v.；adj.",
+    "lv": "六级",
+    "m": "扩散， 弥漫； 传播， 散布；冗长的， 漫无边际的； 四散的， 弥漫的",
+    "ex": "The sky above appears overcast yet diffused sunlight illuminates parts of the cliff faces casting subtle shadows across some areas while highlighting others, adding depth and texture to the overall composition."
+   },
+   {
+    "w": "diminish",
+    "ipa": "dɪˈmɪnɪʃ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "减少",
+    "ex": "In the foreground stands a prominent stack closest to the viewer's perspective; it is flanked by smaller stacks extending into the distance towards the horizon where they gradually diminish due to atmospheric haze or mist …"
+   },
+   {
+    "w": "disobedience",
+    "ipa": "ˌdɪsəˈbidiəns",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "不服从；违反，违抗",
+    "ex": "The text at the top of the image reads: “Mom told me not to touch it.” ### Analysis and Meaning: 1. **Disobedience theme**: The text implies that the child has intentionally ignored the instruction or warning given by their mom."
+   },
+   {
+    "w": "dominate",
+    "ipa": "ˈdɑməˌneɪt",
+    "pos": "vi.；vt.",
+    "lv": "六级",
+    "m": "拥有优势；在…中占首要地位；支配，统治，控制；耸立于，俯视",
+    "ex": "An expansive coastal landscape dominated by towering limestone stacks rising dramatically from turquoise waters of the ocean."
+   },
+   {
+    "w": "duo",
+    "ipa": "ˈduoʊ",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "二重奏；二重唱；二人组",
+    "ex": "The dynamic duo is a symbol of constant rivalry and humor, and their interactions have been a part of popular culture for decades."
+   },
+   {
+    "w": "effectiveness",
+    "ipa": "ˈifɛktɪvnəs",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "效力",
+    "ex": "3. **Performance Insights**: - Initially, FineWeb 2 has a significant advantage over other datasets, which highlights the effectiveness of the data collected in this dataset. - As training tokens increase, the performance gap …"
+   },
+   {
+    "w": "efficiently",
+    "ipa": "ɪˈfɪʃəntli",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "有效地",
+    "ex": "We employ a dynamic tiling vision encoding strategy to efficiently process high-resolution images with various aspect ratios."
+   },
+   {
+    "w": "element",
+    "ipa": "ˈɛləmənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "元素，要素",
+    "ex": "4. **Visual cue**: The child's action of taking a bite adds a dynamic and engaging element to the humor, amplifying the sense of mischief and delight in the moment."
+   },
+   {
+    "w": "embody",
+    "ipa": "ɪmˈbɑdi",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "体现",
+    "ex": "This enables the model to interact better with the real world, thereby creating opportunities to play a greater role in fields such as embodied AI and computer/phone agents."
+   },
+   {
+    "w": "embrace",
+    "ipa": "ɪmˈbreɪs",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "拥抱；接受；采纳",
+    "ex": "As I stepped outside, the Parisian night embraced me, a welcome that felt both ancient and new, just like the city itself."
+   },
+   {
+    "w": "emergent",
+    "ipa": "ˈimərʤənt",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "紧急的；浮现的；意外的；自然发生的",
+    "ex": "We also observe that the model has exhibited emergent abilities."
+   },
+   {
+    "w": "encode",
+    "ipa": "ɛnˈkoʊd",
+    "pos": "vt.",
+    "lv": "考博",
+    "m": "把译成电码， 把…编码",
+    "ex": "We employ a dynamic tiling vision encoding strategy to efficiently process high-resolution images with various aspect ratios."
+   },
+   {
+    "w": "engage",
+    "ipa": "ɪnˈgeɪʤ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "忙于，从事；吸引",
+    "ex": "4. **Visual cue**: The child's action of taking a bite adds a dynamic and engaging element to the humor, amplifying the sense of mischief and delight in the moment."
+   },
+   {
+    "w": "engine",
+    "ipa": "ˈɪnʤən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "引擎，发动机",
+    "ex": "I boarded the plane, the roar of engines a symphony of promise."
+   },
+   {
+    "w": "enigmatic",
+    "ipa": "ˌɛnɪgˈmætɪk",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "神秘的；高深莫测的；谜一般的",
+    "ex": "I left the room, the Mona Lisa's enigmatic smile still etched in my mind."
+   },
+   {
+    "w": "episode",
+    "ipa": "ˈɛpɪˌsoʊd",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "一个事件； 插曲， 片段； 连续剧的一集",
+    "ex": "Each episode typically features Tom making various plans to catch Jerry, only to be outsmarted or thwarted by Jerry's cleverness and cunning."
+   },
+   {
+    "w": "essence",
+    "ipa": "ˈɛsəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "本质，本体",
+    "ex": "This cake captures the essence of their playful and chaotic relationship through its design and decoration."
+   },
+   {
+    "w": "etch",
+    "ipa": "ɛʧ",
+    "pos": "v.；n.",
+    "lv": "专八",
+    "m": "蚀刻；鲜明地描述；铭记；刻蚀；腐蚀剂",
+    "ex": "I sat in the Paris Airport terminal, the word \"BIENVENUE\" etched in bold, inviting letters above me."
+   },
+   {
+    "w": "exaggerate",
+    "ipa": "ɪgˈzæʤərˌeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "夸张",
+    "ex": "2. **Humor in contrast**: The exaggerated act of biting the cake makes the situation absurd, adding to the humor."
+   },
+   {
+    "w": "excessively",
+    "ipa": "ɪkˈsɛsɪvli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "过分，极端地",
+    "ex": "2Given that InfoVQA contains images with extreme aspect ratios and excessively large images, we enlarge the"
+   },
+   {
+    "w": "exhibit",
+    "ipa": "ɪgˈzɪbɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "显示；陈列，展览",
+    "ex": "We also observe that the model has exhibited emergent abilities."
+   },
+   {
+    "w": "expansive",
+    "ipa": "ɪkˈspænsɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "广阔的；扩张的；豪爽的",
+    "ex": "An expansive coastal landscape dominated by towering limestone stacks rising dramatically from turquoise waters of the ocean."
+   },
+   {
+    "w": "extend",
+    "ipa": "ɪkˈstɛnd",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "延长；扩大；致",
+    "ex": "In the foreground stands a prominent stack closest to the viewer's perspective; it is flanked by smaller stacks extending into the distance towards the horizon where they gradually diminish due to atmospheric haze or mist …"
+   },
+   {
+    "w": "facilitate",
+    "ipa": "fəˈsɪlɪteɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使便利",
+    "ex": "This configuration facilitates efficient computational consumption"
+   },
+   {
+    "w": "favorably",
+    "ipa": "ˈfeɪvərəbli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "赞同地, 亲切地",
+    "ex": "It also performs favorably on chart understanding with accurate attributes recognition."
+   },
+   {
+    "w": "feature",
+    "ipa": "ˈfiʧər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "特点",
+    "ex": "Each episode typically features Tom making various plans to catch Jerry, only to be outsmarted or thwarted by Jerry's cleverness and cunning."
+   },
+   {
+    "w": "ferret",
+    "ipa": "ˈfɛrət",
+    "pos": "v.；n.",
+    "lv": "专八",
+    "m": "搜出，查获；驱出；用雪貂猎取；雪貂；白鼬；侦探",
+    "ex": "On the grounding benchmarks, we compare DeepSeek-VL2 with Groudning DINO [56], UNINEXT [52], ONE-PEACE [87], mPLUG-2 [97], Florence-2 [96], InternVL2 [16], Shikra [11], TextHawk2 [103], Ferret-v2 [108], MM1.5 [107] and Qwen2 [88]."
+   },
+   {
+    "w": "finally",
+    "ipa": "ˈfaɪnəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "最后；不可更改的",
+    "ex": "Finally, while DeepSeek-VL2 excels in visual perception and recognition tasks, we aim to strengthen its reasoning capabilities."
+   },
+   {
+    "w": "flank",
+    "ipa": "flæŋk",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "肋，肋腹；侧面",
+    "ex": "In the foreground stands a prominent stack closest to the viewer's perspective; it is flanked by smaller stacks extending into the distance towards the horizon where they gradually diminish due to atmospheric haze or mist …"
+   },
+   {
+    "w": "flavor",
+    "ipa": "ˈfleɪvər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "口味",
+    "ex": "The sweetness of the milkshake can complement the flavors of your spaghetti dish."
+   },
+   {
+    "w": "fleet",
+    "ipa": "flit",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "舰队；船队，机群",
+    "ex": "The golden frame shimmered, and I felt a connection, a fleeting moment of understanding."
+   },
+   {
+    "w": "foam",
+    "ipa": "foʊm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "泡沫塑料；泡沫",
+    "ex": "Small waves break against both the base of the stacks and nearer shoreline creating white foam patterns contrasting sharply with the deep blue-green sea water below."
+   },
+   {
+    "w": "foreground",
+    "ipa": "ˈfɔrˌgraʊnd",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "前景；最显著的位置",
+    "ex": "In the foreground stands a prominent stack closest to the viewer's perspective; it is flanked by smaller stacks extending into the distance towards the horizon where they gradually diminish due to atmospheric haze or mist …"
+   },
+   {
+    "w": "formation",
+    "ipa": "fɔrˈmeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "形成；构成；形成物",
+    "ex": "These natural formations are part of The Twelve Apostles geological formation located on the Great Ocean Road in Victoria, Australia."
+   },
+   {
+    "w": "frame",
+    "ipa": "freɪm",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "框架",
+    "ex": "To the right side of the frame lies a sandy beach that curves gently around as if embracing the rugged cliffs which form the backdrop for this scene."
+   },
+   {
+    "w": "frequently",
+    "ipa": "ˈfrikwɛntli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "时常，常常",
+    "ex": "Locate the object of the same category in the second image. <|grounding|> Find the most frequently appearing fruit from the first image in the second image. <|grounding|>According to the first image, which dish contains that …"
+   },
+   {
+    "w": "fully",
+    "ipa": "ˈfʊli",
+    "pos": "adv.；n.",
+    "lv": "专四",
+    "m": "充分地；完全地；彻底地；(Fully)人名；(法)菲利",
+    "ex": "This illustrates the common experience of PhD students who often find it difficult to fully disconnect from their research, even when they are physically away from their work environment."
+   },
+   {
+    "w": "gap",
+    "ipa": "gæp",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "差距;缝隙缺口",
+    "ex": "3. **Performance Insights**: - Initially, FineWeb 2 has a significant advantage over other datasets, which highlights the effectiveness of the data collected in this dataset. - As training tokens increase, the performance gap …"
+   },
+   {
+    "w": "generalize",
+    "ipa": "ˈʤɛnərəˌlaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "概括出",
+    "ex": "Interestingly, although the majority of images in our training set come from natural scenes, and the referring expressions are object category names or specific descriptions of objects, we find that the model is capable of …"
+   },
+   {
+    "w": "genre",
+    "ipa": "ˈʒɑnrə",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "体载， 类型",
+    "ex": "However, it is worth noting that creative storytelling in real-world scenarios demands more diverse genres (e.g., horror, comedy, action) and varied plot types (e.g., happy or tragic endings), which may inherently conflict with …"
+   },
+   {
+    "w": "gently",
+    "ipa": "ˈʤɛntli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "有礼貌地；柔和地",
+    "ex": "To the right side of the frame lies a sandy beach that curves gently around as if embracing the rugged cliffs which form the backdrop for this scene."
+   },
+   {
+    "w": "geological",
+    "ipa": "ˌʤiəˈlɑʤɪkəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "地质的， 地质学的",
+    "ex": "These natural formations are part of The Twelve Apostles geological formation located on the Great Ocean Road in Victoria, Australia."
+   },
+   {
+    "w": "glow",
+    "ipa": "gloʊ",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "白热光；发白热光",
+    "ex": "The ceiling lights buzzed softly, casting a sterile glow that neither cheered nor soothed my nerves."
+   },
+   {
+    "w": "grandeur",
+    "ipa": "grænˈdur",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "壮丽；庄严；宏伟",
+    "ex": "Then, the familiar spire of the Arc de Triomphe appeared, its grandeur a testament to human ambition."
+   },
+   {
+    "w": "greenery",
+    "ipa": "ˈgrinəri",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "绿树，绿色植物",
+    "ex": "Vegetation can also be seen at various points including atop certain stacks providing hints of greenery amidst predominantly earth-toned rock structures."
+   },
+   {
+    "w": "haze",
+    "ipa": "heɪz",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "霾，薄雾",
+    "ex": "In the foreground stands a prominent stack closest to the viewer's perspective; it is flanked by smaller stacks extending into the distance towards the horizon where they gradually diminish due to atmospheric haze or mist …"
+   },
+   {
+    "w": "hint",
+    "ipa": "hɪnt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "暗示，示意；建议",
+    "ex": "Vegetation can also be seen at various points including atop certain stacks providing hints of greenery amidst predominantly earth-toned rock structures."
+   },
+   {
+    "w": "holistic",
+    "ipa": "hoʊˈlɪstɪk",
+    "pos": "adj.",
+    "lv": "雅思",
+    "m": "整体的， 全面的； 功能整体性的",
+    "ex": "Multimodal Performance Benchmarks We perform a holistic evaluation of DeepSeek-VL2 across a collection of commonly used benchmarks, including DocVQA [66], ChartQA [65], InfoVQA 2 [67], TextVQA [77], RealWorldQA [95], OCRBench …"
+   },
+   {
+    "w": "horizon",
+    "ipa": "hərˈaɪzən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "地平线；眼界，见识",
+    "ex": "In the foreground stands a prominent stack closest to the viewer's perspective; it is flanked by smaller stacks extending into the distance towards the horizon where they gradually diminish due to atmospheric haze or mist …"
+   },
+   {
+    "w": "horror",
+    "ipa": "ˈhɔrər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "恐怖；战栗；憎恶",
+    "ex": "However, it is worth noting that creative storytelling in real-world scenarios demands more diverse genres (e.g., horror, comedy, action) and varied plot types (e.g., happy or tragic endings), which may inherently conflict with …"
+   },
+   {
+    "w": "humorously",
+    "ipa": "ˈhjumərəsli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "幽默地, 滑稽地",
+    "ex": "In short, this image humorously captures the playful defiance of childhood, using the visual of a child taking a bite of an untouchable cake to amplify the humor and relatability. 这张图为什么好笑 …"
+   },
+   {
+    "w": "iconic",
+    "ipa": "ˌaɪˈkɑnɪk",
+    "pos": "adj.",
+    "lv": "超纲",
+    "m": "图标式的；符号的",
+    "ex": "I watched, entranced, as the plane descended, the iconic archway a beacon of hope and history."
+   },
+   {
+    "w": "illuminate",
+    "ipa": "ˌɪˈlumɪnɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "阐释，阐明",
+    "ex": "The sky above appears overcast yet diffused sunlight illuminates parts of the cliff faces casting subtle shadows across some areas while highlighting others, adding depth and texture to the overall composition."
+   },
+   {
+    "w": "illustrate",
+    "ipa": "ˈɪləˌstreɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "说明,阐明",
+    "ex": "This illustrates the common experience of PhD students who often find it difficult to fully disconnect from their research, even when they are physically away from their work environment."
+   },
+   {
+    "w": "imply",
+    "ipa": "ˌɪmˈplaɪ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "意味；暗示",
+    "ex": "The text at the top of the image reads: “Mom told me not to touch it.” ### Analysis and Meaning: 1. **Disobedience theme**: The text implies that the child has intentionally ignored the instruction or warning given by their mom."
+   },
+   {
+    "w": "improvement",
+    "ipa": "ˌɪmˈpruvmənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "改进，改善；改进处",
+    "ex": "Limitations and Future Work While DeepSeek-VL2 demonstrates strong capabilities across various tasks, there are several areas for future improvements."
+   },
+   {
+    "w": "ingredient",
+    "ipa": "ˌɪnˈgridiənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "成分，原料",
+    "ex": "For example, it can think about how to prepare a dish based on images of certain ingredients."
+   },
+   {
+    "w": "inherently",
+    "ipa": "ˌɪnˈhɛrəntli",
+    "pos": "adv.",
+    "lv": "GRE",
+    "m": "固有地， 天性地",
+    "ex": "However, it is worth noting that creative storytelling in real-world scenarios demands more diverse genres (e.g., horror, comedy, action) and varied plot types (e.g., happy or tragic endings), which may inherently conflict with …"
+   },
+   {
+    "w": "insight",
+    "ipa": "ˈɪnˌsaɪt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "洞察力，洞悉",
+    "ex": "3. **Performance Insights**: - Initially, FineWeb 2 has a significant advantage over other datasets, which highlights the effectiveness of the data collected in this dataset. - As training tokens increase, the performance gap …"
+   },
+   {
+    "w": "interact",
+    "ipa": "ˌɪnərˈækt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "互动",
+    "ex": "This enables the model to interact better with the real world, thereby creating opportunities to play a greater role in fields such as embodied AI and computer/phone agents."
+   },
+   {
+    "w": "interaction",
+    "ipa": "ˌɪnərˈækʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "相互作用；干扰",
+    "ex": "The dynamic duo is a symbol of constant rivalry and humor, and their interactions have been a part of popular culture for decades."
+   },
+   {
+    "w": "interestingly",
+    "ipa": "ˈɪntəˌrɛstɪŋli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "有趣地",
+    "ex": "Interestingly, although the majority of images in our training set come from natural scenes, and the referring expressions are object category names or specific descriptions of objects, we find that the model is capable of …"
+   },
+   {
+    "w": "interplay",
+    "ipa": "ˈɪntərˌpleɪ",
+    "pos": "n.；vi.",
+    "lv": "考博",
+    "m": "相互影响，相互作用；相互影响，相互作用",
+    "ex": "This serene but powerful seascape captures nature’s grandeur through its interplay between landforms, water bodies, light conditions, and vegetation all harmoniously coexisting within the same visual space. …"
+   },
+   {
+    "w": "interpretation",
+    "ipa": "ˌɪnˌtərprɪˈteɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "阐释，说明",
+    "ex": "These benchmarks span diverse tasks from document understanding and chart interpretation to real-world problem solving, enabling comprehensive evaluation of our model’s capabilities."
+   },
+   {
+    "w": "intersection",
+    "ipa": "ˌɪntərˈsekʃn",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "交叉点",
+    "g": "g",
+    "ex": "at the intersection of vision and language"
+   },
+   {
+    "w": "landform",
+    "ipa": "ˈlændˌfɔrm",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "地形, 地貌",
+    "ex": "This serene but powerful seascape captures nature’s grandeur through its interplay between landforms, water bodies, light conditions, and vegetation all harmoniously coexisting within the same visual space. …"
+   },
+   {
+    "w": "landmark",
+    "ipa": "ˈlændˌmɑrk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "有重大意义或影响的",
+    "ex": "The story writing is backed by its strong general visual capabilities such as landmark recognition and OCR, as highlight in green texts."
+   },
+   {
+    "w": "landscape",
+    "ipa": "ˈlænˌskeɪp",
+    "pos": "n.；vt.",
+    "lv": "六级",
+    "m": "风景，景色；风景画；全景；美化…的景观",
+    "ex": "An expansive coastal landscape dominated by towering limestone stacks rising dramatically from turquoise waters of the ocean."
+   },
+   {
+    "w": "laptop",
+    "ipa": "ˈlæpˌtɑp",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "膝上型轻便电脑，笔记本电脑",
+    "ex": "On the right, the student is actually at the beach, but their mind is still consumed by thoughts of work, represented by stacks of papers and a laptop."
+   },
+   {
+    "w": "limestone",
+    "ipa": "ˈlaɪmˌstoʊn",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "石灰石",
+    "ex": "An expansive coastal landscape dominated by towering limestone stacks rising dramatically from turquoise waters of the ocean."
+   },
+   {
+    "w": "locate",
+    "ipa": "ˈloʊˌkeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "位于，定位",
+    "ex": "These natural formations are part of The Twelve Apostles geological formation located on the Great Ocean Road in Victoria, Australia."
+   },
+   {
+    "w": "location",
+    "ipa": "loʊˈkeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "位置，场所",
+    "ex": "With the special token <|grounding|>, DeepSeek-VL2 can unleash its ability of grounded conversation, where it can refer to the key objects with accurate locations in its response, as demonstrated in Figure 9."
+   },
+   {
+    "w": "lover",
+    "ipa": "ˈləvər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "爱好者；情人；情侣",
+    "ex": "If you're a fig lover, you should definitely try <|ref|>the green cake<|/ref|><|det|>[[635, 299, 951, 690]]<|/det|> ."
+   },
+   {
+    "w": "meaningful",
+    "ipa": "ˈminɪŋfəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "有目的的； 有意义的",
+    "ex": "Figure 5, where it can describe the correct context and explain the humor with meaningful"
+   },
+   {
+    "w": "mischief",
+    "ipa": "ˈmɪsʧəf",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "调皮，捣蛋，胡闹",
+    "ex": "4. **Visual cue**: The child's action of taking a bite adds a dynamic and engaging element to the humor, amplifying the sense of mischief and delight in the moment."
+   },
+   {
+    "w": "mischievous",
+    "ipa": "ˈmɪsʧəvəs",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "淘气的；（人、行为等）恶作剧的；有害的",
+    "ex": "The child, appearing determined and mischievous, is depicted biting into a large chocolate cake on a table."
+   },
+   {
+    "w": "moreover",
+    "ipa": "mɔˈroʊvər",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "再者，加之，此外",
+    "ex": "Moreover, like other current VLMs, the model occasionally faces challenges with blurry images or unseen objects, presenting opportunities for improved robustness in future versions."
+   },
+   {
+    "w": "multifaceted",
+    "ipa": "ˌməltiˈfæsətɪd",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "多层面的",
+    "ex": "Our model has multifaceted capabilities, including recognition of landmarks, image-based poetry composition,"
+   },
+   {
+    "w": "multiple",
+    "ipa": "ˈməltəpəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "复合的；并联的",
+    "ex": "Our model can analyze the associations and differences among multiple images, while also enabling simple reasoning by integrating the content of several images."
+   },
+   {
+    "w": "mystery",
+    "ipa": "ˈmɪstəri",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "迷，神秘的事物",
+    "ex": "I found myself in a room, the Mona Lisa's eyes staring back at me, a mystery untouched by time."
+   },
+   {
+    "w": "narrate",
+    "ipa": "ˈnɛˌreɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "叙述；给…作旁白",
+    "ex": "images as input and narrate a story in either Chinese or English based on the images."
+   },
+   {
+    "w": "nerve",
+    "ipa": "nərv",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "神经；勇敢，胆量",
+    "ex": "The ceiling lights buzzed softly, casting a sterile glow that neither cheered nor soothed my nerves."
+   },
+   {
+    "w": "notably",
+    "ipa": "ˈnoʊtəbli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "显著地，尤其",
+    "ex": "Notably, our 3B, 16B and 27B models can be deployed on a single GPU with 10 GB, 40GB and 80GB memory respectively."
+   },
+   {
+    "w": "notification",
+    "ipa": "ˌnoʊtəfəˈkeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "通知， 告示； 通知书",
+    "ex": "Web UI/Screenshot 找到<|ref|>淡定姐<|/ref|>。 <|ref|>Action Games<|/ref|> Pinpoint <|ref|>Notifications<|/ref|> in the image with its coordinates. <|ref|>孙悟空<|/ref|> Meme/Anime Locate the <|ref|>space needle<|/ref|> in the given image. …"
+   },
+   {
+    "w": "occasionally",
+    "ipa": "əˈkeɪʒnəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "偶尔",
+    "ex": "the model occasionally faces challenges with blurry images or unseen objects"
+   },
+   {
+    "w": "ongoing",
+    "ipa": "ˈɑŋɡoʊɪŋ",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "持续的",
+    "ex": "guide our ongoing research directions"
+   },
+   {
+    "w": "opportunity",
+    "ipa": "ˌɑpərˈtunəti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "机会，良机",
+    "ex": "This enables the model to interact better with the real world, thereby creating opportunities to play a greater role in fields such as embodied AI and computer/phone agents."
+   },
+   {
+    "w": "originally",
+    "ipa": "ərˈɪʤənəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "最初,原先",
+    "ex": "In addition, since the story writing ability is originally from the text-only DeepSeek Chat model, which is already aligned with good safety, we do not observe significant harmful and NSFW output from DeepSeek-VL2 during our …"
+   },
+   {
+    "w": "overcast",
+    "ipa": "ˈoʊvərˌkæst",
+    "pos": "adj.；v.",
+    "lv": "专四",
+    "m": "阴天的；阴暗的；愁闷的；使沮丧；包缝；遮蔽",
+    "ex": "The sky above appears overcast yet diffused sunlight illuminates parts of the cliff faces casting subtle shadows across some areas while highlighting others, adding depth and texture to the overall composition."
+   },
+   {
+    "w": "parameter",
+    "ipa": "pərˈæmətər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "参（变）数；参量",
+    "ex": "Benefited from our MoE architecture, DeepSeek-VL2 achieves similar or better performance with fewer activated parameters."
+   },
+   {
+    "w": "paris",
+    "ipa": "ˈpɛrɪs",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "巴黎",
+    "ex": "I sat in the Paris Airport terminal, the word \"BIENVENUE\" etched in bold, inviting letters above me."
+   },
+   {
+    "w": "parisian",
+    "ipa": "pərˈɪʒən",
+    "pos": "—",
+    "lv": "考博",
+    "m": "巴黎(人)(的)",
+    "ex": "As I stepped outside, the Parisian night embraced me, a welcome that felt both ancient and new, just like the city itself."
+   },
+   {
+    "w": "partially",
+    "ipa": "ˈpɑrʃəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "部分地",
+    "ex": "In the foreground stands a prominent stack closest to the viewer's perspective; it is flanked by smaller stacks extending into the distance towards the horizon where they gradually diminish due to atmospheric haze or mist …"
+   },
+   {
+    "w": "patchwork",
+    "ipa": "ˈpæʧˌwərk",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "拼缝物, 拼缀物, 拼凑物",
+    "ex": "As we soared above the clouds, the world below became a patchwork of life—houses, roads, rivers—each a story waiting to be told."
+   },
+   {
+    "w": "perspective",
+    "ipa": "pərˈspɛktɪv",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "视角，观点；远景",
+    "ex": "The reflection in the glass showed me a different perspective, a reminder that beauty is in the eye of the beholder."
+   },
+   {
+    "w": "phd",
+    "ipa": "ˈpiˌeɪʧˈdi",
+    "pos": "—",
+    "lv": "专四",
+    "m": "博士学位；哲学博士学位（Doctor of Philosophy）",
+    "ex": "This illustrates the common experience of PhD students who often find it difficult to fully disconnect from their research, even when they are physically away from their work environment."
+   },
+   {
+    "w": "physically",
+    "ipa": "ˈfɪzɪkəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "身体上；体格上",
+    "ex": "This illustrates the common experience of PhD students who often find it difficult to fully disconnect from their research, even when they are physically away from their work environment."
+   },
+   {
+    "w": "pinpoint",
+    "ipa": "ˈpɪnˌpɔɪnt",
+    "pos": "v.；adj.；n.",
+    "lv": "考博",
+    "m": "查明；精确地找到；准确描述；精确的；详尽的；针尖；精确位置；极小之物",
+    "ex": "Web UI/Screenshot 找到<|ref|>淡定姐<|/ref|>。 <|ref|>Action Games<|/ref|> Pinpoint <|ref|>Notifications<|/ref|> in the image with its coordinates. <|ref|>孙悟空<|/ref|> Meme/Anime Locate the <|ref|>space needle<|/ref|> in the given image. …"
+   },
+   {
+    "w": "playful",
+    "ipa": "ˈpleɪfəl",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "开玩笑的；幽默的；爱嬉戏的",
+    "ex": "This cake captures the essence of their playful and chaotic relationship through its design and decoration."
+   },
+   {
+    "w": "poetry",
+    "ipa": "ˈpoʊətri",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "诗，诗歌，诗作",
+    "ex": "Our model has multifaceted capabilities, including recognition of landmarks, image-based poetry composition,"
+   },
+   {
+    "w": "prominent",
+    "ipa": "ˈprɑmənənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "杰出的，突起的，凸出的",
+    "ex": "In the foreground stands a prominent stack closest to the viewer's perspective; it is flanked by smaller stacks extending into the distance towards the horizon where they gradually diminish due to atmospheric haze or mist …"
+   },
+   {
+    "w": "publicly",
+    "ipa": "ˈpəblɪkli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "公然地, 舆论上",
+    "ex": "By making codes and pre-trained models publicly available, we aim to stimulate further advancements and applications at the intersection of vision and language."
+   },
+   {
+    "w": "qualitative",
+    "ipa": "kˈwɑləˌteɪtɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "质的；定性的",
+    "ex": "Qualitative Study In this section, we demonstrate different capabilities of DeepSeek-VL2, ranging from general question answering to visual storytelling and visual grounding."
+   },
+   {
+    "w": "rebellious",
+    "ipa": "rɪˈbɛljəs",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "反抗的；造反的；难控制的",
+    "ex": "3. **Relatable scenario**: This image humorously captures a widely understood, everyday behavior— children wanting things they are told they cannot have, leading to playful and sometimes rebellious actions."
+   },
+   {
+    "w": "recognition",
+    "ipa": "ˌrɛkɪgˈnɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "认出，识别；承认",
+    "ex": "The story writing is backed by its strong general visual capabilities such as landmark recognition and OCR, as highlight in green texts."
+   },
+   {
+    "w": "reflection",
+    "ipa": "rɪˈflɛkʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "反射；映象；反映",
+    "ex": "The reflection in the glass showed me a different perspective, a reminder that beauty is in the eye of the beholder."
+   },
+   {
+    "w": "reluctantly",
+    "ipa": "rɪˈləktəntli",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "不情愿地；勉强地",
+    "ex": "This reflects the common tendency of children to follow rules reluctantly and test boundaries when told otherwise."
+   },
+   {
+    "w": "reminder",
+    "ipa": "riˈmaɪndər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "暗示；提醒的人/物；催单",
+    "ex": "The reflection in the glass showed me a different perspective, a reminder that beauty is in the eye of the beholder."
+   },
+   {
+    "w": "respectively",
+    "ipa": "rɪˈspɛktɪvli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "各自地",
+    "ex": "Notably, our 3B, 16B and 27B models can be deployed on a single GPU with 10 GB, 40GB and 80GB memory respectively."
+   },
+   {
+    "w": "revolve",
+    "ipa": "riˈvɑlv",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "（使）旋转",
+    "ex": "The story revolves around the never-ending chase between the cunning Tom the Cat and Jerry the Mouse."
+   },
+   {
+    "w": "rivalry",
+    "ipa": "ˈraɪvəlri",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "竞争， 竞赛； 对抗",
+    "ex": "The dynamic duo is a symbol of constant rivalry and humor, and their interactions have been a part of popular culture for decades."
+   },
+   {
+    "w": "roar",
+    "ipa": "rɔr",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "吼叫；呼喊；吼",
+    "ex": "I boarded the plane, the roar of engines a symphony of promise."
+   },
+   {
+    "w": "robustness",
+    "ipa": "roʊˈbʌstnəs",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "鲁棒性",
+    "ex": "presenting opportunities for improved robustness in future versions"
+   },
+   {
+    "w": "rugged",
+    "ipa": "ˈrəgəd",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "崎岖的；坚固的；高低不平的；粗糙的",
+    "ex": "To the right side of the frame lies a sandy beach that curves gently around as if embracing the rugged cliffs which form the backdrop for this scene."
+   },
+   {
+    "w": "sandy",
+    "ipa": "ˈsændi",
+    "pos": "adj.；n.",
+    "lv": "四级",
+    "m": "沙地的；多沙的；含沙的；(Sandy)人名；(法、喀、罗、西、英)桑迪(教名Alasdair、Alastair、Alexander、Alister、Elshen",
+    "ex": "To the right side of the frame lies a sandy beach that curves gently around as if embracing the rugged cliffs which form the backdrop for this scene."
+   },
+   {
+    "w": "scenario",
+    "ipa": "sɪˈnɛrioʊ",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "情境 “；剧本",
+    "ex": "However, it is worth noting that creative storytelling in real-world scenarios demands more diverse genres (e.g., horror, comedy, action) and varied plot types (e.g., happy or tragic endings), which may inherently conflict with …"
+   },
+   {
+    "w": "scope",
+    "ipa": "skoʊp",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "范围",
+    "ex": "We aim to explore solutions to broaden the scope of storytelling while considering these challenges."
+   },
+   {
+    "w": "seascape",
+    "ipa": "ˈsi,skep",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "海景, 海景画",
+    "ex": "This serene but powerful seascape captures nature’s grandeur through its interplay between landforms, water bodies, light conditions, and vegetation all harmoniously coexisting within the same visual space. …"
+   },
+   {
+    "w": "seemingly",
+    "ipa": "ˈsimɪŋli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "表面上看",
+    "ex": "The over-the-top behavior contrasts with the seemingly simple instruction, creating an unexpected and funny outcome."
+   },
+   {
+    "w": "serene",
+    "ipa": "sərˈin",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "静谧的，平静的",
+    "ex": "This serene but powerful seascape captures nature’s grandeur through its interplay between landforms, water bodies, light conditions, and vegetation all harmoniously coexisting within the same visual space. …"
+   },
+   {
+    "w": "serenely",
+    "ipa": "sərˈinəli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "安详地；沉着地；宁静地",
+    "ex": "The Eiffel Tower symbol floated serenely, a promise of what was to come."
+   },
+   {
+    "w": "sharply",
+    "ipa": "ˈʃɑrpli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "严厉地，苛刻地",
+    "ex": "Small waves break against both the base of the stacks and nearer shoreline creating white foam patterns contrasting sharply with the deep blue-green sea water below."
+   },
+   {
+    "w": "shimmer",
+    "ipa": "ˈʃɪmər",
+    "pos": "n.；v.",
+    "lv": "考博",
+    "m": "微光；闪光；闪烁；发闪烁的微光",
+    "ex": "The golden frame shimmered, and I felt a connection, a fleeting moment of understanding."
+   },
+   {
+    "w": "shoreline",
+    "ipa": "ˈʃɔˌrlaɪn",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "海岸线",
+    "ex": "Small waves break against both the base of the stacks and nearer shoreline creating white foam patterns contrasting sharply with the deep blue-green sea water below."
+   },
+   {
+    "w": "shroud",
+    "ipa": "ʃraʊd",
+    "pos": "n.；v.",
+    "lv": "考博",
+    "m": "寿衣；覆盖物；船的横桅索；[电] 护罩；覆盖；包以尸衣",
+    "ex": "In the foreground stands a prominent stack closest to the viewer's perspective; it is flanked by smaller stacks extending into the distance towards the horizon where they gradually diminish due to atmospheric haze or mist …"
+   },
+   {
+    "w": "soar",
+    "ipa": "sɔr",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "猛增",
+    "ex": "As we soared above the clouds, the world below became a patchwork of life—houses, roads, rivers—each a story waiting to be told."
+   },
+   {
+    "w": "softly",
+    "ipa": "ˈsɔftli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "温柔地；柔和地；柔软地；静静地",
+    "ex": "The ceiling lights buzzed softly, casting a sterile glow that neither cheered nor soothed my nerves."
+   },
+   {
+    "w": "solution",
+    "ipa": "səˈluʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "解决，解答，解决办法",
+    "ex": "We aim to explore solutions to broaden the scope of storytelling while considering these challenges."
+   },
+   {
+    "w": "solve",
+    "ipa": "sɑlv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "解决",
+    "ex": "These benchmarks span diverse tasks from document understanding and chart interpretation to real-world problem solving, enabling comprehensive evaluation of our model’s capabilities."
+   },
+   {
+    "w": "soothe",
+    "ipa": "suð",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "安慰，减轻",
+    "ex": "The ceiling lights buzzed softly, casting a sterile glow that neither cheered nor soothed my nerves."
+   },
+   {
+    "w": "spaghetti",
+    "ipa": "spəˈgɛti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "意大利式细面条",
+    "ex": "The sweetness of the milkshake can complement the flavors of your spaghetti dish."
+   },
+   {
+    "w": "span",
+    "ipa": "spæn",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "跨距；一段时间",
+    "ex": "These benchmarks span diverse tasks from document understanding and chart interpretation to real-world problem solving, enabling comprehensive evaluation of our model’s capabilities."
+   },
+   {
+    "w": "spire",
+    "ipa": "spaɪr",
+    "pos": "n.；vi.；vt.",
+    "lv": "考博",
+    "m": "[建] 尖顶；尖塔；螺旋；螺旋形上升；给…加塔尖",
+    "ex": "Then, the familiar spire of the Arc de Triomphe appeared, its grandeur a testament to human ambition."
+   },
+   {
+    "w": "stack",
+    "ipa": "stæk",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "堆，垛；堆积",
+    "ex": "On the right, the student is actually at the beach, but their mind is still consumed by thoughts of work, represented by stacks of papers and a laptop."
+   },
+   {
+    "w": "steppe",
+    "ipa": "stɛp",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "特指西伯利亚一带没有树木的大草原",
+    "ex": "As I stepped outside, the Parisian night embraced me, a welcome that felt both ancient and new, just like the city itself."
+   },
+   {
+    "w": "sterile",
+    "ipa": "ˈstɛrəl",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "不育的；无菌的；贫瘠的；不毛的；枯燥乏味的",
+    "ex": "The ceiling lights buzzed softly, casting a sterile glow that neither cheered nor soothed my nerves."
+   },
+   {
+    "w": "stimulate",
+    "ipa": "ˈstɪmjuleɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "激发，促进",
+    "ex": "we aim to stimulate further advancements and applications"
+   },
+   {
+    "w": "storytelling",
+    "ipa": "ˈstɔriˌtɛlɪŋ",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "说书, 讲故事",
+    "ex": "Qualitative Study In this section, we demonstrate different capabilities of DeepSeek-VL2, ranging from general question answering to visual storytelling and visual grounding."
+   },
+   {
+    "w": "subtle",
+    "ipa": "ˈsətəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "微妙的",
+    "ex": "The sky above appears overcast yet diffused sunlight illuminates parts of the cliff faces casting subtle shadows across some areas while highlighting others, adding depth and texture to the overall composition."
+   },
+   {
+    "w": "sweetness",
+    "ipa": "sˈwitnəs",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "甜蜜，芬芳；愉悦，美好",
+    "ex": "The sweetness of the milkshake can complement the flavors of your spaghetti dish."
+   },
+   {
+    "w": "testament",
+    "ipa": "ˈtɛstəmənt",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "[法] 遗嘱；圣约；确实的证明",
+    "ex": "Then, the familiar spire of the Arc de Triomphe appeared, its grandeur a testament to human ambition."
+   },
+   {
+    "w": "texture",
+    "ipa": "ˈtɛksʧər",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "质地",
+    "ex": "The sky above appears overcast yet diffused sunlight illuminates parts of the cliff faces casting subtle shadows across some areas while highlighting others, adding depth and texture to the overall composition."
+   },
+   {
+    "w": "thai",
+    "ipa": "taɪ",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "泰国人, 泰国语",
+    "ex": "The chart shows a comparison of multilingual datasets based on the average normalized score across six languages: Arabic (ar), French (fr), Russian (ru), Thai (th), Turkish (tr), and Chinese (zh)."
+   },
+   {
+    "w": "thereby",
+    "ipa": "ˈðɛrˈbaɪ",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "因此，从而，由此",
+    "ex": "This enables the model to interact better with the real world, thereby creating opportunities to play a greater role in fields such as embodied AI and computer/phone agents."
+   },
+   {
+    "w": "thwart",
+    "ipa": "θwɔrt",
+    "pos": "v.；adj.；n.；adv.；prep.",
+    "lv": "专四",
+    "m": "挫败；反对；阻碍；横过；横放的；固执的；划手座；独木舟的横梁；横过；横过",
+    "ex": "Each episode typically features Tom making various plans to catch Jerry, only to be outsmarted or thwarted by Jerry's cleverness and cunning."
+   },
+   {
+    "w": "tom",
+    "ipa": "tɑm",
+    "pos": "n.；v.",
+    "lv": "专八",
+    "m": "雄性动物（尤指雄猫）；汤姆（人名）；〈美口〉(像汤姆叔一样)逆来顺受",
+    "ex": "Each episode typically features Tom making various plans to catch Jerry, only to be outsmarted or thwarted by Jerry's cleverness and cunning."
+   },
+   {
+    "w": "tragic",
+    "ipa": "ˈtræʤɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "悲惨的；悲剧的",
+    "ex": "However, it is worth noting that creative storytelling in real-world scenarios demands more diverse genres (e.g., horror, comedy, action) and varied plot types (e.g., happy or tragic endings), which may inherently conflict with …"
+   },
+   {
+    "w": "trash",
+    "ipa": "træʃ",
+    "pos": "n.；vt.",
+    "lv": "六级",
+    "m": "垃圾，废物；拙劣的文学作品；没用的人，社会渣滓，败类；捣毁， 破坏",
+    "ex": "Well, you'll want to use the <|ref|>trashcan<|/ref|><|det|>[[583, 639, 811, 994]]<|/det|> that's positioned on the sidewalk. <|grounding|>I want to throw out the trash now, what should I do? <|grounding|>How to maintain world …"
+   },
+   {
+    "w": "turquoise",
+    "ipa": "ˈtərkwɔɪz",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "[矿]绿宝石, 绿松石色, 青绿色",
+    "ex": "An expansive coastal landscape dominated by towering limestone stacks rising dramatically from turquoise waters of the ocean."
+   },
+   {
+    "w": "underscore",
+    "ipa": "ˌəndərˈskɔr",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "强调",
+    "ex": "3. **Performance Insights**: - Initially, FineWeb 2 has a significant advantage over other datasets, which highlights the effectiveness of the data collected in this dataset. - As training tokens increase, the performance gap …"
+   },
+   {
+    "w": "unexpected",
+    "ipa": "ˌənɪkˈspɛktɪd",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "想不到的，意外的",
+    "ex": "The over-the-top behavior contrasts with the seemingly simple instruction, creating an unexpected and funny outcome."
+   },
+   {
+    "w": "unleash",
+    "ipa": "ənˈliʃ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "发动；解开…的皮带；解除…的束缚",
+    "ex": "With the special token <|grounding|>, DeepSeek-VL2 can unleash its ability of grounded conversation, where it can refer to the key objects with accurate locations in its response, as demonstrated in Figure 9."
+   },
+   {
+    "w": "unseen",
+    "ipa": "ˌʌnˈsiːn",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "未见过的",
+    "ex": "challenges with blurry images or unseen objects"
+   },
+   {
+    "w": "untouchable",
+    "ipa": "ənˈtəʧəbəl",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "达不到的；不可批评的；不可捉摸的",
+    "ex": "In short, this image humorously captures the playful defiance of childhood, using the visual of a child taking a bite of an untouchable cake to amplify the humor and relatability. 这张图为什么好笑 …"
+   },
+   {
+    "w": "untouched",
+    "ipa": "ənˈtəʧt",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "未触及的, 未改变的",
+    "ex": "I found myself in a room, the Mona Lisa's eyes staring back at me, a mystery untouched by time."
+   },
+   {
+    "w": "vegetation",
+    "ipa": "ˌvɛʤəˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "植物， 草木",
+    "ex": "Vegetation can also be seen at various points including atop certain stacks providing hints of greenery amidst predominantly earth-toned rock structures."
+   },
+   {
+    "w": "weapon",
+    "ipa": "ˈwɛpən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "武器， 兵器",
+    "ex": "It's a big question, but one way could be by not having destructive weapons like </ref|>the big bomb</ref|><|det|>[[53, 997,932]]</det> on display in museums."
+   },
+   {
+    "w": "widely",
+    "ipa": "ˈwaɪdli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "大大地",
+    "ex": "3. **Relatable scenario**: This image humorously captures a widely understood, everyday behavior— children wanting things they are told they cannot have, leading to playful and sometimes rebellious actions."
+   }
+  ]
+ },
+ {
+  "sec": "References · 参考文献区用词（正文未出现）",
+  "short": "文献区",
+  "icon": "R",
+  "words": [
+   {
+    "w": "aesthetic",
+    "ipa": "ɛsˈθɛtɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "美学的， 审美的； 悦目的， 雅致的",
+    "ex": "Laion-aesthetics, 2023."
+   },
+   {
+    "w": "aria",
+    "ipa": "ˈɑriə",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "独唱曲， 咏叹调",
+    "ex": "Aria: An open multimodal native mixture-of-experts model. arXiv preprint arXiv:2410.05993, 2024. [47] F."
+   },
+   {
+    "w": "auxiliary",
+    "ipa": "ɑgˈzɪljəri",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "辅助的；附属的",
+    "ex": "Auxiliary-loss-free load balancing strategy for mixture-of-experts."
+   },
+   {
+    "w": "bilingual",
+    "ipa": "baɪˈlɪŋgwəl",
+    "pos": "adj.；n.",
+    "lv": "专四",
+    "m": "双语的；通两种语言的人",
+    "ex": "Texthawk2: A large vision-language model excels in bilingual ocr and grounding with 16x fewer tokens. arXiv preprint arXiv:2410.05261, 2024. [104] Y."
+   },
+   {
+    "w": "cambrian",
+    "ipa": "ˈkæmbriən",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "威尔斯人",
+    "ex": "Cambrian-1: A fully open, vision-centric exploration of multimodal llms."
+   },
+   {
+    "w": "centric",
+    "ipa": "ˈsɛntrɪk",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "以…为中心的",
+    "ex": "Cambrian-1: A fully open, vision-centric exploration of multimodal llms."
+   },
+   {
+    "w": "classification",
+    "ipa": "ˌklæsəfəˈkeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "分类，级别",
+    "ex": "The open images dataset v4: Unified image classification, object detection, and visual relationship detection at scale."
+   },
+   {
+    "w": "compose",
+    "ipa": "kəmˈpoʊz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "组成，构成；创作",
+    "ex": "grounding. Our model series is composed of three variants: DeepSeek-VL2-Tiny, DeepSeek-VL2-"
+   },
+   {
+    "w": "compositional",
+    "ipa": "ˌkɑmpəˈzɪʃənəl",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "合成的,组成的",
+    "ex": "Gqa: A new dataset for real-world visual reasoning and compositional question answering."
+   },
+   {
+    "w": "contributor",
+    "ipa": "kənˈtrɪbjətər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "贡献者；投稿者；捐助者",
+    "ex": "∗: Core contributors. †: Project lead. ‡: Corresponding author."
+   },
+   {
+    "w": "conversion",
+    "ipa": "kənˈvərʒən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "转变，转化；改变",
+    "ex": "Unlocking the conversion of web screenshots into html code with the websight dataset, 2024. [45] B."
+   },
+   {
+    "w": "convert",
+    "ipa": "ˈkɑnvərt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使转变；使改变",
+    "ex": "Latex-ocr — a tool to convert images of latex equations into latex code. https://github.com/lukas-blecher/LaTeX-OCR, 2023."
+   },
+   {
+    "w": "correspondence",
+    "ipa": "ˌkɔrəˈspɑndəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "信件， 函件； 通信， 通信联系； 符合， 一致， 相似",
+    "ex": "Flickr30k entities: Collecting region-to-phrase correspondences for richer image-to-sentence models."
+   },
+   {
+    "w": "decouple",
+    "ipa": "diˈkəpəl",
+    "pos": "v.",
+    "lv": "雅思",
+    "m": "减弱， 减少",
+    "ex": "Janus: Decoupling visual encoding for unified multimodal understanding and generation. arXiv preprint arXiv:2410.13848, 2024. [95] xAI."
+   },
+   {
+    "w": "digit",
+    "ipa": "ˈdɪʤɪt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "数字；手指或足趾；一指宽",
+    "ex": "Icfhr 2014 competition on handwritten digit string recognition in challenging datasets (hdsrc 2014)."
+   },
+   {
+    "w": "economical",
+    "ipa": "ˌɛkəˈnɑmɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "节约的；经济学的",
+    "ex": "Deepseek-v2: A strong, economical, and efficient mixture-of-experts language model. arXiv preprint arXiv:2405.04434, 2024. [54] H."
+   },
+   {
+    "w": "elevate",
+    "ipa": "ˈɛləˌveɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "提升，举起；使高兴",
+    "ex": "Making the V in VQA matter: Elevating the role of image understanding in Visual Question Answering."
+   },
+   {
+    "w": "empirical",
+    "ipa": "ˌɛmˈpɪrɪkəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "经验主义的",
+    "ex": "In Proceedings of the 2014 conference on empirical methods in natural language processing (EMNLP), pages 787–798, 2014. [34] A."
+   },
+   {
+    "w": "empower",
+    "ipa": "ɪmˈpaʊər",
+    "pos": "vt.",
+    "lv": "专八",
+    "m": "授权于； 使能够",
+    "ex": "Magicoder: Empowering code generation with OSS-instruct."
+   },
+   {
+    "w": "entity",
+    "ipa": "ˈɛntɪti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "实体， 独立存在体， 实际存在物",
+    "ex": "Flickr30k entities: Collecting region-to-phrase correspondences for richer image-to-sentence models."
+   },
+   {
+    "w": "equation",
+    "ipa": "ɪkˈweɪʒən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "方程(式)；等式",
+    "ex": "Latex-ocr — a tool to convert images of latex equations into latex code. https://github.com/lukas-blecher/LaTeX-OCR, 2023."
+   },
+   {
+    "w": "extractor",
+    "ipa": "ɪkˈstræktɚ",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "抽出器, 拔取的人, 抽出者 [计] 抽取字; 析取字 [化] 抽提塔; 浸取器; 萃取器 [医] 拔出器, 取出器, 提取器",
+    "ex": "Global table extractor (gte): A framework for joint table identification and cell structure recognition using visual context."
+   },
+   {
+    "w": "flyer",
+    "ipa": "flaɪər",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "传单；飞鸟；飞行物；飞跳；孤注一掷",
+    "ex": "URL https://www.high-flyer.cn/en/blog/hai-llm. [31] D."
+   },
+   {
+    "w": "generalist",
+    "ipa": "ˈʤɛnərəlɪst",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "多面手,通才",
+    "ex": "Gpt-4v(ision) is a generalist web agent, if grounded."
+   },
+   {
+    "w": "generative",
+    "ipa": "ˈʤɛnərətɪv",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "生产的，有生产力的",
+    "ex": "Journeydb: A benchmark for generative image understanding."
+   },
+   {
+    "w": "generic",
+    "ipa": "ʤəˈnɛrɪk",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "【生物】 属的， 类的； 一般的， 普通的",
+    "ex": "aligning for generic visual-linguistic tasks. arXiv preprint arXiv:2312.14238, 2023."
+   },
+   {
+    "w": "harmonize",
+    "ipa": "ˈhɑrməˌnaɪz",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "协调",
+    "ex": "Janusflow: Harmonizing autoregression and rectified flow for unified multimodal understanding and generation. arXiv preprint arXiv:2411.07975, 2024. [64] J."
+   },
+   {
+    "w": "harness",
+    "ipa": "ˈhɑrnɪs",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "治理；马具，挽具",
+    "ex": "Allava: Harnessing gpt4v-synthesized data for a lite vision-language model. arXiv preprint arXiv:2402.11684, 2024. [11] K."
+   },
+   {
+    "w": "hidden",
+    "ipa": "ˈhɪdən",
+    "pos": "adj.；v.；n.",
+    "lv": "专四",
+    "m": "隐藏的；隐藏，躲藏（hide的过去分词）；(Hidden)人名；(英)希登",
+    "ex": "On the hidden mystery of ocr in large multimodal models. arXiv preprint arXiv:2305.07895, 2023. [58] Y."
+   },
+   {
+    "w": "highly",
+    "ipa": "ˈhaɪli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "高度地，很，非常",
+    "ex": "Phi-3 technical report: A highly capable language model locally on your phone. arXiv preprint arXiv:2404.14219, 2024. [2] agentsea."
+   },
+   {
+    "w": "interpretable",
+    "ipa": "ɪnˈtɜːrprətəbəl",
+    "pos": "adj.",
+    "lv": "超纲",
+    "m": "可解释的，可理解的",
+    "ex": "Mathqa: Towards interpretable math word problem solving with operation-based formalisms. arXiv preprint arXiv:1905.13319, 2019. [5] Anthropic."
+   },
+   {
+    "w": "large-scale",
+    "ipa": "ˈlɑrʤˌskeɪl",
+    "pos": "adj.",
+    "lv": "雅思",
+    "m": "大规模的， 大范围的",
+    "ex": "A large-scale dataset for table-based fact verification. In International Conference on"
+   },
+   {
+    "w": "lee",
+    "ipa": "li",
+    "pos": "n.；adj.",
+    "lv": "专八",
+    "m": "保护；背风处；保护的；庇荫的；避风的",
+    "ex": "[22] M. Deitke, C. Clark, S. Lee, R. Tripathi, Y. Yang, J. S. Park, M. Salehi, N. Muennighoff, K. Lo,"
+   },
+   {
+    "w": "linguistic",
+    "ipa": "lɪŋgˈwɪstɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "语言的；语言学的",
+    "ex": "aligning for generic visual-linguistic tasks. arXiv preprint arXiv:2312.14238, 2023."
+   },
+   {
+    "w": "localize",
+    "ipa": "ˈloʊkəˌlaɪz",
+    "pos": "v.",
+    "lv": "托福",
+    "m": "集中,局部化",
+    "ex": "Groma: Localized visual tokenization for grounding multimodal large language models."
+   },
+   {
+    "w": "locally",
+    "ipa": "ˈloʊkəli",
+    "pos": "adv.",
+    "lv": "考博",
+    "m": "在本地, 地方性地, 局部地",
+    "ex": "Phi-3 technical report: A highly capable language model locally on your phone. arXiv preprint arXiv:2404.14219, 2024. [2] agentsea."
+   },
+   {
+    "w": "logical",
+    "ipa": "ˈlɑʤɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "逻辑的；符合逻辑的",
+    "ex": "Chartqa: A benchmark for question answering about charts with visual and logical reasoning. arXiv preprint arXiv:2203.10244, 2022. [66] M."
+   },
+   {
+    "w": "magpie",
+    "ipa": "ˈmægˌpaɪ",
+    "pos": "n.；adj.",
+    "lv": "专八",
+    "m": "鹊，喜鹊；饶舌的人；有收集零碎东西癖好的人；鹊的；有收集癖的；斑驳的，混杂的",
+    "ex": "Magpie: Alignment data synthesis from scratch by prompting aligned llms with nothing. arXiv preprint arXiv:2406.08464, 2024. [99] Y."
+   },
+   {
+    "w": "massive",
+    "ipa": "ˈmæsɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "巨大的 大量的",
+    "ex": "Mmmu: A massive multi-discipline multimodal understanding and reasoning benchmark for expert agi."
+   },
+   {
+    "w": "mathematical",
+    "ipa": "ˌmæθəˈmætɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "数学的，数学上的",
+    "ex": "Mathvista: Evaluating mathematical reasoning of foundation models in visual contexts."
+   },
+   {
+    "w": "megalith",
+    "ipa": "ˈmɛɡəlɪθ",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "[考古](古建筑用的)巨石",
+    "ex": "Megalith 10m dataset. https://huggingface.co/dataset s/madebyollin/megalith-10m, 2024. [9] M."
+   },
+   {
+    "w": "merge",
+    "ipa": "mərʤ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "合并",
+    "ex": "Densefusion-1m: Merging vision experts for comprehensive multimodal perception. arXiv preprint arXiv:2407.08303, 2024. [51] Z."
+   },
+   {
+    "w": "metric",
+    "ipa": "ˈmɛtrɪk",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "公制的，米制的",
+    "ex": "Large-scale classification of fine-art paintings: Learning the right metric on the right feature. arXiv preprint arXiv:1505.00855, 2015. [74] S."
+   },
+   {
+    "w": "modal",
+    "ipa": "ˈmoʊdəl",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "模态的, 形态上的",
+    "ex": "Wang, et al. mplug-2: A modularized multi-modal foundation model across text, image and video."
+   },
+   {
+    "w": "multimedia",
+    "ipa": "ˌməltiˈmidiə",
+    "pos": "n.；adj.",
+    "lv": "专四",
+    "m": "多媒体；多媒体的",
+    "ex": "In Proceedings of the 31st ACM International Conference on Multimedia, pages 3200–3208, 2023. [53] A."
+   },
+   {
+    "w": "netherland",
+    "ipa": "ˈnɛðərlənd",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "荷兰",
+    "ex": "In Computer Vision–ECCV 2016: 14th European Conference, Amsterdam, The Netherlands, October 11-14, 2016, Proceedings, Part II 14, pages 69–85."
+   },
+   {
+    "w": "neural",
+    "ipa": "ˈnʊrəl",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "神经的",
+    "ex": "In The Thirty-eighth Annual Conference on Neural Information Processing Systems. [84] S."
+   },
+   {
+    "w": "proceeding",
+    "ipa": "prəˈsidɪŋ",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "程序，行动，事项",
+    "ex": "In Computer Vision–ECCV 2016: 14th European Conference, Amsterdam, The Netherlands, October 11-14, 2016, Proceedings, Part II 14, pages 69–85."
+   },
+   {
+    "w": "progressive",
+    "ipa": "prəˈgrɛsɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "进步的；向前进的",
+    "ex": "Internvl2: Better than the best—expanding performance boundaries of open-source multimodal models with the progressive scaling strategy, 2024. [17] A."
+   },
+   {
+    "w": "prose",
+    "ipa": "proʊz",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "散文",
+    "ex": "From pixels to prose: A large dataset of dense image captions."
+   },
+   {
+    "w": "rectify",
+    "ipa": "ˈrɛktəˌfaɪ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "纠正；调整",
+    "ex": "Janusflow: Harmonizing autoregression and rectified flow for unified multimodal understanding and generation. arXiv preprint arXiv:2411.07975, 2024. [64] J."
+   },
+   {
+    "w": "region",
+    "ipa": "ˈriʤən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "地区，地带；领域",
+    "ex": "Flickr30k entities: Collecting region-to-phrase correspondences for richer image-to-sentence models."
+   },
+   {
+    "w": "sigmoid",
+    "ipa": "ˈsɪɡmɔɪd",
+    "pos": "adj./n.",
+    "lv": "考博",
+    "m": "S 形的；sigmoid function 逻辑斯谛/乙状函数",
+    "ex": "Sigmoid loss for language image pretraining."
+   },
+   {
+    "w": "sonnet",
+    "ipa": "ˈsɑnɪt",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "十四行诗；商籁诗",
+    "ex": "Claude 3.5 sonnet. https://www.anthropic.com/news/claude-3-5-s onnet, 2024. [6] Y."
+   },
+   {
+    "w": "specialization",
+    "ipa": "ˌspɛʃələˈzeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "特殊化, 专门化",
+    "ex": "Deepseekmoe: Towards ultimate expert specialization in mixture-of-experts language models. arXiv preprint arXiv:2401.06066, 2024. [21] W."
+   },
+   {
+    "w": "summarization",
+    "ipa": "ˌsʌmərɪˈzeʃən",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "摘要, 概要",
+    "ex": "Wikihow: A large scale text summarization dataset. arXiv preprint arXiv:1810.09305, 2018. [39] A."
+   },
+   {
+    "w": "syntax",
+    "ipa": "ˈsɪnˌtæks",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "语法；句法；有秩序的排列",
+    "ex": "Syntax-aware network for handwritten mathematical expression recognition. arXiv preprint arXiv:2203.01601, 2022. [105] X."
+   },
+   {
+    "w": "synthesis",
+    "ipa": "ˈsɪnθəsəs",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "综合，综合物；（化学或生物学物质的）合成；（用电子方式对声音、语音或音乐的）合成",
+    "ex": "Magpie: Alignment data synthesis from scratch by prompting aligned llms with nothing. arXiv preprint arXiv:2406.08464, 2024. [99] Y."
+   },
+   {
+    "w": "synthesize",
+    "ipa": "ˈsɪnθəˌsaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "合成；综合",
+    "ex": "Allava: Harnessing gpt4v-synthesized data for a lite vision-language model. arXiv preprint arXiv:2402.11684, 2024. [11] K."
+   },
+   {
+    "w": "transfer",
+    "ipa": "ˈtrænsfər",
+    "pos": "—",
+    "lv": "四级",
+    "m": "转换，调换",
+    "ex": "Llava-onevision: Easy visual task transfer. arXiv preprint arXiv:2408.03326, 2024."
+   },
+   {
+    "w": "ultimate",
+    "ipa": "ˈəltəmət",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "最后的，最终的",
+    "ex": "Deepseekmoe: Towards ultimate expert specialization in mixture-of-experts language models. arXiv preprint arXiv:2401.06066, 2024. [21] W."
+   },
+   {
+    "w": "unify",
+    "ipa": "ˈjunəˌfaɪ",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "使联合， 统一； 使相同， 使一致",
+    "ex": "The open images dataset v4: Unified image classification, object detection, and visual relationship detection at scale."
+   },
+   {
+    "w": "unlimited",
+    "ipa": "ənˈlɪmɪtɪd",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "无限的；不定的",
+    "ex": "Exploring one general representation model toward unlimited modalities. arXiv preprint"
+   },
+   {
+    "w": "upgrade",
+    "ipa": "ˈəpˈgreɪd",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "升级",
+    "ex": "key major upgrades. For the vision component, we incorporate a dynamic tiling vision encoding"
+   },
+   {
+    "w": "verification",
+    "ipa": "ˌvɛrəfəˈkeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "确认",
+    "ex": "Tabfact: A large-scale dataset for table-based fact verification."
+   },
+   {
+    "w": "viable",
+    "ipa": "ˈvaɪəbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "可行的；能养活的；能生育的",
+    "ex": "URL https://www.databricks.com/blog/2023/04/12/dolly-first-ope n-commercially-viable-instruction-tuned-llm. [20] D."
+   },
+   {
+    "w": "vip",
+    "ipa": "ˌviˌaɪˈpi",
+    "pos": "—",
+    "lv": "专四",
+    "m": "大人物，贵宾（Very Important Person）；视频接口处理器（Video Interface Processor）；可变信息处理（Variable",
+    "ex": "Vip-llava: Making large multimodal models understand arbitrary visual prompts."
+   },
+   {
+    "w": "volume",
+    "ipa": "ˈvɑljum",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "卷，册；容积；音量",
+    "ex": "In Proceedings of the 41st International Conference on Machine Learning, volume 235 of Proceedings of Machine Learning Research, pages 52632–52657."
+   }
+  ]
+ }
+];
+// lv 一律写中文档名（十一档平级，2026-09-30 定案；旧短码由 build 脚本自动翻译）
+const LVCLS={"四级":"t4","六级":"t6","考研":"tk","考博":"tp","专四":"tm4","专八":"tm8","雅思":"ty","托福":"tt","GRE":"tg","超纲":"tsuper"};
+const LVNAME={"四级":"四级","六级":"六级","考研":"考研","考博":"考博","专四":"专业四级","专八":"专业八级","雅思":"雅思","托福":"托福","GRE":"GRE","超纲":"超纲（大纲未收）"};
+const LVSHORT={"四级":"4","六级":"6","考研":"考研","考博":"考博","专四":"专四","专八":"专八","雅思":"雅思","托福":"托福","GRE":"GRE","超纲":"★超纲"};
+const LVORDER=["四级","六级","考研","考博","专四","专八","雅思","托福","GRE","超纲"];
+
+let mode="sec";
+let theme="theme-mag"; // 章节视图固定杂志风；按级别视图固定暗色大页
+
+function cardHTML(x,sec){
+  const from = mode==="lv" ? `<div class="from">出自 ${sec}</div>` : "";
+  if(theme==="theme-paper"){
+    return `<div class="word"><span class="w">${x.w}<span class="ipa">/${x.ipa}/</span><i class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</i></span>
+      <span><span class="pos">${x.pos}</span><span class="m">${x.m}</span>${from}</span>
+      <span class="ex">${x.ex}</span></div>`;
+  }
+  if(theme==="theme-mag") return "";
+  return `<div class="card lv${x.lv}" data-say="${x.w}"><span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span><span class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</span>
+    <div class="m">${x.pos} ${x.m}</div><div class="ex">${x.ex}</div>${from}</div>`;
+}
+function magRow(x,sec){
+  return `<tr data-say="${x.w}"><td class="w"><span class="hwband">${x.w}</span><span class="ipa">/${x.ipa}/</span></td>
+    <td class="lv"><b class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</b></td>
+    <td class="m">${x.pos} ${x.m}${mode==="lv"?`<span class="from">出自 ${sec}</span>`:""}</td>
+    <td class="ex">${x.ex}</td></tr>`;
+}
+function groupHTML(title,icon,inner){
+  if(theme==="theme-mag") return `<div class="sec"><h2>${title}</h2><table>${inner}</table></div>`;
+  if(theme==="theme-dark"||theme==="theme-fresh")
+    return `<div class="sec"><h2>${theme==="theme-dark"?"":"<span class='n'>"+icon+"</span>"}${title}</h2><div class="grid">${inner}</div></div>`;
+  return `<div class="sec"><h2>${title}</h2>${inner}</div>`;
+}
+
+function render(){
+  document.body.classList.toggle("lv-mode",mode==="lv");
+  // 注意：必须用 classList.add，不能整体赋值 className —— 否则会抹掉 body.night，
+  // 而夜晚章节视图依赖 body.night.theme-mag 这条 CSS，抹掉后点「按章节」会静默退回白天。
+  if(mode==="sec")document.body.classList.add("theme-mag");
+  const app=document.getElementById("app");
+  let html="";
+  if(mode==="sec"){
+    for(const s of DATA){
+      html += theme==="theme-mag"
+        ? groupHTML(s.sec,s.icon,s.words.map(x=>magRow(x,s.short)).join(""))
+        : groupHTML(s.sec,s.icon,s.words.map(x=>cardHTML(x,s.short)).join(""));
+    }
+  }else{
+    // 学习模式同款暗色大页：每个级别一块
+    const dot={"四级":"var(--c4)","六级":"var(--c6)","考研":"var(--ckaon)","考博":"var(--cphd)","专四":"var(--cm4)","专八":"var(--cm8)","雅思":"var(--cy)","托福":"var(--ct)","GRE":"var(--cg)","超纲":"var(--csuper)"};
+    html=LVORDER.map(lv=>{
+      const items=[];
+      DATA.forEach(s=>s.words.forEach(x=>{if(x.lv===lv)items.push([x,s.short])}));   // ov 已废除（2026-09-30）
+      if(!items.length)return"";   // 本词表里没有这一档 → 不出空面板
+      items.sort((a,b)=>a[0].w.localeCompare(b[0].w));
+      const cls={"六级":"l6","考研":"lk","考博":"lp","专四":"lm4","专八":"lm8","雅思":"ly","托福":"lt","GRE":"lg","超纲":"lsuper"}[lv]||"";
+      return `<div class="lvslide ${cls}">
+        <div class="ltitle"><span style="color:${dot[lv]}">${LVNAME[lv]}</span>词汇<small>${items.length} words · 按字母排序 · 悬停看原文例句 · 点击发音</small></div>
+        <div class="sgrid">${items.map(([x,sec])=>`
+          <div class="lcard" data-say="${x.w}">
+            <span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span>
+            <div class="m">${x.pos} ${x.m}</div>
+            <div class="ex">${x.ex}</div>
+            <div class="from">出自 ${sec}</div>
+          </div>`).join("")}</div></div>`;
+    }).join("");
+  }
+  app.innerHTML=html;
+}
+function syncToolbar(){
+  document.getElementById("v-sec").classList.toggle("on",mode==="sec");
+  document.getElementById("v-lv").classList.toggle("on",mode==="lv");
+}
+document.getElementById("v-sec").onclick=()=>{mode="sec";theme="theme-mag";syncToolbar();render();};
+document.getElementById("v-lv").onclick=()=>{mode="lv";syncToolbar();render();};
+
+// 朗读：多引擎在线 TTS 自动降级（有道 / Polly / 百度 / 谷歌），可按下拉切换主音色
+// 合并自 .agents 有道源版 与 workbuddy Polly 源版 —— 单文件同时支持两套引擎
+const VOICE_MAP={
+  yd1:{src:"yd",label:"美式 · 有道（推荐）"},
+  yd0:{src:"yd",label:"英式 · 有道"},
+  Brian:{src:"se",label:"Brian · 英式男声"},
+  Amy:{src:"se",label:"Amy · 英式女声"},
+  Matthew:{src:"se",label:"Matthew · 美式男声"},
+  Joanna:{src:"se",label:"Joanna · 美式女声"},
+  Salli:{src:"se",label:"Salli · 美式女声"},
+  Ivy:{src:"se",label:"Ivy · 美式童声"},
+  bd:{src:"bd",label:"百度翻译 · 女声"},
+  gg:{src:"gg",label:"谷歌翻译"},
+  mute:{src:"mute",label:"🔇 不朗读"}
+};
+const VOICE_ORDER=["yd1","yd0","Brian","Amy","Matthew","Joanna","Salli","Ivy","bd","gg","mute"];
+let ONLINE="yd1"; // 默认有道 · 美音（保留 .agents 版行为）
+try{const sv=localStorage.getItem("vocab_voice");if(sv&&VOICE_MAP[sv])ONLINE=sv;}catch(e){}
+const ENG=["yd","se","bd","gg"];               // 全部可选引擎
+const ENG_NAME={yd:"有道",se:"Polly",bd:"百度",gg:"谷歌"};
+const POLLY_VOICES={Brian:1,Amy:1,Matthew:1,Joanna:1,Salli:1,Ivy:1};
+let SRC_ORDER=ENG.slice(),srcIdx=0;           // 降级顺序：按所选音色的主引擎优先
+function applyVoiceOrder(){
+  const want=VOICE_MAP[ONLINE].src;
+  const i=ENG.indexOf(want);
+  SRC_ORDER=i<0?ENG.slice():ENG.slice(i).concat(ENG.slice(0,i));
+}
+applyVoiceOrder();
+let audio=null;
+function ttsURL(src,t){
+  const q=encodeURIComponent(t);
+  if(src==="yd")return `https://dict.youdao.com/dictvoice?type=${ONLINE==="yd0"?"0":"1"}&audio=${q}`;
+  if(src==="se")return `https://api.streamelements.com/kappa/v2/speech?voice=${POLLY_VOICES[ONLINE]?ONLINE:"Brian"}&text=${q}`;
+  if(src==="bd")return `https://fanyi.baidu.com/gettts?lan=en&text=${q}&spd=5&source=web`;
+  return `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q=${q}`;
+}
+function fillVoiceSel(){
+  const sel=document.getElementById("voiceSel");if(!sel)return;
+  sel.innerHTML=VOICE_ORDER.map(v=>`<option value="${v}" ${ONLINE===v?"selected":""}>${VOICE_MAP[v].label}</option>`).join("");
+  const st=document.getElementById("srcState");
+  if(st)st.textContent=ENG_NAME[SRC_ORDER[srcIdx]]||"";
+}
+fillVoiceSel();
+let saying=0; // 防并发
+function say(t){
+  if(ONLINE==="mute"){try{if(audio){audio.pause();audio=null}}catch(e){}return}
+  const my=++saying;
+  trySrc(0,t,my);
+}
+function trySrc(i,t,my){
+  if(my!==saying)return;
+  if(i>=SRC_ORDER.length){const st=document.getElementById("srcState");if(st)st.textContent="无可用源";return}
+  const src=SRC_ORDER[i];
+  const st=document.getElementById("srcState");
+  if(st)st.textContent="尝试 "+ENG_NAME[src];
+  try{if(audio){audio.pause();audio=null}}catch(e){}
+  const a=new Audio(ttsURL(src,t));
+  let ok=false,advanced=false;
+  const advance=()=>{ if(!ok&&!advanced&&my===saying){advanced=true;trySrc(i+1,t,my);} };
+  a.addEventListener("playing",()=>{ok=true;
+    if(srcIdx!==i){srcIdx=i;fillVoiceSel();} // 记住能用的源
+  });
+  a.addEventListener("error",advance);
+  audio=a;
+  a.play().catch(advance);
+  setTimeout(()=>{ if(!ok&&my===saying&&a.paused)advance(); },2500);
+}
+document.getElementById("voiceSel").addEventListener("change",e=>{
+  ONLINE=e.target.value; applyVoiceOrder(); srcIdx=0; // 换音色重新从头试源
+  try{localStorage.setItem("vocab_voice",ONLINE);}catch(e){}
+  if(ONLINE!=="mute") say("Hello, let us learn new words together.");
+});
+/* ---- 白天 / 夜晚 ---- */
+let style="day";
+try{const s=localStorage.getItem("vocab_style");if(["day","night","paper"].indexOf(s)>=0)style=s;}catch(e){}
+function applyStyle(){
+  document.body.classList.toggle("night",style==="night");
+  document.body.classList.toggle("paper",style==="paper");
+  ["day","night","paper"].forEach(k=>{const b=document.getElementById("st-"+k);if(b)b.classList.toggle("on",style===k);});
+  if(typeof studyEl!=="undefined"&&studyEl)studyEl.classList.toggle("day",style!=="night");
+}
+document.getElementById("st-day").onclick=()=>{style="day";try{localStorage.setItem("vocab_style","day")}catch(e){};applyStyle();};
+document.getElementById("st-night").onclick=()=>{style="night";try{localStorage.setItem("vocab_style","night")}catch(e){};applyStyle();};
+document.getElementById("st-paper").onclick=()=>{style="paper";try{localStorage.setItem("vocab_style","paper")}catch(e){};applyStyle();};
+document.getElementById("app").addEventListener("click",e=>{
+  const el=e.target.closest("[data-say]"); if(el) say(el.dataset.say);
+});
+
+/* ---------- 学习模式：按章节分页的 PPT 翻页 ---------- */
+const PER_PAGE = 12; // 每页最多词数，放不下自动续页
+let slides=[],si=0;
+function buildSlides(){
+  slides=[];
+  for(const s of DATA){
+    for(let i=0;i<s.words.length;i+=PER_PAGE){
+      slides.push({sec:s.sec,page:Math.floor(i/PER_PAGE)+1,
+        pages:Math.ceil(s.words.length/PER_PAGE),words:s.words.slice(i,i+PER_PAGE)});
+    }
+  }
+}
+const studyEl=document.getElementById("study");
+let open=false;
+function showSlide(){
+  const sl=slides[si];
+  const title=sl.pages>1 ? `${sl.sec}（第 ${sl.page}/${sl.pages} 页）` : sl.sec;
+  document.getElementById("sPage").innerHTML =
+    `<div class="stitle">${title}<small>${sl.words.length} words</small></div>
+     <div class="sgrid">${sl.words.map(x=>`
+       <div class="scard" data-say="${x.w}">
+         <span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span><span class="tag ${LVCLS[x.lv]}" style="font-size:11px;padding:2px 8px">${LVSHORT[x.lv]}</span>
+         <div class="m">${x.pos} ${x.m}</div>
+         <div class="ex">${x.ex}</div>
+       </div>`).join("")}</div>`;
+  document.getElementById("sIdx").textContent=(si+1)+" / "+slides.length;
+  document.getElementById("sbar").style.width=((si+1)/slides.length*100)+"%";
+  document.getElementById("sPrev").disabled=si===0;
+  document.getElementById("sNext").disabled=si===slides.length-1;
+  studyEl.querySelector(".sbody").scrollTop=0;
+}
+function studyOpen(){ buildSlides(); si=0; open=true; studyEl.classList.add("on"); applyStyle(); showSlide(); }
+function studyClose(){ open=false; studyEl.classList.remove("on"); }
+function next(){ if(si<slides.length-1){ si++; showSlide(); } }
+function prev(){ if(si>0){ si--; showSlide(); } }
+document.getElementById("v-study").onclick=()=>open?studyClose():studyOpen();
+document.getElementById("sClose").onclick=studyClose;
+document.getElementById("sExit").onclick=studyClose;
+document.getElementById("sNext").onclick=next;
+document.getElementById("sPrev").onclick=prev;
+studyEl.addEventListener("click",e=>{
+  const el=e.target.closest("[data-say]"); if(el) say(el.dataset.say);
+});
+document.addEventListener("keydown",e=>{
+  if(!open) return;
+  if(e.code==="Space"||e.key==="ArrowRight"||e.key==="PageDown"){ e.preventDefault(); next(); }
+  else if(e.key==="ArrowLeft"||e.key==="PageUp"){ prev(); }
+  else if(e.key==="Escape"){ studyClose(); }
+});
+applyStyle(); syncToolbar(); render();
+</script>
+<a href="../../vocab.html" target="_self" style="position:fixed;left:14px;bottom:14px;z-index:9999;font:600 13px/1 -apple-system,system-ui,sans-serif;color:#fff;background:rgba(0,0,0,.55);padding:8px 12px;border-radius:20px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.25)">← 返回索引</a></body>
+</html>

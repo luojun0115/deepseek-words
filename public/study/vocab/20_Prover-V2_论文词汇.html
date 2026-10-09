@@ -1,0 +1,3716 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DeepSeek-Prover-V2 论文核心词汇</title>
+<style>
+:root{--c4:#3b82f6;--c6:#8b5cf6;--ckaon:#f59e0b;--cphd:#ef4444;--ct:#0d9488;--cg:#d946ef;--cm4:#0ea5e9;--cm8:#f43f5e;--cy:#10b981;--csuper:#facc15}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;transition:background .3s,color .3s}
+.tag{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:4px;color:#fff;vertical-align:2px;margin-left:6px;font-style:normal;flex:none;white-space:nowrap}
+.tag.t4{background:var(--c4)}.tag.t6{background:var(--c6)}.tag.tk{background:var(--ckaon)}.tag.tp{background:var(--cphd)}.tag.tm4{background:var(--cm4)}.tag.tm8{background:var(--cm8)}
+.tag.tt{background:var(--ct)}.tag.tg{background:var(--cg)}.tag.ty{background:var(--cy)}.tag.tsuper{background:var(--csuper);color:#3a2f00}
+.ipa{font-family:"SF Mono",Menlo,monospace;font-size:.82em;font-weight:400;opacity:.62;margin-left:6px}
+
+
+/* 论文原标题小字 */
+.ptitle{font-size:12.5px;letter-spacing:.3px;margin-top:6px}
+.ptitle i{font-family:Georgia,serif}
+.theme-mag .ptitle{color:#999;text-transform:none}
+.theme-dark .ptitle{color:#6e7681}
+.theme-paper .ptitle{color:#a09578}
+.theme-fresh .ptitle{color:#9ca3af}
+body.lv-mode .ptitle{color:#7d8590}
+
+/* 预览工具条 */
+.toolbar{position:fixed;right:16px;bottom:16px;z-index:99;display:flex;flex-direction:column;gap:8px;background:rgba(20,22,30,.88);padding:12px;border-radius:14px;backdrop-filter:blur(8px);box-shadow:0 6px 24px rgba(0,0,0,.35)}
+.toolbar .row{display:flex;gap:6px}
+.toolbar button{border:none;cursor:pointer;padding:7px 12px;border-radius:8px;font-size:12.5px;background:#3a3f4d;color:#cbd2e0;transition:.15s}
+.toolbar button:hover{background:#4a5164}
+.toolbar button.on{background:#fff;color:#111;font-weight:600}
+.toolbar .lbl{font-size:10px;color:#8a93a6;text-align:left;margin:2px 0 -2px 2px}
+
+/* ---------- A 纸质阅读 ---------- */
+body.theme-paper{background:#faf6ee;color:#2c2a25}
+.theme-paper .wrap{max-width:880px;margin:0 auto;padding:56px 24px 140px}
+.theme-paper .hero h1{font-family:Georgia,"Songti SC",serif;font-size:34px}
+.theme-paper .hero p{color:#8a8272;margin:10px 0 42px;font-size:14px}
+.theme-paper .sec{margin-bottom:44px}
+.theme-paper .sec>h2{font-family:Georgia,"Songti SC",serif;font-size:20px;padding-left:14px;border-left:4px solid #b08d4f;margin-bottom:18px}
+.theme-paper .word{display:flex;gap:14px;padding:14px 16px;border-bottom:1px dashed #ddd2bc;align-items:baseline}
+.theme-paper .word:hover{background:#f3ecdc}
+.theme-paper .w{font-family:Georgia,serif;font-size:19px;font-weight:700;min-width:250px}
+.theme-paper .pos{color:#a09578;font-size:13px;margin-right:6px}
+.theme-paper .m{color:#4a463c;font-size:15px}
+.theme-paper .ex{margin-left:auto;max-width:270px;font-size:12.5px;color:#9a8f76;font-style:italic;text-align:right}
+.theme-paper .from{display:block;font-size:11px;color:#b3a888;font-style:normal;margin-top:3px}
+
+/* ---------- B 暗色科技 ---------- */
+body.theme-dark{background:#0d1117;color:#e6edf3}
+.theme-dark .wrap{max-width:1000px;margin:0 auto;padding:56px 24px 140px}
+.theme-dark .hero h1{font-family:"SF Mono",Menlo,monospace;font-size:26px}
+.theme-dark .hero h1::before{content:"$ ";color:#3fb950}
+.theme-dark .hero p{color:#7d8590;margin:10px 0 40px;font-size:14px;font-family:Menlo,monospace}
+.theme-dark .sec>h2{font-size:15px;font-family:Menlo,monospace;color:#58a6ff;padding:10px 16px;background:#161b22;border:1px solid #30363d;border-radius:8px 8px 0 0;margin-bottom:-1px}
+.theme-dark .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;padding:20px;background:#161b22;border:1px solid #30363d;border-radius:0 0 8px 8px}
+.theme-dark .card{background:#0d1117;border:1px solid #30363d;border-left:4px solid #58a6ff;border-radius:6px;padding:15px 17px;transition:.2s;cursor:pointer;font-family:Menlo,monospace}
+.theme-dark .card:hover{border-color:#58a6ff;box-shadow:0 0 14px rgba(88,166,255,.25);transform:translateY(-2px)}
+.theme-dark .w{font-family:Menlo,monospace;font-size:17px;color:#79c0ff}
+.theme-dark .ipa{color:#7ee787;opacity:.9}
+.theme-dark .m{color:#8b949e;font-size:13.5px;margin-top:7px;line-height:1.55}
+.theme-dark .ex{font-size:12px;color:#6e7681;margin-top:8px;border-top:1px solid #21262d;padding-top:8px;font-style:italic}
+.theme-dark .from{color:#484f58;font-size:11px;margin-top:4px}
+
+/* ---------- C 清新卡片 ---------- */
+body.theme-fresh{background:linear-gradient(160deg,#eef4ff 0%,#f6f0ff 50%,#fff7ec 100%);color:#1f2430}
+.theme-fresh .wrap{max-width:1020px;margin:0 auto;padding:56px 24px 140px}
+.theme-fresh .hero h1{font-size:32px;font-weight:800;background:linear-gradient(90deg,#3b82f6,#8b5cf6,#f59e0b);-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block}
+.theme-fresh .hero p{color:#6b7280;margin:10px 0 40px;font-size:14px}
+.theme-fresh .sec>h2{font-size:19px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.theme-fresh .sec>h2 .n{width:30px;height:30px;border-radius:10px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.08);display:inline-flex;align-items:center;justify-content:center;font-size:13px}
+.theme-fresh .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+.theme-fresh .card{background:rgba(255,255,255,.82);backdrop-filter:blur(6px);border-radius:18px;padding:17px 19px 15px;box-shadow:0 3px 14px rgba(80,80,140,.09);transition:.2s;cursor:pointer;border-top:5px solid #dbe3f5}
+.theme-fresh .card.lv四级{border-top-color:#3b82f6}.theme-fresh .card.lv六级{border-top-color:#8b5cf6}
+.theme-fresh .card.lv考研{border-top-color:#f59e0b}.theme-fresh .card.lv考博{border-top-color:#ef4444}
+.theme-fresh .card.lv专四{border-top-color:#0ea5e9}.theme-fresh .card.lv专八{border-top-color:#f43f5e}
+.theme-fresh .card.lv雅思{border-top-color:#10b981}.theme-fresh .card.lv托福{border-top-color:#0d9488}
+.theme-fresh .card.lvGRE{border-top-color:#d946ef}.theme-fresh .card.lv超纲{border-top-color:#facc15}
+.theme-fresh .card .w{display:inline-block;background:#f3f5fb;border-radius:8px;padding:2px 10px}
+.theme-fresh .card:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(80,80,140,.16)}
+.theme-fresh .w{font-size:18px;font-weight:700}
+.theme-fresh .m{color:#4b5563;font-size:14px;margin-top:6px;line-height:1.55}
+.theme-fresh .ex{color:#9ca3af;font-size:12.5px;margin-top:8px}
+.theme-fresh .from{color:#b6bcc9;font-size:11.5px;margin-top:4px}
+
+/* ---------- D 杂志表格（宽松版） ---------- */
+body.theme-mag{background:#fff;color:#111}
+.theme-mag .wrap{max-width:960px;margin:0 auto;padding:52px 28px 140px}
+.theme-mag .hero{border-bottom:3px solid #111;padding-bottom:16px;margin-bottom:10px}
+.theme-mag .hero h1{font-family:"Songti SC",Georgia,serif;font-size:38px;font-weight:900}
+.theme-mag .hero p{color:#888;font-size:13.5px;margin-top:8px}
+.theme-mag .sec>h2{font-size:14px;letter-spacing:3px;text-transform:uppercase;color:#c2410c;margin:44px 0 8px;border-bottom:1px solid #e5e5e5;padding-bottom:8px}
+.theme-mag table{width:100%;border-collapse:collapse}
+.theme-mag td{padding:16px 12px;border-bottom:1px solid #f0f0f0;font-size:15.5px;line-height:1.65;vertical-align:top}
+.theme-mag tr:hover td{background:#fff8f3}
+.theme-mag .w{font-weight:700;font-size:17px;width:300px}
+.theme-mag .lv{width:60px}
+.theme-mag .lv b{font-size:11.5px;padding:3px 0;display:block;text-align:center;border-radius:3px;color:#fff;font-weight:600}
+.theme-mag .m{color:#3d3d3d}
+.theme-mag .ex{color:#9a9a9a;font-size:13px;font-style:italic}
+.theme-mag .from{display:block;color:#c9c9c9;font-size:11.5px;font-style:normal;margin-top:4px}
+
+/* ---------- 按级别：学习模式同款暗色大页 ---------- */
+body.lv-mode{background:#0b0e13 !important}
+body.lv-mode .hero h1,body.lv-mode .hero p{color:#e8ecf3}
+body.lv-mode .hero p{color:#7d8590}
+.lvslide{background:#101318;color:#e8ecf3;border-radius:20px;padding:26px 32px 22px;margin-bottom:26px;border-top:6px solid var(--c4)}
+.lvslide.l6{border-top-color:var(--c6)}.lvslide.lk{border-top-color:var(--ckaon)}.lvslide.lp{border-top-color:var(--cphd)}
+.lvslide.lt{border-top-color:var(--ct)}.lvslide.lg{border-top-color:var(--cg)}.lvslide.lm4{border-top-color:var(--cm4)}.lvslide.lm8{border-top-color:var(--cm8)}.lvslide.ly{border-top-color:var(--cy)}.lvslide.lsuper{border-top-color:var(--csuper)}
+.lvslide .ltitle{font-size:26px;font-weight:800;font-family:Georgia,serif;display:flex;align-items:baseline;gap:14px}
+.lvslide .ltitle small{font-size:14px;color:#7d8590;font-family:Menlo,monospace;font-weight:400}
+.lvslide .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;padding:20px 0 8px}
+.lvslide .lcard{background:#171c26;border:1px solid #2b3342;border-radius:14px;padding:15px 17px;cursor:pointer;transition:.15s}
+.lvslide .lcard:hover{border-color:#79c0ff;transform:translateY(-2px)}
+.lvslide .lcard .w{font-size:19px;font-weight:700;font-family:Georgia,serif}
+.lvslide .lcard .ipa{font-family:Menlo,monospace;font-size:13px;color:#7ee787;margin-left:8px}
+.lvslide .lcard .m{color:#aeb6c4;font-size:14px;margin-top:7px;line-height:1.55}
+.lvslide .lcard .ex{color:#646d7d;font-size:12px;font-style:italic;margin-top:7px}
+.lvslide .lcard .from{color:#4d5563;font-size:11px;margin-top:6px}
+
+
+/* ---------- 白天 / 夜晚 ---------- */
+body.lv-mode:not(.night){background:#eef1f6 !important}
+body.lv-mode:not(.night) .hero h1{color:#1f2430}
+body.lv-mode:not(.night) .hero p{color:#6b7280}
+body.lv-mode:not(.night) .lvslide{background:#fff;color:#1f2430;box-shadow:0 4px 18px rgba(80,80,140,.10)}
+body.lv-mode:not(.night) .lvslide .lcard{background:#f7f9fd;border-color:#e4e9f3}
+body.lv-mode:not(.night) .lvslide .lcard:hover{border-color:#3b82f6}
+body.lv-mode:not(.night) .lvslide .lcard .m{color:#4b5563}
+body.lv-mode:not(.night) .lvslide .lcard .ex{color:#98a0ae}
+body.lv-mode:not(.night) .lvslide .lcard .from{color:#b3bac6}
+body.lv-mode:not(.night) .lvslide .lcard .ipa{color:#0a7d33}
+body.night.theme-mag{background:#0d1117;color:#e6edf3}
+body.night.theme-mag .hero{border-bottom-color:#e6edf3}
+body.night.theme-mag .hero p{color:#8b949e}
+body.night.theme-mag .sec>h2{color:#fbbf24;border-bottom-color:#30363d}
+body.night.theme-mag td{border-bottom-color:#1c2230}
+body.night.theme-mag tr:hover td{background:#161b22}
+body.night.theme-mag .m{color:#c9d1d9}
+body.night.theme-mag .ex{color:#8b949e}
+body.night.theme-mag .from{color:#57606a}
+body.night.theme-mag .w{color:#e6edf3}
+body.night.theme-mag .ptitle{color:#8b949e}
+body.night.theme-mag .ipa{opacity:.55}
+#study.day{background:#f5f7fa;color:#1f2430}
+#study.day .scard{background:#fff;border-color:#e4e9f3}
+#study.day .scard .m{color:#4b5563}
+#study.day .scard .ex{color:#98a0ae}
+#study.day .scard:hover{border-color:#3b82f6}
+#study.day .sfoot{color:#98a0ae;border-top-color:#e6e9f0}
+#study.day .snav button,#study.day #sClose{background:#fff;color:#1f2430;border-color:#d7dce6}
+#study.day .sfoot kbd{background:#e8ecf3;color:#1f2430}
+
+/* ---------- 学习模式（PPT 按章节翻页） ---------- */
+#study{position:fixed;inset:0;z-index:200;display:none;background:#101318;color:#e8ecf3;flex-direction:column}
+#study.on{display:flex}
+#study .sprog{height:4px;background:#262c38}
+#study .sprog i{display:block;height:100%;background:linear-gradient(90deg,#58a6ff,#8b5cf6);width:0;transition:width .25s}
+#study .sbody{flex:1;overflow:auto;padding:20px 40px}
+#study .stitle{font-size:24px;font-weight:800;font-family:Georgia,serif;padding:6px 4px 2px}
+#study .stitle small{color:#5b6472;font-size:14px;font-family:Menlo,monospace;font-weight:400;margin-left:12px}
+#study .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;padding:16px 2px 30px}
+#study .scard{background:#171c26;border:1px solid #2b3342;border-radius:14px;padding:16px 18px;cursor:pointer;transition:.15s}
+#study .scard:hover{border-color:#58a6ff;transform:translateY(-2px)}
+#study .scard .w{font-size:22px;font-weight:700;font-family:Georgia,serif}
+#study .scard .ipa{color:#7ee787;font-size:14px;margin-left:8px}
+#study .scard .m{color:#aeb6c4;font-size:14.5px;margin-top:8px;line-height:1.55}
+#study .scard .ex{color:#646d7d;font-size:12px;font-style:italic;margin-top:6px}
+#study .sfoot{display:flex;justify-content:space-between;align-items:center;padding:14px 28px;color:#5b6472;font-size:13px;border-top:1px solid #1d232e}
+#study .sfoot kbd{background:#262c38;border-radius:5px;padding:2px 8px;margin:0 2px;font-family:Menlo,monospace;font-size:12px}
+#study .snav{display:flex;gap:10px;align-items:center}
+#study .snav button{border:1px solid #333b4a;background:#1a2029;color:#cbd2e0;border-radius:8px;padding:8px 18px;cursor:pointer;font-size:14px}
+#study .snav button:hover{border-color:#58a6ff}
+#study .snav button:disabled{opacity:.35;cursor:default}
+
+
+
+/* —— 样式·暖白（暖白纸底） —— */
+
+body.theme-mag.paper{background:#f4f2ea!important;color:#23211c!important}
+body.theme-mag.paper .hero{border-bottom-color:#23211c}
+body.theme-mag.paper .hero h1{color:#1c1a12}
+body.theme-mag.paper .hero p{color:#6b6a5c}
+body.theme-mag.paper .ptitle{color:#8a8878}
+body.theme-mag.paper .sec>h2{color:#5f7a3f;border-bottom-color:#ddd8ca}
+body.theme-mag.paper td{border-bottom-color:#e6e1d3}
+body.theme-mag.paper tr:hover td{background:#ece7da}
+body.theme-mag.paper .m{color:#33312a}
+body.theme-mag.paper .ex{color:#8a8878}
+body.theme-mag.paper .from{color:#b3b0a0}
+body.theme-mag.paper .ipa{color:#6b6a5c}
+.theme-mag .hwband{padding:0 3px;font-weight:700}
+body.theme-mag.paper .hwband{background:linear-gradient(transparent 16%,#cdddb8 16%,#cdddb8 84%,transparent 84%);color:#1c1a12}
+
+
+</style>
+</head>
+<body class="theme-mag">
+<div class="wrap">
+  <div class="hero">
+    <h1>DeepSeek-Prover-V2 论文核心词汇</h1>
+    <div class="ptitle"><i>DeepSeek-Prover-V2: Advancing Formal Mathematical Reasoning via Reinforcement Learning for Subgoal Decomposition · arXiv:2504.21801 · DeepSeek-AI, 2025</i></div>
+    <p>全量口径重做 · 5 节 402 词 · 十一档 + 超纲（2026-10-08）</p>
+  </div>
+  <div id="app"></div>
+</div>
+
+<div class="toolbar">
+  <div class="lbl">视图</div>
+  <div class="row">
+    <button id="v-sec" class="on">按章节</button>
+    <button id="v-lv">按级别综合</button>
+    <button id="v-study">▶ 学习模式</button>
+  </div>
+  <div class="lbl">样式</div>
+  <div class="row">
+    <button id="st-day" class="on">☀ 白天</button>
+    <button id="st-night">🌙 夜晚</button>
+    <button id="st-paper">暖白</button>
+  </div>
+  <div class="lbl">朗读声音 · 多引擎</div>
+  <div class="row"><select id="voiceSel" style="flex:1;border:none;border-radius:8px;padding:7px 8px;background:#3a3f4d;color:#cbd2e0;font-size:12.5px;outline:none"></select><span id="srcState" style="align-self:center;font-size:10.5px;color:#8a93a6;min-width:34px;text-align:center"></span></div>
+</div>
+
+<div id="study">
+  <div class="sprog"><i id="sbar"></i></div>
+  <button id="sClose" title="退出学习模式 (Esc)" style="position:absolute;top:14px;right:18px;z-index:5;border:1px solid #333b4a;background:#1a2029;color:#cbd2e0;border-radius:8px;width:34px;height:34px;font-size:16px;cursor:pointer">✕</button>
+  <div class="sbody"><div id="sPage"></div></div>
+  <div class="sfoot">
+    <span><kbd>空格</kbd>/<kbd>→</kbd> 下一页 &nbsp; <kbd>←</kbd> 上一页 &nbsp; 点单词发音 &nbsp; <kbd>Esc</kbd> 退出</span>
+    <div class="snav">
+      <span id="sIdx">0 / 0</span>
+      <button id="sPrev">← 上一页</button>
+      <button id="sNext">下一页 →</button>
+      <button id="sExit" style="border-color:#5b3a3a">退出</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// lv: 4=四级 6=六级 k=考研 p=考博；ipa 为美式音标
+const DATA = [
+ {
+  "sec": "1. Introduction · 引言",
+  "short": "Intro",
+  "icon": "1",
+  "words": [
+   {
+    "w": "additionally",
+    "ipa": "əˈdɪʃəˌnəli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "此外；又，加之",
+    "ex": "Additionally, we contribute ProverBench, a benchmark dataset containing 325 formalized problems to advance neural theorem proving research, including 15 from the prestigious AIME competitions (years 24-25)."
+   },
+   {
+    "w": "advancement",
+    "ipa": "ədˈvænsmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "进步，提升",
+    "ex": "These advancements are largely enabled by the paradigm of inference-time scaling, most notably through natural language chain-of-thought reasoning (Jaech et al., 2024)."
+   },
+   {
+    "w": "ambiguity",
+    "ipa": "ˌæmbɪˈɡjuːəti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "歧义，模糊",
+    "ex": "These systems permit no ambiguity, implicit assumptions, or omission of details"
+   },
+   {
+    "w": "classical",
+    "ipa": "ˈklæsɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "古典的；经典的",
+    "ex": "To harness the strengths of informal mathematical reasoning in support of formal theorem proving, a classical approach is to hierarchically decompose formal proofs based on the guidance of natural-language proof sketches."
+   },
+   {
+    "w": "closely",
+    "ipa": "ˈkloʊsli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "紧密地，接近地",
+    "ex": "This informal-to-formal theorem proving paradigm closely mirrors the concept of subgoals in hierarchical reinforcement learning (Barto and Mahadevan, 2003;"
+   },
+   {
+    "w": "conjectural",
+    "ipa": "kənˈdʒektʃərəl",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "推测的",
+    "g": "g",
+    "ex": "leverages the decomposed subgoals to generate conjectural theorems"
+   },
+   {
+    "w": "contrast",
+    "ipa": "ˈkɑntræst",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "对比，反差；对比",
+    "ex": "In contrast, proof assistants such as Lean (Moura and Ullrich, 2021), Isabelle (Paulson, 1994), and Coq (Barras et al., 1999) operate on strict logical foundations, where every proof step must be explicitly constructed and …"
+   },
+   {
+    "w": "decompose",
+    "ipa": "ˌdiːkəmˈpoʊz",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "分解",
+    "ex": "prompting DeepSeek-V3 to decompose complex problems into a series of subgoals"
+   },
+   {
+    "w": "decomposition",
+    "ipa": "ˌdikəmpəˈzɪʃən",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "分解, 腐烂",
+    "ex": "This hierarchical decomposition aligns with human problem-solving strategies and supports modularity, reusability, and more efficient proof search (Wang et al., 2024b;"
+   },
+   {
+    "w": "despite",
+    "ipa": "dɪˈspaɪt",
+    "pos": "prep.",
+    "lv": "四级",
+    "m": "不管",
+    "ex": "Despite the success of natural language reasoning in solving competition-level mathematical problems, its application to formal theorem proving remains fundamentally challenging."
+   },
+   {
+    "w": "efficient",
+    "ipa": "ɪˈfɪʃənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "效率高的，有能力的",
+    "ex": "This hierarchical decomposition aligns with human problem-solving strategies and supports modularity, reusability, and more efficient proof search (Wang et al., 2024b;"
+   },
+   {
+    "w": "emergence",
+    "ipa": "ˈimərʤəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "出现，发生",
+    "ex": "Introduction The emergence of reasoning capabilities in large language models (LLMs) has revolutionized numerous areas of artificial intelligence, particularly in the domain of mathematical problem solving (DeepSeek-AI, 2025)."
+   },
+   {
+    "w": "formalization",
+    "ipa": "ˌfɔrmələˈzeɪʃn",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "形式化",
+    "ex": "for both subgoal decomposition and formalization"
+   },
+   {
+    "w": "formally",
+    "ipa": "ˈfɔrməli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "正式地, 形式上",
+    "ex": "Proof Sketch To prove this formally, we can use mathematical induction."
+   },
+   {
+    "w": "fundamentally",
+    "ipa": "ˌfʌndəˈmentli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "根本上",
+    "ex": "its application to formal theorem proving remains fundamentally challenging"
+   },
+   {
+    "w": "gap",
+    "ipa": "gæp",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "差距;缝隙缺口",
+    "ex": "Bridging the gap between informal, high-level reasoning and the syntactic rigor of formal verification systems remains a longstanding research challenge in neural theorem proving (Yang et al., 2024)."
+   },
+   {
+    "w": "generalization",
+    "ipa": "ˌʤɛnərəlɪˈzeɪʃən",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "一般化",
+    "ex": "The model shows strong generalization capabilities to college-level theorem proving, solving 37.1% of ProofNet-test problems with Pass@1024 and tackling 47 out of 658 challenging PutnamBench problems."
+   },
+   {
+    "w": "harness",
+    "ipa": "ˈhɑrnɪs",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "利用，驾驭",
+    "g": "g",
+    "ex": "To harness the strengths of informal mathematical reasoning"
+   },
+   {
+    "w": "heuristic",
+    "ipa": "hjʊˈrɪstɪk",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "启发式方法",
+    "g": "g",
+    "ex": "LLMs perform natural language reasoning in an inherently informal manner, relying on heuristics, ap-proximations, and data-driven guessing patterns that often lack the rigorous structure required by formal verification systems."
+   },
+   {
+    "w": "hierarchical",
+    "ipa": "ˌhaɪˈrɑrkəkəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "分层的；等级体系的",
+    "ex": "This informal-to-formal theorem proving paradigm closely mirrors the concept of subgoals in hierarchical reinforcement learning (Barto and Mahadevan, 2003;"
+   },
+   {
+    "w": "hierarchically",
+    "ipa": "ˌhaɪəˈrɑrkɪkli",
+    "pos": "adv.",
+    "lv": "超纲",
+    "m": "分层地",
+    "ex": "to hierarchically decompose formal proofs based on the guidance"
+   },
+   {
+    "w": "hierarchy",
+    "ipa": "ˈhaɪˌrɑrki",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "等级制度； 统治集团， 领导层",
+    "ex": "Recent studies have extended this paradigm by employing multi-tiered hierarchies for structured proof generation (Wang et al., 2024a), and by leveraging reinforcement learning techniques to optimize the decomposition of complex …"
+   },
+   {
+    "w": "implicit",
+    "ipa": "ˌɪmˈplɪsət",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "不言明的， 含蓄的； 内含的， 固有的； 无疑问的",
+    "ex": "These systems permit no ambiguity, implicit assumptions, or omission of details."
+   },
+   {
+    "w": "inductive",
+    "ipa": "ˌɪnˈdəktɪv",
+    "pos": "adj.",
+    "lv": "雅思",
+    "m": "诱导的， 归纳的",
+    "ex": "intro n hn induction' hn with k hk case refl => exact base_case case step => apply inductive_step k hk exact by assumption apply final_proof exact h₀"
+   },
+   {
+    "w": "inequality",
+    "ipa": "ˌɪnɪkˈwɑləti",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "不平等；不同；不平均",
+    "ex": "Base Case: Verify the inequality for �= 4."
+   },
+   {
+    "w": "inference",
+    "ipa": "ˈɪnfərəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "推断结果， 结论； 推论， 推理， 推断",
+    "ex": "These advancements are largely enabled by the paradigm of inference-time scaling, most notably through natural language chain-of-thought reasoning (Jaech et al., 2024)."
+   },
+   {
+    "w": "informal",
+    "ipa": "ˌɪnˈfɔrməl",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "非正式的；不拘礼节的；随便的；通俗的；日常使用的",
+    "ex": "This informal-to-formal theorem proving paradigm closely mirrors the concept of subgoals in hierarchical reinforcement learning (Barto and Mahadevan, 2003;"
+   },
+   {
+    "w": "inherently",
+    "ipa": "ˌɪnˈhɛrəntli",
+    "pos": "adv.",
+    "lv": "GRE",
+    "m": "固有地， 天性地",
+    "ex": "LLMs perform natural language reasoning in an inherently informal manner, relying on heuristics, ap-proximations, and data-driven guessing patterns that often lack the rigorous structure required by formal verification systems."
+   },
+   {
+    "w": "integer",
+    "ipa": "ˈɪntəʤər",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "[数] 整数；整体；完整的事物",
+    "ex": "�! denotes the factorial of �, which is the product of all positive integers up to �."
+   },
+   {
+    "w": "intermediate",
+    "ipa": "ˌɪntərˈmiːdiət",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "中间的",
+    "ex": "a subgoal is typically an intermediate proposition or lemma"
+   },
+   {
+    "w": "interpretability",
+    "ipa": "ɪnˌtɜrprətəˈbɪləti",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "可解释性",
+    "ex": "improving both accuracy and interpretability"
+   },
+   {
+    "w": "largely",
+    "ipa": "ˈlɑrʤli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "大部分；大量地",
+    "ex": "These advancements are largely enabled by the paradigm of inference-time scaling, most notably through natural language chain-of-thought reasoning (Jaech et al., 2024)."
+   },
+   {
+    "w": "longstanding",
+    "ipa": "ˈlɔŋˌstændɪŋ",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "长期存在的，由来已久的",
+    "ex": "Bridging the gap between informal, high-level reasoning and the syntactic rigor of formal verification systems remains a longstanding research challenge in neural theorem proving (Yang et al., 2024)."
+   },
+   {
+    "w": "modularity",
+    "ipa": "ˌmɑdʒuˈlærəti",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "模块化",
+    "ex": "supports modularity, reusability, and more efficient proof search"
+   },
+   {
+    "w": "multiple",
+    "ipa": "ˈməltəpəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "复合的；并联的",
+    "ex": "The resulting DeepSeek-Prover-V2-671B model establishes a new state-of-the-art in neural theorem proving across multiple benchmarks."
+   },
+   {
+    "w": "neural",
+    "ipa": "ˈnʊrəl",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "神经的",
+    "ex": "The resulting DeepSeek-Prover-V2-671B model establishes a new state-of-the-art in neural theorem proving across multiple benchmarks."
+   },
+   {
+    "w": "notably",
+    "ipa": "ˈnoʊtəbli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "显著地，尤其",
+    "ex": "These advancements are largely enabled by the paradigm of inference-time scaling, most notably through natural language chain-of-thought reasoning (Jaech et al., 2024)."
+   },
+   {
+    "w": "numerous",
+    "ipa": "ˈnumərəs",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "为数众多的；许多",
+    "ex": "Introduction The emergence of reasoning capabilities in large language models (LLMs) has revolutionized numerous areas of artificial intelligence, particularly in the domain of mathematical problem solving (DeepSeek-AI, 2025)."
+   },
+   {
+    "w": "omission",
+    "ipa": "oʊˈmɪʃn",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "省略，遗漏",
+    "ex": "permit no ambiguity, implicit assumptions, or omission of details"
+   },
+   {
+    "w": "overarching",
+    "ipa": "ˌoʊvərˈɑrtʃɪŋ",
+    "pos": "adj.",
+    "lv": "超纲",
+    "m": "首要的，贯穿始终的",
+    "g": "g",
+    "ex": "to progressively achieve the overarching objective"
+   },
+   {
+    "w": "overview",
+    "ipa": "ˈoʊvərvˌju",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "[图情] 综述；概观",
+    "ex": "Figure 2 | Overview of the cold-start data collection process employed by DeepSeek-Prover-V2."
+   },
+   {
+    "w": "particularly",
+    "ipa": "ˌpɑrˈtɪkjələrli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "特别，尤其，格外",
+    "ex": "Introduction The emergence of reasoning capabilities in large language models (LLMs) has revolutionized numerous areas of artificial intelligence, particularly in the domain of mathematical problem solving (DeepSeek-AI, 2025)."
+   },
+   {
+    "w": "prestigious",
+    "ipa": "pərˈstiʤəs",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "有声望的",
+    "ex": "Additionally, we contribute ProverBench, a benchmark dataset containing 325 formalized problems to advance neural theorem proving research, including 15 from the prestigious AIME competitions (years 24-25)."
+   },
+   {
+    "w": "progression",
+    "ipa": "prəˈɡreʃn",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "递进，进程",
+    "ex": "creating a more effective learning progression"
+   },
+   {
+    "w": "progressively",
+    "ipa": "prəˈɡresɪvli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "逐步地",
+    "ex": "to progressively achieve the overarching objective"
+   },
+   {
+    "w": "propose",
+    "ipa": "prəˈpoʊz",
+    "pos": "v.；v.",
+    "lv": "四级",
+    "m": "提议；求婚",
+    "ex": "Jiang et al. (2023) proposed a framework, called Draft, Sketch, and Prove (DSP), that leverages a large language model to generate proof sketches in natural language, which are subsequently translated into formal proof steps."
+   },
+   {
+    "w": "proposition",
+    "ipa": "ˌprɑpəˈzɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "提议，主题",
+    "ex": "In formal theorem proving, a subgoal is typically an intermediate proposition or lemma that contributes to the proof of a larger theorem (Zhao et al., 2023, 2024)."
+   },
+   {
+    "w": "recursive",
+    "ipa": "rɪˈkɜrsɪv",
+    "pos": "adj.",
+    "lv": "超纲",
+    "m": "递归的",
+    "ex": "initialization data collected through a recursive theorem proving pipeline"
+   },
+   {
+    "w": "revolutionize",
+    "ipa": "ˌrevəˈluːʃənaɪz",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "彻底变革",
+    "ex": "has revolutionized numerous areas of artificial intelligence"
+   },
+   {
+    "w": "rigor",
+    "ipa": "ˈrɪgər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "严格",
+    "ex": "Bridging the gap between informal, high-level reasoning and the syntactic rigor of formal verification systems remains a longstanding research challenge in neural theorem proving (Yang et al., 2024)."
+   },
+   {
+    "w": "rigorous",
+    "ipa": "ˈrɪɡərəs",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "严谨的",
+    "g": "g",
+    "ex": "often lack the rigorous structure required by formal verification systems"
+   },
+   {
+    "w": "scale",
+    "ipa": "skeɪl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "规模，比例",
+    "ex": "These advancements are largely enabled by the paradigm of inference-time scaling, most notably through natural language chain-of-thought reasoning (Jaech et al., 2024)."
+   },
+   {
+    "w": "simultaneously",
+    "ipa": "ˌsaɪməlˈteɪniəsli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "同步地，同时地",
+    "ex": "We prompt DeepSeek-V3 to decompose theorems into high-level proof sketches while simultaneously formalizing these proof steps in Lean 4, resulting in a sequence of subgoals."
+   },
+   {
+    "w": "solely",
+    "ipa": "ˈsoʊlli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "仅仅",
+    "ex": "Rather than relying solely on a single forward pass to arrive at an answer"
+   },
+   {
+    "w": "sophisticate",
+    "ipa": "səˈfɪstəˌkeɪt",
+    "pos": "v.；n.",
+    "lv": "专四",
+    "m": "弄复杂；使变得世故；曲解；久经世故的人；精通者",
+    "ex": "DeepSeek-Prover-V2-671B successfully solves 6 of these 15 challenging AIME problems, further demonstrating its sophisticated mathematical reasoning capabilities."
+   },
+   {
+    "w": "subgoal",
+    "ipa": "ˈsʌbɡoʊl",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "子目标",
+    "ex": "decompose complex problems into a series of subgoals"
+   },
+   {
+    "w": "subsequently",
+    "ipa": "ˈsʌbsɪkwəntli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "随后",
+    "ex": "which are subsequently translated into formal proof steps"
+   },
+   {
+    "w": "syntactic",
+    "ipa": "sɪnˈtæktɪk",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "句法的；语法的；依据造句法的",
+    "ex": "Bridging the gap between informal, high-level reasoning and the syntactic rigor of formal verification systems remains a longstanding research challenge in neural theorem proving (Yang et al., 2024)."
+   },
+   {
+    "w": "synthesize",
+    "ipa": "ˈsɪnθəsaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "合成",
+    "ex": "The proofs of resolved subgoals are synthesized into a chain-of-thought process"
+   },
+   {
+    "w": "thereby",
+    "ipa": "ˈðɛrˈbaɪ",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "因此，从而，由此",
+    "ex": "Since the subgoal decomposition is powered by a large general-purpose model, we use a smaller 7B model to handle the proof search for each subgoal, thereby reducing the associated computational burden."
+   },
+   {
+    "w": "tier",
+    "ipa": "tir",
+    "pos": "n.；vt.；vi.",
+    "lv": "专四",
+    "m": "层，排；行，列；等级；使层叠；成递升排列",
+    "ex": "Recent studies have extended this paradigm by employing multi-tiered hierarchies for structured proof generation (Wang et al., 2024a), and by leveraging reinforcement learning techniques to optimize the decomposition of complex …"
+   }
+  ]
+ },
+ {
+  "sec": "2. Method · 方法（RL + 课程学习）",
+  "short": "Method",
+  "icon": "2",
+  "words": [
+   {
+    "w": "additional",
+    "ipa": "əˈdɪʃənəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "额外的",
+    "ex": "First, we incorporate additional problems derived from autoformalization and various open-source datasets (Ying et al., 2024;"
+   },
+   {
+    "w": "align",
+    "ipa": "əˈlaɪn",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使结盟；使成一行；匹配",
+    "ex": "The overall training procedure remains largely aligned with that of DeepSeek-Prover-V1 (Xin et al., 2024a) and DeepSeek-Prover-V1.5 (Xin et al., 2024b), with only two modifications to the distribution of training problems."
+   },
+   {
+    "w": "alignment",
+    "ipa": "əˈlaɪnmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "排成直线；结盟，联合",
+    "ex": "In practice, enforcing this alignment enhances proof accuracy, especially on complex theorems that demand multi-step reasoning."
+   },
+   {
+    "w": "analyze",
+    "ipa": "ˈænəˌlaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "分析",
+    "ex": "To prove a given formal theorem statement, we prompt DeepSeek-V3 to first analyze the mathematical problem in natural language, then decompose the proof into smaller steps, translating each step into a corresponding Lean formal …"
+   },
+   {
+    "w": "append",
+    "ipa": "əˈpɛnd",
+    "pos": "v.；n.",
+    "lv": "专八",
+    "m": "附加；贴上；盖章；设置数据文件的搜索路径",
+    "ex": "This proof is then appended to DeepSeek-V3’s chain-of-thought, which outlines the corresponding lemma decomposition, thereby producing a cohesive synthesis of informal reasoning and subsequent formalization."
+   },
+   {
+    "w": "articulate",
+    "ipa": "ɑrˈtɪkjəˌleɪt",
+    "pos": "adj.；vt.",
+    "lv": "六级",
+    "m": "善于表达的， 发音清晰的； 表达得清楚有力的；明确有力地表达； 清楚地吐， 清晰地发",
+    "ex": "High-precision Chain-of-Thought (CoT) mode: This mode systematically articulates intermediate reasoning steps, emphasizing transparency and logical progression, before constructing the final formal proofs."
+   },
+   {
+    "w": "augment",
+    "ipa": "ɔgˈmɛnt",
+    "pos": "v.；n.",
+    "lv": "六级",
+    "m": "增加；增大；增加；增大",
+    "ex": "Second, we augment the dataset with problems generated through subgoal decomposition, aiming at solving more challenging instances from the valid split of the MiniF2F benchmark (Zheng et al., 2022)."
+   },
+   {
+    "w": "automatically",
+    "ipa": "ˌɔtəˈmætɪkli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "自动地；不经思考地",
+    "ex": "Upon the successful resolution of all decomposed steps, a complete proof of the original theorem can be automatically derived."
+   },
+   {
+    "w": "binary",
+    "ipa": "ˈbaɪnəˌri",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "[数] 二进制的；二元的，二态的",
+    "ex": "Training utilizes binary rewards, where each generated Lean proof receives a reward of 1 if verified as correct and 0 otherwise."
+   },
+   {
+    "w": "boost",
+    "ipa": "bust",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "推动,宣扬；促使，促进",
+    "ex": "In addition, we perform the same reinforcement learning stage used in the training of the 671B model to boost the performance of DeepSeek-Prover-V2-7B."
+   },
+   {
+    "w": "broaden",
+    "ipa": "ˈbrɔdən",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "放宽，变阔",
+    "ex": "Lin et al., 2025), broadening the coverage of the training problem domains."
+   },
+   {
+    "w": "capable",
+    "ipa": "ˈkeɪpəbəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "能干的，有能力的",
+    "ex": "Our findings indicate that off-the-shelf models, such as DeepSeek-V3 (DeepSeek-AI, 2024), are capable of decomposing proof steps and expressing them in formal languages."
+   },
+   {
+    "w": "cognitive",
+    "ipa": "ˈkɑgnɪtɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "认知的",
+    "ex": "The non-CoT components emphasize formal verification skills in the Lean theorem prover ecosystem, while the CoT examples explicitly model the cognitive process of transforming mathematical intuition into formal proof structures."
+   },
+   {
+    "w": "coherent",
+    "ipa": "koʊˈhɪrənt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "（文章、观点等）连贯的，有条理的，一致的",
+    "ex": "In contrast, Kimina-Prover adopts a reverse workflow: it begins by collecting complete formal proofs alongside their informal counterparts, then uses general-purpose reasoning models to retrosynthesize intermediate …"
+   },
+   {
+    "w": "cohesive",
+    "ipa": "koʊˈhisɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "粘合性的，有结合力的",
+    "ex": "This proof is then appended to DeepSeek-V3’s chain-of-thought, which outlines the corresponding lemma decomposition, thereby producing a cohesive synthesis of informal reasoning and subsequent formalization."
+   },
+   {
+    "w": "commonly",
+    "ipa": "ˈkɑmənli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "普通地，一般地",
+    "ex": "The CoT mode is enhanced through a further reinforcement learning stage, following the standard training pipeline commonly used for reasoning models."
+   },
+   {
+    "w": "complementary",
+    "ipa": "ˌkɑmpləˈmɛnʧi",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "补充的； 辅助的",
+    "ex": "DeepSeek-Prover-V2 is developed through a two-stage training pipeline that establishes two complementary proof generation modes: 1."
+   },
+   {
+    "w": "compose",
+    "ipa": "kəmˈpoʊz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "组成，构成；创作",
+    "ex": "The resulting chain of thought culminates in a Lean theorem composed of a sequence of have statements, each concluded with a sorry placeholder indicating a subgoal to be solved."
+   },
+   {
+    "w": "compute",
+    "ipa": "kəmˈpjut",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "计算，估计，估算",
+    "ex": "To generate denser training signals, Dong and Ma (2025) proposed a self-play approach that enriches training problem sets by generating tractable conjectures closely related to the original theorem statements, thereby enabling …"
+   },
+   {
+    "w": "concise",
+    "ipa": "kənˈsaɪs",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "简明的， 简要的",
+    "ex": "Alongside the CoT reasoning mode, we incorporate non-CoT proof data collected during expert iteration to enable a cost-efficient proving option that produces concise formal outputs with a small-size model."
+   },
+   {
+    "w": "concurrent",
+    "ipa": "kənˈkərənt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "一致的；同时的",
+    "ex": "This cold-start dataset generation strategy differs from that of Kimina-Prover (Wang et al., 2025), a concurrent work on formal reasoning models."
+   },
+   {
+    "w": "conjecture",
+    "ipa": "kənˈʤɛkʧər",
+    "pos": "n.；v.",
+    "lv": "考博",
+    "m": "推测；猜想；推测；揣摩",
+    "ex": "To generate denser training signals, Dong and Ma (2025) proposed a self-play approach that enriches training problem sets by generating tractable conjectures closely related to the original theorem statements, thereby enabling …"
+   },
+   {
+    "w": "consistency",
+    "ipa": "kənˈsɪstənsi",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "[计] 一致性；稠度；相容性",
+    "ex": "To address this issue, we incorporate a consistency reward in the early steps of training, which penalizes the structural misalignment, explicitly enforcing the inclusion of all decomposed have-structured lemmas in the final …"
+   },
+   {
+    "w": "consistently",
+    "ipa": "kənˈsɪstəntli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "一贯地",
+    "ex": "DeepSeek-Prover-V2-671B, consistently outperforms all baselines"
+   },
+   {
+    "w": "context",
+    "ipa": "ˈkɑntɛkst",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "背景，环境",
+    "ex": "We perform supervised fine-tuning on DeepSeek-V3-Base-671B (DeepSeek-AI, 2024) using a constant learning rate of 5e-6 within a context window of 16,384 tokens."
+   },
+   {
+    "w": "coverage",
+    "ipa": "ˈkəvərɪʤ",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "报道",
+    "ex": "Lin et al., 2025), broadening the coverage of the training problem domains."
+   },
+   {
+    "w": "critic",
+    "ipa": "ˈkrɪtɪk",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "批评家，评论家",
+    "ex": "Unlike PPO (Schulman et al., 2017), GRPO eliminates the need for a separate critic model by sampling a group of candidate proofs for each theorem prompt and optimizing the policy based on their relative rewards."
+   },
+   {
+    "w": "culminate",
+    "ipa": "ˈkəlmɪˌneɪt",
+    "pos": "vi.",
+    "lv": "六级",
+    "m": "告终",
+    "ex": "The resulting chain of thought culminates in a Lean theorem composed of a sequence of have statements, each concluded with a sorry placeholder indicating a subgoal to be solved."
+   },
+   {
+    "w": "current",
+    "ipa": "ˈkɑrənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "当前的",
+    "ex": "In each training iteration, the current best prover policy is used to generate proof attempts for those challenging problems that remain unsolved in prior iterations."
+   },
+   {
+    "w": "demonstration",
+    "ipa": "ˌdɛmənˈstreɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "展示；游行",
+    "ex": "This iterative loop ensures that the model not only learns from the initial demonstration datasets but also distills its own successful reasoning traces, progressively refining its ability to solve harder problems."
+   },
+   {
+    "w": "derive",
+    "ipa": "dəraɪv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "得到，导出",
+    "ex": "Upon the successful resolution of all decomposed steps, a complete proof of the original theorem can be automatically derived."
+   },
+   {
+    "w": "directly",
+    "ipa": "dɪˈrɛkli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "直接地；立即",
+    "ex": "Specifically, we synthesize data by formalizing natural-language proofs directly into structured formal proof sketches."
+   },
+   {
+    "w": "distill",
+    "ipa": "dɪˈstɪl",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "蒸馏， 用蒸馏法提取； 吸取， 提炼",
+    "ex": "This iterative loop ensures that the model not only learns from the initial demonstration datasets but also distills its own successful reasoning traces, progressively refining its ability to solve harder problems."
+   },
+   {
+    "w": "distillation",
+    "ipa": "ˌdɪstəˈleɪʃən",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "精馏，蒸馏，净化；蒸馏法；精华，蒸馏物",
+    "ex": "Distillation."
+   },
+   {
+    "w": "distinct",
+    "ipa": "dɪˈstɪŋkt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "明显的；有区别的",
+    "ex": "During each iteration, we sample 256 distinct problems, generating 32 candidate proofs per theorem with a maximum sequence length of 32,768 tokens."
+   },
+   {
+    "w": "diverge",
+    "ipa": "dɪˈvərʤ",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "分岔；分歧",
+    "ex": "During the training process, we observe that the structure of the generated proofs frequently diverges from the lemma decomposition provided by the chain-of-thought guidance."
+   },
+   {
+    "w": "domain",
+    "ipa": "doʊˈmeɪn",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "领域",
+    "ex": "Lin et al., 2025), broadening the coverage of the training problem domains."
+   },
+   {
+    "w": "ecosystem",
+    "ipa": "ˈikoʊˌsɪstəm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "生态系统",
+    "ex": "The non-CoT components emphasize formal verification skills in the Lean theorem prover ecosystem, while the CoT examples explicitly model the cognitive process of transforming mathematical intuition into formal proof structures."
+   },
+   {
+    "w": "effective",
+    "ipa": "ˈifɛktɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "有效的；有影响的",
+    "ex": "To ensure effective learning, we curate training prompts to include only problems that are sufficiently challenging yet solvable by the supervised fine-tuned model."
+   },
+   {
+    "w": "efficiency",
+    "ipa": "ɪˈfɪʃənsi",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "效率；功效，效能",
+    "ex": "Shao et al., 2024) as our reinforcement learning algorithm, which has demonstrated superior effectiveness and efficiency in reasoning tasks (DeepSeek-AI, 2025)."
+   },
+   {
+    "w": "eliminate",
+    "ipa": "ɪˈlɪməˌneɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "消除",
+    "ex": "Unlike PPO (Schulman et al., 2017), GRPO eliminates the need for a separate critic model by sampling a group of candidate proofs for each theorem prompt and optimizing the policy based on their relative rewards."
+   },
+   {
+    "w": "emphasize",
+    "ipa": "ˈɛmfəˌsaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "强调",
+    "ex": "The non-CoT components emphasize formal verification skills in the Lean theorem prover ecosystem, while the CoT examples explicitly model the cognitive process of transforming mathematical intuition into formal proof structures."
+   },
+   {
+    "w": "enable",
+    "ipa": "ɪˈneɪbəl",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使能够……",
+    "ex": "It enables the collection of hundreds of high-quality synthetic cold-start data, which serve as the foundation for training DeepSeek-Prover-V2."
+   },
+   {
+    "w": "enforce",
+    "ipa": "ɛnˈfɔrs",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "实施，执行；强制",
+    "ex": "In practice, enforcing this alignment enhances proof accuracy, especially on complex theorems that demand multi-step reasoning."
+   },
+   {
+    "w": "enhance",
+    "ipa": "ɛnˈhæns",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "提高；加强；增加",
+    "ex": "The CoT mode is enhanced through a further reinforcement learning stage, following the standard training pipeline commonly used for reasoning models."
+   },
+   {
+    "w": "explicitly",
+    "ipa": "ɪkˈsplɪsətli",
+    "pos": "adv.",
+    "lv": "GRE",
+    "m": "直接地，明确地",
+    "ex": "The non-CoT components emphasize formal verification skills in the Lean theorem prover ecosystem, while the CoT examples explicitly model the cognitive process of transforming mathematical intuition into formal proof structures."
+   },
+   {
+    "w": "extensive",
+    "ipa": "ɪkˈstɛnsɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "广阔的；广泛的",
+    "ex": "To reduce the computational overhead of extensive proof search, we employ a smaller 7B prover model specifically optimized for processing the decomposed lemmas."
+   },
+   {
+    "w": "extract",
+    "ipa": "ˈɛkˌstrækt",
+    "pos": "v.；n.",
+    "lv": "六级",
+    "m": "取出；提取；摘录",
+    "ex": "We extract subgoal expressions from have statements to substitute them for the original goals in the given problems (see Figure 3(a)), and then incorporate the preceding subgoals as premises (see Figure 3(b))."
+   },
+   {
+    "w": "facilitate",
+    "ipa": "fəˈsɪləˌteɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使便利，促进",
+    "ex": "This construction enables subsequent subgoals to be resolved using the intermediate results of earlier steps, thereby promoting a more localized dependency structure and facilitating the development of simpler lemmas."
+   },
+   {
+    "w": "feedback",
+    "ipa": "ˈfidˌbæk",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "反馈",
+    "ex": "Following the standard training objective for reasoning models (DeepSeek-AI, 2025), we use binary correct-or-incorrect feedback as the primary form of reward supervision."
+   },
+   {
+    "w": "frequently",
+    "ipa": "ˈfrikwɛntli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "时常，常常",
+    "ex": "During the training process, we observe that the structure of the generated proofs frequently diverges from the lemma decomposition provided by the chain-of-thought guidance."
+   },
+   {
+    "w": "generate",
+    "ipa": "ˈʤɛnərˌeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "产生",
+    "ex": "We generate two types of subgoal theorems, one incor-porating preceding subgoals as premises and one without, corresponding to Figure 3(b) and"
+   },
+   {
+    "w": "illustrative",
+    "ipa": "ˌɪˈləstrətɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "说明的；作例证的；解说的",
+    "ex": "Figure 3 | An illustrative example of how we translate decomposed subgoals into a series of"
+   },
+   {
+    "w": "implement",
+    "ipa": "ˈɪmpləmənt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "实施，执行",
+    "ex": "In this paper, we implement a straightforward approach that leverages subgoals to expand the scope of formal statements used for model training."
+   },
+   {
+    "w": "incorporate",
+    "ipa": "ˌɪnˈkɔrpərˌeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "合并；体现",
+    "ex": "Statement type (b) is used for recursive solving of complex problems, while both types (a) and (b) are incorporated into the curriculum learning process."
+   },
+   {
+    "w": "incorrect",
+    "ipa": "ˌɪnkərˈɛkt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "不正确的，错误的",
+    "ex": "Following the standard training objective for reasoning models (DeepSeek-AI, 2025), we use binary correct-or-incorrect feedback as the primary form of reward supervision."
+   },
+   {
+    "w": "instance",
+    "ipa": "ˈɪnstəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "情况，例子",
+    "ex": "Second, we augment the dataset with problems generated through subgoal decomposition, aiming at solving more challenging instances from the valid split of the MiniF2F benchmark (Zheng et al., 2022)."
+   },
+   {
+    "w": "integrate",
+    "ipa": "ˈɪnəˌgreɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "成为一体， 合并",
+    "ex": "Both types are integrated into the expert iteration stage (Polu and"
+   },
+   {
+    "w": "intuition",
+    "ipa": "ˌɪntuˈɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "直觉； 由直觉获知的信息",
+    "ex": "The non-CoT components emphasize formal verification skills in the Lean theorem prover ecosystem, while the CoT examples explicitly model the cognitive process of transforming mathematical intuition into formal proof structures."
+   },
+   {
+    "w": "issue",
+    "ipa": "ˈɪʃu",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "发行；问题",
+    "ex": "To address this issue, we incorporate a consistency reward in the early steps of training, which penalizes the structural misalignment, explicitly enforcing the inclusion of all decomposed have-structured lemmas in the final …"
+   },
+   {
+    "w": "known",
+    "ipa": "noʊn",
+    "pos": "adj.；v.",
+    "lv": "专四",
+    "m": "已知的；知名的；大家知道的；知道（know的过去分词）",
+    "ex": "Since general-purpose models are known to struggle with producing complete Lean proofs, we instruct DeepSeek-V3 to generate only a high-level proof sketch with the details omitted."
+   },
+   {
+    "w": "lean",
+    "ipa": "lin",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "倾斜，屈身；靠",
+    "ex": "Training utilizes binary rewards, where each generated Lean proof receives a reward of 1 if verified as correct and 0 otherwise."
+   },
+   {
+    "w": "leverage",
+    "ipa": "ˈlɛvərɪʤ",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "手段，影响力；杠杆作用；杠杆效率；利用；举债经营",
+    "ex": "Leveraging the subgoals generated by DeepSeek-V3, we adopt a recursive solving strategy to systematically resolve each intermediate proof step."
+   },
+   {
+    "w": "localize",
+    "ipa": "ˈloʊkəˌlaɪz",
+    "pos": "v.",
+    "lv": "托福",
+    "m": "集中,局部化",
+    "ex": "This construction enables subsequent subgoals to be resolved using the intermediate results of earlier steps, thereby promoting a more localized dependency structure and facilitating the development of simpler lemmas."
+   },
+   {
+    "w": "logical",
+    "ipa": "ˈlɑʤɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "逻辑的；符合逻辑的",
+    "ex": "High-precision Chain-of-Thought (CoT) mode: This mode systematically articulates intermediate reasoning steps, emphasizing transparency and logical progression, before constructing the final formal proofs."
+   },
+   {
+    "w": "loop",
+    "ipa": "lup",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "圈，环，环孔",
+    "ex": "This iterative loop ensures that the model not only learns from the initial demonstration datasets but also distills its own successful reasoning traces, progressively refining its ability to solve harder problems."
+   },
+   {
+    "w": "lower",
+    "ipa": "loʊər",
+    "pos": "adj.；v.",
+    "lv": "四级",
+    "m": "较低的；放下",
+    "ex": "Subgoal Decomposition lemma lower_bound (a b c d s : ℝ) (h₀ : 0 < a ∧ 0 < b ∧ 0 < c ∧ 0 < d) (h₁ : s = a / (a + b + d) + b / (a + b + c) + c / (b + c + d) + d / (a + c + d)) (term1_pos : 0 < a / (a + b + d)) (term1_less1 : a / (a …"
+   },
+   {
+    "w": "mathematician",
+    "ipa": "ˌmæθəməˈtɪʃən",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "数学家",
+    "ex": "Recursive Proof Search via Subgoal Decomposition Decomposing the proof of a complex theorem into a sequence of smaller lemmas that serve as stepping stones is an effective strategy commonly employed by human mathematicians."
+   },
+   {
+    "w": "mechanism",
+    "ipa": "ˈmɛkəˌnɪzəm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "机制，机能",
+    "ex": "This pipeline provides a natural and scalable mechanism for synthesizing formal reasoning data by combining high-level reasoning from language models with precise formal verification."
+   },
+   {
+    "w": "mode",
+    "ipa": "moʊd",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "方式，样式",
+    "ex": "DeepSeek-Prover-V2 is developed through a two-stage training pipeline that establishes two complementary proof generation modes: 1."
+   },
+   {
+    "w": "modification",
+    "ipa": "ˌmɑdəfəˈkeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "修改",
+    "ex": "The overall training procedure remains largely aligned with that of DeepSeek-Prover-V1 (Xin et al., 2024a) and DeepSeek-Prover-V1.5 (Xin et al., 2024b), with only two modifications to the distribution of training problems."
+   },
+   {
+    "w": "objective",
+    "ipa": "əˈbʤɛktɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "客观的；无偏见的",
+    "ex": "Following the standard training objective for reasoning models (DeepSeek-AI, 2025), we use binary correct-or-incorrect feedback as the primary form of reward supervision."
+   },
+   {
+    "w": "optimization",
+    "ipa": "ɑptɪmɪˈzeɪʃən",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "最佳化, 最优化",
+    "ex": "We employ Group Relative Policy Optimization (GRPO;"
+   },
+   {
+    "w": "optimize",
+    "ipa": "ˈɑptɪˌmaɪz",
+    "pos": "vt.",
+    "lv": "考博",
+    "m": "使最优化； 充分利用",
+    "ex": "To reduce the computational overhead of extensive proof search, we employ a smaller 7B prover model specifically optimized for processing the decomposed lemmas."
+   },
+   {
+    "w": "option",
+    "ipa": "ˈɔpʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "选择",
+    "ex": "Alongside the CoT reasoning mode, we incorporate non-CoT proof data collected during expert iteration to enable a cost-efficient proving option that produces concise formal outputs with a small-size model."
+   },
+   {
+    "w": "original",
+    "ipa": "ərˈɪʤənəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "原始的，最初的",
+    "ex": "Upon the successful resolution of all decomposed steps, a complete proof of the original theorem can be automatically derived."
+   },
+   {
+    "w": "overall",
+    "ipa": "ˈoʊvərˌɔl",
+    "pos": "n.；adj.",
+    "lv": "四级",
+    "m": "工装裤；全面的",
+    "ex": "The overall training procedure remains largely aligned with that of DeepSeek-Prover-V1 (Xin et al., 2024a) and DeepSeek-Prover-V1.5 (Xin et al., 2024b), with only two modifications to the distribution of training problems."
+   },
+   {
+    "w": "pathway",
+    "ipa": "ˈpæθˌweɪ",
+    "pos": "n.",
+    "lv": "雅思",
+    "m": "路径， 途径",
+    "ex": "Our training corpus consists of two complementary sources: (1) non-CoT data collected through expert iteration, which produces Lean codes without intermediate reasoning steps; and (2) the cold-start CoT data described in Section …"
+   },
+   {
+    "w": "penalize",
+    "ipa": "ˈpɛnəˌlaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "处罚；处刑；使不利",
+    "ex": "To address this issue, we incorporate a consistency reward in the early steps of training, which penalizes the structural misalignment, explicitly enforcing the inclusion of all decomposed have-structured lemmas in the final …"
+   },
+   {
+    "w": "phase",
+    "ipa": "feɪz",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "阶段；方面；相位",
+    "ex": "We extend the maximum context length of DeepSeek-Prover-V1.5-Base-7B (Xin et al., 2024b) from 4,096 to 32,768 tokens and fine-tune this extended-context model using rollout data collected during the reinforcement learning phase …"
+   },
+   {
+    "w": "precede",
+    "ipa": "prɪˈsid",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "先于…，领先",
+    "ex": "We generate two types of subgoal theorems, one incor-porating preceding subgoals as premises and one without, corresponding to Figure 3(b) and"
+   },
+   {
+    "w": "precision",
+    "ipa": "priˈsɪʒən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "精确，精密，精密度",
+    "ex": "High-precision Chain-of-Thought (CoT) mode: This mode systematically articulates intermediate reasoning steps, emphasizing transparency and logical progression, before constructing the final formal proofs."
+   },
+   {
+    "w": "premise",
+    "ipa": "ˈprɛmɪs",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "房屋和地基， 经营场址； 前提， 假设",
+    "ex": "We generate two types of subgoal theorems, one incor-porating preceding subgoals as premises and one without, corresponding to Figure 3(b) and"
+   },
+   {
+    "w": "previous",
+    "ipa": "ˈpriviəs",
+    "pos": "adj.；adv.",
+    "lv": "四级",
+    "m": "之前的；先前地",
+    "ex": "Several previous studies have explored this hierarchical strategy in the context of neural theorem proving, aiming to enhance proof search efficiency by leveraging the informal reasoning capabilities of modern LLMs (Jiang et al. …"
+   },
+   {
+    "w": "prior",
+    "ipa": "praɪər",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "在先的；优先的",
+    "ex": "In each training iteration, the current best prover policy is used to generate proof attempts for those challenging problems that remain unsolved in prior iterations."
+   },
+   {
+    "w": "proof",
+    "ipa": "pruf",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "证据；证明；校样",
+    "ex": "Leveraging the subgoals generated by DeepSeek-V3, we adopt a recursive solving strategy to systematically resolve each intermediate proof step."
+   },
+   {
+    "w": "proportion",
+    "ipa": "prəˈpɔrʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比例，部分",
+    "ex": "resulting training signals for prover models are often sparse, as a large proportion of computa-"
+   },
+   {
+    "w": "refine",
+    "ipa": "rɪˈfaɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "改善，精炼",
+    "ex": "This iterative loop ensures that the model not only learns from the initial demonstration datasets but also distills its own successful reasoning traces, progressively refining its ability to solve harder problems."
+   },
+   {
+    "w": "reinforcement",
+    "ipa": "ˌriɪnˈfɔrsmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "加固；增援；援军；加强",
+    "ex": "The CoT mode is enhanced through a further reinforcement learning stage, following the standard training pipeline commonly used for reasoning models."
+   },
+   {
+    "w": "resolution",
+    "ipa": "ˌrɛzəˈluʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "坚决，坚定；决定",
+    "ex": "Upon the successful resolution of all decomposed steps, a complete proof of the original theorem can be automatically derived."
+   },
+   {
+    "w": "resolve",
+    "ipa": "riˈzɑlv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "解决，下决心",
+    "ex": "We curate a subset of challenging problems that remain unsolved by the 7B prover model in an end-to-end manner, but for which all decomposed subgoals have been successfully resolved."
+   },
+   {
+    "w": "reverse",
+    "ipa": "rɪˈvərs",
+    "pos": "—",
+    "lv": "四级",
+    "m": "（使）反转",
+    "ex": "In contrast, Kimina-Prover adopts a reverse workflow: it begins by collecting complete formal proofs alongside their informal counterparts, then uses general-purpose reasoning models to retrosynthesize intermediate …"
+   },
+   {
+    "w": "scope",
+    "ipa": "skoʊp",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "范围",
+    "ex": "In this paper, we implement a straightforward approach that leverages subgoals to expand the scope of formal statements used for model training."
+   },
+   {
+    "w": "self",
+    "ipa": "sɛlf",
+    "pos": "n.；adj.；vt.；vi.",
+    "lv": "四级",
+    "m": "自己，自我；本质；私心；同一的；使自花授精；使近亲繁殖；自花授精",
+    "ex": "To generate denser training signals, Dong and Ma (2025) proposed a self-play approach that enriches training problem sets by generating tractable conjectures closely related to the original theorem statements, thereby enabling …"
+   },
+   {
+    "w": "sequence",
+    "ipa": "ˈsikwəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "连续，继续；次序",
+    "ex": "During each iteration, we sample 256 distinct problems, generating 32 candidate proofs per theorem with a maximum sequence length of 32,768 tokens."
+   },
+   {
+    "w": "series",
+    "ipa": "ˈsɪriz",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "连续，系列；丛书",
+    "ex": "Figure 3 | An illustrative example of how we translate decomposed subgoals into a series of"
+   },
+   {
+    "w": "sketch",
+    "ipa": "skɛʧ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "略图；速写；概略",
+    "ex": "Specifically, we synthesize data by formalizing natural-language proofs directly into structured formal proof sketches."
+   },
+   {
+    "w": "solvable",
+    "ipa": "ˈsɑlvəbəl",
+    "pos": "adj.",
+    "lv": "超纲",
+    "m": "可解决的，可求解的",
+    "ex": "To ensure effective learning, we curate training prompts to include only problems that are sufficiently challenging yet solvable by the supervised fine-tuned model."
+   },
+   {
+    "w": "span",
+    "ipa": "ˈspænɪŋ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "跨越，涵盖",
+    "ex": "spanning both high-school competition problems and undergraduate-level mathematics"
+   },
+   {
+    "w": "sparse",
+    "ipa": "spɑrs",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "稀疏的；稀少的",
+    "ex": "resulting training signals for prover models are often sparse, as a large proportion of computa-"
+   },
+   {
+    "w": "specifically",
+    "ipa": "spəˈsɪfɪkli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "特别地， 特定地； 明确地， 具体地",
+    "ex": "To reduce the computational overhead of extensive proof search, we employ a smaller 7B prover model specifically optimized for processing the decomposed lemmas."
+   },
+   {
+    "w": "strategy",
+    "ipa": "ˈstrætəʤi",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "策略，战略",
+    "ex": "Leveraging the subgoals generated by DeepSeek-V3, we adopt a recursive solving strategy to systematically resolve each intermediate proof step."
+   },
+   {
+    "w": "structural",
+    "ipa": "ˈstrəkʧərəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "结构的，构造的",
+    "ex": "To address this issue, we incorporate a consistency reward in the early steps of training, which penalizes the structural misalignment, explicitly enforcing the inclusion of all decomposed have-structured lemmas in the final …"
+   },
+   {
+    "w": "sufficiently",
+    "ipa": "səˈfɪʃəntli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "足够地，充分地",
+    "ex": "To ensure effective learning, we curate training prompts to include only problems that are sufficiently challenging yet solvable by the supervised fine-tuned model."
+   },
+   {
+    "w": "supervise",
+    "ipa": "ˈsupərˌvaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "监督，监视",
+    "ex": "We perform supervised fine-tuning on DeepSeek-V3-Base-671B (DeepSeek-AI, 2024) using a constant learning rate of 5e-6 within a context window of 16,384 tokens."
+   },
+   {
+    "w": "supervision",
+    "ipa": "ˌsupərˈvɪʒən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "监督",
+    "ex": "Following the standard training objective for reasoning models (DeepSeek-AI, 2025), we use binary correct-or-incorrect feedback as the primary form of reward supervision."
+   },
+   {
+    "w": "synthesis",
+    "ipa": "ˈsɪnθəsəs",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "综合，综合物；（化学或生物学物质的）合成；（用电子方式对声音、语音或音乐的）合成",
+    "ex": "This proof is then appended to DeepSeek-V3’s chain-of-thought, which outlines the corresponding lemma decomposition, thereby producing a cohesive synthesis of informal reasoning and subsequent formalization."
+   },
+   {
+    "w": "synthetic",
+    "ipa": "sɪnˈθɛtɪk",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "合成的，人造的",
+    "ex": "It enables the collection of hundreds of high-quality synthetic cold-start data, which serve as the foundation for training DeepSeek-Prover-V2."
+   },
+   {
+    "w": "systematically",
+    "ipa": "ˌsɪstəˈmætɪkli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "系统地，有规则地",
+    "ex": "Leveraging the subgoals generated by DeepSeek-V3, we adopt a recursive solving strategy to systematically resolve each intermediate proof step."
+   },
+   {
+    "w": "tackle",
+    "ipa": "ˈtækl",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "攻克",
+    "ex": "tackling IMO-level mathematical problems that represent the frontier"
+   },
+   {
+    "w": "theorem",
+    "ipa": "ˈθɪrəm",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "定理；原理，原则",
+    "ex": "We generate two types of subgoal theorems, one incor-porating preceding subgoals as premises and one without, corresponding to Figure 3(b) and"
+   },
+   {
+    "w": "token",
+    "ipa": "ˈtoʊkən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "辅币；象征",
+    "ex": "During each iteration, we sample 256 distinct problems, generating 32 candidate proofs per theorem with a maximum sequence length of 32,768 tokens."
+   },
+   {
+    "w": "tractable",
+    "ipa": "ˈtræktəbəl",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "易于管教的；易驾驭的；易处理的；驯良的",
+    "ex": "To generate denser training signals, Dong and Ma (2025) proposed a self-play approach that enriches training problem sets by generating tractable conjectures closely related to the original theorem statements, thereby enabling …"
+   },
+   {
+    "w": "transparency",
+    "ipa": "trænˈspɛrənsi",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "透明，透明度；幻灯片；有图案的玻璃",
+    "ex": "High-precision Chain-of-Thought (CoT) mode: This mode systematically articulates intermediate reasoning steps, emphasizing transparency and logical progression, before constructing the final formal proofs."
+   },
+   {
+    "w": "ultimate",
+    "ipa": "ˈʌltɪmət",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "终极的",
+    "ex": "with the ultimate aim of tackling IMO-level mathematical problems"
+   },
+   {
+    "w": "underlying",
+    "ipa": "ˌəndərˈlaɪɪŋ",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "潜在的，基础的",
+    "ex": "This procedure builds on the same underlying principle as AlphaProof’s test-time reinforcement learning (DeepMind, 2024), wherein variations of a target problem are generated to enhance the model’s capability in solving …"
+   },
+   {
+    "w": "utilize",
+    "ipa": "ˈjutəˌlaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "利用",
+    "ex": "Training utilizes binary rewards, where each generated Lean proof receives a reward of 1 if verified as correct and 0 otherwise."
+   },
+   {
+    "w": "variation",
+    "ipa": "ˌvɛriˈeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "变化，变动；变异",
+    "ex": "This procedure builds on the same underlying principle as AlphaProof’s test-time reinforcement learning (DeepMind, 2024), wherein variations of a target problem are generated to enhance the model’s capability in solving …"
+   },
+   {
+    "w": "verification",
+    "ipa": "ˌvɛrəfəˈkeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "确认",
+    "ex": "This pipeline provides a natural and scalable mechanism for synthesizing formal reasoning data by combining high-level reasoning from language models with precise formal verification."
+   },
+   {
+    "w": "verify",
+    "ipa": "ˈvɛrəˌfaɪ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "证实，查证；证明",
+    "ex": "Training utilizes binary rewards, where each generated Lean proof receives a reward of 1 if verified as correct and 0 otherwise."
+   },
+   {
+    "w": "widely",
+    "ipa": "ˈwaɪdli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "大大地",
+    "ex": "The training procedure for the non-CoT mode of DeepSeek-Prover-V2 follows the paradigm of expert iteration (Polu and Sutskever, 2020), a widely adopted framework for developing formal theorem provers."
+   }
+  ]
+ },
+ {
+  "sec": "3. Results · 结果",
+  "short": "Results",
+  "icon": "3",
+  "words": [
+   {
+    "w": "abstraction",
+    "ipa": "æbˈstrækʃən",
+    "pos": "n.",
+    "lv": "雅思",
+    "m": "抽象",
+    "ex": "The deliberate inclusion of this diverse array of mathematical fields allows for a thorough assessment of model capabilities across varying levels of abstraction and reasoning styles."
+   },
+   {
+    "w": "accommodate",
+    "ipa": "əˈkɑməˌdeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "适合， 提供住宿",
+    "ex": "When computational budgets are expanded to accommodate 3200 samples, performance on the Lite subset demonstrates a marked improvement to 61.88%."
+   },
+   {
+    "w": "accordingly",
+    "ipa": "əˈkɔrdɪŋli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "因此，所以；照着",
+    "ex": "An interesting finding is that the chain-of-thought reasoning of DeepSeek-Prover-V2-671B can effectively identify misformulations and adapt its proof strategy accordingly."
+   },
+   {
+    "w": "approach",
+    "ipa": "əˈproʊʧ",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "靠近；接近，方法",
+    "ex": "These results further highlight the effectiveness of the CoT reasoning approach in handling challenging, college-level mathematical problems."
+   },
+   {
+    "w": "array",
+    "ipa": "əreɪ",
+    "pos": "v.；n.",
+    "lv": "六级",
+    "m": "（美观地）排列；陈列",
+    "ex": "The deliberate inclusion of this diverse array of mathematical fields allows for a thorough assessment of model capabilities across varying levels of abstraction and reasoning styles."
+   },
+   {
+    "w": "benchmark",
+    "ipa": "ˈbɛnʧˌmɑrk",
+    "pos": "n.；v.",
+    "lv": "专八",
+    "m": "基准；标准检查程序；用基准问题测试（计算机系统等）",
+    "ex": "The benchmark includes Olympiad-level problems covering core areas of elementary mathematics, including algebra, number theory, and induction."
+   },
+   {
+    "w": "bold",
+    "ipa": "boʊld",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "大胆的；冒失的",
+    "ex": "Problems with underlined bolded indices have been solved by DeepSeek-Prover-V2."
+   },
+   {
+    "w": "breakdown",
+    "ipa": "ˈbreɪkˌdaʊn",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "垮， 衰竭； 损坏， 故障； 倒塌",
+    "ex": "Table 2 presents a detailed breakdown of the problems solved by DeepSeek-Prover-V2 on the miniF2F benchmark,"
+   },
+   {
+    "w": "bug",
+    "ipa": "bəg",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "虫子；臭虫",
+    "ex": "We acknowledge the Lean community for their assistance in identifying the cause of this unexpected result, which was traced to a user interface bug in Lean 4.9.0."
+   },
+   {
+    "w": "calculus",
+    "ipa": "ˈkælkjələs",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "微积分；结石",
+    "ex": "This comprehensive benchmark covers number theory, elementary algebra, linear algebra, abstract algebra, calculus, real analysis, complex analysis, functional analysis, and probability."
+   },
+   {
+    "w": "capability",
+    "ipa": "ˌkeɪpəˈbɪləti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "能力，才能",
+    "ex": "The problems from AIME 24&25 have become a standard benchmark for evaluating the reasoning capabilities of large language models."
+   },
+   {
+    "w": "capacity",
+    "ipa": "kəˈpæsɪti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "容量；能力；能量",
+    "ex": "This suggests that high-capacity models may internalize and externalize intermediate reasoning implicitly, even in the absence of explicit CoT prompting 3.2."
+   },
+   {
+    "w": "cardinal",
+    "ipa": "ˈkɑrdɪnəl",
+    "pos": "adj.；n.",
+    "lv": "六级",
+    "m": "最重要的； 基本的；红衣主教；【数】基数",
+    "ex": "Upon closer examination of the model’s outputs, we identified a distinctive pattern in its reasoning approach: the 7B model frequently employs Cardinal.toNat and Cardinal.natCast_inj to exploit this user-interface bug (see …"
+   },
+   {
+    "w": "carefully",
+    "ipa": "ˈkɛrfəli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "小心地",
+    "ex": "In addition to AIME 24&25, we augment our benchmark with problems carefully selected from textbooks used in high school competitions and undergraduate-level courses to strengthen coverage in specific mathematical domains."
+   },
+   {
+    "w": "claim",
+    "ipa": "kleɪm",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "声称，主张；索取",
+    "ex": "Our initial report claimed an unexpected finding that DeepSeek-Prover-V2-7B successfully solved 13 problems on PutnamBench that remained unsolved by its larger 671B counterpart."
+   },
+   {
+    "w": "collaborate",
+    "ipa": "kəˈlæbərˌeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "合作",
+    "ex": "After collaborating with the benchmark maintainers and identifying two misformulated problem statements, the final result stands at 10 solved problems."
+   },
+   {
+    "w": "community",
+    "ipa": "kəmˈjunɪti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "社区；社会；公社",
+    "ex": "We acknowledge the Lean community for their assistance in identifying the cause of this unexpected result, which was traced to a user interface bug in Lean 4.9.0."
+   },
+   {
+    "w": "comparative",
+    "ipa": "kəmˈpærətɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "比较的，相对的",
+    "ex": "Table 6 presents the comparative performance analysis of various theorem provers on both FormalMATH-All and FormalMATH-Lite benchmarks."
+   },
+   {
+    "w": "comparison",
+    "ipa": "kəmˈpɛrəsən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比较，对照；比似",
+    "ex": "In comparison, DeepSeek-Prover-V2-671B, operating under the formal proof generation setting with given correct answers, is able to construct valid formal proofs for 6 of 15 problems."
+   },
+   {
+    "w": "compel",
+    "ipa": "kəmˈpɛl",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "强迫",
+    "ex": "The comparative analysis further reveals a compelling scaling pattern: as the sample budget increases from 1 to 8192, the performance gap between the 7B and 671B variants widens considerably, with the larger model demonstrating …"
+   },
+   {
+    "w": "competitive",
+    "ipa": "kəmˈpɛtɪtɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "竞争的， 比赛的； 好竞争的， 求胜心切的； 有竞争力的",
+    "ex": "DeepSeek-Prover-V2-7B also exhibits competitive performance, surpassing all existing open-source theorem provers in the literature."
+   },
+   {
+    "w": "complement",
+    "ipa": "ˈkɑmpləmənt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "补充",
+    "ex": "Complementing these findings,"
+   },
+   {
+    "w": "comprise",
+    "ipa": "kəmˈpraɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "包含，包括；构成",
+    "ex": "CombiBench (Liu et al., 2025) is a comprehensive benchmark comprising 100 combinatorial competition problems formalized in Lean 4, each paired with its corresponding natural-language statement."
+   },
+   {
+    "w": "contest",
+    "ipa": "ˈkɑntɛst",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比赛",
+    "ex": "Contest Problems AIME 24I P2 , P7 , P13 AIME 24II P4 , P7, P13 , P14 AIME 25I P1 , P8 , P9, P11 AIME 25II P2 , P4 , P13, P15"
+   },
+   {
+    "w": "continuity",
+    "ipa": "ˌkɑntəˈnuəti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "连续， 持续",
+    "ex": "Number theory and algebra problems test a model’s facility with discrete structures and equations, while analysis-oriented problems evaluate understanding of limits, continuity, and calculus."
+   },
+   {
+    "w": "contradiction",
+    "ipa": "ˌkɑntrəˈdɪkʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "矛盾，不一致；否认",
+    "ex": "We include an example in the Appendix C where the model detects a contradiction within a misformulated statement and derives False to close the target goal through exfalso."
+   },
+   {
+    "w": "core",
+    "ipa": "kɔr",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "果实的心，核心",
+    "ex": "The benchmark includes Olympiad-level problems covering core areas of elementary mathematics, including algebra, number theory, and induction."
+   },
+   {
+    "w": "corpus",
+    "ipa": "ˈkɔrpəs",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "[计] 语料库；文集；本金",
+    "ex": "FormalMATH-Lite is a manageable subset of 425 problems (comprising 359 high school-level and 66 undergraduate-level problems) carefully selected from the full corpus, addressing the impracticality of evaluating on the full …"
+   },
+   {
+    "w": "cot",
+    "ipa": "kɑt",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "简易床；小屋；轻便小床",
+    "ex": "These results further highlight the effectiveness of the CoT reasoning approach in handling challenging, college-level mathematical problems."
+   },
+   {
+    "w": "counterpart",
+    "ipa": "ˈkaʊntərˌpɑrt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "对等物",
+    "ex": "The final result stands at 47 problems successfully solved (as shown in Table 4), which significantly outperforms its non-CoT counterpart."
+   },
+   {
+    "w": "cumbersome",
+    "ipa": "ˈkəmbərsəm",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "笨重的；累赘的；难处理的",
+    "ex": "To ensure cleaner formal-izations, we filter out geometry, combinatorics, and counting problems whose representations in Lean are potentially cumbersome."
+   },
+   {
+    "w": "declaration",
+    "ipa": "ˌdɛklərˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "宣布， 宣告； 宣言， 声明； 申报",
+    "ex": "Specifically, the apply? tactic fails to emit sorry declarations under certain corner cases."
+   },
+   {
+    "w": "deliberate",
+    "ipa": "dɪˈlɪbərˌeɪt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "故意的",
+    "ex": "The deliberate inclusion of this diverse array of mathematical fields allows for a thorough assessment of model capabilities across varying levels of abstraction and reasoning styles."
+   },
+   {
+    "w": "demonstrate",
+    "ipa": "ˈdɛmənˌstreɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "证明；展示",
+    "ex": "When computational budgets are expanded to accommodate 3200 samples, performance on the Lite subset demonstrates a marked improvement to 61.88%."
+   },
+   {
+    "w": "denote",
+    "ipa": "dɪˈnoʊt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "指示，意味着",
+    "ex": "evaluation set consisting of 325 problems, while AIME 24&25 denotes a subset of 15 problems formalized from recent AIME competitions."
+   },
+   {
+    "w": "detail",
+    "ipa": "ˈditeɪl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "细节",
+    "ex": "Table 2 presents a detailed breakdown of the problems solved by DeepSeek-Prover-V2 on the miniF2F benchmark,"
+   },
+   {
+    "w": "detect",
+    "ipa": "dɪˈtɛkt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "觉察;检测",
+    "ex": "We include an example in the Appendix C where the model detects a contradiction within a misformulated statement and derives False to close the target goal through exfalso."
+   },
+   {
+    "w": "deviation",
+    "ipa": "ˌdiviˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "背离，偏离；偏差",
+    "ex": "𝜇± 𝜎denotes the average accuracy 𝜇and the standard deviation 𝜎."
+   },
+   {
+    "w": "discrete",
+    "ipa": "dɪˈskrit",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "分离的， 不相关联的",
+    "ex": "Number theory and algebra problems test a model’s facility with discrete structures and equations, while analysis-oriented problems evaluate understanding of limits, continuity, and calculus."
+   },
+   {
+    "w": "distinctive",
+    "ipa": "dɪˈstɪŋktɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "独特的，与众不同的",
+    "ex": "Upon closer examination of the model’s outputs, we identified a distinctive pattern in its reasoning approach: the 7B model frequently employs Cardinal.toNat and Cardinal.natCast_inj to exploit this user-interface bug (see …"
+   },
+   {
+    "w": "distribution",
+    "ipa": "ˌdɪstrəˈbjuʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "分发，分配；分布",
+    "ex": "These problems are divided into two equally sized subsets, denoted by miniF2F-valid and miniF2F-test, each containing 244 problems with an identical distribution across subject areas."
+   },
+   {
+    "w": "drawn",
+    "ipa": "drɔn",
+    "pos": "adj.",
+    "lv": "GRE",
+    "m": "憔悴的",
+    "ex": "The remaining 310 problems are drawn from curated textbook examples and educational tutorials, contributing a diverse and pedagogically grounded collection of formalized mathematical problems."
+   },
+   {
+    "w": "educational",
+    "ipa": "ˌɛʤəˈkeɪʃənəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "教育的， 教育性的",
+    "ex": "The remaining 310 problems are drawn from curated textbook examples and educational tutorials, contributing a diverse and pedagogically grounded collection of formalized mathematical problems."
+   },
+   {
+    "w": "effectively",
+    "ipa": "ˈifɛktɪvli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "有效地",
+    "ex": "An interesting finding is that the chain-of-thought reasoning of DeepSeek-Prover-V2-671B can effectively identify misformulations and adapt its proof strategy accordingly."
+   },
+   {
+    "w": "effectiveness",
+    "ipa": "ˈifɛktɪvnəs",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "效力",
+    "ex": "These results further highlight the effectiveness of the CoT reasoning approach in handling challenging, college-level mathematical problems."
+   },
+   {
+    "w": "elementary",
+    "ipa": "ˌɛləˈmɛnʧri",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "基本的；初级的",
+    "ex": "The benchmark includes Olympiad-level problems covering core areas of elementary mathematics, including algebra, number theory, and induction."
+   },
+   {
+    "w": "emit",
+    "ipa": "ɪˈmɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "发出，排出",
+    "ex": "Specifically, the apply? tactic fails to emit sorry declarations under certain corner cases."
+   },
+   {
+    "w": "encompass",
+    "ipa": "ɛnˈkəmpəs",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "包含；包围，环绕；完成",
+    "ex": "As a result, we formalize 310 problems that encompass a broad spectrum, ranging from elementary mathematics at the competition level to advanced topics typically encountered in undergraduate studies."
+   },
+   {
+    "w": "encounter",
+    "ipa": "ɪnˈkaʊnər",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "遭遇，遇到；遭遇",
+    "ex": "As a result, we formalize 310 problems that encompass a broad spectrum, ranging from elementary mathematics at the competition level to advanced topics typically encountered in undergraduate studies."
+   },
+   {
+    "w": "enrich",
+    "ipa": "ɪnˈrɪtʃ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "充实，丰富",
+    "ex": "to enrich our evaluation, including 15 selected problems"
+   },
+   {
+    "w": "ensure",
+    "ipa": "ɪnˈʃʊr",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "确保",
+    "ex": "To ensure cleaner formal-izations, we filter out geometry, combinatorics, and counting problems whose representations in Lean are potentially cumbersome."
+   },
+   {
+    "w": "equally",
+    "ipa": "ˈikwəli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "同样地；相等地，平等地；公平地",
+    "ex": "These problems are divided into two equally sized subsets, denoted by miniF2F-valid and miniF2F-test, each containing 244 problems with an identical distribution across subject areas."
+   },
+   {
+    "w": "equation",
+    "ipa": "ɪkˈweɪʒən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "方程(式)；等式",
+    "ex": "Number theory and algebra problems test a model’s facility with discrete structures and equations, while analysis-oriented problems evaluate understanding of limits, continuity, and calculus."
+   },
+   {
+    "w": "evaluation",
+    "ipa": "ɪˌvæljuˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "评价，评估",
+    "ex": "This benchmark is designed to enable more comprehensive evaluation across both high-school competition problems and undergraduate-level mathematics."
+   },
+   {
+    "w": "exceptional",
+    "ipa": "ɪkˈsɛpʃənəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "例外的",
+    "ex": "The American In-vitational Mathematics Examination (AIME) is an annual mathematics competition designed to challenge and recognize talented high school students who demonstrate exceptional proficiency in mathematics."
+   },
+   {
+    "w": "exclude",
+    "ipa": "ɪkˈsklud",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "排除，不包括",
+    "ex": "We exclude problems that are incompatible with Lean 4.9.0 and evaluate the model on the remaining set of 649 problems."
+   },
+   {
+    "w": "exclusively",
+    "ipa": "ɪkˈsklusɪvli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "专门地",
+    "ex": "We reserve the miniF2F-test set exclusively for evaluating model performance, while the miniF2F-valid problems are incorporated into curriculum learning with subgoal decomposition."
+   },
+   {
+    "w": "exhibit",
+    "ipa": "ɪgˈzɪbɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "显示；陈列，展览",
+    "ex": "DeepSeek-Prover-V2-7B also exhibits competitive performance, surpassing all existing open-source theorem provers in the literature."
+   },
+   {
+    "w": "experimental",
+    "ipa": "ɪkˌspɛrɪˈmɛntəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "实验的，试验的",
+    "ex": "All experimental results of DeepSeek-Prover-V2 are conducted with Lean 4.9.0-rc2, using the same testing environment as DeepSeek-Prover-V1.5 (Xin et al., 2024b)."
+   },
+   {
+    "w": "exploit",
+    "ipa": "ˌɛkˈsplɔɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "开采",
+    "ex": "Upon closer examination of the model’s outputs, we identified a distinctive pattern in its reasoning approach: the 7B model frequently employs Cardinal.toNat and Cardinal.natCast_inj to exploit this user-interface bug (see …"
+   },
+   {
+    "w": "extend",
+    "ipa": "ɪkˈstɛnd",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "延长；扩大；致",
+    "ex": "These findings highlight the potential of state-of-the-art general-purpose LLMs to extend beyond natural language understanding and effectively support complex formal reasoning tasks."
+   },
+   {
+    "w": "externalize",
+    "ipa": "ikˈstə:nəlaiz",
+    "pos": "v.",
+    "lv": "GRE",
+    "m": "使…表面化",
+    "ex": "This suggests that high-capacity models may internalize and externalize intermediate reasoning implicitly, even in the absence of explicit CoT prompting 3.2."
+   },
+   {
+    "w": "facility",
+    "ipa": "fəˈsɪlɪti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "设施",
+    "ex": "Number theory and algebra problems test a model’s facility with discrete structures and equations, while analysis-oriented problems evaluate understanding of limits, continuity, and calculus."
+   },
+   {
+    "w": "feature",
+    "ipa": "ˈfiʧər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "特点",
+    "ex": "Of these, 15 are formalized from number theory and algebra questions featured in the recent AIME competitions (AIME 24 and 25), offering authentic high-school competition-level challenges."
+   },
+   {
+    "w": "filter",
+    "ipa": "ˈfɪltər",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "过滤；滤纸",
+    "ex": "To ensure cleaner formal-izations, we filter out geometry, combinatorics, and counting problems whose representations in Lean are potentially cumbersome."
+   },
+   {
+    "w": "formalize",
+    "ipa": "ˈfɔrməlaɪz",
+    "pos": "v.",
+    "lv": "托福",
+    "m": "形式化",
+    "ex": "a collection of 325 formalized problems, to enrich our evaluation"
+   },
+   {
+    "w": "functional",
+    "ipa": "ˈfəŋkʃənəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "功能的",
+    "ex": "The abstract algebra and functional analysis components challenge models to reason about abstract structures and spaces, requiring sophisticated formal reasoning capabilities."
+   },
+   {
+    "w": "general-purpose",
+    "ipa": "ˈʤɛnərəl ˈpərpəs",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "通用的，一般用途的（与专用 special-purpose 相对）",
+    "ex": "Prover-V2-671B. These findings highlight the potential of state-of-the-art general-purpose LLMs"
+   },
+   {
+    "w": "hack",
+    "ipa": "hæk",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "黑客攻击",
+    "ex": "Reward Hacking in Reinforcement Learning."
+   },
+   {
+    "w": "highlight",
+    "ipa": "ˈhaɪˌlaɪt",
+    "pos": "—",
+    "lv": "六级",
+    "m": "照亮；突出；强调",
+    "ex": "These results further highlight the effectiveness of the CoT reasoning approach in handling challenging, college-level mathematical problems."
+   },
+   {
+    "w": "highly",
+    "ipa": "ˈhaɪli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "高度地，很，非常",
+    "ex": "The Putnam Competition is a highly prestigious annual mathematics competition for undergraduate students across the United States and Canada, encompassing a variety of college-level domains such as analysis, linear algebra …"
+   },
+   {
+    "w": "identical",
+    "ipa": "aɪˈdɛntɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "相同的",
+    "ex": "These problems are divided into two equally sized subsets, denoted by miniF2F-valid and miniF2F-test, each containing 244 problems with an identical distribution across subject areas."
+   },
+   {
+    "w": "implicitly",
+    "ipa": "ˌɪmˈplɪsətli",
+    "pos": "adv.",
+    "lv": "专八",
+    "m": "暗示地，含蓄地，隐晦地",
+    "ex": "This suggests that high-capacity models may internalize and externalize intermediate reasoning implicitly, even in the absence of explicit CoT prompting 3.2."
+   },
+   {
+    "w": "improvement",
+    "ipa": "ˌɪmˈpruvmənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "改进，改善；改进处",
+    "ex": "When computational budgets are expanded to accommodate 3200 samples, performance on the Lite subset demonstrates a marked improvement to 61.88%."
+   },
+   {
+    "w": "inclusion",
+    "ipa": "ˌɪnˈkluʒən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "包含；内含物",
+    "ex": "The deliberate inclusion of this diverse array of mathematical fields allows for a thorough assessment of model capabilities across varying levels of abstraction and reasoning styles."
+   },
+   {
+    "w": "incompatible",
+    "ipa": "ˌɪnkəmˈpætəbəl",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "不相容的",
+    "ex": "After filtering out problems incompatible with Lean 4.9.0 and those containing multiple sorry placeholders, we evaluate on 77 problems from the benchmark."
+   },
+   {
+    "w": "index",
+    "ipa": "ˈɪndɛks",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "索引；指数；指标",
+    "ex": "Problems with underlined bolded indices have been solved by DeepSeek-Prover-V2."
+   },
+   {
+    "w": "induction",
+    "ipa": "ˌɪnˈdəkʃən",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "就职；归纳推理",
+    "ex": "The benchmark includes Olympiad-level problems covering core areas of elementary mathematics, including algebra, number theory, and induction."
+   },
+   {
+    "w": "interestingly",
+    "ipa": "ˈɪntəˌrɛstɪŋli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "有趣地",
+    "ex": "Interestingly, within the non-CoT setting, the 671B model generates longer outputs on average compared to the 7B model."
+   },
+   {
+    "w": "interface",
+    "ipa": "ˈɪnərˌfeɪs",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "分界面",
+    "ex": "We acknowledge the Lean community for their assistance in identifying the cause of this unexpected result, which was traced to a user interface bug in Lean 4.9.0."
+   },
+   {
+    "w": "invoke",
+    "ipa": "ˌɪnˈvoʊk",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "调用；祈求；引起；恳求",
+    "ex": "miniF2F-valid are collected throughout the curriculum learning process, and DeepSeek-Prover-V2-671B is further invoked with Pass@8192 on the remaining problems."
+   },
+   {
+    "w": "latest",
+    "ipa": "ˈleɪtəst",
+    "pos": "adv.；n.；adj.",
+    "lv": "专四",
+    "m": "最迟地；最后地；最新的事物；最新的，最近的；最迟的，最后的",
+    "ex": "We evaluate our model on the latest release of PutnamBench, which contains 658 problems formalized in Lean 4."
+   },
+   {
+    "w": "lightweight",
+    "ipa": "ˈlaɪtˈweɪt",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "轻量级选手, 不能胜任者",
+    "ex": "Remarkably, our subgoal-guided curriculum learning framework, which integrates the general-purpose model DeepSeek-V3 with a lightweight specialized 7B prover, achieves a 89.8% success rate on miniF2F-valid, nearly matching the …"
+   },
+   {
+    "w": "linear",
+    "ipa": "ˈlɪniər",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "线的；长度的",
+    "ex": "This comprehensive benchmark covers number theory, elementary algebra, linear algebra, abstract algebra, calculus, real analysis, complex analysis, functional analysis, and probability."
+   },
+   {
+    "w": "linguistic",
+    "ipa": "lɪŋgˈwɪstɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "语言的；语言学的",
+    "ex": "This comparison highlights that the performance gap between informal mathematical reasoning and formal theorem proving is substantially narrowing, indicating growing alignment between linguistic understanding and formal logical …"
+   },
+   {
+    "w": "longer",
+    "ipa": "ˈlɔŋgər",
+    "pos": "—",
+    "lv": "托福",
+    "m": "比较久(的)",
+    "ex": "Interestingly, within the non-CoT setting, the 671B model generates longer outputs on average compared to the 7B model."
+   },
+   {
+    "w": "mathematical",
+    "ipa": "ˌmæθəˈmætɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "数学的，数学上的",
+    "ex": "These results further highlight the effectiveness of the CoT reasoning approach in handling challenging, college-level mathematical problems."
+   },
+   {
+    "w": "metric",
+    "ipa": "ˈmɛtrɪk",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "公制的，米制的",
+    "ex": "DeepSeek-Prover-V2-671B demonstrates superior performance across all evaluation metrics, successfully solving 28.31% of problems in the full dataset and 56.00% of problems in the Lite subset with 32 samples."
+   },
+   {
+    "w": "notable",
+    "ipa": "ˈnoʊtəbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "值得注意的；著名的",
+    "ex": "The 7B parameter variant of DeepSeek-Prover-V2 also exhibits notable effectiveness, outperforming previous baselines including Goedel-Prover-SFT (Lin et al., 2025), STP (Dong and Ma, 2025), and Kimina-Prover-Preview-Distill-7B …"
+   },
+   {
+    "w": "notation",
+    "ipa": "noʊˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "记号， 标记法",
+    "ex": "The notation"
+   },
+   {
+    "w": "noticeably",
+    "ipa": "ˈnoʊtɪsəbli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "显著地，显然",
+    "ex": "Upon closer examination of the model’s outputs, we identified a distinctive pattern in its reasoning approach: the 7B model frequently employs Cardinal.toNat and Cardinal.natCast_inj to exploit this user-interface bug (see …"
+   },
+   {
+    "w": "olympiad",
+    "ipa": "oʊˈlɪmpiæd",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "奥林匹克竞赛（学科竞赛）",
+    "ex": "The benchmark includes Olympiad-level problems covering core areas of elementary mathematics, including algebra, number theory, and induction."
+   },
+   {
+    "w": "orient",
+    "ipa": "ˈɔriˌɛnt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使适应，使确定方向",
+    "ex": "Number theory and algebra problems test a model’s facility with discrete structures and equations, while analysis-oriented problems evaluate understanding of limits, continuity, and calculus."
+   },
+   {
+    "w": "parameter",
+    "ipa": "pərˈæmətər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "参（变）数；参量",
+    "ex": "The 7B parameter variant of DeepSeek-Prover-V2 also exhibits notable effectiveness, outperforming previous baselines including Goedel-Prover-SFT (Lin et al., 2025), STP (Dong and Ma, 2025), and Kimina-Prover-Preview-Distill-7B …"
+   },
+   {
+    "w": "persistent",
+    "ipa": "pərˈsɪstənt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "持续的，坚持的",
+    "ex": "These results indicate that, while the prover model is primarily trained in number theory and algebra, it demonstrates promising generalization to combinatorial problems, despite their persistent difficulty."
+   },
+   {
+    "w": "potentially",
+    "ipa": "pəˈtɛnʃəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "潜在地",
+    "ex": "To ensure cleaner formal-izations, we filter out geometry, combinatorics, and counting problems whose representations in Lean are potentially cumbersome."
+   },
+   {
+    "w": "predominantly",
+    "ipa": "ˌprɪˈdɑmənənˌtli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "占主导地位地",
+    "ex": "CoT setting. Notably, despite the training data being predominantly drawn from high-school"
+   },
+   {
+    "w": "primarily",
+    "ipa": "praɪˈmɛrəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "主要地，首先",
+    "ex": "These results indicate that, while the prover model is primarily trained in number theory and algebra, it demonstrates promising generalization to combinatorial problems, despite their persistent difficulty."
+   },
+   {
+    "w": "probability",
+    "ipa": "ˌprɑbəˈbɪləˌti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "可能性；概率",
+    "ex": "This comprehensive benchmark covers number theory, elementary algebra, linear algebra, abstract algebra, calculus, real analysis, complex analysis, functional analysis, and probability."
+   },
+   {
+    "w": "proficiency",
+    "ipa": "prəˈfɪʃənsi",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "熟练，精通",
+    "ex": "The American In-vitational Mathematics Examination (AIME) is an annual mathematics competition designed to challenge and recognize talented high school students who demonstrate exceptional proficiency in mathematics."
+   },
+   {
+    "w": "prompt",
+    "ipa": "prɑmpt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "敏捷的；v. 敦促",
+    "ex": "This suggests that high-capacity models may internalize and externalize intermediate reasoning implicitly, even in the absence of explicit CoT prompting 3.2."
+   },
+   {
+    "w": "reinforce",
+    "ipa": "ˌriɪnˈfɔrs",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "加强，强化",
+    "ex": "This reinforces the effectiveness of CoT prompting, which encourages decomposition of complex problems into intermediate steps, and further confirms that inference-time scaling holds in the domain of formal theorem proving."
+   },
+   {
+    "w": "release",
+    "ipa": "riˈlis",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "发布，释放",
+    "ex": "We evaluate our model on the latest release of PutnamBench, which contains 658 problems formalized in Lean 4."
+   },
+   {
+    "w": "remarkably",
+    "ipa": "rɪˈmɑrkəbli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "非凡地；显著地",
+    "ex": "Remarkably, our subgoal-guided curriculum learning framework, which integrates the general-purpose model DeepSeek-V3 with a lightweight specialized 7B prover, achieves a 89.8% success rate on miniF2F-valid, nearly matching the …"
+   },
+   {
+    "w": "representation",
+    "ipa": "ˌrɛprəzɛnˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "描写；陈述；代表",
+    "ex": "To ensure cleaner formal-izations, we filter out geometry, combinatorics, and counting problems whose representations in Lean are potentially cumbersome."
+   },
+   {
+    "w": "respective",
+    "ipa": "rɪˈspɛktɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "各自的，各个的",
+    "ex": "Without further specification, baseline evaluation results are sourced from their respective original papers."
+   },
+   {
+    "w": "respectively",
+    "ipa": "rɪˈspɛktɪvli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "各自地",
+    "ex": "We use the Lean 4 translation of ProofNet made available by Xin et al. (2024b), which is further divided into two splits: ProofNet-valid and ProofNet-test, containing 185 and 186 problems, respectively."
+   },
+   {
+    "w": "response",
+    "ipa": "rɪˈspɑns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "反应",
+    "ex": "over 16 sampled responses, the model successfully solves 8 out of 15 problems. In comparison,"
+   },
+   {
+    "w": "reveal",
+    "ipa": "rɪˈvil",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "揭露，揭示",
+    "ex": "A closer examination reveals that, although explicit reasoning is not prompted in the non-CoT mode, the larger model often inserts brief natural language comments within the proof code that resemble implicit reasoning steps (see …"
+   },
+   {
+    "w": "revise",
+    "ipa": "rɪˈvaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "修订",
+    "ex": "We adopt the revised version of miniF2F released by Wang et al. (2025), and further introduce two additional revisions to miniF2F-valid and one revision to miniF2F-test (see Appendix D)."
+   },
+   {
+    "w": "robust",
+    "ipa": "roʊˈbəst",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "强健的",
+    "ex": "Prover-SFT and STP on PutnamBench are sourced from their original papers, which conducted evaluations on an earlier version of PutnamBench comprising 644 problems. level mathematics, the model exhibits strong generalization to …"
+   },
+   {
+    "w": "sample",
+    "ipa": "ˈsæmpəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "样品；实例，标本",
+    "ex": "When computational budgets are expanded to accommodate 3200 samples, performance on the Lite subset demonstrates a marked improvement to 61.88%."
+   },
+   {
+    "w": "selection",
+    "ipa": "səˈlɛkʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "选择，挑选",
+    "ex": "Table 8 | Selection of AIME 24&25 problems for"
+   },
+   {
+    "w": "solution",
+    "ipa": "səˈluʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "解决，解答，解决办法",
+    "ex": "We evaluate DeepSeek-Prover-V2 in the with-solution setting of this benchmark, where the correct answer is embedded in the Lean statement, allowing the evaluation to focus solely on proof generation."
+   },
+   {
+    "w": "solve",
+    "ipa": "sɑlv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "解决",
+    "ex": "The final result stands at 47 problems successfully solved (as shown in Table 4), which significantly outperforms its non-CoT counterpart."
+   },
+   {
+    "w": "source",
+    "ipa": "sɔrs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "来源",
+    "ex": "Without further specification, baseline evaluation results are sourced from their respective original papers."
+   },
+   {
+    "w": "specialize",
+    "ipa": "ˈspɛʃəˌlaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "专业从事",
+    "ex": "Remarkably, our subgoal-guided curriculum learning framework, which integrates the general-purpose model DeepSeek-V3 with a lightweight specialized 7B prover, achieves a 89.8% success rate on miniF2F-valid, nearly matching the …"
+   },
+   {
+    "w": "specification",
+    "ipa": "ˌspɛsɪfɪˈkeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "说明书",
+    "ex": "Without further specification, baseline evaluation results are sourced from their respective original papers."
+   },
+   {
+    "w": "spectrum",
+    "ipa": "ˈspɛktrəm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "系列，范围；波谱",
+    "ex": "As a result, we formalize 310 problems that encompass a broad spectrum, ranging from elementary mathematics at the competition level to advanced topics typically encountered in undergraduate studies."
+   },
+   {
+    "w": "strategic",
+    "ipa": "strəˈtiʤɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "对全局有重要意义的， 关键的； 战略的",
+    "ex": "Through strategic subgoal decomposition, the model is able to break down challenging problems into a sequence of tractable steps, serving as an effective bridge between informal reasoning and formal proof construction. #output …"
+   },
+   {
+    "w": "structure",
+    "ipa": "ˈstrəkʧər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "结构",
+    "ex": "The abstract algebra and functional analysis components challenge models to reason about abstract structures and spaces, requiring sophisticated formal reasoning capabilities."
+   },
+   {
+    "w": "substantial",
+    "ipa": "səbˈstænʃəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "大量的",
+    "ex": "The results, shown in Table 4, indicate a substantial improvement in the pass rate of DeepSeek-Prover-V2 when using CoT reasoning compared to the non-CoT setting."
+   },
+   {
+    "w": "substantially",
+    "ipa": "səbˈstænʃəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "大幅地",
+    "ex": "is substantially narrowing"
+   },
+   {
+    "w": "successfully",
+    "ipa": "səkˈsɛsfəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "成功地",
+    "ex": "The final result stands at 47 problems successfully solved (as shown in Table 4), which significantly outperforms its non-CoT counterpart."
+   },
+   {
+    "w": "summarize",
+    "ipa": "ˈsəmərˌaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "概括，概述，总结",
+    "ex": "Table 1 summarizes a comparison of state-of-the-art formal"
+   },
+   {
+    "w": "surpass",
+    "ipa": "sərˈpæs",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "超过",
+    "ex": "DeepSeek-Prover-V2-7B also exhibits competitive performance, surpassing all existing open-source theorem provers in the literature."
+   },
+   {
+    "w": "tactic",
+    "ipa": "ˈtæktɪk",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "(s)策略,战术",
+    "ex": "Specifically, the apply? tactic fails to emit sorry declarations under certain corner cases."
+   },
+   {
+    "w": "tag",
+    "ipa": "tæg",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "附加语；标签",
+    "ex": "The tags CoT and non-CoT refer to two generation modes of a unified model, each guided by a different prompt."
+   },
+   {
+    "w": "trace",
+    "ipa": "treɪs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "痕迹",
+    "ex": "We acknowledge the Lean community for their assistance in identifying the cause of this unexpected result, which was traced to a user interface bug in Lean 4.9.0."
+   },
+   {
+    "w": "trajectory",
+    "ipa": "trəˈʤɛktəri",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "[物](射线的) 轨道, 弹道, 轨线",
+    "ex": "The comparative analysis further reveals a compelling scaling pattern: as the sample budget increases from 1 to 8192, the performance gap between the 7B and 671B variants widens considerably, with the larger model demonstrating …"
+   },
+   {
+    "w": "tutorial",
+    "ipa": "tuˈtɔriəl",
+    "pos": "adj.；n.",
+    "lv": "六级",
+    "m": "辅导的；家庭教师的，个别指导的；个别指导",
+    "ex": "The remaining 310 problems are drawn from curated textbook examples and educational tutorials, contributing a diverse and pedagogically grounded collection of formalized mathematical problems."
+   },
+   {
+    "w": "undergraduate",
+    "ipa": "ˌəndərˈgræʤəwət",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "大学在校生",
+    "ex": "This benchmark is designed to enable more comprehensive evaluation across both high-school competition problems and undergraduate-level mathematics."
+   },
+   {
+    "w": "underscore",
+    "ipa": "ˌəndərˈskɔr",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "强调",
+    "ex": "Prover-SFT and STP on PutnamBench are sourced from their original papers, which conducted evaluations on an earlier version of PutnamBench comprising 644 problems. level mathematics, the model exhibits strong generalization to …"
+   },
+   {
+    "w": "unexpected",
+    "ipa": "ˌənɪkˈspɛktɪd",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "想不到的，意外的",
+    "ex": "We acknowledge the Lean community for their assistance in identifying the cause of this unexpected result, which was traced to a user interface bug in Lean 4.9.0."
+   },
+   {
+    "w": "unify",
+    "ipa": "ˈjunəˌfaɪ",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "使联合， 统一； 使相同， 使一致",
+    "ex": "The tags CoT and non-CoT refer to two generation modes of a unified model, each guided by a different prompt."
+   },
+   {
+    "w": "unprecedented",
+    "ipa": "ənˈprɛsɪˌdɛntɪd",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "史无前例的",
+    "ex": "The experimental results demonstrate that DeepSeek-Prover-V2-671B establishes a new state-of-the-art performance on the miniF2F-test benchmark, achieving an unprecedented 82.4% accuracy with only 32 samples when leveraging the …"
+   },
+   {
+    "w": "variant",
+    "ipa": "ˈvɛriənt",
+    "pos": "adj.；n.",
+    "lv": "六级",
+    "m": "不同的；多样的；变体；转化",
+    "ex": "The test split of ProofNet is reserved exclusively for model evaluation, as variants of the ProofNet-valid problems are included in the public synthetic dataset provided by Dong and Ma (2025), which is used in our supervised …"
+   },
+   {
+    "w": "vary",
+    "ipa": "ˈvɛri",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "变化；不同",
+    "ex": "The deliberate inclusion of this diverse array of mathematical fields allows for a thorough assessment of model capabilities across varying levels of abstraction and reasoning styles."
+   },
+   {
+    "w": "widen",
+    "ipa": "ˈwaɪdən",
+    "pos": "v.；v.",
+    "lv": "四级",
+    "m": "加宽；变宽",
+    "ex": "The comparative analysis further reveals a compelling scaling pattern: as the sample budget increases from 1 to 8192, the performance gap between the 7B and 671B variants widens considerably, with the larger model demonstrating …"
+   }
+  ]
+ },
+ {
+  "sec": "4. Conclusion · 结论",
+  "short": "Concl",
+  "icon": "4",
+  "words": [
+   {
+    "w": "automate",
+    "ipa": "ˈɔtəˌmeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使自动化",
+    "ex": "Our future work will focus on scaling this paradigm to an AlphaProof-like system with the ultimate aim of tackling IMO-level mathematical problems that represent the frontier of automated theorem proving challenges."
+   },
+   {
+    "w": "comprehensive",
+    "ipa": "ˌkɑmprɪˈhensɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "全面的",
+    "ex": "we propose a comprehensive pipeline for synthesizing cold-start reasoning data"
+   },
+   {
+    "w": "efficiently",
+    "ipa": "ɪˈfɪʃəntli",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "有效地",
+    "ex": "Our approach com-bines high-level proof sketches with formal steps, creating a sequence of manageable subgoals that can be efficiently solved using a smaller 7B model, significantly reducing computational re-quirements."
+   },
+   {
+    "w": "establish",
+    "ipa": "ɪˈstæblɪʃ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "建立",
+    "ex": "The resulting DeepSeek-Prover-V2-671B model establishes a new state-of-the-art in neural theorem proving across multiple benchmarks."
+   },
+   {
+    "w": "formal",
+    "ipa": "ˈfɔrməl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "正式的；礼仪上的",
+    "ex": "Conclusion In this work, we propose a comprehensive pipeline for synthesizing cold-start reasoning data to advance formal theorem proving."
+   },
+   {
+    "w": "increasingly",
+    "ipa": "ɪnˈkriːsɪŋli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "日益",
+    "ex": "to generate increasingly difficult training tasks"
+   },
+   {
+    "w": "manageable",
+    "ipa": "ˈmænɪdʒəbl",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "可控的",
+    "ex": "creating a sequence of manageable subgoals"
+   },
+   {
+    "w": "paradigm",
+    "ipa": "ˈpærədaɪm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "范式",
+    "ex": "scaling this paradigm to an AlphaProof-like system"
+   },
+   {
+    "w": "pipeline",
+    "ipa": "ˈpaɪˌplaɪn",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "管道, 传递途径",
+    "ex": "Conclusion In this work, we propose a comprehensive pipeline for synthesizing cold-start reasoning data to advance formal theorem proving."
+   },
+   {
+    "w": "significant",
+    "ipa": "sɪgˈnɪfɪkənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "重要的",
+    "ex": "The subsequent reinforcement learning stage substantially enhanced this connection, leading to significant improvements in formal theorem proving capabilities."
+   },
+   {
+    "w": "subsequent",
+    "ipa": "ˈsʌbsɪkwənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "随后的",
+    "ex": "The subsequent reinforcement learning stage substantially enhanced this connection"
+   },
+   {
+    "w": "wherein",
+    "ipa": "werˈɪn",
+    "pos": "adv.",
+    "lv": "超纲",
+    "m": "其中",
+    "g": "g",
+    "ex": "a recursive theorem-proving framework, wherein DeepSeek-V3 serves as a unified model"
+   }
+  ]
+ },
+ {
+  "sec": "References · 参考文献区用词（正文未出现）",
+  "short": "文献区",
+  "icon": "R",
+  "words": [
+   {
+    "w": "actually",
+    "ipa": "ˈæˌkʧuəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "实际上；竟然",
+    "ex": "But to actually prove ‘ubiquitous W (x i)‘, we need to prove ‘appears W ⟨2, _⟩‘, etc., but we can derive ‘false‘ from ‘hW’ 0‘."
+   },
+   {
+    "w": "alternatively",
+    "ipa": "ɔlˈtərnətɪvli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "二选一地；非此即彼",
+    "ex": "2. **Derive an Upper Bound for 𝑘**: −Use inequalities to show that 𝑘< 4, i.e., 𝑘⩽3. −Alternatively, note that for 𝑝, 𝑞, 𝑟in the given range, 𝑘⩽3 is natural, as larger 𝑘would make the right side too large."
+   },
+   {
+    "w": "applicable",
+    "ipa": "ˈæpləkəbəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "能应用的；适当的",
+    "ex": "But still: −‘hW’ 0 . . .‘ is not directly applicable because ‘0 : N‘ is ‘< N‘ (as ‘N > 2 ^ n.1 ⩾1‘), but ‘Function.Periodic W 0‘ is ‘∀z : Z, W (z + 0) = W z‘, which is trivially true (‘z + 0 = z‘)."
+   },
+   {
+    "w": "buggy",
+    "ipa": "ˈbəgi",
+    "pos": "n.；adj.",
+    "lv": "专八",
+    "m": "童车；双轮单座轻马车；多虫的",
+    "ex": "Examples of the Buggy Proofs Generated by DeepSeek-Prover-V2-7B on PutnamBench Triggering the User Interface Bug of apply? import Mathlib open Nat Set /−−"
+   },
+   {
+    "w": "calculation",
+    "ipa": "ˌkælkjəˈleɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "计算，计算结果",
+    "ex": "But the precise calculation is not needed."
+   },
+   {
+    "w": "cannot",
+    "ipa": "ˈkænɑt",
+    "pos": "conj.",
+    "lv": "托福",
+    "m": "不能",
+    "ex": "However, ‘N’ = 1‘ is possible (if ‘N > 1‘), but ‘W‘ cannot be periodic with ‘N’ = 1‘, as there are only two possible ‘W‘s (both constant), but ‘hW’‘ forbids this."
+   },
+   {
+    "w": "clarity",
+    "ipa": "ˈklɛrɪti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "清晰，清楚",
+    "ex": "To enhance clarity, model outputs are reformulated using inline LaTeX expressions."
+   },
+   {
+    "w": "coefficient",
+    "ipa": "ˌkoʊəˈfɪʃənt",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "协同因素；系数，率",
+    "ex": "Find the number of pairs 𝑃, 𝑄of polynomials with real coefficients such that \\[ (P(X))^2 + (Q(X))^2 = X^{2n} + 1 \\] and deg 𝑃> deg 𝑄. −/theorem putnam_2007_b4 (n : N) (npos : n > 0) :"
+   },
+   {
+    "w": "con",
+    "ipa": "kɑn",
+    "pos": "n.；v.；adv.；adj.；prep.",
+    "lv": "专八",
+    "m": "反对票；反对论；精读；默记；反面地；欺诈的；以…",
+    "ex": "appears W ⟨U.1 + 1, Fin.snoc U.2 0⟩∧ appears W ⟨U.1 + 1, Fin.snoc U.2 1⟩∧ appears W ⟨U.1 + 1, Fin.cons 0 U.2⟩∧ appears W ⟨U.1 + 1, Fin.cons 1 U.2⟩ /-- Let 𝑛be a positive integer and let 𝑊= . . . 𝑥−1𝑥0𝑥1𝑥2 . . . be an infinite …"
+   },
+   {
+    "w": "deduction",
+    "ipa": "dɪˈdəkʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "扣款",
+    "ex": "In Automated Deduction–CADE 28: 28th International Conference on Automated Deduction, Virtual Event, July 12–15, 2021, Proceedings 28, pages 625–635."
+   },
+   {
+    "w": "define",
+    "ipa": "dɪˈfaɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "下定义，确定",
+    "ex": "But we must ensure ‘x‘ is defined and uses the correct type. ### Step−by−Step Abstract Plan 1."
+   },
+   {
+    "w": "definition",
+    "ipa": "ˌdɛfəˈnɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "定义",
+    "ex": "The definitions:"
+   },
+   {
+    "w": "dominate",
+    "ipa": "ˈdɑməˌneɪt",
+    "pos": "vi.；vt.",
+    "lv": "六级",
+    "m": "拥有优势；在…中占首要地位；支配，统治，控制；耸立于，俯视",
+    "ex": "For 𝑝⩾4, the term (𝑝−2)(𝑞−2)(𝑟−2) dominates 2𝑝+ 2𝑞+ 2𝑟−7, so no solutions will exist."
+   },
+   {
+    "w": "dual",
+    "ipa": "duəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "双的， 两重的",
+    "ex": "Lyra: Orchestrating dual correction in automated theorem proving."
+   },
+   {
+    "w": "eleventh",
+    "ipa": "ˈilɛvənθ",
+    "pos": "num.",
+    "lv": "四级",
+    "m": "第十一(个)",
+    "ex": "In The Eleventh International Conference on Learning Representations, 2023."
+   },
+   {
+    "w": "embed",
+    "ipa": "ɪmˈbɛd",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "把…嵌入， 扎牢； 使深留脑中",
+    "ex": "Since we have ‘False‘, construct any trivial ‘x‘ (e.g., constant embedding to ‘⟨1, fun _ => 0⟩‘)."
+   },
+   {
+    "w": "enigma",
+    "ipa": "ɪˈnɪgmə",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "谜，不可思议的东西",
+    "ex": "Decomposing the enigma: Subgoal-based demonstration learning for formal theorem proving. arXiv preprint arXiv:2305.16366, 2023."
+   },
+   {
+    "w": "factor",
+    "ipa": "ˈfæktər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "因素；因子，系数",
+    "ex": "Set 𝑝= 4: 4𝑞𝑟−1 = 3(3)(𝑞−1)(𝑟−1) 4𝑞𝑟−1 = 9𝑞𝑟−9𝑞−9𝑟+ 9 −5𝑞𝑟+ 9𝑞+ 9𝑟−10 = 0 Multiply by 5: −25𝑞𝑟+ 45𝑞+ 45𝑟−50 = 0 Factor: (5𝑞−9)(5𝑟−9) = 31 Since 𝑞⩾5, 𝑟⩾6, (5𝑞−9) ⩾16, (5𝑟−9) ⩾21, so left side is ⩾16 · 21 = 336 > 31."
+   },
+   {
+    "w": "fin",
+    "ipa": "fɪn",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "鱼鳍；鳍状物；尾翅；散热片",
+    "ex": "The goal is to find an injective function from ‘Fin n‘ to ubiquitous finite nonempty words in ‘W‘"
+   },
+   {
+    "w": "finite",
+    "ipa": "ˈfaɪˌnaɪt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "有限的；有尽的",
+    "ex": "A finite nonempty word 𝑈is said to appear in 𝑊if there exist indices 𝑘⩽ℓsuch that 𝑈= 𝑥𝑘𝑥𝑘+1 . . . 𝑥ℓ."
+   },
+   {
+    "w": "generic",
+    "ipa": "ʤəˈnɛrɪk",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "【生物】 属的， 类的； 一般的， 普通的",
+    "ex": "Isabelle a Generic Theorem Prover."
+   },
+   {
+    "w": "hence",
+    "ipa": "hɛns",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "因此，所以；今后",
+    "ex": "But ‘hW’ 0 (by linarith)‘ states ‘¬Function.Periodic W 0‘, which is false. **Conclusion**: The assumptions in the Lean problem are contradictory because: 1. ‘N > 2 ^ n.1 ⩾1‘ (‘n : N+‘ so ‘n.1 ⩾1‘), hence ‘N ⩾2‘ (as ‘N : N‘ and ‘2 …"
+   },
+   {
+    "w": "hypothesis",
+    "ipa": "haɪˈpɑθəsəs",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "假设，假说",
+    "ex": "Thus, the initial step is to derive ‘false‘ from the hypotheses. Then, we can use ‘false.elim‘ to"
+   },
+   {
+    "w": "identity",
+    "ipa": "aɪˈdɛntəˌti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "身份",
+    "ex": "−−Use the quadratic equation to solve for the sum of cosines have h11 : Real.cos (Real.pi / 7) = Real.cos (Real.pi / 7) := rfl have h12 : 8 * Real.cos (Real.pi / 7) ^ 3 −4 * Real.cos (Real.pi / 7) ^ 2 −4 * Real.cos (Real.pi / 7) …"
+   },
+   {
+    "w": "imply",
+    "ipa": "ˌɪmˈplaɪ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "意味；暗示",
+    "ex": "Wait, ‘n : N+‘ is a positive integer (‘n.1 ⩾1‘), so: −‘n.1 ⩾1‘ implies ‘2 ^ n.1 ⩾2 ^ 1 = 2‘, so ‘N > 2‘ and ‘N ⩾3‘."
+   },
+   {
+    "w": "infinite",
+    "ipa": "ˈɪnfənət",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "无限的",
+    "ex": "appears W ⟨U.1 + 1, Fin.snoc U.2 0⟩∧ appears W ⟨U.1 + 1, Fin.snoc U.2 1⟩∧ appears W ⟨U.1 + 1, Fin.cons 0 U.2⟩∧ appears W ⟨U.1 + 1, Fin.cons 1 U.2⟩ /-- Let 𝑛be a positive integer and let 𝑊= . . . 𝑥−1𝑥0𝑥1𝑥2 . . . be an infinite …"
+   },
+   {
+    "w": "input",
+    "ipa": "ˈɪnˌpʊt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "输入；投入的资金",
+    "ex": "Input: Complete the following Lean 4 code: ‘‘‘lean4 import Mathlib"
+   },
+   {
+    "w": "intelligent",
+    "ipa": "ˌɪnˈtɛləʤənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "智能的",
+    "ex": "Intelligent problem-solving as integrated hierarchical reinforcement learning."
+   },
+   {
+    "w": "internship",
+    "ipa": "ˈɪntərnˌʃɪp",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "实习生身份； 实习医师期",
+    "ex": "†Work done during internship at DeepSeek-AI."
+   },
+   {
+    "w": "invalid",
+    "ipa": "ˌɪnˈvæləd",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "无效的",
+    "ex": "The correct equation is: 2𝑞𝑟−1 = 3(1)(𝑞−1)(𝑟−1) = 3(𝑞𝑟−𝑞−𝑟+ 1) Thus: 2𝑞𝑟−1 = 3𝑞𝑟−3𝑞−3𝑟+ 3 −𝑞𝑟+ 3𝑞+ 3𝑟−4 = 0 Multiply by −1: 𝑞𝑟−3𝑞−3𝑟+ 4 = 0 Add 5: 𝑞𝑟−3𝑞−3𝑟+ 9 = 5 Factor: (𝑞−3)(𝑟−3) = 5 Since 𝑞⩾3, 𝑟⩾4, possible pairs are: −𝑞−3 = …"
+   },
+   {
+    "w": "large-scale",
+    "ipa": "ˈlɑrʤˌskeɪl",
+    "pos": "adj.",
+    "lv": "雅思",
+    "m": "大规模的， 大范围的",
+    "ex": "Prover: Advancing theorem proving in llms through large-scale synthetic data. arXiv preprint"
+   },
+   {
+    "w": "manual",
+    "ipa": "ˈmænjuəl",
+    "pos": "adj.；n.",
+    "lv": "四级",
+    "m": "体力的；手册",
+    "ex": "The Coq proof assistant reference manual."
+   },
+   {
+    "w": "matrix",
+    "ipa": "ˈmeɪtrɪks",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "[数] 矩阵；模型；[生物][地质] 基质；母体；子宫；[地质] 脉石",
+    "ex": "−/theorem putnam_2005_a4 (n : N) (H : Matrix (Fin n) (Fin n) R) (a b : N) (S : Matrix (Fin a) (Fin b) R) (npos : n ⩾1) (Hentries : ∀i j : Fin n, H i j = 1 ∨H i j = −1) (Hortho : H.HasOrthogonalRows) (hab : 1 ⩽a ∧a ⩽n ∧1 ⩽b ∧b ⩽n)"
+   },
+   {
+    "w": "minimal",
+    "ipa": "ˈmɪnəməl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "最低的，最小限度的",
+    "ex": "Suppose that the minimal period 𝑁of 𝑊is greater than 2𝑛."
+   },
+   {
+    "w": "monotone",
+    "ipa": "ˈmɑnəˌtoʊn",
+    "pos": "n.；adj.；vt.",
+    "lv": "专八",
+    "m": "单调；单音调；单调的；单调地读",
+    "ex": "Then ‘2 ^ n.1 ⩾2 ^ 1 = 2‘ (since ‘n.1 ⩾1‘ and ‘2 ^ (·)‘ is monotone)."
+   },
+   {
+    "w": "mutually",
+    "ipa": "mˈjuʧuəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "互相地",
+    "ex": "Let 𝐻be an 𝑛× 𝑛matrix all of whose entries are ±1 and whose rows are mutually orthogonal."
+   },
+   {
+    "w": "necessarily",
+    "ipa": "ˌnɛsəˈsɛrəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "必然，必定",
+    "ex": "Since ‘N ⩾1‘ (as ‘N > 2 ^ n.1 ⩾1‘), ‘N’ = 0 < N‘. −‘Function.Periodic W 0‘ means ‘∀z, W (z + 0) = W z‘, i.e., ‘∀z, W z = W z‘, which is always true. −But ‘hW’ 0 (by linarith)‘ gives ‘¬Function.Periodic W 0‘, i.e., false. −So, the …"
+   },
+   {
+    "w": "norm",
+    "ipa": "nɔrm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "标准，规范；平均数",
+    "ex": "have h_false : False := by have h1 : 0 < N := by have h2 : 2 ^ n.1 ⩾2 ^ 1 := by apply Nat.pow_le_pow_of_le_right · norm_num · have h3 : n.1 ⩾1 := by exact Nat.one_le_of_lt n.2 linarith have h3 : N > 2 ^ n.1 := hN have h4 : N > 0 …"
+   },
+   {
+    "w": "observation",
+    "ipa": "ˌɑbzərˈveɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "注意；观察；观察力",
+    "ex": "#### Observations and Strategy:"
+   },
+   {
+    "w": "odd",
+    "ipa": "ɑd",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "奇数的；单只的",
+    "ex": "𝑘=0 (2𝑘+ 1) = 𝑛2.−/theorem induction_sum_odd (n : N) : (Í k in Finset.range n, 2 * k) + 1 = n ^ 2 := by"
+   },
+   {
+    "w": "omega",
+    "ipa": "oʊˈmɛgə",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "最后；终了；希腊字母的最后一个字Ω",
+    "ex": "interval_cases ((q : Z) −3).natAbs <;> norm_num at h39 ⊢<;> omega"
+   },
+   {
+    "w": "orchestrate",
+    "ipa": "ˈɔrkɪˌstreɪt",
+    "pos": "v.",
+    "lv": "专八",
+    "m": "把…编成管弦乐曲；（美）精心安排；把…协调地结合起来",
+    "ex": "Lyra: Orchestrating dual correction in automated theorem proving."
+   },
+   {
+    "w": "periodic",
+    "ipa": "ˌpɪriˈɑdɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "周期的；一定时期的",
+    "ex": "But ‘hW’ 0 h‘ (where ‘h : 0 < N‘ is ‘Nat.lt_of_succ_le (by . . .)‘), gives ‘¬Function.Periodic W 0‘, which is false, so ‘false‘ follows."
+   },
+   {
+    "w": "precisely",
+    "ipa": "prɪˈsaɪsli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "正好",
+    "ex": "Contradiction! −More precisely, take ‘N’ = 0‘."
+   },
+   {
+    "w": "proceeding",
+    "ipa": "prəˈsidɪŋ",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "程序，行动，事项",
+    "ex": "In Automated Deduction–CADE 28: 28th International Conference on Automated Deduction, Virtual Event, July 12–15, 2021, Proceedings 28, pages 625–635."
+   },
+   {
+    "w": "prod",
+    "ipa": "prɑd",
+    "pos": "n.；v.",
+    "lv": "考博",
+    "m": "刺针；刺棒；签子；刺，戳；刺激",
+    "ex": "𝑘=1(1 + 1/𝑘3) ⩽3 −1/𝑛.−/theorem induction_prod1p1onk3le3m1onn (n : N) (h0 : 0 < n) :"
+   },
+   {
+    "w": "prop",
+    "ipa": "prɑp",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "支柱，支撑物；支持者；道具；（橄榄球中的）支柱前锋；支撑，支持，维持；使倚靠在某物上",
+    "ex": "def ubiquitous (W : Z →Fin 2) (U : Σ n, Fin n →Fin 2) : Prop :="
+   },
+   {
+    "w": "quadratic",
+    "ipa": "kwɑˈdrætɪk",
+    "pos": "adj.；n.",
+    "lv": "专八",
+    "m": "[数] 二次的；二次方程式",
+    "ex": "−−Use the quadratic equation to solve for the sum of cosines have h11 : Real.cos (Real.pi / 7) = Real.cos (Real.pi / 7) := rfl have h12 : 8 * Real.cos (Real.pi / 7) ^ 3 −4 * Real.cos (Real.pi / 7) ^ 2 −4 * Real.cos (Real.pi / 7) …"
+   },
+   {
+    "w": "ratio",
+    "ipa": "ˈreɪʃiˌoʊ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比，比率",
+    "ex": "theorem proving, reaching 88.9% pass ratio on the MiniF2F-test and solving 47 out of 658"
+   },
+   {
+    "w": "rewrite",
+    "ipa": "ˈriˌraɪt",
+    "pos": "v.；n.",
+    "lv": "专四",
+    "m": "改写；重写；重写或改写的文稿；改写的作品",
+    "ex": "Similarly, for larger 𝑝⩾4, no solutions exist, because the term 𝑝𝑞𝑟dominates. #### Step 4: Conclusion The only triples (𝑝, 𝑞, 𝑟) satisfying all conditions are (2, 4, 8) and (3, 5, 15). ### Step−by−Step Abstract Plan 1. …"
+   },
+   {
+    "w": "sentry",
+    "ipa": "ˈsɛntri",
+    "pos": "n.；vi.；vt.",
+    "lv": "专八",
+    "m": "哨兵；岗哨；放哨；设岗哨",
+    "ex": "(Sentries : ∀(i : Fin a) (j : Fin b), S i j = 1)"
+   },
+   {
+    "w": "separately",
+    "ipa": "ˈsɛpərətli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "分别地，另行",
+    "ex": "−−We need to handle each case of k separately"
+   },
+   {
+    "w": "shift",
+    "ipa": "ʃɪft",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "替换，转移；转换",
+    "ex": "4. **Using Periodicity**: −Since ‘W‘ is periodic with period ‘N‘, we can shift ‘k‘ by multiples of ‘N‘ to get the same word. −For any ‘m : N+‘, the constant word ‘(m, fun _ => a)‘ appears in ‘W‘ if ‘W‘ has ‘a‘ anywhere (‘k‘ can …"
+   },
+   {
+    "w": "similarly",
+    "ipa": "ˈsɪmələrli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "类似地，相似地",
+    "ex": "Similarly, set 𝑝= 3: 3𝑞𝑟−1 = 2(2)(𝑞−1)(𝑟−1) 3𝑞𝑟−1 = 4(𝑞𝑟−𝑞−𝑟+ 1) 3𝑞𝑟−1 = 4𝑞𝑟−4𝑞−4𝑟+ 4 −𝑞𝑟+ 4𝑞+ 4𝑟−5 = 0 𝑞𝑟−4𝑞−4𝑟+ 5 = 0 Add 11: 𝑞𝑟−4𝑞−4𝑟+ 16 = 11 Factor: (𝑞−4)(𝑟−4) = 11 Since 𝑞> 𝑝= 3, 𝑞⩾4, and 𝑟> 𝑞, possible factorings are: −𝑞−4 …"
+   },
+   {
+    "w": "sin",
+    "ipa": "sɪn",
+    "pos": "vi.；n.",
+    "lv": "四级",
+    "m": "犯戒律， 犯过失；罪，罪孽",
+    "ex": "Real.sin_le_one (3 * (Real.pi / 7)), Real.cos_le_one (Real.pi / 7), Real.cos_le_one (2 * (Real.pi /"
+   },
+   {
+    "w": "singleton",
+    "ipa": "ˈsɪŋgəltən",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "一个, 独身",
+    "ex": "→Fin 2‘ is a singleton), but ‘n = 0‘ gives ‘(x i).1 ≠0‘ is false (‘(x i).1 = 0‘)."
+   },
+   {
+    "w": "slightly",
+    "ipa": "sˈlaɪtli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "轻微地",
+    "ex": "However, the Lean problem is slightly different:"
+   },
+   {
+    "w": "subtract",
+    "ipa": "səbˈtrækt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "减，减去，去掉",
+    "ex": "It is easier to write: (𝑝−2)(𝑞−2)(𝑟−2) = 𝑝𝑞𝑟−2𝑝𝑞−2𝑝𝑟−2𝑞𝑟+ 4𝑝+ 4𝑞+ 4𝑟−8 Then: 𝑝𝑞𝑟−2𝑝𝑞−2𝑝𝑟−2𝑞𝑟+ 2𝑝+ 2𝑞+ 2𝑟−1 = 0 Subtract: (𝑝−2)(𝑞−2)(𝑟−2) −(𝑝𝑞𝑟−2𝑝𝑞−2𝑝𝑟−2𝑞𝑟+ 2𝑝+ 2𝑞+ 2𝑟−1) = 2𝑝+ 2𝑞+ 2𝑟−7 But from above: (𝑝−2)(𝑞−2)(𝑟−2) = 2𝑝+ 2𝑞+ …"
+   },
+   {
+    "w": "sum",
+    "ipa": "səm",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "总数；金额；共计",
+    "ex": "−−Use the quadratic equation to solve for the sum of cosines have h11 : Real.cos (Real.pi / 7) = Real.cos (Real.pi / 7) := rfl have h12 : 8 * Real.cos (Real.pi / 7) ^ 3 −4 * Real.cos (Real.pi / 7) ^ 2 −4 * Real.cos (Real.pi / 7) …"
+   },
+   {
+    "w": "tang",
+    "ipa": "tɑŋ",
+    "pos": "v.",
+    "lv": "托福",
+    "m": "有浓味 n特殊气味",
+    "ex": "H. Wang, H. Xin, Z. Liu, W. Li, Y. Huang, J. Lu, Y. Zhicheng, J. Tang, J. Yin, Z. Li, et al. Proving theorems recursively. In The Thirty-eighth Annual Conference on Neural Information"
+   },
+   {
+    "w": "tighten",
+    "ipa": "ˈtaɪtən",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "紧的，紧缩的",
+    "ex": "However, we can tighten this further."
+   },
+   {
+    "w": "transaction",
+    "ipa": "trænˈzækʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "交易，业务，事务",
+    "ex": "Transactions on Machine Learning Research, 2024."
+   },
+   {
+    "w": "trigger",
+    "ipa": "ˈtrɪgər",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "引发，引起",
+    "ex": "Examples of the Buggy Proofs Generated by DeepSeek-Prover-V2-7B on PutnamBench Triggering the User Interface Bug of apply? import Mathlib open Nat Set /−−"
+   },
+   {
+    "w": "triple",
+    "ipa": "ˈtrɪpəl",
+    "pos": "adj.；v.",
+    "lv": "六级",
+    "m": "三部分的，三方的；三倍的，三重的；增至三倍",
+    "ex": "Similarly, for larger 𝑝⩾4, no solutions exist, because the term 𝑝𝑞𝑟dominates. #### Step 4: Conclusion The only triples (𝑝, 𝑞, 𝑟) satisfying all conditions are (2, 4, 8) and (3, 5, 15). ### Step−by−Step Abstract Plan 1. …"
+   },
+   {
+    "w": "trivial",
+    "ipa": "ˈtrɪviəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "琐碎的；平常的",
+    "ex": "Since we have ‘False‘, construct any trivial ‘x‘ (e.g., constant embedding to ‘⟨1, fun _ => 0⟩‘)."
+   },
+   {
+    "w": "ubiquitous",
+    "ipa": "juˈbɪkwɪtəs",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "无处无在的，普遍的",
+    "ex": "But to actually prove ‘ubiquitous W (x i)‘, we need to prove ‘appears W ⟨2, _⟩‘, etc., but we can derive ‘false‘ from ‘hW’ 0‘."
+   },
+   {
+    "w": "virtual",
+    "ipa": "ˈvərʧuəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "虚拟的",
+    "ex": "In Automated Deduction–CADE 28: 28th International Conference on Automated Deduction, Virtual Event, July 12–15, 2021, Proceedings 28, pages 625–635."
+   },
+   {
+    "w": "workbook",
+    "ipa": "ˈwə:kbuk",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "工作手册；练习簿",
+    "ex": "Lean workbook: A large-scale lean problem set formalized from natural language math problems."
+   },
+   {
+    "w": "yield",
+    "ipa": "jild",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "屈服，产出；产量",
+    "ex": "Wait, we found that 𝑘= 2 yields only (3, 5, 15)."
+   }
+  ]
+ }
+];
+// lv 一律写中文档名（十一档平级，2026-09-30 定案；旧短码由 build 脚本自动翻译）
+const LVCLS={"四级":"t4","六级":"t6","考研":"tk","考博":"tp","专四":"tm4","专八":"tm8","雅思":"ty","托福":"tt","GRE":"tg","超纲":"tsuper"};
+const LVNAME={"四级":"四级","六级":"六级","考研":"考研","考博":"考博","专四":"专业四级","专八":"专业八级","雅思":"雅思","托福":"托福","GRE":"GRE","超纲":"超纲（大纲未收）"};
+const LVSHORT={"四级":"4","六级":"6","考研":"考研","考博":"考博","专四":"专四","专八":"专八","雅思":"雅思","托福":"托福","GRE":"GRE","超纲":"★超纲"};
+const LVORDER=["四级","六级","考研","考博","专四","专八","雅思","托福","GRE","超纲"];
+
+let mode="sec";
+let theme="theme-mag"; // 章节视图固定杂志风；按级别视图固定暗色大页
+
+function cardHTML(x,sec){
+  const from = mode==="lv" ? `<div class="from">出自 ${sec}</div>` : "";
+  if(theme==="theme-paper"){
+    return `<div class="word"><span class="w">${x.w}<span class="ipa">/${x.ipa}/</span><i class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</i></span>
+      <span><span class="pos">${x.pos}</span><span class="m">${x.m}</span>${from}</span>
+      <span class="ex">${x.ex}</span></div>`;
+  }
+  if(theme==="theme-mag") return "";
+  return `<div class="card lv${x.lv}" data-say="${x.w}"><span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span><span class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</span>
+    <div class="m">${x.pos} ${x.m}</div><div class="ex">${x.ex}</div>${from}</div>`;
+}
+function magRow(x,sec){
+  return `<tr data-say="${x.w}"><td class="w"><span class="hwband">${x.w}</span><span class="ipa">/${x.ipa}/</span></td>
+    <td class="lv"><b class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</b></td>
+    <td class="m">${x.pos} ${x.m}${mode==="lv"?`<span class="from">出自 ${sec}</span>`:""}</td>
+    <td class="ex">${x.ex}</td></tr>`;
+}
+function groupHTML(title,icon,inner){
+  if(theme==="theme-mag") return `<div class="sec"><h2>${title}</h2><table>${inner}</table></div>`;
+  if(theme==="theme-dark"||theme==="theme-fresh")
+    return `<div class="sec"><h2>${theme==="theme-dark"?"":"<span class='n'>"+icon+"</span>"}${title}</h2><div class="grid">${inner}</div></div>`;
+  return `<div class="sec"><h2>${title}</h2>${inner}</div>`;
+}
+
+function render(){
+  document.body.classList.toggle("lv-mode",mode==="lv");
+  // 注意：必须用 classList.add，不能整体赋值 className —— 否则会抹掉 body.night，
+  // 而夜晚章节视图依赖 body.night.theme-mag 这条 CSS，抹掉后点「按章节」会静默退回白天。
+  if(mode==="sec")document.body.classList.add("theme-mag");
+  const app=document.getElementById("app");
+  let html="";
+  if(mode==="sec"){
+    for(const s of DATA){
+      html += theme==="theme-mag"
+        ? groupHTML(s.sec,s.icon,s.words.map(x=>magRow(x,s.short)).join(""))
+        : groupHTML(s.sec,s.icon,s.words.map(x=>cardHTML(x,s.short)).join(""));
+    }
+  }else{
+    // 学习模式同款暗色大页：每个级别一块
+    const dot={"四级":"var(--c4)","六级":"var(--c6)","考研":"var(--ckaon)","考博":"var(--cphd)","专四":"var(--cm4)","专八":"var(--cm8)","雅思":"var(--cy)","托福":"var(--ct)","GRE":"var(--cg)","超纲":"var(--csuper)"};
+    html=LVORDER.map(lv=>{
+      const items=[];
+      DATA.forEach(s=>s.words.forEach(x=>{if(x.lv===lv)items.push([x,s.short])}));   // ov 已废除（2026-09-30）
+      if(!items.length)return"";   // 本词表里没有这一档 → 不出空面板
+      items.sort((a,b)=>a[0].w.localeCompare(b[0].w));
+      const cls={"六级":"l6","考研":"lk","考博":"lp","专四":"lm4","专八":"lm8","雅思":"ly","托福":"lt","GRE":"lg","超纲":"lsuper"}[lv]||"";
+      return `<div class="lvslide ${cls}">
+        <div class="ltitle"><span style="color:${dot[lv]}">${LVNAME[lv]}</span>词汇<small>${items.length} words · 按字母排序 · 悬停看原文例句 · 点击发音</small></div>
+        <div class="sgrid">${items.map(([x,sec])=>`
+          <div class="lcard" data-say="${x.w}">
+            <span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span>
+            <div class="m">${x.pos} ${x.m}</div>
+            <div class="ex">${x.ex}</div>
+            <div class="from">出自 ${sec}</div>
+          </div>`).join("")}</div></div>`;
+    }).join("");
+  }
+  app.innerHTML=html;
+}
+function syncToolbar(){
+  document.getElementById("v-sec").classList.toggle("on",mode==="sec");
+  document.getElementById("v-lv").classList.toggle("on",mode==="lv");
+}
+document.getElementById("v-sec").onclick=()=>{mode="sec";theme="theme-mag";syncToolbar();render();};
+document.getElementById("v-lv").onclick=()=>{mode="lv";syncToolbar();render();};
+
+// 朗读：多引擎在线 TTS 自动降级（有道 / Polly / 百度 / 谷歌），可按下拉切换主音色
+// 合并自 .agents 有道源版 与 workbuddy Polly 源版 —— 单文件同时支持两套引擎
+const VOICE_MAP={
+  yd1:{src:"yd",label:"美式 · 有道（推荐）"},
+  yd0:{src:"yd",label:"英式 · 有道"},
+  Brian:{src:"se",label:"Brian · 英式男声"},
+  Amy:{src:"se",label:"Amy · 英式女声"},
+  Matthew:{src:"se",label:"Matthew · 美式男声"},
+  Joanna:{src:"se",label:"Joanna · 美式女声"},
+  Salli:{src:"se",label:"Salli · 美式女声"},
+  Ivy:{src:"se",label:"Ivy · 美式童声"},
+  bd:{src:"bd",label:"百度翻译 · 女声"},
+  gg:{src:"gg",label:"谷歌翻译"},
+  mute:{src:"mute",label:"🔇 不朗读"}
+};
+const VOICE_ORDER=["yd1","yd0","Brian","Amy","Matthew","Joanna","Salli","Ivy","bd","gg","mute"];
+let ONLINE="yd1"; // 默认有道 · 美音（保留 .agents 版行为）
+try{const sv=localStorage.getItem("vocab_voice");if(sv&&VOICE_MAP[sv])ONLINE=sv;}catch(e){}
+const ENG=["yd","se","bd","gg"];               // 全部可选引擎
+const ENG_NAME={yd:"有道",se:"Polly",bd:"百度",gg:"谷歌"};
+const POLLY_VOICES={Brian:1,Amy:1,Matthew:1,Joanna:1,Salli:1,Ivy:1};
+let SRC_ORDER=ENG.slice(),srcIdx=0;           // 降级顺序：按所选音色的主引擎优先
+function applyVoiceOrder(){
+  const want=VOICE_MAP[ONLINE].src;
+  const i=ENG.indexOf(want);
+  SRC_ORDER=i<0?ENG.slice():ENG.slice(i).concat(ENG.slice(0,i));
+}
+applyVoiceOrder();
+let audio=null;
+function ttsURL(src,t){
+  const q=encodeURIComponent(t);
+  if(src==="yd")return `https://dict.youdao.com/dictvoice?type=${ONLINE==="yd0"?"0":"1"}&audio=${q}`;
+  if(src==="se")return `https://api.streamelements.com/kappa/v2/speech?voice=${POLLY_VOICES[ONLINE]?ONLINE:"Brian"}&text=${q}`;
+  if(src==="bd")return `https://fanyi.baidu.com/gettts?lan=en&text=${q}&spd=5&source=web`;
+  return `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q=${q}`;
+}
+function fillVoiceSel(){
+  const sel=document.getElementById("voiceSel");if(!sel)return;
+  sel.innerHTML=VOICE_ORDER.map(v=>`<option value="${v}" ${ONLINE===v?"selected":""}>${VOICE_MAP[v].label}</option>`).join("");
+  const st=document.getElementById("srcState");
+  if(st)st.textContent=ENG_NAME[SRC_ORDER[srcIdx]]||"";
+}
+fillVoiceSel();
+let saying=0; // 防并发
+function say(t){
+  if(ONLINE==="mute"){try{if(audio){audio.pause();audio=null}}catch(e){}return}
+  const my=++saying;
+  trySrc(0,t,my);
+}
+function trySrc(i,t,my){
+  if(my!==saying)return;
+  if(i>=SRC_ORDER.length){const st=document.getElementById("srcState");if(st)st.textContent="无可用源";return}
+  const src=SRC_ORDER[i];
+  const st=document.getElementById("srcState");
+  if(st)st.textContent="尝试 "+ENG_NAME[src];
+  try{if(audio){audio.pause();audio=null}}catch(e){}
+  const a=new Audio(ttsURL(src,t));
+  let ok=false,advanced=false;
+  const advance=()=>{ if(!ok&&!advanced&&my===saying){advanced=true;trySrc(i+1,t,my);} };
+  a.addEventListener("playing",()=>{ok=true;
+    if(srcIdx!==i){srcIdx=i;fillVoiceSel();} // 记住能用的源
+  });
+  a.addEventListener("error",advance);
+  audio=a;
+  a.play().catch(advance);
+  setTimeout(()=>{ if(!ok&&my===saying&&a.paused)advance(); },2500);
+}
+document.getElementById("voiceSel").addEventListener("change",e=>{
+  ONLINE=e.target.value; applyVoiceOrder(); srcIdx=0; // 换音色重新从头试源
+  try{localStorage.setItem("vocab_voice",ONLINE);}catch(e){}
+  if(ONLINE!=="mute") say("Hello, let us learn new words together.");
+});
+/* ---- 白天 / 夜晚 ---- */
+let style="day";
+try{const s=localStorage.getItem("vocab_style");if(["day","night","paper"].indexOf(s)>=0)style=s;}catch(e){}
+function applyStyle(){
+  document.body.classList.toggle("night",style==="night");
+  document.body.classList.toggle("paper",style==="paper");
+  ["day","night","paper"].forEach(k=>{const b=document.getElementById("st-"+k);if(b)b.classList.toggle("on",style===k);});
+  if(typeof studyEl!=="undefined"&&studyEl)studyEl.classList.toggle("day",style!=="night");
+}
+document.getElementById("st-day").onclick=()=>{style="day";try{localStorage.setItem("vocab_style","day")}catch(e){};applyStyle();};
+document.getElementById("st-night").onclick=()=>{style="night";try{localStorage.setItem("vocab_style","night")}catch(e){};applyStyle();};
+document.getElementById("st-paper").onclick=()=>{style="paper";try{localStorage.setItem("vocab_style","paper")}catch(e){};applyStyle();};
+document.getElementById("app").addEventListener("click",e=>{
+  const el=e.target.closest("[data-say]"); if(el) say(el.dataset.say);
+});
+
+/* ---------- 学习模式：按章节分页的 PPT 翻页 ---------- */
+const PER_PAGE = 12; // 每页最多词数，放不下自动续页
+let slides=[],si=0;
+function buildSlides(){
+  slides=[];
+  for(const s of DATA){
+    for(let i=0;i<s.words.length;i+=PER_PAGE){
+      slides.push({sec:s.sec,page:Math.floor(i/PER_PAGE)+1,
+        pages:Math.ceil(s.words.length/PER_PAGE),words:s.words.slice(i,i+PER_PAGE)});
+    }
+  }
+}
+const studyEl=document.getElementById("study");
+let open=false;
+function showSlide(){
+  const sl=slides[si];
+  const title=sl.pages>1 ? `${sl.sec}（第 ${sl.page}/${sl.pages} 页）` : sl.sec;
+  document.getElementById("sPage").innerHTML =
+    `<div class="stitle">${title}<small>${sl.words.length} words</small></div>
+     <div class="sgrid">${sl.words.map(x=>`
+       <div class="scard" data-say="${x.w}">
+         <span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span><span class="tag ${LVCLS[x.lv]}" style="font-size:11px;padding:2px 8px">${LVSHORT[x.lv]}</span>
+         <div class="m">${x.pos} ${x.m}</div>
+         <div class="ex">${x.ex}</div>
+       </div>`).join("")}</div>`;
+  document.getElementById("sIdx").textContent=(si+1)+" / "+slides.length;
+  document.getElementById("sbar").style.width=((si+1)/slides.length*100)+"%";
+  document.getElementById("sPrev").disabled=si===0;
+  document.getElementById("sNext").disabled=si===slides.length-1;
+  studyEl.querySelector(".sbody").scrollTop=0;
+}
+function studyOpen(){ buildSlides(); si=0; open=true; studyEl.classList.add("on"); applyStyle(); showSlide(); }
+function studyClose(){ open=false; studyEl.classList.remove("on"); }
+function next(){ if(si<slides.length-1){ si++; showSlide(); } }
+function prev(){ if(si>0){ si--; showSlide(); } }
+document.getElementById("v-study").onclick=()=>open?studyClose():studyOpen();
+document.getElementById("sClose").onclick=studyClose;
+document.getElementById("sExit").onclick=studyClose;
+document.getElementById("sNext").onclick=next;
+document.getElementById("sPrev").onclick=prev;
+studyEl.addEventListener("click",e=>{
+  const el=e.target.closest("[data-say]"); if(el) say(el.dataset.say);
+});
+document.addEventListener("keydown",e=>{
+  if(!open) return;
+  if(e.code==="Space"||e.key==="ArrowRight"||e.key==="PageDown"){ e.preventDefault(); next(); }
+  else if(e.key==="ArrowLeft"||e.key==="PageUp"){ prev(); }
+  else if(e.key==="Escape"){ studyClose(); }
+});
+applyStyle(); syncToolbar(); render();
+</script>
+<a href="../../vocab.html" target="_self" style="position:fixed;left:14px;bottom:14px;z-index:9999;font:600 13px/1 -apple-system,system-ui,sans-serif;color:#fff;background:rgba(0,0,0,.55);padding:8px 12px;border-radius:20px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.25)">← 返回索引</a></body>
+</html>

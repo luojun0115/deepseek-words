@@ -1,0 +1,80 @@
+# GitHub Pages 自动部署：push 到 main 就自动构建并发版（ 2026-10-09 ）
+# 站点地址 https://luojun0115.github.io/deepseek-words/（与 config.mts 里 base 一致）
+# 一次性前提：仓库 Settings → Pages → Build and deployment → Source 选 GitHub Actions
+# （本机没有 gh CLI，这步只能网页上点一次；之后每次 push 全自动，改代码/改词页都会自己上线）
+#
+# 自动部署分两半：本文件是「云端那一半」；「本地那一半」是 .githooks/pre-push
+# （npm run hooks 装）。内容层（文稿 content/ 与 data/*.json）已在 2026-10-09 搬进仓内，
+# CI 单靠仓库就能重建；只有 67 张词页本体仍在仓库外（../vocab_pages/ 等）CI 拿不到，
+# 所以改完页必须先在本地 sync；钩子拿 .sync-manifest.json 的源页 sha1 判“副本是不是旧的”，
+# 不合格就 push 失败，不会把旧内容推到 Actions 去上线。
+name: Deploy VitePress to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # 内容守卫：先对账再装依赖。改词表/加篇却忘了跑 sync-pages 就 push 时，
+      # 这里直接失败而不是把缺页的站点发上线（期望值全从 data/*.json 现推，加篇不用改脚本）
+      # 零依赖脚本，排在 npm ci 前面，不对就立即失败
+      # 十四项里的两项（与仓外源页比指纹、pre-push 钩子是否装了）在 CI 自动记为跳过：
+      # 它们要仓库外的东西（工作区源页 / .git 目录），CI 根本没有；其余十二项照跑，退出码仍为 0
+      # 其中包括“内容层不许读仓外”的守卫（json ← 仓内词汇页、papers.md ← 仓内文稿、
+      # 三个内容脚本拼路径的行不许上跳两级），另有一项守“取消了的 /master 页不得残留引用”，
+      # 还有一项拿 gen-notes.mjs --check 对平 notes/ 与 papers.json 的篇目（学习笔记栏目），所以 CI 里也能验证站点只靠仓库自身就能重建
+      - name: Verify content consistency
+        run: npm run verify
+
+      - name: Install dependencies
+        run: npm ci
+
+      # public/study 下的词汇学习/词汇朗读/总集独立页是仓库里的成品，CI 只构建、不重新生成
+      # （它们的本体在工作区 vocab_pages/ listen_pages/ 里，不在仓库，CI 拿不到）
+      - name: Build site
+        run: npm run build
+
+      # 61 项浏览器自检（scripts/check_portal.cjs）故意不放进 CI：
+      # 它要装 playwright + chromium，且本地页面与 ubuntu 字体/控件尺寸有差异，
+      # 一旦误报就会直接卡住发布。所以它做本地提交前的手动门禁（理由见仓内 DECISIONS.md §D）
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .vitepress/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

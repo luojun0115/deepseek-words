@@ -1,0 +1,21 @@
+{
+  "name": "deepseek-vocab-portal",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview",
+    "sync": "node scripts/sync-pages.mjs",
+    "data": "python3 scripts/gen-data.py",
+    "notes": "node scripts/gen-notes.mjs",
+    "papers": "node scripts/refresh-papers.mjs",
+    "verify": "node scripts/verify_content.mjs",
+    "selfcheck": "node scripts/selfcheck_in_repo.mjs",
+    "hooks": "cp .githooks/pre-push .git/hooks/pre-push && chmod +x .git/hooks/pre-push && echo '已装 pre-push：.githooks/pre-push → .git/hooks/'"
+  },
+  "devDependencies": {
+    "vitepress": "^1.6.4"
+  }
+}

@@ -1,0 +1,2928 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DeepSeek-Coder-V2 论文核心词汇</title>
+<style>
+:root{--c4:#3b82f6;--c6:#8b5cf6;--ckaon:#f59e0b;--cphd:#ef4444;--ct:#0d9488;--cg:#d946ef;--cm4:#0ea5e9;--cm8:#f43f5e;--cy:#10b981;--csuper:#facc15}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;transition:background .3s,color .3s}
+.tag{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:4px;color:#fff;vertical-align:2px;margin-left:6px;font-style:normal;flex:none;white-space:nowrap}
+.tag.t4{background:var(--c4)}.tag.t6{background:var(--c6)}.tag.tk{background:var(--ckaon)}.tag.tp{background:var(--cphd)}.tag.tm4{background:var(--cm4)}.tag.tm8{background:var(--cm8)}
+.tag.tt{background:var(--ct)}.tag.tg{background:var(--cg)}.tag.ty{background:var(--cy)}.tag.tsuper{background:var(--csuper);color:#3a2f00}
+.ipa{font-family:"SF Mono",Menlo,monospace;font-size:.82em;font-weight:400;opacity:.62;margin-left:6px}
+
+
+/* 论文原标题小字 */
+.ptitle{font-size:12.5px;letter-spacing:.3px;margin-top:6px}
+.ptitle i{font-family:Georgia,serif}
+.theme-mag .ptitle{color:#999;text-transform:none}
+.theme-dark .ptitle{color:#6e7681}
+.theme-paper .ptitle{color:#a09578}
+.theme-fresh .ptitle{color:#9ca3af}
+body.lv-mode .ptitle{color:#7d8590}
+
+/* 预览工具条 */
+.toolbar{position:fixed;right:16px;bottom:16px;z-index:99;display:flex;flex-direction:column;gap:8px;background:rgba(20,22,30,.88);padding:12px;border-radius:14px;backdrop-filter:blur(8px);box-shadow:0 6px 24px rgba(0,0,0,.35)}
+.toolbar .row{display:flex;gap:6px}
+.toolbar button{border:none;cursor:pointer;padding:7px 12px;border-radius:8px;font-size:12.5px;background:#3a3f4d;color:#cbd2e0;transition:.15s}
+.toolbar button:hover{background:#4a5164}
+.toolbar button.on{background:#fff;color:#111;font-weight:600}
+.toolbar .lbl{font-size:10px;color:#8a93a6;text-align:left;margin:2px 0 -2px 2px}
+
+/* ---------- A 纸质阅读 ---------- */
+body.theme-paper{background:#faf6ee;color:#2c2a25}
+.theme-paper .wrap{max-width:880px;margin:0 auto;padding:56px 24px 140px}
+.theme-paper .hero h1{font-family:Georgia,"Songti SC",serif;font-size:34px}
+.theme-paper .hero p{color:#8a8272;margin:10px 0 42px;font-size:14px}
+.theme-paper .sec{margin-bottom:44px}
+.theme-paper .sec>h2{font-family:Georgia,"Songti SC",serif;font-size:20px;padding-left:14px;border-left:4px solid #b08d4f;margin-bottom:18px}
+.theme-paper .word{display:flex;gap:14px;padding:14px 16px;border-bottom:1px dashed #ddd2bc;align-items:baseline}
+.theme-paper .word:hover{background:#f3ecdc}
+.theme-paper .w{font-family:Georgia,serif;font-size:19px;font-weight:700;min-width:250px}
+.theme-paper .pos{color:#a09578;font-size:13px;margin-right:6px}
+.theme-paper .m{color:#4a463c;font-size:15px}
+.theme-paper .ex{margin-left:auto;max-width:270px;font-size:12.5px;color:#9a8f76;font-style:italic;text-align:right}
+.theme-paper .from{display:block;font-size:11px;color:#b3a888;font-style:normal;margin-top:3px}
+
+/* ---------- B 暗色科技 ---------- */
+body.theme-dark{background:#0d1117;color:#e6edf3}
+.theme-dark .wrap{max-width:1000px;margin:0 auto;padding:56px 24px 140px}
+.theme-dark .hero h1{font-family:"SF Mono",Menlo,monospace;font-size:26px}
+.theme-dark .hero h1::before{content:"$ ";color:#3fb950}
+.theme-dark .hero p{color:#7d8590;margin:10px 0 40px;font-size:14px;font-family:Menlo,monospace}
+.theme-dark .sec>h2{font-size:15px;font-family:Menlo,monospace;color:#58a6ff;padding:10px 16px;background:#161b22;border:1px solid #30363d;border-radius:8px 8px 0 0;margin-bottom:-1px}
+.theme-dark .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;padding:20px;background:#161b22;border:1px solid #30363d;border-radius:0 0 8px 8px}
+.theme-dark .card{background:#0d1117;border:1px solid #30363d;border-left:4px solid #58a6ff;border-radius:6px;padding:15px 17px;transition:.2s;cursor:pointer;font-family:Menlo,monospace}
+.theme-dark .card:hover{border-color:#58a6ff;box-shadow:0 0 14px rgba(88,166,255,.25);transform:translateY(-2px)}
+.theme-dark .w{font-family:Menlo,monospace;font-size:17px;color:#79c0ff}
+.theme-dark .ipa{color:#7ee787;opacity:.9}
+.theme-dark .m{color:#8b949e;font-size:13.5px;margin-top:7px;line-height:1.55}
+.theme-dark .ex{font-size:12px;color:#6e7681;margin-top:8px;border-top:1px solid #21262d;padding-top:8px;font-style:italic}
+.theme-dark .from{color:#484f58;font-size:11px;margin-top:4px}
+
+/* ---------- C 清新卡片 ---------- */
+body.theme-fresh{background:linear-gradient(160deg,#eef4ff 0%,#f6f0ff 50%,#fff7ec 100%);color:#1f2430}
+.theme-fresh .wrap{max-width:1020px;margin:0 auto;padding:56px 24px 140px}
+.theme-fresh .hero h1{font-size:32px;font-weight:800;background:linear-gradient(90deg,#3b82f6,#8b5cf6,#f59e0b);-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block}
+.theme-fresh .hero p{color:#6b7280;margin:10px 0 40px;font-size:14px}
+.theme-fresh .sec>h2{font-size:19px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.theme-fresh .sec>h2 .n{width:30px;height:30px;border-radius:10px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.08);display:inline-flex;align-items:center;justify-content:center;font-size:13px}
+.theme-fresh .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+.theme-fresh .card{background:rgba(255,255,255,.82);backdrop-filter:blur(6px);border-radius:18px;padding:17px 19px 15px;box-shadow:0 3px 14px rgba(80,80,140,.09);transition:.2s;cursor:pointer;border-top:5px solid #dbe3f5}
+.theme-fresh .card.lv四级{border-top-color:#3b82f6}.theme-fresh .card.lv六级{border-top-color:#8b5cf6}
+.theme-fresh .card.lv考研{border-top-color:#f59e0b}.theme-fresh .card.lv考博{border-top-color:#ef4444}
+.theme-fresh .card.lv专四{border-top-color:#0ea5e9}.theme-fresh .card.lv专八{border-top-color:#f43f5e}
+.theme-fresh .card.lv雅思{border-top-color:#10b981}.theme-fresh .card.lv托福{border-top-color:#0d9488}
+.theme-fresh .card.lvGRE{border-top-color:#d946ef}.theme-fresh .card.lv超纲{border-top-color:#facc15}
+.theme-fresh .card .w{display:inline-block;background:#f3f5fb;border-radius:8px;padding:2px 10px}
+.theme-fresh .card:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(80,80,140,.16)}
+.theme-fresh .w{font-size:18px;font-weight:700}
+.theme-fresh .m{color:#4b5563;font-size:14px;margin-top:6px;line-height:1.55}
+.theme-fresh .ex{color:#9ca3af;font-size:12.5px;margin-top:8px}
+.theme-fresh .from{color:#b6bcc9;font-size:11.5px;margin-top:4px}
+
+/* ---------- D 杂志表格（宽松版） ---------- */
+body.theme-mag{background:#fff;color:#111}
+.theme-mag .wrap{max-width:960px;margin:0 auto;padding:52px 28px 140px}
+.theme-mag .hero{border-bottom:3px solid #111;padding-bottom:16px;margin-bottom:10px}
+.theme-mag .hero h1{font-family:"Songti SC",Georgia,serif;font-size:38px;font-weight:900}
+.theme-mag .hero p{color:#888;font-size:13.5px;margin-top:8px}
+.theme-mag .sec>h2{font-size:14px;letter-spacing:3px;text-transform:uppercase;color:#c2410c;margin:44px 0 8px;border-bottom:1px solid #e5e5e5;padding-bottom:8px}
+.theme-mag table{width:100%;border-collapse:collapse}
+.theme-mag td{padding:16px 12px;border-bottom:1px solid #f0f0f0;font-size:15.5px;line-height:1.65;vertical-align:top}
+.theme-mag tr:hover td{background:#fff8f3}
+.theme-mag .w{font-weight:700;font-size:17px;width:300px}
+.theme-mag .lv{width:60px}
+.theme-mag .lv b{font-size:11.5px;padding:3px 0;display:block;text-align:center;border-radius:3px;color:#fff;font-weight:600}
+.theme-mag .m{color:#3d3d3d}
+.theme-mag .ex{color:#9a9a9a;font-size:13px;font-style:italic}
+.theme-mag .from{display:block;color:#c9c9c9;font-size:11.5px;font-style:normal;margin-top:4px}
+
+/* ---------- 按级别：学习模式同款暗色大页 ---------- */
+body.lv-mode{background:#0b0e13 !important}
+body.lv-mode .hero h1,body.lv-mode .hero p{color:#e8ecf3}
+body.lv-mode .hero p{color:#7d8590}
+.lvslide{background:#101318;color:#e8ecf3;border-radius:20px;padding:26px 32px 22px;margin-bottom:26px;border-top:6px solid var(--c4)}
+.lvslide.l6{border-top-color:var(--c6)}.lvslide.lk{border-top-color:var(--ckaon)}.lvslide.lp{border-top-color:var(--cphd)}
+.lvslide.lt{border-top-color:var(--ct)}.lvslide.lg{border-top-color:var(--cg)}.lvslide.lm4{border-top-color:var(--cm4)}.lvslide.lm8{border-top-color:var(--cm8)}.lvslide.ly{border-top-color:var(--cy)}.lvslide.lsuper{border-top-color:var(--csuper)}
+.lvslide .ltitle{font-size:26px;font-weight:800;font-family:Georgia,serif;display:flex;align-items:baseline;gap:14px}
+.lvslide .ltitle small{font-size:14px;color:#7d8590;font-family:Menlo,monospace;font-weight:400}
+.lvslide .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;padding:20px 0 8px}
+.lvslide .lcard{background:#171c26;border:1px solid #2b3342;border-radius:14px;padding:15px 17px;cursor:pointer;transition:.15s}
+.lvslide .lcard:hover{border-color:#79c0ff;transform:translateY(-2px)}
+.lvslide .lcard .w{font-size:19px;font-weight:700;font-family:Georgia,serif}
+.lvslide .lcard .ipa{font-family:Menlo,monospace;font-size:13px;color:#7ee787;margin-left:8px}
+.lvslide .lcard .m{color:#aeb6c4;font-size:14px;margin-top:7px;line-height:1.55}
+.lvslide .lcard .ex{color:#646d7d;font-size:12px;font-style:italic;margin-top:7px}
+.lvslide .lcard .from{color:#4d5563;font-size:11px;margin-top:6px}
+
+
+/* ---------- 白天 / 夜晚 ---------- */
+body.lv-mode:not(.night){background:#eef1f6 !important}
+body.lv-mode:not(.night) .hero h1{color:#1f2430}
+body.lv-mode:not(.night) .hero p{color:#6b7280}
+body.lv-mode:not(.night) .lvslide{background:#fff;color:#1f2430;box-shadow:0 4px 18px rgba(80,80,140,.10)}
+body.lv-mode:not(.night) .lvslide .lcard{background:#f7f9fd;border-color:#e4e9f3}
+body.lv-mode:not(.night) .lvslide .lcard:hover{border-color:#3b82f6}
+body.lv-mode:not(.night) .lvslide .lcard .m{color:#4b5563}
+body.lv-mode:not(.night) .lvslide .lcard .ex{color:#98a0ae}
+body.lv-mode:not(.night) .lvslide .lcard .from{color:#b3bac6}
+body.lv-mode:not(.night) .lvslide .lcard .ipa{color:#0a7d33}
+body.night.theme-mag{background:#0d1117;color:#e6edf3}
+body.night.theme-mag .hero{border-bottom-color:#e6edf3}
+body.night.theme-mag .hero p{color:#8b949e}
+body.night.theme-mag .sec>h2{color:#fbbf24;border-bottom-color:#30363d}
+body.night.theme-mag td{border-bottom-color:#1c2230}
+body.night.theme-mag tr:hover td{background:#161b22}
+body.night.theme-mag .m{color:#c9d1d9}
+body.night.theme-mag .ex{color:#8b949e}
+body.night.theme-mag .from{color:#57606a}
+body.night.theme-mag .w{color:#e6edf3}
+body.night.theme-mag .ptitle{color:#8b949e}
+body.night.theme-mag .ipa{opacity:.55}
+#study.day{background:#f5f7fa;color:#1f2430}
+#study.day .scard{background:#fff;border-color:#e4e9f3}
+#study.day .scard .m{color:#4b5563}
+#study.day .scard .ex{color:#98a0ae}
+#study.day .scard:hover{border-color:#3b82f6}
+#study.day .sfoot{color:#98a0ae;border-top-color:#e6e9f0}
+#study.day .snav button,#study.day #sClose{background:#fff;color:#1f2430;border-color:#d7dce6}
+#study.day .sfoot kbd{background:#e8ecf3;color:#1f2430}
+
+/* ---------- 学习模式（PPT 按章节翻页） ---------- */
+#study{position:fixed;inset:0;z-index:200;display:none;background:#101318;color:#e8ecf3;flex-direction:column}
+#study.on{display:flex}
+#study .sprog{height:4px;background:#262c38}
+#study .sprog i{display:block;height:100%;background:linear-gradient(90deg,#58a6ff,#8b5cf6);width:0;transition:width .25s}
+#study .sbody{flex:1;overflow:auto;padding:20px 40px}
+#study .stitle{font-size:24px;font-weight:800;font-family:Georgia,serif;padding:6px 4px 2px}
+#study .stitle small{color:#5b6472;font-size:14px;font-family:Menlo,monospace;font-weight:400;margin-left:12px}
+#study .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;padding:16px 2px 30px}
+#study .scard{background:#171c26;border:1px solid #2b3342;border-radius:14px;padding:16px 18px;cursor:pointer;transition:.15s}
+#study .scard:hover{border-color:#58a6ff;transform:translateY(-2px)}
+#study .scard .w{font-size:22px;font-weight:700;font-family:Georgia,serif}
+#study .scard .ipa{color:#7ee787;font-size:14px;margin-left:8px}
+#study .scard .m{color:#aeb6c4;font-size:14.5px;margin-top:8px;line-height:1.55}
+#study .scard .ex{color:#646d7d;font-size:12px;font-style:italic;margin-top:6px}
+#study .sfoot{display:flex;justify-content:space-between;align-items:center;padding:14px 28px;color:#5b6472;font-size:13px;border-top:1px solid #1d232e}
+#study .sfoot kbd{background:#262c38;border-radius:5px;padding:2px 8px;margin:0 2px;font-family:Menlo,monospace;font-size:12px}
+#study .snav{display:flex;gap:10px;align-items:center}
+#study .snav button{border:1px solid #333b4a;background:#1a2029;color:#cbd2e0;border-radius:8px;padding:8px 18px;cursor:pointer;font-size:14px}
+#study .snav button:hover{border-color:#58a6ff}
+#study .snav button:disabled{opacity:.35;cursor:default}
+
+
+
+/* —— 样式·暖白（暖白纸底） —— */
+
+body.theme-mag.paper{background:#f4f2ea!important;color:#23211c!important}
+body.theme-mag.paper .hero{border-bottom-color:#23211c}
+body.theme-mag.paper .hero h1{color:#1c1a12}
+body.theme-mag.paper .hero p{color:#6b6a5c}
+body.theme-mag.paper .ptitle{color:#8a8878}
+body.theme-mag.paper .sec>h2{color:#5f7a3f;border-bottom-color:#ddd8ca}
+body.theme-mag.paper td{border-bottom-color:#e6e1d3}
+body.theme-mag.paper tr:hover td{background:#ece7da}
+body.theme-mag.paper .m{color:#33312a}
+body.theme-mag.paper .ex{color:#8a8878}
+body.theme-mag.paper .from{color:#b3b0a0}
+body.theme-mag.paper .ipa{color:#6b6a5c}
+.theme-mag .hwband{padding:0 3px;font-weight:700}
+body.theme-mag.paper .hwband{background:linear-gradient(transparent 16%,#cdddb8 16%,#cdddb8 84%,transparent 84%);color:#1c1a12}
+
+
+</style>
+</head>
+<body class="theme-mag">
+<div class="wrap">
+  <div class="hero">
+    <h1>DeepSeek-Coder-V2 论文核心词汇</h1>
+    <div class="ptitle"><i>DeepSeek-Coder-V2: Breaking the Barrier of Closed-Source Models in Code Intelligence · arXiv:2406.11931 · DeepSeek-AI, 2024</i></div>
+    <p>全量口径重做 · 6 节 303 词 · 十一档 + 超纲（2026-10-08）</p>
+  </div>
+  <div id="app"></div>
+</div>
+
+<div class="toolbar">
+  <div class="lbl">视图</div>
+  <div class="row">
+    <button id="v-sec" class="on">按章节</button>
+    <button id="v-lv">按级别综合</button>
+    <button id="v-study">▶ 学习模式</button>
+  </div>
+  <div class="lbl">样式</div>
+  <div class="row">
+    <button id="st-day" class="on">☀ 白天</button>
+    <button id="st-night">🌙 夜晚</button>
+    <button id="st-paper">暖白</button>
+  </div>
+  <div class="lbl">朗读声音 · 多引擎</div>
+  <div class="row"><select id="voiceSel" style="flex:1;border:none;border-radius:8px;padding:7px 8px;background:#3a3f4d;color:#cbd2e0;font-size:12.5px;outline:none"></select><span id="srcState" style="align-self:center;font-size:10.5px;color:#8a93a6;min-width:34px;text-align:center"></span></div>
+</div>
+
+<div id="study">
+  <div class="sprog"><i id="sbar"></i></div>
+  <button id="sClose" title="退出学习模式 (Esc)" style="position:absolute;top:14px;right:18px;z-index:5;border:1px solid #333b4a;background:#1a2029;color:#cbd2e0;border-radius:8px;width:34px;height:34px;font-size:16px;cursor:pointer">✕</button>
+  <div class="sbody"><div id="sPage"></div></div>
+  <div class="sfoot">
+    <span><kbd>空格</kbd>/<kbd>→</kbd> 下一页 &nbsp; <kbd>←</kbd> 上一页 &nbsp; 点单词发音 &nbsp; <kbd>Esc</kbd> 退出</span>
+    <div class="snav">
+      <span id="sIdx">0 / 0</span>
+      <button id="sPrev">← 上一页</button>
+      <button id="sNext">下一页 →</button>
+      <button id="sExit" style="border-color:#5b3a3a">退出</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// lv: 4=四级 6=六级 k=考研 p=考博；ipa 为美式音标
+const DATA = [
+ {
+  "sec": "1. Introduction · 引言",
+  "short": "Intro",
+  "icon": "1",
+  "words": [
+   {
+    "w": "accommodate",
+    "ipa": "əˈkɑmədeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "容纳，适应",
+    "ex": "To accommodate longer code inputs and enhance applicability"
+   },
+   {
+    "w": "align",
+    "ipa": "əˈlaɪn",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使结盟；使成一行；匹配",
+    "ex": "Then, in the reinforcement learning phase, we employ Group Relative Policy Optimization (GRPO) algorithm to align its behavior with human preferences."
+   },
+   {
+    "w": "alignment",
+    "ipa": "əˈlaɪnmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "排成直线；结盟，联合",
+    "ex": "To enable the model to support code completion after alignment, we also utilize Fill-In-Middle approach (Guo et al., 2024) during the fine-tuning of the base model with 16B parameters."
+   },
+   {
+    "w": "applicability",
+    "ipa": "ˌæplɪkəˈbɪləti",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "适用性",
+    "ex": "enhance applicability across various programming scenarios"
+   },
+   {
+    "w": "approach",
+    "ipa": "əˈproʊʧ",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "靠近；接近，方法",
+    "ex": "These models have steadily approached the performance levels of closed-source counterparts, contributing to the progress of code intelligence."
+   },
+   {
+    "w": "community",
+    "ipa": "kəmˈjunɪti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "社区；社会；公社",
+    "ex": "Introduction The open-source community has made significant strides in advancing code intelligence through the development of open-source code models such as StarCoder (Li et al., 2023b;"
+   },
+   {
+    "w": "continuous",
+    "ipa": "kənˈtɪnjuəs",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "连续不断的，持续的",
+    "ex": "After continuous pre-training DeepSeek-V2 on this multi-source corpora, we find that DeepSeek-Coder-V2 significantly enhances the model’s capabilities in coding and mathematical reasoning while maintaining comparable general …"
+   },
+   {
+    "w": "counterpart",
+    "ipa": "ˈkaʊntərˌpɑrt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "对等物",
+    "ex": "These models have steadily approached the performance levels of closed-source counterparts, contributing to the progress of code intelligence."
+   },
+   {
+    "w": "discernible",
+    "ipa": "dɪˈsɜrnəbl",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "可辨别的，明显的",
+    "ex": "there remains a discernible gap"
+   },
+   {
+    "w": "efficiently",
+    "ipa": "ɪˈfɪʃəntli",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "有效地",
+    "ex": "MoE framework, which has activation parameters of only 2.4B and 21B, efficiently sup-porting diverse computational and application needs. Additionally, DeepSeek-Coder-V2"
+   },
+   {
+    "w": "elementary",
+    "ipa": "ˌɛləˈmɛnʧri",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "基本的；初级的",
+    "ex": "Additionally, DeepSeek-Coder-V2 is the first open-source model that surpasses a score of 10% on SWEBench (Jimenez et al., 2023). • Math: DeepSeek-Coder-V2 exhibits strong mathematical reasoning abilities, rivaling top …"
+   },
+   {
+    "w": "enable",
+    "ipa": "ɪˈneɪbəl",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使能够……",
+    "ex": "To enable the model to support code completion after alignment, we also utilize Fill-In-Middle approach (Guo et al., 2024) during the fine-tuning of the base model with 16B parameters."
+   },
+   {
+    "w": "feedback",
+    "ipa": "ˈfidˌbæk",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "反馈",
+    "ex": "Preference data is collected in the coding domain using compiler feedback and test cases, and a reward model is developed to guide the training of the policy model."
+   },
+   {
+    "w": "gap",
+    "ipa": "gæp",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "差距;缝隙缺口",
+    "ex": "To bridge this gap and further propel the development of open-source code models, we introduce the DeepSeek-Coder-V2 series."
+   },
+   {
+    "w": "maintain",
+    "ipa": "meɪnˈteɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "保持，维持",
+    "ex": "while maintaining comparable performance in general language tasks"
+   },
+   {
+    "w": "optimization",
+    "ipa": "ɑptɪmɪˈzeɪʃən",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "最佳化, 最优化",
+    "ex": "Then, in the reinforcement learning phase, we employ Group Relative Policy Optimization (GRPO) algorithm to align its behavior with human preferences."
+   },
+   {
+    "w": "optimize",
+    "ipa": "ˈɑptɪˌmaɪz",
+    "pos": "vt.",
+    "lv": "考博",
+    "m": "使最优化； 充分利用",
+    "ex": "This approach ensures that the model’s responses are optimized for correctness and human preference in coding tasks."
+   },
+   {
+    "w": "opus",
+    "ipa": "ˈoʊpəs",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "作品",
+    "ex": "However, there remains a discernible gap when comparing them to state-of-the-art closed-source models like GPT4-Turbo (OpenAI, 2023), Claude 3 Opus (Anthropic, 2024), and Gemini 1.5 Pro (Reid et al., 2024)."
+   },
+   {
+    "w": "originate",
+    "ipa": "əˈrɪdʒɪneɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "源自",
+    "ex": "4.2 trillion tokens originate from the DeepSeek V2 dataset"
+   },
+   {
+    "w": "permissive",
+    "ipa": "pərˈmɪsɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "宽松的（许可）",
+    "g": "g",
+    "ex": "released publicly under a permissive license"
+   },
+   {
+    "w": "phase",
+    "ipa": "feɪz",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "阶段；方面；相位",
+    "ex": "Then, in the reinforcement learning phase, we employ Group Relative Policy Optimization (GRPO) algorithm to align its behavior with human preferences."
+   },
+   {
+    "w": "pro",
+    "ipa": "proʊ",
+    "pos": "adv.；n.；prep.",
+    "lv": "专八",
+    "m": "赞成地；赞成者；赞成的意见；赞成",
+    "ex": "However, there remains a discernible gap when comparing them to state-of-the-art closed-source models like GPT4-Turbo (OpenAI, 2023), Claude 3 Opus (Anthropic, 2024), and Gemini 1.5 Pro (Reid et al., 2024)."
+   },
+   {
+    "w": "propel",
+    "ipa": "prəˈpel",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "推动，推进",
+    "g": "g",
+    "ex": "To bridge this gap and further propel the development of open-source code models"
+   },
+   {
+    "w": "reinforcement",
+    "ipa": "ˌriɪnˈfɔrsmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "加固；增援；援军；加强",
+    "ex": "Then, in the reinforcement learning phase, we employ Group Relative Policy Optimization (GRPO) algorithm to align its behavior with human preferences."
+   },
+   {
+    "w": "release",
+    "ipa": "riˈlis",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "发布，释放",
+    "ex": "Experimental results indicate that DeepSeek-Coder-V2 236B outperforms state-of-the-art closed-source models, such as GPT4-Turbo, Claude 3 Opus, and Gemini 1.5 Pro, in both coding and mathematics tasks. • DeepSeek-Coder-V2 models …"
+   },
+   {
+    "w": "remarkable",
+    "ipa": "rɪˈmɑrkəbl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "非凡的，显著的",
+    "ex": "DeepSeek-Coder-V2 demonstrates remarkable superiority over all open source models"
+   },
+   {
+    "w": "response",
+    "ipa": "rɪˈspɑns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "反应",
+    "ex": "This approach ensures that the model’s responses are optimized for correctness and human preference in coding tasks."
+   },
+   {
+    "w": "rival",
+    "ipa": "ˈraɪvəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "对手",
+    "ex": "Additionally, DeepSeek-Coder-V2 is the first open-source model that surpasses a score of 10% on SWEBench (Jimenez et al., 2023). • Math: DeepSeek-Coder-V2 exhibits strong mathematical reasoning abilities, rivaling top …"
+   },
+   {
+    "w": "series",
+    "ipa": "ˈsɪriz",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "连续，系列；丛书",
+    "ex": "To bridge this gap and further propel the development of open-source code models, we introduce the DeepSeek-Coder-V2 series."
+   },
+   {
+    "w": "source",
+    "ipa": "sɔrs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "来源",
+    "ex": "These models have steadily approached the performance levels of closed-source counterparts, contributing to the progress of code intelligence."
+   },
+   {
+    "w": "steadily",
+    "ipa": "ˈstɛdəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "稳定地,坚定地",
+    "ex": "These models have steadily approached the performance levels of closed-source counterparts, contributing to the progress of code intelligence."
+   },
+   {
+    "w": "stride",
+    "ipa": "straɪd",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "进展，大步",
+    "g": "g",
+    "ex": "has made significant strides in advancing code intelligence"
+   },
+   {
+    "w": "superiority",
+    "ipa": "suˌpɪriˈɔrəti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "优越性",
+    "ex": "demonstrates remarkable superiority over all open source models"
+   },
+   {
+    "w": "unrestricted",
+    "ipa": "ˌʌnrɪˈstrɪktɪd",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "不受限制的",
+    "ex": "allowing for both research and unrestricted commercial use"
+   },
+   {
+    "w": "utilize",
+    "ipa": "ˈjuːtəlaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "利用",
+    "ex": "we also utilize Fill-In-Middle approach"
+   }
+  ]
+ },
+ {
+  "sec": "2. Data Collection · 数据收集",
+  "short": "Data",
+  "icon": "2",
+  "words": [
+   {
+    "w": "alphabetic",
+    "ipa": "ˌælfəˈbɛtɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "字母的；照字母次序的",
+    "ex": "Additionally, we remove files with fewer than 25% alphabetic characters."
+   },
+   {
+    "w": "annotate",
+    "ipa": "ˈænoʊteɪt",
+    "pos": "v.",
+    "lv": "GRE",
+    "m": "标注",
+    "ex": "We then annotate the URLs associated with code-related or math-related content"
+   },
+   {
+    "w": "briefly",
+    "ipa": "ˈbrifli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "短暂地；简略地；暂时地",
+    "ex": "To make the paper self-contained, we briefly describe the filtering rules."
+   },
+   {
+    "w": "byte",
+    "ipa": "baɪt",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "字节； 位元组",
+    "ex": "Since tokenization for languages like Chinese cannot be done through spaces, we use the Byte Pair Encoding (BPE) tokenizer from DeepSeek-V2, which significantly improves the recall accuracy of fastText."
+   },
+   {
+    "w": "cannot",
+    "ipa": "ˈkænɑt",
+    "pos": "conj.",
+    "lv": "托福",
+    "m": "不能",
+    "ex": "Since tokenization for languages like Chinese cannot be done through spaces, we use the Byte Pair Encoding (BPE) tokenizer from DeepSeek-V2, which significantly improves the recall accuracy of fastText."
+   },
+   {
+    "w": "comparative",
+    "ipa": "kəmˈpærətɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "比较的",
+    "ex": "validate the quality of this data through comparative analysis experiments"
+   },
+   {
+    "w": "constitute",
+    "ipa": "ˈkɑnstɪtuːt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "构成",
+    "ex": "the visible text constitutes at least 20% of the code"
+   },
+   {
+    "w": "corpus",
+    "ipa": "ˈkɔrpəs",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "[计] 语料库；文集；本金",
+    "ex": "The initial seed corpus is constructed by manually collecting high-quality source code, such as those containing detailed descriptions."
+   },
+   {
+    "w": "crawl",
+    "ipa": "krɔl",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "爬，爬行",
+    "ex": "To collect code-related and math-related web texts from Common Crawl, we follow the same pipeline as DeepSeekMath (Shao et al., 2024)."
+   },
+   {
+    "w": "detail",
+    "ipa": "ˈditeɪl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "细节",
+    "ex": "The initial seed corpus is constructed by manually collecting high-quality source code, such as those containing detailed descriptions."
+   },
+   {
+    "w": "directly",
+    "ipa": "dɪˈrɛkli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "直接地；立即",
+    "ex": "Since the natural language corpus is directly sampled from the training dataset of DeepSeek-V2, this section focuses on the collection, cleaning, and filtering processes of the code and math data."
+   },
+   {
+    "w": "documentation",
+    "ipa": "ˌdɑkjəmɛnˈteɪʃən",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "文件证据， 文献资料， 文件",
+    "ex": "Specifically, we select coding forums such as StackOverflow1, library sites such as PyTorch documentation2, and mathematics website such as StackExchange3 as our initial seed corpus."
+   },
+   {
+    "w": "duplicate",
+    "ipa": "ˈdupləˌkeɪt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "副本，复制品",
+    "ex": "We first apply the same filtering rules and near-deduplication as those used in the DeepSeek-Coder (Guo et al., 2024) to filter out lower-quality and duplicated source code."
+   },
+   {
+    "w": "effectively",
+    "ipa": "ɪˈfektɪvli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "有效地",
+    "ex": "This effectively removes most data-heavy files"
+   },
+   {
+    "w": "encode",
+    "ipa": "ɛnˈkoʊd",
+    "pos": "vt.",
+    "lv": "考博",
+    "m": "把译成电码， 把…编码",
+    "ex": "Since tokenization for languages like Chinese cannot be done through spaces, we use the Byte Pair Encoding (BPE) tokenizer from DeepSeek-V2, which significantly improves the recall accuracy of fastText."
+   },
+   {
+    "w": "encompass",
+    "ipa": "ɛnˈkəmpəs",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "包含；包围，环绕；完成",
+    "ex": "By applying these filtering rules and near-deduplication, we obtain 821B code encompassing 338 programming languages and 185B code-related text, such as markdown and issues."
+   },
+   {
+    "w": "exceed",
+    "ipa": "ɪkˈsid",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "超过，胜过；超出",
+    "ex": "Firstly, we filter out files with an average line length exceeding 100 characters or a maximum line length surpassing 1000 characters."
+   },
+   {
+    "w": "filter",
+    "ipa": "ˈfɪltər",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "过滤；滤纸",
+    "ex": "We first apply the same filtering rules and near-deduplication as those used in the DeepSeek-Coder (Guo et al., 2024) to filter out lower-quality and duplicated source code."
+   },
+   {
+    "w": "finally",
+    "ipa": "ˈfaɪnəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "最后；不可更改的",
+    "ex": "Finally, the new code corpus consists of 1,170B code-related tokens sourced from GitHub and CommonCrawl."
+   },
+   {
+    "w": "firstly",
+    "ipa": "ˈfərstli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "首先，第一（列举论点用）",
+    "ex": "Firstly, we filter out files with an average line length exceeding 100 characters or a maximum line length surpassing 1000 characters."
+   },
+   {
+    "w": "forum",
+    "ipa": "ˈfɔrəm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "论坛",
+    "ex": "we select coding forums such as StackOverflow"
+   },
+   {
+    "w": "improvement",
+    "ipa": "ˌɪmˈpruvmənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "改进，改善；改进处",
+    "ex": "Further training the 1B model with 2T tokens led to additional improvements, with HumanEval and MBPP scores rising to 37.2% and 54.0%, respectively."
+   },
+   {
+    "w": "iteration",
+    "ipa": "ˌaɪtəˈreɪʃn",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "迭代",
+    "ex": "After three iterations of data collection, we gather 70 billion code-related tokens"
+   },
+   {
+    "w": "lower",
+    "ipa": "loʊər",
+    "pos": "adj.；v.",
+    "lv": "四级",
+    "m": "较低的；放下",
+    "ex": "We first apply the same filtering rules and near-deduplication as those used in the DeepSeek-Coder (Guo et al., 2024) to filter out lower-quality and duplicated source code."
+   },
+   {
+    "w": "pipeline",
+    "ipa": "ˈpaɪˌplaɪn",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "管道, 传递途径",
+    "ex": "To collect code-related and math-related web texts from Common Crawl, we follow the same pipeline as DeepSeekMath (Shao et al., 2024)."
+   },
+   {
+    "w": "primarily",
+    "ipa": "praɪˈmɛrəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "主要地，首先",
+    "ex": "Data Collection The pre-training data for DeepSeek-Coder-V2 primarily consists of 60% source code, 10% math corpus, and 30% natural language corpus."
+   },
+   {
+    "w": "recall",
+    "ipa": "rɪˈkɔl",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "召回",
+    "ex": "to recall more coding-related and math-related web pages"
+   },
+   {
+    "w": "respectively",
+    "ipa": "rɪˈspɛktɪvli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "各自地",
+    "ex": "Further training the 1B model with 2T tokens led to additional improvements, with HumanEval and MBPP scores rising to 37.2% and 54.0%, respectively."
+   },
+   {
+    "w": "retain",
+    "ipa": "rɪˈteɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "保留,留用",
+    "ex": "We retain files where the visible text constitutes at least 20% of the code and is no less than 100 characters."
+   },
+   {
+    "w": "self",
+    "ipa": "sɛlf",
+    "pos": "n.；adj.；vt.；vi.",
+    "lv": "四级",
+    "m": "自己，自我；本质；私心；同一的；使自花授精；使近亲繁殖；自花授精",
+    "ex": "To make the paper self-contained, we briefly describe the filtering rules."
+   },
+   {
+    "w": "self-contained",
+    "ipa": "ˈsɛlfkənˈteɪnd",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "(指住所)有独立设施的，(通常指)独门独户的 (指人)拘谨的，不需与他人来往的",
+    "ex": "2024) to filter out lower-quality and duplicated source code. To make the paper self-contained,"
+   },
+   {
+    "w": "site",
+    "ipa": "saɪt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "场所，地址",
+    "ex": "Specifically, we select coding forums such as StackOverflow1, library sites such as PyTorch documentation2, and mathematics website such as StackExchange3 as our initial seed corpus."
+   },
+   {
+    "w": "surpass",
+    "ipa": "sərˈpæs",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "超过",
+    "ex": "Firstly, we filter out files with an average line length exceeding 100 characters or a maximum line length surpassing 1000 characters."
+   },
+   {
+    "w": "validate",
+    "ipa": "ˈvælɪdeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "验证",
+    "ex": "we further validate the quality of this data through comparative analysis"
+   },
+   {
+    "w": "visible",
+    "ipa": "ˈvɪzəbəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "看得见的",
+    "ex": "We retain files where the visible text constitutes at least 20% of the code and is no less than 100 characters."
+   }
+  ]
+ },
+ {
+  "sec": "3. Training Policy · 训练策略",
+  "short": "Train",
+  "icon": "3",
+  "words": [
+   {
+    "w": "additional",
+    "ipa": "əˈdɪʃənəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "额外的",
+    "ex": "In the second stage, we train the model for an additional 1000 steps, employing a sequence length of 128K and a batch size of 288 sequences."
+   },
+   {
+    "w": "attribute",
+    "ipa": "əˈtrɪbjuːt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "归因于",
+    "ex": "which we attributed to the exponential normalization technique"
+   },
+   {
+    "w": "batch",
+    "ipa": "bæʧ",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "一批， 一组， 一群； 一批生产量",
+    "ex": "In the second stage, we train the model for an additional 1000 steps, employing a sequence length of 128K and a batch size of 288 sequences."
+   },
+   {
+    "w": "checkpoint",
+    "ipa": "ˈʧɛkˌpɔɪnt",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "检查站，关卡",
+    "ex": "To maintain robust natural language understanding capabilities in DeepSeek-Coder-V2, we continue the pre-training process from an intermediate checkpoint of DeepSeek-V2."
+   },
+   {
+    "w": "consequently",
+    "ipa": "ˈkɑnsəkˌwɛntli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "结果",
+    "ex": "Consequently, DeepSeek-Coder-V2 has been exposed to a total of 10.2T high-quality tokens during the pre-training phase."
+   },
+   {
+    "w": "considerable",
+    "ipa": "kənˈsɪdərəbl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "相当大的",
+    "ex": "Considerable effort was spent collecting prompts related to code and math"
+   },
+   {
+    "w": "context",
+    "ipa": "ˈkɑntɛkst",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "背景，环境",
+    "ex": "Long Context Extension Following DeepSeek-V2, we extend the context length of DeepSeek-Coder-V2 to 128K using Yarn (Peng et al., 2023)."
+   },
+   {
+    "w": "coverage",
+    "ipa": "ˈkəvərɪʤ",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "报道",
+    "ex": "In terms of code preference data, although the code compiler itself can already provide 0-1 feedback (whether the code pass all test cases or not), some code prompts may have a limited number of test cases, and do not provide …"
+   },
+   {
+    "w": "critic",
+    "ipa": "ˈkrɪtɪk",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "批评家，评论家",
+    "ex": "Notably, GRPO is proven to be quite effective and has less cost compared with PPO, since there is no need to maintain an additional critic model."
+   },
+   {
+    "w": "crucial",
+    "ipa": "ˈkruʃəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "至关重要的",
+    "ex": "Reward Modeling Reward models play crucial roles in the RL training."
+   },
+   {
+    "w": "decay",
+    "ipa": "dɪˈkeɪ",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "腐烂；衰败；腐烂",
+    "ex": "For learning rate scheduling, we employ a cosine decay strategy, starting with 2000 warm-up steps and gradually reducing the learning rate to 10% of its initial value."
+   },
+   {
+    "w": "disable",
+    "ipa": "dɪˈseɪbəl",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使无能，使伤残",
+    "ex": "Model DeepSeek-Coder-V2-Lite DeepSeek-Coder-V2 # Total Parameters (#TP) 16B 236B # Active Parameters (#AP) 2.4B 21B Pre-training Tokens 4.2T+6T 4.2T+6T LR Scheduler Cosine Cosine FIM Enable Disable"
+   },
+   {
+    "w": "effective",
+    "ipa": "ˈifɛktɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "有效的；有影响的",
+    "ex": "Notably, GRPO is proven to be quite effective and has less cost compared with PPO, since there is no need to maintain an additional critic model."
+   },
+   {
+    "w": "efficacy",
+    "ipa": "ˈefɪkəsi",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "功效",
+    "ex": "to enhance the training efficacy and model performance"
+   },
+   {
+    "w": "encounter",
+    "ipa": "ɪnˈkaʊntər",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "遭遇",
+    "ex": "we encountered instability during training and spikes in gradient values"
+   },
+   {
+    "w": "enhance",
+    "ipa": "ɪnˈhæns",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "增强",
+    "ex": "to enhance its capability for handling long contexts"
+   },
+   {
+    "w": "exponential",
+    "ipa": "ˌekspəˈnenʃl",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "指数的",
+    "ex": "attributed to the exponential normalization technique"
+   },
+   {
+    "w": "fully",
+    "ipa": "ˈfʊli",
+    "pos": "adv.；n.",
+    "lv": "专四",
+    "m": "充分地；完全地；彻底地；(Fully)人名；(法)菲利",
+    "ex": "Reinforcement Learning We further employ Reinforcement Learning (RL) techniques to fully simulate the capabilities of DeepSeek-Coder-V2, which is proven to be quite effective."
+   },
+   {
+    "w": "generalization",
+    "ipa": "ˌdʒenrələˈzeɪʃn",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "泛化",
+    "ex": "has better generalization ability, in comparison with raw compiler signal"
+   },
+   {
+    "w": "gradient",
+    "ipa": "ˈgreɪdiənt",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "斜坡",
+    "ex": "Notably, we encountered instability during training and spikes in gradient values, which we attributed to the exponential normalization technique."
+   },
+   {
+    "w": "haystack",
+    "ipa": "ˈheɪˌstæk",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "干草堆",
+    "ex": "As shown in Figure 2, the results on the “Needle In A Haystack” (NIAH) tests indicate that DeepSeek-Coder-V2 performs well across all context window lengths up to 128K."
+   },
+   {
+    "w": "hence",
+    "ipa": "hɛns",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "因此，所以；今后",
+    "ex": "Hence, we use reward model signal rather than compiler signal in all subsequent experiments."
+   },
+   {
+    "w": "hyper",
+    "ipa": "ˈhaɪpər",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "亢奋的,高度紧张的",
+    "ex": "The hyper-parameters of YARN are the same as DeepSeek-V2: the scale 𝑠to 40, 𝛼to 1, 𝛽to 32."
+   },
+   {
+    "w": "illustrate",
+    "ipa": "ˈɪləˌstreɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "说明,阐明",
+    "ex": "As illustrated in"
+   },
+   {
+    "w": "initially",
+    "ipa": "ˌɪˈnɪʃəli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "最初，起初",
+    "ex": "The intermediate checkpoint was initially trained on 4.2T tokens."
+   },
+   {
+    "w": "instability",
+    "ipa": "ˌɪnstəˈbɪləti",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "不稳定性",
+    "ex": "we encountered instability during training and spikes in gradient values"
+   },
+   {
+    "w": "intermediate",
+    "ipa": "ˌɪntərˈmiːdiət",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "中间的",
+    "ex": "we continue the pre-training process from an intermediate checkpoint"
+   },
+   {
+    "w": "label",
+    "ipa": "ˈleɪbəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "标签；标记，符号",
+    "ex": "In terms of mathematical preference data, we obtain them using the ground-truth labels."
+   },
+   {
+    "w": "leverage",
+    "ipa": "ˈlevərɪdʒ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "利用",
+    "ex": "leveraging the PSM (Prefix, Suffix, Middle) mode"
+   },
+   {
+    "w": "methodology",
+    "ipa": "ˌmɛθəˈdɑləʤi",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "方法学，方法论",
+    "ex": "Both DeepSeek-Coder-V2 and DeepSeek-Coder-V2-Lite are trained using the same methodology."
+   },
+   {
+    "w": "mode",
+    "ipa": "moʊd",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "方式，样式",
+    "ex": "We adopt the FIM training approach for the development of DeepSeek-Coder-v2-16B, leveraging the PSM (Prefix, Suffix, Middle) mode."
+   },
+   {
+    "w": "normalization",
+    "ipa": "ˌnɔrməlɪˈzeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "正常化，标准化",
+    "ex": "Notably, we encountered instability during training and spikes in gradient values, which we attributed to the exponential normalization technique."
+   },
+   {
+    "w": "notably",
+    "ipa": "ˈnoʊtəbli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "显著地，尤其",
+    "ex": "Notably, GRPO is proven to be quite effective and has less cost compared with PPO, since there is no need to maintain an additional critic model."
+   },
+   {
+    "w": "objective",
+    "ipa": "əbˈdʒektɪv",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "目标",
+    "ex": "We use two training objectives for DeepSeek-Coder-v2 16B"
+   },
+   {
+    "w": "optimal",
+    "ipa": "ˈɑptɪməl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "最佳的；最理想的",
+    "ex": "In terms of code preference data, although the code compiler itself can already provide 0-1 feedback (whether the code pass all test cases or not), some code prompts may have a limited number of test cases, and do not provide …"
+   },
+   {
+    "w": "prediction",
+    "ipa": "priˈdɪkʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "预言，预告；预报",
+    "ex": "Training Strategy We use two training objectives for DeepSeek-Coder-v2 16B: Next-Token-Prediction and Fill-In-Middle (FIM) (Bavarian et al., 2022;"
+   },
+   {
+    "w": "prefix",
+    "ipa": "ˈprifɪks",
+    "pos": "n.；v.",
+    "lv": "专四",
+    "m": "前缀；加前缀；将某事物加在前面",
+    "ex": "We adopt the FIM training approach for the development of DeepSeek-Coder-v2-16B, leveraging the PSM (Prefix, Suffix, Middle) mode."
+   },
+   {
+    "w": "prompt",
+    "ipa": "prɑmpt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "敏捷的；v. 敦促",
+    "ex": "Prompts Considerable effort was spent collecting prompts related to code and math from various sources, and each code prompt comes with corresponding test cases."
+   },
+   {
+    "w": "ratio",
+    "ipa": "ˈreɪʃiˌoʊ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比，比率",
+    "ex": "It should be noted here we upsample long context data ratio during long context extension."
+   },
+   {
+    "w": "reconstruction",
+    "ipa": "ˌrikənˈstrəkʃən",
+    "pos": "n.",
+    "lv": "雅思",
+    "m": "重建； 再现",
+    "ex": "This method structures the content reconstruction in the sequence: Prefix, Suffix, and Middle, as illustrated below: <｜fim_begin｜> 𝑓𝑝𝑟𝑒<｜fim_hole｜> 𝑓𝑠𝑢𝑓<｜fim_end｜> 𝑓𝑚𝑖𝑑𝑑𝑙𝑒<|eos_token|> This structure is applied at the document …"
+   },
+   {
+    "w": "revert",
+    "ipa": "rɪˈvɜrt",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "回退，恢复",
+    "ex": "we reverted to the conventional normalization method"
+   },
+   {
+    "w": "robust",
+    "ipa": "roʊˈbʌst",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "稳健的",
+    "ex": "To maintain robust natural language understanding capabilities"
+   },
+   {
+    "w": "sample",
+    "ipa": "ˈsæmpəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "样品；实例，标本",
+    "ex": "To maintain the general ability, we also sample several data from the instruction data of DeepSeek-V2."
+   },
+   {
+    "w": "scale",
+    "ipa": "skeɪl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "规模，比例",
+    "ex": "The hyper-parameters of YARN are the same as DeepSeek-V2: the scale 𝑠to 40, 𝛼to 1, 𝛽to 32."
+   },
+   {
+    "w": "sequence",
+    "ipa": "ˈsikwəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "连续，继续；次序",
+    "ex": "In the second stage, we train the model for an additional 1000 steps, employing a sequence length of 128K and a batch size of 288 sequences."
+   },
+   {
+    "w": "simulate",
+    "ipa": "ˈsɪmjəleɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "模拟，充分发挥",
+    "ex": "to fully simulate the capabilities of DeepSeek-Coder-V2"
+   },
+   {
+    "w": "specification",
+    "ipa": "ˌspesɪfɪˈkeɪʃn",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "规格，规范",
+    "ex": "Batch sizes and learning rates are adjusted according to DeepSeek-V2 specifications"
+   },
+   {
+    "w": "spike",
+    "ipa": "spaɪk",
+    "pos": "n.；v.",
+    "lv": "专四",
+    "m": "长钉，道钉；钉鞋；细高跟；阻止；以大钉钉牢；用尖物刺穿",
+    "ex": "Notably, we encountered instability during training and spikes in gradient values, which we attributed to the exponential normalization technique."
+   },
+   {
+    "w": "strategy",
+    "ipa": "ˈstrætəʤi",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "策略，战略",
+    "ex": "Training Strategy We use two training objectives for DeepSeek-Coder-v2 16B: Next-Token-Prediction and Fill-In-Middle (FIM) (Bavarian et al., 2022;"
+   },
+   {
+    "w": "sub-optimal",
+    "ipa": "ˌsʌbˈɑptɪməl",
+    "pos": "adj.",
+    "lv": "超纲",
+    "m": "次优的",
+    "ex": "directly using 0-1 feedback from the compiler may be noisy and sub-optimal"
+   },
+   {
+    "w": "subsequent",
+    "ipa": "ˈsʌbsɪkwənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "随后的",
+    "ex": "we use reward model signal rather than compiler signal in all subsequent experiments"
+   },
+   {
+    "w": "supervise",
+    "ipa": "ˈsupərˌvaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "监督，监视",
+    "ex": "Supervised Fine-Tuning To build DeepSeek-Coder-V2 Chat, we construct the instruction training dataset mixed with code and math data."
+   },
+   {
+    "w": "yarn",
+    "ipa": "jɑrn",
+    "pos": "n.；v.",
+    "lv": "专四",
+    "m": "纱线；奇谈，故事；用纱线缠",
+    "ex": "Long Context Extension Following DeepSeek-V2, we extend the context length of DeepSeek-Coder-V2 to 128K using Yarn (Peng et al., 2023)."
+   }
+  ]
+ },
+ {
+  "sec": "4. Experimental Results · 实验结果",
+  "short": "Results",
+  "icon": "4",
+  "words": [
+   {
+    "w": "accord",
+    "ipa": "əˈkɔrd",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使一致；给予",
+    "ex": "This benchmark not only tests the LLM’s coding skills but also checks its consistency in producing code edits according to the specifications in the prompt."
+   },
+   {
+    "w": "additionally",
+    "ipa": "əˈdɪʃəˌnəli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "此外；又，加之",
+    "ex": "Additionally, DeepSeek-Coder-V2 solves more problems from AIME 2024 than the other models, demonstrating its strong mathematical reasoning capabilities."
+   },
+   {
+    "w": "advancement",
+    "ipa": "ədˈvænsmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "进步，提升",
+    "ex": "This underscores the model’s efficiency and the advancements in model architecture and training methodologies that allow it to outperform larger counterparts."
+   },
+   {
+    "w": "advantageous",
+    "ipa": "ˌædvənˈteɪʤəs",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "有利的，有助的",
+    "ex": "This ability is particularly advantageous for code completion tools."
+   },
+   {
+    "w": "arc",
+    "ipa": "ɑrk",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "弧，弓形物；弧光",
+    "ex": "We compare DeepSeek-Coder-V2 Instruct with DeepSeek-V2 Chat on standard benchmarks, which covers both English and Chinese benchmarks, including BigBench Hard (BBH) (Suzgun et al., 2022), MMLU (Hendrycks et al., 2020), ARC (Clark …"
+   },
+   {
+    "w": "arena",
+    "ipa": "ərˈinə",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "表演场地， 竞技场； 活动场所",
+    "ex": "When comparing the performance of 16B models, it is evident that DeepSeek-Coder-V2- Lite-Instruct outperforms DeepSeek-V2-Lite-Chat in benchmarks like BBH and Arena-Hard."
+   },
+   {
+    "w": "automate",
+    "ipa": "ˈɔtəˌmeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使自动化",
+    "ex": "This superior performance highlights its efficiency and robustness in automated code repair tasks, positioning DeepSeek-Coder-V2-Instruct as the top open-source model and a formidable competitor to closed-source alternatives in …"
+   },
+   {
+    "w": "bash",
+    "ipa": "bæʃ",
+    "pos": "v.；n.",
+    "lv": "专八",
+    "m": "猛击，痛击；怒殴；猛烈的一击，痛击",
+    "ex": "To test the multilingual abilities of models, we extended the HumanEval benchmark problems into seven additional languages: C++, Java, PHP, TypeScript, C#, Bash, JavaScript, Swift, R, Julia, D, Rust and Racket."
+   },
+   {
+    "w": "benchmark",
+    "ipa": "ˈbɛnʧˌmɑrk",
+    "pos": "n.；v.",
+    "lv": "专八",
+    "m": "基准；标准检查程序；用基准问题测试（计算机系统等）",
+    "ex": "Table 7 outlines the performances of different language models on software repair benchmarks, including Defects4J, SWE-Bench, and Aider."
+   },
+   {
+    "w": "bug",
+    "ipa": "bəg",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "虫子；臭虫",
+    "ex": "It consists of a collection of real-world software bugs from various open-source projects, including but not limited to Apache Commons, JFreeChart, and Closure Compiler."
+   },
+   {
+    "w": "capability",
+    "ipa": "ˌkeɪpəˈbɪləti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "能力，才能",
+    "ex": "Additionally, DeepSeek-Coder-V2 solves more problems from AIME 2024 than the other models, demonstrating its strong mathematical reasoning capabilities."
+   },
+   {
+    "w": "capacity",
+    "ipa": "kəˈpæsɪti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "容量；能力；能量",
+    "ex": "This limitation in model complexity could restrict its learning and problem-solving capacities."
+   },
+   {
+    "w": "chunk",
+    "ipa": "ʧəŋk",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "厚片， 大块； 相当大的部分",
+    "ex": "5We use the first generated line rather than the whole generated chunk, thus the result is slightly different with DeepSeek-Coder."
+   },
+   {
+    "w": "closely",
+    "ipa": "ˈkloʊsli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "紧密地，接近地",
+    "ex": "DeepSeek-Coder-V2-Instruct’s impressive ability to handle complex coding challenges firmly establishes it as a top contender, closely trailing the leading GPT-4-Turbo variant."
+   },
+   {
+    "w": "commonly",
+    "ipa": "ˈkɑmənli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "普通地，一般地",
+    "ex": "The HumanEval (Chen et al., 2021) 4 and MBPP (Austin et al., 2021b) benchmarks are commonly utilized for assessing the performance of code-generating Large Language Models (LLMs)."
+   },
+   {
+    "w": "comparable",
+    "ipa": "ˈkɑmpərəbl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "相当的",
+    "ex": "achieves performance comparable to GPT4-Turbo in code-specific tasks"
+   },
+   {
+    "w": "comparison",
+    "ipa": "kəmˈpɛrəsən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比较，对照；比似",
+    "ex": "Table 10 | A Comparison of DeepSeek-Coder-V2 Instruct with DeepSeek-V2 Chat."
+   },
+   {
+    "w": "competitive",
+    "ipa": "kəmˈpɛtɪtɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "竞争的， 比赛的； 好竞争的， 求胜心切的； 有竞争力的",
+    "ex": "To further validate the model’s capability in real-world competitive programming problems, we utilize the LiveCodeBench (Jain et al., 2024) and USACO benchmark (Shi et al., 2024) to estimate the effectiveness of DeepSeek-Coder-V2."
+   },
+   {
+    "w": "competitor",
+    "ipa": "kəmˈpɛtɪtər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "竞争者，对手",
+    "ex": "This superior performance highlights its efficiency and robustness in automated code repair tasks, positioning DeepSeek-Coder-V2-Instruct as the top open-source model and a formidable competitor to closed-source alternatives in …"
+   },
+   {
+    "w": "completion",
+    "ipa": "kəmˈpliʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "完成，结束，完满",
+    "ex": "However, we believe that the smaller number of active parameters in DeepSeek-Coder-V2 makes it faster for code completion scenarios."
+   },
+   {
+    "w": "complexity",
+    "ipa": "kəmˈplɛksɪti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "复杂（性）",
+    "ex": "This limitation in model complexity could restrict its learning and problem-solving capacities."
+   },
+   {
+    "w": "comprehensive",
+    "ipa": "ˌkɑmpriˈhɛnsɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "综合的，全面的",
+    "ex": "SWE-bench is a comprehensive benchmark designed to evaluate the performance of large language models in addressing real-world software issues sourced from GitHub."
+   },
+   {
+    "w": "comprise",
+    "ipa": "kəmˈpraɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "包含，包括；构成",
+    "ex": "HumanEval comprises 164 Python tasks that are verified through test cases to evaluate the performance of Code LLMs in a zero-shot scenario."
+   },
+   {
+    "w": "compute",
+    "ipa": "kəmˈpjut",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "计算，估计，估算",
+    "ex": "USACO benchmark contains 307 problems from the USA Computing Olympiad, along with high-quality unit tests, reference code, and official analyses for each problem."
+   },
+   {
+    "w": "concatenate",
+    "ipa": "kənˈkætəˌneɪt",
+    "pos": "v.",
+    "lv": "GRE",
+    "m": "连接",
+    "ex": "chain-of-thought prompting; each test question was concatenated with the instruction: \"\\nPlease reason step by step,"
+   },
+   {
+    "w": "configuration",
+    "ipa": "kənˌfɪgjərˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "配置， 布局， 构造",
+    "ex": "Among the compared models, DeepSeek-Coder-V2-Lite-Base, with a configuration of 2.4B active parameters, achieves outstanding results."
+   },
+   {
+    "w": "consistency",
+    "ipa": "kənˈsɪstənsi",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "[计] 一致性；稠度；相容性",
+    "ex": "This benchmark not only tests the LLM’s coding skills but also checks its consistency in producing code edits according to the specifications in the prompt."
+   },
+   {
+    "w": "constrain",
+    "ipa": "kənˈstreɪn",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "限制",
+    "ex": "The models were constrained to generate a maximum of 64 new tokens per prompt, and the first non-empty and non-comment line of the output was selected as the prediction."
+   },
+   {
+    "w": "contamination",
+    "ipa": "kənˌtæməˈneɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "污染",
+    "ex": "LiveCodeBench is a meticulous and contamination-free assessment of Large Language Models (LLMs) for code generation, systematically gathering novel challenges over time from three prominent competitive programming platforms …"
+   },
+   {
+    "w": "contender",
+    "ipa": "kənˈtɛndər",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "竞争者",
+    "ex": "This performance is notable as it breaks the dominance typically seen from closed-source models, standing out as a leading open-source contender."
+   },
+   {
+    "w": "cot",
+    "ipa": "kɑt",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "简易床；小屋；轻便小床",
+    "ex": "It scores 70.0% on CruxEval-I-COT and 75.1% on CruxEval-O-COT, showcasing its superior capability within the open-source domain."
+   },
+   {
+    "w": "currently",
+    "ipa": "ˈkərəntli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "当前；一般地",
+    "ex": "Repository-Level Code Completion Evaluation We use RepoBench (Liu et al., 2023b) to evaluate the capabilities of currently available open-source code models with sizes below 35B in repository-level code completion tasks."
+   },
+   {
+    "w": "decode",
+    "ipa": "dɪˈkoʊd",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "解码",
+    "ex": "The results, presented in Table 9, were obtained using greedy decoding without the aid of tools or voting techniques, unless otherwise specified."
+   },
+   {
+    "w": "defect",
+    "ipa": "ˈdifɛkt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "缺点，缺陷，欠缺",
+    "ex": "Table 7 outlines the performances of different language models on software repair benchmarks, including Defects4J, SWE-Bench, and Aider."
+   },
+   {
+    "w": "demonstrate",
+    "ipa": "ˈdemənstreɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "证明，展示",
+    "ex": "Experimental results demonstrate that DeepSeek-Coder-V2 achieves performance comparable"
+   },
+   {
+    "w": "despite",
+    "ipa": "dɪˈspaɪt",
+    "pos": "prep.",
+    "lv": "四级",
+    "m": "不管",
+    "ex": "As shown in Table 5, the results indicate that the DeepSeek-Coder-V2-Lite-Base model, despite having only 2.4 billion active parameters, achieves code completion capabilities in Python comparable to the DeepSeek-Coder-Base 33B …"
+   },
+   {
+    "w": "distinct",
+    "ipa": "dɪˈstɪŋkt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "明显的；有区别的",
+    "ex": "Aider’s code editing benchmark evaluates the LLM’s ability to modify Python source files, completing 133 distinct coding tasks."
+   },
+   {
+    "w": "domain",
+    "ipa": "doʊˈmeɪn",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "领域",
+    "ex": "It scores 70.0% on CruxEval-I-COT and 75.1% on CruxEval-O-COT, showcasing its superior capability within the open-source domain."
+   },
+   {
+    "w": "dominance",
+    "ipa": "ˈdɑmənəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "支配,优势",
+    "ex": "This performance is notable as it breaks the dominance typically seen from closed-source models, standing out as a leading open-source contender."
+   },
+   {
+    "w": "edit",
+    "ipa": "ˈɛdət",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "剪辑，编辑",
+    "ex": "Aider’s code editing benchmark evaluates the LLM’s ability to modify Python source files, completing 133 distinct coding tasks."
+   },
+   {
+    "w": "effectiveness",
+    "ipa": "ˈifɛktɪvnəs",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "效力",
+    "ex": "Each bug in the dataset is accompanied by test suites that can be used to validate the effectiveness of program repair tools."
+   },
+   {
+    "w": "efficiency",
+    "ipa": "ɪˈfɪʃənsi",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "效率；功效，效能",
+    "ex": "This underscores the model’s efficiency and the advancements in model architecture and training methodologies that allow it to outperform larger counterparts."
+   },
+   {
+    "w": "emerge",
+    "ipa": "ˈimərʤ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "出现",
+    "ex": "Coder-Instruct emerges as a standout, achieving the best performance within the open source models."
+   },
+   {
+    "w": "ensure",
+    "ipa": "ɪnˈʃʊr",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "确保",
+    "ex": "To ensure this dataset was not present in our pre-training data and avoid data leakage, we only use data from December 2023."
+   },
+   {
+    "w": "establish",
+    "ipa": "ɪˈstæblɪʃ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "建立，创办，设立",
+    "ex": "Several open-source models, such as SantaCoder (Allal et al., 2023), StarCoder (Li et al., 2023b), and CodeLlama (Roziere et al., 2023), also leverage similar capabilities and have established high standards in the domain of code …"
+   },
+   {
+    "w": "estimate",
+    "ipa": "ˈɛstəˌmeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "估计",
+    "ex": "To further validate the model’s capability in real-world competitive programming problems, we utilize the LiveCodeBench (Jain et al., 2024) and USACO benchmark (Shi et al., 2024) to estimate the effectiveness of DeepSeek-Coder-V2."
+   },
+   {
+    "w": "evaluation",
+    "ipa": "ɪˌvæljuˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "评价，评估",
+    "ex": "Our evaluation includes five context length levels—2k, 4k, 8k, 12k, and 16k tokens—across three settings: cross-file-first, cross-file-random, and in-file."
+   },
+   {
+    "w": "excel",
+    "ipa": "ɪkˈsɛl",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "胜过，杰出",
+    "ex": "These benchmarks place a high demand on the model’s reasoning ability, which DeepSeek-Coder-V2-Lite-Instruct excels at."
+   },
+   {
+    "w": "exceptional",
+    "ipa": "ɪkˈsepʃənl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "卓越的",
+    "ex": "exceptional instruction-following capabilities to handle real-world complex programming"
+   },
+   {
+    "w": "excess",
+    "ipa": "ˈɛkˌsɛs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "过量，过度",
+    "ex": "The maximum token length for prompts was set to 15,800 by truncating excess cross-file context."
+   },
+   {
+    "w": "exhibit",
+    "ipa": "ɪgˈzɪbɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "显示；陈列，展览",
+    "ex": "Moving on to 236B models, DeepSeek-Coder-V2 Instruct exhibits greater strength in reasoning benchmarks, particularly in Arena-Hard, which comprises a substantial proportion of code, math, and reasoning questions."
+   },
+   {
+    "w": "experimental",
+    "ipa": "ɪkˌspɛrɪˈmɛntəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "实验的，试验的",
+    "ex": "Experimental Results In this section, we evaluate DeepSeek-Coder-V2 on three types of tasks, including coding, mathematics, and general natural language."
+   },
+   {
+    "w": "extensive",
+    "ipa": "ɪkˈstɛnsɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "广阔的；广泛的",
+    "ex": "Table 3 provides an extensive overview of the performance metrics for various models across"
+   },
+   {
+    "w": "firmly",
+    "ipa": "ˈfərmli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "坚固地，稳定地",
+    "ex": "DeepSeek-Coder-V2-Instruct’s impressive ability to handle complex coding challenges firmly establishes it as a top contender, closely trailing the leading GPT-4-Turbo variant."
+   },
+   {
+    "w": "formidable",
+    "ipa": "ˌfɔrˈmɪdəbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "可怕的；令人敬畏的，令人惊叹的",
+    "ex": "This superior performance highlights its efficiency and robustness in automated code repair tasks, positioning DeepSeek-Coder-V2-Instruct as the top open-source model and a formidable competitor to closed-source alternatives in …"
+   },
+   {
+    "w": "furthermore",
+    "ipa": "ˈfərðərˌmɔr",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "而且，此外",
+    "ex": "Furthermore, the DeepSeek-Coder-V2-Lite-Instruct also performs impressively, surpassing the larger 33B model."
+   },
+   {
+    "w": "general-purpose",
+    "ipa": "ˈʤɛnərəl ˈpərpəs",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "通用的，一般用途的（与专用 special-purpose 相对）",
+    "ex": "general-purpose alignment stage of DeepSeek-V2 Chat."
+   },
+   {
+    "w": "generate",
+    "ipa": "ˈʤɛnərˌeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "产生",
+    "ex": "5We use the first generated line rather than the whole generated chunk, thus the result is slightly different with DeepSeek-Coder."
+   },
+   {
+    "w": "highlight",
+    "ipa": "ˈhaɪˌlaɪt",
+    "pos": "—",
+    "lv": "六级",
+    "m": "照亮；突出；强调",
+    "ex": "This superior performance highlights its efficiency and robustness in automated code repair tasks, positioning DeepSeek-Coder-V2-Instruct as the top open-source model and a formidable competitor to closed-source alternatives in …"
+   },
+   {
+    "w": "identical",
+    "ipa": "aɪˈdɛntɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "相同的",
+    "ex": "For both benchmarks, we employed a greedy search strategy and recreated the baseline results using identical scripts and environments to ensure a fair comparison. #TP #AP Python Java C++ C# TS JS PHP Bash Closed-Source Models …"
+   },
+   {
+    "w": "impressive",
+    "ipa": "ɪmˈpresɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "了不起的",
+    "ex": "Although DeepSeek-Coder-V2 achieves impressive performance on standard benchmarks"
+   },
+   {
+    "w": "impressively",
+    "ipa": "ˌɪmˈprɛsɪvli",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "令人难忘地, 令人印象深刻地",
+    "ex": "Furthermore, the DeepSeek-Coder-V2-Lite-Instruct also performs impressively, surpassing the larger 33B model."
+   },
+   {
+    "w": "inherit",
+    "ipa": "ˌɪnˈhɛrət",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "继承",
+    "ex": "General Natural Language As DeepSeek-Coder-V2 is built upon DeepSeek-V2, it inherits the strong natural language capability, even surpassing DeepSeek-V2 on reasoning-related benchmarks."
+   },
+   {
+    "w": "input",
+    "ipa": "ˈɪnˌpʊt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "输入；投入的资金",
+    "ex": "This benchmark comprises 800 Python functions paired with corresponding input-output examples."
+   },
+   {
+    "w": "intensive",
+    "ipa": "ˌɪnˈtɛnsɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "加强的；精耕细作的",
+    "ex": "However, DeepSeek-Coder-V2-Lite Instruct falls behind in knowledge-intensive benchmarks like TriviaQA, primarily due to the relatively smaller amount of web data used during pre-training."
+   },
+   {
+    "w": "issue",
+    "ipa": "ˈɪʃu",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "发行；问题",
+    "ex": "SWE-bench is a comprehensive benchmark designed to evaluate the performance of large language models in addressing real-world software issues sourced from GitHub."
+   },
+   {
+    "w": "known",
+    "ipa": "noʊn",
+    "pos": "adj.；v.",
+    "lv": "专四",
+    "m": "已知的；知名的；大家知道的；知道（know的过去分词）",
+    "ex": "It is divided into two distinct tasks: CRUXEval-I, which requires the large language model (LLM) to predict the output based on the given input, and CRUXEval-O, where the model must predict the input from the known output."
+   },
+   {
+    "w": "largely",
+    "ipa": "ˈlɑrʤli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "大部分；大量地",
+    "ex": "This performance gap may largely be attributed to the fact that DeepSeek-Coder-V2-Instruct operates with only 21 billion activation parameters, which is considerably fewer than those in larger, more advanced closed-source models …"
+   },
+   {
+    "w": "latest",
+    "ipa": "ˈleɪtəst",
+    "pos": "adv.；n.；adj.",
+    "lv": "专四",
+    "m": "最迟地；最后地；最新的事物；最新的，最近的；最迟的，最后的",
+    "ex": "Notably, the latest version (v1.1) of RepoBench sources its data from GitHub repositories created between October 6th and December 31st, 2023, while our pre-training data includes code created before November 2023."
+   },
+   {
+    "w": "leakage",
+    "ipa": "ˈlikɪʤ",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "漏，泄漏；漏出物",
+    "ex": "To ensure this dataset was not present in our pre-training data and avoid data leakage, we only use data from December 2023."
+   },
+   {
+    "w": "limitation",
+    "ipa": "ˌlɪmɪˈteɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "限制；限度，局限",
+    "ex": "This limitation in model complexity could restrict its learning and problem-solving capacities."
+   },
+   {
+    "w": "longer",
+    "ipa": "ˈlɔŋgər",
+    "pos": "—",
+    "lv": "托福",
+    "m": "比较久(的)",
+    "ex": "It scores 21% in Defects4J and 12.7% in SWE-Bench, closely approaching the results of leading closed-source models and demonstrating significant capability in handling longer code sequences."
+   },
+   {
+    "w": "margin",
+    "ipa": "ˈmɑrʤən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "边缘，范围",
+    "ex": "With a considerable margin in average performance (65.6% vs."
+   },
+   {
+    "w": "mathematical",
+    "ipa": "ˌmæθəˈmætɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "数学的，数学上的",
+    "ex": "Additionally, DeepSeek-Coder-V2 solves more problems from AIME 2024 than the other models, demonstrating its strong mathematical reasoning capabilities."
+   },
+   {
+    "w": "meticulous",
+    "ipa": "məˈtɪkjələs",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "一丝不苟的；小心翼翼的；拘泥小节的",
+    "ex": "LiveCodeBench is a meticulous and contamination-free assessment of Large Language Models (LLMs) for code generation, systematically gathering novel challenges over time from three prominent competitive programming platforms …"
+   },
+   {
+    "w": "meticulously",
+    "ipa": "məˈtɪkjələsli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "仔细地,谨慎地",
+    "ex": "It is specifically trained on a meticulously curated subset of the Stack dataset (Kocetkov et al., 2022), covering 86 programming languages. • StarCoder2 (Lozhkov et al., 2024) consists of 3B, 7B, and 15B parameters models …"
+   },
+   {
+    "w": "metric",
+    "ipa": "ˈmɛtrɪk",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "公制的，米制的",
+    "ex": "Table 8 presents the performance of various language models on the CruxEval benchmark, which assesses models on two metrics: CruxEval-I-COT and CruxEval-O-COT."
+   },
+   {
+    "w": "mistral",
+    "ipa": "ˈmɪstrəl",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "寒冷西北风",
+    "ex": "These models are pre-trained on a project-level code corpus using a window size of 16K and an additional fill-in-the-blank task, enabling support for project-level code completion and infilling. • Codestral (MistralAI, 2024) is a …"
+   },
+   {
+    "w": "modify",
+    "ipa": "ˈmɑdəˌfaɪ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "更改，修改；修饰",
+    "ex": "Aider’s code editing benchmark evaluates the LLM’s ability to modify Python source files, completing 133 distinct coding tasks."
+   },
+   {
+    "w": "multiple",
+    "ipa": "ˈməltəpəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "复合的；并联的",
+    "ex": "multiple programming languages on the HumanEval and MBPP+ Benchmarks."
+   },
+   {
+    "w": "notable",
+    "ipa": "ˈnoʊtəbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "值得注意的；著名的",
+    "ex": "This performance is notable as it breaks the dominance typically seen from closed-source models, standing out as a leading open-source contender."
+   },
+   {
+    "w": "odyssey",
+    "ipa": "ˈɑdəsi",
+    "pos": "n.",
+    "lv": "雅思",
+    "m": "长途冒险旅行；一连串的冒险",
+    "ex": "DeepSeek-Coder-V2 achieved an accuracy of 75.7% on the MATH benchmark and 53.7% on Math Odyssey, comparable to the state-of-the-art GPT-4o."
+   },
+   {
+    "w": "olympiad",
+    "ipa": "oʊˈlɪmpiæd",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "奥林匹克竞赛（学科竞赛）",
+    "ex": "USACO benchmark contains 307 problems from the USA Computing Olympiad, along with high-quality unit tests, reference code, and official analyses for each problem."
+   },
+   {
+    "w": "original",
+    "ipa": "ərˈɪʤənəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "原始的，最初的",
+    "ex": "Since the original bugs in Defec4J may need modify several files in the repository resulting in a long context, we collect 238 bugs that only need to modify one method from this benchmark."
+   },
+   {
+    "w": "overall",
+    "ipa": "ˈoʊvərˌɔl",
+    "pos": "n.；adj.",
+    "lv": "四级",
+    "m": "工装裤；全面的",
+    "ex": "This exceptional result places it second overall, just behind GPT-4-Turbo-0409, which leads with an overall performance of 45.7%."
+   },
+   {
+    "w": "overview",
+    "ipa": "ˈoʊvərvˌju",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "[图情] 综述；概观",
+    "ex": "Table 3 provides an extensive overview of the performance metrics for various models across"
+   },
+   {
+    "w": "par",
+    "ipa": "pɑr",
+    "pos": "n.；adj.",
+    "lv": "专八",
+    "m": "标准；票面价值；平均数量；标准的；票面的",
+    "ex": "Notably, DeepSeek-Coder-V2-Instruct delivers a standout performance, tying for the highest score among large models at 43.4%, on par with GPT-4o."
+   },
+   {
+    "w": "parameter",
+    "ipa": "pərˈæmətər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "参（变）数；参量",
+    "ex": "Among the compared models, DeepSeek-Coder-V2-Lite-Base, with a configuration of 2.4B active parameters, achieves outstanding results."
+   },
+   {
+    "w": "particularly",
+    "ipa": "ˌpɑrˈtɪkjələrli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "特别，尤其，格外",
+    "ex": "This ability is particularly advantageous for code completion tools."
+   },
+   {
+    "w": "patch",
+    "ipa": "pæʧ",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "补钉；碎片；补缀",
+    "ex": "The benchmark presents a codebase alongside a specific issue, challenging the language model to generate a patch that effectively resolves the described problem."
+   },
+   {
+    "w": "precede",
+    "ipa": "prɪˈsid",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "先于…，领先",
+    "ex": "This method allows the model to adeptly complete code by filling in blanks using the surrounding context, which includes both the preceding and following code segments."
+   },
+   {
+    "w": "previous",
+    "ipa": "ˈpriviəs",
+    "pos": "adj.；adv.",
+    "lv": "四级",
+    "m": "之前的；先前地",
+    "ex": "We compare DeepSeek-Coder-V2 with the previous state-of-the-art large language models. • CodeLlama (Roziere et al., 2023) consists of a series of code language models based on Llama2 (Touvron et al., 2023), and continue …"
+   },
+   {
+    "w": "prominent",
+    "ipa": "ˈprɑmənənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "杰出的，突起的，凸出的",
+    "ex": "LiveCodeBench is a meticulous and contamination-free assessment of Large Language Models (LLMs) for code generation, systematically gathering novel challenges over time from three prominent competitive programming platforms …"
+   },
+   {
+    "w": "proportion",
+    "ipa": "prəˈpɔrʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比例，部分",
+    "ex": "Moving on to 236B models, DeepSeek-Coder-V2 Instruct exhibits greater strength in reasoning benchmarks, particularly in Arena-Hard, which comprises a substantial proportion of code, math, and reasoning questions."
+   },
+   {
+    "w": "publicly",
+    "ipa": "ˈpəblɪkli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "公然地, 舆论上",
+    "ex": "These models are available in four sizes: 7B, 13B, 34B, and 70B. • StarCoder (Lozhkov et al., 2024) is a publicly accessible model with 15 billion parameters."
+   },
+   {
+    "w": "python",
+    "ipa": "ˈpaɪθɑn",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "巨蟒；大蟒",
+    "ex": "HumanEval comprises 164 Python tasks that are verified through test cases to evaluate the performance of Code LLMs in a zero-shot scenario."
+   },
+   {
+    "w": "racket",
+    "ipa": "ˈrækɪt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "喧嚷， 吵闹； 敲诈， 勒索， 诈骗； 球拍",
+    "ex": "To test the multilingual abilities of models, we extended the HumanEval benchmark problems into seven additional languages: C++, Java, PHP, TypeScript, C#, Bash, JavaScript, Swift, R, Julia, D, Rust and Racket."
+   },
+   {
+    "w": "recreate",
+    "ipa": "ˈrɛkriˌeɪt",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "娱乐；消遣",
+    "ex": "For both benchmarks, we employed a greedy search strategy and recreated the baseline results using identical scripts and environments to ensure a fair comparison. #TP #AP Python Java C++ C# TS JS PHP Bash Closed-Source Models …"
+   },
+   {
+    "w": "relatively",
+    "ipa": "ˈrɛlətɪvli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "相对地，比较地",
+    "ex": "However, DeepSeek-Coder-V2-Lite Instruct falls behind in knowledge-intensive benchmarks like TriviaQA, primarily due to the relatively smaller amount of web data used during pre-training."
+   },
+   {
+    "w": "repository",
+    "ipa": "riˈpɑzəˌtɔri",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "贮藏室，仓库；知识库；智囊团",
+    "ex": "This dataset is constructed from a diverse set of real-world, open-sourced, permissively licensed repositories in two popular programming languages: Python and Java."
+   },
+   {
+    "w": "resolve",
+    "ipa": "riˈzɑlv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "解决，下决心",
+    "ex": "The benchmark presents a codebase alongside a specific issue, challenging the language model to generate a patch that effectively resolves the described problem."
+   },
+   {
+    "w": "restrict",
+    "ipa": "riˈstrɪkt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "限制，限定",
+    "ex": "This limitation in model complexity could restrict its learning and problem-solving capacities."
+   },
+   {
+    "w": "reverse",
+    "ipa": "rɪˈvərs",
+    "pos": "—",
+    "lv": "四级",
+    "m": "（使）反转",
+    "ex": "This structure challenges the model’s ability to understand and reason through Python code in both forward and reverse directions."
+   },
+   {
+    "w": "rigorous",
+    "ipa": "ˈrɪgərəs",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "严格的",
+    "ex": "This rigorous evaluation framework ensures that the language model’s ability to understand and fix real-world software issues is thoroughly tested, providing a clear measure of its practical utility and effectiveness in software …"
+   },
+   {
+    "w": "rust",
+    "ipa": "rəst",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "锈；生锈，氧化",
+    "ex": "To test the multilingual abilities of models, we extended the HumanEval benchmark problems into seven additional languages: C++, Java, PHP, TypeScript, C#, Bash, JavaScript, Swift, R, Julia, D, Rust and Racket."
+   },
+   {
+    "w": "scenario",
+    "ipa": "səˈnærioʊ",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "场景",
+    "ex": "This gap leads to poor performance in complex scenarios and tasks"
+   },
+   {
+    "w": "script",
+    "ipa": "skrɪpt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "剧本， 广播稿； 书写用的字母； 笔迹， 手迹",
+    "ex": "For both benchmarks, we employed a greedy search strategy and recreated the baseline results using identical scripts and environments to ensure a fair comparison. #TP #AP Python Java C++ C# TS JS PHP Bash Closed-Source Models …"
+   },
+   {
+    "w": "segment",
+    "ipa": "ˌsɛgˈmɛnt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "部分， 片段； 瓣",
+    "ex": "This method allows the model to adeptly complete code by filling in blanks using the surrounding context, which includes both the preceding and following code segments."
+   },
+   {
+    "w": "showcase",
+    "ipa": "ˈʃoʊˌkeɪs",
+    "pos": "n.；vt.",
+    "lv": "六级",
+    "m": "陈列橱，[家具] 陈列柜；显示优点的东西；使展现；在玻璃橱窗陈列",
+    "ex": "Table 4 showcases the performance of various language models on the two benchmarks."
+   },
+   {
+    "w": "slightly",
+    "ipa": "sˈlaɪtli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "轻微地",
+    "ex": "On the other hand, DeepSeek-V2 Chat demonstrates slightly better results in benchmarks such as MT-bench (Zheng et al., 2023), AlpacaEval 2.0 (Dubois et al., 2024), and AlignBench (Liu et al., 2023c)."
+   },
+   {
+    "w": "solve",
+    "ipa": "sɑlv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "解决",
+    "ex": "Additionally, DeepSeek-Coder-V2 solves more problems from AIME 2024 than the other models, demonstrating its strong mathematical reasoning capabilities."
+   },
+   {
+    "w": "span",
+    "ipa": "spæn",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "跨距；一段时间",
+    "ex": "It is specifically trained on a meticulously curated subset of the Stack dataset (Kocetkov et al., 2022), covering 86 programming languages. • StarCoder2 (Lozhkov et al., 2024) consists of 3B, 7B, and 15B parameters models …"
+   },
+   {
+    "w": "specialize",
+    "ipa": "ˈspɛʃəˌlaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "专业从事",
+    "ex": "Python, Java, and JavaScript, as well as more specialized languages like Swift and Fortran."
+   },
+   {
+    "w": "specifically",
+    "ipa": "spəˈsɪfɪkli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "特别地， 特定地； 明确地， 具体地",
+    "ex": "Defects4J is a widely used dataset in the field of software engineering, specifically designed for the purpose of evaluating and testing program repair techniques."
+   },
+   {
+    "w": "specify",
+    "ipa": "ˈspɛsəˌfaɪ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "指定，具体说明",
+    "ex": "The results, presented in Table 9, were obtained using greedy decoding without the aid of tools or voting techniques, unless otherwise specified."
+   },
+   {
+    "w": "stack",
+    "ipa": "stæk",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "堆，垛；堆积",
+    "ex": "It is specifically trained on a meticulously curated subset of the Stack dataset (Kocetkov et al., 2022), covering 86 programming languages. • StarCoder2 (Lozhkov et al., 2024) consists of 3B, 7B, and 15B parameters models …"
+   },
+   {
+    "w": "structure",
+    "ipa": "ˈstrəkʧər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "结构",
+    "ex": "This structure challenges the model’s ability to understand and reason through Python code in both forward and reverse directions."
+   },
+   {
+    "w": "substantial",
+    "ipa": "səbˈstænʃəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "大量的",
+    "ex": "Moving on to 236B models, DeepSeek-Coder-V2 Instruct exhibits greater strength in reasoning benchmarks, particularly in Arena-Hard, which comprises a substantial proportion of code, math, and reasoning questions."
+   },
+   {
+    "w": "systematically",
+    "ipa": "ˌsɪstəˈmætɪkli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "系统地，有规则地",
+    "ex": "LiveCodeBench is a meticulous and contamination-free assessment of Large Language Models (LLMs) for code generation, systematically gathering novel challenges over time from three prominent competitive programming platforms …"
+   },
+   {
+    "w": "template",
+    "ipa": "ˈtɛmplət",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "模板， 样板",
+    "ex": "The DeepSeek-Coder-V2-Instruct demonstrates exceptional performance, securing the second-highest average 4We use the template \"Please complete the python function below."
+   },
+   {
+    "w": "tenth",
+    "ipa": "tɛnθ",
+    "pos": "num.；adj.",
+    "lv": "四级",
+    "m": "第十；十分之一；十分之一的；第十个的",
+    "ex": "Compared to CodeStral, the DeepSeek-Coder-V2-Lite-Base model has only one-tenth of the active parameters of CodeStral, resulting in lower performance in code completion tasks."
+   },
+   {
+    "w": "thoroughly",
+    "ipa": "ˈθəroʊli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "十分地, 彻底地",
+    "ex": "This rigorous evaluation framework ensures that the language model’s ability to understand and fix real-world software issues is thoroughly tested, providing a clear measure of its practical utility and effectiveness in software …"
+   },
+   {
+    "w": "tier",
+    "ipa": "tir",
+    "pos": "n.；vt.；vi.",
+    "lv": "专四",
+    "m": "层，排；行，列；等级；使层叠；成递升排列",
+    "ex": "DeepSeek-Coder-V2-Instruct shows top-tier results across a variety of languages, including the highest scores in Java and PHP, and strong performances in Python, C++, C#, TypeScript, and JavaScript, underscoring its robustness …"
+   },
+   {
+    "w": "token",
+    "ipa": "ˈtoʊkən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "辅币；象征",
+    "ex": "Each model is trained from scratch on 2 trillion tokens, with a composition of 87% code and 13% natural language in both English and Chinese."
+   },
+   {
+    "w": "trail",
+    "ipa": "treɪl",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "痕迹；小径；跟踪",
+    "ex": "DeepSeek-Coder-V2-Instruct’s impressive ability to handle complex coding challenges firmly establishes it as a top contender, closely trailing the leading GPT-4-Turbo variant."
+   },
+   {
+    "w": "trillion",
+    "ipa": "ˈtrɪljən",
+    "pos": "num.",
+    "lv": "六级",
+    "m": "万亿",
+    "ex": "Each model is trained from scratch on 2 trillion tokens, with a composition of 87% code and 13% natural language in both English and Chinese."
+   },
+   {
+    "w": "truncate",
+    "ipa": "ˈtrəŋˌkeɪt",
+    "pos": "v.",
+    "lv": "GRE",
+    "m": "截短， 缩短",
+    "ex": "The maximum token length for prompts was set to 15,800 by truncating excess cross-file context."
+   },
+   {
+    "w": "underscore",
+    "ipa": "ˌəndərˈskɔr",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "强调",
+    "ex": "This underscores the model’s efficiency and the advancements in model architecture and training methodologies that allow it to outperform larger counterparts."
+   },
+   {
+    "w": "utility",
+    "ipa": "juˈtɪləti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "使用，公共设施",
+    "ex": "This rigorous evaluation framework ensures that the language model’s ability to understand and fix real-world software issues is thoroughly tested, providing a clear measure of its practical utility and effectiveness in software …"
+   },
+   {
+    "w": "variant",
+    "ipa": "ˈvɛriənt",
+    "pos": "adj.；n.",
+    "lv": "六级",
+    "m": "不同的；多样的；变体；转化",
+    "ex": "DeepSeek-Coder-V2-Instruct’s impressive ability to handle complex coding challenges firmly establishes it as a top contender, closely trailing the leading GPT-4-Turbo variant."
+   },
+   {
+    "w": "verify",
+    "ipa": "ˈvɛrəˌfaɪ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "证实，查证；证明",
+    "ex": "HumanEval comprises 164 Python tasks that are verified through test cases to evaluate the performance of Code LLMs in a zero-shot scenario."
+   },
+   {
+    "w": "versatility",
+    "ipa": "ˌvərsəˈtɪləti",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "多功能性；多才多艺；用途广泛",
+    "ex": "DeepSeek-Coder-V2-Instruct shows top-tier results across a variety of languages, including the highest scores in Java and PHP, and strong performances in Python, C++, C#, TypeScript, and JavaScript, underscoring its robustness …"
+   },
+   {
+    "w": "widely",
+    "ipa": "ˈwaɪdli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "大大地",
+    "ex": "Defects4J is a widely used dataset in the field of software engineering, specifically designed for the purpose of evaluating and testing program repair techniques."
+   }
+  ]
+ },
+ {
+  "sec": "5. Conclusion · 结论",
+  "short": "Concl",
+  "icon": "5",
+  "words": [
+   {
+    "w": "continually",
+    "ipa": "kənˈtɪnjuəli",
+    "pos": "adv.",
+    "lv": "雅思",
+    "m": "不断地",
+    "ex": "which is continually pre-trained from DeepSeek-V2 with 6 trillion tokens"
+   },
+   {
+    "w": "current",
+    "ipa": "ˈkɑrənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "当前的",
+    "ex": "Although DeepSeek-Coder-V2 achieves impressive performance on standard benchmarks, we find that there is still a significant gap in instruction-following capabilities compared to current state-of-the-art models like GPT-4 Turbo."
+   },
+   {
+    "w": "extend",
+    "ipa": "ɪkˈstend",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "扩展，延伸",
+    "ex": "extends the maximum context length from 16K to 128K tokens"
+   },
+   {
+    "w": "productivity",
+    "ipa": "ˌproʊdəkˈtɪvɪti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "生产力",
+    "ex": "In the future, we will focus more on improving the model’s instruction-following capabilities to better handle real-world complex programming scenarios and enhance the productivity of the development process."
+   },
+   {
+    "w": "significant",
+    "ipa": "sɪɡˈnɪfɪkənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "显著的",
+    "ex": "supports a significantly larger number of programming languages"
+   }
+  ]
+ },
+ {
+  "sec": "References · 参考文献区用词（正文未出现）",
+  "short": "文献区",
+  "icon": "R",
+  "words": [
+   {
+    "w": "asset",
+    "ipa": "ˈæˌsɛt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "有价值的人(或物)资产",
+    "ex": "Supported Programming Languages ABAP, ActionScript, Ada, Agda, AGS Script, Alloy, AmbientTalk, AMD GPU, AMPL, ANSYS Parametric Design Language, ANTLR, Apache Configuration, APL, AppleScript, Arc, Arduino, ASP, AspectJ, Assembly …"
+   },
+   {
+    "w": "auto",
+    "ipa": "ˈɔtoʊ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "(口语)汽车",
+    "ex": "Repobench: Benchmarking repository-level code auto-completion systems."
+   },
+   {
+    "w": "buffer",
+    "ipa": "ˈbəfər",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "[计] 缓冲区；缓冲器，[车辆] 减震器；缓冲",
+    "ex": "Supported Programming Languages ABAP, ActionScript, Ada, Agda, AGS Script, Alloy, AmbientTalk, AMD GPU, AMPL, ANSYS Parametric Design Language, ANTLR, Apache Configuration, APL, AppleScript, Arc, Arduino, ASP, AspectJ, Assembly …"
+   },
+   {
+    "w": "capable",
+    "ipa": "ˈkeɪpəbəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "能干的，有能力的",
+    "ex": "Introducing meta llama 3: The most capable openly available llm to date. https: //ai.meta.com/blog/meta-llama-3/, April 2024."
+   },
+   {
+    "w": "catalog",
+    "ipa": "ˈkætəlɔg",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "目录，目录册",
+    "ex": "Supported Programming Languages ABAP, ActionScript, Ada, Agda, AGS Script, Alloy, AmbientTalk, AMD GPU, AMPL, ANSYS Parametric Design Language, ANTLR, Apache Configuration, APL, AppleScript, Arc, Arduino, ASP, AspectJ, Assembly …"
+   },
+   {
+    "w": "centric",
+    "ipa": "ˈsɛntrɪk",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "以…为中心的",
+    "ex": "AGIEval: A human-centric benchmark for evaluating foundation models."
+   },
+   {
+    "w": "classification",
+    "ipa": "ˌklæsəfəˈkeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "分类，级别",
+    "ex": "Fasttext. zip: Compress-ing text classification models. arXiv preprint arXiv:1612.03651, 2016."
+   },
+   {
+    "w": "clue",
+    "ipa": "klu",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "线索",
+    "ex": "CLUE: A chinese language understanding evaluation benchmark."
+   },
+   {
+    "w": "cole",
+    "ipa": "koʊl",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "油菜, 小菜",
+    "ex": "Zong, editors, Proceedings of the 28th International Conference on Computational Linguistics, COLING 2020, Barcelona, Spain (Online), December 8-13, 2020, pages 4762–4772."
+   },
+   {
+    "w": "compress",
+    "ipa": "ˈkɑmprɛs",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "压紧，压缩",
+    "ex": "Fasttext. zip: Compress-ing text classification models. arXiv preprint arXiv:1612.03651, 2016."
+   },
+   {
+    "w": "decouple",
+    "ipa": "diˈkəpəl",
+    "pos": "v.",
+    "lv": "雅思",
+    "m": "减弱， 减少",
+    "ex": "Decoupled weight decay regularization, 2019."
+   },
+   {
+    "w": "deli",
+    "ipa": "ˈdɛli",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "熟食店；[食品] 熟食品（等于delicatessen）",
+    "ex": "Junxiao Song, Deli Chen, Xin Xie, Kang Guan, Yuxiang You, Aixin Liu, Qiushi Du, Wenjun Gao"
+   },
+   {
+    "w": "discipline",
+    "ipa": "ˈdɪsəplən",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "纪律；训练；训练",
+    "ex": "C-Eval: A multi-level multi-discipline chinese evaluation suite for foundation models. arXiv preprint arXiv:2305.08322, 2023."
+   },
+   {
+    "w": "distantly",
+    "ipa": "ˈdistəntli",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "疏远的, 遥远的",
+    "ex": "TriviaQA: A large scale distantly supervised challenge dataset for reading comprehension."
+   },
+   {
+    "w": "don",
+    "ipa": "dɑn",
+    "pos": "n.；v.",
+    "lv": "专四",
+    "m": "先生，阁下；指导教师，大学教师；穿上",
+    "ex": "Santacoder: don’t reach for the stars! arXiv preprint arXiv:2301.03988, 2023."
+   },
+   {
+    "w": "economical",
+    "ipa": "ˌɛkəˈnɑmɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "节约的；经济学的",
+    "ex": "Deepseek-v2: A strong, economical, and efficient mixture-of-experts language model, 2024."
+   },
+   {
+    "w": "efficient",
+    "ipa": "ɪˈfɪʃənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "效率高的，有能力的",
+    "ex": "Deepseek-v2: A strong, economical, and efficient mixture-of-experts language model, 2024."
+   },
+   {
+    "w": "holistic",
+    "ipa": "hoʊˈlɪstɪk",
+    "pos": "adj.",
+    "lv": "雅思",
+    "m": "整体的， 全面的； 功能整体性的",
+    "ex": "Livecodebench: Holistic and contamination free evaluation of large language models for code, 2024."
+   },
+   {
+    "w": "interface",
+    "ipa": "ˈɪnərˌfeɪs",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "分界面",
+    "ex": "Supported Programming Languages ABAP, ActionScript, Ada, Agda, AGS Script, Alloy, AmbientTalk, AMD GPU, AMPL, ANSYS Parametric Design Language, ANTLR, Apache Configuration, APL, AppleScript, Arc, Arduino, ASP, AspectJ, Assembly …"
+   },
+   {
+    "w": "internal",
+    "ipa": "ˌɪnˈtərnəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "内的；国内的",
+    "ex": "Supported Programming Languages ABAP, ActionScript, Ada, Agda, AGS Script, Alloy, AmbientTalk, AMD GPU, AMPL, ANSYS Parametric Design Language, ANTLR, Apache Configuration, APL, AppleScript, Arc, Arduino, ASP, AspectJ, Assembly …"
+   },
+   {
+    "w": "lasso",
+    "ipa": "ˈlæsoʊ",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "(套捕牛、马等用的)套索",
+    "ex": "Supported Programming Languages ABAP, ActionScript, Ada, Agda, AGS Script, Alloy, AmbientTalk, AMD GPU, AMPL, ANSYS Parametric Design Language, ANTLR, Apache Configuration, APL, AppleScript, Arc, Arduino, ASP, AspectJ, Assembly …"
+   },
+   {
+    "w": "linguistic",
+    "ipa": "lɪŋgˈwɪstɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "语言的；语言学的",
+    "ex": "Zong, editors, Proceedings of the 28th International Conference on Computational Linguistics, COLING 2020, Barcelona, Spain (Online), December 8-13, 2020, pages 4762–4772."
+   },
+   {
+    "w": "literate",
+    "ipa": "ˈlɪtərət",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "有文化的，识字的",
+    "ex": "Supported Programming Languages ABAP, ActionScript, Ada, Agda, AGS Script, Alloy, AmbientTalk, AMD GPU, AMPL, ANSYS Parametric Design Language, ANTLR, Apache Configuration, APL, AppleScript, Arc, Arduino, ASP, AspectJ, Assembly …"
+   },
+   {
+    "w": "massive",
+    "ipa": "ˈmæsɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "巨大的 大量的",
+    "ex": "CMMLU: Measuring massive multitask language understanding in Chinese. arXiv preprint arXiv:2306.09212, 2023a."
+   },
+   {
+    "w": "neural",
+    "ipa": "ˈnʊrəl",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "神经的",
+    "ex": "on Neural Information Processing Systems, 2023a. URL https://openreview.net/for"
+   },
+   {
+    "w": "openly",
+    "ipa": "ˈoʊpənli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "不隐瞒地, 公然地",
+    "ex": "Introducing meta llama 3: The most capable openly available llm to date. https: //ai.meta.com/blog/meta-llama-3/, April 2024."
+   },
+   {
+    "w": "proceeding",
+    "ipa": "prəˈsidɪŋ",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "程序，行动，事项",
+    "ex": "Zong, editors, Proceedings of the 28th International Conference on Computational Linguistics, COLING 2020, Barcelona, Spain (Online), December 8-13, 2020, pages 4762–4772."
+   },
+   {
+    "w": "propeller",
+    "ipa": "prəˈpɛlər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "螺旋桨，推进器",
+    "ex": "Supported Programming Languages ABAP, ActionScript, Ada, Agda, AGS Script, Alloy, AmbientTalk, AMD GPU, AMPL, ANSYS Parametric Design Language, ANTLR, Apache Configuration, APL, AppleScript, Arc, Arduino, ASP, AspectJ, Assembly …"
+   },
+   {
+    "w": "protocol",
+    "ipa": "ˈproʊtəˌkɔl",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "礼仪， 礼节； 草案， 议定书",
+    "ex": "Supported Programming Languages ABAP, ActionScript, Ada, Agda, AGS Script, Alloy, AmbientTalk, AMD GPU, AMPL, ANSYS Parametric Design Language, ANTLR, Apache Configuration, APL, AppleScript, Arc, Arduino, ASP, AspectJ, Assembly …"
+   },
+   {
+    "w": "representation",
+    "ipa": "ˌrɛprəzɛnˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "描写；陈述；代表",
+    "ex": "In The Twelfth International Conference on Learning Representations, 2023b."
+   },
+   {
+    "w": "ruby",
+    "ipa": "ˈrubi",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "红宝石",
+    "ex": "Supported Programming Languages ABAP, ActionScript, Ada, Agda, AGS Script, Alloy, AmbientTalk, AMD GPU, AMPL, ANSYS Parametric Design Language, ANTLR, Apache Configuration, APL, AppleScript, Arc, Arduino, ASP, AspectJ, Assembly …"
+   },
+   {
+    "w": "server",
+    "ipa": "ˈsərvər",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "服务器",
+    "ex": "Supported Programming Languages ABAP, ActionScript, Ada, Agda, AGS Script, Alloy, AmbientTalk, AMD GPU, AMPL, ANSYS Parametric Design Language, ANTLR, Apache Configuration, APL, AppleScript, Arc, Arduino, ASP, AspectJ, Assembly …"
+   },
+   {
+    "w": "setup",
+    "ipa": "ˈsɛˌtəp",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "装备, 安装,计划",
+    "ex": "Supported Programming Languages ABAP, ActionScript, Ada, Agda, AGS Script, Alloy, AmbientTalk, AMD GPU, AMPL, ANSYS Parametric Design Language, ANTLR, Apache Configuration, APL, AppleScript, Arc, Arduino, ASP, AspectJ, Assembly …"
+   },
+   {
+    "w": "sonnet",
+    "ipa": "ˈsɑnɪt",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "十四行诗；商籁诗",
+    "ex": "The claude 3 model family: Opus, sonnet, haiku."
+   },
+   {
+    "w": "spain",
+    "ipa": "speɪn",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "西班牙",
+    "ex": "Zong, editors, Proceedings of the 28th International Conference on Computational Linguistics, COLING 2020, Barcelona, Spain (Online), December 8-13, 2020, pages 4762–4772."
+   },
+   {
+    "w": "substantially",
+    "ipa": "səbˈstænʃəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "大体上；本质上",
+    "ex": "substantially enhances the coding and mathematical reasoning capabilities of DeepSeek-V2,"
+   },
+   {
+    "w": "synthesis",
+    "ipa": "ˈsɪnθəsəs",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "综合，综合物；（化学或生物学物质的）合成；（用电子方式对声音、语音或音乐的）合成",
+    "ex": "Program synthesis with large language models, 2021a."
+   },
+   {
+    "w": "transact",
+    "ipa": "trænˈzækt",
+    "pos": "v.",
+    "lv": "托福",
+    "m": "交易； 执行， 处理",
+    "ex": "Supported Programming Languages ABAP, ActionScript, Ada, Agda, AGS Script, Alloy, AmbientTalk, AMD GPU, AMPL, ANSYS Parametric Design Language, ANTLR, Apache Configuration, APL, AppleScript, Arc, Arduino, ASP, AspectJ, Assembly …"
+   },
+   {
+    "w": "transaction",
+    "ipa": "trænˈzækʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "交易，业务，事务",
+    "ex": "Transactions on Machine Learning Research, 2022."
+   },
+   {
+    "w": "unity",
+    "ipa": "ˈjunɪti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "单一；统一；团结",
+    "ex": "Supported Programming Languages ABAP, ActionScript, Ada, Agda, AGS Script, Alloy, AmbientTalk, AMD GPU, AMPL, ANSYS Parametric Design Language, ANTLR, Apache Configuration, APL, AppleScript, Arc, Arduino, ASP, AspectJ, Assembly …"
+   },
+   {
+    "w": "unlock",
+    "ipa": "ənˈlɑk",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "开…的锁；开启",
+    "ex": "Gemini 1.5: Unlocking multimodal understanding across millions of tokens of context. arXiv preprint arXiv:2403.05530, 2024."
+   },
+   {
+    "w": "volume",
+    "ipa": "ˈvɑljum",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "卷，册；容积；音量",
+    "ex": "Kan, editors, Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), pages 1601–1611, Vancouver, Canada, July 2017."
+   }
+  ]
+ }
+];
+// lv 一律写中文档名（十一档平级，2026-09-30 定案；旧短码由 build 脚本自动翻译）
+const LVCLS={"四级":"t4","六级":"t6","考研":"tk","考博":"tp","专四":"tm4","专八":"tm8","雅思":"ty","托福":"tt","GRE":"tg","超纲":"tsuper"};
+const LVNAME={"四级":"四级","六级":"六级","考研":"考研","考博":"考博","专四":"专业四级","专八":"专业八级","雅思":"雅思","托福":"托福","GRE":"GRE","超纲":"超纲（大纲未收）"};
+const LVSHORT={"四级":"4","六级":"6","考研":"考研","考博":"考博","专四":"专四","专八":"专八","雅思":"雅思","托福":"托福","GRE":"GRE","超纲":"★超纲"};
+const LVORDER=["四级","六级","考研","考博","专四","专八","雅思","托福","GRE","超纲"];
+
+let mode="sec";
+let theme="theme-mag"; // 章节视图固定杂志风；按级别视图固定暗色大页
+
+function cardHTML(x,sec){
+  const from = mode==="lv" ? `<div class="from">出自 ${sec}</div>` : "";
+  if(theme==="theme-paper"){
+    return `<div class="word"><span class="w">${x.w}<span class="ipa">/${x.ipa}/</span><i class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</i></span>
+      <span><span class="pos">${x.pos}</span><span class="m">${x.m}</span>${from}</span>
+      <span class="ex">${x.ex}</span></div>`;
+  }
+  if(theme==="theme-mag") return "";
+  return `<div class="card lv${x.lv}" data-say="${x.w}"><span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span><span class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</span>
+    <div class="m">${x.pos} ${x.m}</div><div class="ex">${x.ex}</div>${from}</div>`;
+}
+function magRow(x,sec){
+  return `<tr data-say="${x.w}"><td class="w"><span class="hwband">${x.w}</span><span class="ipa">/${x.ipa}/</span></td>
+    <td class="lv"><b class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</b></td>
+    <td class="m">${x.pos} ${x.m}${mode==="lv"?`<span class="from">出自 ${sec}</span>`:""}</td>
+    <td class="ex">${x.ex}</td></tr>`;
+}
+function groupHTML(title,icon,inner){
+  if(theme==="theme-mag") return `<div class="sec"><h2>${title}</h2><table>${inner}</table></div>`;
+  if(theme==="theme-dark"||theme==="theme-fresh")
+    return `<div class="sec"><h2>${theme==="theme-dark"?"":"<span class='n'>"+icon+"</span>"}${title}</h2><div class="grid">${inner}</div></div>`;
+  return `<div class="sec"><h2>${title}</h2>${inner}</div>`;
+}
+
+function render(){
+  document.body.classList.toggle("lv-mode",mode==="lv");
+  // 注意：必须用 classList.add，不能整体赋值 className —— 否则会抹掉 body.night，
+  // 而夜晚章节视图依赖 body.night.theme-mag 这条 CSS，抹掉后点「按章节」会静默退回白天。
+  if(mode==="sec")document.body.classList.add("theme-mag");
+  const app=document.getElementById("app");
+  let html="";
+  if(mode==="sec"){
+    for(const s of DATA){
+      html += theme==="theme-mag"
+        ? groupHTML(s.sec,s.icon,s.words.map(x=>magRow(x,s.short)).join(""))
+        : groupHTML(s.sec,s.icon,s.words.map(x=>cardHTML(x,s.short)).join(""));
+    }
+  }else{
+    // 学习模式同款暗色大页：每个级别一块
+    const dot={"四级":"var(--c4)","六级":"var(--c6)","考研":"var(--ckaon)","考博":"var(--cphd)","专四":"var(--cm4)","专八":"var(--cm8)","雅思":"var(--cy)","托福":"var(--ct)","GRE":"var(--cg)","超纲":"var(--csuper)"};
+    html=LVORDER.map(lv=>{
+      const items=[];
+      DATA.forEach(s=>s.words.forEach(x=>{if(x.lv===lv)items.push([x,s.short])}));   // ov 已废除（2026-09-30）
+      if(!items.length)return"";   // 本词表里没有这一档 → 不出空面板
+      items.sort((a,b)=>a[0].w.localeCompare(b[0].w));
+      const cls={"六级":"l6","考研":"lk","考博":"lp","专四":"lm4","专八":"lm8","雅思":"ly","托福":"lt","GRE":"lg","超纲":"lsuper"}[lv]||"";
+      return `<div class="lvslide ${cls}">
+        <div class="ltitle"><span style="color:${dot[lv]}">${LVNAME[lv]}</span>词汇<small>${items.length} words · 按字母排序 · 悬停看原文例句 · 点击发音</small></div>
+        <div class="sgrid">${items.map(([x,sec])=>`
+          <div class="lcard" data-say="${x.w}">
+            <span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span>
+            <div class="m">${x.pos} ${x.m}</div>
+            <div class="ex">${x.ex}</div>
+            <div class="from">出自 ${sec}</div>
+          </div>`).join("")}</div></div>`;
+    }).join("");
+  }
+  app.innerHTML=html;
+}
+function syncToolbar(){
+  document.getElementById("v-sec").classList.toggle("on",mode==="sec");
+  document.getElementById("v-lv").classList.toggle("on",mode==="lv");
+}
+document.getElementById("v-sec").onclick=()=>{mode="sec";theme="theme-mag";syncToolbar();render();};
+document.getElementById("v-lv").onclick=()=>{mode="lv";syncToolbar();render();};
+
+// 朗读：多引擎在线 TTS 自动降级（有道 / Polly / 百度 / 谷歌），可按下拉切换主音色
+// 合并自 .agents 有道源版 与 workbuddy Polly 源版 —— 单文件同时支持两套引擎
+const VOICE_MAP={
+  yd1:{src:"yd",label:"美式 · 有道（推荐）"},
+  yd0:{src:"yd",label:"英式 · 有道"},
+  Brian:{src:"se",label:"Brian · 英式男声"},
+  Amy:{src:"se",label:"Amy · 英式女声"},
+  Matthew:{src:"se",label:"Matthew · 美式男声"},
+  Joanna:{src:"se",label:"Joanna · 美式女声"},
+  Salli:{src:"se",label:"Salli · 美式女声"},
+  Ivy:{src:"se",label:"Ivy · 美式童声"},
+  bd:{src:"bd",label:"百度翻译 · 女声"},
+  gg:{src:"gg",label:"谷歌翻译"},
+  mute:{src:"mute",label:"🔇 不朗读"}
+};
+const VOICE_ORDER=["yd1","yd0","Brian","Amy","Matthew","Joanna","Salli","Ivy","bd","gg","mute"];
+let ONLINE="yd1"; // 默认有道 · 美音（保留 .agents 版行为）
+try{const sv=localStorage.getItem("vocab_voice");if(sv&&VOICE_MAP[sv])ONLINE=sv;}catch(e){}
+const ENG=["yd","se","bd","gg"];               // 全部可选引擎
+const ENG_NAME={yd:"有道",se:"Polly",bd:"百度",gg:"谷歌"};
+const POLLY_VOICES={Brian:1,Amy:1,Matthew:1,Joanna:1,Salli:1,Ivy:1};
+let SRC_ORDER=ENG.slice(),srcIdx=0;           // 降级顺序：按所选音色的主引擎优先
+function applyVoiceOrder(){
+  const want=VOICE_MAP[ONLINE].src;
+  const i=ENG.indexOf(want);
+  SRC_ORDER=i<0?ENG.slice():ENG.slice(i).concat(ENG.slice(0,i));
+}
+applyVoiceOrder();
+let audio=null;
+function ttsURL(src,t){
+  const q=encodeURIComponent(t);
+  if(src==="yd")return `https://dict.youdao.com/dictvoice?type=${ONLINE==="yd0"?"0":"1"}&audio=${q}`;
+  if(src==="se")return `https://api.streamelements.com/kappa/v2/speech?voice=${POLLY_VOICES[ONLINE]?ONLINE:"Brian"}&text=${q}`;
+  if(src==="bd")return `https://fanyi.baidu.com/gettts?lan=en&text=${q}&spd=5&source=web`;
+  return `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q=${q}`;
+}
+function fillVoiceSel(){
+  const sel=document.getElementById("voiceSel");if(!sel)return;
+  sel.innerHTML=VOICE_ORDER.map(v=>`<option value="${v}" ${ONLINE===v?"selected":""}>${VOICE_MAP[v].label}</option>`).join("");
+  const st=document.getElementById("srcState");
+  if(st)st.textContent=ENG_NAME[SRC_ORDER[srcIdx]]||"";
+}
+fillVoiceSel();
+let saying=0; // 防并发
+function say(t){
+  if(ONLINE==="mute"){try{if(audio){audio.pause();audio=null}}catch(e){}return}
+  const my=++saying;
+  trySrc(0,t,my);
+}
+function trySrc(i,t,my){
+  if(my!==saying)return;
+  if(i>=SRC_ORDER.length){const st=document.getElementById("srcState");if(st)st.textContent="无可用源";return}
+  const src=SRC_ORDER[i];
+  const st=document.getElementById("srcState");
+  if(st)st.textContent="尝试 "+ENG_NAME[src];
+  try{if(audio){audio.pause();audio=null}}catch(e){}
+  const a=new Audio(ttsURL(src,t));
+  let ok=false,advanced=false;
+  const advance=()=>{ if(!ok&&!advanced&&my===saying){advanced=true;trySrc(i+1,t,my);} };
+  a.addEventListener("playing",()=>{ok=true;
+    if(srcIdx!==i){srcIdx=i;fillVoiceSel();} // 记住能用的源
+  });
+  a.addEventListener("error",advance);
+  audio=a;
+  a.play().catch(advance);
+  setTimeout(()=>{ if(!ok&&my===saying&&a.paused)advance(); },2500);
+}
+document.getElementById("voiceSel").addEventListener("change",e=>{
+  ONLINE=e.target.value; applyVoiceOrder(); srcIdx=0; // 换音色重新从头试源
+  try{localStorage.setItem("vocab_voice",ONLINE);}catch(e){}
+  if(ONLINE!=="mute") say("Hello, let us learn new words together.");
+});
+/* ---- 白天 / 夜晚 ---- */
+let style="day";
+try{const s=localStorage.getItem("vocab_style");if(["day","night","paper"].indexOf(s)>=0)style=s;}catch(e){}
+function applyStyle(){
+  document.body.classList.toggle("night",style==="night");
+  document.body.classList.toggle("paper",style==="paper");
+  ["day","night","paper"].forEach(k=>{const b=document.getElementById("st-"+k);if(b)b.classList.toggle("on",style===k);});
+  if(typeof studyEl!=="undefined"&&studyEl)studyEl.classList.toggle("day",style!=="night");
+}
+document.getElementById("st-day").onclick=()=>{style="day";try{localStorage.setItem("vocab_style","day")}catch(e){};applyStyle();};
+document.getElementById("st-night").onclick=()=>{style="night";try{localStorage.setItem("vocab_style","night")}catch(e){};applyStyle();};
+document.getElementById("st-paper").onclick=()=>{style="paper";try{localStorage.setItem("vocab_style","paper")}catch(e){};applyStyle();};
+document.getElementById("app").addEventListener("click",e=>{
+  const el=e.target.closest("[data-say]"); if(el) say(el.dataset.say);
+});
+
+/* ---------- 学习模式：按章节分页的 PPT 翻页 ---------- */
+const PER_PAGE = 12; // 每页最多词数，放不下自动续页
+let slides=[],si=0;
+function buildSlides(){
+  slides=[];
+  for(const s of DATA){
+    for(let i=0;i<s.words.length;i+=PER_PAGE){
+      slides.push({sec:s.sec,page:Math.floor(i/PER_PAGE)+1,
+        pages:Math.ceil(s.words.length/PER_PAGE),words:s.words.slice(i,i+PER_PAGE)});
+    }
+  }
+}
+const studyEl=document.getElementById("study");
+let open=false;
+function showSlide(){
+  const sl=slides[si];
+  const title=sl.pages>1 ? `${sl.sec}（第 ${sl.page}/${sl.pages} 页）` : sl.sec;
+  document.getElementById("sPage").innerHTML =
+    `<div class="stitle">${title}<small>${sl.words.length} words</small></div>
+     <div class="sgrid">${sl.words.map(x=>`
+       <div class="scard" data-say="${x.w}">
+         <span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span><span class="tag ${LVCLS[x.lv]}" style="font-size:11px;padding:2px 8px">${LVSHORT[x.lv]}</span>
+         <div class="m">${x.pos} ${x.m}</div>
+         <div class="ex">${x.ex}</div>
+       </div>`).join("")}</div>`;
+  document.getElementById("sIdx").textContent=(si+1)+" / "+slides.length;
+  document.getElementById("sbar").style.width=((si+1)/slides.length*100)+"%";
+  document.getElementById("sPrev").disabled=si===0;
+  document.getElementById("sNext").disabled=si===slides.length-1;
+  studyEl.querySelector(".sbody").scrollTop=0;
+}
+function studyOpen(){ buildSlides(); si=0; open=true; studyEl.classList.add("on"); applyStyle(); showSlide(); }
+function studyClose(){ open=false; studyEl.classList.remove("on"); }
+function next(){ if(si<slides.length-1){ si++; showSlide(); } }
+function prev(){ if(si>0){ si--; showSlide(); } }
+document.getElementById("v-study").onclick=()=>open?studyClose():studyOpen();
+document.getElementById("sClose").onclick=studyClose;
+document.getElementById("sExit").onclick=studyClose;
+document.getElementById("sNext").onclick=next;
+document.getElementById("sPrev").onclick=prev;
+studyEl.addEventListener("click",e=>{
+  const el=e.target.closest("[data-say]"); if(el) say(el.dataset.say);
+});
+document.addEventListener("keydown",e=>{
+  if(!open) return;
+  if(e.code==="Space"||e.key==="ArrowRight"||e.key==="PageDown"){ e.preventDefault(); next(); }
+  else if(e.key==="ArrowLeft"||e.key==="PageUp"){ prev(); }
+  else if(e.key==="Escape"){ studyClose(); }
+});
+applyStyle(); syncToolbar(); render();
+</script>
+<a href="../../vocab.html" target="_self" style="position:fixed;left:14px;bottom:14px;z-index:9999;font:600 13px/1 -apple-system,system-ui,sans-serif;color:#fff;background:rgba(0,0,0,.55);padding:8px 12px;border-radius:20px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.25)">← 返回索引</a></body>
+</html>

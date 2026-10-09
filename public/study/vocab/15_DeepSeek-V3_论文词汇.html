@@ -1,0 +1,5376 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DeepSeek-V3 论文核心词汇</title>
+<style>
+:root{--c4:#3b82f6;--c6:#8b5cf6;--ckaon:#f59e0b;--cphd:#ef4444;--ct:#0d9488;--cg:#d946ef;--cm4:#0ea5e9;--cm8:#f43f5e;--cy:#10b981;--csuper:#facc15}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;transition:background .3s,color .3s}
+.tag{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:4px;color:#fff;vertical-align:2px;margin-left:6px;font-style:normal;flex:none;white-space:nowrap}
+.tag.t4{background:var(--c4)}.tag.t6{background:var(--c6)}.tag.tk{background:var(--ckaon)}.tag.tp{background:var(--cphd)}.tag.tm4{background:var(--cm4)}.tag.tm8{background:var(--cm8)}
+.tag.tt{background:var(--ct)}.tag.tg{background:var(--cg)}.tag.ty{background:var(--cy)}.tag.tsuper{background:var(--csuper);color:#3a2f00}
+.ipa{font-family:"SF Mono",Menlo,monospace;font-size:.82em;font-weight:400;opacity:.62;margin-left:6px}
+
+
+/* 论文原标题小字 */
+.ptitle{font-size:12.5px;letter-spacing:.3px;margin-top:6px}
+.ptitle i{font-family:Georgia,serif}
+.theme-mag .ptitle{color:#999;text-transform:none}
+.theme-dark .ptitle{color:#6e7681}
+.theme-paper .ptitle{color:#a09578}
+.theme-fresh .ptitle{color:#9ca3af}
+body.lv-mode .ptitle{color:#7d8590}
+
+/* 预览工具条 */
+.toolbar{position:fixed;right:16px;bottom:16px;z-index:99;display:flex;flex-direction:column;gap:8px;background:rgba(20,22,30,.88);padding:12px;border-radius:14px;backdrop-filter:blur(8px);box-shadow:0 6px 24px rgba(0,0,0,.35)}
+.toolbar .row{display:flex;gap:6px}
+.toolbar button{border:none;cursor:pointer;padding:7px 12px;border-radius:8px;font-size:12.5px;background:#3a3f4d;color:#cbd2e0;transition:.15s}
+.toolbar button:hover{background:#4a5164}
+.toolbar button.on{background:#fff;color:#111;font-weight:600}
+.toolbar .lbl{font-size:10px;color:#8a93a6;text-align:left;margin:2px 0 -2px 2px}
+
+/* ---------- A 纸质阅读 ---------- */
+body.theme-paper{background:#faf6ee;color:#2c2a25}
+.theme-paper .wrap{max-width:880px;margin:0 auto;padding:56px 24px 140px}
+.theme-paper .hero h1{font-family:Georgia,"Songti SC",serif;font-size:34px}
+.theme-paper .hero p{color:#8a8272;margin:10px 0 42px;font-size:14px}
+.theme-paper .sec{margin-bottom:44px}
+.theme-paper .sec>h2{font-family:Georgia,"Songti SC",serif;font-size:20px;padding-left:14px;border-left:4px solid #b08d4f;margin-bottom:18px}
+.theme-paper .word{display:flex;gap:14px;padding:14px 16px;border-bottom:1px dashed #ddd2bc;align-items:baseline}
+.theme-paper .word:hover{background:#f3ecdc}
+.theme-paper .w{font-family:Georgia,serif;font-size:19px;font-weight:700;min-width:250px}
+.theme-paper .pos{color:#a09578;font-size:13px;margin-right:6px}
+.theme-paper .m{color:#4a463c;font-size:15px}
+.theme-paper .ex{margin-left:auto;max-width:270px;font-size:12.5px;color:#9a8f76;font-style:italic;text-align:right}
+.theme-paper .from{display:block;font-size:11px;color:#b3a888;font-style:normal;margin-top:3px}
+
+/* ---------- B 暗色科技 ---------- */
+body.theme-dark{background:#0d1117;color:#e6edf3}
+.theme-dark .wrap{max-width:1000px;margin:0 auto;padding:56px 24px 140px}
+.theme-dark .hero h1{font-family:"SF Mono",Menlo,monospace;font-size:26px}
+.theme-dark .hero h1::before{content:"$ ";color:#3fb950}
+.theme-dark .hero p{color:#7d8590;margin:10px 0 40px;font-size:14px;font-family:Menlo,monospace}
+.theme-dark .sec>h2{font-size:15px;font-family:Menlo,monospace;color:#58a6ff;padding:10px 16px;background:#161b22;border:1px solid #30363d;border-radius:8px 8px 0 0;margin-bottom:-1px}
+.theme-dark .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;padding:20px;background:#161b22;border:1px solid #30363d;border-radius:0 0 8px 8px}
+.theme-dark .card{background:#0d1117;border:1px solid #30363d;border-left:4px solid #58a6ff;border-radius:6px;padding:15px 17px;transition:.2s;cursor:pointer;font-family:Menlo,monospace}
+.theme-dark .card:hover{border-color:#58a6ff;box-shadow:0 0 14px rgba(88,166,255,.25);transform:translateY(-2px)}
+.theme-dark .w{font-family:Menlo,monospace;font-size:17px;color:#79c0ff}
+.theme-dark .ipa{color:#7ee787;opacity:.9}
+.theme-dark .m{color:#8b949e;font-size:13.5px;margin-top:7px;line-height:1.55}
+.theme-dark .ex{font-size:12px;color:#6e7681;margin-top:8px;border-top:1px solid #21262d;padding-top:8px;font-style:italic}
+.theme-dark .from{color:#484f58;font-size:11px;margin-top:4px}
+
+/* ---------- C 清新卡片 ---------- */
+body.theme-fresh{background:linear-gradient(160deg,#eef4ff 0%,#f6f0ff 50%,#fff7ec 100%);color:#1f2430}
+.theme-fresh .wrap{max-width:1020px;margin:0 auto;padding:56px 24px 140px}
+.theme-fresh .hero h1{font-size:32px;font-weight:800;background:linear-gradient(90deg,#3b82f6,#8b5cf6,#f59e0b);-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block}
+.theme-fresh .hero p{color:#6b7280;margin:10px 0 40px;font-size:14px}
+.theme-fresh .sec>h2{font-size:19px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.theme-fresh .sec>h2 .n{width:30px;height:30px;border-radius:10px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.08);display:inline-flex;align-items:center;justify-content:center;font-size:13px}
+.theme-fresh .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+.theme-fresh .card{background:rgba(255,255,255,.82);backdrop-filter:blur(6px);border-radius:18px;padding:17px 19px 15px;box-shadow:0 3px 14px rgba(80,80,140,.09);transition:.2s;cursor:pointer;border-top:5px solid #dbe3f5}
+.theme-fresh .card.lv四级{border-top-color:#3b82f6}.theme-fresh .card.lv六级{border-top-color:#8b5cf6}
+.theme-fresh .card.lv考研{border-top-color:#f59e0b}.theme-fresh .card.lv考博{border-top-color:#ef4444}
+.theme-fresh .card.lv专四{border-top-color:#0ea5e9}.theme-fresh .card.lv专八{border-top-color:#f43f5e}
+.theme-fresh .card.lv雅思{border-top-color:#10b981}.theme-fresh .card.lv托福{border-top-color:#0d9488}
+.theme-fresh .card.lvGRE{border-top-color:#d946ef}.theme-fresh .card.lv超纲{border-top-color:#facc15}
+.theme-fresh .card .w{display:inline-block;background:#f3f5fb;border-radius:8px;padding:2px 10px}
+.theme-fresh .card:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(80,80,140,.16)}
+.theme-fresh .w{font-size:18px;font-weight:700}
+.theme-fresh .m{color:#4b5563;font-size:14px;margin-top:6px;line-height:1.55}
+.theme-fresh .ex{color:#9ca3af;font-size:12.5px;margin-top:8px}
+.theme-fresh .from{color:#b6bcc9;font-size:11.5px;margin-top:4px}
+
+/* ---------- D 杂志表格（宽松版） ---------- */
+body.theme-mag{background:#fff;color:#111}
+.theme-mag .wrap{max-width:960px;margin:0 auto;padding:52px 28px 140px}
+.theme-mag .hero{border-bottom:3px solid #111;padding-bottom:16px;margin-bottom:10px}
+.theme-mag .hero h1{font-family:"Songti SC",Georgia,serif;font-size:38px;font-weight:900}
+.theme-mag .hero p{color:#888;font-size:13.5px;margin-top:8px}
+.theme-mag .sec>h2{font-size:14px;letter-spacing:3px;text-transform:uppercase;color:#c2410c;margin:44px 0 8px;border-bottom:1px solid #e5e5e5;padding-bottom:8px}
+.theme-mag table{width:100%;border-collapse:collapse}
+.theme-mag td{padding:16px 12px;border-bottom:1px solid #f0f0f0;font-size:15.5px;line-height:1.65;vertical-align:top}
+.theme-mag tr:hover td{background:#fff8f3}
+.theme-mag .w{font-weight:700;font-size:17px;width:300px}
+.theme-mag .lv{width:60px}
+.theme-mag .lv b{font-size:11.5px;padding:3px 0;display:block;text-align:center;border-radius:3px;color:#fff;font-weight:600}
+.theme-mag .m{color:#3d3d3d}
+.theme-mag .ex{color:#9a9a9a;font-size:13px;font-style:italic}
+.theme-mag .from{display:block;color:#c9c9c9;font-size:11.5px;font-style:normal;margin-top:4px}
+
+/* ---------- 按级别：学习模式同款暗色大页 ---------- */
+body.lv-mode{background:#0b0e13 !important}
+body.lv-mode .hero h1,body.lv-mode .hero p{color:#e8ecf3}
+body.lv-mode .hero p{color:#7d8590}
+.lvslide{background:#101318;color:#e8ecf3;border-radius:20px;padding:26px 32px 22px;margin-bottom:26px;border-top:6px solid var(--c4)}
+.lvslide.l6{border-top-color:var(--c6)}.lvslide.lk{border-top-color:var(--ckaon)}.lvslide.lp{border-top-color:var(--cphd)}
+.lvslide.lt{border-top-color:var(--ct)}.lvslide.lg{border-top-color:var(--cg)}.lvslide.lm4{border-top-color:var(--cm4)}.lvslide.lm8{border-top-color:var(--cm8)}.lvslide.ly{border-top-color:var(--cy)}.lvslide.lsuper{border-top-color:var(--csuper)}
+.lvslide .ltitle{font-size:26px;font-weight:800;font-family:Georgia,serif;display:flex;align-items:baseline;gap:14px}
+.lvslide .ltitle small{font-size:14px;color:#7d8590;font-family:Menlo,monospace;font-weight:400}
+.lvslide .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;padding:20px 0 8px}
+.lvslide .lcard{background:#171c26;border:1px solid #2b3342;border-radius:14px;padding:15px 17px;cursor:pointer;transition:.15s}
+.lvslide .lcard:hover{border-color:#79c0ff;transform:translateY(-2px)}
+.lvslide .lcard .w{font-size:19px;font-weight:700;font-family:Georgia,serif}
+.lvslide .lcard .ipa{font-family:Menlo,monospace;font-size:13px;color:#7ee787;margin-left:8px}
+.lvslide .lcard .m{color:#aeb6c4;font-size:14px;margin-top:7px;line-height:1.55}
+.lvslide .lcard .ex{color:#646d7d;font-size:12px;font-style:italic;margin-top:7px}
+.lvslide .lcard .from{color:#4d5563;font-size:11px;margin-top:6px}
+
+
+/* ---------- 白天 / 夜晚 ---------- */
+body.lv-mode:not(.night){background:#eef1f6 !important}
+body.lv-mode:not(.night) .hero h1{color:#1f2430}
+body.lv-mode:not(.night) .hero p{color:#6b7280}
+body.lv-mode:not(.night) .lvslide{background:#fff;color:#1f2430;box-shadow:0 4px 18px rgba(80,80,140,.10)}
+body.lv-mode:not(.night) .lvslide .lcard{background:#f7f9fd;border-color:#e4e9f3}
+body.lv-mode:not(.night) .lvslide .lcard:hover{border-color:#3b82f6}
+body.lv-mode:not(.night) .lvslide .lcard .m{color:#4b5563}
+body.lv-mode:not(.night) .lvslide .lcard .ex{color:#98a0ae}
+body.lv-mode:not(.night) .lvslide .lcard .from{color:#b3bac6}
+body.lv-mode:not(.night) .lvslide .lcard .ipa{color:#0a7d33}
+body.night.theme-mag{background:#0d1117;color:#e6edf3}
+body.night.theme-mag .hero{border-bottom-color:#e6edf3}
+body.night.theme-mag .hero p{color:#8b949e}
+body.night.theme-mag .sec>h2{color:#fbbf24;border-bottom-color:#30363d}
+body.night.theme-mag td{border-bottom-color:#1c2230}
+body.night.theme-mag tr:hover td{background:#161b22}
+body.night.theme-mag .m{color:#c9d1d9}
+body.night.theme-mag .ex{color:#8b949e}
+body.night.theme-mag .from{color:#57606a}
+body.night.theme-mag .w{color:#e6edf3}
+body.night.theme-mag .ptitle{color:#8b949e}
+body.night.theme-mag .ipa{opacity:.55}
+#study.day{background:#f5f7fa;color:#1f2430}
+#study.day .scard{background:#fff;border-color:#e4e9f3}
+#study.day .scard .m{color:#4b5563}
+#study.day .scard .ex{color:#98a0ae}
+#study.day .scard:hover{border-color:#3b82f6}
+#study.day .sfoot{color:#98a0ae;border-top-color:#e6e9f0}
+#study.day .snav button,#study.day #sClose{background:#fff;color:#1f2430;border-color:#d7dce6}
+#study.day .sfoot kbd{background:#e8ecf3;color:#1f2430}
+
+/* ---------- 学习模式（PPT 按章节翻页） ---------- */
+#study{position:fixed;inset:0;z-index:200;display:none;background:#101318;color:#e8ecf3;flex-direction:column}
+#study.on{display:flex}
+#study .sprog{height:4px;background:#262c38}
+#study .sprog i{display:block;height:100%;background:linear-gradient(90deg,#58a6ff,#8b5cf6);width:0;transition:width .25s}
+#study .sbody{flex:1;overflow:auto;padding:20px 40px}
+#study .stitle{font-size:24px;font-weight:800;font-family:Georgia,serif;padding:6px 4px 2px}
+#study .stitle small{color:#5b6472;font-size:14px;font-family:Menlo,monospace;font-weight:400;margin-left:12px}
+#study .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;padding:16px 2px 30px}
+#study .scard{background:#171c26;border:1px solid #2b3342;border-radius:14px;padding:16px 18px;cursor:pointer;transition:.15s}
+#study .scard:hover{border-color:#58a6ff;transform:translateY(-2px)}
+#study .scard .w{font-size:22px;font-weight:700;font-family:Georgia,serif}
+#study .scard .ipa{color:#7ee787;font-size:14px;margin-left:8px}
+#study .scard .m{color:#aeb6c4;font-size:14.5px;margin-top:8px;line-height:1.55}
+#study .scard .ex{color:#646d7d;font-size:12px;font-style:italic;margin-top:6px}
+#study .sfoot{display:flex;justify-content:space-between;align-items:center;padding:14px 28px;color:#5b6472;font-size:13px;border-top:1px solid #1d232e}
+#study .sfoot kbd{background:#262c38;border-radius:5px;padding:2px 8px;margin:0 2px;font-family:Menlo,monospace;font-size:12px}
+#study .snav{display:flex;gap:10px;align-items:center}
+#study .snav button{border:1px solid #333b4a;background:#1a2029;color:#cbd2e0;border-radius:8px;padding:8px 18px;cursor:pointer;font-size:14px}
+#study .snav button:hover{border-color:#58a6ff}
+#study .snav button:disabled{opacity:.35;cursor:default}
+
+
+
+/* —— 样式·暖白（暖白纸底） —— */
+
+body.theme-mag.paper{background:#f4f2ea!important;color:#23211c!important}
+body.theme-mag.paper .hero{border-bottom-color:#23211c}
+body.theme-mag.paper .hero h1{color:#1c1a12}
+body.theme-mag.paper .hero p{color:#6b6a5c}
+body.theme-mag.paper .ptitle{color:#8a8878}
+body.theme-mag.paper .sec>h2{color:#5f7a3f;border-bottom-color:#ddd8ca}
+body.theme-mag.paper td{border-bottom-color:#e6e1d3}
+body.theme-mag.paper tr:hover td{background:#ece7da}
+body.theme-mag.paper .m{color:#33312a}
+body.theme-mag.paper .ex{color:#8a8878}
+body.theme-mag.paper .from{color:#b3b0a0}
+body.theme-mag.paper .ipa{color:#6b6a5c}
+.theme-mag .hwband{padding:0 3px;font-weight:700}
+body.theme-mag.paper .hwband{background:linear-gradient(transparent 16%,#cdddb8 16%,#cdddb8 84%,transparent 84%);color:#1c1a12}
+
+
+</style>
+</head>
+<body class="theme-mag">
+<div class="wrap">
+  <div class="hero">
+    <h1>DeepSeek-V3 论文核心词汇</h1>
+    <div class="ptitle"><i>DeepSeek-V3 Technical Report · arXiv:2412.19437 · DeepSeek-AI, 2024</i></div>
+    <p>全量口径重做 · 6 节 609 词 · 十一档 + 超纲（2026-10-08）</p>
+  </div>
+  <div id="app"></div>
+</div>
+
+<div class="toolbar">
+  <div class="lbl">视图</div>
+  <div class="row">
+    <button id="v-sec" class="on">按章节</button>
+    <button id="v-lv">按级别综合</button>
+    <button id="v-study">▶ 学习模式</button>
+  </div>
+  <div class="lbl">样式</div>
+  <div class="row">
+    <button id="st-day" class="on">☀ 白天</button>
+    <button id="st-night">🌙 夜晚</button>
+    <button id="st-paper">暖白</button>
+  </div>
+  <div class="lbl">朗读声音 · 多引擎</div>
+  <div class="row"><select id="voiceSel" style="flex:1;border:none;border-radius:8px;padding:7px 8px;background:#3a3f4d;color:#cbd2e0;font-size:12.5px;outline:none"></select><span id="srcState" style="align-self:center;font-size:10.5px;color:#8a93a6;min-width:34px;text-align:center"></span></div>
+</div>
+
+<div id="study">
+  <div class="sprog"><i id="sbar"></i></div>
+  <button id="sClose" title="退出学习模式 (Esc)" style="position:absolute;top:14px;right:18px;z-index:5;border:1px solid #333b4a;background:#1a2029;color:#cbd2e0;border-radius:8px;width:34px;height:34px;font-size:16px;cursor:pointer">✕</button>
+  <div class="sbody"><div id="sPage"></div></div>
+  <div class="sfoot">
+    <span><kbd>空格</kbd>/<kbd>→</kbd> 下一页 &nbsp; <kbd>←</kbd> 上一页 &nbsp; 点单词发音 &nbsp; <kbd>Esc</kbd> 退出</span>
+    <div class="snav">
+      <span id="sIdx">0 / 0</span>
+      <button id="sPrev">← 上一页</button>
+      <button id="sNext">下一页 →</button>
+      <button id="sExit" style="border-color:#5b3a3a">退出</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// lv: 4=四级 6=六级 k=考研 p=考博；ipa 为美式音标
+const DATA = [
+ {
+  "sec": "1. Introduction · 引言",
+  "short": "Intro",
+  "icon": "1",
+  "words": [
+   {
+    "w": "acceleration",
+    "ipa": "ˌækˌsɛlərˈeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "加速；加速度",
+    "ex": "It can also be used for speculative decoding for inference acceleration."
+   },
+   {
+    "w": "advancement",
+    "ipa": "ədˈvænsmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "进步，提升",
+    "ex": "Peng et al., 2023b), its evolution being closely tied to advancements in hardware capabilities (Luo et al., 2024;"
+   },
+   {
+    "w": "adverse",
+    "ipa": "ædˈvɜrs",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "不利的",
+    "g": "g",
+    "ex": "minimizing the adverse impact on model performance"
+   },
+   {
+    "w": "competitiveness",
+    "ipa": "kəmˈpɛtɪtɪvnɪs",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "竞争力",
+    "ex": "For engineering-related tasks, while DeepSeek-V3 performs slightly below Claude-Sonnet-3.5, it still outpaces all other models by a significant margin, demonstrating its competitiveness across diverse technical benchmarks."
+   },
+   {
+    "w": "consequently",
+    "ipa": "ˈkɑnsəkˌwɛntli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "结果",
+    "ex": "Consequently, our pre-training stage is completed in less than two months and costs 2664K GPU hours."
+   },
+   {
+    "w": "cost-effective",
+    "ipa": "ˌkɔːstɪˈfektɪv",
+    "pos": "adj.",
+    "lv": "超纲",
+    "m": "高性价比的",
+    "ex": "for cost-effective training"
+   },
+   {
+    "w": "costly",
+    "ipa": "ˈkɔːstli",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "昂贵的",
+    "ex": "making it possible to train DeepSeek-V3 without using costly tensor parallelism"
+   },
+   {
+    "w": "counterpart",
+    "ipa": "ˈkaʊntərˌpɑrt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "对等物",
+    "ex": "Mistral, 2024), are also making significant strides, endeavoring to close the gap with their closed-source counterparts."
+   },
+   {
+    "w": "currently",
+    "ipa": "ˈkərəntli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "当前；一般地",
+    "ex": "Despite its economical training costs, comprehensive evaluations reveal that DeepSeek-V3-Base has emerged as the strongest open-source base model currently available, especially in code and math."
+   },
+   {
+    "w": "diminish",
+    "ipa": "dɪˈmɪnɪʃ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "缩小，减少",
+    "ex": "progressively diminishing the gap towards Artificial General Intelligence"
+   },
+   {
+    "w": "distill",
+    "ipa": "dɪˈstɪl",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "蒸馏",
+    "ex": "we distill the reasoning capability from the DeepSeek-R1 series of models"
+   },
+   {
+    "w": "efficient",
+    "ipa": "ɪˈfɪʃənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "效率高的，有能力的",
+    "ex": "In addition, we also develop efficient cross-node all-to-all communication kernels to fully utilize InfiniBand (IB) and NVLink bandwidths."
+   },
+   {
+    "w": "emerge",
+    "ipa": "ɪˈmɜrdʒd",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "兴起的",
+    "ex": "Low-precision training has emerged as a promising solution for efficient training"
+   },
+   {
+    "w": "emphasize",
+    "ipa": "ˈɛmfəˌsaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "强调",
+    "ex": "Lastly, we emphasize again the economical training costs of DeepSeek-V3, summarized in"
+   },
+   {
+    "w": "encounter",
+    "ipa": "ɪnˈkaʊntər",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "遇到",
+    "ex": "we did not encounter any irrecoverable loss spikes or have to roll back"
+   },
+   {
+    "w": "endeavor",
+    "ipa": "ɪnˈdevər",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "努力，尽力",
+    "g": "g",
+    "ex": "endeavoring to close the gap with their closed-source counterparts"
+   },
+   {
+    "w": "exclude",
+    "ipa": "ɪkˈsklud",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "排除，不包括",
+    "ex": "Note that the aforementioned costs include only the official training of DeepSeek-V3, excluding the costs associated with prior research and ablation experiments on architectures, algorithms, or data."
+   },
+   {
+    "w": "exposition",
+    "ipa": "ˌɛkspəˈzɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "说明，解释；展览会，博览会",
+    "ex": "In the remainder of this paper, we first present a detailed exposition of our DeepSeek-V3 model architecture (Section 2)."
+   },
+   {
+    "w": "extend",
+    "ipa": "ɪkˈstɛnd",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "延长；扩大；致",
+    "ex": "In the first stage, the maximum context length is extended to 32K, and in the second stage, it is further extended to 128K."
+   },
+   {
+    "w": "footprint",
+    "ipa": "ˈfʊtprɪnt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "占用（空间）",
+    "ex": "we meticulously optimize the memory footprint"
+   },
+   {
+    "w": "fully",
+    "ipa": "ˈfʊli",
+    "pos": "adv.；n.",
+    "lv": "专四",
+    "m": "充分地；完全地；彻底地；(Fully)人名；(法)菲利",
+    "ex": "In addition, we also develop efficient cross-node all-to-all communication kernels to fully utilize InfiniBand (IB) and NVLink bandwidths."
+   },
+   {
+    "w": "furthermore",
+    "ipa": "ˈfərðərˌmɔr",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "而且，此外",
+    "ex": "Furthermore, we meticulously optimize the memory footprint, making it possible to train DeepSeek-V3 without using costly tensor parallelism."
+   },
+   {
+    "w": "gap",
+    "ipa": "gæp",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "差距;缝隙缺口",
+    "ex": "Mistral, 2024), are also making significant strides, endeavoring to close the gap with their closed-source counterparts."
+   },
+   {
+    "w": "kernel",
+    "ipa": "ˈkərnəl",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "（果实的）核；谷粒",
+    "ex": "In addition, we also develop efficient cross-node all-to-all communication kernels to fully utilize InfiniBand (IB) and NVLink bandwidths."
+   },
+   {
+    "w": "lastly",
+    "ipa": "ˈlæstli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "最后，终于",
+    "ex": "Lastly, we conclude this work, discuss existing limitations of DeepSeek-V3, and propose potential directions for future research (Section 6)."
+   },
+   {
+    "w": "limitation",
+    "ipa": "ˌlɪmɪˈteɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "限制；限度，局限",
+    "ex": "Lastly, we conclude this work, discuss existing limitations of DeepSeek-V3, and propose potential directions for future research (Section 6)."
+   },
+   {
+    "w": "meticulously",
+    "ipa": "məˈtɪkjələsli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "细致地",
+    "ex": "we meticulously optimize the memory footprint"
+   },
+   {
+    "w": "mistral",
+    "ipa": "ˈmɪstrəl",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "寒冷西北风",
+    "ex": "Mistral, 2024), are also making significant strides, endeavoring to close the gap with their closed-source counterparts."
+   },
+   {
+    "w": "optimize",
+    "ipa": "ˈɑptɪˌmaɪz",
+    "pos": "vt.",
+    "lv": "考博",
+    "m": "使最优化； 充分利用",
+    "ex": "Furthermore, we meticulously optimize the memory footprint, making it possible to train DeepSeek-V3 without using costly tensor parallelism."
+   },
+   {
+    "w": "overlap",
+    "ipa": "ˌoʊvərˈlæp",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "重叠",
+    "ex": "hides most of the communication during training through computation-communication overlap"
+   },
+   {
+    "w": "parallelism",
+    "ipa": "ˈpɛrəˌlɛˌlɪzəm",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "平行， 类似",
+    "ex": "Furthermore, we meticulously optimize the memory footprint, making it possible to train DeepSeek-V3 without using costly tensor parallelism."
+   },
+   {
+    "w": "prior",
+    "ipa": "praɪər",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "在先的；优先的",
+    "ex": "Note that the aforementioned costs include only the official training of DeepSeek-V3, excluding the costs associated with prior research and ablation experiments on architectures, algorithms, or data."
+   },
+   {
+    "w": "progressively",
+    "ipa": "prəˈɡresɪvli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "逐步地",
+    "ex": "progressively diminishing the gap towards Artificial General Intelligence"
+   },
+   {
+    "w": "propose",
+    "ipa": "prəˈpoʊz",
+    "pos": "v.；v.",
+    "lv": "四级",
+    "m": "提议；求婚",
+    "ex": "Lastly, we conclude this work, discuss existing limitations of DeepSeek-V3, and propose potential directions for future research (Section 6)."
+   },
+   {
+    "w": "reinforcement",
+    "ipa": "ˌriɪnˈfɔrsmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "加固；增援；援军；加强",
+    "ex": "Thereafter, we discuss our efforts on post-training, which include Supervised Fine-Tuning (SFT), Reinforcement Learning (RL), the corresponding evaluations, and discussions (Section 5)."
+   },
+   {
+    "w": "remainder",
+    "ipa": "rɪˈmeɪndər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "剩余（物）；余数",
+    "ex": "In the remainder of this paper, we first present a detailed exposition of our DeepSeek-V3 model architecture (Section 2)."
+   },
+   {
+    "w": "remarkably",
+    "ipa": "rɪˈmɑrkəbli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "非常，显著地",
+    "ex": "The pre-training process is remarkably stable"
+   },
+   {
+    "w": "rental",
+    "ipa": "ˈrɛntəl",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "租",
+    "ex": "Assuming the rental price of the H800 GPU is $2 per GPU hour, our total training costs amount to only $5.576M."
+   },
+   {
+    "w": "secondly",
+    "ipa": "ˈsɛkəndli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "第二(点)；其次",
+    "ex": "Secondly, DeepSeek-V3 employs a multi-token prediction training objective, which we have observed to enhance the overall performance on evaluation benchmarks."
+   },
+   {
+    "w": "solidify",
+    "ipa": "səˈlɪdəˌfaɪ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "凝固",
+    "ex": "Notably, it even outperforms o1-preview on specific benchmarks, such as MATH-500, demonstrating its robust mathematical reasoning capabilities. (2) On coding-related tasks, DeepSeek-V3 emerges as the top-performing model for …"
+   },
+   {
+    "w": "solution",
+    "ipa": "səˈluʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "解决，解答，解决办法",
+    "ex": "Low-precision training has emerged as a promising solution for efficient training (Dettmers et al., 2022;"
+   },
+   {
+    "w": "spike",
+    "ipa": "spaɪk",
+    "pos": "n.；v.",
+    "lv": "专四",
+    "m": "长钉，道钉；钉鞋；细高跟；阻止；以大钉钉牢；用尖物刺穿",
+    "ex": "Throughout the entire training process, we did not encounter any irrecoverable loss spikes or have to roll back."
+   },
+   {
+    "w": "stride",
+    "ipa": "straɪd",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "进展",
+    "ex": "are also making significant strides, endeavoring to close the gap"
+   },
+   {
+    "w": "strive",
+    "ipa": "straɪv",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "力求",
+    "ex": "we consistently strive for strong model performance and economical costs"
+   },
+   {
+    "w": "subsequent",
+    "ipa": "ˈsəbsəkwənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "随后的，后来的",
+    "ex": "The subsequent training stages after pre-training require only 0.1M GPU hours."
+   },
+   {
+    "w": "supervise",
+    "ipa": "ˈsupərˌvaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "监督，监视",
+    "ex": "Thereafter, we discuss our efforts on post-training, which include Supervised Fine-Tuning (SFT), Reinforcement Learning (RL), the corresponding evaluations, and discussions (Section 5)."
+   },
+   {
+    "w": "thereafter",
+    "ipa": "ðɛˈræftər",
+    "pos": "adv.",
+    "lv": "考研",
+    "m": "此后，以后",
+    "ex": "Thereafter, we discuss our efforts on post-training, which include Supervised Fine-Tuning (SFT), Reinforcement Learning (RL), the corresponding evaluations, and discussions (Section 5)."
+   },
+   {
+    "w": "trillion",
+    "ipa": "ˈtrɪljən",
+    "pos": "num.",
+    "lv": "六级",
+    "m": "万亿",
+    "ex": "During the pre-training stage, training DeepSeek-V3 on each trillion tokens requires only 180K H800 GPU hours, i.e., 3.7 days on our cluster with 2048 H800 GPUs."
+   },
+   {
+    "w": "undergo",
+    "ipa": "ˌʌndərˈɡoʊ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "经历",
+    "ex": "have been undergoing rapid iteration and evolution"
+   },
+   {
+    "w": "unlock",
+    "ipa": "ˌʌnˈlɑk",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "释放，激发",
+    "ex": "to align it with human preferences and further unlock its potential"
+   },
+   {
+    "w": "usage",
+    "ipa": "ˈjusɪʤ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "使用，对待；惯用法",
+    "ex": "Through the support for FP8 computation and storage, we achieve both accelerated training and reduced GPU memory usage."
+   },
+   {
+    "w": "utilize",
+    "ipa": "ˈjuːtəlaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "利用",
+    "ex": "to fully utilize InfiniBand (IB) and NVLink bandwidths"
+   },
+   {
+    "w": "validate",
+    "ipa": "ˈvælɪdeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "验证",
+    "ex": "These two architectures have been validated in DeepSeek-V2"
+   }
+  ]
+ },
+ {
+  "sec": "2. Architecture · 架构策略",
+  "short": "Arch",
+  "icon": "2",
+  "words": [
+   {
+    "w": "additional",
+    "ipa": "əˈdɪʃənəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "额外的",
+    "ex": "Finally, taking h𝑘 𝑖as the input, the shared output head will compute the probability distribution for the 𝑘-th additional prediction token 𝑃𝑘"
+   },
+   {
+    "w": "assign",
+    "ipa": "əˈsaɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "分配，布置",
+    "ex": "(18) 𝑠′ 𝑖,𝑡= 𝑠𝑖,𝑡 Í𝑁𝑟 𝑗=1 𝑠𝑗,𝑡 , (19) 𝑃𝑖= 1 𝑇 𝑇 ∑︁ 𝑡=1 𝑠′ 𝑖,𝑡, (20) where the balance factor 𝛼is a hyper-parameter, which will be assigned an extremely small value for DeepSeek-V3;"
+   },
+   {
+    "w": "auxiliary",
+    "ipa": "ɔːɡˈzɪliəri",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "辅助的",
+    "ex": "DeepSeek-V3 pioneers an auxiliary-loss-free strategy for load balancing"
+   },
+   {
+    "w": "bandwidth",
+    "ipa": "ˈbændwɪdθ",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "带宽",
+    "ex": "to fully utilize InfiniBand (IB) and NVLink bandwidths"
+   },
+   {
+    "w": "briefly",
+    "ipa": "ˈbrifli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "短暂地；简略地；暂时地",
+    "ex": "Figure 2 illustrates the basic architecture of DeepSeek-V3, and we will briefly review the details of MLA and DeepSeekMoE in this section."
+   },
+   {
+    "w": "bubble",
+    "ipa": "ˈbʌbl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "气泡（流水线空泡）",
+    "ex": "which has fewer pipeline bubbles and hides most of the communication"
+   },
+   {
+    "w": "causal",
+    "ipa": "ˈkɔzəl",
+    "pos": "adj.；n.",
+    "lv": "考博",
+    "m": "因果关系的；有原因的；表示原因的连词",
+    "ex": "Our principle of maintaining the causal chain of predictions is similar to that of EAGLE (Li et al., 2024b), but its primary objective is speculative decoding (Leviathan et al., 2023;"
+   },
+   {
+    "w": "collapse",
+    "ipa": "kəˈlæps",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "倒坍；崩溃，瓦解",
+    "ex": "For MoE models, an unbalanced expert load will lead to routing collapse (Shazeer et al., 2017) and diminish computational efficiency in scenarios with expert parallelism."
+   },
+   {
+    "w": "complementary",
+    "ipa": "ˌkɑmpləˈmɛnʧi",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "补充的； 辅助的",
+    "ex": "Complementary Sequence-Wise Auxiliary Loss."
+   },
+   {
+    "w": "compute",
+    "ipa": "kəmˈpjut",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "计算，估计，估算",
+    "ex": "Finally, taking h𝑘 𝑖as the input, the shared output head will compute the probability distribution for the 𝑘-th additional prediction token 𝑃𝑘"
+   },
+   {
+    "w": "concatenation",
+    "ipa": "kənˌkætəˈneɪʃən",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "串联",
+    "ex": "RoPE(·) denotes the operation that applies RoPE matrices; and [·; ·] denotes concatenation."
+   },
+   {
+    "w": "detail",
+    "ipa": "ˈditeɪl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "细节",
+    "ex": "Figure 2 illustrates the basic architecture of DeepSeek-V3, and we will briefly review the details of MLA and DeepSeekMoE in this section."
+   },
+   {
+    "w": "device",
+    "ipa": "dɪˈvaɪs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "装置，设备",
+    "ex": "Like the device-limited routing used by DeepSeek-V2, DeepSeek-V3 also uses a restricted routing mechanism to limit communication costs during training."
+   },
+   {
+    "w": "distribution",
+    "ipa": "ˌdɪstrəˈbjuʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "分发，分配；分布",
+    "ex": "Finally, taking h𝑘 𝑖as the input, the shared output head will compute the probability distribution for the 𝑘-th additional prediction token 𝑃𝑘"
+   },
+   {
+    "w": "exception",
+    "ipa": "ɪkˈsɛpʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "例外",
+    "ex": "DeepSeek-V2, an exception is that we additionally introduce an auxiliary-loss-free load balancing"
+   },
+   {
+    "w": "explicitly",
+    "ipa": "ɪkˈsplɪsətli",
+    "pos": "adv.",
+    "lv": "GRE",
+    "m": "直接地，明确地",
+    "ex": "For other minor details not explicitly mentioned, DeepSeek-V3 adheres to the settings of DeepSeek-V2 (DeepSeek-AI, 2024c)."
+   },
+   {
+    "w": "feature",
+    "ipa": "ˈfiʧər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "特点",
+    "ex": "Architecture We first introduce the basic architecture of DeepSeek-V3, featured by Multi-head Latent Attention (MLA) (DeepSeek-AI, 2024c) for efficient inference and DeepSeekMoE (Dai et al., 2024) for economical training."
+   },
+   {
+    "w": "finally",
+    "ipa": "ˈfaɪnəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "最后；不可更改的",
+    "ex": "Finally, taking h𝑘 𝑖as the input, the shared output head will compute the probability distribution for the 𝑘-th additional prediction token 𝑃𝑘"
+   },
+   {
+    "w": "impair",
+    "ipa": "ˌɪmˈpɛr",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "损害",
+    "ex": "However, too large an auxiliary loss will impair the model performance (Wang et al., 2024a)."
+   },
+   {
+    "w": "inclusive",
+    "ipa": "ˌɪnˈklusɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "包括的",
+    "ex": "The combined h′𝑘 𝑖serves as the input of the Transformer block at the 𝑘-th depth to produce the output representation at the current depth h𝑘 𝑖: h𝑘 1:𝑇−𝑘= TRM𝑘(h′𝑘 1:𝑇−𝑘), (22) where 𝑇represents the input sequence length and …"
+   },
+   {
+    "w": "indicator",
+    "ipa": "ˈɪndəˌkeɪtər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "指示器；[试剂] 指示剂；[计] 指示符；压力计",
+    "ex": "1(·) denotes the indicator function; and 𝑇denotes the number of tokens in a sequence."
+   },
+   {
+    "w": "inference",
+    "ipa": "ˈɪnfərəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "推断结果， 结论； 推论， 推理， 推断",
+    "ex": "For efficient inference and economical training, DeepSeek-V3 also adopts MLA and DeepSeekMoE, which have been thoroughly validated by DeepSeek-V2."
+   },
+   {
+    "w": "input",
+    "ipa": "ˈɪnˌpʊt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "输入；投入的资金",
+    "ex": "Finally, taking h𝑘 𝑖as the input, the shared output head will compute the probability distribution for the 𝑘-th additional prediction token 𝑃𝑘"
+   },
+   {
+    "w": "investigate",
+    "ipa": "ˌɪnˈvɛstəˌgeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "调查",
+    "ex": "Multi-Token Prediction Inspired by Gloeckle et al. (2024), we investigate and set a Multi-Token Prediction (MTP) objective for DeepSeek-V3, which extends the prediction scope to multiple future tokens at each position."
+   },
+   {
+    "w": "log",
+    "ipa": "lɔg",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "原木，木料",
+    "ex": "For each prediction depth, we compute a cross-entropy loss L𝑘 MTP: L𝑘 MTP = CrossEntropy(𝑃𝑘 2+𝑘:𝑇+1, 𝑡2+𝑘:𝑇+1) = −1 𝑇 𝑇+1 ∑︁ 𝑖=2+𝑘 log 𝑃𝑘 𝑖[𝑡𝑖], (24) where 𝑇denotes the input sequence length, 𝑡𝑖denotes the ground-truth token at …"
+   },
+   {
+    "w": "mainly",
+    "ipa": "ˈmeɪnli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "主要地，大体上",
+    "ex": "Our MTP strategy mainly aims to improve the performance of the main model, so during inference, we can directly discard the MTP modules and the main model can function independently and normally."
+   },
+   {
+    "w": "mechanism",
+    "ipa": "ˈmɛkəˌnɪzəm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "机制，机能",
+    "ex": "Like the device-limited routing used by DeepSeek-V2, DeepSeek-V3 also uses a restricted routing mechanism to limit communication costs during training."
+   },
+   {
+    "w": "minor",
+    "ipa": "ˈmaɪnər",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "小的",
+    "ex": "For other minor details not explicitly mentioned, DeepSeek-V3 adheres to the settings of DeepSeek-V2 (DeepSeek-AI, 2024c)."
+   },
+   {
+    "w": "normally",
+    "ipa": "ˈnɔrməli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "通常，正常地",
+    "ex": "Our MTP strategy mainly aims to improve the performance of the main model, so during inference, we can directly discard the MTP modules and the main model can function independently and normally."
+   },
+   {
+    "w": "objective",
+    "ipa": "əbˈdʒektɪv",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "目标",
+    "ex": "employs a multi-token prediction training objective"
+   },
+   {
+    "w": "overload",
+    "ipa": "ˈoʊvərˌloʊd",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "使负担太重",
+    "ex": "At the end of each step, we will decrease the bias term by 𝛾if its corresponding expert is overloaded, and increase it by 𝛾if its corresponding expert is underloaded, where 𝛾is a hyper-parameter called bias update speed."
+   },
+   {
+    "w": "precision",
+    "ipa": "prɪˈsɪʒn",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "精度",
+    "ex": "we support the FP8 mixed precision training"
+   },
+   {
+    "w": "prediction",
+    "ipa": "priˈdɪkʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "预言，预告；预报",
+    "ex": "Finally, taking h𝑘 𝑖as the input, the shared output head will compute the probability distribution for the 𝑘-th additional prediction token 𝑃𝑘"
+   },
+   {
+    "w": "probability",
+    "ipa": "ˌprɑbəˈbɪləˌti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "可能性；概率",
+    "ex": "Finally, taking h𝑘 𝑖as the input, the shared output head will compute the probability distribution for the 𝑘-th additional prediction token 𝑃𝑘"
+   },
+   {
+    "w": "representation",
+    "ipa": "ˌrɛprəzɛnˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "描写；陈述；代表",
+    "ex": "On the other hand, MTP may enable the model to pre-plan its representations for better prediction of future tokens."
+   },
+   {
+    "w": "restrict",
+    "ipa": "riˈstrɪkt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "限制，限定",
+    "ex": "Like the device-limited routing used by DeepSeek-V2, DeepSeek-V3 also uses a restricted routing mechanism to limit communication costs during training."
+   },
+   {
+    "w": "rotary",
+    "ipa": "ˈroʊtəri",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "旋转的，转动的",
+    "ex": "to produce the decoupled key that carries Rotary Positional Embedding (RoPE) (Su et al., 2024);"
+   },
+   {
+    "w": "sequential",
+    "ipa": "səkˈwɛnʃəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "序列的； 连续的； 随之而来的",
+    "ex": "To be specific, our MTP implementation uses 𝐷sequential modules to predict 𝐷 additional tokens."
+   },
+   {
+    "w": "slightly",
+    "ipa": "sˈlaɪtli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "轻微地",
+    "ex": "Slightly different from DeepSeek-V2, DeepSeek-V3 uses the sigmoid function to compute the affinity scores, and applies a normalization among all selected affinity scores to produce the gating values."
+   },
+   {
+    "w": "speculative",
+    "ipa": "ˈspɛkjələtɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "投机的； 思考的",
+    "ex": "Additionally, we can also repurpose these MTP modules for speculative decoding to further improve the generation latency."
+   },
+   {
+    "w": "thoroughly",
+    "ipa": "ˈθəroʊli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "十分地, 彻底地",
+    "ex": "For efficient inference and economical training, DeepSeek-V3 also adopts MLA and DeepSeekMoE, which have been thoroughly validated by DeepSeek-V2."
+   },
+   {
+    "w": "transformer",
+    "ipa": "trænsˈfɔrmər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "变压器，转换器",
+    "ex": "Basic Architecture The basic architecture of DeepSeek-V3 is still within the Transformer (Vaswani et al., 2017) framework."
+   },
+   {
+    "w": "unbalance",
+    "ipa": "ənˈbæləns",
+    "pos": "v.",
+    "lv": "托福",
+    "m": "使失衡,使精神紊乱n失衡",
+    "ex": "For MoE models, an unbalanced expert load will lead to routing collapse (Shazeer et al., 2017) and diminish computational efficiency in scenarios with expert parallelism."
+   },
+   {
+    "w": "yield",
+    "ipa": "jild",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "屈服，产出；产量",
+    "ex": "Ultimately, the attention queries (q𝑡,𝑖), keys (k𝑗,𝑖), and values (v𝐶 𝑗,𝑖) are combined to yield the final attention output u𝑡: o𝑡,𝑖= 𝑡∑︁ 𝑗=1 Softmax𝑗( q𝑇 𝑡,𝑖k𝑗,𝑖 √︃ 𝑑ℎ+ 𝑑𝑅 ℎ )v𝐶 𝑗,𝑖, (10) u𝑡= 𝑊𝑂[o𝑡,1; o𝑡,2; ...; o𝑡,𝑛ℎ], (11)"
+   }
+  ]
+ },
+ {
+  "sec": "3. Training & Infra · 训练与基础设施",
+  "short": "Infra",
+  "icon": "3",
+  "words": [
+   {
+    "w": "acceptable",
+    "ipa": "əkˈsɛptəbəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "可接受的，合意的",
+    "ex": "Notably, compared with the BF16 baseline, the relative loss error of our FP8-training model remains consistently below 0.25%, a level well within the acceptable range of training randomness."
+   },
+   {
+    "w": "accommodate",
+    "ipa": "əˈkɑməˌdeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "适合， 提供住宿",
+    "ex": "This approach ensures that the quantization process can better accommodate outliers by adapting the scale according to smaller groups of elements."
+   },
+   {
+    "w": "accord",
+    "ipa": "əˈkɔrd",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使一致；给予",
+    "ex": "This approach ensures that the quantization process can better accommodate outliers by adapting the scale according to smaller groups of elements."
+   },
+   {
+    "w": "accumulation",
+    "ipa": "əˌkjumjəˈleɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "积聚,堆积物",
+    "ex": "In the current Tensor Core implementation of the NVIDIA Hopper architecture, FP8 GEMM suffers from limited accumulation precision."
+   },
+   {
+    "w": "additionally",
+    "ipa": "əˈdɪʃəˌnəli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "此外；又，加之",
+    "ex": "Additionally, we leverage the IBGDA (NVIDIA, 2022) technology to further minimize latency and enhance communication efficiency."
+   },
+   {
+    "w": "aggregate",
+    "ipa": "ˈægrəgət",
+    "pos": "adj.；n.；vt.",
+    "lv": "六级",
+    "m": "总计的， 合计的；总数，合计；总计达， 合计； 使聚集， 使积聚",
+    "ex": "Currently, the SMs primarily perform the following tasks for all-to-all communication: • Forwarding data between the IB (InfiniBand) and NVLink domain while aggregating IB traffic destined for multiple GPUs within the same node …"
+   },
+   {
+    "w": "align",
+    "ipa": "əˈlaɪn",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使结盟；使成一行；匹配",
+    "ex": "As a standard practice, the input distribution is aligned to the representable range of the FP8 format by scaling the maximum absolute value of the input tensor to the maximum representable value of FP8 (Narang et al., 2017)."
+   },
+   {
+    "w": "alleviate",
+    "ipa": "əˈliviˌeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "减轻，缓解",
+    "ex": "To alleviate this challenge, we quantize the activation before MoE up-projections into FP8 and then apply dispatch components, which is compatible with FP8 Fprop in MoE up-projections."
+   },
+   {
+    "w": "alternatively",
+    "ipa": "ɔlˈtərnətɪvli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "二选一地；非此即彼",
+    "ex": "Alternatively, a near-memory computing approach can be adopted, where compute logic is placed near the HBM."
+   },
+   {
+    "w": "aspire",
+    "ipa": "əˈspaɪr",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "(to，after)渴望，追求，有志于",
+    "ex": "We aspire to see future vendors developing hardware that offloads these communication tasks from the valuable computation unit SM, serving as a GPU co-processor or a network co-processor like NVIDIA SHARP Graham et al. (2016)."
+   },
+   {
+    "w": "attribute",
+    "ipa": "əˈtrɪˌbjut",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "归因于",
+    "ex": "We attribute the feasibility of this approach to our fine-grained quantization strategy, i.e., tile and block-wise scaling."
+   },
+   {
+    "w": "auto",
+    "ipa": "ˈɔtoʊ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "(口语)汽车",
+    "ex": "Specifically, we employ customized PTX (Parallel Thread Execution) instructions and auto-tune the communication chunk size, which significantly reduces the use of the L2 cache and the interference to other SMs."
+   },
+   {
+    "w": "batch",
+    "ipa": "bæʧ",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "一批， 一组， 一群； 一批生产量",
+    "ex": "The micro-batches in the reverse direction are symmetric to those in the forward direction, so we omit their batch ID for illustration simplicity."
+   },
+   {
+    "w": "bottleneck",
+    "ipa": "ˈbɑtəlˌnɛk",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "瓶颈；障碍物",
+    "ex": "In the decoding stage, the batch size per expert is relatively small (usually within 256 tokens), and the bottleneck is memory access rather than computation."
+   },
+   {
+    "w": "buffer",
+    "ipa": "ˈbəfər",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "[计] 缓冲区；缓冲器，[车辆] 减震器；缓冲",
+    "ex": "Currently, the SMs primarily perform the following tasks for all-to-all communication: • Forwarding data between the IB (InfiniBand) and NVLink domain while aggregating IB traffic destined for multiple GPUs within the same node …"
+   },
+   {
+    "w": "cache",
+    "ipa": "kæˈʃeɪ",
+    "pos": "n.；v.",
+    "lv": "专八",
+    "m": "电脑高速缓冲存储器；贮存物；隐藏处；隐藏；窖藏",
+    "ex": "To reduce the memory consumption, it is a natural choice to cache activations in FP8 format for the backward pass of the Linear operator."
+   },
+   {
+    "w": "chimera",
+    "ipa": "ʧɪˈmɛrə",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "[希神]狮头, 羊身, 蛇尾的吐火怪物, 妖怪, 狂想",
+    "ex": "Compared with Chimera (Li and Hoefler, 2021), DualPipe only requires that the pipeline stages and micro-batches be divisible by 2, without requiring micro-batches to be divisible by pipeline stages."
+   },
+   {
+    "w": "chip",
+    "ipa": "ʧɪp",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "屑片， 碎片； 炸土豆条； 集成电路片， 集成块； 缺口， 瑕疵",
+    "ex": "Therefore, we recommend future chips to support fine-grained quantization by enabling Tensor Cores to receive scaling factors and implement MMA with group scaling."
+   },
+   {
+    "w": "chunk",
+    "ipa": "ʧəŋk",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "厚片， 大块； 相当大的部分",
+    "ex": "The key idea of DualPipe is to overlap the computation and communication within a pair of individual forward and backward chunks."
+   },
+   {
+    "w": "clarification",
+    "ipa": "ˌklɛrəfəˈkeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "澄清, 净化",
+    "ex": "For clarification, only"
+   },
+   {
+    "w": "cluster",
+    "ipa": "ˈkləstər",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "串，束，簇；群，组；群聚；聚集",
+    "ex": "To be specific, in our cluster, cross-node GPUs are fully interconnected with IB, and intra-node communications are handled via NVLink."
+   },
+   {
+    "w": "commonly",
+    "ipa": "ˈkɑmənli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "普通地，一般地",
+    "ex": "Low-precision GEMM operations often suffer from un-derflow issues, and their accuracy largely depends on high-precision accumulation, which is commonly performed in an FP32 precision (Kalamkar et al., 2019;"
+   },
+   {
+    "w": "compatible",
+    "ipa": "kəmˈpætəbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "兼容的",
+    "ex": "To alleviate this challenge, we quantize the activation before MoE up-projections into FP8 and then apply dispatch components, which is compatible with FP8 Fprop in MoE up-projections."
+   },
+   {
+    "w": "complexity",
+    "ipa": "kəmˈplɛksɪti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "复杂（性）",
+    "ex": "Furthermore, to reduce application programming complexity, we aim for this hardware to unify the IB (scale-out) and NVLink (scale-up) networks from the perspective of the computation units."
+   },
+   {
+    "w": "computation",
+    "ipa": "ˌkɑmpjəˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "计算, 估计",
+    "ex": "Therefore, to avoid impacting the computation speed of the attention part, we can allocate only a small portion of SMs to dispatch+MoE+combine."
+   },
+   {
+    "w": "conjunction",
+    "ipa": "kənˈʤəŋkʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "接合，连接；连接词",
+    "ex": "Low-Precision Storage and Communication In conjunction with our FP8 training framework, we further reduce the memory consumption and communication overhead by compressing cached activations and optimizer states into …"
+   },
+   {
+    "w": "conserve",
+    "ipa": "kənˈsərv",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "保留，保护",
+    "ex": "Secondly, we develop efficient cross-node all-to-all communication kernels to fully utilize IB and NVLink bandwidths and conserve Streaming Multiprocessors (SMs) dedicated to communication."
+   },
+   {
+    "w": "constrain",
+    "ipa": "kənˈstreɪn",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "限制",
+    "ex": "In low-precision training frameworks, overflows and underflows are common challenges due to the limited dynamic range of the FP8 format, which is constrained by its reduced exponent bits."
+   },
+   {
+    "w": "consumption",
+    "ipa": "kənˈsəmʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "消费，消耗",
+    "ex": "To reduce the memory consumption, it is a natural choice to cache activations in FP8 format for the backward pass of the Linear operator."
+   },
+   {
+    "w": "contrast",
+    "ipa": "ˈkɑntræst",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "对比，反差；对比",
+    "ex": "In contrast to the hybrid FP8 format adopted by prior work (NVIDIA, 2024b;"
+   },
+   {
+    "w": "conversion",
+    "ipa": "kənˈvərʒən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "转变，转化；改变",
+    "ex": "Combined with the fusion of FP8 format conversion and TMA access, this enhancement will significantly streamline the quantization workflow."
+   },
+   {
+    "w": "convert",
+    "ipa": "ˈkɑnvərt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使转变；使改变",
+    "ex": "Additionally, these activations will be converted from an 1x128 quantization tile to an 128x1 tile in the backward pass."
+   },
+   {
+    "w": "core",
+    "ipa": "kɔr",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "果实的心，核心",
+    "ex": "These scaling factors can be efficiently multiplied on the CUDA Cores as the dequantization process with minimal additional computational cost."
+   },
+   {
+    "w": "craft",
+    "ipa": "kræft",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "工艺；手艺，行业",
+    "ex": "Training Framework The training of DeepSeek-V3 is supported by the HAI-LLM framework, an efficient and lightweight training framework crafted by our engineers from the ground up."
+   },
+   {
+    "w": "critical",
+    "ipa": "ˈkrɪtɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "批评的，爱挑剔的",
+    "ex": "For both the forward and backward combine components, we retain them in BF16 to preserve training precision in critical parts of the training pipeline."
+   },
+   {
+    "w": "cumbersome",
+    "ipa": "ˈkəmbərsəm",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "笨重的；累赘的；难处理的",
+    "ex": "The current architecture makes it cumbersome to fuse matrix transposition with GEMM operations."
+   },
+   {
+    "w": "current",
+    "ipa": "ˈkɑrənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "当前的",
+    "ex": "The current implementations struggle to effectively support online quantization, despite its effectiveness demonstrated in our research."
+   },
+   {
+    "w": "customize",
+    "ipa": "ˈkəstəˌmaɪz",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "定制",
+    "ex": "We adopt a customized E5M6 data format exclusively for these activations."
+   },
+   {
+    "w": "deficiency",
+    "ipa": "dɪˈfɪʃənsi",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "缺乏；不足",
+    "ex": "Although helpful in achieving successful FP8 training, it is merely a compromise due to the Hopper architecture’s hardware deficiency in FP8 GEMM accumulation precision."
+   },
+   {
+    "w": "degradation",
+    "ipa": "ˌdɛgrəˈdeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "降级；退化；衰变",
+    "ex": "We adopt the BF16 data format instead of FP32 to track the first and second moments in the AdamW (Loshchilov and Hutter, 2017) optimizer, without incurring observable performance degradation."
+   },
+   {
+    "w": "degrade",
+    "ipa": "dɪˈgreɪd",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使降低；使堕落",
+    "ex": "This method makes low-precision training highly sensitive to activation outliers, which can heavily degrade quantization accuracy."
+   },
+   {
+    "w": "denote",
+    "ipa": "dɪˈnoʊt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "指示，意味着",
+    "ex": "Orange denotes forward, green denotes \"backward for input\", blue denotes \"backward for weights\", purple denotes PP communication, and red denotes barriers."
+   },
+   {
+    "w": "dense",
+    "ipa": "dɛns",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "密集的；浓厚的",
+    "ex": "In particular, we use 1-way Tensor Parallelism for the dense MLPs in shallow layers to save TP communication."
+   },
+   {
+    "w": "density",
+    "ipa": "ˈdɛnsɪti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "密度",
+    "ex": "In this framework, most compute-density operations are conducted in FP8, while a few key operations are strategically maintained in their original data formats to balance training efficiency and numerical stability."
+   },
+   {
+    "w": "depict",
+    "ipa": "dɪˈpɪkt",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "描绘， 描述",
+    "ex": "As depicted in Figure 6, all three GEMMs associated with the Linear operator, namely Fprop (forward pass), Dgrad (activation backward pass), and Wgrad (weight backward pass), are executed in FP8."
+   },
+   {
+    "w": "deploy",
+    "ipa": "dɪˈplɔɪ",
+    "pos": "v.；n.",
+    "lv": "六级",
+    "m": "配置；展开；使疏开；部署",
+    "ex": "To this end, we introduce a deployment strategy of redundant experts, which duplicates high-load experts and deploys them redundantly."
+   },
+   {
+    "w": "deployment",
+    "ipa": "dɪˈplɔɪmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "部署",
+    "ex": "To this end, we introduce a deployment strategy of redundant experts, which duplicates high-load experts and deploys them redundantly."
+   },
+   {
+    "w": "despite",
+    "ipa": "dɪˈspaɪt",
+    "pos": "prep.",
+    "lv": "四级",
+    "m": "不管",
+    "ex": "The current implementations struggle to effectively support online quantization, despite its effectiveness demonstrated in our research."
+   },
+   {
+    "w": "destine",
+    "ipa": "ˈdɛstɪn",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "命定，注定；预定",
+    "ex": "Currently, the SMs primarily perform the following tasks for all-to-all communication: • Forwarding data between the IB (InfiniBand) and NVLink domain while aggregating IB traffic destined for multiple GPUs within the same node …"
+   },
+   {
+    "w": "detect",
+    "ipa": "dɪˈtɛkt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "觉察;检测",
+    "ex": "The high-load experts are detected based on statistics collected during the online deployment and are adjusted periodically (e.g., every 10 minutes)."
+   },
+   {
+    "w": "directly",
+    "ipa": "dɪˈrɛkli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "直接地；立即",
+    "ex": "In this case, BF16 elements can be cast to FP8 directly as they are read from HBM into the GPU, reducing off-chip memory access by roughly 50%."
+   },
+   {
+    "w": "dispatch",
+    "ipa": "dɪˈspæʧ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "发送，派遣",
+    "ex": "All-to-all communication of the dispatch and combine parts is performed via direct point-to-point transfers over IB to achieve low latency."
+   },
+   {
+    "w": "divisible",
+    "ipa": "dɪˈvɪzəbəl",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "可分的；可分割的",
+    "ex": "Compared with Chimera (Li and Hoefler, 2021), DualPipe only requires that the pipeline stages and micro-batches be divisible by 2, without requiring micro-batches to be divisible by pipeline stages."
+   },
+   {
+    "w": "duplicate",
+    "ipa": "ˈdupləˌkeɪt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "副本，复制品",
+    "ex": "To this end, we introduce a deployment strategy of redundant experts, which duplicates high-load experts and deploys them redundantly."
+   },
+   {
+    "w": "easily",
+    "ipa": "ˈizəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "容易地；舒适的",
+    "ex": "With this unified interface, computation units can easily accomplish operations such as read, write, multicast, and reduce across the entire IB-NVLink-unified domain via submitting communication requests based on simple …"
+   },
+   {
+    "w": "effectively",
+    "ipa": "ˈifɛktɪvli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "有效地",
+    "ex": "The current implementations struggle to effectively support online quantization, despite its effectiveness demonstrated in our research."
+   },
+   {
+    "w": "efficiently",
+    "ipa": "ɪˈfɪʃəntli",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "有效地",
+    "ex": "These scaling factors can be efficiently multiplied on the CUDA Cores as the dequantization process with minimal additional computational cost."
+   },
+   {
+    "w": "element",
+    "ipa": "ˈɛləmənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "元素，要素",
+    "ex": "In this case, BF16 elements can be cast to FP8 directly as they are read from HBM into the GPU, reducing off-chip memory access by roughly 50%."
+   },
+   {
+    "w": "eliminate",
+    "ipa": "ɪˈlɪməˌneɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "消除",
+    "ex": "We recompute all RMSNorm operations and MLA up-projections during back-propagation, thereby eliminating the need to persistently store their output activations."
+   },
+   {
+    "w": "embed",
+    "ipa": "ɪmˈbɛd",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "把…嵌入， 扎牢； 使深留脑中",
+    "ex": "This arrangement enables the physical sharing of parameters and gradients, of the shared embedding and output head, between the MTP module and the main model."
+   },
+   {
+    "w": "enable",
+    "ipa": "ɪˈneɪbəl",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使能够……",
+    "ex": "Finally, we meticulously optimize the memory footprint during training, thereby enabling us to train DeepSeek-V3 without using costly Tensor Parallelism (TP)."
+   },
+   {
+    "w": "enclose",
+    "ipa": "ɪnˈkloʊz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "围住，圈起；附上",
+    "ex": "Two cells enclosed by a shared black border have mutually overlapped computation and communication."
+   },
+   {
+    "w": "enhancement",
+    "ipa": "ɛnˈhænsmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "增进, 增加",
+    "ex": "Combined with the fusion of FP8 format conversion and TMA access, this enhancement will significantly streamline the quantization workflow."
+   },
+   {
+    "w": "entirely",
+    "ipa": "ɪnˈtaɪərli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "完全地，彻底地",
+    "ex": "Moreover, using SMs for communication results in significant inefficiencies, as tensor cores remain entirely under-utilized."
+   },
+   {
+    "w": "equipped",
+    "ipa": "ɪkˈwɪpt",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "装备；预备（equip的过去分词）；整装",
+    "ex": "Compute Clusters DeepSeek-V3 is trained on a cluster equipped with 2048 NVIDIA H800 GPUs."
+   },
+   {
+    "w": "equivalent",
+    "ipa": "ɪkˈwɪvələnt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "相等的，相当的",
+    "ex": "Based on our experiments, setting 𝑁𝐶= 128 elements, equivalent to 4 WGMMAs, represents the minimal accumulation interval that can significantly improve precision without introducing substantial overhead."
+   },
+   {
+    "w": "estimation",
+    "ipa": "ˌɛstəˈmeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "估计；尊重",
+    "ex": "During training, we preserve the Exponential Moving Average (EMA) of the model parameters for early estimation of the model performance after learning rate decay."
+   },
+   {
+    "w": "execute",
+    "ipa": "ˈɛksəˌkjut",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "将…处死；实施",
+    "ex": "However, on the H800 architecture, it is typical for two WGMMA to persist concurrently: while one warpgroup performs the promotion operation, the other is able to execute the MMA operation."
+   },
+   {
+    "w": "execution",
+    "ipa": "ˌɛksəˈkjuʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "实行，执行；处死刑",
+    "ex": "To be specific, during MMA (Matrix Multiply-Accumulate) execution on Tensor Cores, intermediate results are accumulated using the limited bit width."
+   },
+   {
+    "w": "exponent",
+    "ipa": "ˈɛkˌspoʊnənt",
+    "pos": "n.；adj.",
+    "lv": "六级",
+    "m": "[数] 指数；典型；说明者，说明物；说明的",
+    "ex": "By operating on smaller element groups, our methodology effectively shares exponent bits among these grouped elements, mitigating the impact of the limited dynamic range."
+   },
+   {
+    "w": "exponential",
+    "ipa": "ˌɛkspoʊˈnɛnʃəl",
+    "pos": "n.；adj.",
+    "lv": "考博",
+    "m": "指数；指数的, 幂数的",
+    "ex": "During training, we preserve the Exponential Moving Average (EMA) of the model parameters for early estimation of the model performance after learning rate decay."
+   },
+   {
+    "w": "extremely",
+    "ipa": "ɪkˈstrimli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "极端，极其，非常",
+    "ex": "Extremely Memory Saving with Minimal Overhead In order to reduce the memory footprint during training, we employ the following techniques."
+   },
+   {
+    "w": "facilitate",
+    "ipa": "fəˈsɪləˌteɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使便利，促进",
+    "ex": "We also recommend supporting a warp-level cast instruction for speedup, which further facilitates the better fusion of layer normalization and FP8 cast."
+   },
+   {
+    "w": "factor",
+    "ipa": "ˈfæktər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "因素；因子，系数",
+    "ex": "These scaling factors can be efficiently multiplied on the CUDA Cores as the dequantization process with minimal additional computational cost."
+   },
+   {
+    "w": "feasibility",
+    "ipa": "ˌfizəˈbɪləti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "可行",
+    "ex": "We attribute the feasibility of this approach to our fine-grained quantization strategy, i.e., tile and block-wise scaling."
+   },
+   {
+    "w": "firstly",
+    "ipa": "ˈfərstli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "首先，第一（列举论点用）",
+    "ex": "Firstly, in order to accelerate model training, the majority of core computation kernels, i.e., GEMM operations, are implemented in FP8 precision."
+   },
+   {
+    "w": "fuse",
+    "ipa": "fjuz",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "保险丝；导火线",
+    "ex": "The current architecture makes it cumbersome to fuse matrix transposition with GEMM operations."
+   },
+   {
+    "w": "fusion",
+    "ipa": "fˈjuʒən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "联合， 合并； 核聚变",
+    "ex": "Combined with the fusion of FP8 format conversion and TMA access, this enhancement will significantly streamline the quantization workflow."
+   },
+   {
+    "w": "global",
+    "ipa": "ˈgloʊbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "全球的， 全世界的； 总的， 完整的",
+    "ex": "To address this inefficiency, we recommend that future chips integrate FP8 cast and TMA (Tensor Memory Accelerator) access into a single fused operation, so quantization can be completed during the transfer of activations from …"
+   },
+   {
+    "w": "globally",
+    "ipa": "ˈgloʊbəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "世界上, 全世界",
+    "ex": "Before the all-to-all operation at each layer begins, we compute the globally optimal routing scheme on the fly."
+   },
+   {
+    "w": "gradient",
+    "ipa": "ˈgreɪdiənt",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "斜坡",
+    "ex": "To further guarantee numerical stability, we store the master weights, weight gradients, and optimizer states in higher precision."
+   },
+   {
+    "w": "granular",
+    "ipa": "ˈgrænjələr",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "颗粒的；粒状的",
+    "ex": "To solve this, we propose a fine-grained quantization method that applies scaling at a more granular level."
+   },
+   {
+    "w": "hardware",
+    "ipa": "ˈhɑrdˌwɛr",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "五金器具；硬件",
+    "ex": "Communication Hardware In DeepSeek-V3, we implement the overlap between computation and communication to hide the communication latency during computation."
+   },
+   {
+    "w": "highly",
+    "ipa": "ˈhaɪli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "高度地，很，非常",
+    "ex": "This method makes low-precision training highly sensitive to activation outliers, which can heavily degrade quantization accuracy."
+   },
+   {
+    "w": "hopper",
+    "ipa": "ˈhɑpər",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "料斗；漏斗；单足跳者；跳虫",
+    "ex": "In the current Tensor Core implementation of the NVIDIA Hopper architecture, FP8 GEMM suffers from limited accumulation precision."
+   },
+   {
+    "w": "hybrid",
+    "ipa": "ˈhaɪbrɪd",
+    "pos": "n.；adj.",
+    "lv": "六级",
+    "m": "杂种，混血儿；混合物；混合的；杂种的",
+    "ex": "In contrast to the hybrid FP8 format adopted by prior work (NVIDIA, 2024b;"
+   },
+   {
+    "w": "illustration",
+    "ipa": "ˌɪləˈstreɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "说明，图解；例证",
+    "ex": "The micro-batches in the reverse direction are symmetric to those in the forward direction, so we omit their batch ID for illustration simplicity."
+   },
+   {
+    "w": "impact",
+    "ipa": "ˌɪmˈpækt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "影响",
+    "ex": "Therefore, to avoid impacting the computation speed of the attention part, we can allocate only a small portion of SMs to dispatch+MoE+combine."
+   },
+   {
+    "w": "implement",
+    "ipa": "ˈɪmpləmənt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "实施，执行",
+    "ex": "Firstly, in order to accelerate model training, the majority of core computation kernels, i.e., GEMM operations, are implemented in FP8 precision."
+   },
+   {
+    "w": "implementation",
+    "ipa": "ˌɪmpləmɛnˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "实现，履行",
+    "ex": "The current implementations struggle to effectively support online quantization, despite its effectiveness demonstrated in our research."
+   },
+   {
+    "w": "imply",
+    "ipa": "ˌɪmˈplaɪ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "意味；暗示",
+    "ex": "without incurring additional overhead from NVLink. This implies that, although DeepSeek-V3"
+   },
+   {
+    "w": "incur",
+    "ipa": "ˌɪnˈkər",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "引起，导致",
+    "ex": "This method allows us to maintain EMA parameters without incurring additional memory or time overhead."
+   },
+   {
+    "w": "index",
+    "ipa": "ˈɪndɛks",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "索引；指数；指标",
+    "ex": "For each token, when its routing decision is made, it will first be transmitted via IB to the GPUs with the same in-node index on its target nodes."
+   },
+   {
+    "w": "individual",
+    "ipa": "ˌɪndəˈvɪʤəwəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "个人",
+    "ex": "The key idea of DualPipe is to overlap the computation and communication within a pair of individual forward and backward chunks."
+   },
+   {
+    "w": "inefficient",
+    "ipa": "ˌɪnɪˈfɪʃənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "效率低的，无能的",
+    "ex": "DualPipe and Computation-Communication Overlap For DeepSeek-V3, the communication overhead introduced by cross-node expert parallelism results in an inefficient computation-to-communication ratio of approximately 1:1."
+   },
+   {
+    "w": "infer",
+    "ipa": "ˌɪnˈfər",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "推论，推断；猜想",
+    "ex": "values across prior iterations to infer the current value. In order to ensure accurate scales and"
+   },
+   {
+    "w": "inner",
+    "ipa": "ˈɪnər",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "内部的；内心的",
+    "ex": "One key modification in our method is the introduction of per-group scaling factors along the inner dimension of GEMM operations."
+   },
+   {
+    "w": "innovative",
+    "ipa": "ˈɪnəˌveɪtɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "创新的， 革新的",
+    "ex": "To tackle this challenge, we design an innovative pipeline parallelism algorithm called DualPipe, which not only accelerates model training by effectively overlapping forward and backward computation-communication phases, but …"
+   },
+   {
+    "w": "instability",
+    "ipa": "ˌɪnstəˈbɪlɪti",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "不稳定性",
+    "ex": "In Appendix B.2, we further discuss the training instability when we group and scale activations on a block basis in the same way as weights quantization."
+   },
+   {
+    "w": "instantaneously",
+    "ipa": "ˌɪnstənˈtæniəsli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "即刻；突如其来地",
+    "ex": "Once it reaches the target nodes, we will endeavor to ensure that it is instantaneously forwarded via NVLink to specific GPUs that host their target experts, without being blocked by subsequently arriving tokens."
+   },
+   {
+    "w": "integral",
+    "ipa": "ˈɪnəgrəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "完整的",
+    "ex": "To avoid introducing extra quantization error, all the scaling factors are round scaled, i.e., integral power of 2. (2) Inputs of the SwiGLU operator in MoE."
+   },
+   {
+    "w": "interconnect",
+    "ipa": "ˌɪntərkəˈnɛkt",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "相互联系",
+    "ex": "To be specific, in our cluster, cross-node GPUs are fully interconnected with IB, and intra-node communications are handled via NVLink."
+   },
+   {
+    "w": "interface",
+    "ipa": "ˈɪnərˌfeɪs",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "分界面",
+    "ex": "With this unified interface, computation units can easily accomplish operations such as read, write, multicast, and reduce across the entire IB-NVLink-unified domain via submitting communication requests based on simple …"
+   },
+   {
+    "w": "interference",
+    "ipa": "ˌɪnərˈfɪrəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "干涉，干预；阻碍",
+    "ex": "Specifically, we employ customized PTX (Parallel Thread Execution) instructions and auto-tune the communication chunk size, which significantly reduces the use of the L2 cache and the interference to other SMs."
+   },
+   {
+    "w": "investigation",
+    "ipa": "ˌɪnˌvɛstəˈgeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "调查，调查研究",
+    "ex": "For this reason, after careful investigations, we maintain the original precision (e.g., BF16 or FP32) for the following components: the embedding module, the output head, MoE gating modules, normalization operators, and …"
+   },
+   {
+    "w": "involve",
+    "ipa": "ˌɪnˈvɑlv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "卷入，包含",
+    "ex": "Given the substantial computation involved in the prefilling stage, the overhead of computing this routing scheme is almost negligible."
+   },
+   {
+    "w": "issue",
+    "ipa": "ˈɪʃu",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "发行；问题",
+    "ex": "It is worth noting that this modification reduces the WGMMA (Warpgroup-level Matrix Multiply-Accumulate) instruction issue rate for a single warpgroup."
+   },
+   {
+    "w": "largely",
+    "ipa": "ˈlɑrʤli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "大部分；大量地",
+    "ex": "The associated dequantization overhead is largely mitigated under our increased-precision accumulation process, a critical"
+   },
+   {
+    "w": "latency",
+    "ipa": "ˈleɪtənsi",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "潜伏, 潜在, 潜伏物, 性潜伏期（ 岁或 岁至青春期）, [生理]（肌肉等的）反应时间（介于刺激与反应之间的时间）",
+    "ex": "All-to-all communication of the dispatch and combine parts is performed via direct point-to-point transfers over IB to achieve low latency."
+   },
+   {
+    "w": "latest",
+    "ipa": "ˈleɪtəst",
+    "pos": "adv.；n.；adj.",
+    "lv": "专四",
+    "m": "最迟地；最后地；最新的事物；最新的，最近的；最迟的，最后的",
+    "ex": "We hope our design can serve as a reference for future work to keep pace with the latest GPU architectures."
+   },
+   {
+    "w": "layout",
+    "ipa": "leɪaʊt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "布局，安排，设计",
+    "ex": "Currently, the SMs primarily perform the following tasks for all-to-all communication: • Forwarding data between the IB (InfiniBand) and NVLink domain while aggregating IB traffic destined for multiple GPUs within the same node …"
+   },
+   {
+    "w": "leverage",
+    "ipa": "ˈlɛvərɪʤ",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "手段，影响力；杠杆作用；杠杆效率；利用；举债经营",
+    "ex": "To effectively leverage the different bandwidths of IB and NVLink, we limit each token to be dispatched to at most 4 nodes, thereby reducing IB traffic."
+   },
+   {
+    "w": "lightweight",
+    "ipa": "ˈlaɪtˈweɪt",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "轻量级选手, 不能胜任者",
+    "ex": "Training Framework The training of DeepSeek-V3 is supported by the HAI-LLM framework, an efficient and lightweight training framework crafted by our engineers from the ground up."
+   },
+   {
+    "w": "linear",
+    "ipa": "ˈlɪniər",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "线的；长度的",
+    "ex": "To reduce the memory consumption, it is a natural choice to cache activations in FP8 format for the backward pass of the Linear operator."
+   },
+   {
+    "w": "logic",
+    "ipa": "ˈlɑʤɪk",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "逻辑",
+    "ex": "Alternatively, a near-memory computing approach can be adopted, where compute logic is placed near the HBM."
+   },
+   {
+    "w": "lower",
+    "ipa": "loʊər",
+    "pos": "adj.；v.",
+    "lv": "四级",
+    "m": "较低的；放下",
+    "ex": "However, we observe that the accumulation precision of FP8 GEMM on NVIDIA H800 GPUs is limited to retaining around 14 bits, which is significantly lower than FP32 accumulation precision."
+   },
+   {
+    "w": "matrix",
+    "ipa": "ˈmeɪtrɪks",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "[数] 矩阵；模型；[生物][地质] 基质；母体；子宫；[地质] 脉石",
+    "ex": "During the backward pass, the matrix needs to be read out, dequantized, transposed, re-quantized into 128x1 tiles, and stored in HBM."
+   },
+   {
+    "w": "methodology",
+    "ipa": "ˌmɛθəˈdɑləʤi",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "方法学，方法论",
+    "ex": "By operating on smaller element groups, our methodology effectively shares exponent bits among these grouped elements, mitigating the impact of the limited dynamic range."
+   },
+   {
+    "w": "minimal",
+    "ipa": "ˈmɪnəməl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "最低的，最小限度的",
+    "ex": "Extremely Memory Saving with Minimal Overhead In order to reduce the memory footprint during training, we employ the following techniques."
+   },
+   {
+    "w": "minimize",
+    "ipa": "ˈmɪnəˌmaɪz",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "将…减少； 最小化",
+    "ex": "Additionally, we leverage the IBGDA (NVIDIA, 2022) technology to further minimize latency and enhance communication efficiency."
+   },
+   {
+    "w": "mitigate",
+    "ipa": "ˈmɪtəˌgeɪt",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "使缓和，使减轻",
+    "ex": "The associated dequantization overhead is largely mitigated under our increased-precision accumulation process, a critical"
+   },
+   {
+    "w": "modification",
+    "ipa": "ˌmɑdəfəˈkeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "修改",
+    "ex": "One key modification in our method is the introduction of per-group scaling factors along the inner dimension of GEMM operations."
+   },
+   {
+    "w": "multiplication",
+    "ipa": "ˌməltəpləˈkeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "乘法；增加",
+    "ex": "Improved Precision from Quantization and Multiplication Based on our mixed precision FP8 framework, we introduce several strategies to enhance low-precision training accuracy, focusing on both the quantization method and the …"
+   },
+   {
+    "w": "negligible",
+    "ipa": "ˈnɛglɪʤəbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "微不足道的",
+    "ex": "Given the substantial computation involved in the prefilling stage, the overhead of computing this routing scheme is almost negligible."
+   },
+   {
+    "w": "node",
+    "ipa": "noʊd",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "节点；瘤；[数] 叉点",
+    "ex": "For each token, when its routing decision is made, it will first be transmitted via IB to the GPUs with the same in-node index on its target nodes."
+   },
+   {
+    "w": "normalization",
+    "ipa": "ˌnɔrməlɪˈzeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "正常化，标准化",
+    "ex": "We also recommend supporting a warp-level cast instruction for speedup, which further facilitates the better fusion of layer normalization and FP8 cast."
+   },
+   {
+    "w": "numerical",
+    "ipa": "nuˈmɛrɪkəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "数字的，数值的",
+    "ex": "To further guarantee numerical stability, we store the master weights, weight gradients, and optimizer states in higher precision."
+   },
+   {
+    "w": "omit",
+    "ipa": "oʊˈmɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "省略，省去；遗漏",
+    "ex": "The micro-batches in the reverse direction are symmetric to those in the forward direction, so we omit their batch ID for illustration simplicity."
+   },
+   {
+    "w": "online",
+    "ipa": "ˈɔnˌlaɪn",
+    "pos": "adj.；adv.",
+    "lv": "六级",
+    "m": "联机的；在线的；在线地",
+    "ex": "The current implementations struggle to effectively support online quantization, despite its effectiveness demonstrated in our research."
+   },
+   {
+    "w": "option",
+    "ipa": "ˈɔpʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "选择",
+    "ex": "Despite these problems, the limited accumulation precision is still the default option in a few FP8 frameworks (NVIDIA, 2024b), severely constraining the training accuracy."
+   },
+   {
+    "w": "overflow",
+    "ipa": "ˌoʊvərˈfloʊ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "溢出，淹没",
+    "ex": "In low-precision training frameworks, overflows and underflows are common challenges due to the limited dynamic range of the FP8 format, which is constrained by its reduced exponent bits."
+   },
+   {
+    "w": "partial",
+    "ipa": "ˈpɑrʃəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "部分的；不公平的",
+    "ex": "Once an interval of 𝑁𝐶is reached, these partial results will be copied to FP32 registers on CUDA Cores, where full-precision FP32 accumulation is performed."
+   },
+   {
+    "w": "partially",
+    "ipa": "ˈpɑrʃəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "部分地",
+    "ex": "Our implementation partially mitigates the limitation by accumulating"
+   },
+   {
+    "w": "partition",
+    "ipa": "pɑrˈtɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "分开，分割；隔墙",
+    "ex": "In detail, we employ the warp specialization technique (Bauer et al., 2014) and partition 20 SMs into 10 communication channels."
+   },
+   {
+    "w": "peak",
+    "ipa": "pik",
+    "pos": "n.；adj.",
+    "lv": "四级",
+    "m": "山顶，巅；最高的",
+    "ex": "while only increasing the peak activation memory by"
+   },
+   {
+    "w": "periodically",
+    "ipa": "ˌpiriˈɑdɪkəli",
+    "pos": "adv.",
+    "lv": "雅思",
+    "m": "偶然地，定期地",
+    "ex": "The high-load experts are detected based on statistics collected during the online deployment and are adjusted periodically (e.g., every 10 minutes)."
+   },
+   {
+    "w": "persist",
+    "ipa": "pərˈsɪst",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "坚持，固执；持续",
+    "ex": "However, on the H800 architecture, it is typical for two WGMMA to persist concurrently: while one warpgroup performs the promotion operation, the other is able to execute the MMA operation."
+   },
+   {
+    "w": "perspective",
+    "ipa": "pərˈspɛktɪv",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "视角，观点；远景",
+    "ex": "From this perspective, each token will select 9 experts during routing, where the shared expert is regarded as a heavy-load one that will always be selected."
+   },
+   {
+    "w": "pipeline",
+    "ipa": "ˈpaɪˌplaɪn",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "管道, 传递途径",
+    "ex": "For both the forward and backward combine components, we retain them in BF16 to preserve training precision in critical parts of the training pipeline."
+   },
+   {
+    "w": "portion",
+    "ipa": "ˈpɔrʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "一部分；一分",
+    "ex": "Therefore, to avoid impacting the computation speed of the attention part, we can allocate only a small portion of SMs to dispatch+MoE+combine."
+   },
+   {
+    "w": "preliminary",
+    "ipa": "prɪˈlɪməˌnɛri",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "预备的，初步的",
+    "ex": "Taking GEMM operations of two random matrices with K = 4096 for example, in our preliminary test, the limited accumulation precision in Tensor Cores results in a maximum relative error of nearly 2%."
+   },
+   {
+    "w": "presence",
+    "ipa": "ˈprɛzəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "出席，到场；在",
+    "ex": "While low-precision training holds great promise, it is often limited by the presence of outliers in activations, weights, and gradients (Fishman et al., 2024;"
+   },
+   {
+    "w": "previous",
+    "ipa": "ˈpriviəs",
+    "pos": "adj.；adv.",
+    "lv": "四级",
+    "m": "之前的；先前地",
+    "ex": "In the existing process, we need to read 128 BF16 activation values (the output of the previous computation) from HBM (High Bandwidth Memory) for quantization, and the quantized FP8 values are then written back to HBM, only to be …"
+   },
+   {
+    "w": "projection",
+    "ipa": "prɑˈʤɛkʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "投射；规划；突出；发射；推测",
+    "ex": "We recompute all RMSNorm operations and MLA up-projections during back-propagation, thereby eliminating the need to persistently store their output activations."
+   },
+   {
+    "w": "promotion",
+    "ipa": "pərˈmoʊʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "促销",
+    "ex": "In order to address this issue, we adopt the strategy of promotion to CUDA Cores for higher precision (Thakkar et al., 2023)."
+   },
+   {
+    "w": "propagation",
+    "ipa": "ˌprɑpəˈgeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "繁殖；传播；蔓延",
+    "ex": "We recompute all RMSNorm operations and MLA up-projections during back-propagation, thereby eliminating the need to persistently store their output activations."
+   },
+   {
+    "w": "rearrange",
+    "ipa": "riəreɪnʤ",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "重新安排",
+    "ex": "As illustrated in Figure 4, for a pair of forward and backward chunks, we rearrange these components and manually adjust the ratio of GPU SMs dedicated to communication versus computation."
+   },
+   {
+    "w": "redundant",
+    "ipa": "rɪˈdəndənt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "过剩的；失业的，被解雇的",
+    "ex": "To this end, we introduce a deployment strategy of redundant experts, which duplicates high-load experts and deploys them redundantly."
+   },
+   {
+    "w": "region",
+    "ipa": "ˈriʤən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "地区，地带；领域",
+    "ex": "Currently, the SMs primarily perform the following tasks for all-to-all communication: • Forwarding data between the IB (InfiniBand) and NVLink domain while aggregating IB traffic destined for multiple GPUs within the same node …"
+   },
+   {
+    "w": "respective",
+    "ipa": "rɪˈspɛktɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "各自的，各个的",
+    "ex": "During the dispatching process, (1) IB sending, (2) IB-to-NVLink forwarding, and (3) NVLink receiving are handled by respective warps."
+   },
+   {
+    "w": "responsible",
+    "ipa": "riˈspɑnsəbəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "负责的，有责任的",
+    "ex": "For the MoE part, each GPU hosts only one expert, and 64 GPUs are responsible for hosting redundant experts and shared experts."
+   },
+   {
+    "w": "retention",
+    "ipa": "riˈtɛnʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "保留， 保持",
+    "ex": "These targeted retentions of high precision ensure stable training dynamics for DeepSeek-V3."
+   },
+   {
+    "w": "reverse",
+    "ipa": "rɪˈvərs",
+    "pos": "—",
+    "lv": "四级",
+    "m": "（使）反转",
+    "ex": "The micro-batches in the reverse direction are symmetric to those in the forward direction, so we omit their batch ID for illustration simplicity."
+   },
+   {
+    "w": "roughly",
+    "ipa": "ˈrəfli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "粗糙地；概略地",
+    "ex": "In this case, BF16 elements can be cast to FP8 directly as they are read from HBM into the GPU, reducing off-chip memory access by roughly 50%."
+   },
+   {
+    "w": "route",
+    "ipa": "rut",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "路，路线，路程",
+    "ex": "Given the substantial computation involved in the prefilling stage, the overhead of computing this routing scheme is almost negligible."
+   },
+   {
+    "w": "scale",
+    "ipa": "skeɪl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "规模，比例",
+    "ex": "This approach ensures that the quantization process can better accommodate outliers by adapting the scale according to smaller groups of elements."
+   },
+   {
+    "w": "scenario",
+    "ipa": "sɪˈnɛrioʊ",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "情境 “；剧本",
+    "ex": "In addition, even in more general scenarios without a heavy communication burden, DualPipe still exhibits efficiency advantages."
+   },
+   {
+    "w": "scheme",
+    "ipa": "skim",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "计划，规划；诡计",
+    "ex": "Given the substantial computation involved in the prefilling stage, the overhead of computing this routing scheme is almost negligible."
+   },
+   {
+    "w": "sensitivity",
+    "ipa": "ˌsɛnsɪˈtɪvɪti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "敏感（性）；灵敏性",
+    "ex": "Despite the efficiency advantage of the FP8 format, certain operators still require a higher precision due to their sensitivity to low-precision computations."
+   },
+   {
+    "w": "sequence",
+    "ipa": "ˈsikwəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "连续，继续；次序",
+    "ex": "The attention part employs 4-way Tensor Parallelism (TP4) with Sequence Parallelism (SP), combined with 8-way Data Parallelism (DP8)."
+   },
+   {
+    "w": "serial",
+    "ipa": "ˈsɪˌriəl",
+    "pos": "adj.；n.",
+    "lv": "六级",
+    "m": "连续的， 顺序排列的；连续剧，连载故事",
+    "ex": "This significantly reduces the dependency on communication bandwidth compared to serial computation and communication."
+   },
+   {
+    "w": "severely",
+    "ipa": "səˈvɪrli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "严重地；严格地，严厉地；纯朴地",
+    "ex": "Despite these problems, the limited accumulation precision is still the default option in a few FP8 frameworks (NVIDIA, 2024b), severely constraining the training accuracy."
+   },
+   {
+    "w": "shard",
+    "ipa": "ʃɑrd",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "[瓷]碎片破片",
+    "ex": "caused by feature outliers; for illustration simplicity, only Fprop is illustrated. (b) In conjunction with our quantization strategy, we improve the FP8 GEMM precision by promoting to CUDA Cores at an interval of 𝑁𝐶= 128 …"
+   },
+   {
+    "w": "simplicity",
+    "ipa": "sɪmˈplɪsɪti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "简单",
+    "ex": "The micro-batches in the reverse direction are symmetric to those in the forward direction, so we omit their batch ID for illustration simplicity."
+   },
+   {
+    "w": "simultaneously",
+    "ipa": "ˌsaɪməlˈteɪniəsli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "同步地，同时地",
+    "ex": "It employs a bidirectional pipeline scheduling, which feeds micro-batches from both ends of the pipeline simultaneously and a significant portion of communications can be fully overlapped."
+   },
+   {
+    "w": "solve",
+    "ipa": "sɑlv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "解决",
+    "ex": "To solve this, we propose a fine-grained quantization method that applies scaling at a more granular level."
+   },
+   {
+    "w": "specially",
+    "ipa": "ˈspɛʃəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "特意地；专门地",
+    "ex": "Specially, for a backward chunk, both attention and MLP are further split into two parts, backward for input and backward for weights, like in ZeroBubble (Qi et al., 2023b)."
+   },
+   {
+    "w": "stability",
+    "ipa": "stəˈbɪlɪti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "稳定，稳定性，巩固",
+    "ex": "To further guarantee numerical stability, we store the master weights, weight gradients, and optimizer states in higher precision."
+   },
+   {
+    "w": "statistical",
+    "ipa": "stəˈtɪstɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "统计的，统计学的",
+    "ex": "Similar to prefilling, we periodically determine the set of redundant experts in a certain interval, based on the statistical expert load from our online service."
+   },
+   {
+    "w": "strategy",
+    "ipa": "ˈstrætəʤi",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "策略，战略",
+    "ex": "To this end, we introduce a deployment strategy of redundant experts, which duplicates high-load experts and deploys them redundantly."
+   },
+   {
+    "w": "streamline",
+    "ipa": "ˈstrimˌlaɪn",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "流线；流线型",
+    "ex": "Combined with the fusion of FP8 format conversion and TMA access, this enhancement will significantly streamline the quantization workflow."
+   },
+   {
+    "w": "subsequently",
+    "ipa": "ˈsəbsəkwəntli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "随后",
+    "ex": "Once it reaches the target nodes, we will endeavor to ensure that it is instantaneously forwarded via NVLink to specific GPUs that host their target experts, without being blocked by subsequently arriving tokens."
+   },
+   {
+    "w": "substantial",
+    "ipa": "səbˈstænʃəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "大量的",
+    "ex": "Given the substantial computation involved in the prefilling stage, the overhead of computing this routing scheme is almost negligible."
+   },
+   {
+    "w": "sufficient",
+    "ipa": "səˈfɪʃənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "足够的",
+    "ex": "Efficient Implementation of Cross-Node All-to-All Communication In order to ensure sufficient computational performance for DualPipe, we customize efficient cross-node all-to-all communication kernels (including dispatching and …"
+   },
+   {
+    "w": "sufficiently",
+    "ipa": "səˈfɪʃəntli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "足够地，充分地",
+    "ex": "For the MoE part, we use 32-way Expert Parallelism (EP32), which ensures that each expert processes a sufficiently large batch size, thereby enhancing computational efficiency."
+   },
+   {
+    "w": "sum",
+    "ipa": "səm",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "总数；金额；共计",
+    "ex": "In this way, the whole partial sum accumulation and dequantization can be completed directly inside Tensor Cores until the final result is produced, avoiding frequent data movements."
+   },
+   {
+    "w": "summarize",
+    "ipa": "ˈsəmərˌaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "概括，概述，总结",
+    "ex": "In Table 2, we summarize the pipeline bubbles and memory usage across different PP methods."
+   },
+   {
+    "w": "symmetric",
+    "ipa": "sɪˈmɛtrɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "对称的；匀称的",
+    "ex": "The micro-batches in the reverse direction are symmetric to those in the forward direction, so we omit their batch ID for illustration simplicity."
+   },
+   {
+    "w": "tackle",
+    "ipa": "ˈtækəl",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "处理",
+    "ex": "To tackle this challenge, we design an innovative pipeline parallelism algorithm called DualPipe, which not only accelerates model training by effectively overlapping forward and backward computation-communication phases, but …"
+   },
+   {
+    "w": "throughput",
+    "ipa": "θˈruˌpʊt",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "生产量，生产能力",
+    "ex": "To simultaneously ensure both the Service-Level Objective (SLO) for online services and high throughput, we employ the following deployment strategy that separates the prefilling and decoding stages."
+   },
+   {
+    "w": "tile",
+    "ipa": "taɪl",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "瓷砖；贴砖；瓦片",
+    "ex": "During the backward pass, the matrix needs to be read out, dequantized, transposed, re-quantized into 128x1 tiles, and stored in HBM."
+   },
+   {
+    "w": "transfer",
+    "ipa": "ˈtrænsfər",
+    "pos": "—",
+    "lv": "四级",
+    "m": "转换，调换",
+    "ex": "For the MoE all-to-all communication, we use the same method as in training: first transferring tokens across nodes via IB, and then forwarding among the intra-node GPUs via NVLink."
+   },
+   {
+    "w": "transpose",
+    "ipa": "trænˈspoʊz",
+    "pos": "v.；n.",
+    "lv": "专八",
+    "m": "调换；移项；颠倒顺序；转置阵",
+    "ex": "During the backward pass, the matrix needs to be read out, dequantized, transposed, re-quantized into 128x1 tiles, and stored in HBM."
+   },
+   {
+    "w": "transposition",
+    "ipa": ",trænzpəˈzɪʃən",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "[数] 移项；调换；换置；变调",
+    "ex": "The current architecture makes it cumbersome to fuse matrix transposition with GEMM operations."
+   },
+   {
+    "w": "truncate",
+    "ipa": "ˈtrəŋˌkeɪt",
+    "pos": "v.",
+    "lv": "GRE",
+    "m": "截短， 缩短",
+    "ex": "and truncates bits exceeding this range. The accumulation of addition results into registers also"
+   },
+   {
+    "w": "unify",
+    "ipa": "ˈjunəˌfaɪ",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "使联合， 统一； 使相同， 使一致",
+    "ex": "With this unified interface, computation units can easily accomplish operations such as read, write, multicast, and reduce across the entire IB-NVLink-unified domain via submitting communication requests based on simple …"
+   },
+   {
+    "w": "utilization",
+    "ipa": "ˌjutələˈzeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "利用",
+    "ex": "This design enables overlapping of the two operations, maintaining high utilization of Tensor Cores."
+   },
+   {
+    "w": "vendor",
+    "ipa": "ˈvɛndər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "卖主；小贩；供应商；[贸易] 自动售货机",
+    "ex": "Suggestions on Hardware Design Based on our implementation of the all-to-all communication and FP8 training scheme, we propose the following suggestions on chip design to AI hardware vendors."
+   },
+   {
+    "w": "warp",
+    "ipa": "wɔrp",
+    "pos": "n.；v.",
+    "lv": "专八",
+    "m": "弯曲，歪曲；偏见；乖戾；使变形；使有偏见；曲解",
+    "ex": "During the dispatching process, (1) IB sending, (2) IB-to-NVLink forwarding, and (3) NVLink receiving are handled by respective warps."
+   },
+   {
+    "w": "width",
+    "ipa": "wɪdθ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "宽阔，广阔；宽度",
+    "ex": "To be specific, during MMA (Matrix Multiply-Accumulate) execution on Tensor Cores, intermediate results are accumulated using the limited bit width."
+   },
+   {
+    "w": "workload",
+    "ipa": "ˈwərˌkloʊd",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "工作量",
+    "ex": "Additionally, to enhance throughput and hide the overhead of all-to-all communication, we are also exploring processing two micro-batches with similar computational workloads simultaneously in the decoding stage."
+   }
+  ]
+ },
+ {
+  "sec": "4. Post-Training · 后训练与蒸馏",
+  "short": "Post",
+  "icon": "4",
+  "words": [
+   {
+    "w": "activate",
+    "ipa": "ˈæktəˌveɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "激活",
+    "ex": "Among the routed experts, 8 experts will be activated for each token, and each token will be ensured to be sent to at most 4 nodes."
+   },
+   {
+    "w": "affinity",
+    "ipa": "əˈfɪnɪti",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "亲密关系",
+    "ex": "Both of the baseline models purely use auxiliary losses to encourage load balance, and use the sigmoid gating function with top-K affinity normalization."
+   },
+   {
+    "w": "alignment",
+    "ipa": "əˈlaɪnmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "排成直线；结盟，联合",
+    "ex": "In alignment with DeepSeekCoder-V2, we also incorporate the FIM strategy in the pre-training of DeepSeek-V3."
+   },
+   {
+    "w": "analyze",
+    "ipa": "ˈænəˌlaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "分析",
+    "ex": "To validate this, we record and analyze the expert load of a 16B auxiliary-loss-based baseline and a 16B auxiliary-loss-free model on different domains in the Pile test set."
+   },
+   {
+    "w": "append",
+    "ipa": "əˈpɛnd",
+    "pos": "v.；n.",
+    "lv": "专八",
+    "m": "附加；贴上；盖章；设置数据文件的搜索路径",
+    "ex": "On top of them, keeping the training data and the other architectures the same, we append a 1-depth MTP module onto them and train two models with the MTP strategy for comparison."
+   },
+   {
+    "w": "approach",
+    "ipa": "əˈproʊʧ",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "靠近；接近，方法",
+    "ex": "Long Context Extension We adopt a similar approach to DeepSeek-V2 (DeepSeek-AI, 2024c) to enable long context capabilities in DeepSeek-V3."
+   },
+   {
+    "w": "arc",
+    "ipa": "ɑrk",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "弧，弓形物；弧光",
+    "ex": "Language understanding and reasoning datasets include HellaSwag (Zellers et al., 2019), PIQA (Bisk et al., 2020), ARC (Clark et al., 2018), and BigBench Hard (BBH) (Suzgun et al., 2022)."
+   },
+   {
+    "w": "array",
+    "ipa": "əreɪ",
+    "pos": "v.；n.",
+    "lv": "六级",
+    "m": "（美观地）排列；陈列",
+    "ex": "To address this issue, we randomly split a certain proportion of such combined tokens during training, which exposes the model to a wider array of special cases and mitigates this bias."
+   },
+   {
+    "w": "bias",
+    "ipa": "baɪəs",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "偏见",
+    "ex": "For auxiliary-loss-free load balancing, we set the bias update speed 𝛾to 0.001 for the first 14.3T tokens, and to 0.0 for the remaining 500B tokens."
+   },
+   {
+    "w": "byte",
+    "ipa": "baɪt",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "字节； 位元组",
+    "ex": "The tokenizer for DeepSeek-V3 employs Byte-level BPE (Shibata et al., 1999) with an extended vocabulary of 128K tokens."
+   },
+   {
+    "w": "capability",
+    "ipa": "ˌkeɪpəˈbɪləti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "能力，才能",
+    "ex": "Long Context Extension We adopt a similar approach to DeepSeek-V2 (DeepSeek-AI, 2024c) to enable long context capabilities in DeepSeek-V3."
+   },
+   {
+    "w": "capable",
+    "ipa": "ˈkeɪpəbəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "能干的，有能力的",
+    "ex": "Through this two-phase extension training, DeepSeek-V3 is capable of handling inputs up to 128K in length while maintaining strong performance."
+   },
+   {
+    "w": "categorize",
+    "ipa": "ˈkætəgərˌaɪz",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "分类",
+    "ex": "Considered benchmarks are categorized and listed as follows, where underlined benchmarks are in Chinese and double-underlined benchmarks are multilingual ones: Multi-subject multiple-choice datasets include MMLU (Hendrycks et …"
+   },
+   {
+    "w": "clip",
+    "ipa": "klɪp",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "剪；剪辑报刊",
+    "ex": "The gradient clipping norm is set to 1.0."
+   },
+   {
+    "w": "comparison",
+    "ipa": "kəmˈpɛrəsən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比较，对照；比似",
+    "ex": "On top of them, keeping the training data and the other architectures the same, we append a 1-depth MTP module onto them and train two models with the MTP strategy for comparison."
+   },
+   {
+    "w": "comprehensive",
+    "ipa": "ˌkɑmpriˈhɛnsɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "综合的，全面的",
+    "ex": "Due to our efficient architectures and comprehensive engineering optimizations, DeepSeek-V3 achieves extremely high training efficiency."
+   },
+   {
+    "w": "comprehensively",
+    "ipa": "ˌkɑmprɪˈhɛnsɪvli",
+    "pos": "adv.",
+    "lv": "GRE",
+    "m": "包括地； 全面地",
+    "ex": "Overall, DeepSeek-V3-Base comprehensively outperforms DeepSeek-V2-Base and Qwen2.5 72B Base, and surpasses LLaMA-3.1 405B Base in the majority of benchmarks, essentially becoming the strongest open-source model."
+   },
+   {
+    "w": "compress",
+    "ipa": "ˈkɑmprɛs",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "压紧，压缩",
+    "ex": "As DeepSeek-V2, DeepSeek-V3 also employs additional RMSNorm layers after the compressed latent vectors, and multiplies additional scaling factors at the width bottlenecks."
+   },
+   {
+    "w": "compression",
+    "ipa": "kəmˈprɛʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "压缩，压紧，浓缩",
+    "ex": "The pretokenizer and training data for our tokenizer are modified to optimize multilingual compression efficiency."
+   },
+   {
+    "w": "comprise",
+    "ipa": "kəmˈpraɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "包含，包括；构成",
+    "ex": "At the small scale, we train a baseline MoE model comprising 15.7B total parameters on 1.33T tokens."
+   },
+   {
+    "w": "configuration",
+    "ipa": "kənˌfɪgjərˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "配置， 布局， 构造",
+    "ex": "The YaRN configuration is consistent with that used in DeepSeek-V2, being applied exclusively to the decoupled shared key k𝑅 𝑡."
+   },
+   {
+    "w": "consistently",
+    "ipa": "kənˈsɪstəntli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "一贯地；一致地；坚实地",
+    "ex": "From the table, we can observe that the MTP strategy consistently enhances the model performance on most of the evaluation benchmarks."
+   },
+   {
+    "w": "constitute",
+    "ipa": "ˈkɑnstəˌtut",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "组成",
+    "ex": "Evaluation Benchmarks The base model of DeepSeek-V3 is pretrained on a multilingual corpus with English and Chinese constituting the majority, so we evaluate its performance on a series of benchmarks primarily in English and …"
+   },
+   {
+    "w": "constraint",
+    "ipa": "kənˈstreɪnt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "限制，束缚，约束",
+    "ex": "Compared with the sequence-wise auxiliary loss, batch-wise balancing imposes a more flexible constraint, as it does not enforce in-domain balance on each sequence."
+   },
+   {
+    "w": "context",
+    "ipa": "ˈkɑntɛkst",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "背景，环境",
+    "ex": "Long Context Extension We adopt a similar approach to DeepSeek-V2 (DeepSeek-AI, 2024c) to enable long context capabilities in DeepSeek-V3."
+   },
+   {
+    "w": "contextual",
+    "ipa": "ˌkɑnˈtɛksˌʧuəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "上下文的",
+    "ex": "In the training process of DeepSeekCoder-V2 (DeepSeek-AI, 2024a), we observe that the Fill-in-Middle (FIM) strategy does not compromise the next-token prediction capability while enabling the model to accurately predict middle …"
+   },
+   {
+    "w": "corpus",
+    "ipa": "ˈkɔrpəs",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "[计] 语料库；文集；本金",
+    "ex": "Finally, the training corpus for DeepSeek-V3 consists of 14.8T high-quality and diverse tokens in our tokenizer."
+   },
+   {
+    "w": "correlation",
+    "ipa": "ˌkɔrəˈleɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "相关，关联",
+    "ex": "To further investigate the correlation between this flexibility and the advantage in model performance, we additionally design and validate a batch-wise auxiliary loss that encourages load balance on each training batch instead …"
+   },
+   {
+    "w": "coverage",
+    "ipa": "ˈkəvərɪʤ",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "报道",
+    "ex": "of mathematical and programming samples, while expanding multilingual coverage beyond"
+   },
+   {
+    "w": "cue",
+    "ipa": "kju",
+    "pos": "n.；vt.",
+    "lv": "六级",
+    "m": "暗示，信号；提示；提示； 暗示",
+    "ex": "In the training process of DeepSeekCoder-V2 (DeepSeek-AI, 2024a), we observe that the Fill-in-Middle (FIM) strategy does not compromise the next-token prediction capability while enabling the model to accurately predict middle …"
+   },
+   {
+    "w": "curve",
+    "ipa": "kərv",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "曲线；弯；弄弯",
+    "ex": "following a cosine decay curve."
+   },
+   {
+    "w": "decay",
+    "ipa": "dɪˈkeɪ",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "腐烂；衰败；腐烂",
+    "ex": "We employ the AdamW optimizer (Loshchilov and Hutter, 2017) with hyper-parameters set to 𝛽1 = 0.9, 𝛽2 = 0.95, and weight_decay = 0.1."
+   },
+   {
+    "w": "decouple",
+    "ipa": "diˈkəpəl",
+    "pos": "v.",
+    "lv": "雅思",
+    "m": "减弱， 减少",
+    "ex": "The YaRN configuration is consistent with that used in DeepSeek-V2, being applied exclusively to the decoupled shared key k𝑅 𝑡."
+   },
+   {
+    "w": "demonstrate",
+    "ipa": "ˈdɛmənˌstreɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "证明；展示",
+    "ex": "As illustrated in Figure 9, we observe that the auxiliary-loss-free model demonstrates greater expert specialization patterns as expected."
+   },
+   {
+    "w": "deviation",
+    "ipa": "ˌdiviˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "背离，偏离；偏差",
+    "ex": "All learnable parameters are randomly initialized with a standard deviation of 0.006."
+   },
+   {
+    "w": "discard",
+    "ipa": "dɪˈskɑrd",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "丢弃，抛弃，遗弃",
+    "ex": "Note that during inference, we directly discard the MTP module, so the inference costs of the compared models are exactly the same."
+   },
+   {
+    "w": "diversity",
+    "ipa": "dɪˈvərsɪti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "多样性；差异",
+    "ex": "Also, our data processing pipeline is refined to minimize redundancy while maintaining corpus diversity."
+   },
+   {
+    "w": "effectiveness",
+    "ipa": "ɪˈfektɪvnəs",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "有效性",
+    "ex": "highlights the effectiveness of the distillation technique"
+   },
+   {
+    "w": "efficiency",
+    "ipa": "ɪˈfɪʃənsi",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "效率；功效，效能",
+    "ex": "Due to our efficient architectures and comprehensive engineering optimizations, DeepSeek-V3 achieves extremely high training efficiency."
+   },
+   {
+    "w": "enforce",
+    "ipa": "ɛnˈfɔrs",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "实施，执行；强制",
+    "ex": "Compared with the sequence-wise auxiliary loss, batch-wise balancing imposes a more flexible constraint, as it does not enforce in-domain balance on each sequence."
+   },
+   {
+    "w": "enhance",
+    "ipa": "ɛnˈhæns",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "提高；加强；增加",
+    "ex": "From the table, we can observe that the MTP strategy consistently enhances the model performance on most of the evaluation benchmarks."
+   },
+   {
+    "w": "essentially",
+    "ipa": "ɛˈsɛnʃəli",
+    "pos": "adv.",
+    "lv": "GRE",
+    "m": "本质上地；必须的",
+    "ex": "Overall, DeepSeek-V3-Base comprehensively outperforms DeepSeek-V2-Base and Qwen2.5 72B Base, and surpasses LLaMA-3.1 405B Base in the majority of benchmarks, essentially becoming the strongest open-source model."
+   },
+   {
+    "w": "evaluation",
+    "ipa": "ɪˌvæljuˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "评价，评估",
+    "ex": "From the table, we can observe that the MTP strategy consistently enhances the model performance on most of the evaluation benchmarks."
+   },
+   {
+    "w": "exceed",
+    "ipa": "ɪkˈsid",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "超过，胜过；超出",
+    "ex": "Scores with a gap not exceeding 0.3 are considered to be at the same level."
+   },
+   {
+    "w": "exclusively",
+    "ipa": "ɪkˈsklusɪvli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "专门地",
+    "ex": "The YaRN configuration is consistent with that used in DeepSeek-V2, being applied exclusively to the decoupled shared key k𝑅 𝑡."
+   },
+   {
+    "w": "experimental",
+    "ipa": "ɪkˌspɛrɪˈmɛntəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "实验的，试验的",
+    "ex": "The experimental results show that, when achieving a similar level of batch-wise load balance, the batch-wise auxiliary loss can also achieve similar model performance to the auxiliary-loss-free method."
+   },
+   {
+    "w": "flexibility",
+    "ipa": "ˌflɛksəˈbɪləti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "灵活性；适应性",
+    "ex": "This flexibility allows experts to better specialize in different domains."
+   },
+   {
+    "w": "haystack",
+    "ipa": "ˈheɪˌstæk",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "干草堆",
+    "ex": "Figure 8 | Evaluation results on the ”Needle In A Haystack” (NIAH) tests."
+   },
+   {
+    "w": "hidden",
+    "ipa": "ˈhɪdən",
+    "pos": "adj.；v.；n.",
+    "lv": "专四",
+    "m": "隐藏的；隐藏，躲藏（hide的过去分词）；(Hidden)人名；(英)希登",
+    "ex": "Each MoE layer consists of 1 shared expert and 256 routed experts, where the intermediate hidden dimension of each expert is 2048."
+   },
+   {
+    "w": "highlight",
+    "ipa": "ˈhaɪlaɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "突出",
+    "ex": "This remarkable capability highlights the effectiveness of the distillation technique"
+   },
+   {
+    "w": "hyper",
+    "ipa": "ˈhaɪpər",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "亢奋的,高度紧张的",
+    "ex": "We employ the AdamW optimizer (Loshchilov and Hutter, 2017) with hyper-parameters set to 𝛽1 = 0.9, 𝛽2 = 0.95, and weight_decay = 0.1."
+   },
+   {
+    "w": "identical",
+    "ipa": "aɪˈdɛntɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "相同的",
+    "ex": "The hyper-parameters remain identical across both phases, with the scale 𝑠= 40, 𝛼= 1, 𝛽= 32, and the scaling factor √ 𝑡= 0.1 ln 𝑠+ 1."
+   },
+   {
+    "w": "illustrate",
+    "ipa": "ˈɪləˌstreɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "说明,阐明",
+    "ex": "As illustrated in Figure 9, we observe that the auxiliary-loss-free model demonstrates greater expert specialization patterns as expected."
+   },
+   {
+    "w": "imbalance",
+    "ipa": "ɪmˈbæləns",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "不平衡",
+    "ex": "For the balance loss, we set 𝛼to 0.0001, just to avoid extreme imbalance within any single sequence."
+   },
+   {
+    "w": "impose",
+    "ipa": "ˌɪmˈpoʊz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "强加",
+    "ex": "Compared with the sequence-wise auxiliary loss, batch-wise balancing imposes a more flexible constraint, as it does not enforce in-domain balance on each sequence."
+   },
+   {
+    "w": "individually",
+    "ipa": "ˌɪndɪˈvɪʤəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "个别地,单独地",
+    "ex": "base models individually. (1) Compared with DeepSeek-V2-Base, due to the improvements in"
+   },
+   {
+    "w": "induce",
+    "ipa": "ˌɪnˈdus",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "引诱",
+    "ex": "Due to space constraints, we only present the results of two layers as an example, with the results of all layers provided in Appendix C. certain sequences or small batches, and (2) domain-shift-induced load imbalance during …"
+   },
+   {
+    "w": "infrastructure",
+    "ipa": "ˌɪnfrəˈstrəkʧər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "基础设施；公共建设；下部构造",
+    "ex": "Under our training framework and infrastructures, training DeepSeek-V3 on each trillion tokens requires only 180K H800 GPU hours, which is much cheaper than training 72B or 405B dense models."
+   },
+   {
+    "w": "integrate",
+    "ipa": "ˈɪnəˌgreɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "成为一体， 合并",
+    "ex": "Our evaluation is based on our internal evaluation framework integrated in our HAI-LLM framework."
+   },
+   {
+    "w": "integrity",
+    "ipa": "ˌɪnˈtɛgrəti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "完整，综合",
+    "ex": "Inspired by Ding et al. (2024), we implement the document packing method for data integrity but do not incorporate cross-sample attention masking during training."
+   },
+   {
+    "w": "internal",
+    "ipa": "ˌɪnˈtərnəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "内的；国内的",
+    "ex": "We evaluate all these models with our internal evaluation framework, and ensure that they share the same evaluation setting."
+   },
+   {
+    "w": "latent",
+    "ipa": "ˈleɪtənt",
+    "pos": "adj.",
+    "lv": "考研",
+    "m": "存在但看不见的",
+    "ex": "As DeepSeek-V2, DeepSeek-V3 also employs additional RMSNorm layers after the compressed latent vectors, and multiplies additional scaling factors at the width bottlenecks."
+   },
+   {
+    "w": "layer",
+    "ipa": "leɪər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "层，层次；铺设者",
+    "ex": "Each MoE layer consists of 1 shared expert and 256 routed experts, where the intermediate hidden dimension of each expert is 2048."
+   },
+   {
+    "w": "maintain",
+    "ipa": "meɪnˈteɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "维持，主张",
+    "ex": "Through this two-phase extension training, DeepSeek-V3 is capable of handling inputs up to 128K in length while maintaining strong performance."
+   },
+   {
+    "w": "modify",
+    "ipa": "ˈmɑdəˌfaɪ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "更改，修改；修饰",
+    "ex": "The pretokenizer and training data for our tokenizer are modified to optimize multilingual compression efficiency."
+   },
+   {
+    "w": "module",
+    "ipa": "ˈmɑʤul",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "模块；组件",
+    "ex": "Note that during inference, we directly discard the MTP module, so the inference costs of the compared models are exactly the same."
+   },
+   {
+    "w": "norm",
+    "ipa": "nɔrm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "标准，规范；平均数",
+    "ex": "The gradient clipping norm is set to 1.0."
+   },
+   {
+    "w": "notable",
+    "ipa": "ˈnoʊtəbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "值得注意的；著名的",
+    "ex": "Figure 8 illustrates that DeepSeek-V3, following supervised fine-tuning, achieves notable performance on the \"Needle In A Haystack\" (NIAH) test, demonstrating consistent robustness across context window lengths up to 128K."
+   },
+   {
+    "w": "optimization",
+    "ipa": "ɑptɪmɪˈzeɪʃən",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "最佳化, 最优化",
+    "ex": "Due to our efficient architectures and comprehensive engineering optimizations, DeepSeek-V3 achieves extremely high training efficiency."
+   },
+   {
+    "w": "parameter",
+    "ipa": "pərˈæmətər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "参（变）数；参量",
+    "ex": "We employ the AdamW optimizer (Loshchilov and Hutter, 2017) with hyper-parameters set to 𝛽1 = 0.9, 𝛽2 = 0.95, and weight_decay = 0.1."
+   },
+   {
+    "w": "particularly",
+    "ipa": "ˌpɑrˈtɪkjələrli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "特别，尤其，格外",
+    "ex": "However, this trick may introduce the token boundary bias (Lundberg, 2023) when the model processes multi-line prompts without terminal line breaks, particularly for few-shot evaluation prompts."
+   },
+   {
+    "w": "perplexity",
+    "ipa": "pərˈplɛksəti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "(正式用语)困惑，窘困，令人困惑的事或物",
+    "ex": "Following our previous work (DeepSeek-AI, 2024b,c), we adopt perplexity-based evaluation for datasets including HellaSwag, PIQA, WinoGrande, RACE-Middle, RACE-High, MMLU, MMLU-Redux, MMLU-Pro, MMMLU, ARC-Easy, ARC-Challenge …"
+   },
+   {
+    "w": "phase",
+    "ipa": "feɪz",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "阶段；方面；相位",
+    "ex": "The hyper-parameters remain identical across both phases, with the scale 𝑠= 40, 𝛼= 1, 𝛽= 32, and the scaling factor √ 𝑡= 0.1 ln 𝑠+ 1."
+   },
+   {
+    "w": "prefix",
+    "ipa": "ˈprifɪks",
+    "pos": "n.；v.",
+    "lv": "专四",
+    "m": "前缀；加前缀；将某事物加在前面",
+    "ex": "To be specific, we employ the Prefix-Suffix-Middle (PSM) framework to structure data as follows: <|fim_begin|> 𝑓pre<|fim_hole|> 𝑓suf<|fim_end|> 𝑓middle<|eos_token|>."
+   },
+   {
+    "w": "previously",
+    "ipa": "ˈpriviəsli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "事先",
+    "ex": "DeepSeek-V3-Base achieves the best performance on most benchmarks, especially on math and code tasks. of DeepSeek-V2-Base exhibits a slight difference from our previously reported results."
+   },
+   {
+    "w": "proportion",
+    "ipa": "prəˈpɔrʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比例，部分",
+    "ex": "To address this issue, we randomly split a certain proportion of such combined tokens during training, which exposes the model to a wider array of special cases and mitigates this bias."
+   },
+   {
+    "w": "purely",
+    "ipa": "ˈpjʊrli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "纯粹地；仅仅，只不过；完全地；贞淑地；清洁地",
+    "ex": "Both of the baseline models purely use auxiliary losses to encourage load balance, and use the sigmoid gating function with top-K affinity normalization."
+   },
+   {
+    "w": "query",
+    "ipa": "kˈwiri",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "疑问，质问；疑问号 ；[计] 查询；询问；对……表示疑问",
+    "ex": "For the decoupled queries and key, we set the per-head dimension 𝑑𝑅 ℎto 64."
+   },
+   {
+    "w": "randomly",
+    "ipa": "ˈrændəmli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "随机地",
+    "ex": "To address this issue, we randomly split a certain proportion of such combined tokens during training, which exposes the model to a wider array of special cases and mitigates this bias."
+   },
+   {
+    "w": "ratio",
+    "ipa": "ˈreɪʃiˌoʊ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比，比率",
+    "ex": "The relative expert load denotes the ratio between the actual expert load and the theoretically balanced expert load."
+   },
+   {
+    "w": "redundancy",
+    "ipa": "rɪˈdəndənsi",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "[计][数] 冗余（等于redundance）；裁员；人浮于事",
+    "ex": "Also, our data processing pipeline is refined to minimize redundancy while maintaining corpus diversity."
+   },
+   {
+    "w": "refine",
+    "ipa": "rɪˈfaɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "改善，精炼",
+    "ex": "Also, our data processing pipeline is refined to minimize redundancy while maintaining corpus diversity."
+   },
+   {
+    "w": "remarkable",
+    "ipa": "rɪˈmɑrkəbl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "非凡的",
+    "ex": "This remarkable capability highlights the effectiveness of the distillation technique"
+   },
+   {
+    "w": "respectively",
+    "ipa": "rɪˈspɛktɪvli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "各自地",
+    "ex": "Their hyper-parameters to control the strength of auxiliary losses are the same as DeepSeek-V2-Lite and DeepSeek-V2, respectively."
+   },
+   {
+    "w": "scope",
+    "ipa": "skoʊp",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "范围",
+    "ex": "Sequence-Wise Load Balance The key distinction between auxiliary-loss-free balancing and sequence-wise auxiliary loss lies in their balancing scope: batch-wise versus sequence-wise."
+   },
+   {
+    "w": "shift",
+    "ipa": "ʃɪft",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "替换，转移；转换",
+    "ex": "Due to space constraints, we only present the results of two layers as an example, with the results of all layers provided in Appendix C. certain sequences or small batches, and (2) domain-shift-induced load imbalance during …"
+   },
+   {
+    "w": "sigmoid",
+    "ipa": "ˈsɪɡmɔɪd",
+    "pos": "adj./n.",
+    "lv": "考博",
+    "m": "S 形的；sigmoid function 逻辑斯谛/乙状函数",
+    "ex": "Both of the baseline models purely use auxiliary losses to encourage load balance, and use the sigmoid gating function with top-K affinity normalization."
+   },
+   {
+    "w": "specialization",
+    "ipa": "ˌspɛʃələˈzeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "特殊化, 专门化",
+    "ex": "As illustrated in Figure 9, we observe that the auxiliary-loss-free model demonstrates greater expert specialization patterns as expected."
+   },
+   {
+    "w": "specialize",
+    "ipa": "ˈspɛʃəˌlaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "专业从事",
+    "ex": "This flexibility allows experts to better specialize in different domains."
+   },
+   {
+    "w": "standardize",
+    "ipa": "ˈstændərˌdaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使标准化",
+    "ex": "Standardized exams include AGIEval (Zhong et al., 2023)."
+   },
+   {
+    "w": "structure",
+    "ipa": "ˈstrəkʧər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "结构",
+    "ex": "To be specific, we employ the Prefix-Suffix-Middle (PSM) framework to structure data as follows: <|fim_begin|> 𝑓pre<|fim_hole|> 𝑓suf<|fim_end|> 𝑓middle<|eos_token|>."
+   },
+   {
+    "w": "suffix",
+    "ipa": "ˈsəfɪks",
+    "pos": "v.；n.",
+    "lv": "专四",
+    "m": "添后缀；后缀；下标",
+    "ex": "To be specific, we employ the Prefix-Suffix-Middle (PSM) framework to structure data as follows: <|fim_begin|> 𝑓pre<|fim_hole|> 𝑓suf<|fim_end|> 𝑓middle<|eos_token|>."
+   },
+   {
+    "w": "vector",
+    "ipa": "ˈvɛktər",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "矢量；飞机航线",
+    "ex": "As DeepSeek-V2, DeepSeek-V3 also employs additional RMSNorm layers after the compressed latent vectors, and multiplies additional scaling factors at the width bottlenecks."
+   },
+   {
+    "w": "versus",
+    "ipa": "ˈvərsəz",
+    "pos": "prep.",
+    "lv": "六级",
+    "m": "（比赛等中）对",
+    "ex": "Sequence-Wise Load Balance The key distinction between auxiliary-loss-free balancing and sequence-wise auxiliary loss lies in their balancing scope: batch-wise versus sequence-wise."
+   },
+   {
+    "w": "yarn",
+    "ipa": "jɑrn",
+    "pos": "n.；v.",
+    "lv": "专四",
+    "m": "纱线；奇谈，故事；用纱线缠",
+    "ex": "The YaRN configuration is consistent with that used in DeepSeek-V2, being applied exclusively to the decoupled shared key k𝑅 𝑡."
+   }
+  ]
+ },
+ {
+  "sec": "5. Conclusion · 结论",
+  "short": "Concl",
+  "icon": "5",
+  "words": [
+   {
+    "w": "ablate",
+    "ipa": "æbˈlet",
+    "pos": "v.",
+    "lv": "GRE",
+    "m": "融化",
+    "ex": "Distillation from DeepSeek-R1 We ablate the contribution of distillation from DeepSeek-R1 based on DeepSeek-V2.5."
+   },
+   {
+    "w": "acceptance",
+    "ipa": "əkˈsɛptəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "接受，验收；承认",
+    "ex": "This high acceptance rate enables DeepSeek-V3 to achieve a significantly improved decoding speed, delivering 1.8 times TPS (Tokens Per Second)."
+   },
+   {
+    "w": "adhere",
+    "ipa": "ədˈhɪr",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "坚守，遵循",
+    "g": "g",
+    "ex": "DeepSeek consistently adheres to the route of open-source models"
+   },
+   {
+    "w": "allocation",
+    "ipa": "ˌæləˈkeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "分配，配置；安置",
+    "ex": "On the factual knowledge benchmark, SimpleQA, DeepSeek-V3 falls behind GPT-4o and Claude-Sonnet, primarily due to its design focus and resource allocation."
+   },
+   {
+    "w": "architectural",
+    "ipa": "ˌɑrkəˈtɛkʧərəl",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "建筑上的； 建筑学的",
+    "ex": "context length. Additionally, we will try to break through the architectural limitations of"
+   },
+   {
+    "w": "arena",
+    "ipa": "ərˈinə",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "表演场地， 竞技场； 活动场所",
+    "ex": "Furthermore, DeepSeek-V3 achieves a groundbreaking milestone as the first open-source model to surpass 85% on the Arena-Hard benchmark."
+   },
+   {
+    "w": "bash",
+    "ipa": "bæʃ",
+    "pos": "v.；n.",
+    "lv": "专八",
+    "m": "猛击，痛击；怒殴；猛烈的一击，痛击",
+    "ex": "For code and math benchmarks, the HumanEval-Mul dataset includes 8 mainstream programming languages (Python, Java, Cpp, C#, JavaScript, TypeScript, PHP, and Bash) in total."
+   },
+   {
+    "w": "benchmark",
+    "ipa": "ˈbɛnʧˌmɑrk",
+    "pos": "n.；v.",
+    "lv": "专八",
+    "m": "基准；标准检查程序；用基准问题测试（计算机系统等）",
+    "ex": "Benchmarks containing fewer than 1000 samples are tested multiple times using varying temperature settings to derive robust final results."
+   },
+   {
+    "w": "carefully",
+    "ipa": "ˈkɛrfəli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "小心地",
+    "ex": "To maintain a balance between model accuracy and computational efficiency, we carefully selected optimal settings for DeepSeek-V3 in distillation."
+   },
+   {
+    "w": "checkpoint",
+    "ipa": "ˈʧɛkˌpɔɪnt",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "检查站，关卡",
+    "ex": "The baseline is trained on short CoT data, whereas its competitor uses data generated by the expert checkpoints described above."
+   },
+   {
+    "w": "clarity",
+    "ipa": "ˈklɛrɪti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "清晰，清楚",
+    "ex": "Our objective is to balance the high accuracy of R1-generated reasoning data and the clarity and conciseness of regularly formatted reasoning data."
+   },
+   {
+    "w": "closely",
+    "ipa": "ˈkloʊsli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "紧密地，接近地",
+    "ex": "Moreover, DeepSeek-V3 excels in MMLU-Pro, a more challenging educational knowledge benchmark, where it closely trails Claude-Sonnet 3.5."
+   },
+   {
+    "w": "cognitive",
+    "ipa": "ˈkɑgnɪtɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "认知的",
+    "ex": "The effectiveness demonstrated in these specific areas indicates that long-CoT distillation could be valuable for enhancing model performance in other cognitive tasks requiring complex reasoning."
+   },
+   {
+    "w": "comparable",
+    "ipa": "ˈkɑmpərəbl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "相当的",
+    "ex": "achieves performance comparable to leading closed-source models like GPT-4o"
+   },
+   {
+    "w": "competitive",
+    "ipa": "kəmˈpɛtɪtɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "竞争的， 比赛的； 好竞争的， 求胜心切的； 有竞争力的",
+    "ex": "DeepSeek-V3 stands as the best-performing open-source model, and also exhibits competitive performance against frontier closed-source models."
+   },
+   {
+    "w": "competitor",
+    "ipa": "kəmˈpɛtɪtər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "竞争者，对手",
+    "ex": "In addition, on GPQA-Diamond, a PhD-level evaluation testbed, DeepSeek-V3 achieves remarkable results, ranking just behind Claude 3.5 Sonnet and outperforming all other competitors by a substantial margin."
+   },
+   {
+    "w": "concise",
+    "ipa": "kənˈsaɪs",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "简明的， 简要的",
+    "ex": "This method ensures that the final training data retains the strengths of DeepSeek-R1 while producing responses that are concise and effective."
+   },
+   {
+    "w": "constitutional",
+    "ipa": "ˌkɑnstəˈtuʃənəl",
+    "pos": "adj.；n.",
+    "lv": "六级",
+    "m": "宪法的；本质的；体质上的；保健的；保健散步；保健运动",
+    "ex": "By integrating additional constitutional inputs, DeepSeek-V3 can optimize towards the constitutional direction."
+   },
+   {
+    "w": "conversely",
+    "ipa": "ˈkɑnvərsli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "相反地",
+    "ex": "Conversely, for questions without a definitive ground-truth, such as those involving creative writing, the reward model is tasked with providing feedback based on the question and the corresponding answer as inputs."
+   },
+   {
+    "w": "cot",
+    "ipa": "kɑt",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "简易床；小屋；轻便小床",
+    "ex": "We use CoT and non-CoT methods to evaluate model performance on LiveCodeBench, where the data are collected from August 2024 to November 2024."
+   },
+   {
+    "w": "creation",
+    "ipa": "kriˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "创造， 创建； 创造的作品， 产物； 宇宙， 天地万物",
+    "ex": "Supervised Fine-Tuning We curate our instruction-tuning datasets to include 1.5M instances spanning multiple domains, with each domain employing distinct data creation methods tailored to its specific requirements."
+   },
+   {
+    "w": "creative",
+    "ipa": "kriˈeɪtɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "创造性的，创作的",
+    "ex": "Conversely, for questions without a definitive ground-truth, such as those involving creative writing, the reward model is tasked with providing feedback based on the question and the corresponding answer as inputs."
+   },
+   {
+    "w": "creator",
+    "ipa": "kriˈeɪtər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "创造者；创建者",
+    "ex": "For other datasets, we follow their original evaluation protocols with default prompts as provided by the dataset creators."
+   },
+   {
+    "w": "critic",
+    "ipa": "ˈkrɪtɪk",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "批评家，评论家",
+    "ex": "Group Relative Policy Optimization Similar to DeepSeek-V2 (DeepSeek-AI, 2024c), we adopt Group Relative Policy Optimization (GRPO) (Shao et al., 2024), which foregoes the critic model that is typically with the same size as the …"
+   },
+   {
+    "w": "debug",
+    "ipa": "diˈbəg",
+    "pos": "v.",
+    "lv": "专八",
+    "m": "调试；除错，改正有毛病部分；[军] 除去窃听器",
+    "ex": "This underscores the robust capabilities of DeepSeek-V3, especially in dealing with complex prompts, including coding and debugging tasks."
+   },
+   {
+    "w": "decode",
+    "ipa": "dɪˈkoʊd",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "解码",
+    "ex": "This high acceptance rate enables DeepSeek-V3 to achieve a significantly improved decoding speed, delivering 1.8 times TPS (Tokens Per Second)."
+   },
+   {
+    "w": "default",
+    "ipa": "dɪˈfɔlt",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "不履行义务；不履行义务",
+    "ex": "For other datasets, we follow their original evaluation protocols with default prompts as provided by the dataset creators."
+   },
+   {
+    "w": "define",
+    "ipa": "dɪˈfaɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "下定义，确定",
+    "ex": "On the instruction-following benchmark, DeepSeek-V3 significantly outperforms its predecessor, DeepSeek-V2-series, highlighting its improved ability to understand and adhere to user-defined format constraints."
+   },
+   {
+    "w": "definitive",
+    "ipa": "dɪˈfɪnɪtɪv",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "最可靠的， 权威性的； 决定性的",
+    "ex": "Conversely, for questions without a definitive ground-truth, such as those involving creative writing, the reward model is tasked with providing feedback based on the question and the corresponding answer as inputs."
+   },
+   {
+    "w": "derive",
+    "ipa": "dəraɪv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "得到，导出",
+    "ex": "Benchmarks containing fewer than 1000 samples are tested multiple times using varying temperature settings to derive robust final results."
+   },
+   {
+    "w": "designate",
+    "ipa": "ˈdɛzɪgˌneɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "指定，委派",
+    "ex": "For instance, certain math problems have deterministic results, and we require the model to provide the final answer within a designated format (e.g., in a box), allowing us to apply rules to verify the correctness."
+   },
+   {
+    "w": "developer",
+    "ipa": "dɪˈvɛləpər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "开发者",
+    "ex": "By providing access to its robust capabilities, DeepSeek-V3 can drive innovation and improvement in areas such as software engineering and algorithm development, empowering developers and researchers to push the boundaries of …"
+   },
+   {
+    "w": "dimensional",
+    "ipa": "dɪˈmɛnʃənəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "空间的；尺寸的",
+    "ex": "• We will explore more comprehensive and multi-dimensional model evaluation methods to"
+   },
+   {
+    "w": "distillation",
+    "ipa": "ˌdɪstəˈleɪʃən",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "精馏，蒸馏，净化；蒸馏法；精华，蒸馏物",
+    "ex": "Table 9 demonstrates the effectiveness of the distillation data, showing significant improvements in both LiveCodeBench and MATH-500 benchmarks."
+   },
+   {
+    "w": "distinct",
+    "ipa": "dɪˈstɪŋkt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "明显的；有区别的",
+    "ex": "Supervised Fine-Tuning We curate our instruction-tuning datasets to include 1.5M instances spanning multiple domains, with each domain employing distinct data creation methods tailored to its specific requirements."
+   },
+   {
+    "w": "domain",
+    "ipa": "doʊˈmeɪn",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "领域",
+    "ex": "MMLU is a widely recognized benchmark designed to assess the performance of large language models, across diverse knowledge domains and tasks."
+   },
+   {
+    "w": "economical",
+    "ipa": "ˌiːkəˈnɑmɪkl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "经济的",
+    "ex": "it also maintains economical training costs"
+   },
+   {
+    "w": "educational",
+    "ipa": "ˌɛʤəˈkeɪʃənəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "教育的， 教育性的",
+    "ex": "Moreover, DeepSeek-V3 excels in MMLU-Pro, a more challenging educational knowledge benchmark, where it closely trails Claude-Sonnet 3.5."
+   },
+   {
+    "w": "effective",
+    "ipa": "ˈifɛktɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "有效的；有影响的",
+    "ex": "This method ensures that the final training data retains the strengths of DeepSeek-R1 while producing responses that are concise and effective."
+   },
+   {
+    "w": "efficacy",
+    "ipa": "ˈɛfɪˌkæsi",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "功效，效力",
+    "ex": "In domains where verification through external tools is straightforward, such as some coding or mathematics scenarios, RL demonstrates exceptional efficacy."
+   },
+   {
+    "w": "empower",
+    "ipa": "ɪmˈpaʊər",
+    "pos": "vt.",
+    "lv": "专八",
+    "m": "授权于； 使能够",
+    "ex": "By providing access to its robust capabilities, DeepSeek-V3 can drive innovation and improvement in areas such as software engineering and algorithm development, empowering developers and researchers to push the boundaries of …"
+   },
+   {
+    "w": "encompass",
+    "ipa": "ɛnˈkəmpəs",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "包含；包围，环绕；完成",
+    "ex": "Coding is a challenging and practical task for LLMs, encompassing engineering-focused tasks like SWE-Bench-Verified and Aider, as well as algorithmic tasks such as HumanEval and LiveCodeBench."
+   },
+   {
+    "w": "enlist",
+    "ipa": "ˌɛnˈlɪst",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "支持；从军；应募；赞助",
+    "ex": "For non-reasoning data, such as creative writing, role-play, and simple question answering, we utilize DeepSeek-V2.5 to generate responses and enlist human annotators to verify the accuracy and correctness of the data."
+   },
+   {
+    "w": "enrich",
+    "ipa": "ɪnˈrɪʧ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "丰富；使富有",
+    "ex": "The system prompt is meticulously designed to include instructions that guide the model toward producing responses enriched with mechanisms for reflection and verification."
+   },
+   {
+    "w": "ensure",
+    "ipa": "ɪnˈʃʊr",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "确保",
+    "ex": "This method ensures that the final training data retains the strengths of DeepSeek-R1 while producing responses that are concise and effective."
+   },
+   {
+    "w": "epoch",
+    "ipa": "ˈɛpək",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "（新）时代；历元",
+    "ex": "We fine-tune DeepSeek-V3-Base for two epochs using the SFT dataset, using the"
+   },
+   {
+    "w": "establish",
+    "ipa": "ɪˈstæblɪʃ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "建立，创办，设立",
+    "ex": "To establish our methodology, we begin by developing an expert model tailored to a specific domain, such as code, mathematics, or general reasoning, using a combined Supervised Fine-Tuning (SFT) and Reinforcement Learning (RL) …"
+   },
+   {
+    "w": "estimate",
+    "ipa": "ˈɛstəˌmeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "估计",
+    "ex": "Group Relative Policy Optimization Similar to DeepSeek-V2 (DeepSeek-AI, 2024c), we adopt Group Relative Policy Optimization (GRPO) (Shao et al., 2024), which foregoes the critic model that is typically with the same size as the …"
+   },
+   {
+    "w": "excel",
+    "ipa": "ɪkˈsɛl",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "胜过，杰出",
+    "ex": "Moreover, DeepSeek-V3 excels in MMLU-Pro, a more challenging educational knowledge benchmark, where it closely trails Claude-Sonnet 3.5."
+   },
+   {
+    "w": "exceptional",
+    "ipa": "ɪkˈsɛpʃənəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "例外的",
+    "ex": "Similarly, DeepSeek-V3 showcases exceptional performance on AlpacaEval 2.0, outperforming both closed-source and open-source models."
+   },
+   {
+    "w": "excessive",
+    "ipa": "ɪkˈsɛsɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "过度的",
+    "ex": "Specifically, while the R1-generated data demonstrates strong accuracy, it suffers from issues such as overthinking, poor formatting, and excessive length."
+   },
+   {
+    "w": "exhibit",
+    "ipa": "ɪgˈzɪbɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "显示；陈列，展览",
+    "ex": "DeepSeek-V3 stands as the best-performing open-source model, and also exhibits competitive performance against frontier closed-source models."
+   },
+   {
+    "w": "exploitation",
+    "ipa": "ˌɛkˌsplɔɪˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "开采， 开发； 剥削， 榨取； 自私的利用",
+    "ex": "By leveraging rule-based validation wherever possible, we ensure a higher level of reliability, as this approach is resistant to manipulation or exploitation."
+   },
+   {
+    "w": "exploration",
+    "ipa": "ˌɛksplərˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "考察；勘探；探查",
+    "ex": "Further exploration of this approach across different domains remains an important direction for future research."
+   },
+   {
+    "w": "external",
+    "ipa": "ɪkˈstərnəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "外部的，外面的",
+    "ex": "In domains where verification through external tools is straightforward, such as some coding or mathematics scenarios, RL demonstrates exceptional efficacy."
+   },
+   {
+    "w": "factual",
+    "ipa": "ˈfækʧuəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "事实的；真实的",
+    "ex": "On the factual knowledge benchmark, SimpleQA, DeepSeek-V3 falls behind GPT-4o and Claude-Sonnet, primarily due to its design focus and resource allocation."
+   },
+   {
+    "w": "feedback",
+    "ipa": "ˈfidˌbæk",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "反馈",
+    "ex": "We believe that this paradigm, which combines supplementary information with LLMs as a feedback source, is of paramount importance."
+   },
+   {
+    "w": "fortunately",
+    "ipa": "ˈfɔrʧənətli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "幸运地",
+    "ex": "Fortunately, these limitations are expected to be naturally addressed with the development of more advanced hardware."
+   },
+   {
+    "w": "frame",
+    "ipa": "freɪm",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "框架",
+    "ex": "In long-context understanding benchmarks such as DROP, LongBench v2, and FRAMES, DeepSeek-V3 continues to demonstrate its position as a top-tier model."
+   },
+   {
+    "w": "generate",
+    "ipa": "ˈʤɛnərˌeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "产生",
+    "ex": "Our objective is to balance the high accuracy of R1-generated reasoning data and the clarity and conciseness of regularly formatted reasoning data."
+   },
+   {
+    "w": "generative",
+    "ipa": "ˈʤɛnərətɪv",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "生产的，有生产力的",
+    "ex": "DeepSeek-V3 as a Generative Reward Model We compare the judgment ability of DeepSeek-V3 with state-of-the-art models, namely GPT-4o and Claude-3.5."
+   },
+   {
+    "w": "generator",
+    "ipa": "ˈʤɛnərˌeɪtər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "发电机；发生者",
+    "ex": "This expert model serves as a data generator for the final model."
+   },
+   {
+    "w": "groundbreaking",
+    "ipa": "ˈgraʊnˌbreɪkɪŋ",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "开创性的",
+    "ex": "Furthermore, DeepSeek-V3 achieves a groundbreaking milestone as the first open-source model to surpass 85% on the Arena-Hard benchmark."
+   },
+   {
+    "w": "hack",
+    "ipa": "hæk",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "黑客攻击",
+    "ex": "This approach helps mitigate the risk of reward hacking in specific tasks."
+   },
+   {
+    "w": "impractical",
+    "ipa": "ˌɪmˈpræktɪkəl",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "不切实际的，不现实的；不能实行的",
+    "ex": "However, in more general scenarios, constructing a feedback mechanism through hard coding is impractical."
+   },
+   {
+    "w": "impressive",
+    "ipa": "ˌɪmˈprɛsɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "给人印象深刻的",
+    "ex": "It achieves an impressive 91.6 F1 score in the 3-shot setting on DROP, outperforming all other models in this category."
+   },
+   {
+    "w": "improvement",
+    "ipa": "ˌɪmˈpruvmənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "改进，改善；改进处",
+    "ex": "Table 9 demonstrates the effectiveness of the distillation data, showing significant improvements in both LiveCodeBench and MATH-500 benchmarks."
+   },
+   {
+    "w": "incorporate",
+    "ipa": "ˌɪnˈkɔrpərˌeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "合并；体现",
+    "ex": "After hundreds of RL steps, the intermediate RL model learns to incorporate R1 patterns, thereby enhancing overall performance strategically."
+   },
+   {
+    "w": "incorporation",
+    "ipa": "ɪnˌkɔrpəˈreɪʃn",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "纳入",
+    "ex": "explore the incorporation of additional training signal sources"
+   },
+   {
+    "w": "infinite",
+    "ipa": "ˈɪnfɪnət",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "无限的",
+    "ex": "striving to approach efficient support for infinite context length"
+   },
+   {
+    "w": "innovation",
+    "ipa": "ˌɪnəˈveɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "改革，创新",
+    "ex": "By providing access to its robust capabilities, DeepSeek-V3 can drive innovation and improvement in areas such as software engineering and algorithm development, empowering developers and researchers to push the boundaries of …"
+   },
+   {
+    "w": "instance",
+    "ipa": "ˈɪnstəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "情况，例子",
+    "ex": "Supervised Fine-Tuning We curate our instruction-tuning datasets to include 1.5M instances spanning multiple domains, with each domain employing distinct data creation methods tailored to its specific requirements."
+   },
+   {
+    "w": "intermediate",
+    "ipa": "ˌɪnərˈmidiɪt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "中间的；中级的",
+    "ex": "After hundreds of RL steps, the intermediate RL model learns to incorporate R1 patterns, thereby enhancing overall performance strategically."
+   },
+   {
+    "w": "invest",
+    "ipa": "ˌɪnˈvɛst",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "投资",
+    "ex": "In the future, we plan to strategically invest in research across the following directions. • We will consistently study and refine our model architectures, aiming to further improve both the training and inference efficiency …"
+   },
+   {
+    "w": "invisible",
+    "ipa": "ˌɪnˈvɪzəbəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "看不见的，无形的",
+    "ex": "However, we adopt a sample masking strategy to ensure that these examples remain isolated and mutually invisible."
+   },
+   {
+    "w": "isolate",
+    "ipa": "ˈaɪsəˌleɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使隔离，使孤立",
+    "ex": "However, we adopt a sample masking strategy to ensure that these examples remain isolated and mutually invisible."
+   },
+   {
+    "w": "iterate",
+    "ipa": "ˈɪtəreɪt",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "迭代",
+    "ex": "We will continuously iterate on the quantity and quality of our training data"
+   },
+   {
+    "w": "label",
+    "ipa": "ˈleɪbəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "标签；标记，符号",
+    "ex": "On MMLU-Redux, a refined version of MMLU with corrected labels, DeepSeek-V3 surpasses its peers."
+   },
+   {
+    "w": "launch",
+    "ipa": "lɔnʧ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "发射",
+    "ex": "The long-context capability of DeepSeek-V3 is further validated by its best-in-class performance on LongBench v2, a dataset that was released just a few weeks before the launch of DeepSeek V3."
+   },
+   {
+    "w": "mainstream",
+    "ipa": "ˈmeɪnˌstrim",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "主流",
+    "ex": "For code and math benchmarks, the HumanEval-Mul dataset includes 8 mainstream programming languages (Python, Java, Cpp, C#, JavaScript, TypeScript, PHP, and Bash) in total."
+   },
+   {
+    "w": "manipulation",
+    "ipa": "məˌnɪpjəˈleɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "操纵，控制",
+    "ex": "By leveraging rule-based validation wherever possible, we ensure a higher level of reliability, as this approach is resistant to manipulation or exploitation."
+   },
+   {
+    "w": "margin",
+    "ipa": "ˈmɑrʤən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "边缘，范围",
+    "ex": "On FRAMES, a benchmark requiring question-answering over 100k token contexts, DeepSeek-V3 closely trails GPT-4o while outperforming all other models by a significant margin."
+   },
+   {
+    "w": "mathematical",
+    "ipa": "ˌmæθəˈmætɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "数学的，数学上的",
+    "ex": "For mathematical assessments, AIME and CNMO 2024 are evaluated with a temperature of 0.7, and the results are averaged over 16 runs, while MATH-500 employs greedy decoding."
+   },
+   {
+    "w": "maximize",
+    "ipa": "ˈmæksəˌmaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "取最大值, 最佳化",
+    "ex": "𝜋𝜃𝑜𝑙𝑑and then optimizes the policy model 𝜋𝜃by maximizing the following objective:"
+   },
+   {
+    "w": "meticulous",
+    "ipa": "məˈtɪkjələs",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "一丝不苟的；小心翼翼的；拘泥小节的",
+    "ex": "The training of DeepSeek-V3 is cost-effective due to the support of FP8 training and meticulous engineering optimizations."
+   },
+   {
+    "w": "metric",
+    "ipa": "ˈmɛtrɪk",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "公制的，米制的",
+    "ex": "Benchmark (Metric) DeepSeek DeepSeek Qwen2.5 LLaMA-3.1 Claude-3.5- GPT-4o DeepSeek V2-0506 V2.5-0905 72B-Inst."
+   },
+   {
+    "w": "milestone",
+    "ipa": "ˈmaɪlˌstoʊn",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "里程碑",
+    "ex": "Furthermore, DeepSeek-V3 achieves a groundbreaking milestone as the first open-source model to surpass 85% on the Arena-Hard benchmark."
+   },
+   {
+    "w": "mislead",
+    "ipa": "mɪsˈlid",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "误导",
+    "ex": "may create a misleading impression of the model capabilities and affect our foundational"
+   },
+   {
+    "w": "moreover",
+    "ipa": "mɔˈroʊvər",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "再者，加之，此外",
+    "ex": "Moreover, DeepSeek-V3 excels in MMLU-Pro, a more challenging educational knowledge benchmark, where it closely trails Claude-Sonnet 3.5."
+   },
+   {
+    "w": "multiple",
+    "ipa": "ˈməltəpəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "复合的；并联的",
+    "ex": "Benchmarks containing fewer than 1000 samples are tested multiple times using varying temperature settings to derive robust final results."
+   },
+   {
+    "w": "mutually",
+    "ipa": "mˈjuʧuəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "互相地",
+    "ex": "However, we adopt a sample masking strategy to ensure that these examples remain isolated and mutually invisible."
+   },
+   {
+    "w": "namely",
+    "ipa": "ˈneɪmli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "即，也就是",
+    "ex": "DeepSeek-V3 as a Generative Reward Model We compare the judgment ability of DeepSeek-V3 with state-of-the-art models, namely GPT-4o and Claude-3.5."
+   },
+   {
+    "w": "naturally",
+    "ipa": "ˈnæʧərəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "自然地；天然地",
+    "ex": "Fortunately, these limitations are expected to be naturally addressed with the development of more advanced hardware."
+   },
+   {
+    "w": "notably",
+    "ipa": "ˈnoʊtəbli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "显著地，尤其",
+    "ex": "Notably, it surpasses DeepSeek-V2.5-0905 by a significant margin of 20%, highlighting substantial improvements in tackling simple tasks and showcasing the effectiveness of its advancements."
+   },
+   {
+    "w": "olympiad",
+    "ipa": "oʊˈlɪmpiæd",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "奥林匹克竞赛（学科竞赛）",
+    "ex": "Apart from the benchmark we used for base model testing, we further evaluate instructed models on IFEval (Zhou et al., 2023), FRAMES (Krishna et al., 2024), LongBench v2 (Bai et al., 2024), GPQA (Rein et al., 2023), SimpleQA …"
+   },
+   {
+    "w": "optimal",
+    "ipa": "ˈɑptɪməl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "最佳的；最理想的",
+    "ex": "To maintain a balance between model accuracy and computational efficiency, we carefully selected optimal settings for DeepSeek-V3 in distillation."
+   },
+   {
+    "w": "original",
+    "ipa": "ərˈɪʤənəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "原始的，最初的",
+    "ex": "For other datasets, we follow their original evaluation protocols with default prompts as provided by the dataset creators."
+   },
+   {
+    "w": "overall",
+    "ipa": "ˈoʊvərˌɔl",
+    "pos": "n.；adj.",
+    "lv": "四级",
+    "m": "工装裤；全面的",
+    "ex": "After hundreds of RL steps, the intermediate RL model learns to incorporate R1 patterns, thereby enhancing overall performance strategically."
+   },
+   {
+    "w": "par",
+    "ipa": "pɑr",
+    "pos": "n.；adj.",
+    "lv": "专八",
+    "m": "标准；票面价值；平均数量；标准的；票面的",
+    "ex": "DeepSeek-V3 achieves performance on par with the best versions of GPT-4o-0806 and Claude-3.5-Sonnet-1022, while surpassing other versions."
+   },
+   {
+    "w": "paradigm",
+    "ipa": "ˈpɛrəˌdaɪm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "典范; 范例; 示例",
+    "ex": "We believe that this paradigm, which combines supplementary information with LLMs as a feedback source, is of paramount importance."
+   },
+   {
+    "w": "paramount",
+    "ipa": "ˈpɛrəˌmaʊnt",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "至高无上的；最重要的（没有比较级和最高级）",
+    "ex": "We believe that this paradigm, which combines supplementary information with LLMs as a feedback source, is of paramount importance."
+   },
+   {
+    "w": "peer",
+    "ipa": "pɪr",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "同龄人",
+    "ex": "On MMLU-Redux, a refined version of MMLU with corrected labels, DeepSeek-V3 surpasses its peers."
+   },
+   {
+    "w": "phd",
+    "ipa": "ˈpiˌeɪʧˈdi",
+    "pos": "—",
+    "lv": "专四",
+    "m": "博士学位；哲学博士学位（Doctor of Philosophy）",
+    "ex": "In addition, on GPQA-Diamond, a PhD-level evaluation testbed, DeepSeek-V3 achieves remarkable results, ranking just behind Claude 3.5 Sonnet and outperforming all other competitors by a substantial margin."
+   },
+   {
+    "w": "pivotal",
+    "ipa": "ˈpɪvətəl",
+    "pos": "adj.；n.",
+    "lv": "专八",
+    "m": "关键的；中枢的；枢轴的；关键事物；中心事物",
+    "ex": "Self-Rewarding Rewards play a pivotal role in RL, steering the optimization process."
+   },
+   {
+    "w": "polyglot",
+    "ipa": "ˌpɑlɪˈglɑt",
+    "pos": "adj.",
+    "lv": "GRE",
+    "m": "通晓数种语言, 数种语言的",
+    "ex": "Aider-Polyglot (Acc.)"
+   },
+   {
+    "w": "pose",
+    "ipa": "poʊz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "构成（威胁/负担）",
+    "ex": "which might pose a burden for small-sized teams"
+   },
+   {
+    "w": "predecessor",
+    "ipa": "ˈprɛdəˌsɛsər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "前辈，前任者",
+    "ex": "On the instruction-following benchmark, DeepSeek-V3 significantly outperforms its predecessor, DeepSeek-V2-series, highlighting its improved ability to understand and adhere to user-defined format constraints."
+   },
+   {
+    "w": "primarily",
+    "ipa": "praɪˈmɛrəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "主要地，首先",
+    "ex": "On the factual knowledge benchmark, SimpleQA, DeepSeek-V3 falls behind GPT-4o and Claude-Sonnet, primarily due to its design focus and resource allocation."
+   },
+   {
+    "w": "pro",
+    "ipa": "proʊ",
+    "pos": "adv.；n.；prep.",
+    "lv": "专八",
+    "m": "赞成地；赞成者；赞成的意见；赞成",
+    "ex": "Moreover, DeepSeek-V3 excels in MMLU-Pro, a more challenging educational knowledge benchmark, where it closely trails Claude-Sonnet 3.5."
+   },
+   {
+    "w": "processor",
+    "ipa": "ˈprɑˌsɛsər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "加工机； 加工工人； 处理器",
+    "ex": "The LLM serves as a versatile processor capable of transforming unstructured information from diverse scenarios into rewards, ultimately facilitating the self-improvement of LLMs."
+   },
+   {
+    "w": "proficiency",
+    "ipa": "prəˈfɪʃənsi",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "熟练，精通",
+    "ex": "This demonstrates its outstanding proficiency in writing tasks and handling straightforward question-answering scenarios."
+   },
+   {
+    "w": "prompt",
+    "ipa": "prɑmpt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "敏捷的；v. 敦促",
+    "ex": "This underscores the robust capabilities of DeepSeek-V3, especially in dealing with complex prompts, including coding and debugging tasks."
+   },
+   {
+    "w": "protocol",
+    "ipa": "ˈproʊtəˌkɔl",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "礼仪， 礼节； 草案， 议定书",
+    "ex": "For other datasets, we follow their original evaluation protocols with default prompts as provided by the dataset creators."
+   },
+   {
+    "w": "python",
+    "ipa": "ˈpaɪθɑn",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "巨蟒；大蟒",
+    "ex": "For code and math benchmarks, the HumanEval-Mul dataset includes 8 mainstream programming languages (Python, Java, Cpp, C#, JavaScript, TypeScript, PHP, and Bash) in total."
+   },
+   {
+    "w": "reflection",
+    "ipa": "rɪˈflɛkʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "反射；映象；反映",
+    "ex": "The system prompt is meticulously designed to include instructions that guide the model toward producing responses enriched with mechanisms for reflection and verification."
+   },
+   {
+    "w": "regularly",
+    "ipa": "ˈrɛgjələrli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "定期地，有规律地",
+    "ex": "Our objective is to balance the high accuracy of R1-generated reasoning data and the clarity and conciseness of regularly formatted reasoning data."
+   },
+   {
+    "w": "rejection",
+    "ipa": "rɪˈʤɛkʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "拒绝",
+    "ex": "Upon completing the RL training phase, we implement rejection sampling to curate high-quality SFT data for the final model, where the expert models are used as data generation sources."
+   },
+   {
+    "w": "relatively",
+    "ipa": "ˈrɛlətɪvli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "相对地，比较地",
+    "ex": "Firstly, to ensure efficient inference, the recommended deployment unit for DeepSeek-V3 is relatively large, which might pose a burden for small-sized teams."
+   },
+   {
+    "w": "release",
+    "ipa": "riˈlis",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "发布，释放",
+    "ex": "The long-context capability of DeepSeek-V3 is further validated by its best-in-class performance on LongBench v2, a dataset that was released just a few weeks before the launch of DeepSeek V3."
+   },
+   {
+    "w": "reliability",
+    "ipa": "riˌlaɪəˈbɪləti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "可靠性",
+    "ex": "By leveraging rule-based validation wherever possible, we ensure a higher level of reliability, as this approach is resistant to manipulation or exploitation."
+   },
+   {
+    "w": "researcher",
+    "ipa": "ˈrisərʧər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "研究员",
+    "ex": "By providing access to its robust capabilities, DeepSeek-V3 can drive innovation and improvement in areas such as software engineering and algorithm development, empowering developers and researchers to push the boundaries of …"
+   },
+   {
+    "w": "resistant",
+    "ipa": "rɪˈzɪstənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "抵抗的，抵制的",
+    "ex": "By leveraging rule-based validation wherever possible, we ensure a higher level of reliability, as this approach is resistant to manipulation or exploitation."
+   },
+   {
+    "w": "resource",
+    "ipa": "ˈrisɔrs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "资源； 财力； 应付办法， 谋略",
+    "ex": "On the factual knowledge benchmark, SimpleQA, DeepSeek-V3 falls behind GPT-4o and Claude-Sonnet, primarily due to its design focus and resource allocation."
+   },
+   {
+    "w": "response",
+    "ipa": "rɪˈspɑns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "反应",
+    "ex": "This method ensures that the final training data retains the strengths of DeepSeek-R1 while producing responses that are concise and effective."
+   },
+   {
+    "w": "retain",
+    "ipa": "rɪˈteɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "保留,留用",
+    "ex": "This method ensures that the final training data retains the strengths of DeepSeek-R1 while producing responses that are concise and effective."
+   },
+   {
+    "w": "reveal",
+    "ipa": "rɪˈvil",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "揭露，揭示",
+    "ex": "Our experiments reveal an interesting trade-off: the distillation leads to better performance but also substantially increases the"
+   },
+   {
+    "w": "robust",
+    "ipa": "roʊˈbəst",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "强健的",
+    "ex": "Benchmarks containing fewer than 1000 samples are tested multiple times using varying temperature settings to derive robust final results."
+   },
+   {
+    "w": "sample",
+    "ipa": "ˈsæmpəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "样品；实例，标本",
+    "ex": "Benchmarks containing fewer than 1000 samples are tested multiple times using varying temperature settings to derive robust final results."
+   },
+   {
+    "w": "schema",
+    "ipa": "ˈskimə",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "[计][心理] 模式；计划；图解；概要",
+    "ex": "On C-Eval, a representative benchmark for Chinese educational knowledge evaluation, and CLUEWSC (Chinese Winograd Schema Challenge), DeepSeek-V3 and Qwen2.5-72B exhibit similar performance levels, indicating that both models are …"
+   },
+   {
+    "w": "self",
+    "ipa": "sɛlf",
+    "pos": "n.；adj.；vt.；vi.",
+    "lv": "四级",
+    "m": "自己，自我；本质；私心；同一的；使自花授精；使近亲繁殖；自花授精",
+    "ex": "Beyond self-rewarding, we are also dedicated to uncovering other general and scalable rewarding methods to consistently advance the model capabilities in general scenarios."
+   },
+   {
+    "w": "series",
+    "ipa": "ˈsɪriz",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "连续，系列；丛书",
+    "ex": "The post-training also makes a success in distilling the reasoning capability from the DeepSeek-R1 series of models."
+   },
+   {
+    "w": "showcase",
+    "ipa": "ˈʃoʊˌkeɪs",
+    "pos": "n.；vt.",
+    "lv": "六级",
+    "m": "陈列橱，[家具] 陈列柜；显示优点的东西；使展现；在玻璃橱窗陈列",
+    "ex": "Table 6 presents the evaluation results, showcasing that DeepSeek-V3 stands as the best-performing open-source model."
+   },
+   {
+    "w": "significant",
+    "ipa": "sɪgˈnɪfɪkənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "重要的",
+    "ex": "Table 9 demonstrates the effectiveness of the distillation data, showing significant improvements in both LiveCodeBench and MATH-500 benchmarks."
+   },
+   {
+    "w": "similarly",
+    "ipa": "ˈsɪmələrli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "类似地，相似地",
+    "ex": "Similarly, DeepSeek-V3 showcases exceptional performance on AlpacaEval 2.0, outperforming both closed-source and open-source models."
+   },
+   {
+    "w": "sonnet",
+    "ipa": "ˈsɑnɪt",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "十四行诗；商籁诗",
+    "ex": "DeepSeek-V3 achieves performance on par with the best versions of GPT-4o-0806 and Claude-3.5-Sonnet-1022, while surpassing other versions."
+   },
+   {
+    "w": "source",
+    "ipa": "sɔrs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "来源",
+    "ex": "DeepSeek-V3 stands as the best-performing open-source model, and also exhibits competitive performance against frontier closed-source models."
+   },
+   {
+    "w": "span",
+    "ipa": "spæn",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "跨距；一段时间",
+    "ex": "Supervised Fine-Tuning We curate our instruction-tuning datasets to include 1.5M instances spanning multiple domains, with each domain employing distinct data creation methods tailored to its specific requirements."
+   },
+   {
+    "w": "specifically",
+    "ipa": "spəˈsɪfɪkli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "特别地， 特定地； 明确地， 具体地",
+    "ex": "Specifically, while the R1-generated data demonstrates strong accuracy, it suffers from issues such as overthinking, poor formatting, and excessive length."
+   },
+   {
+    "w": "steadily",
+    "ipa": "ˈstedəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "稳步地",
+    "ex": "aiming to steadily approach the ultimate goal of AGI"
+   },
+   {
+    "w": "steer",
+    "ipa": "stɪr",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "驾驶",
+    "ex": "Self-Rewarding Rewards play a pivotal role in RL, steering the optimization process."
+   },
+   {
+    "w": "strategically",
+    "ipa": "strəˈtiːdʒɪkli",
+    "pos": "adv.",
+    "lv": "超纲",
+    "m": "有策略地",
+    "ex": "we plan to strategically invest in research across the following directions"
+   },
+   {
+    "w": "substantially",
+    "ipa": "səbˈstænʃəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "大体上；本质上",
+    "ex": "Our experiments reveal an interesting trade-off: the distillation leads to better performance but also substantially increases the"
+   },
+   {
+    "w": "supplementary",
+    "ipa": "ˌsəpləˈmɛntəˌri",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "增补的， 补充的",
+    "ex": "We believe that this paradigm, which combines supplementary information with LLMs as a feedback source, is of paramount importance."
+   },
+   {
+    "w": "surpass",
+    "ipa": "sərˈpæs",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "超过",
+    "ex": "On MMLU-Redux, a refined version of MMLU with corrected labels, DeepSeek-V3 surpasses its peers."
+   },
+   {
+    "w": "thereby",
+    "ipa": "ˌðerˈbaɪ",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "从而",
+    "ex": "thereby pushing the boundaries of its modeling capabilities"
+   },
+   {
+    "w": "tier",
+    "ipa": "tir",
+    "pos": "n.；vt.；vi.",
+    "lv": "专四",
+    "m": "层，排；行，列；等级；使层叠；成递升排列",
+    "ex": "In long-context understanding benchmarks such as DROP, LongBench v2, and FRAMES, DeepSeek-V3 continues to demonstrate its position as a top-tier model."
+   },
+   {
+    "w": "token",
+    "ipa": "ˈtoʊkən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "辅币；象征",
+    "ex": "This high acceptance rate enables DeepSeek-V3 to achieve a significantly improved decoding speed, delivering 1.8 times TPS (Tokens Per Second)."
+   },
+   {
+    "w": "trail",
+    "ipa": "treɪl",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "痕迹；小径；跟踪",
+    "ex": "Moreover, DeepSeek-V3 excels in MMLU-Pro, a more challenging educational knowledge benchmark, where it closely trails Claude-Sonnet 3.5."
+   },
+   {
+    "w": "ultimate",
+    "ipa": "ˈəltəmət",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "最后的，最终的",
+    "ex": "DeepSeek consistently adheres to the route of open-source models with longtermism, aiming to steadily approach the ultimate goal of AGI (Artificial General Intelligence)."
+   },
+   {
+    "w": "ultimately",
+    "ipa": "ˈəltəmətli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "最后，最终",
+    "ex": "The LLM serves as a versatile processor capable of transforming unstructured information from diverse scenarios into rewards, ultimately facilitating the self-improvement of LLMs."
+   },
+   {
+    "w": "uncover",
+    "ipa": "ənˈkəvər",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "揭开…的盖子",
+    "ex": "Beyond self-rewarding, we are also dedicated to uncovering other general and scalable rewarding methods to consistently advance the model capabilities in general scenarios."
+   },
+   {
+    "w": "underscore",
+    "ipa": "ˌəndərˈskɔr",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "强调",
+    "ex": "This underscores the robust capabilities of DeepSeek-V3, especially in dealing with complex prompts, including coding and debugging tasks."
+   },
+   {
+    "w": "variant",
+    "ipa": "ˈvɛriənt",
+    "pos": "adj.；n.",
+    "lv": "六级",
+    "m": "不同的；多样的；变体；转化",
+    "ex": "For the DeepSeek-V2 model series, we select the most representative variants for comparison."
+   },
+   {
+    "w": "vary",
+    "ipa": "ˈvɛri",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "变化；不同",
+    "ex": "Benchmarks containing fewer than 1000 samples are tested multiple times using varying temperature settings to derive robust final results."
+   },
+   {
+    "w": "verification",
+    "ipa": "ˌvɛrəfəˈkeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "确认",
+    "ex": "In domains where verification through external tools is straightforward, such as some coding or mathematics scenarios, RL demonstrates exceptional efficacy."
+   },
+   {
+    "w": "verify",
+    "ipa": "ˈvɛrəˌfaɪ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "证实，查证；证明",
+    "ex": "Coding is a challenging and practical task for LLMs, encompassing engineering-focused tasks like SWE-Bench-Verified and Aider, as well as algorithmic tasks such as HumanEval and LiveCodeBench."
+   },
+   {
+    "w": "versatile",
+    "ipa": "ˈvərsətəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "多方面的；通用的",
+    "ex": "The LLM serves as a versatile processor capable of transforming unstructured information from diverse scenarios into rewards, ultimately facilitating the self-improvement of LLMs."
+   },
+   {
+    "w": "whereas",
+    "ipa": "wɛˈræz",
+    "pos": "conj.",
+    "lv": "六级",
+    "m": "然而， 但是， 尽管",
+    "ex": "The baseline is trained on short CoT data, whereas its competitor uses data generated by the expert checkpoints described above."
+   },
+   {
+    "w": "widely",
+    "ipa": "ˈwaɪdli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "大大地",
+    "ex": "MMLU is a widely recognized benchmark designed to assess the performance of large language models, across diverse knowledge domains and tasks."
+   }
+  ]
+ },
+ {
+  "sec": "References · 参考文献区用词（正文未出现）",
+  "short": "文献区",
+  "icon": "R",
+  "words": [
+   {
+    "w": "adversarial",
+    "ipa": "ˌædvərˈsɛriəl",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "敌手的，对手的",
+    "ex": "Winogrande: An adversarial winograd schema challenge at scale, 2019."
+   },
+   {
+    "w": "aggregation",
+    "ipa": "ˌægrəˈgeɪʃən",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "集合,集合体",
+    "ex": "Scalable hierarchical aggregation protocol (SHArP): A hardware architecture for efficient data reduction."
+   },
+   {
+    "w": "alphabetically",
+    "ipa": "ˌælfəˈbɛtɪkli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "按字母表顺序地",
+    "ex": "Xiao Wei An Xianzu Wang Xinxia Shan Ying Tang Yukun Zha Yuting Yan Zhen Zhang Within each role, authors are listed alphabetically by the first name."
+   },
+   {
+    "w": "annotation",
+    "ipa": "ˌænəˈteɪʃən",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "注释， 注解",
+    "ex": "Ren Zehui Ren Zhangli Sha Zhe Fu Zhean Xu Zhenda Xie Zhengyan Zhang Zhewen Hao Zhibin Gou Zhicheng Ma Zhigang Yan Zhihong Shao Zhiyu Wu Zhuoshu Li Zihui Gu Zijia Zhu Zijun Liu* Zilin Li Ziwei Xie Ziyang Song Ziyi Gao Zizheng Pan …"
+   },
+   {
+    "w": "ascend",
+    "ipa": "əˈsɛnd",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "上升",
+    "ex": "Ascend HiFloat8 format for deep learning. arXiv preprint arXiv:2409.16626, 2024."
+   },
+   {
+    "w": "augment",
+    "ipa": "ɔgˈmɛnt",
+    "pos": "v.；n.",
+    "lv": "六级",
+    "m": "增加；增大；增加；增大",
+    "ex": "Fact, fetch, and reason: A unified evaluation of retrieval-augmented generation."
+   },
+   {
+    "w": "cannot",
+    "ipa": "ˈkænɑt",
+    "pos": "conj.",
+    "lv": "托福",
+    "m": "不能",
+    "ex": "These outliers cannot be effectively managed by a block-wise quantization approach."
+   },
+   {
+    "w": "centric",
+    "ipa": "ˈsɛntrɪk",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "以…为中心的",
+    "ex": "AGIEval: A human-centric benchmark for evaluating foundation models."
+   },
+   {
+    "w": "classical",
+    "ipa": "ˈklæsɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "古典的；经典的",
+    "ex": "Ccpm: A chinese classical poetry matching dataset, 2021."
+   },
+   {
+    "w": "clue",
+    "ipa": "klu",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "线索",
+    "ex": "CLUE: A chinese language understanding evaluation benchmark."
+   },
+   {
+    "w": "coefficient",
+    "ipa": "ˌkoʊəˈfɪʃənt",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "协同因素；系数，率",
+    "ex": "Exponential Moving Average (EMA) with a coefficient of 0.9."
+   },
+   {
+    "w": "cole",
+    "ipa": "koʊl",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "油菜, 小菜",
+    "ex": "Zong, editors, Proceedings of the 28th International Conference on Computational Linguistics, COLING 2020, Barcelona, Spain (Online), December 8-13, 2020, pages 4762–4772."
+   },
+   {
+    "w": "commonsense",
+    "ipa": "ˌkɑmənˈsɛns",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "有常识的",
+    "ex": "PIQA: reasoning about physical commonsense in natural language."
+   },
+   {
+    "w": "compliance",
+    "ipa": "kəmˈplaɪəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "顺从，服从；承诺",
+    "ex": "Business & Compliance"
+   },
+   {
+    "w": "conditional",
+    "ipa": "kənˈdɪʃənəl",
+    "pos": "adj.；n.",
+    "lv": "六级",
+    "m": "有条件的；假定的；条件句；条件语",
+    "ex": "Gshard: Scaling giant models with conditional computation and automatic sharding."
+   },
+   {
+    "w": "contamination",
+    "ipa": "kənˌtæməˈneɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "污染",
+    "ex": "Livecodebench: Holistic and contamination free evaluation of large language models for code."
+   },
+   {
+    "w": "correlate",
+    "ipa": "ˈkɔrəˌleɪt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "互相关联的事物",
+    "ex": "We hypothesize that this sensitivity arises because activation gradients are highly imbalanced among tokens, resulting in token-correlated outliers (Xi et al., 2023)."
+   },
+   {
+    "w": "deli",
+    "ipa": "ˈdɛli",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "熟食店；[食品] 熟食品（等于delicatessen）",
+    "ex": "Contributions and Acknowledgments Research & Engineering Aixin Liu Bing Xue Bingxuan Wang Bochao Wu Chengda Lu Chenggang Zhao Chengqi Deng Chenyu Zhang* Chong Ruan Damai Dai Daya Guo Dejian Yang Deli Chen Erhang Li Fangyun Lin …"
+   },
+   {
+    "w": "demystify",
+    "ipa": "diˈmɪstəˌfaɪ",
+    "pos": "v.",
+    "lv": "GRE",
+    "m": "减少…的神秘性",
+    "ex": "Agentless: Demystifying llm-based software engineering agents. arXiv preprint, 2024."
+   },
+   {
+    "w": "depart",
+    "ipa": "dɪˈpɑrt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "离开，起程；出发",
+    "ex": "Names marked with * denote individuals who have departed from our team."
+   },
+   {
+    "w": "discipline",
+    "ipa": "ˈdɪsəplən",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "纪律；训练；训练",
+    "ex": "C-Eval: A multi-level multi-discipline chinese evaluation suite for foundation models. arXiv preprint arXiv:2305.08322, 2023."
+   },
+   {
+    "w": "discrete",
+    "ipa": "dɪˈskrit",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "分离的， 不相关联的",
+    "ex": "DROP: A reading comprehension benchmark requiring discrete reasoning over paragraphs."
+   },
+   {
+    "w": "distantly",
+    "ipa": "ˈdistəntli",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "疏远的, 遥远的",
+    "ex": "TriviaQA: A large scale distantly supervised challenge dataset for reading comprehension."
+   },
+   {
+    "w": "divergence",
+    "ipa": "dɪˈvərʤəns",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "分歧",
+    "ex": "model divergence on an MoE model comprising approximately 16B total parameters, trained for"
+   },
+   {
+    "w": "elementary",
+    "ipa": "ˌɛləˈmɛnʧri",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "基本的；初级的",
+    "ex": "Cmath: Can your language model pass chinese elementary school math test?, 2023."
+   },
+   {
+    "w": "eleventh",
+    "ipa": "ˈilɛvənθ",
+    "pos": "num.",
+    "lv": "四级",
+    "m": "第十一(个)",
+    "ex": "In The Eleventh International Conference on Learning Representations, ICLR 2023, Kigali, Rwanda, May 1-5, 2023."
+   },
+   {
+    "w": "empirical",
+    "ipa": "ˌɛmˈpɪrɪkəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "经验主义的",
+    "ex": "Riedel, editors, Proceedings of the 2017 Conference on Empirical Methods in Natural Language Processing, EMNLP 2017, Copenhagen, Denmark, September 9-11, 2017, pages 785–794."
+   },
+   {
+    "w": "encode",
+    "ipa": "ɛnˈkoʊd",
+    "pos": "vt.",
+    "lv": "考博",
+    "m": "把译成电码， 把…编码",
+    "ex": "Byte pair encoding: A text compression scheme that accelerates pattern matching."
+   },
+   {
+    "w": "exploit",
+    "ipa": "ˌɛkˈsplɔɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "开采",
+    "ex": "Speculative decoding: Exploiting speculative execution for accelerating seq2seq generation."
+   },
+   {
+    "w": "extraction",
+    "ipa": "ɛkˈstrækʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "抽出；提取法",
+    "ex": "A span-extraction dataset for Chinese machine reading comprehension."
+   },
+   {
+    "w": "forum",
+    "ipa": "ˈfɔrəm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "论坛",
+    "ex": "URL https://openreview.net/forum?i d=fR3wGCk-IXp."
+   },
+   {
+    "w": "giant",
+    "ipa": "ʤaɪənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "巨人；巨物",
+    "ex": "Gshard: Scaling giant models with conditional computation and automatic sharding."
+   },
+   {
+    "w": "gong",
+    "ipa": "gɔŋ",
+    "pos": "n.；v.",
+    "lv": "专四",
+    "m": "锣；钟状物；奖章；鸣锣传唤；鸣锣命令驾车者停驶",
+    "ex": "Wei Yang Zhang Yanhong Xu Yao Li Yao Zhao Yaofeng Sun Yaohui Wang Yi Yu Yichao Zhang Yifan Shi Yiliang Xiong Ying He Yishi Piao Yisong Wang Yixuan Tan Yiyang Ma* Yiyuan Liu Yongqiang Guo Yu Wu Yuan Ou Yuduan Wang Yue Gong Yuheng …"
+   },
+   {
+    "w": "harness",
+    "ipa": "ˈhɑrnɪs",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "治理；马具，挽具",
+    "ex": "fully harness its capabilities. Comprehensive evaluations reveal that DeepSeek-V3 outperforms"
+   },
+   {
+    "w": "heal",
+    "ipa": "hil",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "治愈；使和解",
+    "ex": "The art of prompt design: Prompt boundaries and token healing, 2023."
+   },
+   {
+    "w": "hierarchical",
+    "ipa": "ˌhaɪˈrɑrkəkəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "分层的；等级体系的",
+    "ex": "Scalable hierarchical aggregation protocol (SHArP): A hardware architecture for efficient data reduction."
+   },
+   {
+    "w": "holistic",
+    "ipa": "hoʊˈlɪstɪk",
+    "pos": "adj.",
+    "lv": "雅思",
+    "m": "整体的， 全面的； 功能整体性的",
+    "ex": "Livecodebench: Holistic and contamination free evaluation of large language models for code."
+   },
+   {
+    "w": "hypothesize",
+    "ipa": "haɪˈpɑθəˌsaɪz",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "假设,猜测",
+    "ex": "We hypothesize that this sensitivity arises because activation gradients are highly imbalanced among tokens, resulting in token-correlated outliers (Xi et al., 2023)."
+   },
+   {
+    "w": "integer",
+    "ipa": "ˈɪntəʤər",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "[数] 整数；整体；完整的事物",
+    "ex": "Training transformers with 4-bit integers."
+   },
+   {
+    "w": "joint",
+    "ipa": "ʤɔɪnt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "联合的",
+    "ex": "Wan, editors, Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP), pages 5883–5889, Hong Kong, China, Nov."
+   },
+   {
+    "w": "large-scale",
+    "ipa": "ˈlɑrʤˌskeɪl",
+    "pos": "adj.",
+    "lv": "雅思",
+    "m": "大规模的， 大范围的",
+    "ex": "S. Li and T. Hoefler. Chimera: efficiently training large-scale neural networks with bidirectional"
+   },
+   {
+    "w": "linguistic",
+    "ipa": "lɪŋgˈwɪstɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "语言的；语言学的",
+    "ex": "In Findings of the Association for Computational Linguistics: EMNLP 2023, Singapore, December 6-10, 2023, pages 3909–3925."
+   },
+   {
+    "w": "machinery",
+    "ipa": "məˈʃinəri",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "机器， 机械",
+    "ex": "Association for Computing Machinery."
+   },
+   {
+    "w": "massive",
+    "ipa": "ˈmæsɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "巨大的 大量的",
+    "ex": "Multilingual massive multitask language understanding (mmmlu), 2024b."
+   },
+   {
+    "w": "minimise",
+    "ipa": "ˈminimaiz",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "使减到最低限度； 最小化",
+    "ex": "Understanding and minimising out-lier features in transformer training."
+   },
+   {
+    "w": "neural",
+    "ipa": "ˈnʊrəl",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "神经的",
+    "ex": "Chimera: efficiently training large-scale neural networks with bidirectional pipelines."
+   },
+   {
+    "w": "outrageously",
+    "ipa": "ˌaʊˈtreɪʤəsli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "令人不能容忍地； 肆无忌惮地",
+    "ex": "Outrageously large neural networks: The sparsely-gated mixture-of-experts layer."
+   },
+   {
+    "w": "poetry",
+    "ipa": "ˈpoʊətri",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "诗，诗歌，诗作",
+    "ex": "Ccpm: A chinese classical poetry matching dataset, 2021."
+   },
+   {
+    "w": "proceeding",
+    "ipa": "prəˈsidɪŋ",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "程序，行动，事项",
+    "ex": "In Proceedings of the International Conference for High Performance Computing, Networking, Storage and Analysis, SC ’21, page 1–14."
+   },
+   {
+    "w": "proof",
+    "ipa": "pruf",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "证据；证明；校样",
+    "ex": "GPQA: A graduate-level google-proof q&a benchmark. arXiv preprint arXiv:2311.12022, 2023."
+   },
+   {
+    "w": "propagate",
+    "ipa": "ˈprɑpəˌgeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "传播，普及；繁殖",
+    "ex": "The results reveal that the Dgrad operation which computes the activation gradients and back-propagates to shallow layers in a chain-like manner, is highly sensitive to precision."
+   },
+   {
+    "w": "realistic",
+    "ipa": "ˌriəˈlɪstɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "现实的，实际的",
+    "ex": "LongBench v2: Towards deeper understanding and reasoning on realistic long-context multitasks. arXiv preprint arXiv:2412.15204, 2024."
+   },
+   {
+    "w": "reduction",
+    "ipa": "rɪˈdəkʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "减少，减小，缩减",
+    "ex": "Scalable hierarchical aggregation protocol (SHArP): A hardware architecture for efficient data reduction."
+   },
+   {
+    "w": "retrieval",
+    "ipa": "rɪˈtrivəl",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "检索；恢复；取回；拯救",
+    "ex": "Fact, fetch, and reason: A unified evaluation of retrieval-augmented generation."
+   },
+   {
+    "w": "singe",
+    "ipa": "sɪnʤ",
+    "pos": "v.；n.",
+    "lv": "专八",
+    "m": "烧焦；烤焦；烧焦；烤焦",
+    "ex": "Singe: leveraging warp specialization for high performance on GPUs."
+   },
+   {
+    "w": "spain",
+    "ipa": "speɪn",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "西班牙",
+    "ex": "Zong, editors, Proceedings of the 28th International Conference on Computational Linguistics, COLING 2020, Barcelona, Spain (Online), December 8-13, 2020, pages 4762–4772."
+   },
+   {
+    "w": "sparsely",
+    "ipa": "ˈspɑrsli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "稀疏地；贫乏地",
+    "ex": "Outrageously large neural networks: The sparsely-gated mixture-of-experts layer."
+   },
+   {
+    "w": "symposium",
+    "ipa": "sɪmˈpoʊziəm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "座谈会",
+    "ex": "In Proceedings of the 19th ACM SIGPLAN Symposium on Principles and Practice of Parallel Programming, PPoPP ’14, page 119–130, New York, NY, USA, 2014."
+   },
+   {
+    "w": "synthesis",
+    "ipa": "ˈsɪnθəsəs",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "综合，综合物；（化学或生物学物质的）合成；（用电子方式对声音、语音或音乐的）合成",
+    "ex": "Program synthesis with large language models. arXiv preprint arXiv:2108.07732, 2021."
+   },
+   {
+    "w": "tan",
+    "ipa": "tæn",
+    "pos": "vi.；vt.；n.",
+    "lv": "四级",
+    "m": "晒成棕褐色；使晒成棕褐色；硝制；棕褐色， 棕黄色； 晒成棕褐色， 晒黑",
+    "ex": "Wei Yang Zhang Yanhong Xu Yao Li Yao Zhao Yaofeng Sun Yaohui Wang Yi Yu Yichao Zhang Yifan Shi Yiliang Xiong Ying He Yishi Piao Yisong Wang Yixuan Tan Yiyang Ma* Yiyuan Liu Yongqiang Guo Yu Wu Yuan Ou Yuduan Wang Yue Gong Yuheng …"
+   },
+   {
+    "w": "tang",
+    "ipa": "tɑŋ",
+    "pos": "v.",
+    "lv": "托福",
+    "m": "有浓味 n特殊气味",
+    "ex": "Xiao Wei An Xianzu Wang Xinxia Shan Ying Tang Yukun Zha Yuting Yan Zhen Zhang Within each role, authors are listed alphabetically by the first name."
+   },
+   {
+    "w": "tenth",
+    "ipa": "tɛnθ",
+    "pos": "num.；adj.",
+    "lv": "四级",
+    "m": "第十；十分之一；十分之一的；第十个的",
+    "ex": "In The Thirty-Fourth AAAI Conference on Artificial Intelligence, AAAI 2020, The Thirty-Second Innovative Applications of Artificial Intelligence Conference, IAAI 2020, The Tenth AAAI Symposium on Educational Advances in …"
+   },
+   {
+    "w": "uncertainty",
+    "ipa": "ənˈsərtənti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "犹豫， 迟疑； 不确定； 无把握",
+    "ex": "EAGLE: speculative sampling requires rethinking feature uncertainty."
+   },
+   {
+    "w": "vision",
+    "ipa": "ˈvɪʒən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "视；想象力；梦幻",
+    "ex": "Stable and low-precision training for large-scale vision-language models."
+   },
+   {
+    "w": "volume",
+    "ipa": "ˈvɑljum",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "卷，册；容积；音量",
+    "ex": "Kan, editors, Proceedings of the 55th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), pages 1601–1611, Vancouver, Canada, July 2017."
+   },
+   {
+    "w": "workshop",
+    "ipa": "ˈwərkˌʃɑp",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "车间，工场；创作室",
+    "ex": "In 2016 First International Workshop on Communication Optimizations in HPC (COMHPC), pages 1–10."
+   },
+   {
+    "w": "yuan",
+    "ipa": "juɑn",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "元(中国货币单位)",
+    "ex": "Wei Yang Zhang Yanhong Xu Yao Li Yao Zhao Yaofeng Sun Yaohui Wang Yi Yu Yichao Zhang Yifan Shi Yiliang Xiong Ying He Yishi Piao Yisong Wang Yixuan Tan Yiyang Ma* Yiyuan Liu Yongqiang Guo Yu Wu Yuan Ou Yuduan Wang Yue Gong Yuheng …"
+   }
+  ]
+ }
+];
+// lv 一律写中文档名（十一档平级，2026-09-30 定案；旧短码由 build 脚本自动翻译）
+const LVCLS={"四级":"t4","六级":"t6","考研":"tk","考博":"tp","专四":"tm4","专八":"tm8","雅思":"ty","托福":"tt","GRE":"tg","超纲":"tsuper"};
+const LVNAME={"四级":"四级","六级":"六级","考研":"考研","考博":"考博","专四":"专业四级","专八":"专业八级","雅思":"雅思","托福":"托福","GRE":"GRE","超纲":"超纲（大纲未收）"};
+const LVSHORT={"四级":"4","六级":"6","考研":"考研","考博":"考博","专四":"专四","专八":"专八","雅思":"雅思","托福":"托福","GRE":"GRE","超纲":"★超纲"};
+const LVORDER=["四级","六级","考研","考博","专四","专八","雅思","托福","GRE","超纲"];
+
+let mode="sec";
+let theme="theme-mag"; // 章节视图固定杂志风；按级别视图固定暗色大页
+
+function cardHTML(x,sec){
+  const from = mode==="lv" ? `<div class="from">出自 ${sec}</div>` : "";
+  if(theme==="theme-paper"){
+    return `<div class="word"><span class="w">${x.w}<span class="ipa">/${x.ipa}/</span><i class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</i></span>
+      <span><span class="pos">${x.pos}</span><span class="m">${x.m}</span>${from}</span>
+      <span class="ex">${x.ex}</span></div>`;
+  }
+  if(theme==="theme-mag") return "";
+  return `<div class="card lv${x.lv}" data-say="${x.w}"><span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span><span class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</span>
+    <div class="m">${x.pos} ${x.m}</div><div class="ex">${x.ex}</div>${from}</div>`;
+}
+function magRow(x,sec){
+  return `<tr data-say="${x.w}"><td class="w"><span class="hwband">${x.w}</span><span class="ipa">/${x.ipa}/</span></td>
+    <td class="lv"><b class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</b></td>
+    <td class="m">${x.pos} ${x.m}${mode==="lv"?`<span class="from">出自 ${sec}</span>`:""}</td>
+    <td class="ex">${x.ex}</td></tr>`;
+}
+function groupHTML(title,icon,inner){
+  if(theme==="theme-mag") return `<div class="sec"><h2>${title}</h2><table>${inner}</table></div>`;
+  if(theme==="theme-dark"||theme==="theme-fresh")
+    return `<div class="sec"><h2>${theme==="theme-dark"?"":"<span class='n'>"+icon+"</span>"}${title}</h2><div class="grid">${inner}</div></div>`;
+  return `<div class="sec"><h2>${title}</h2>${inner}</div>`;
+}
+
+function render(){
+  document.body.classList.toggle("lv-mode",mode==="lv");
+  // 注意：必须用 classList.add，不能整体赋值 className —— 否则会抹掉 body.night，
+  // 而夜晚章节视图依赖 body.night.theme-mag 这条 CSS，抹掉后点「按章节」会静默退回白天。
+  if(mode==="sec")document.body.classList.add("theme-mag");
+  const app=document.getElementById("app");
+  let html="";
+  if(mode==="sec"){
+    for(const s of DATA){
+      html += theme==="theme-mag"
+        ? groupHTML(s.sec,s.icon,s.words.map(x=>magRow(x,s.short)).join(""))
+        : groupHTML(s.sec,s.icon,s.words.map(x=>cardHTML(x,s.short)).join(""));
+    }
+  }else{
+    // 学习模式同款暗色大页：每个级别一块
+    const dot={"四级":"var(--c4)","六级":"var(--c6)","考研":"var(--ckaon)","考博":"var(--cphd)","专四":"var(--cm4)","专八":"var(--cm8)","雅思":"var(--cy)","托福":"var(--ct)","GRE":"var(--cg)","超纲":"var(--csuper)"};
+    html=LVORDER.map(lv=>{
+      const items=[];
+      DATA.forEach(s=>s.words.forEach(x=>{if(x.lv===lv)items.push([x,s.short])}));   // ov 已废除（2026-09-30）
+      if(!items.length)return"";   // 本词表里没有这一档 → 不出空面板
+      items.sort((a,b)=>a[0].w.localeCompare(b[0].w));
+      const cls={"六级":"l6","考研":"lk","考博":"lp","专四":"lm4","专八":"lm8","雅思":"ly","托福":"lt","GRE":"lg","超纲":"lsuper"}[lv]||"";
+      return `<div class="lvslide ${cls}">
+        <div class="ltitle"><span style="color:${dot[lv]}">${LVNAME[lv]}</span>词汇<small>${items.length} words · 按字母排序 · 悬停看原文例句 · 点击发音</small></div>
+        <div class="sgrid">${items.map(([x,sec])=>`
+          <div class="lcard" data-say="${x.w}">
+            <span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span>
+            <div class="m">${x.pos} ${x.m}</div>
+            <div class="ex">${x.ex}</div>
+            <div class="from">出自 ${sec}</div>
+          </div>`).join("")}</div></div>`;
+    }).join("");
+  }
+  app.innerHTML=html;
+}
+function syncToolbar(){
+  document.getElementById("v-sec").classList.toggle("on",mode==="sec");
+  document.getElementById("v-lv").classList.toggle("on",mode==="lv");
+}
+document.getElementById("v-sec").onclick=()=>{mode="sec";theme="theme-mag";syncToolbar();render();};
+document.getElementById("v-lv").onclick=()=>{mode="lv";syncToolbar();render();};
+
+// 朗读：多引擎在线 TTS 自动降级（有道 / Polly / 百度 / 谷歌），可按下拉切换主音色
+// 合并自 .agents 有道源版 与 workbuddy Polly 源版 —— 单文件同时支持两套引擎
+const VOICE_MAP={
+  yd1:{src:"yd",label:"美式 · 有道（推荐）"},
+  yd0:{src:"yd",label:"英式 · 有道"},
+  Brian:{src:"se",label:"Brian · 英式男声"},
+  Amy:{src:"se",label:"Amy · 英式女声"},
+  Matthew:{src:"se",label:"Matthew · 美式男声"},
+  Joanna:{src:"se",label:"Joanna · 美式女声"},
+  Salli:{src:"se",label:"Salli · 美式女声"},
+  Ivy:{src:"se",label:"Ivy · 美式童声"},
+  bd:{src:"bd",label:"百度翻译 · 女声"},
+  gg:{src:"gg",label:"谷歌翻译"},
+  mute:{src:"mute",label:"🔇 不朗读"}
+};
+const VOICE_ORDER=["yd1","yd0","Brian","Amy","Matthew","Joanna","Salli","Ivy","bd","gg","mute"];
+let ONLINE="yd1"; // 默认有道 · 美音（保留 .agents 版行为）
+try{const sv=localStorage.getItem("vocab_voice");if(sv&&VOICE_MAP[sv])ONLINE=sv;}catch(e){}
+const ENG=["yd","se","bd","gg"];               // 全部可选引擎
+const ENG_NAME={yd:"有道",se:"Polly",bd:"百度",gg:"谷歌"};
+const POLLY_VOICES={Brian:1,Amy:1,Matthew:1,Joanna:1,Salli:1,Ivy:1};
+let SRC_ORDER=ENG.slice(),srcIdx=0;           // 降级顺序：按所选音色的主引擎优先
+function applyVoiceOrder(){
+  const want=VOICE_MAP[ONLINE].src;
+  const i=ENG.indexOf(want);
+  SRC_ORDER=i<0?ENG.slice():ENG.slice(i).concat(ENG.slice(0,i));
+}
+applyVoiceOrder();
+let audio=null;
+function ttsURL(src,t){
+  const q=encodeURIComponent(t);
+  if(src==="yd")return `https://dict.youdao.com/dictvoice?type=${ONLINE==="yd0"?"0":"1"}&audio=${q}`;
+  if(src==="se")return `https://api.streamelements.com/kappa/v2/speech?voice=${POLLY_VOICES[ONLINE]?ONLINE:"Brian"}&text=${q}`;
+  if(src==="bd")return `https://fanyi.baidu.com/gettts?lan=en&text=${q}&spd=5&source=web`;
+  return `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q=${q}`;
+}
+function fillVoiceSel(){
+  const sel=document.getElementById("voiceSel");if(!sel)return;
+  sel.innerHTML=VOICE_ORDER.map(v=>`<option value="${v}" ${ONLINE===v?"selected":""}>${VOICE_MAP[v].label}</option>`).join("");
+  const st=document.getElementById("srcState");
+  if(st)st.textContent=ENG_NAME[SRC_ORDER[srcIdx]]||"";
+}
+fillVoiceSel();
+let saying=0; // 防并发
+function say(t){
+  if(ONLINE==="mute"){try{if(audio){audio.pause();audio=null}}catch(e){}return}
+  const my=++saying;
+  trySrc(0,t,my);
+}
+function trySrc(i,t,my){
+  if(my!==saying)return;
+  if(i>=SRC_ORDER.length){const st=document.getElementById("srcState");if(st)st.textContent="无可用源";return}
+  const src=SRC_ORDER[i];
+  const st=document.getElementById("srcState");
+  if(st)st.textContent="尝试 "+ENG_NAME[src];
+  try{if(audio){audio.pause();audio=null}}catch(e){}
+  const a=new Audio(ttsURL(src,t));
+  let ok=false,advanced=false;
+  const advance=()=>{ if(!ok&&!advanced&&my===saying){advanced=true;trySrc(i+1,t,my);} };
+  a.addEventListener("playing",()=>{ok=true;
+    if(srcIdx!==i){srcIdx=i;fillVoiceSel();} // 记住能用的源
+  });
+  a.addEventListener("error",advance);
+  audio=a;
+  a.play().catch(advance);
+  setTimeout(()=>{ if(!ok&&my===saying&&a.paused)advance(); },2500);
+}
+document.getElementById("voiceSel").addEventListener("change",e=>{
+  ONLINE=e.target.value; applyVoiceOrder(); srcIdx=0; // 换音色重新从头试源
+  try{localStorage.setItem("vocab_voice",ONLINE);}catch(e){}
+  if(ONLINE!=="mute") say("Hello, let us learn new words together.");
+});
+/* ---- 白天 / 夜晚 ---- */
+let style="day";
+try{const s=localStorage.getItem("vocab_style");if(["day","night","paper"].indexOf(s)>=0)style=s;}catch(e){}
+function applyStyle(){
+  document.body.classList.toggle("night",style==="night");
+  document.body.classList.toggle("paper",style==="paper");
+  ["day","night","paper"].forEach(k=>{const b=document.getElementById("st-"+k);if(b)b.classList.toggle("on",style===k);});
+  if(typeof studyEl!=="undefined"&&studyEl)studyEl.classList.toggle("day",style!=="night");
+}
+document.getElementById("st-day").onclick=()=>{style="day";try{localStorage.setItem("vocab_style","day")}catch(e){};applyStyle();};
+document.getElementById("st-night").onclick=()=>{style="night";try{localStorage.setItem("vocab_style","night")}catch(e){};applyStyle();};
+document.getElementById("st-paper").onclick=()=>{style="paper";try{localStorage.setItem("vocab_style","paper")}catch(e){};applyStyle();};
+document.getElementById("app").addEventListener("click",e=>{
+  const el=e.target.closest("[data-say]"); if(el) say(el.dataset.say);
+});
+
+/* ---------- 学习模式：按章节分页的 PPT 翻页 ---------- */
+const PER_PAGE = 12; // 每页最多词数，放不下自动续页
+let slides=[],si=0;
+function buildSlides(){
+  slides=[];
+  for(const s of DATA){
+    for(let i=0;i<s.words.length;i+=PER_PAGE){
+      slides.push({sec:s.sec,page:Math.floor(i/PER_PAGE)+1,
+        pages:Math.ceil(s.words.length/PER_PAGE),words:s.words.slice(i,i+PER_PAGE)});
+    }
+  }
+}
+const studyEl=document.getElementById("study");
+let open=false;
+function showSlide(){
+  const sl=slides[si];
+  const title=sl.pages>1 ? `${sl.sec}（第 ${sl.page}/${sl.pages} 页）` : sl.sec;
+  document.getElementById("sPage").innerHTML =
+    `<div class="stitle">${title}<small>${sl.words.length} words</small></div>
+     <div class="sgrid">${sl.words.map(x=>`
+       <div class="scard" data-say="${x.w}">
+         <span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span><span class="tag ${LVCLS[x.lv]}" style="font-size:11px;padding:2px 8px">${LVSHORT[x.lv]}</span>
+         <div class="m">${x.pos} ${x.m}</div>
+         <div class="ex">${x.ex}</div>
+       </div>`).join("")}</div>`;
+  document.getElementById("sIdx").textContent=(si+1)+" / "+slides.length;
+  document.getElementById("sbar").style.width=((si+1)/slides.length*100)+"%";
+  document.getElementById("sPrev").disabled=si===0;
+  document.getElementById("sNext").disabled=si===slides.length-1;
+  studyEl.querySelector(".sbody").scrollTop=0;
+}
+function studyOpen(){ buildSlides(); si=0; open=true; studyEl.classList.add("on"); applyStyle(); showSlide(); }
+function studyClose(){ open=false; studyEl.classList.remove("on"); }
+function next(){ if(si<slides.length-1){ si++; showSlide(); } }
+function prev(){ if(si>0){ si--; showSlide(); } }
+document.getElementById("v-study").onclick=()=>open?studyClose():studyOpen();
+document.getElementById("sClose").onclick=studyClose;
+document.getElementById("sExit").onclick=studyClose;
+document.getElementById("sNext").onclick=next;
+document.getElementById("sPrev").onclick=prev;
+studyEl.addEventListener("click",e=>{
+  const el=e.target.closest("[data-say]"); if(el) say(el.dataset.say);
+});
+document.addEventListener("keydown",e=>{
+  if(!open) return;
+  if(e.code==="Space"||e.key==="ArrowRight"||e.key==="PageDown"){ e.preventDefault(); next(); }
+  else if(e.key==="ArrowLeft"||e.key==="PageUp"){ prev(); }
+  else if(e.key==="Escape"){ studyClose(); }
+});
+applyStyle(); syncToolbar(); render();
+</script>
+<a href="../../vocab.html" target="_self" style="position:fixed;left:14px;bottom:14px;z-index:9999;font:600 13px/1 -apple-system,system-ui,sans-serif;color:#fff;background:rgba(0,0,0,.55);padding:8px 12px;border-radius:20px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.25)">← 返回索引</a></body>
+</html>

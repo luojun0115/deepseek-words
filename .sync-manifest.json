@@ -1,0 +1,279 @@
+{
+ "format": 2,
+ "note": "由 scripts/sync-pages.mjs 生成，别手改。dest 键相对门户仓，src 相对 PAGES_ROOT（工作区根）。",
+ "roots": [
+  "listen_pages",
+  "vocab_pages",
+  "汇总站_20261008/pages"
+ ],
+ "files": {
+  "public/study/listen/01_DeepSeek-LLM_单词听力.html": {
+   "src": "listen_pages/01_DeepSeek-LLM_单词听力.html",
+   "sha1": "62f693412429b35c548183e23d8cab3c3dda9c28"
+  },
+  "public/study/listen/02_DeepSeekMoE_单词听力.html": {
+   "src": "listen_pages/02_DeepSeekMoE_单词听力.html",
+   "sha1": "251711812d92521365945e64a0545410f078cc63"
+  },
+  "public/study/listen/03_DeepSeek-Coder_单词听力.html": {
+   "src": "listen_pages/03_DeepSeek-Coder_单词听力.html",
+   "sha1": "1c571a6fe9206cffb654a594718f047ef6358a6b"
+  },
+  "public/study/listen/04_DeepSeekMath_单词听力.html": {
+   "src": "listen_pages/04_DeepSeekMath_单词听力.html",
+   "sha1": "4c95ed206003eee69698c764a7fe6074c2d50566"
+  },
+  "public/study/listen/05_DeepSeek-VL_单词听力.html": {
+   "src": "listen_pages/05_DeepSeek-VL_单词听力.html",
+   "sha1": "16dd41aef09cb34b8e9847be728f3f2e2395cd4a"
+  },
+  "public/study/listen/06_DeepSeek-V2_单词听力.html": {
+   "src": "listen_pages/06_DeepSeek-V2_单词听力.html",
+   "sha1": "435c88b6a63bd3c5466f729bb97a010361b4fd53"
+  },
+  "public/study/listen/07_DeepSeek-Prover_单词听力.html": {
+   "src": "listen_pages/07_DeepSeek-Prover_单词听力.html",
+   "sha1": "ac4dc038eb60ec0aef12ee260f3d87cf1079d493"
+  },
+  "public/study/listen/08_DeepSeek-Coder-V2_单词听力.html": {
+   "src": "listen_pages/08_DeepSeek-Coder-V2_单词听力.html",
+   "sha1": "e2b2580a0f10120104e5d8f2ce6bda7cea921fb1"
+  },
+  "public/study/listen/09_ESFT_单词听力.html": {
+   "src": "listen_pages/09_ESFT_单词听力.html",
+   "sha1": "71ffd0991c3636ba98245ae5ec42ad08deef2e40"
+  },
+  "public/study/listen/10_Prover-V1.5_单词听力.html": {
+   "src": "listen_pages/10_Prover-V1.5_单词听力.html",
+   "sha1": "9fa87558b53149c46e7b7beb4c58aaa968c9f2d9"
+  },
+  "public/study/listen/11_Fire-Flyer_单词听力.html": {
+   "src": "listen_pages/11_Fire-Flyer_单词听力.html",
+   "sha1": "913bf9391b305a2f99272400f0c33953bf9105c6"
+  },
+  "public/study/listen/12_Janus_单词听力.html": {
+   "src": "listen_pages/12_Janus_单词听力.html",
+   "sha1": "b0974aa9b8f0af484d45e90bfda5de379556c0ba"
+  },
+  "public/study/listen/13_JanusFlow_单词听力.html": {
+   "src": "listen_pages/13_JanusFlow_单词听力.html",
+   "sha1": "735a591d091f541e5f7c922635ea99257f34f546"
+  },
+  "public/study/listen/14_VL2_单词听力.html": {
+   "src": "listen_pages/14_VL2_单词听力.html",
+   "sha1": "82646432b938a8794d3c1cd2205495cf1c739533"
+  },
+  "public/study/listen/15_DeepSeek-V3_单词听力.html": {
+   "src": "listen_pages/15_DeepSeek-V3_单词听力.html",
+   "sha1": "748ce2fce74c7ee1dc1a8f99c9e12c168a580261"
+  },
+  "public/study/listen/16_DeepSeek-R1_单词听力.html": {
+   "src": "listen_pages/16_DeepSeek-R1_单词听力.html",
+   "sha1": "f09c511ad0e4aedbc85e77c0e90a54493bf71e0c"
+  },
+  "public/study/listen/17_Janus-Pro_单词听力.html": {
+   "src": "listen_pages/17_Janus-Pro_单词听力.html",
+   "sha1": "f479eecf6059e37b418dd46d184ff5b1ff5bc5c8"
+  },
+  "public/study/listen/18_NSA_单词听力.html": {
+   "src": "listen_pages/18_NSA_单词听力.html",
+   "sha1": "727d6a9f10e06b3e55615bc71ca293a108fd8e2a"
+  },
+  "public/study/listen/19_RM_单词听力.html": {
+   "src": "listen_pages/19_RM_单词听力.html",
+   "sha1": "1f3b04b53cf86b1cda72dd2e04c60a283af3b07b"
+  },
+  "public/study/listen/20_Prover-V2_单词听力.html": {
+   "src": "listen_pages/20_Prover-V2_单词听力.html",
+   "sha1": "aa16c212420c994752b86eea44b64af3a37134ce"
+  },
+  "public/study/listen/21_Insights-V3_单词听力.html": {
+   "src": "listen_pages/21_Insights-V3_单词听力.html",
+   "sha1": "e26d0e6972fecb3840dd2d2cc2928ad577288203"
+  },
+  "public/study/listen/22_DeepSeek-OCR_单词听力.html": {
+   "src": "listen_pages/22_DeepSeek-OCR_单词听力.html",
+   "sha1": "2c8671d01a466851c31bfbf967ae75e24ad1f51c"
+  },
+  "public/study/listen/23_DeepSeekMath-V2_单词听力.html": {
+   "src": "listen_pages/23_DeepSeekMath-V2_单词听力.html",
+   "sha1": "e5bdb4f28c089ef5c09366f41d1dab01cc2d62c4"
+  },
+  "public/study/listen/24_DeepSeek-V3.2_单词听力.html": {
+   "src": "listen_pages/24_DeepSeek-V3.2_单词听力.html",
+   "sha1": "8f613f8293311126e387f65ffdc4af389a323a9f"
+  },
+  "public/study/listen/25_mHC_单词听力.html": {
+   "src": "listen_pages/25_mHC_单词听力.html",
+   "sha1": "8da6c33c5acdff6502b43cadae1e060411aeced3"
+  },
+  "public/study/listen/26_Engram_单词听力.html": {
+   "src": "listen_pages/26_Engram_单词听力.html",
+   "sha1": "b387a4ef0abb7ca9144a4d463f8e949db0493c74"
+  },
+  "public/study/listen/27_OCR2_单词听力.html": {
+   "src": "listen_pages/27_OCR2_单词听力.html",
+   "sha1": "b9b517879b9d071c741149424c61a31e47c7fad3"
+  },
+  "public/study/listen/28_DualPath_单词听力.html": {
+   "src": "listen_pages/28_DualPath_单词听力.html",
+   "sha1": "a3770bf90fe6d5e3c80ebb22323987f08ecffc5b"
+  },
+  "public/study/listen/29_DeepSeek-V4_单词听力.html": {
+   "src": "listen_pages/29_DeepSeek-V4_单词听力.html",
+   "sha1": "c99f9680ae10ed18ae097700246b6b42e534db1f"
+  },
+  "public/study/listen/30_DSpark_单词听力.html": {
+   "src": "listen_pages/30_DSpark_单词听力.html",
+   "sha1": "7b8ea9bc058baf51a57d426b10a658bd1f711ea8"
+  },
+  "public/study/listen/31_Spatiotemporal_单词听力.html": {
+   "src": "listen_pages/31_Spatiotemporal_单词听力.html",
+   "sha1": "c512fa768ec2dcfe188ed0c10a5ab15821325521"
+  },
+  "public/study/listen/32_DeepSeek-V4.1-Flash_单词听力.html": {
+   "src": "listen_pages/32_DeepSeek-V4.1-Flash_单词听力.html",
+   "sha1": "998cd9342ae68ba9f6b5b64db373d3dc5b91b40e"
+  },
+  "public/study/vocab/01_DeepSeek-LLM_论文词汇.html": {
+   "src": "vocab_pages/01_DeepSeek-LLM_论文词汇.html",
+   "sha1": "bcc2fe577017d6cd2c20afd01c886b629b79c3e8"
+  },
+  "public/study/vocab/02_DeepSeekMoE_论文词汇.html": {
+   "src": "vocab_pages/02_DeepSeekMoE_论文词汇.html",
+   "sha1": "de395157885e032dd2c7e193aba1fb4102b84596"
+  },
+  "public/study/vocab/03_DeepSeek-Coder_论文词汇.html": {
+   "src": "vocab_pages/03_DeepSeek-Coder_论文词汇.html",
+   "sha1": "e6f034afade3124dde43eb63afd2de43626a2511"
+  },
+  "public/study/vocab/04_DeepSeekMath_论文词汇.html": {
+   "src": "vocab_pages/04_DeepSeekMath_论文词汇.html",
+   "sha1": "37356be876e15101b23cefe12fa55e9f3cc4b6a1"
+  },
+  "public/study/vocab/05_DeepSeek-VL_论文词汇.html": {
+   "src": "vocab_pages/05_DeepSeek-VL_论文词汇.html",
+   "sha1": "f8fa1541008676f213f14a73e4ab7ecc7cc18a4b"
+  },
+  "public/study/vocab/06_DeepSeek-V2_论文词汇.html": {
+   "src": "vocab_pages/06_DeepSeek-V2_论文词汇.html",
+   "sha1": "5a3a455c1966e7b2eb244c8a0412e2afa2c60b4c"
+  },
+  "public/study/vocab/07_DeepSeek-Prover_论文词汇.html": {
+   "src": "vocab_pages/07_DeepSeek-Prover_论文词汇.html",
+   "sha1": "c3bc34edfc13c1dec24533828e143117100b3e41"
+  },
+  "public/study/vocab/08_DeepSeek-Coder-V2_论文词汇.html": {
+   "src": "vocab_pages/08_DeepSeek-Coder-V2_论文词汇.html",
+   "sha1": "18487c4578404c08e82a80b444dcbd9843eb9128"
+  },
+  "public/study/vocab/09_ESFT_论文词汇.html": {
+   "src": "vocab_pages/09_ESFT_论文词汇.html",
+   "sha1": "fcef7783bf82d3764d53f7e922ee81f0bcf5af9c"
+  },
+  "public/study/vocab/10_Prover-V1.5_论文词汇.html": {
+   "src": "vocab_pages/10_Prover-V1.5_论文词汇.html",
+   "sha1": "458d4481b8eb006757a36a517e0728feb3318bf6"
+  },
+  "public/study/vocab/11_Fire-Flyer_论文词汇.html": {
+   "src": "vocab_pages/11_Fire-Flyer_论文词汇.html",
+   "sha1": "0a24ed6250d3a54580447031c4746d91482ddc12"
+  },
+  "public/study/vocab/12_Janus_论文词汇.html": {
+   "src": "vocab_pages/12_Janus_论文词汇.html",
+   "sha1": "bb1ae0a6b5b2ea5a1c954e5731df93ee9cbdc507"
+  },
+  "public/study/vocab/13_JanusFlow_论文词汇.html": {
+   "src": "vocab_pages/13_JanusFlow_论文词汇.html",
+   "sha1": "5a277f15640938fb50ddaf00526b6ebba0108bf2"
+  },
+  "public/study/vocab/14_VL2_论文词汇.html": {
+   "src": "vocab_pages/14_VL2_论文词汇.html",
+   "sha1": "575299315c94a1679b5ea56123228039c7e5af65"
+  },
+  "public/study/vocab/15_DeepSeek-V3_论文词汇.html": {
+   "src": "vocab_pages/15_DeepSeek-V3_论文词汇.html",
+   "sha1": "4c3decc84ba864638f8f4a1e93de948df957bfab"
+  },
+  "public/study/vocab/16_DeepSeek-R1_论文词汇.html": {
+   "src": "vocab_pages/16_DeepSeek-R1_论文词汇.html",
+   "sha1": "cb5f6ada0b90771f4512844497a20bfa61751bdc"
+  },
+  "public/study/vocab/17_Janus-Pro_论文词汇.html": {
+   "src": "vocab_pages/17_Janus-Pro_论文词汇.html",
+   "sha1": "8eb927ff149addaab846a402efe2e145063b4e7f"
+  },
+  "public/study/vocab/18_NSA_论文词汇.html": {
+   "src": "vocab_pages/18_NSA_论文词汇.html",
+   "sha1": "cea6e4cf28d47636583011d69c5124637db8e095"
+  },
+  "public/study/vocab/19_RM_论文词汇.html": {
+   "src": "vocab_pages/19_RM_论文词汇.html",
+   "sha1": "9d778ec2d8cdcd0a79ed497d9c2e625df62fa177"
+  },
+  "public/study/vocab/20_Prover-V2_论文词汇.html": {
+   "src": "vocab_pages/20_Prover-V2_论文词汇.html",
+   "sha1": "201d7f070145df2e41c2e93bba1b837678e4e188"
+  },
+  "public/study/vocab/21_Insights-V3_论文词汇.html": {
+   "src": "vocab_pages/21_Insights-V3_论文词汇.html",
+   "sha1": "ff5b3ae0737d07f81421d5942b592a70bb9bfa7f"
+  },
+  "public/study/vocab/22_DeepSeek-OCR_论文词汇.html": {
+   "src": "vocab_pages/22_DeepSeek-OCR_论文词汇.html",
+   "sha1": "99a0a73062c4e01ed41a10876f035e07d154d371"
+  },
+  "public/study/vocab/23_DeepSeekMath-V2_论文词汇.html": {
+   "src": "vocab_pages/23_DeepSeekMath-V2_论文词汇.html",
+   "sha1": "f7b92497f628dc9eb057bd0d9a5747dbc912ea1e"
+  },
+  "public/study/vocab/24_DeepSeek-V3.2_论文词汇.html": {
+   "src": "vocab_pages/24_DeepSeek-V3.2_论文词汇.html",
+   "sha1": "9a1b5089caef9d36b8691f54f4d71f47cfdd3235"
+  },
+  "public/study/vocab/25_mHC_论文词汇.html": {
+   "src": "vocab_pages/25_mHC_论文词汇.html",
+   "sha1": "0809fca429373c4c7067b1d7b4556b6390a443ac"
+  },
+  "public/study/vocab/26_Engram_论文词汇.html": {
+   "src": "vocab_pages/26_Engram_论文词汇.html",
+   "sha1": "4b5efa05e9eefe47d672455884a971ffe8e839ea"
+  },
+  "public/study/vocab/27_OCR2_论文词汇.html": {
+   "src": "vocab_pages/27_OCR2_论文词汇.html",
+   "sha1": "181aba5f0c88c76ca6523e8453d6b79e87740fcc"
+  },
+  "public/study/vocab/28_DualPath_论文词汇.html": {
+   "src": "vocab_pages/28_DualPath_论文词汇.html",
+   "sha1": "9cdad99a6e74ab0025287360550fe214b3121f37"
+  },
+  "public/study/vocab/29_DeepSeek-V4_论文词汇.html": {
+   "src": "vocab_pages/29_DeepSeek-V4_论文词汇.html",
+   "sha1": "b5e6a7e06eb3c2e544977209db8269d872f426b2"
+  },
+  "public/study/vocab/30_DSpark_论文词汇.html": {
+   "src": "vocab_pages/30_DSpark_论文词汇.html",
+   "sha1": "4379f7ae8c3624abd580b2d4e2243bdc7561e04d"
+  },
+  "public/study/vocab/31_Spatiotemporal_论文词汇.html": {
+   "src": "vocab_pages/31_Spatiotemporal_论文词汇.html",
+   "sha1": "a97672600b568504631f1b5e8ba551290702ac95"
+  },
+  "public/study/vocab/32_DeepSeek-V4.1-Flash_论文词汇.html": {
+   "src": "vocab_pages/32_DeepSeek-V4.1-Flash_论文词汇.html",
+   "sha1": "00ae84fda4789b018dd587a54ff76b598a667862"
+  },
+  "public/study/master/听力总集_全量连播.html": {
+   "src": "汇总站_20261008/pages/听力总集_全量连播.html",
+   "sha1": "2d58419a34ae09aed5cf01e7b9d551db7d702fc6"
+  },
+  "public/study/master/听力总集_去重连播.html": {
+   "src": "汇总站_20261008/pages/听力总集_去重连播.html",
+   "sha1": "d5b06b6950500be0d3ab0b0fa4e7ea25804c505f"
+  },
+  "public/study/master/词汇总集_去重.html": {
+   "src": "汇总站_20261008/pages/词汇总集_去重.html",
+   "sha1": "87d29468c5e7a1fb67cf7e76fbe127ce7d10a49d"
+  }
+ }
+}

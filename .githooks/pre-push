@@ -1,0 +1,34 @@
+#!/bin/sh
+# pre-push 钩子：自动部署的「前半段」。
+#   后半段是 .github/workflows/deploy.yml —— push 到 main 后 Actions 自动构建并发 GitHub Pages。
+#   前半段要保证推上去的 commit 本身是干净的，否则 Action 会把旧内容/缺页的站点发上线：
+#     1) 把工作区源页（仓库外的 vocab_pages/ listen_pages/ 汇总站_20261008/pages）同步进 public/study
+#     2) 跑内容守卫 verify_content（篇数对账、孤儿页、base 逃逸、源页指纹）
+#     3) 要求工作区干净：同步产生了变化 = 你刚才是想推旧内容，先把变化提交再推
+#
+# 装法（每个克隆一次）：npm run hooks
+# 紧急绕过：git push --no-verify（自己承担把旧内容发上线的后果）
+set -e
+
+cd "$(git rev-parse --show-toplevel)"
+
+echo "── pre-push 1/3 同步词页（工作区源页 → public/study）"
+if [ -d ../vocab_pages ] && [ -d ../listen_pages ] && [ -d "../汇总站_20261008/pages" ]; then
+  node scripts/sync-pages.mjs
+else
+  echo "  跳过：仓库旁边没有源页目录（独立克隆的场景），只能校验仓内已有的副本"
+fi
+
+echo "── pre-push 2/3 内容守卫"
+node scripts/verify_content.mjs
+
+echo "── pre-push 3/3 工作区是否干净"
+dirty=$(git status --porcelain)
+if [ -n "$dirty" ]; then
+  echo "✗ 有未提交的改动，push 上去的是旧内容（Actions 只构建已提交的 commit）："
+  echo "$dirty" | sed 's/^/    /'
+  echo "  同步刚把变化落到盘上；确认无误后 git add -A && git commit，再 push。"
+  exit 1
+fi
+
+echo "✓ 可以推送：push 到 main 后 Actions 会自动构建并发布到 https://luojun0115.github.io/deepseek-words/"

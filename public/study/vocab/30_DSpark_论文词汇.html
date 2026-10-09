@@ -1,0 +1,4979 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSpark 论文核心词汇</title>
+<style>
+:root{--c4:#3b82f6;--c6:#8b5cf6;--ckaon:#f59e0b;--cphd:#ef4444;--ct:#0d9488;--cg:#d946ef;--cm4:#0ea5e9;--cm8:#f43f5e;--cy:#10b981;--csuper:#facc15}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;transition:background .3s,color .3s}
+.tag{display:inline-block;font-size:10.5px;padding:1px 7px;border-radius:4px;color:#fff;vertical-align:2px;margin-left:6px;font-style:normal;flex:none;white-space:nowrap}
+.tag.t4{background:var(--c4)}.tag.t6{background:var(--c6)}.tag.tk{background:var(--ckaon)}.tag.tp{background:var(--cphd)}.tag.tm4{background:var(--cm4)}.tag.tm8{background:var(--cm8)}
+.tag.tt{background:var(--ct)}.tag.tg{background:var(--cg)}.tag.ty{background:var(--cy)}.tag.tsuper{background:var(--csuper);color:#3a2f00}
+.ipa{font-family:"SF Mono",Menlo,monospace;font-size:.82em;font-weight:400;opacity:.62;margin-left:6px}
+
+
+/* 论文原标题小字 */
+.ptitle{font-size:12.5px;letter-spacing:.3px;margin-top:6px}
+.ptitle i{font-family:Georgia,serif}
+.theme-mag .ptitle{color:#999;text-transform:none}
+.theme-dark .ptitle{color:#6e7681}
+.theme-paper .ptitle{color:#a09578}
+.theme-fresh .ptitle{color:#9ca3af}
+body.lv-mode .ptitle{color:#7d8590}
+
+/* 预览工具条 */
+.toolbar{position:fixed;right:16px;bottom:16px;z-index:99;display:flex;flex-direction:column;gap:8px;background:rgba(20,22,30,.88);padding:12px;border-radius:14px;backdrop-filter:blur(8px);box-shadow:0 6px 24px rgba(0,0,0,.35)}
+.toolbar .row{display:flex;gap:6px}
+.toolbar button{border:none;cursor:pointer;padding:7px 12px;border-radius:8px;font-size:12.5px;background:#3a3f4d;color:#cbd2e0;transition:.15s}
+.toolbar button:hover{background:#4a5164}
+.toolbar button.on{background:#fff;color:#111;font-weight:600}
+.toolbar .lbl{font-size:10px;color:#8a93a6;text-align:left;margin:2px 0 -2px 2px}
+
+/* ---------- A 纸质阅读 ---------- */
+body.theme-paper{background:#faf6ee;color:#2c2a25}
+.theme-paper .wrap{max-width:880px;margin:0 auto;padding:56px 24px 140px}
+.theme-paper .hero h1{font-family:Georgia,"Songti SC",serif;font-size:34px}
+.theme-paper .hero p{color:#8a8272;margin:10px 0 42px;font-size:14px}
+.theme-paper .sec{margin-bottom:44px}
+.theme-paper .sec>h2{font-family:Georgia,"Songti SC",serif;font-size:20px;padding-left:14px;border-left:4px solid #b08d4f;margin-bottom:18px}
+.theme-paper .word{display:flex;gap:14px;padding:14px 16px;border-bottom:1px dashed #ddd2bc;align-items:baseline}
+.theme-paper .word:hover{background:#f3ecdc}
+.theme-paper .w{font-family:Georgia,serif;font-size:19px;font-weight:700;min-width:250px}
+.theme-paper .pos{color:#a09578;font-size:13px;margin-right:6px}
+.theme-paper .m{color:#4a463c;font-size:15px}
+.theme-paper .ex{margin-left:auto;max-width:270px;font-size:12.5px;color:#9a8f76;font-style:italic;text-align:right}
+.theme-paper .from{display:block;font-size:11px;color:#b3a888;font-style:normal;margin-top:3px}
+
+/* ---------- B 暗色科技 ---------- */
+body.theme-dark{background:#0d1117;color:#e6edf3}
+.theme-dark .wrap{max-width:1000px;margin:0 auto;padding:56px 24px 140px}
+.theme-dark .hero h1{font-family:"SF Mono",Menlo,monospace;font-size:26px}
+.theme-dark .hero h1::before{content:"$ ";color:#3fb950}
+.theme-dark .hero p{color:#7d8590;margin:10px 0 40px;font-size:14px;font-family:Menlo,monospace}
+.theme-dark .sec>h2{font-size:15px;font-family:Menlo,monospace;color:#58a6ff;padding:10px 16px;background:#161b22;border:1px solid #30363d;border-radius:8px 8px 0 0;margin-bottom:-1px}
+.theme-dark .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;padding:20px;background:#161b22;border:1px solid #30363d;border-radius:0 0 8px 8px}
+.theme-dark .card{background:#0d1117;border:1px solid #30363d;border-left:4px solid #58a6ff;border-radius:6px;padding:15px 17px;transition:.2s;cursor:pointer;font-family:Menlo,monospace}
+.theme-dark .card:hover{border-color:#58a6ff;box-shadow:0 0 14px rgba(88,166,255,.25);transform:translateY(-2px)}
+.theme-dark .w{font-family:Menlo,monospace;font-size:17px;color:#79c0ff}
+.theme-dark .ipa{color:#7ee787;opacity:.9}
+.theme-dark .m{color:#8b949e;font-size:13.5px;margin-top:7px;line-height:1.55}
+.theme-dark .ex{font-size:12px;color:#6e7681;margin-top:8px;border-top:1px solid #21262d;padding-top:8px;font-style:italic}
+.theme-dark .from{color:#484f58;font-size:11px;margin-top:4px}
+
+/* ---------- C 清新卡片 ---------- */
+body.theme-fresh{background:linear-gradient(160deg,#eef4ff 0%,#f6f0ff 50%,#fff7ec 100%);color:#1f2430}
+.theme-fresh .wrap{max-width:1020px;margin:0 auto;padding:56px 24px 140px}
+.theme-fresh .hero h1{font-size:32px;font-weight:800;background:linear-gradient(90deg,#3b82f6,#8b5cf6,#f59e0b);-webkit-background-clip:text;background-clip:text;color:transparent;display:inline-block}
+.theme-fresh .hero p{color:#6b7280;margin:10px 0 40px;font-size:14px}
+.theme-fresh .sec>h2{font-size:19px;margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.theme-fresh .sec>h2 .n{width:30px;height:30px;border-radius:10px;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,.08);display:inline-flex;align-items:center;justify-content:center;font-size:13px}
+.theme-fresh .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px}
+.theme-fresh .card{background:rgba(255,255,255,.82);backdrop-filter:blur(6px);border-radius:18px;padding:17px 19px 15px;box-shadow:0 3px 14px rgba(80,80,140,.09);transition:.2s;cursor:pointer;border-top:5px solid #dbe3f5}
+.theme-fresh .card.lv四级{border-top-color:#3b82f6}.theme-fresh .card.lv六级{border-top-color:#8b5cf6}
+.theme-fresh .card.lv考研{border-top-color:#f59e0b}.theme-fresh .card.lv考博{border-top-color:#ef4444}
+.theme-fresh .card.lv专四{border-top-color:#0ea5e9}.theme-fresh .card.lv专八{border-top-color:#f43f5e}
+.theme-fresh .card.lv雅思{border-top-color:#10b981}.theme-fresh .card.lv托福{border-top-color:#0d9488}
+.theme-fresh .card.lvGRE{border-top-color:#d946ef}.theme-fresh .card.lv超纲{border-top-color:#facc15}
+.theme-fresh .card .w{display:inline-block;background:#f3f5fb;border-radius:8px;padding:2px 10px}
+.theme-fresh .card:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(80,80,140,.16)}
+.theme-fresh .w{font-size:18px;font-weight:700}
+.theme-fresh .m{color:#4b5563;font-size:14px;margin-top:6px;line-height:1.55}
+.theme-fresh .ex{color:#9ca3af;font-size:12.5px;margin-top:8px}
+.theme-fresh .from{color:#b6bcc9;font-size:11.5px;margin-top:4px}
+
+/* ---------- D 杂志表格（宽松版） ---------- */
+body.theme-mag{background:#fff;color:#111}
+.theme-mag .wrap{max-width:960px;margin:0 auto;padding:52px 28px 140px}
+.theme-mag .hero{border-bottom:3px solid #111;padding-bottom:16px;margin-bottom:10px}
+.theme-mag .hero h1{font-family:"Songti SC",Georgia,serif;font-size:38px;font-weight:900}
+.theme-mag .hero p{color:#888;font-size:13.5px;margin-top:8px}
+.theme-mag .sec>h2{font-size:14px;letter-spacing:3px;text-transform:uppercase;color:#c2410c;margin:44px 0 8px;border-bottom:1px solid #e5e5e5;padding-bottom:8px}
+.theme-mag table{width:100%;border-collapse:collapse}
+.theme-mag td{padding:16px 12px;border-bottom:1px solid #f0f0f0;font-size:15.5px;line-height:1.65;vertical-align:top}
+.theme-mag tr:hover td{background:#fff8f3}
+.theme-mag .w{font-weight:700;font-size:17px;width:300px}
+.theme-mag .lv{width:60px}
+.theme-mag .lv b{font-size:11.5px;padding:3px 0;display:block;text-align:center;border-radius:3px;color:#fff;font-weight:600}
+.theme-mag .m{color:#3d3d3d}
+.theme-mag .ex{color:#9a9a9a;font-size:13px;font-style:italic}
+.theme-mag .from{display:block;color:#c9c9c9;font-size:11.5px;font-style:normal;margin-top:4px}
+
+/* ---------- 按级别：学习模式同款暗色大页 ---------- */
+body.lv-mode{background:#0b0e13 !important}
+body.lv-mode .hero h1,body.lv-mode .hero p{color:#e8ecf3}
+body.lv-mode .hero p{color:#7d8590}
+.lvslide{background:#101318;color:#e8ecf3;border-radius:20px;padding:26px 32px 22px;margin-bottom:26px;border-top:6px solid var(--c4)}
+.lvslide.l6{border-top-color:var(--c6)}.lvslide.lk{border-top-color:var(--ckaon)}.lvslide.lp{border-top-color:var(--cphd)}
+.lvslide.lt{border-top-color:var(--ct)}.lvslide.lg{border-top-color:var(--cg)}.lvslide.lm4{border-top-color:var(--cm4)}.lvslide.lm8{border-top-color:var(--cm8)}.lvslide.ly{border-top-color:var(--cy)}.lvslide.lsuper{border-top-color:var(--csuper)}
+.lvslide .ltitle{font-size:26px;font-weight:800;font-family:Georgia,serif;display:flex;align-items:baseline;gap:14px}
+.lvslide .ltitle small{font-size:14px;color:#7d8590;font-family:Menlo,monospace;font-weight:400}
+.lvslide .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;padding:20px 0 8px}
+.lvslide .lcard{background:#171c26;border:1px solid #2b3342;border-radius:14px;padding:15px 17px;cursor:pointer;transition:.15s}
+.lvslide .lcard:hover{border-color:#79c0ff;transform:translateY(-2px)}
+.lvslide .lcard .w{font-size:19px;font-weight:700;font-family:Georgia,serif}
+.lvslide .lcard .ipa{font-family:Menlo,monospace;font-size:13px;color:#7ee787;margin-left:8px}
+.lvslide .lcard .m{color:#aeb6c4;font-size:14px;margin-top:7px;line-height:1.55}
+.lvslide .lcard .ex{color:#646d7d;font-size:12px;font-style:italic;margin-top:7px}
+.lvslide .lcard .from{color:#4d5563;font-size:11px;margin-top:6px}
+
+
+/* ---------- 白天 / 夜晚 ---------- */
+body.lv-mode:not(.night){background:#eef1f6 !important}
+body.lv-mode:not(.night) .hero h1{color:#1f2430}
+body.lv-mode:not(.night) .hero p{color:#6b7280}
+body.lv-mode:not(.night) .lvslide{background:#fff;color:#1f2430;box-shadow:0 4px 18px rgba(80,80,140,.10)}
+body.lv-mode:not(.night) .lvslide .lcard{background:#f7f9fd;border-color:#e4e9f3}
+body.lv-mode:not(.night) .lvslide .lcard:hover{border-color:#3b82f6}
+body.lv-mode:not(.night) .lvslide .lcard .m{color:#4b5563}
+body.lv-mode:not(.night) .lvslide .lcard .ex{color:#98a0ae}
+body.lv-mode:not(.night) .lvslide .lcard .from{color:#b3bac6}
+body.lv-mode:not(.night) .lvslide .lcard .ipa{color:#0a7d33}
+body.night.theme-mag{background:#0d1117;color:#e6edf3}
+body.night.theme-mag .hero{border-bottom-color:#e6edf3}
+body.night.theme-mag .hero p{color:#8b949e}
+body.night.theme-mag .sec>h2{color:#fbbf24;border-bottom-color:#30363d}
+body.night.theme-mag td{border-bottom-color:#1c2230}
+body.night.theme-mag tr:hover td{background:#161b22}
+body.night.theme-mag .m{color:#c9d1d9}
+body.night.theme-mag .ex{color:#8b949e}
+body.night.theme-mag .from{color:#57606a}
+body.night.theme-mag .w{color:#e6edf3}
+body.night.theme-mag .ptitle{color:#8b949e}
+body.night.theme-mag .ipa{opacity:.55}
+#study.day{background:#f5f7fa;color:#1f2430}
+#study.day .scard{background:#fff;border-color:#e4e9f3}
+#study.day .scard .m{color:#4b5563}
+#study.day .scard .ex{color:#98a0ae}
+#study.day .scard:hover{border-color:#3b82f6}
+#study.day .sfoot{color:#98a0ae;border-top-color:#e6e9f0}
+#study.day .snav button,#study.day #sClose{background:#fff;color:#1f2430;border-color:#d7dce6}
+#study.day .sfoot kbd{background:#e8ecf3;color:#1f2430}
+
+/* ---------- 学习模式（PPT 按章节翻页） ---------- */
+#study{position:fixed;inset:0;z-index:200;display:none;background:#101318;color:#e8ecf3;flex-direction:column}
+#study.on{display:flex}
+#study .sprog{height:4px;background:#262c38}
+#study .sprog i{display:block;height:100%;background:linear-gradient(90deg,#58a6ff,#8b5cf6);width:0;transition:width .25s}
+#study .sbody{flex:1;overflow:auto;padding:20px 40px}
+#study .stitle{font-size:24px;font-weight:800;font-family:Georgia,serif;padding:6px 4px 2px}
+#study .stitle small{color:#5b6472;font-size:14px;font-family:Menlo,monospace;font-weight:400;margin-left:12px}
+#study .sgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;padding:16px 2px 30px}
+#study .scard{background:#171c26;border:1px solid #2b3342;border-radius:14px;padding:16px 18px;cursor:pointer;transition:.15s}
+#study .scard:hover{border-color:#58a6ff;transform:translateY(-2px)}
+#study .scard .w{font-size:22px;font-weight:700;font-family:Georgia,serif}
+#study .scard .ipa{color:#7ee787;font-size:14px;margin-left:8px}
+#study .scard .m{color:#aeb6c4;font-size:14.5px;margin-top:8px;line-height:1.55}
+#study .scard .ex{color:#646d7d;font-size:12px;font-style:italic;margin-top:6px}
+#study .sfoot{display:flex;justify-content:space-between;align-items:center;padding:14px 28px;color:#5b6472;font-size:13px;border-top:1px solid #1d232e}
+#study .sfoot kbd{background:#262c38;border-radius:5px;padding:2px 8px;margin:0 2px;font-family:Menlo,monospace;font-size:12px}
+#study .snav{display:flex;gap:10px;align-items:center}
+#study .snav button{border:1px solid #333b4a;background:#1a2029;color:#cbd2e0;border-radius:8px;padding:8px 18px;cursor:pointer;font-size:14px}
+#study .snav button:hover{border-color:#58a6ff}
+#study .snav button:disabled{opacity:.35;cursor:default}
+
+
+
+/* —— 样式·暖白（暖白纸底） —— */
+
+body.theme-mag.paper{background:#f4f2ea!important;color:#23211c!important}
+body.theme-mag.paper .hero{border-bottom-color:#23211c}
+body.theme-mag.paper .hero h1{color:#1c1a12}
+body.theme-mag.paper .hero p{color:#6b6a5c}
+body.theme-mag.paper .ptitle{color:#8a8878}
+body.theme-mag.paper .sec>h2{color:#5f7a3f;border-bottom-color:#ddd8ca}
+body.theme-mag.paper td{border-bottom-color:#e6e1d3}
+body.theme-mag.paper tr:hover td{background:#ece7da}
+body.theme-mag.paper .m{color:#33312a}
+body.theme-mag.paper .ex{color:#8a8878}
+body.theme-mag.paper .from{color:#b3b0a0}
+body.theme-mag.paper .ipa{color:#6b6a5c}
+.theme-mag .hwband{padding:0 3px;font-weight:700}
+body.theme-mag.paper .hwband{background:linear-gradient(transparent 16%,#cdddb8 16%,#cdddb8 84%,transparent 84%);color:#1c1a12}
+
+
+</style>
+</head>
+<body class="theme-mag">
+<div class="wrap">
+  <div class="hero">
+    <h1>DSpark 论文核心词汇</h1>
+    <div class="ptitle"><i>DSpark: Confidence-Scheduled Speculative Decoding with Semi-Autoregressive Generation · arXiv:2607.05147 · DeepSeek-AI, 2026</i></div>
+    <p>全量口径重做 · 3 节 562 词 · 十一档 + 超纲（2026-10-08）</p>
+  </div>
+  <div id="app"></div>
+</div>
+
+<div class="toolbar">
+  <div class="lbl">视图</div>
+  <div class="row">
+    <button id="v-sec" class="on">按章节</button>
+    <button id="v-lv">按级别综合</button>
+    <button id="v-study">▶ 学习模式</button>
+  </div>
+  <div class="lbl">样式</div>
+  <div class="row">
+    <button id="st-day" class="on">☀ 白天</button>
+    <button id="st-night">🌙 夜晚</button>
+    <button id="st-paper">暖白</button>
+  </div>
+  <div class="lbl">朗读声音 · 多引擎</div>
+  <div class="row"><select id="voiceSel" style="flex:1;border:none;border-radius:8px;padding:7px 8px;background:#3a3f4d;color:#cbd2e0;font-size:12.5px;outline:none"></select><span id="srcState" style="align-self:center;font-size:10.5px;color:#8a93a6;min-width:34px;text-align:center"></span></div>
+</div>
+
+<div id="study">
+  <div class="sprog"><i id="sbar"></i></div>
+  <button id="sClose" title="退出学习模式 (Esc)" style="position:absolute;top:14px;right:18px;z-index:5;border:1px solid #333b4a;background:#1a2029;color:#cbd2e0;border-radius:8px;width:34px;height:34px;font-size:16px;cursor:pointer">✕</button>
+  <div class="sbody"><div id="sPage"></div></div>
+  <div class="sfoot">
+    <span><kbd>空格</kbd>/<kbd>→</kbd> 下一页 &nbsp; <kbd>←</kbd> 上一页 &nbsp; 点单词发音 &nbsp; <kbd>Esc</kbd> 退出</span>
+    <div class="snav">
+      <span id="sIdx">0 / 0</span>
+      <button id="sPrev">← 上一页</button>
+      <button id="sNext">下一页 →</button>
+      <button id="sExit" style="border-color:#5b3a3a">退出</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// lv: 4=四级 6=六级 k=考研 p=考博；ipa 为美式音标
+const DATA = [
+ {
+  "sec": "1. Introduction · 引言",
+  "short": "Intro",
+  "icon": "1",
+  "words": [
+   {
+    "w": "adaptive",
+    "ipa": "əˈdæptɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "自适应的",
+    "ex": "high-throughput parallel generation with adaptive, load-aware verification"
+   },
+   {
+    "w": "advancement",
+    "ipa": "ədˈvænsmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "进步，提升",
+    "ex": "To foster collective advancement within the open-source community, we are making our artifacts publicly available."
+   },
+   {
+    "w": "append",
+    "ipa": "əˈpɛnd",
+    "pos": "v.；n.",
+    "lv": "专八",
+    "m": "附加；贴上；盖章；设置数据文件的搜索路径",
+    "ex": "It keeps the computationally expensive draft backbone fully parallel, appending only a lightweight serial output head to inject local transition information."
+   },
+   {
+    "w": "artifact",
+    "ipa": "ˈɑrtəˌfækt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "人工制品；手工艺品",
+    "ex": "To foster collective advancement within the open-source community, we are making our artifacts publicly available."
+   },
+   {
+    "w": "benchmark",
+    "ipa": "ˈbɛnʧˌmɑrk",
+    "pos": "n.；v.",
+    "lv": "专八",
+    "m": "基准；标准检查程序；用基准问题测试（计算机系统等）",
+    "ex": "On controlled offline benchmarks—spanning mathematical reasoning, code generation, and daily chat—DSpark consistently outperforms strong baselines."
+   },
+   {
+    "w": "broaden",
+    "ipa": "ˈbrɔdən",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "放宽，变阔",
+    "ex": "Compared to the prior MTP-1 production baseline (DeepSeek-AI, 2024), DSpark significantly broadens the system’s operational envelope."
+   },
+   {
+    "w": "checkpoint",
+    "ipa": "ˈʧɛkˌpɔɪnt",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "检查站，关卡",
+    "ex": "Specifically, we release the trained DSpark checkpoints for both the DeepSeek-V4-Flash (preview) and DeepSeek-V4-Pro (preview) models."
+   },
+   {
+    "w": "collective",
+    "ipa": "kəˈlɛktɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "集体的；集合性的",
+    "ex": "To foster collective advancement within the open-source community, we are making our artifacts publicly available."
+   },
+   {
+    "w": "community",
+    "ipa": "kəmˈjunɪti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "社区；社会；公社",
+    "ex": "To foster collective advancement within the open-source community, we are making our artifacts publicly available."
+   },
+   {
+    "w": "compel",
+    "ipa": "kəmˈpɛl",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "强迫",
+    "ex": "Liu et al., 2026a) have emerged as a compelling alternative: all draft positions are produced in a single forward pass, making drafting latency nearly independent of block size."
+   },
+   {
+    "w": "constitute",
+    "ipa": "ˈkɑnstɪtuːt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "构成",
+    "ex": "constitute"
+   },
+   {
+    "w": "conversational",
+    "ipa": "ˌkɑnvərˈseɪʃənəl",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "会话的, 对话的",
+    "ex": "such as real-time conversational assistants and multi-turn agentic workflows. Speculative"
+   },
+   {
+    "w": "core",
+    "ipa": "kɔr",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "果实的心，核心",
+    "ex": "At its core, DSpark is designed to resolve the inherent trade-offs in draft generation and verification through two complementary mechanisms. • First, to overcome the lack of inter-token dependencies, DSpark adopts a …"
+   },
+   {
+    "w": "decay",
+    "ipa": "dɪˈkeɪ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "衰减",
+    "ex": "they suffer from rapid acceptance decay due to a lack of inter-token dependencies"
+   },
+   {
+    "w": "decouple",
+    "ipa": "diːˈkʌpl",
+    "pos": "v.",
+    "lv": "雅思",
+    "m": "解耦",
+    "g": "g",
+    "ex": "by decoupling draft generation from target verification"
+   },
+   {
+    "w": "degrade",
+    "ipa": "dɪˈɡreɪd",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使恶化",
+    "ex": "severely degrading throughput in high-concurrency serving systems"
+   },
+   {
+    "w": "deteriorate",
+    "ipa": "dɪˈtɪriərˌeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "恶化",
+    "ex": "Furthermore, under strict Service Level Agreements (SLAs) where the baseline’s capacity deteriorates severely—such as 120 TPS for Flash and 50 TPS for Pro—DSpark mitigates verification overhead to maintain robust throughput."
+   },
+   {
+    "w": "distinct",
+    "ipa": "dɪˈstɪŋkt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "明显的；有区别的",
+    "ex": "Beyond top-line metrics, our fine-grained position-wise analysis reveals the distinct generation characteristics of different drafters, empirically demonstrating how DSpark successfully combines the high initial-token capacity of …"
+   },
+   {
+    "w": "easily",
+    "ipa": "ˈizəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "容易地；舒适的",
+    "ex": "While parallel generation easily produces long draft blocks, indiscriminately verifying all proposed tokens degrades system throughput, particularly under high-concurrency workloads (Hu et al., 2026b;"
+   },
+   {
+    "w": "emerge",
+    "ipa": "ˈimərʤ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "出现",
+    "ex": "Liu et al., 2026a) have emerged as a compelling alternative: all draft positions are produced in a single forward pass, making drafting latency nearly independent of block size."
+   },
+   {
+    "w": "empirically",
+    "ipa": "ɛmˈpɪrɪkəli",
+    "pos": "adv.",
+    "lv": "GRE",
+    "m": "凭经验地",
+    "ex": "Beyond top-line metrics, our fine-grained position-wise analysis reveals the distinct generation characteristics of different drafters, empirically demonstrating how DSpark successfully combines the high initial-token capacity of …"
+   },
+   {
+    "w": "extensively",
+    "ipa": "ɪkˈstɛnsɪvli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "广泛地",
+    "ex": "We extensively evaluate DSpark across both controlled offline benchmarks and production-scale online deployments."
+   },
+   {
+    "w": "fully",
+    "ipa": "ˈfʊli",
+    "pos": "adv.；n.",
+    "lv": "专四",
+    "m": "充分地；完全地；彻底地；(Fully)人名；(法)菲利",
+    "ex": "It keeps the computationally expensive draft backbone fully parallel, appending only a lightweight serial output head to inject local transition information."
+   },
+   {
+    "w": "ideal",
+    "ipa": "aɪˈdil",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "理想的；观念的",
+    "ex": "The ideal verification length varies along two axes."
+   },
+   {
+    "w": "indiscriminately",
+    "ipa": "ˌɪndɪˈskrɪmɪnətli",
+    "pos": "adv.",
+    "lv": "GRE",
+    "m": "不加区分地",
+    "g": "g",
+    "ex": "indiscriminately verifying these extended blocks wastes critical batch capacity"
+   },
+   {
+    "w": "leverage",
+    "ipa": "ˈlɛvərɪʤ",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "手段，影响力；杠杆作用；杠杆效率；利用；举债经营",
+    "ex": "This scheduler leverages real-time engine throughput profiles to route target verification budget only toward tokens with the highest expected return."
+   },
+   {
+    "w": "lightweight",
+    "ipa": "ˈlaɪtweɪt",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "轻量的",
+    "ex": "a lightweight sequential module"
+   },
+   {
+    "w": "longer",
+    "ipa": "ˈlɔŋgər",
+    "pos": "—",
+    "lv": "托福",
+    "m": "比较久(的)",
+    "ex": "This structural advantage theoretically allows parallel drafters to efficiently generate substantially longer draft blocks."
+   },
+   {
+    "w": "mathematical",
+    "ipa": "ˌmæθəˈmætɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "数学的，数学上的",
+    "ex": "On controlled offline benchmarks—spanning mathematical reasoning, code generation, and daily chat—DSpark consistently outperforms strong baselines."
+   },
+   {
+    "w": "mitigate",
+    "ipa": "ˈmɪtɪɡeɪt",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "缓解",
+    "ex": "to introduce intra-block dependency modeling and mitigate suffix decay"
+   },
+   {
+    "w": "modal",
+    "ipa": "ˈmoʊdəl",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "模态的, 形态上的",
+    "ex": "This independence leads to multi-modal collisions and rapid acceptance decay at later positions (Gu et al., 2018;"
+   },
+   {
+    "w": "naturally",
+    "ipa": "ˈnæʧərəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "自然地；天然地",
+    "ex": "On the data side, structured requests like code naturally sustain higher acceptance rates than open-ended chat (Abramovich et al., 2026;"
+   },
+   {
+    "w": "online",
+    "ipa": "ˈɔnˌlaɪn",
+    "pos": "adj.；adv.",
+    "lv": "六级",
+    "m": "联机的；在线的；在线地",
+    "ex": "We extensively evaluate DSpark across both controlled offline benchmarks and production-scale online deployments."
+   },
+   {
+    "w": "operational",
+    "ipa": "ˌɑpərˈeɪʃənəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "操作上的；可使用的",
+    "ex": "Compared to the prior MTP-1 production baseline (DeepSeek-AI, 2024), DSpark significantly broadens the system’s operational envelope."
+   },
+   {
+    "w": "particularly",
+    "ipa": "ˌpɑrˈtɪkjələrli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "特别，尤其，格外",
+    "ex": "While parallel generation easily produces long draft blocks, indiscriminately verifying all proposed tokens degrades system throughput, particularly under high-concurrency workloads (Hu et al., 2026b;"
+   },
+   {
+    "w": "perceive",
+    "ipa": "pərˈsiv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "察觉",
+    "ex": "output length. The resulting low GPU utilization and high user-perceived waiting time constitute"
+   },
+   {
+    "w": "prior",
+    "ipa": "praɪər",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "在先的；优先的",
+    "ex": "Compared to the prior MTP-1 production baseline (DeepSeek-AI, 2024), DSpark significantly broadens the system’s operational envelope."
+   },
+   {
+    "w": "pro",
+    "ipa": "proʊ",
+    "pos": "adv.；n.；prep.",
+    "lv": "专八",
+    "m": "赞成地；赞成者；赞成的意见；赞成",
+    "ex": "Specifically, we release the trained DSpark checkpoints for both the DeepSeek-V4-Flash (preview) and DeepSeek-V4-Pro (preview) models."
+   },
+   {
+    "w": "proportional",
+    "ipa": "prəˈpɔrʃənl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "成比例的",
+    "ex": "making inference latency proportional to the output length"
+   },
+   {
+    "w": "publicly",
+    "ipa": "ˈpəblɪkli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "公然地, 舆论上",
+    "ex": "To foster collective advancement within the open-source community, we are making our artifacts publicly available."
+   },
+   {
+    "w": "release",
+    "ipa": "riˈlis",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "发布，释放",
+    "ex": "Specifically, we release the trained DSpark checkpoints for both the DeepSeek-V4-Flash (preview) and DeepSeek-V4-Pro (preview) models."
+   },
+   {
+    "w": "repository",
+    "ipa": "riˈpɑzəˌtɔri",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "贮藏室，仓库；知识库；智囊团",
+    "ex": "Furthermore, we open-source DeepSpec, an algorithm-driven training repository, including Eagle3, DFlash and DSpark."
+   },
+   {
+    "w": "robust",
+    "ipa": "roʊˈbəst",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "强健的",
+    "ex": "Furthermore, under strict Service Level Agreements (SLAs) where the baseline’s capacity deteriorates severely—such as 120 TPS for Flash and 50 TPS for Pro—DSpark mitigates verification overhead to maintain robust throughput."
+   },
+   {
+    "w": "serial",
+    "ipa": "ˈsɪˌriəl",
+    "pos": "adj.；n.",
+    "lv": "六级",
+    "m": "连续的， 顺序排列的；连续剧，连载故事",
+    "ex": "It keeps the computationally expensive draft backbone fully parallel, appending only a lightweight serial output head to inject local transition information."
+   },
+   {
+    "w": "severely",
+    "ipa": "səˈvɪrli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "严重地",
+    "ex": "severely degrading throughput in high-concurrency serving systems"
+   },
+   {
+    "w": "shift",
+    "ipa": "ʃɪft",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "替换，转移；转换",
+    "ex": "By overcoming this performance cliff, DSpark unlocks strict interactivity tiers that were previously unattainable, effectively shifting the Pareto frontier of LLM serving."
+   },
+   {
+    "w": "solution",
+    "ipa": "səˈluʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "解决，解答，解决办法",
+    "ex": "Leviathan et al., 2023) offers a principled solution: a lightweight draft model proposes a block of candidate tokens, and the full-size target model verifies the entire block in a single forward pass via rejection sampling …"
+   },
+   {
+    "w": "span",
+    "ipa": "spæn",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "跨距；一段时间",
+    "ex": "On controlled offline benchmarks—spanning mathematical reasoning, code generation, and daily chat—DSpark consistently outperforms strong baselines."
+   },
+   {
+    "w": "specifically",
+    "ipa": "spəˈsɪfɪkli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "特别地， 特定地； 明确地， 具体地",
+    "ex": "Specifically, we release the trained DSpark checkpoints for both the DeepSeek-V4-Flash (preview) and DeepSeek-V4-Pro (preview) models."
+   },
+   {
+    "w": "speculative",
+    "ipa": "ˈspekjələtɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "投机的（推测式）",
+    "ex": "Speculative decoding accelerates Large Language Model (LLM) inference"
+   },
+   {
+    "w": "structure",
+    "ipa": "ˈstrəkʧər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "结构",
+    "ex": "On the data side, structured requests like code naturally sustain higher acceptance rates than open-ended chat (Abramovich et al., 2026;"
+   },
+   {
+    "w": "substantially",
+    "ipa": "səbˈstænʃəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "大幅地",
+    "ex": "DSpark substantially improves the accepted length"
+   },
+   {
+    "w": "tier",
+    "ipa": "tir",
+    "pos": "n.；vt.；vi.",
+    "lv": "专四",
+    "m": "层，排；行，列；等级；使层叠；成递升排列",
+    "ex": "By overcoming this performance cliff, DSpark unlocks strict interactivity tiers that were previously unattainable, effectively shifting the Pareto frontier of LLM serving."
+   },
+   {
+    "w": "unattainable",
+    "ipa": "ˌʌnəˈteɪnəbl",
+    "pos": "adj.",
+    "lv": "超纲",
+    "m": "无法达到的",
+    "g": "g",
+    "ex": "it enables performance tiers that were previously unattainable"
+   },
+   {
+    "w": "unlock",
+    "ipa": "ənˈlɑk",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "开…的锁；开启",
+    "ex": "However, fully unlocking the potential of large parallel draft blocks introduces two critical bottlenecks—one in generation quality, and the other in system efficiency."
+   },
+   {
+    "w": "utilize",
+    "ipa": "ˈjuːtəlaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "利用",
+    "ex": "DSpark utilizes a semi-autoregressive architecture"
+   },
+   {
+    "w": "workload",
+    "ipa": "ˈwərˌkloʊd",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "工作量",
+    "ex": "While parallel generation easily produces long draft blocks, indiscriminately verifying all proposed tokens degrades system throughput, particularly under high-concurrency workloads (Hu et al., 2026b;"
+   }
+  ]
+ },
+ {
+  "sec": "2. Conclusion · 结论",
+  "short": "Concl",
+  "icon": "2",
+  "words": [
+   {
+    "w": "abc",
+    "ipa": "ˈeɪˌbiˌsi",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "基础知识；字母表；美国广播公司（American Broadcasting Company）；澳大利亚广播公司（Australian Broadcasting ",
+    "ex": "Given prompt tokens ABC , the"
+   },
+   {
+    "w": "acceptance",
+    "ipa": "əkˈsɛptəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "接受，验收；承认",
+    "ex": "Because pure parallel generation (DFlash) suffers from rapid acceptance decay (Figure 2), its marginal utility diminishes for long blocks."
+   },
+   {
+    "w": "accord",
+    "ipa": "əˈkɔrd",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使一致；给予",
+    "ex": "At inference time, the sequential block samples left to right according to 𝑝𝑘(· | 𝑥0, 𝑥<𝑘)."
+   },
+   {
+    "w": "actively",
+    "ipa": "ˈæktɪvli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "活跃地, 积极地",
+    "ex": "To achieve this maximum throughput, the asynchronous scheduler (Section 5.2) actively routes idle compute toward the most promising draft tokens."
+   },
+   {
+    "w": "actually",
+    "ipa": "ˈæˌkʧuəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "实际上；竟然",
+    "ex": "Indiscriminately verifying the full draft block can actually degrade overall system throughput, especially in high-concurrency scenarios (Hu et al., 2026b;"
+   },
+   {
+    "w": "additional",
+    "ipa": "əˈdɪʃənəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "额外的",
+    "ex": "The experimental setup is described in Section 4.1, main results in Section 4.2, and additional analyses are included in Section 4.3."
+   },
+   {
+    "w": "aggregate",
+    "ipa": "ˈægrəgət",
+    "pos": "adj.；n.；vt.",
+    "lv": "六级",
+    "m": "总计的， 合计的；总数，合计；总计达， 合计； 使聚集， 使积聚",
+    "ex": "Consequently, the relative throughput ratio at this point is numerically large, with DSpark achieving a nominal 661% higher aggregate throughput."
+   },
+   {
+    "w": "algorithmically",
+    "ipa": "ˌælɡəˈrɪðmɪkli",
+    "pos": "adv.",
+    "lv": "超纲",
+    "m": "在算法层面",
+    "ex": "Algorithmically, DSpark introduces a semi-autoregressive generation paradigm"
+   },
+   {
+    "w": "align",
+    "ipa": "əˈlaɪn",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使结盟；使成一行；匹配",
+    "ex": "We align Eagle3’s TTT horizon (7) with the block size (7) used by DFlash and DSpark, and we use the same target-model feature layers for all drafters."
+   },
+   {
+    "w": "alignment",
+    "ipa": "əˈlaɪnmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "排成直线；结盟，联合",
+    "ex": "Similarly, when adapting the CTC output layer to parallel speculative decoding, CTC-drafter (Wen et al., 2024) is restricted to greedy verification due to the latent marginalization of alignment paths."
+   },
+   {
+    "w": "allocation",
+    "ipa": "ˌæləˈkeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "分配，配置；安置",
+    "ex": "Consequently, if the total verification batch size 𝐵were fixed, the optimal allocation {ℓ𝑟} would be determined by greedily selecting the draft tokens with the highest survival probabilities from the global pool of all {𝑎𝑟,𝑗}."
+   },
+   {
+    "w": "amortize",
+    "ipa": "ˈæmərˌtaɪz",
+    "pos": "v.",
+    "lv": "GRE",
+    "m": "分期清偿",
+    "ex": "This effectively amortizes sequence-length variance, allowing us to safely assume that engine throughput depends predominantly on the verification batch size 𝐵."
+   },
+   {
+    "w": "analytical",
+    "ipa": "ˌænəˈlɪtɪkəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "分析的",
+    "ex": "We supervise 𝑐𝑘using the analytical acceptance rate per-step 𝑐∗ 𝑘."
+   },
+   {
+    "w": "analyze",
+    "ipa": "ˈænəˌlaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "分析",
+    "ex": "To analyze this behavior, we examine performance beyond the macro-level accepted length."
+   },
+   {
+    "w": "anticipate",
+    "ipa": "ænˈtɪsəˌpeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "预感",
+    "ex": "Lossless speculative decoding strictly requires the non-anticipating property: admission decisions must not depend on future candidate tokens (Chen et al., 2023;"
+   },
+   {
+    "w": "approach",
+    "ipa": "əˈproʊʧ",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "靠近；接近，方法",
+    "ex": "Xia et al., 2023), modern approaches employ rejection sampling to exactly preserve the target model’s distribution (Chen et al., 2023;"
+   },
+   {
+    "w": "approximate",
+    "ipa": "əˈprɑksəˌmeɪt",
+    "pos": "adj.；v.",
+    "lv": "四级",
+    "m": "近似的；近似",
+    "ex": "Instead, we approximate the upcoming verification capacity using the confidence head outputs from two steps prior."
+   },
+   {
+    "w": "architectural",
+    "ipa": "ˌɑrkəˈtɛkʧərəl",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "建筑上的； 建筑学的",
+    "ex": "The preceding analysis highlights a clear architectural objective: combining the high capacity of a parallel backbone for the initial token with the dependency modeling of an autoregressive model for subsequent tokens."
+   },
+   {
+    "w": "arena",
+    "ipa": "ərˈinə",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "表演场地， 竞技场； 活动场所",
+    "ex": "Daily Chat, including MT-Bench (Zheng et al., 2023), Alpaca (Taori et al., 2023) and Arena-Hard (Li et al., 2024a, 2025b)."
+   },
+   {
+    "w": "auto",
+    "ipa": "ˈɔtoʊ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "(口语)汽车",
+    "ex": "This demonstrates that injecting local auto-regression via a lightweight sequential head offers a highly favorable accuracy-parameter trade-off, achieving better sequence coherence than simply stacking deeper parallel layers."
+   },
+   {
+    "w": "automatically",
+    "ipa": "ˌɔtəˈmætɪkli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "自动地；不经思考地",
+    "ex": "As concurrent load increases, the dynamic scheduler automatically restricts the per-request verification length to prevent resource contention."
+   },
+   {
+    "w": "backbone",
+    "ipa": "ˈbækboʊn",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "主干",
+    "ex": "parallel backbone with a lightweight"
+   },
+   {
+    "w": "bandit",
+    "ipa": "ˈbændət",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "土匪，盗匪，歹徒",
+    "ex": "Zacks917, 2026), or bandit-style policies (Liu et al., 2026b)."
+   },
+   {
+    "w": "batch",
+    "ipa": "bæʧ",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "一批， 一组， 一群； 一批生产量",
+    "ex": "Under a simplifying assumption2, let SPS(𝐵) denote the engine throughput, measured in steps per second, for a given forward-pass batch size 𝐵."
+   },
+   {
+    "w": "behavioral",
+    "ipa": "bɪˈheɪvjərəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "行为的",
+    "ex": "Figure 2 details these measurements, demonstrating clear behavioral differences across the architectures."
+   },
+   {
+    "w": "bias",
+    "ipa": "baɪəs",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "偏见",
+    "ex": "To prevent sequence-length bias, the reported latency represents the arithmetic mean across varying context lengths ({512, 1024, 2048, 4096} tokens)."
+   },
+   {
+    "w": "bin",
+    "ipa": "bɪn",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "箱子，容器；二进制；把…放入箱中",
+    "ex": "The shaded background histogram represents the frequency distribution of sample counts across different confidence bins."
+   },
+   {
+    "w": "binary",
+    "ipa": "ˈbaɪnəˌri",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "[数] 二进制的；二元的，二态的",
+    "ex": "The confidence loss Lconf is a binary cross-entropy that trains the confidence head to predict"
+   },
+   {
+    "w": "bold",
+    "ipa": "boʊld",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "大胆的；冒失的",
+    "ex": "Bold marks the best results."
+   },
+   {
+    "w": "boost",
+    "ipa": "bust",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "推动,宣扬；促使，促进",
+    "ex": "Returning to the earlier example: once position 1 samples “of”, the Markov head boosts “course” and suppresses “problem” at position 2, which mitigates the cross-mode collision. • RNN head."
+   },
+   {
+    "w": "bottleneck",
+    "ipa": "ˈbɑtəlˌnɛk",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "瓶颈；障碍物",
+    "ex": "To address these bottlenecks, we implement two system-level optimizations within our internal training framework (HAI-LLM)5:"
+   },
+   {
+    "w": "bulk",
+    "ipa": "bəlk",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "物体，容积，大批",
+    "ex": "A parallel backbone handles the bulk of draft computation, which keeps 𝑇draft nearly independent of 𝛾."
+   },
+   {
+    "w": "bypass",
+    "ipa": "ˈbaɪˌpæs",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "旁通管；绕过",
+    "ex": "Future optimizations could introduce difficulty-aware early exiting within the draft model, enabling such requests to bypass full-block generation."
+   },
+   {
+    "w": "cache",
+    "ipa": "kæˈʃeɪ",
+    "pos": "n.；v.",
+    "lv": "专八",
+    "m": "电脑高速缓冲存储器；贮存物；隐藏处；隐藏；窖藏",
+    "ex": "Instead, we temporarily cache the target model’s forward-pass activations and communicate only the hidden states immediately preceding the language modeling (LM) head."
+   },
+   {
+    "w": "calibrate",
+    "ipa": "ˈkælɪbreɪtɪd",
+    "pos": "adj.",
+    "lv": "雅思",
+    "m": "校准的",
+    "ex": "based on calibrated survival probabilities and real-time engine load"
+   },
+   {
+    "w": "calibration",
+    "ipa": "ˌkæləˈbreɪʃən",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "校准；标定，刻度",
+    "ex": "Applying post-hoc calibration helps to align the prefix survival probabilities with empirical acceptance rates."
+   },
+   {
+    "w": "cannot",
+    "ipa": "ˈkænɑt",
+    "pos": "conj.",
+    "lv": "托福",
+    "m": "不能",
+    "ex": "Most techniques above cannot readily provide such probabilities due to iterative refinement, latent marginalization, or global normalization."
+   },
+   {
+    "w": "capacity",
+    "ipa": "kəˈpæsɪti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "容量；能力；能量",
+    "ex": "The average verification length decreases smoothly with load, ensuring that low-confidence draft tokens are pruned before they consume critical batch capacity."
+   },
+   {
+    "w": "capture",
+    "ipa": "ˈkæpʧər",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "捕获，俘获；夺得",
+    "ex": "In all figures, the scatter points represent raw telemetry data sampled directly from live user traffic, capturing complex, real-world request distributions, while the solid lines represent the fitted performance frontiers."
+   },
+   {
+    "w": "causal",
+    "ipa": "ˈkɔzəl",
+    "pos": "adj.；n.",
+    "lv": "考博",
+    "m": "因果关系的；有原因的；表示原因的连词",
+    "ex": "Thus, asynchronous design forms a causal barrier, maximizing physical throughput across hardware cliffs while preserving the exact target distribution."
+   },
+   {
+    "w": "certainty",
+    "ipa": "ˈsərtənti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "必然；肯定",
+    "ex": "Autoregressive models like Eagle3 effectively leverage this conditional certainty, maintaining or even increasing conditional acceptance deeper into the block (e.g., from 0.53 to 0.74 on Chat)."
+   },
+   {
+    "w": "circumvent",
+    "ipa": "ˌsərkəmˈvɛnt",
+    "pos": "v.",
+    "lv": "专八",
+    "m": "绕过；巧妙地规避",
+    "ex": "DSpark circumvents these limitations by keeping the sequential correction local, so per-token probabilities remain exact softmax evaluations."
+   },
+   {
+    "w": "clarity",
+    "ipa": "ˈklɛrɪti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "清晰，清楚",
+    "ex": "4For clarity, unless otherwise stated, all reported metrics for accepted length and acceptance rate include the target-generated bonus token."
+   },
+   {
+    "w": "clash",
+    "ipa": "klæʃ",
+    "pos": "vi.；n.",
+    "lv": "六级",
+    "m": "发生冲突；不协调；砰地相撞，发出刺耳的撞击声；冲突； 不协调； 刺耳的撞击声",
+    "ex": "Second, the algorithm requires scheduling of dynamic draft tokens per step, which clashes with continuous CUDA graph replay (Fireworks AI, 2023) and Zero-Overhead Scheduling (ZOS) (Zheng et al., 2024;"
+   },
+   {
+    "w": "cliff",
+    "ipa": "klɪf",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "悬崖，峭壁",
+    "ex": "Thus, asynchronous design forms a causal barrier, maximizing physical throughput across hardware cliffs while preserving the exact target distribution."
+   },
+   {
+    "w": "closely",
+    "ipa": "ˈkloʊsli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "紧密地，接近地",
+    "ex": "For instance, in a design closely related to ours, CRF-NAT (Sun et al., 2019) also places a sequential module over parallel hidden states, but its globally normalized partition function prevents exact per-token probability …"
+   },
+   {
+    "w": "coherence",
+    "ipa": "koʊˈhɪrəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "一致",
+    "ex": "This demonstrates that injecting local auto-regression via a lightweight sequential head offers a highly favorable accuracy-parameter trade-off, achieving better sequence coherence than simply stacking deeper parallel layers."
+   },
+   {
+    "w": "coherent",
+    "ipa": "koʊˈhɪrənt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "（文章、观点等）连贯的，有条理的，一致的",
+    "ex": "Ma et al., 2019), or relaxing the training objective so that the model focuses on producing a single coherent output rather than modeling the full distribution over all valid alternatives (Du et al., 2021;"
+   },
+   {
+    "w": "collapse",
+    "ipa": "kəˈlæps",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "倒坍；崩溃，瓦解",
+    "ex": "Autoregressive drafters achieve high 𝜏but pay 𝑇draft ∝𝛾; parallel drafters collapse 𝑇draft to a single pass but sacrifice 𝜏because each position is predicted independently."
+   },
+   {
+    "w": "combination",
+    "ipa": "ˌkɑmbəˈneɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "联合，结合",
+    "ex": "Because each parallel position marginalizes over all possible prior tokens rather than conditioning on an exact sampled prefix, the model frequently proposes inconsistent suffix combinations—a mode known as multi-modal collision …"
+   },
+   {
+    "w": "comparison",
+    "ipa": "kəmˈpɛrəsən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比较，对照；比似",
+    "ex": "At matched practical throughput levels, which provide a more stable comparison, DSpark accelerates per-user generation speeds by 60% to 85%."
+   },
+   {
+    "w": "compatibility",
+    "ipa": "kəmˌpætəˈbɪləˌti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "[计]兼容性",
+    "ex": "To navigate the trade-offs among system compatibility, throughput, and algorithmic correct-ness, we adapt the scheduler to operate asynchronously."
+   },
+   {
+    "w": "complementary",
+    "ipa": "ˌkɑmpləˈmɛnʧi",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "补充的； 辅助的",
+    "ex": "DSpark addresses these limitations with two complementary components: • Semi-autoregressive generation (Section 3.1)."
+   },
+   {
+    "w": "complexity",
+    "ipa": "kəmˈplɛksɪti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "复杂（性）",
+    "ex": "This reduces the per-token communication complexity to 𝑂(𝑑), where 𝑑is the hidden dimension. • Anchor-bounded sequence packing."
+   },
+   {
+    "w": "compress",
+    "ipa": "ˈkɑmprɛs",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "压紧，压缩",
+    "ex": "Specifically on the DeepSeek-V4 architecture, only the index-attention and compress kernels require modification to support this variable-length routing, allowing the dynamic scheduler to operate seamlessly without introducing …"
+   },
+   {
+    "w": "compression",
+    "ipa": "kəmˈprɛʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "压缩，压紧，浓缩",
+    "ex": "Zhang et al., 2024), dynamic vocabulary compression (Williams et al., 2026;"
+   },
+   {
+    "w": "comprise",
+    "ipa": "kəmˈpraɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "包含，包括；构成",
+    "ex": "The parallel backbone comprises three MoE layers (Dai et al., 2024) with mHC (Xie et al., 2026) and a sliding window attention of 128."
+   },
+   {
+    "w": "computation",
+    "ipa": "ˌkɑmpjəˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "计算, 估计",
+    "ex": "A parallel backbone handles the bulk of draft computation, which keeps 𝑇draft nearly independent of 𝛾."
+   },
+   {
+    "w": "compute",
+    "ipa": "kəmˈpjut",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "计算，估计，估算",
+    "ex": "Concretely, at each draft position 𝑘, the target model computes its own distribution 𝑝𝑡 𝑘 and compares it against the draft distribution 𝑝𝑑 𝑘."
+   },
+   {
+    "w": "concatenate",
+    "ipa": "kənˈkætəˌneɪt",
+    "pos": "v.",
+    "lv": "GRE",
+    "m": "连接",
+    "ex": "During prefill, hidden states from a set of target layers {𝑙1, . . . , 𝑙𝑚} are concatenated and projected into the draft hidden space: 𝐻ctx = RMSNorm\u0000𝑊𝑐[𝐻(𝑙1); . . . ; 𝐻(𝑙𝑚)]\u0001, (2)"
+   },
+   {
+    "w": "concurrency",
+    "ipa": "kənˈkɜrənsi",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "并发（度）",
+    "ex": "bottlenecks of large language model inference in high-concurrency production"
+   },
+   {
+    "w": "concurrent",
+    "ipa": "kənˈkərənt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "一致的；同时的",
+    "ex": "As concurrent load increases, the dynamic scheduler automatically restricts the per-request verification length to prevent resource contention."
+   },
+   {
+    "w": "conditional",
+    "ipa": "kənˈdɪʃənəl",
+    "pos": "adj.；n.",
+    "lv": "六级",
+    "m": "有条件的；假定的；条件句；条件语",
+    "ex": "By resolving this trade-off, DSpark maintains a high and stable conditional acceptance rate throughout the entire draft block."
+   },
+   {
+    "w": "confidence",
+    "ipa": "ˈkɑnfədɛns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "信心",
+    "ex": "Ovadia et al., 2019), using the raw confidence scores directly would distort the throughput estimation, leading to suboptimal scheduling."
+   },
+   {
+    "w": "configuration",
+    "ipa": "kənˌfɪgjərˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "配置， 布局， 构造",
+    "ex": "observed throughput–interactivity frontier relative to the MTP-1 baseline under the measured traffic and engine configurations."
+   },
+   {
+    "w": "consequently",
+    "ipa": "ˈkɑnsəkˌwɛntli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "结果",
+    "ex": "Consequently, the relative throughput ratio at this point is numerically large, with DSpark achieving a nominal 661% higher aggregate throughput."
+   },
+   {
+    "w": "consistently",
+    "ipa": "kənˈsɪstəntli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "稳定地",
+    "ex": "consistently accelerates per-user generation speeds"
+   },
+   {
+    "w": "constrain",
+    "ipa": "kənˈstreɪn",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "限制",
+    "ex": "In our deployment setting, however, the number of requests processed per step is frequently constrained by resource limits (e.g., fixed KV-cache capacity per request) and the pool of available user traffic (e.g., RL long-tail …"
+   },
+   {
+    "w": "constraint",
+    "ipa": "kənˈstreɪnt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "限制，束缚，约束",
+    "ex": "To quantify DSpark’s behavior under practical deployment constraints, we evaluate the system at several interactivity SLA anchors."
+   },
+   {
+    "w": "contention",
+    "ipa": "kənˈtɛnʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "争论",
+    "ex": "As concurrent load increases, the dynamic scheduler automatically restricts the per-request verification length to prevent resource contention."
+   },
+   {
+    "w": "context",
+    "ipa": "ˈkɑntɛkst",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "背景，环境",
+    "ex": "To prevent sequence-length bias, the reported latency represents the arithmetic mean across varying context lengths ({512, 1024, 2048, 4096} tokens)."
+   },
+   {
+    "w": "continuation",
+    "ipa": "kənˌtɪnjuˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "继续(部分)；续篇",
+    "ex": "When the context admits multiple plausible continuations, e.g., “of course” and “no problem”, a parallel drafter may produce incoherent combinations such as “of problem” or “no course”, because each position marginalizes over all …"
+   },
+   {
+    "w": "continuous",
+    "ipa": "kənˈtɪnjuəs",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "连续不断的，持续的",
+    "ex": "Because speculative decoding dynamically accepts draft tokens only as a continuous prefix, the survival probability of a token at position 𝑗is the cumulative product 𝑎𝑟,𝑗= Î 𝑖⩽𝑗𝑐𝑟,𝑖."
+   },
+   {
+    "w": "contrast",
+    "ipa": "ˈkɑntræst",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "对比，反差；对比",
+    "ex": "This finding contrasts with the standard expectation that step-by-step autoregression produces higher-quality sequences than parallel models (Israel et al., 2026;"
+   },
+   {
+    "w": "convergence",
+    "ipa": "kənˈvərʤəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "集中",
+    "ex": "Each drafter is trained for 10 epochs to ensure full convergence."
+   },
+   {
+    "w": "correctly",
+    "ipa": "kərˈɛktli",
+    "pos": "adv.",
+    "lv": "考博",
+    "m": "正确地，恰当地",
+    "ex": "Zhang et al., 2026b), which only require confidence scores to correctly rank draft token qualities, our hardware-aware scheduling approach (detailed in Section 3.2.2) precisely requires the absolute magnitudes of the cumulative …"
+   },
+   {
+    "w": "correlate",
+    "ipa": "ˈkɔrəˌleɪt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "互相关联的事物",
+    "ex": "Under this regime, the traditional trade-off simplifies: given a fixed concurrency limit, maximizing per-GPU total token throughput and maximizing the generation speed per user (tok/s/user) become highly correlated objectives …"
+   },
+   {
+    "w": "counterexample",
+    "ipa": "ˈkaʊntɚɪgˈzæmpl",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "反例",
+    "ex": "A retrospective global search would thus inadvertently leak 𝑥𝑟,𝑘into the admission decision for step 𝑘, introducing selection bias (we provide a concrete counterexample demonstrating this theoretical violation in Appendix A)."
+   },
+   {
+    "w": "critical",
+    "ipa": "ˈkrɪtɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "批评的，爱挑剔的",
+    "ex": "The average verification length decreases smoothly with load, ensuring that low-confidence draft tokens are pruned before they consume critical batch capacity."
+   },
+   {
+    "w": "cumulative",
+    "ipa": "ˈkjumjələtɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "积累的",
+    "ex": "Because each 𝑐𝑖models a conditional probability, the chain rule dictates that the joint probability of a draft prefix being accepted factorizes into the cumulative product Î 𝑖⩽𝑘𝑐𝑖."
+   },
+   {
+    "w": "current",
+    "ipa": "ˈkɑrənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "当前的",
+    "ex": "As illustrated, E and F are accepted while G is rejected, prompting the model to generate a corrected token G∗to complete the current round."
+   },
+   {
+    "w": "curve",
+    "ipa": "kərv",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "曲线；弯；弄弯",
+    "ex": "Examining the tail of the curves (positions 2 through 7) exposes the inherent limitation of independent parallel generation."
+   },
+   {
+    "w": "dart",
+    "ipa": "dɑrt",
+    "pos": "vi.；vt.；n.",
+    "lv": "六级",
+    "m": "猛冲，飞奔；投射；飞镖， 飞镖游戏； 急驰， 飞奔",
+    "ex": "To remove the sequential bottleneck of the drafting itself, a line of research proposes parallel or blockwise generation, including Medusa (Cai et al., 2024), P-EAGLE (Hui et al., 2026), PARD (An et al., 2026a,b), DART (Liu et …"
+   },
+   {
+    "w": "decode",
+    "ipa": "dɪˈkoʊd",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "解码",
+    "ex": "Speculative decoding places a further demand that the drafter must provide exact per-token probabilities for the rejection sampling rule."
+   },
+   {
+    "w": "default",
+    "ipa": "dɪˈfɔlt",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "不履行义务；不履行义务",
+    "ex": "Given its higher implementation complexity and less favorable deployment properties, we use the Markov head as the default."
+   },
+   {
+    "w": "define",
+    "ipa": "dɪˈfaɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "下定义，确定",
+    "ex": "Rather than defining a globally normalized energy model, the sequential stage induces a causal block distribution through an autoregressive factorization: 𝑃(𝑋| 𝑥0) = 𝛾 Ö 𝑘=1 𝑝𝑘(𝑥𝑘| 𝑥0, 𝑥<𝑘), 𝑝𝑘(𝑣| 𝑥0, 𝑥<𝑘) = exp(𝑈𝑘(𝑣) + 𝐵𝑘(𝑥0 …"
+   },
+   {
+    "w": "degenerate",
+    "ipa": "dɪˈʤɛnərˌeɪt",
+    "pos": "vi.；adj.；n.",
+    "lv": "六级",
+    "m": "衰退，堕落，蜕化；衰退的，堕落的；堕落者",
+    "ex": "Overall, these results show that DSpark shifts the observed throughput–interactivity frontier outward: it improves throughput in moderate-SLA regimes and, more importantly, preserves non-degenerate serving capacity under strict …"
+   },
+   {
+    "w": "degradation",
+    "ipa": "ˌdɛgrəˈdeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "降级；退化；衰变",
+    "ex": "First, the algorithm assumes a smooth, unimodal capacity curve, whereas the true hardware capacity SPS(𝐵) is inherently discrete, exhibiting a jagged, step-wise degradation (Yan et al., 2020)."
+   },
+   {
+    "w": "demonstrate",
+    "ipa": "ˈdɛmənˌstreɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "证明；展示",
+    "ex": "The rightmost panel demonstrates that the sequential head introduces minimal latency overhead during serving. motivates DSpark’s semi-autoregressive design."
+   },
+   {
+    "w": "denominator",
+    "ipa": "dɪˈnɑməˌneɪtər",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "水平，标准",
+    "ex": "position-wise conditional acceptance tracked during actual speculative decoding rollouts. Specifically, for a given draft position 𝑘, the evaluation denominator counts only the instances where"
+   },
+   {
+    "w": "denote",
+    "ipa": "dɪˈnoʊt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "指示，意味着",
+    "ex": "Under a simplifying assumption2, let SPS(𝐵) denote the engine throughput, measured in steps per second, for a given forward-pass batch size 𝐵."
+   },
+   {
+    "w": "dense",
+    "ipa": "dɛns",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "密集的；浓厚的",
+    "ex": "To decouple the draft model’s computational cost from the target model’s context length, we sample a fixed number of draft anchors from the training sequence and pack these isolated prediction blocks into dense training batches."
+   },
+   {
+    "w": "dependent",
+    "ipa": "dɪˈpɛndənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "依靠的，依赖的",
+    "ex": "The sequential stage supplements the base logits with a prefix-dependent transition bias 𝐵𝑘(𝑥0, 𝑥<𝑘, 𝑥𝑘), allowing each draft position to condition on previously sampled tokens within the block."
+   },
+   {
+    "w": "deploy",
+    "ipa": "dɪˈplɔɪ",
+    "pos": "v.；n.",
+    "lv": "六级",
+    "m": "配置；展开；使疏开；部署",
+    "ex": "However, directly deploying this algorithm into a production environment exposes two fundamental conflicts with real-world infrastructure."
+   },
+   {
+    "w": "deployment",
+    "ipa": "dɪˈplɔɪmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "部署",
+    "ex": "its real-world deployment within the DeepSeek-V4"
+   },
+   {
+    "w": "descend",
+    "ipa": "dɪˈsɛnd",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "下来，下降；下倾",
+    "ex": "We first globally sort all valid prefix extensions in descending order of survival probability."
+   },
+   {
+    "w": "despite",
+    "ipa": "dɪˈspaɪt",
+    "pos": "prep.",
+    "lv": "四级",
+    "m": "不管",
+    "ex": "Consequently, scaling the draft length from 4 to 16 adds a marginal 0.2% to 1.3% to the full-round latency over the DFlash baseline, despite delivering up to a 30% improvement in accepted length."
+   },
+   {
+    "w": "detail",
+    "ipa": "ˈditeɪl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "细节",
+    "ex": "Unless otherwise stated, all experiments in this section use Qwen3-4B as the target model and follow the evaluation protocol detailed in Section 4.1."
+   },
+   {
+    "w": "diagnostic",
+    "ipa": "ˌdaɪəgˈnɑstɪk",
+    "pos": "adj.；n.",
+    "lv": "专四",
+    "m": "诊断的；特征的；诊断法；诊断结论",
+    "ex": "Diagnostic: Static Threshold Sweep."
+   },
+   {
+    "w": "dictate",
+    "ipa": "ˈdɪkˌteɪt",
+    "pos": "—",
+    "lv": "四级",
+    "m": "命令，规定",
+    "ex": "Because each 𝑐𝑖models a conditional probability, the chain rule dictates that the joint probability of a draft prefix being accepted factorizes into the cumulative product Î 𝑖⩽𝑘𝑐𝑖."
+   },
+   {
+    "w": "diminish",
+    "ipa": "dɪˈmɪnɪʃ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "减少",
+    "ex": "Because pure parallel generation (DFlash) suffers from rapid acceptance decay (Figure 2), its marginal utility diminishes for long blocks."
+   },
+   {
+    "w": "directly",
+    "ipa": "dɪˈrɛkli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "直接地；立即",
+    "ex": "However, directly deploying this algorithm into a production environment exposes two fundamental conflicts with real-world infrastructure."
+   },
+   {
+    "w": "disable",
+    "ipa": "dɪˈseɪbəl",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使无能，使伤残",
+    "ex": "Experimental Results To isolate the raw draft quality from system-level scheduling policies, our offline evaluation disables the confidence scheduler, forcing all drafters to propose a fixed block of tokens."
+   },
+   {
+    "w": "discard",
+    "ipa": "dɪˈskɑrd",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "丢弃，抛弃，遗弃",
+    "ex": "Verification proceeds left to right: the first rejection at position 𝑘discards all subsequent tokens 𝑥𝑘+1, . . . , 𝑥𝛾, regardless of their quality."
+   },
+   {
+    "w": "discrete",
+    "ipa": "dɪˈskrit",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "分离的， 不相关联的",
+    "ex": "First, the algorithm assumes a smooth, unimodal capacity curve, whereas the true hardware capacity SPS(𝐵) is inherently discrete, exhibiting a jagged, step-wise degradation (Yan et al., 2020)."
+   },
+   {
+    "w": "disrupt",
+    "ipa": "dɪsˈrəpt",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "使中断； 扰乱",
+    "ex": "Crucially, temperature scaling is an order-preserving transformation: it rectifies the predicted probabilities to match empirical acceptance rates without disrupting the relative draft token rankings learned by the confidence …"
+   },
+   {
+    "w": "distort",
+    "ipa": "dɪˈstɔrt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "扭曲",
+    "ex": "Ovadia et al., 2019), using the raw confidence scores directly would distort the throughput estimation, leading to suboptimal scheduling."
+   },
+   {
+    "w": "distribution",
+    "ipa": "ˌdɪstrəˈbjuʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "分发，分配；分布",
+    "ex": "Concretely, at each draft position 𝑘, the target model computes its own distribution 𝑝𝑡 𝑘 and compares it against the draft distribution 𝑝𝑑 𝑘."
+   },
+   {
+    "w": "divergence",
+    "ipa": "dɪˈvərʤəns",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "分歧",
+    "ex": "The performance divergence here stems strictly from architectural capacity: autoregressive models like Eagle3 are constrained to shallow networks due to their 𝑂(𝛾) latency, whereas 𝑂(1) parallel drafters can afford much deeper …"
+   },
+   {
+    "w": "domain",
+    "ipa": "doʊˈmeɪn",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "领域",
+    "ex": "Extensive offline evaluations demonstrate that DSpark substantially outperforms state-of-the-art autoregressive and parallel baselines across diverse domains."
+   },
+   {
+    "w": "dominate",
+    "ipa": "ˈdɑməˌneɪt",
+    "pos": "vi.；vt.",
+    "lv": "六级",
+    "m": "拥有优势；在…中占首要地位；支配，统治，控制；耸立于，俯视",
+    "ex": "Because this sampling process is inherently sequential, the block must be computationally lightweight (𝑇sequential ≪𝑇parallel) so that the overall draft latency remains dominated by the parallel stage."
+   },
+   {
+    "w": "domino",
+    "ipa": "ˈdɑmɪˌnoʊ",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "多米诺骨牌；面具；化装外衣",
+    "ex": "Concurrent efforts include: Domino (Huang et al., 2026a) introduces a CausalEncoder conceptually similar to our RNN Head;"
+   },
+   {
+    "w": "effective",
+    "ipa": "ˈifɛktɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "有效的；有影响的",
+    "ex": "Consequently, the effective batch size persistently remains well below the GPU’s compute-saturating threshold."
+   },
+   {
+    "w": "effectively",
+    "ipa": "ˈifɛktɪvli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "有效地",
+    "ex": "To evaluate whether the confidence head can effectively prune these unpromising suffixes, we conduct an offline threshold sweep using Qwen3-4B."
+   },
+   {
+    "w": "effectiveness",
+    "ipa": "ˈifɛktɪvnəs",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "效力",
+    "ex": "Experiments In this section, we validate the draft quality of DSpark using offline benchmarks and report the effectiveness of confidence scheduler under online production traffic in Section 5."
+   },
+   {
+    "w": "efficiency",
+    "ipa": "ɪˈfɪʃənsi",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "效率；功效，效能",
+    "ex": "Notably, a shallow 2-layer DSpark outperforms a deeper 5-layer DFlash baseline, highlighting the parameter efficiency of sequential modeling."
+   },
+   {
+    "w": "efficient",
+    "ipa": "ɪˈfɪʃənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "效率高的，有能力的",
+    "ex": "The low-rank factorization (𝑟=256 by default) keeps both storage and per-step compute small, making the sequential loop efficient even for large vocabularies."
+   },
+   {
+    "w": "efficiently",
+    "ipa": "ɪˈfɪʃəntli",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "有效地",
+    "ex": "Confidence-Scheduled Verification The semi-autoregressive architecture enables DSpark to generate large draft blocks efficiently."
+   },
+   {
+    "w": "element",
+    "ipa": "ˈɛləmənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "元素，要素",
+    "ex": "In our compute kernels, all tokens across different requests are flattened and processed identically as independent elements."
+   },
+   {
+    "w": "elsewhere",
+    "ipa": "ˈɛlsˌwɛr",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "在别处，向别处",
+    "ex": "Semi-Autoregressive Generation A parallel drafter produces all 𝛾draft logits in one forward pass, so each prediction cannot condition on tokens sampled elsewhere in the block."
+   },
+   {
+    "w": "embed",
+    "ipa": "ɪmˈbɛd",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "把…嵌入， 扎牢； 使深留脑中",
+    "ex": "It takes as input the embedding of an anchor token1 followed by 𝛾mask token embeddings, and produces logits for all mask positions in a single forward pass."
+   },
+   {
+    "w": "emphasize",
+    "ipa": "ˈɛmfəˌsaɪz",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "强调",
+    "ex": "All three are position-weighted by 𝑤𝑘= exp(−(𝑘−1)/𝛾) (Chen et al., 2026), which emphasizes earlier block positions that contribute more to the expected acceptance length under prefix-based verification."
+   },
+   {
+    "w": "empirical",
+    "ipa": "ˌɛmˈpɪrɪkəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "经验主义的",
+    "ex": "Applying post-hoc calibration helps to align the prefix survival probabilities with empirical acceptance rates."
+   },
+   {
+    "w": "enable",
+    "ipa": "ɪˈneɪbəl",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使能够……",
+    "ex": "Future optimizations could introduce difficulty-aware early exiting within the draft model, enabling such requests to bypass full-block generation."
+   },
+   {
+    "w": "enforce",
+    "ipa": "ɛnˈfɔrs",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "实施，执行；强制",
+    "ex": "To enforce strict causality, the scheduler (Algorithm 1) employs an early-stopping mechanism."
+   },
+   {
+    "w": "engine",
+    "ipa": "ˈɪnʤən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "引擎，发动机",
+    "ex": "Under a simplifying assumption2, let SPS(𝐵) denote the engine throughput, measured in steps per second, for a given forward-pass batch size 𝐵."
+   },
+   {
+    "w": "ensure",
+    "ipa": "ɪnˈʃʊr",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "确保",
+    "ex": "This monotonicity ensures that sorting candidate tokens globally by 𝑎𝑟,𝑗naturally respects intra-block prefix dependencies."
+   },
+   {
+    "w": "epoch",
+    "ipa": "ˈɛpək",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "（新）时代；历元",
+    "ex": "Each drafter is trained for 10 epochs to ensure full convergence."
+   },
+   {
+    "w": "equation",
+    "ipa": "ɪkˈweɪʒən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "方程(式)；等式",
+    "ex": "Recall from Equation 1 that the per-token latency of speculative decoding is 𝐿= (𝑇draft + 𝑇verify)/𝜏."
+   },
+   {
+    "w": "establish",
+    "ipa": "ɪˈstæblɪʃ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "建立，创办，设立",
+    "ex": "Therefore, comparing DSpark against this established baseline directly demonstrates its ability to safely unlock the performance potential of larger draft blocks in dynamic serving environments."
+   },
+   {
+    "w": "estimate",
+    "ipa": "ˈɛstəˌmeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "估计",
+    "ex": "Applying post-hoc STS (Section 3.2.1) mitigates this overconfidence, reducing the average ECE to ∼1% and yielding reliable survival estimates."
+   },
+   {
+    "w": "estimation",
+    "ipa": "ˌɛstəˈmeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "估计；尊重",
+    "ex": "Ovadia et al., 2019), using the raw confidence scores directly would distort the throughput estimation, leading to suboptimal scheduling."
+   },
+   {
+    "w": "evaluation",
+    "ipa": "ɪˌvæljuˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "评价，评估",
+    "ex": "DSpark circumvents these limitations by keeping the sequential correction local, so per-token probabilities remain exact softmax evaluations."
+   },
+   {
+    "w": "excessive",
+    "ipa": "ɪkˈsɛsɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "过度的",
+    "ex": "This single-token setup was historically maintained in production because deploying a static multi-token drafter (e.g., MTP-3/5) strictly degrades aggregate throughput under high concurrency due to excessive verification overhead."
+   },
+   {
+    "w": "execute",
+    "ipa": "ˈɛksəˌkjut",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "将…处死；实施",
+    "ex": "The LM head projection is then executed locally on the draft model’s workers only for the sampled target positions."
+   },
+   {
+    "w": "execution",
+    "ipa": "ˌɛksəˈkjuʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "实行，执行；处死刑",
+    "ex": "However, executing this dynamic routing introduces a severe challenge at the physical execution layer: the inference framework must efficiently support variable-length queries within a single batch."
+   },
+   {
+    "w": "exhibit",
+    "ipa": "ɪgˈzɪbɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "显示；陈列，展览",
+    "ex": "First, the algorithm assumes a smooth, unimodal capacity curve, whereas the true hardware capacity SPS(𝐵) is inherently discrete, exhibiting a jagged, step-wise degradation (Yan et al., 2020)."
+   },
+   {
+    "w": "experimental",
+    "ipa": "ɪkˌspɛrɪˈmɛntəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "实验的，试验的",
+    "ex": "The experimental setup is described in Section 4.1, main results in Section 4.2, and additional analyses are included in Section 4.3."
+   },
+   {
+    "w": "explicitly",
+    "ipa": "ɪkˈsplɪsətli",
+    "pos": "adv.",
+    "lv": "GRE",
+    "m": "直接地，明确地",
+    "ex": "Because our confidence head relies on the Markov feature of the previously sampled token, computing the next survival probability 𝑎𝑟,𝑘+1 explicitly requires the instantiated candidate 𝑥𝑟,𝑘."
+   },
+   {
+    "w": "extend",
+    "ipa": "ɪkˈstɛnd",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "延长；扩大；致",
+    "ex": "This extended verification yields more accepted tokens per forward pass, directly contributing to the throughput gains observed on the Pareto frontier. • As system concurrency scales and target capacity saturates, the scheduler …"
+   },
+   {
+    "w": "extensive",
+    "ipa": "ɪkˈstensɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "大量的",
+    "ex": "Extensive offline evaluations demonstrate that DSpark substantially outperforms"
+   },
+   {
+    "w": "extract",
+    "ipa": "ˈɛkˌstrækt",
+    "pos": "v.；n.",
+    "lv": "六级",
+    "m": "取出；提取；摘录",
+    "ex": "Among them, DFlash (Chen et al., 2026) is a state-of-the-art parallel drafter, which conditions its draft model on rich context features extracted from the target model (KV injection)."
+   },
+   {
+    "w": "facilitate",
+    "ipa": "fəˈsɪləˌteɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使便利，促进",
+    "ex": "3To facilitate future research, we release all checkpoints we trained, including Eagle3, DFlash and DSpark."
+   },
+   {
+    "w": "factor",
+    "ipa": "ˈfæktər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "因素；因子，系数",
+    "ex": "The former governs the quality of service for individual users—a factor increasingly critical in agent-based workloads (Tiwari et al., 2026)—while the latter determines the total number of concurrently served users."
+   },
+   {
+    "w": "factorization",
+    "ipa": "ˌfæktəraɪˈzeɪʃən",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "分解（因式分解/质因数分解）；factorize 的名词",
+    "ex": "The low-rank factorization (𝑟=256 by default) keeps both storage and per-step compute small, making the sequential loop efficient even for large vocabularies."
+   },
+   {
+    "w": "favorable",
+    "ipa": "ˈfeɪvərəbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "赞同的",
+    "ex": "Given its higher implementation complexity and less favorable deployment properties, we use the Markov head as the default."
+   },
+   {
+    "w": "feasible",
+    "ipa": "ˈfizəbəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "可行的；可能的；可用的",
+    "ex": "We therefore interpret this high-SLA point primarily as evidence that DSpark extends the feasible interactivity frontier, rather than as a representative multiplicative speedup over a well-utilized baseline."
+   },
+   {
+    "w": "feature",
+    "ipa": "ˈfiʧər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "特点",
+    "ex": "Leviathan et al., 2023), subsequent work integrates multi-token heads or feature extrapolators directly into the target model (Ankner et al., 2024;"
+   },
+   {
+    "w": "filter",
+    "ipa": "ˈfɪltər",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "过滤；滤纸",
+    "ex": "As the threshold increases, the acceptance rate steadily rises because the estimator filters out tokens that would ultimately be rejected (hashed bars)."
+   },
+   {
+    "w": "finally",
+    "ipa": "ˈfaɪnəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "最后；不可更改的",
+    "ex": "Finally, the target model verifies the scheduled prefix in parallel."
+   },
+   {
+    "w": "fitted",
+    "ipa": "ˈfɪtɪd",
+    "pos": "adj.；v.",
+    "lv": "专四",
+    "m": "合适的；订做的；有…设备的；适应（fit的过去分词）；合适；为…提供设备",
+    "ex": "In all figures, the scatter points represent raw telemetry data sampled directly from live user traffic, capturing complex, real-world request distributions, while the solid lines represent the fitted performance frontiers."
+   },
+   {
+    "w": "flatten",
+    "ipa": "ˈflætən",
+    "pos": "v.",
+    "lv": "专四",
+    "m": "把…弄平；击倒",
+    "ex": "In our compute kernels, all tokens across different requests are flattened and processed identically as independent elements."
+   },
+   {
+    "w": "footprint",
+    "ipa": "ˈfʊtˌprɪnt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "足迹；脚印",
+    "ex": "Evaluating both models over the full document context incurs substantial memory footprints and inter-worker communication overhead."
+   },
+   {
+    "w": "formulate",
+    "ipa": "ˈfɔrmjuleɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "表述为",
+    "ex": "we formulate verification length selection"
+   },
+   {
+    "w": "fragment",
+    "ipa": "ˈfrægmənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "碎片，破片，碎块",
+    "ex": "plausible modes, often producing outputs that mix fragments from different valid sequences."
+   },
+   {
+    "w": "frequency",
+    "ipa": "ˈfrikwənsi",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "屡次；次数；频率",
+    "ex": "The shaded background histogram represents the frequency distribution of sample counts across different confidence bins."
+   },
+   {
+    "w": "frequently",
+    "ipa": "ˈfrikwɛntli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "时常，常常",
+    "ex": "In our deployment setting, however, the number of requests processed per step is frequently constrained by resource limits (e.g., fixed KV-cache capacity per request) and the pool of available user traffic (e.g., RL long-tail …"
+   },
+   {
+    "w": "frozen",
+    "ipa": "ˈfroʊzən",
+    "pos": "adj.；v.",
+    "lv": "专四",
+    "m": "冻结的；冷酷的；结冰（freeze的过去分词）；凝固；变得刻板",
+    "ex": "The draft model shares the target model’s embedding layer and language modeling head (both frozen)."
+   },
+   {
+    "w": "fundamentally",
+    "ipa": "ˌfəndəˈmɛnəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "根本上",
+    "ex": "While approximating the capacity 𝐾introduces a slight temporal offset, the selection mechanism is fundamentally rank-preserving: the most confident draft tokens are always prioritized for verification."
+   },
+   {
+    "w": "furthermore",
+    "ipa": "ˈfərðərˌmɔr",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "而且，此外",
+    "ex": "Furthermore, the confidence head is trained end-to-end alongside the draft model and subsequently calibrated via STS to provide reliable scheduling signals."
+   },
+   {
+    "w": "fusion",
+    "ipa": "fˈjuʒən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "联合， 合并； 核聚变",
+    "ex": "DFlare (Zhang et al., 2026a) addresses conditioning bottlenecks via layer-wise fusion."
+   },
+   {
+    "w": "gap",
+    "ipa": "gæp",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "差距;缝隙缺口",
+    "ex": "This structural gap yields a substantial accuracy margin at position 1, with DFlash starting noticeably higher than Eagle3 (e.g., 0.88 vs."
+   },
+   {
+    "w": "general-purpose",
+    "ipa": "ˈʤɛnərəl ˈpərpəs",
+    "pos": "adj.",
+    "lv": "考博",
+    "m": "通用的，一般用途的（与专用 special-purpose 相对）",
+    "ex": "2024) consisting of 1.3 million samples. It is a general-purpose instruction dataset containing"
+   },
+   {
+    "w": "generalize",
+    "ipa": "ˈʤɛnərəˌlaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "概括出",
+    "ex": "Crucially, this advantage generalizes across model families, as demonstrated by the consistent performance gains on the Gemma4-12B target."
+   },
+   {
+    "w": "generate",
+    "ipa": "ˈʤɛnərˌeɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "产生",
+    "ex": "As illustrated, E and F are accepted while G is rejected, prompting the model to generate a corrected token G∗to complete the current round."
+   },
+   {
+    "w": "global",
+    "ipa": "ˈgloʊbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "全球的， 全世界的； 总的， 完整的",
+    "ex": "Most techniques above cannot readily provide such probabilities due to iterative refinement, latent marginalization, or global normalization."
+   },
+   {
+    "w": "globally",
+    "ipa": "ˈgloʊbəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "世界上, 全世界",
+    "ex": "This monotonicity ensures that sorting candidate tokens globally by 𝑎𝑟,𝑗naturally respects intra-block prefix dependencies."
+   },
+   {
+    "w": "grid",
+    "ipa": "grɪd",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "输电网",
+    "ex": "𝑘∈{1, . . . , 𝛾}, we perform a simple 1D grid search to find the optimal temperature scalar that"
+   },
+   {
+    "w": "hardware",
+    "ipa": "ˈhɑrdˌwɛr",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "五金器具；硬件",
+    "ex": "Hardware-Aware Prefix Scheduler in Practice In Section 3.2.2, Algorithm 1 provides a theoretically sound and lossless scheduling mechanism."
+   },
+   {
+    "w": "hash",
+    "ipa": "hæʃ",
+    "pos": "n.；v.",
+    "lv": "专八",
+    "m": "剁碎的食物；混杂，拼凑；重新表述；搞糟，把…弄乱；切细；推敲",
+    "ex": "As the threshold increases, the acceptance rate steadily rises because the estimator filters out tokens that would ultimately be rejected (hashed bars)."
+   },
+   {
+    "w": "hidden",
+    "ipa": "ˈhɪdən",
+    "pos": "adj.；v.；n.",
+    "lv": "专四",
+    "m": "隐藏的；隐藏，躲藏（hide的过去分词）；(Hidden)人名；(英)希登",
+    "ex": "This reduces the per-token communication complexity to 𝑂(𝑑), where 𝑑is the hidden dimension. • Anchor-bounded sequence packing."
+   },
+   {
+    "w": "highlight",
+    "ipa": "ˈhaɪˌlaɪt",
+    "pos": "—",
+    "lv": "六级",
+    "m": "照亮；突出；强调",
+    "ex": "Notably, a shallow 2-layer DSpark outperforms a deeper 5-layer DFlash baseline, highlighting the parameter efficiency of sequential modeling."
+   },
+   {
+    "w": "highly",
+    "ipa": "ˈhaɪli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "高度地，很，非常",
+    "ex": "This inherent variance in data predictability means a static verification length often wastes compute on trailing tokens that are highly likely to be rejected."
+   },
+   {
+    "w": "histogram",
+    "ipa": "ˈhɪstəˌgræm",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "[统计] 直方图；柱状图",
+    "ex": "The shaded background histogram represents the frequency distribution of sample counts across different confidence bins."
+   },
+   {
+    "w": "historical",
+    "ipa": "hɪˈstɔrɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "历史的，有关历史的",
+    "ex": "Because the unconstrained search evaluates only historical predictions from two steps prior, the admission decision is isolated from the realization of the current token 𝑥𝑟,𝑘."
+   },
+   {
+    "w": "historically",
+    "ipa": "hɪˈstɔrɪkəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "历史上地",
+    "ex": "This single-token setup was historically maintained in production because deploying a static multi-token drafter (e.g., MTP-3/5) strictly degrades aggregate throughput under high concurrency due to excessive verification overhead."
+   },
+   {
+    "w": "horizon",
+    "ipa": "hərˈaɪzən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "地平线；眼界，见识",
+    "ex": "We align Eagle3’s TTT horizon (7) with the block size (7) used by DFlash and DSpark, and we use the same target-model feature layers for all drafters."
+   },
+   {
+    "w": "idle",
+    "ipa": "ˈaɪdəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "空闲的；懒散的",
+    "ex": "To achieve this maximum throughput, the asynchronous scheduler (Section 5.2) actively routes idle compute toward the most promising draft tokens."
+   },
+   {
+    "w": "illustrate",
+    "ipa": "ˈɪləˌstreɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "说明,阐明",
+    "ex": "As illustrated, E and F are accepted while G is rejected, prompting the model to generate a corrected token G∗to complete the current round."
+   },
+   {
+    "w": "impact",
+    "ipa": "ˌɪmˈpækt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "影响",
+    "ex": "2In practical serving scenarios, average context lengths remain well below extremes (e.g., 1M tokens), making their impact on decode latency marginal for highly optimized architectures like DeepSeek-V4."
+   },
+   {
+    "w": "implement",
+    "ipa": "ˈɪmpləmənt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "实施，执行",
+    "ex": "To address these bottlenecks, we implement two system-level optimizations within our internal training framework (HAI-LLM)5:"
+   },
+   {
+    "w": "implementation",
+    "ipa": "ˌɪmpləmɛnˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "实现，履行",
+    "ex": "The complex intra-sequence dependencies are then strictly conveyed via a marker tensor integrated into our sparse attention implementation."
+   },
+   {
+    "w": "implicitly",
+    "ipa": "ˌɪmˈplɪsətli",
+    "pos": "adv.",
+    "lv": "专八",
+    "m": "暗示地，含蓄地，隐晦地",
+    "ex": "Note that this stepwise early-stopping yields the global maximum throughput if and only if the objective Θ is unimodal, which implicitly assumes a smoothly decaying hardware capacity curve."
+   },
+   {
+    "w": "improvement",
+    "ipa": "ˌɪmˈpruvmənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "改进，改善；改进处",
+    "ex": "Similarly, compared to DFlash, DSpark yields relative improvements of 16.3%, 18.4%, and 18.3% across the three scales."
+   },
+   {
+    "w": "inadvertently",
+    "ipa": "ˌɪnədˈvərtəntli",
+    "pos": "adv.",
+    "lv": "专八",
+    "m": "无意地",
+    "ex": "A retrospective global search would thus inadvertently leak 𝑥𝑟,𝑘into the admission decision for step 𝑘, introducing selection bias (we provide a concrete counterexample demonstrating this theoretical violation in Appendix A)."
+   },
+   {
+    "w": "incoherent",
+    "ipa": "ˌɪnkoʊˈhɪrənt",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "语无伦次的；不连贯的；不合逻辑的",
+    "ex": "When the context admits multiple plausible continuations, e.g., “of course” and “no problem”, a parallel drafter may produce incoherent combinations such as “of problem” or “no course”, because each position marginalizes over all …"
+   },
+   {
+    "w": "inconsistent",
+    "ipa": "ˌɪnkənˈsɪstənt",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "不一致的；前后矛盾的",
+    "ex": "Because each parallel position marginalizes over all possible prior tokens rather than conditioning on an exact sampled prefix, the model frequently proposes inconsistent suffix combinations—a mode known as multi-modal collision …"
+   },
+   {
+    "w": "increasingly",
+    "ipa": "ˌɪnˈkrisɪŋgli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "日益，越来越多地",
+    "ex": "The former governs the quality of service for individual users—a factor increasingly critical in agent-based workloads (Tiwari et al., 2026)—while the latter determines the total number of concurrently served users."
+   },
+   {
+    "w": "incur",
+    "ipa": "ˌɪnˈkər",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "引起，导致",
+    "ex": "Evaluating both models over the full document context incurs substantial memory footprints and inter-worker communication overhead."
+   },
+   {
+    "w": "index",
+    "ipa": "ˈɪndɛks",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "索引；指数；指标",
+    "ex": "We manage this packing via token-level attention indices rather than standard 2D masks."
+   },
+   {
+    "w": "indication",
+    "ipa": "ˌɪndəˈkeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "指示；表示；表明",
+    "ex": "As with V4-Flash, we treat this point as an indication that DSpark sustains useful throughput under an interactivity target that the baseline cannot efficiently support."
+   },
+   {
+    "w": "individual",
+    "ipa": "ˌɪndəˈvɪʤəwəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "个人",
+    "ex": "The former governs the quality of service for individual users—a factor increasingly critical in agent-based workloads (Tiwari et al., 2026)—while the latter determines the total number of concurrently served users."
+   },
+   {
+    "w": "induce",
+    "ipa": "ˌɪnˈdus",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "引诱",
+    "ex": "Rather than defining a globally normalized energy model, the sequential stage induces a causal block distribution through an autoregressive factorization: 𝑃(𝑋| 𝑥0) = 𝛾 Ö 𝑘=1 𝑝𝑘(𝑥𝑘| 𝑥0, 𝑥<𝑘), 𝑝𝑘(𝑣| 𝑥0, 𝑥<𝑘) = exp(𝑈𝑘(𝑣) + 𝐵𝑘(𝑥0 …"
+   },
+   {
+    "w": "inefficient",
+    "ipa": "ˌɪnɪˈfɪʃənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "效率低的，无能的",
+    "ex": "Verify Smarter, Not Longer: The Role of Confidence Head While DSpark sustains high acceptance over long draft blocks, verifying the entire proposal remains inefficient (Hu et al., 2026b;"
+   },
+   {
+    "w": "inevitably",
+    "ipa": "ˌɪˈnɛvətəbli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "不可避免地",
+    "ex": "Because ZOS requires the batch size for the next step to be known before the current step completes, synchronous scheduling would inevitably stall the GPU pipeline."
+   },
+   {
+    "w": "inference",
+    "ipa": "ˈɪnfərəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "推断结果， 结论； 推论， 推理， 推断",
+    "ex": "Speculative Decoding Autoregressive language models generate one token per forward pass, making inference latency proportional to output length."
+   },
+   {
+    "w": "infrastructure",
+    "ipa": "ˌɪnfrəˈstrəkʧər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "基础设施；公共建设；下部构造",
+    "ex": "However, directly deploying this algorithm into a production environment exposes two fundamental conflicts with real-world infrastructure."
+   },
+   {
+    "w": "inherent",
+    "ipa": "ˌɪnˈhɛrənt",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "固有的",
+    "ex": "Examining the tail of the curves (positions 2 through 7) exposes the inherent limitation of independent parallel generation."
+   },
+   {
+    "w": "inherently",
+    "ipa": "ˌɪnˈhɛrəntli",
+    "pos": "adv.",
+    "lv": "GRE",
+    "m": "固有地， 天性地",
+    "ex": "For complex queries with inherently low acceptance rates, this upfront drafting compute is unrecoverable."
+   },
+   {
+    "w": "inherit",
+    "ipa": "ˌɪnˈhɛrət",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "继承",
+    "ex": "As shown in Figure 2, DSpark inherits the high initial acceptance of the deep parallel drafter (e.g., starting at 0.93 on Math)."
+   },
+   {
+    "w": "inject",
+    "ipa": "ˌɪnˈʤɛkt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "注射；注满；喷射",
+    "ex": "These context features are injected into every draft"
+   },
+   {
+    "w": "injection",
+    "ipa": "ˌɪnˈʤɛkʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "注射，注入；充满",
+    "ex": "Among them, DFlash (Chen et al., 2026) is a state-of-the-art parallel drafter, which conditions its draft model on rich context features extracted from the target model (KV injection)."
+   },
+   {
+    "w": "input",
+    "ipa": "ˈɪnˌpʊt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "输入；投入的资金",
+    "ex": "It takes as input the embedding of an anchor token1 followed by 𝛾mask token embeddings, and produces logits for all mask positions in a single forward pass."
+   },
+   {
+    "w": "insight",
+    "ipa": "ˈɪnˌsaɪt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "洞察力，洞悉",
+    "ex": "A Little Autoregression Goes a Long Way Building on the insights from Section 4.3.1, we explore the architectural design space of DSpark along two dimensions: drafter depth (number of transformer layers) and proposal length …"
+   },
+   {
+    "w": "inspiration",
+    "ipa": "ˌɪnspərˈeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "灵感",
+    "ex": "Confidence Head Drawing inspiration from Huang et al. (2024);"
+   },
+   {
+    "w": "instance",
+    "ipa": "ˈɪnstəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "情况，例子",
+    "ex": "The metric then calculates the proportion of these valid instances where the token at position 𝑘is also accepted."
+   },
+   {
+    "w": "instantiate",
+    "ipa": "ˌɪnˈstænʃiˌeɪt",
+    "pos": "v.",
+    "lv": "GRE",
+    "m": "例示",
+    "ex": "Because our confidence head relies on the Markov feature of the previously sampled token, computing the next survival probability 𝑎𝑟,𝑘+1 explicitly requires the instantiated candidate 𝑥𝑟,𝑘."
+   },
+   {
+    "w": "integrate",
+    "ipa": "ˈɪnəˌgreɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "成为一体， 合并",
+    "ex": "The complex intra-sequence dependencies are then strictly conveyed via a marker tensor integrated into our sparse attention implementation."
+   },
+   {
+    "w": "integration",
+    "ipa": "ˌɪnəˈgreɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "综合",
+    "ex": "This adaptation fully hides scheduling latency and ensures seamless ZOS integration."
+   },
+   {
+    "w": "intelligently",
+    "ipa": "ˌɪnˈtɛlɪʤəntli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "聪明地；理智地",
+    "ex": "Furthermore, its real-world deployment within the DeepSeek-V4 validates its practical value in production serving: by intelligently managing verification overhead, DSpark sustains robust concurrency under heavy load, consistently …"
+   },
+   {
+    "w": "inter",
+    "ipa": "ˌɪnˈtər",
+    "pos": "v.",
+    "lv": "托福",
+    "m": "埋葬",
+    "ex": "Evaluating both models over the full document context incurs substantial memory footprints and inter-worker communication overhead."
+   },
+   {
+    "w": "interact",
+    "ipa": "ˌɪnərˈækt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "互动",
+    "ex": "This performance bottleneck stems from two interacting factors."
+   },
+   {
+    "w": "interchangeably",
+    "ipa": "ˌɪnərˈʧeɪnʤəbli",
+    "pos": "adv.",
+    "lv": "GRE",
+    "m": "可互换地",
+    "ex": "1We use the terms anchor token and bonus token interchangeably in this paper to denote the final token generated by the target model in the previous decoding round."
+   },
+   {
+    "w": "internal",
+    "ipa": "ˌɪnˈtərnəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "内的；国内的",
+    "ex": "To address these bottlenecks, we implement two system-level optimizations within our internal training framework (HAI-LLM)5:"
+   },
+   {
+    "w": "interpret",
+    "ipa": "ˌɪnˈtərprət",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "解释",
+    "ex": "We therefore interpret this high-SLA point primarily as evidence that DSpark extends the feasible interactivity frontier, rather than as a representative multiplicative speedup over a well-utilized baseline."
+   },
+   {
+    "w": "intuitive",
+    "ipa": "ˌɪnˈtuətɪv",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "直觉的",
+    "ex": "Table 1 presents a counter-intuitive observation: the parallel drafter (DFlash) and the semi-autoregressive drafter (DSpark) often yield longer accepted lengths than the fully autoregressive"
+   },
+   {
+    "w": "invalidate",
+    "ipa": "ˌɪnˈvælɪˌdeɪt",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "使无效；使无价值",
+    "ex": "Because speculative decoding operates as a strict prefix-matching survival process, the first token carries the highest leverage—a rejection here immediately invalidates the entire block."
+   },
+   {
+    "w": "isolate",
+    "ipa": "ˈaɪsəˌleɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使隔离，使孤立",
+    "ex": "Because the unconstrained search evaluates only historical predictions from two steps prior, the admission decision is isolated from the realization of the current token 𝑥𝑟,𝑘."
+   },
+   {
+    "w": "isolation",
+    "ipa": "ˌaɪsəˈleɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "隔绝，隔离",
+    "ex": "We validate the estimator in isolation here, reserving the hardware-aware prefix scheduler (Section 3.2.2) for live production evaluation in Section 5."
+   },
+   {
+    "w": "jagged",
+    "ipa": "ʤægd",
+    "pos": "adj.；v.",
+    "lv": "专八",
+    "m": "锯齿状的；参差不齐的；使成缺口；使成锯齿状（jag的过去式）",
+    "ex": "To prevent the scheduler from being trapped in local minima by jagged SPS cliffs, we remove the early-stopping break, enabling an unconstrained global search."
+   },
+   {
+    "w": "joint",
+    "ipa": "ʤɔɪnt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "联合的",
+    "ex": "Using a held-out validation set, STS calibrates this joint probability consecutively from left to right."
+   },
+   {
+    "w": "kernel",
+    "ipa": "ˈkərnəl",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "（果实的）核；谷粒",
+    "ex": "In our compute kernels, all tokens across different requests are flattened and processed identically as independent elements."
+   },
+   {
+    "w": "known",
+    "ipa": "noʊn",
+    "pos": "adj.；v.",
+    "lv": "专四",
+    "m": "已知的；知名的；大家知道的；知道（know的过去分词）",
+    "ex": "Because ZOS requires the batch size for the next step to be known before the current step completes, synchronous scheduling would inevitably stall the GPU pipeline."
+   },
+   {
+    "w": "label",
+    "ipa": "ˈleɪbəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "标签；标记，符号",
+    "ex": "the soft acceptance label 𝑐∗"
+   },
+   {
+    "w": "large-scale",
+    "ipa": "ˈlɑrʤˌskeɪl",
+    "pos": "adj.",
+    "lv": "雅思",
+    "m": "大规模的， 大范围的",
+    "ex": "it alongside large-scale models like DeepSeek-V4 (DeepSeek-AI, 2026) introduces additional"
+   },
+   {
+    "w": "latency",
+    "ipa": "ˈleɪtənsi",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "潜伏, 潜在, 潜伏物, 性潜伏期（ 岁或 岁至青春期）, [生理]（肌肉等的）反应时间（介于刺激与反应之间的时间）",
+    "ex": "Since the target model dominates the verification compute time at this batch size, the sequential block’s latency overhead is negligible."
+   },
+   {
+    "w": "latent",
+    "ipa": "ˈleɪtənt",
+    "pos": "adj.",
+    "lv": "考研",
+    "m": "存在但看不见的",
+    "ex": "Most techniques above cannot readily provide such probabilities due to iterative refinement, latent marginalization, or global normalization."
+   },
+   {
+    "w": "layer",
+    "ipa": "leɪər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "层，层次；铺设者",
+    "ex": "As expected, DSpark’s performance improves monotonically with depth, with the steepest marginal gain occurring from one to two layers."
+   },
+   {
+    "w": "lever",
+    "ipa": "ˈlɛvər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "杆，杠杆；控制杆",
+    "ex": "The average latency per generated token is: 𝐿= 𝑇draft + 𝑇verify 𝜏 . (1) Improving speedup therefore reduces to three levers: lowering 𝑇draft (draft faster), raising 𝜏 (draft better), or reducing the effective 𝑇verify (verify …"
+   },
+   {
+    "w": "limitation",
+    "ipa": "ˌlɪmɪˈteɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "限制；限度，局限",
+    "ex": "DSpark circumvents these limitations by keeping the sequential correction local, so per-token probabilities remain exact softmax evaluations."
+   },
+   {
+    "w": "linear",
+    "ipa": "ˈlɪniər",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "线的；长度的",
+    "ex": "The architecture features a lightweight linear projection followed by a sigmoid function: 𝑐𝑘= 𝜎\u0000𝑤⊤[ℎ𝑘; 𝑊1[𝑥𝑘−1]]\u0001, (7) where ℎ𝑘is the hidden state of the backbone and 𝑊1[𝑥𝑘−1] is the Markov Embedding from the previous draft token."
+   },
+   {
+    "w": "locally",
+    "ipa": "ˈloʊkəli",
+    "pos": "adv.",
+    "lv": "考博",
+    "m": "在本地, 地方性地, 局部地",
+    "ex": "The LM head projection is then executed locally on the draft model’s workers only for the sampled target positions."
+   },
+   {
+    "w": "log",
+    "ipa": "lɔg",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "原木，木料",
+    "ex": "The cross-entropy loss Lce trains the drafter to predict the correct next token: Lce = − 𝛾 ∑︁ 𝑘=1 𝑤𝑘log 𝑝𝑑 𝑘(𝑥∗ 𝑘), (9) where 𝑥∗ 𝑘is the ground-truth token and 𝑝𝑑 𝑘is the draft distribution."
+   },
+   {
+    "w": "logical",
+    "ipa": "ˈlɑʤɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "逻辑的；符合逻辑的",
+    "ex": "We resolve this by decoupling physical execution from logical sequence tracking."
+   },
+   {
+    "w": "loop",
+    "ipa": "lup",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "圈，环，环孔",
+    "ex": "The low-rank factorization (𝑟=256 by default) keeps both storage and per-step compute small, making the sequential loop efficient even for large vocabularies."
+   },
+   {
+    "w": "lower",
+    "ipa": "loʊər",
+    "pos": "adj.；v.",
+    "lv": "四级",
+    "m": "较低的；放下",
+    "ex": "First, on the data side, draft acceptance rates inherently vary across domains: structured text like code naturally yields high acceptance, whereas open-ended chat has significantly lower acceptance (Abramovich et al., 2026;"
+   },
+   {
+    "w": "magnitude",
+    "ipa": "ˈmægnəˌtud",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "重大；星等",
+    "ex": "Zhang et al., 2026b), which only require confidence scores to correctly rank draft token qualities, our hardware-aware scheduling approach (detailed in Section 3.2.2) precisely requires the absolute magnitudes of the cumulative …"
+   },
+   {
+    "w": "mainly",
+    "ipa": "ˈmeɪnli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "主要地，大体上",
+    "ex": "Also, RNN head provides only marginal additional gains over the Markov head, mainly at longer proposal lengths."
+   },
+   {
+    "w": "maintain",
+    "ipa": "meɪnˈteɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "维持，主张",
+    "ex": "The RNN head relaxes this by maintaining a recurrent state 𝑠𝑘that accumulates the full prefix history within a block."
+   },
+   {
+    "w": "margin",
+    "ipa": "ˈmɑrʤən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "边缘，范围",
+    "ex": "This structural gap yields a substantial accuracy margin at position 1, with DFlash starting noticeably higher than Eagle3 (e.g., 0.88 vs."
+   },
+   {
+    "w": "marginal",
+    "ipa": "ˈmɑrʤənəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "边缘的；记在页边的",
+    "ex": "Because pure parallel generation (DFlash) suffers from rapid acceptance decay (Figure 2), its marginal utility diminishes for long blocks."
+   },
+   {
+    "w": "marker",
+    "ipa": "ˈmɑrkər",
+    "pos": "n.",
+    "lv": "专四",
+    "m": "记分员；书签；标识物；作记号的人",
+    "ex": "The complex intra-sequence dependencies are then strictly conveyed via a marker tensor integrated into our sparse attention implementation."
+   },
+   {
+    "w": "matrix",
+    "ipa": "ˈmeɪtrɪks",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "[数] 矩阵；模型；[生物][地质] 基质；母体；子宫；[地质] 脉石",
+    "ex": "full 𝑉× 𝑉matrix 𝐵; we approximate it with a low-rank factorization 𝐵= 𝑊1𝑊2, where"
+   },
+   {
+    "w": "maximization",
+    "ipa": "ˌmæksɪmaɪˈzeɪʃn",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "最大化",
+    "ex": "a global throughput maximization problem"
+   },
+   {
+    "w": "maximize",
+    "ipa": "ˈmæksəˌmaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "取最大值, 最佳化",
+    "ex": "Thus, asynchronous design forms a causal barrier, maximizing physical throughput across hardware cliffs while preserving the exact target distribution."
+   },
+   {
+    "w": "measurement",
+    "ipa": "ˈmɛʒərmənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "衡量，测量；尺寸",
+    "ex": "Figure 2 details these measurements, demonstrating clear behavioral differences across the architectures."
+   },
+   {
+    "w": "mechanically",
+    "ipa": "məˈkænɪkli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "机械地",
+    "ex": "using the confidence head outputs from two steps prior. Mechanically, the candidate tokens in"
+   },
+   {
+    "w": "mechanism",
+    "ipa": "ˈmɛkəˌnɪzəm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "机制，机能",
+    "ex": "Hardware-Aware Prefix Scheduler in Practice In Section 3.2.2, Algorithm 1 provides a theoretically sound and lossless scheduling mechanism."
+   },
+   {
+    "w": "memoryless",
+    "ipa": "ˈmemərlɪs",
+    "pos": "adj.",
+    "lv": "超纲",
+    "m": "无记忆的（系统状态只取决于当前输入）",
+    "ex": "The Markov head is memoryless beyond one step—position 𝑘cannot access tokens before 𝑥𝑘−1."
+   },
+   {
+    "w": "metric",
+    "ipa": "ˈmɛtrɪk",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "公制的，米制的",
+    "ex": "Unlike standard prefix survival, this metric isolates the baseline predictive quality at position 𝑘by removing the penalty of previous rejections."
+   },
+   {
+    "w": "minimal",
+    "ipa": "ˈmɪnəməl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "最低的，最小限度的",
+    "ex": "The rightmost panel demonstrates that the sequential head introduces minimal latency overhead during serving. motivates DSpark’s semi-autoregressive design."
+   },
+   {
+    "w": "minimize",
+    "ipa": "ˈmɪnəˌmaɪz",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "将…减少； 最小化",
+    "ex": "Although the prefix scheduler minimizes wasted target-model verification, DSpark still incurs a fixed draft-side cost to generate the initial 𝛾-token block via the parallel backbone."
+   },
+   {
+    "w": "minor",
+    "ipa": "ˈmaɪnər",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "小的",
+    "ex": "We make only a minor modification to the original DFlash backbone: instead of feeding an anchor token plus 𝛾mask tokens and predicting only the mask positions, we treat the anchor itself as the first prediction position, so …"
+   },
+   {
+    "w": "mode",
+    "ipa": "moʊd",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "方式，样式",
+    "ex": "Returning to the earlier example: once position 1 samples “of”, the Markov head boosts “course” and suppresses “problem” at position 2, which mitigates the cross-mode collision. • RNN head."
+   },
+   {
+    "w": "moderate",
+    "ipa": "ˈmɑdərˌeɪt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "温和的；有节制的",
+    "ex": "Overall, these results show that DSpark shifts the observed throughput–interactivity frontier outward: it improves throughput in moderate-SLA regimes and, more importantly, preserves non-degenerate serving capacity under strict …"
+   },
+   {
+    "w": "modification",
+    "ipa": "ˌmɑdəfəˈkeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "修改",
+    "ex": "Specifically on the DeepSeek-V4 architecture, only the index-attention and compress kernels require modification to support this variable-length routing, allowing the dynamic scheduler to operate seamlessly without introducing …"
+   },
+   {
+    "w": "module",
+    "ipa": "ˈmɑʤul",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "模块；组件",
+    "ex": "For instance, in a design closely related to ours, CRF-NAT (Sun et al., 2019) also places a sequential module over parallel hidden states, but its globally normalized partition function prevents exact per-token probability …"
+   },
+   {
+    "w": "moreover",
+    "ipa": "mɔˈroʊvər",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "再者，加之，此外",
+    "ex": "Moreover, in prefill-decode disaggregated deployments, decode load balancers keep both request counts and total context lengths roughly balanced across data-parallel (DP) ranks."
+   },
+   {
+    "w": "motivate",
+    "ipa": "ˈmoʊtəˌveɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "促动，激发，诱导",
+    "ex": "This directly motivates our confidence-scheduled verification, which dynamically prunes the draft block based on expected acceptance."
+   },
+   {
+    "w": "multiple",
+    "ipa": "ˈməltəpəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "复合的；并联的",
+    "ex": "Training During training, we randomly sample multiple anchor positions from each target sequence to form 𝛾-token blocks as training data."
+   },
+   {
+    "w": "multiplicative",
+    "ipa": "ˈmʌltɪplɪketɪv",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "倍增的； 乘法的",
+    "ex": "We therefore interpret this high-SLA point primarily as evidence that DSpark extends the feasible interactivity frontier, rather than as a representative multiplicative speedup over a well-utilized baseline."
+   },
+   {
+    "w": "navigate",
+    "ipa": "ˈnævəˌgeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "航行，驾驶",
+    "ex": "To navigate the trade-offs among system compatibility, throughput, and algorithmic correct-ness, we adapt the scheduler to operate asynchronously."
+   },
+   {
+    "w": "negligible",
+    "ipa": "ˈnɛglɪʤəbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "微不足道的",
+    "ex": "Since the target model dominates the verification compute time at this batch size, the sequential block’s latency overhead is negligible."
+   },
+   {
+    "w": "neural",
+    "ipa": "ˈnʊrəl",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "神经的",
+    "ex": "Because neural confidence estimates are often overconfident (Guo et al., 2017;"
+   },
+   {
+    "w": "nominal",
+    "ipa": "ˈnɑmənəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "名义上的， 有名无实的； 很少的， 象征性的； 名词性的",
+    "ex": "Consequently, the relative throughput ratio at this point is numerically large, with DSpark achieving a nominal 661% higher aggregate throughput."
+   },
+   {
+    "w": "normalization",
+    "ipa": "ˌnɔrməlɪˈzeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "正常化，标准化",
+    "ex": "Most techniques above cannot readily provide such probabilities due to iterative refinement, latent marginalization, or global normalization."
+   },
+   {
+    "w": "normalize",
+    "ipa": "ˈnɔrməˌlaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使标准化，使正规化；归一化",
+    "ex": "For instance, in a design closely related to ours, CRF-NAT (Sun et al., 2019) also places a sequential module over parallel hidden states, but its globally normalized partition function prevents exact per-token probability …"
+   },
+   {
+    "w": "notably",
+    "ipa": "ˈnoʊtəbli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "显著地，尤其",
+    "ex": "Notably, a shallow 2-layer DSpark outperforms a deeper 5-layer DFlash baseline, highlighting the parameter efficiency of sequential modeling."
+   },
+   {
+    "w": "noticeably",
+    "ipa": "ˈnoʊtɪsəbli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "显著地，显然",
+    "ex": "This structural gap yields a substantial accuracy margin at position 1, with DFlash starting noticeably higher than Eagle3 (e.g., 0.88 vs."
+   },
+   {
+    "w": "objective",
+    "ipa": "əˈbʤɛktɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "客观的；无偏见的",
+    "ex": "The training objective consists of three terms: a cross-entropy loss Lce, a distribution-matching loss Ltv, and a confidence loss Lconf."
+   },
+   {
+    "w": "observation",
+    "ipa": "ˌɑbzərˈveɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "注意；观察；观察力",
+    "ex": "Table 1 presents a counter-intuitive observation: the parallel drafter (DFlash) and the semi-autoregressive drafter (DSpark) often yield longer accepted lengths than the fully autoregressive"
+   },
+   {
+    "w": "offset",
+    "ipa": "ˈɔfˌsɛt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "抵销",
+    "ex": "While approximating the capacity 𝐾introduces a slight temporal offset, the selection mechanism is fundamentally rank-preserving: the most confident draft tokens are always prioritized for verification."
+   },
+   {
+    "w": "opportunity",
+    "ipa": "ˌɑpərˈtunəti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "机会，良机",
+    "ex": "While useful for diagnostics, a static threshold is sub-optimal in dynamic serving environments because it ignores system load: verifying low-confidence tokens incurs minimal opportunity cost under low concurrency, but wastes …"
+   },
+   {
+    "w": "optimal",
+    "ipa": "ˈɑptɪməl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "最佳的；最理想的",
+    "ex": "Beyond drafter architecture, another line of work focuses on determining the optimal number of speculative tokens to generate or verify in each round."
+   },
+   {
+    "w": "optimization",
+    "ipa": "ɑptɪmɪˈzeɪʃən",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "最佳化, 最优化",
+    "ex": "Future optimizations could introduce difficulty-aware early exiting within the draft model, enabling such requests to bypass full-block generation."
+   },
+   {
+    "w": "optimize",
+    "ipa": "ˈɑptɪˌmaɪz",
+    "pos": "vt.",
+    "lv": "考博",
+    "m": "使最优化； 充分利用",
+    "ex": "High-Throughput and Low-Latency Inference During decoding, production serving systems must simultaneously optimize two competing objectives: per-request latency and aggregate throughput (Kwon et al., 2023;"
+   },
+   {
+    "w": "ordinarily",
+    "ipa": "ˌɔrdəˈnɛrəli",
+    "pos": "adv.",
+    "lv": "考博",
+    "m": "通常，大概",
+    "ex": "Ordinarily, this retrospective search would leak future token information and violate the lossless guarantee (Appendix A)."
+   },
+   {
+    "w": "original",
+    "ipa": "ərˈɪʤənəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "原始的，最初的",
+    "ex": "We make only a minor modification to the original DFlash backbone: instead of feeding an anchor token plus 𝛾mask tokens and predicting only the mask positions, we treat the anchor itself as the first prediction position, so …"
+   },
+   {
+    "w": "overall",
+    "ipa": "ˈoʊvərˌɔl",
+    "pos": "n.；adj.",
+    "lv": "四级",
+    "m": "工装裤；全面的",
+    "ex": "Indiscriminately verifying the full draft block can actually degrade overall system throughput, especially in high-concurrency scenarios (Hu et al., 2026b;"
+   },
+   {
+    "w": "overconfident",
+    "ipa": "ˌoʊvərˈkɑnfɪdənt",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "自负的, 过于自信的",
+    "ex": "Because neural confidence estimates are often overconfident (Guo et al., 2017;"
+   },
+   {
+    "w": "overly",
+    "ipa": "ˈoʊvərli",
+    "pos": "adv.；n.",
+    "lv": "专八",
+    "m": "过度地；极度地；(Overly)人名；(英)奥弗利",
+    "ex": "The reliability diagram (Figure 6) demonstrates that while the raw model achieves strong discrimination (ROC-AUC (Hanley and McNeil, 1982) ranging from 0.81 to 0.90), it is overly confident (ECE 3%–8%)."
+   },
+   {
+    "w": "overview",
+    "ipa": "ˈoʊvərvˌju",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "[图情] 综述；概观",
+    "ex": "Architecture The overview of DSpark is shown in Figure 1."
+   },
+   {
+    "w": "pad",
+    "ipa": "pæd",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "垫；本子；填塞",
+    "ex": "This maintains exact causal masking across multiple independent sequences and anchors, avoiding the computational and memory overhead associated with standard padding."
+   },
+   {
+    "w": "panel",
+    "ipa": "ˈpænəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "专门小组；面，板",
+    "ex": "The rightmost panel demonstrates that the sequential head introduces minimal latency overhead during serving. motivates DSpark’s semi-autoregressive design."
+   },
+   {
+    "w": "paradigm",
+    "ipa": "ˈpɛrəˌdaɪm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "典范; 范例; 示例",
+    "ex": "Algorithmically, DSpark introduces a semi-autoregressive generation paradigm—coupling a computationally heavy parallel backbone with a lightweight sequential head—to mitigate the rapid suffix decay of independent parallel …"
+   },
+   {
+    "w": "parameter",
+    "ipa": "pərˈæmətər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "参（变）数；参量",
+    "ex": "Notably, a shallow 2-layer DSpark outperforms a deeper 5-layer DFlash baseline, highlighting the parameter efficiency of sequential modeling."
+   },
+   {
+    "w": "partition",
+    "ipa": "pɑrˈtɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "分开，分割；隔墙",
+    "ex": "For instance, in a design closely related to ours, CRF-NAT (Sun et al., 2019) also places a sequential module over parallel hidden states, but its globally normalized partition function prevents exact per-token probability …"
+   },
+   {
+    "w": "penalize",
+    "ipa": "ˈpɛnəˌlaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "处罚；处刑；使不利",
+    "ex": "This approach ensures that the evaluation of position 𝑘is not penalized by earlier prefix errors, revealing the underlying predictive quality at each specific step."
+   },
+   {
+    "w": "penalty",
+    "ipa": "ˈpɛnəlti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "惩罚",
+    "ex": "Unlike standard prefix survival, this metric isolates the baseline predictive quality at position 𝑘by removing the penalty of previous rejections."
+   },
+   {
+    "w": "phase",
+    "ipa": "feɪz",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "阶段；方面；相位",
+    "ex": "target model executes one step to generate the next token D , which serves as the anchor for the drafting phase."
+   },
+   {
+    "w": "pipeline",
+    "ipa": "ˈpaɪˌplaɪn",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "管道, 传递途径",
+    "ex": "We address the engineering adaptations required for real-world, non-smooth SPS characteristics and asynchronous system pipelines in Section 5.2."
+   },
+   {
+    "w": "plausible",
+    "ipa": "ˈplɔzəbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "似有道理的， 似乎正确的， 貌似可信的",
+    "ex": "When the context admits multiple plausible continuations, e.g., “of course” and “no problem”, a parallel drafter may produce incoherent combinations such as “of problem” or “no course”, because each position marginalizes over all …"
+   },
+   {
+    "w": "precede",
+    "ipa": "prɪˈsid",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "先于…，领先",
+    "ex": "The simplest instantiation restricts 𝐵𝑘to depend only on the immediately preceding token, reducing it to a first-order transition 𝐵(𝑥𝑘−1, 𝑥𝑘)."
+   },
+   {
+    "w": "precisely",
+    "ipa": "prɪˈsaɪsli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "正好",
+    "ex": "Zhang et al., 2026b), which only require confidence scores to correctly rank draft token qualities, our hardware-aware scheduling approach (detailed in Section 3.2.2) precisely requires the absolute magnitudes of the cumulative …"
+   },
+   {
+    "w": "predecessor",
+    "ipa": "ˈprɛdəˌsɛsər",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "前辈，前任者",
+    "ex": "When the context admits multiple plausible continuations, e.g., “of course” and “no problem”, a parallel drafter may produce incoherent combinations such as “of problem” or “no course”, because each position marginalizes over all …"
+   },
+   {
+    "w": "predictability",
+    "ipa": "prɪˌdɪktəˈbɪlɪti",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "可预见性",
+    "ex": "This inherent variance in data predictability means a static verification length often wastes compute on trailing tokens that are highly likely to be rejected."
+   },
+   {
+    "w": "predictable",
+    "ipa": "prɪˈdɪktəbəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "可预料的",
+    "ex": "As earlier tokens lock in a specific semantic path, subsequent tokens naturally become more predictable."
+   },
+   {
+    "w": "prediction",
+    "ipa": "priˈdɪkʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "预言，预告；预报",
+    "ex": "The other direction reintroduces limited sequential dependency through iterative re-prediction (Austin et al., 2021a;"
+   },
+   {
+    "w": "predictor",
+    "ipa": "prɪˈdɪktər",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "预测器，预测变量； predictor network 预测网络",
+    "ex": "Wen and Feng, 2026), learned acceptance predictors (Huang et al., 2024;"
+   },
+   {
+    "w": "predominantly",
+    "ipa": "ˌprɪˈdɑmənənˌtli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "占主导地位地",
+    "ex": "This effectively amortizes sequence-length variance, allowing us to safely assume that engine throughput depends predominantly on the verification batch size 𝐵."
+   },
+   {
+    "w": "prefix",
+    "ipa": "ˈprifɪks",
+    "pos": "n.；v.",
+    "lv": "专四",
+    "m": "前缀；加前缀；将某事物加在前面",
+    "ex": "Hardware-Aware Prefix Scheduler in Practice In Section 3.2.2, Algorithm 1 provides a theoretically sound and lossless scheduling mechanism."
+   },
+   {
+    "w": "previous",
+    "ipa": "ˈpriviəs",
+    "pos": "adj.；adv.",
+    "lv": "四级",
+    "m": "之前的；先前地",
+    "ex": "Unlike standard prefix survival, this metric isolates the baseline predictive quality at position 𝑘by removing the penalty of previous rejections."
+   },
+   {
+    "w": "previously",
+    "ipa": "ˈpriviəsli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "事先",
+    "ex": "Autoregressive drafters generate draft tokens sequentially, conditioning each position on previously sampled tokens (DeepSeek-AI, 2024;"
+   },
+   {
+    "w": "primarily",
+    "ipa": "praɪˈmɛrəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "主要地，首先",
+    "ex": "We therefore interpret this high-SLA point primarily as evidence that DSpark extends the feasible interactivity frontier, rather than as a representative multiplicative speedup over a well-utilized baseline."
+   },
+   {
+    "w": "prioritize",
+    "ipa": "praɪˈɔrəˌtaɪz",
+    "pos": "v.",
+    "lv": "托福",
+    "m": "优先",
+    "ex": "While approximating the capacity 𝐾introduces a slight temporal offset, the selection mechanism is fundamentally rank-preserving: the most confident draft tokens are always prioritized for verification."
+   },
+   {
+    "w": "priority",
+    "ipa": "praɪˈɔrəti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "优先，优先权",
+    "ex": "Furthermore, recognizing speculative decoding as inherently a system-level scheduling problem, recent works optimize overall goodput and latency by adjusting speculation budgets according to real-time system load and request …"
+   },
+   {
+    "w": "probability",
+    "ipa": "ˌprɑbəˈbɪləˌti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "可能性；概率",
+    "ex": "Most techniques above cannot readily provide such probabilities due to iterative refinement, latent marginalization, or global normalization."
+   },
+   {
+    "w": "proceed",
+    "ipa": "pərˈsid",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "进行；继续进行",
+    "ex": "Verification proceeds left to right: the first rejection at position 𝑘discards all subsequent tokens 𝑥𝑘+1, . . . , 𝑥𝛾, regardless of their quality."
+   },
+   {
+    "w": "profile",
+    "ipa": "ˈproʊˌfaɪl",
+    "pos": "n.；vt.",
+    "lv": "六级",
+    "m": "侧面；人物简介；轮廓，形象；姿态，引人注目的状态；为…描绘； 写…的传略",
+    "ex": "Crucially, this capacity curve is profiled once during engine initialization and stored as a lightweight cost table."
+   },
+   {
+    "w": "projection",
+    "ipa": "prɑˈʤɛkʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "投射；规划；突出；发射；推测",
+    "ex": "The LM head projection is then executed locally on the draft model’s workers only for the sampled target positions."
+   },
+   {
+    "w": "prompt",
+    "ipa": "prɑmpt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "敏捷的；v. 敦促",
+    "ex": "As illustrated, E and F are accepted while G is rejected, prompting the model to generate a corrected token G∗to complete the current round."
+   },
+   {
+    "w": "property",
+    "ipa": "ˈprɑpərti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "财产，资产；性质",
+    "ex": "Lossless speculative decoding strictly requires the non-anticipating property: admission decisions must not depend on future candidate tokens (Chen et al., 2023;"
+   },
+   {
+    "w": "proportion",
+    "ipa": "prəˈpɔrʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比例，部分",
+    "ex": "The metric then calculates the proportion of these valid instances where the token at position 𝑘is also accepted."
+   },
+   {
+    "w": "proportionally",
+    "ipa": "prəˈpɔrʃənəli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "成比例地,相称地",
+    "ex": "This allows substantially larger blocks (e.g., 𝛾=16) without proportionally increasing latency."
+   },
+   {
+    "w": "proposal",
+    "ipa": "prəˈpoʊzəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "提议",
+    "ex": "Also, RNN head provides only marginal additional gains over the Markov head, mainly at longer proposal lengths."
+   },
+   {
+    "w": "propose",
+    "ipa": "prəˈpoʊz",
+    "pos": "v.；v.",
+    "lv": "四级",
+    "m": "提议；求婚",
+    "ex": "At each decoding cycle, the draft model proposes 𝛾candidate tokens 𝑥1, . . . , 𝑥𝛾."
+   },
+   {
+    "w": "protocol",
+    "ipa": "ˈproʊtəˌkɔl",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "礼仪， 礼节； 草案， 议定书",
+    "ex": "Unless otherwise stated, all experiments in this section use Qwen3-4B as the target model and follow the evaluation protocol detailed in Section 4.1."
+   },
+   {
+    "w": "proxy",
+    "ipa": "ˈprɑksi",
+    "pos": "n.",
+    "lv": "雅思",
+    "m": "代理权，代表权；代理人",
+    "ex": "The distribution-matching loss Ltv penalizes the total variation distance between the draft and target distributions: Ltv = 𝛾 ∑︁ 𝑘=1 𝑤𝑘∥𝑝𝑑 𝑘−𝑝𝑡 𝑘∥1. (10) Since the total variation distance is a direct proxy for the acceptance …"
+   },
+   {
+    "w": "prune",
+    "ipa": "prun",
+    "pos": "vt.",
+    "lv": "专四",
+    "m": "修剪， 修整； 删除， 削减",
+    "ex": "In contrast, structured tasks (Math and Code) experience milder pruning and retain more draft tokens, with acceptance rates rising from 76.9% to 92.5% and 67.6% to 92.0%, respectively."
+   },
+   {
+    "w": "qualitatively",
+    "ipa": "kˌwɑləˈteɪtɪvli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "质量上",
+    "ex": "The stricter 120 tok/s/user SLA represents a qualitatively different regime: under this constraint, the single-token MTP-1 baseline approaches its operational boundary and can sustain only a very small concurrent batch."
+   },
+   {
+    "w": "quantify",
+    "ipa": "kˈwɑntɪˌfaɪ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "确定…的数量",
+    "ex": "To quantify DSpark’s behavior under practical deployment constraints, we evaluate the system at several interactivity SLA anchors."
+   },
+   {
+    "w": "query",
+    "ipa": "kˈwiri",
+    "pos": "n.；v.",
+    "lv": "六级",
+    "m": "疑问，质问；疑问号 ；[计] 查询；询问；对……表示疑问",
+    "ex": "For complex queries with inherently low acceptance rates, this upfront drafting compute is unrecoverable."
+   },
+   {
+    "w": "randomly",
+    "ipa": "ˈrændəmli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "随机地",
+    "ex": "Training During training, we randomly sample multiple anchor positions from each target sequence to form 𝛾-token blocks as training data."
+   },
+   {
+    "w": "rapidly",
+    "ipa": "ˈræpədli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "迅速地；很快地；立即",
+    "ex": "Acceptance rate thus decays rapidly along the block, wasting both draft and verification compute."
+   },
+   {
+    "w": "ratio",
+    "ipa": "ˈreɪʃiˌoʊ",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "比，比率",
+    "ex": "Consequently, the relative throughput ratio at this point is numerically large, with DSpark achieving a nominal 661% higher aggregate throughput."
+   },
+   {
+    "w": "readily",
+    "ipa": "ˈrɛdəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "乐意地， 欣然地； 容易地； 很快地， 立即",
+    "ex": "Most techniques above cannot readily provide such probabilities due to iterative refinement, latent marginalization, or global normalization."
+   },
+   {
+    "w": "realization",
+    "ipa": "ˈriləˈzeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "（理想等的）实现",
+    "ex": "Because the unconstrained search evaluates only historical predictions from two steps prior, the admission decision is isolated from the realization of the current token 𝑥𝑟,𝑘."
+   },
+   {
+    "w": "recall",
+    "ipa": "ˈriˌkɔl",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "回想；叫回；收回",
+    "ex": "Recall from Equation 1 that the per-token latency of speculative decoding is 𝐿= (𝑇draft + 𝑇verify)/𝜏."
+   },
+   {
+    "w": "recovery",
+    "ipa": "rɪˈkəvəri",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "重获；痊愈，恢复",
+    "ex": "This isolates the admission event from future tokens, ensuring exact target-distribution recovery."
+   },
+   {
+    "w": "rectify",
+    "ipa": "ˈrɛktəˌfaɪ",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "纠正；调整",
+    "ex": "Crucially, temperature scaling is an order-preserving transformation: it rectifies the predicted probabilities to match empirical acceptance rates without disrupting the relative draft token rankings learned by the confidence …"
+   },
+   {
+    "w": "recurrent",
+    "ipa": "rɪˈkərənt",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "复发的；周期性的，经常发生的",
+    "ex": "The RNN head relaxes this by maintaining a recurrent state 𝑠𝑘that accumulates the full prefix history within a block."
+   },
+   {
+    "w": "refinement",
+    "ipa": "rəˈfaɪnmənt",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "精制；文雅；[化工][油气][冶] 提纯",
+    "ex": "Most techniques above cannot readily provide such probabilities due to iterative refinement, latent marginalization, or global normalization."
+   },
+   {
+    "w": "regenerate",
+    "ipa": "riˈʤɛnərˌeɪt",
+    "pos": "vi.；vt.",
+    "lv": "托福",
+    "m": "新生， 再生， 起革新作用；使新生，重建，改革，革新",
+    "ex": "We only use the prompts from Open-PerfectBlend; responses are regenerated by each target model with recommended sampling parameters."
+   },
+   {
+    "w": "regime",
+    "ipa": "rəˈʒim",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "制度，管理体制",
+    "ex": "Overall, these results show that DSpark shifts the observed throughput–interactivity frontier outward: it improves throughput in moderate-SLA regimes and, more importantly, preserves non-degenerate serving capacity under strict …"
+   },
+   {
+    "w": "regression",
+    "ipa": "rəˈgrɛʃən",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "回归；退化；逆行；复原",
+    "ex": "This demonstrates that injecting local auto-regression via a lightweight sequential head offers a highly favorable accuracy-parameter trade-off, achieving better sequence coherence than simply stacking deeper parallel layers."
+   },
+   {
+    "w": "reintroduce",
+    "ipa": "ˌriɪntrəˈdus",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "重新引入，再次引入",
+    "ex": "The other direction reintroduces limited sequential dependency through iterative re-prediction (Austin et al., 2021a;"
+   },
+   {
+    "w": "rejection",
+    "ipa": "rɪˈʤɛkʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "拒绝",
+    "ex": "Speculative decoding places a further demand that the drafter must provide exact per-token probabilities for the rejection sampling rule."
+   },
+   {
+    "w": "reliability",
+    "ipa": "riˌlaɪəˈbɪləti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "可靠性",
+    "ex": "The reliability diagram (Figure 6) demonstrates that while the raw model achieves strong discrimination (ROC-AUC (Hanley and McNeil, 1982) ranging from 0.81 to 0.90), it is overly confident (ECE 3%–8%)."
+   },
+   {
+    "w": "replay",
+    "ipa": "riˈpleɪ",
+    "pos": "v.；n.",
+    "lv": "专四",
+    "m": "重放；重演；重新比赛；重赛；重播；重演",
+    "ex": "Second, the algorithm requires scheduling of dynamic draft tokens per step, which clashes with continuous CUDA graph replay (Fireworks AI, 2023) and Zero-Overhead Scheduling (ZOS) (Zheng et al., 2024;"
+   },
+   {
+    "w": "representation",
+    "ipa": "ˌrɛprəzɛnˈteɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "描写；陈述；代表",
+    "ex": "layer by concatenating them with the draft block representations along the sequence dimension of keys and values: 𝐾𝑖= [𝑊𝐾 𝑖𝐻ctx; 𝑊𝐾 𝑖𝐻𝑑], 𝑉𝑖= [𝑊𝑉 𝑖𝐻ctx; 𝑊𝑉 𝑖𝐻𝑑]. (3) All positions within a block attend bidirectionally to each …"
+   },
+   {
+    "w": "resolve",
+    "ipa": "riˈzɑlv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "解决，下决心",
+    "ex": "Building on this asynchronous pipeline, we resolve the hardware utilization bottleneck."
+   },
+   {
+    "w": "resource",
+    "ipa": "ˈrisɔrs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "资源； 财力； 应付办法， 谋略",
+    "ex": "As concurrent load increases, the dynamic scheduler automatically restricts the per-request verification length to prevent resource contention."
+   },
+   {
+    "w": "respectively",
+    "ipa": "rɪˈspɛktɪvli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "各自地",
+    "ex": "Let 𝜏denote the number of accepted tokens per cycle, and let 𝑇draft and 𝑇verify be the wall-clock times of the drafting and verification passes, respectively."
+   },
+   {
+    "w": "response",
+    "ipa": "rɪˈspɑns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "反应",
+    "ex": "We only use the prompts from Open-PerfectBlend; responses are regenerated by each target model with recommended sampling parameters."
+   },
+   {
+    "w": "restrict",
+    "ipa": "riˈstrɪkt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "限制，限定",
+    "ex": "The simplest instantiation restricts 𝐵𝑘to depend only on the immediately preceding token, reducing it to a first-order transition 𝐵(𝑥𝑘−1, 𝑥𝑘)."
+   },
+   {
+    "w": "retain",
+    "ipa": "rɪˈteɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "保留,留用",
+    "ex": "The Hardware-Aware Prefix Scheduler then evaluates these scores to retain the prefix EFG and drop the low-confidence token H ."
+   },
+   {
+    "w": "retrain",
+    "ipa": "riˈtreɪn",
+    "pos": "v.",
+    "lv": "托福",
+    "m": "再教育；再训练",
+    "ex": "For strict and fair comparison, we retrain all drafters in the same training framework and on the same data3."
+   },
+   {
+    "w": "retrieval",
+    "ipa": "rɪˈtrivəl",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "检索；恢复；取回；拯救",
+    "ex": "Somasundaram et al., 2025), suffix automata (Hu et al., 2025), and retrieval (He et al., 2023;"
+   },
+   {
+    "w": "retrospective",
+    "ipa": "ˌrɛtrəˈspɛktɪv",
+    "pos": "adj.；n.",
+    "lv": "六级",
+    "m": "回顾的；怀旧的；可追溯的；回顾展",
+    "ex": "Ordinarily, this retrospective search would leak future token information and violate the lossless guarantee (Appendix A)."
+   },
+   {
+    "w": "reveal",
+    "ipa": "rɪˈvil",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "揭露，揭示",
+    "ex": "Beyond the average improvements, Table 1 reveals a strong domain effect: the accepted length is naturally higher on structured tasks (e.g., 5.57 on math and 5.12 on code for Qwen3-4B) than on open-ended chat (3.49)."
+   },
+   {
+    "w": "roughly",
+    "ipa": "ˈrəfli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "粗糙地；概略地",
+    "ex": "Moreover, in prefill-decode disaggregated deployments, decode load balancers keep both request counts and total context lengths roughly balanced across data-parallel (DP) ranks."
+   },
+   {
+    "w": "route",
+    "ipa": "rut",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "路，路线，路程",
+    "ex": "To achieve this maximum throughput, the asynchronous scheduler (Section 5.2) actively routes idle compute toward the most promising draft tokens."
+   },
+   {
+    "w": "sample",
+    "ipa": "ˈsæmpəl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "样品；实例，标本",
+    "ex": "Speculative decoding places a further demand that the drafter must provide exact per-token probabilities for the rejection sampling rule."
+   },
+   {
+    "w": "saturate",
+    "ipa": "ˈsæʧərˌeɪt",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "使湿透， 浸透； 使充满， 使饱和",
+    "ex": "This extended verification yields more accepted tokens per forward pass, directly contributing to the throughput gains observed on the Pareto frontier. • As system concurrency scales and target capacity saturates, the scheduler …"
+   },
+   {
+    "w": "scalar",
+    "ipa": "ˈskeɪlər",
+    "pos": "adj.；n.",
+    "lv": "专四",
+    "m": "标量的；数量的；梯状的，分等级的；[数] 标量；[数] 数量",
+    "ex": "𝑘∈{1, . . . , 𝛾}, we perform a simple 1D grid search to find the optimal temperature scalar that"
+   },
+   {
+    "w": "scale",
+    "ipa": "skeɪl",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "规模，比例",
+    "ex": "Consequently, scaling the draft length from 4 to 16 adds a marginal 0.2% to 1.3% to the full-round latency over the DFlash baseline, despite delivering up to a 30% improvement in accepted length."
+   },
+   {
+    "w": "scatter",
+    "ipa": "ˈskætər",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "使消散；撒；散播",
+    "ex": "In all figures, the scatter points represent raw telemetry data sampled directly from live user traffic, capturing complex, real-world request distributions, while the solid lines represent the fitted performance frontiers."
+   },
+   {
+    "w": "scenario",
+    "ipa": "sɪˈnɛrioʊ",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "情境 “；剧本",
+    "ex": "Indiscriminately verifying the full draft block can actually degrade overall system throughput, especially in high-concurrency scenarios (Hu et al., 2026b;"
+   },
+   {
+    "w": "selection",
+    "ipa": "səˈlɛkʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "选择，挑选",
+    "ex": "While approximating the capacity 𝐾introduces a slight temporal offset, the selection mechanism is fundamentally rank-preserving: the most confident draft tokens are always prioritized for verification."
+   },
+   {
+    "w": "self",
+    "ipa": "sɛlf",
+    "pos": "n.；adj.；vt.；vi.",
+    "lv": "四级",
+    "m": "自己，自我；本质；私心；同一的；使自花授精；使近亲繁殖；自花授精",
+    "ex": "Other strategies include self-speculation via early exits (Elhoushi et al., 2024;"
+   },
+   {
+    "w": "semantic",
+    "ipa": "sɪˈmæntɪk",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "语义的；语义学的（等于semantical）",
+    "ex": "As earlier tokens lock in a specific semantic path, subsequent tokens naturally become more predictable."
+   },
+   {
+    "w": "sequence",
+    "ipa": "ˈsikwəns",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "连续，继续；次序",
+    "ex": "The complex intra-sequence dependencies are then strictly conveyed via a marker tensor integrated into our sparse attention implementation."
+   },
+   {
+    "w": "sequential",
+    "ipa": "səkˈwɛnʃəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "序列的； 连续的； 随之而来的",
+    "ex": "Notably, a shallow 2-layer DSpark outperforms a deeper 5-layer DFlash baseline, highlighting the parameter efficiency of sequential modeling."
+   },
+   {
+    "w": "setup",
+    "ipa": "ˈsɛˌtəp",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "装备, 安装,计划",
+    "ex": "The experimental setup is described in Section 4.1, main results in Section 4.2, and additional analyses are included in Section 4.3."
+   },
+   {
+    "w": "sigmoid",
+    "ipa": "ˈsɪɡmɔɪd",
+    "pos": "adj./n.",
+    "lv": "考博",
+    "m": "S 形的；sigmoid function 逻辑斯谛/乙状函数",
+    "ex": "The architecture features a lightweight linear projection followed by a sigmoid function: 𝑐𝑘= 𝜎\u0000𝑤⊤[ℎ𝑘; 𝑊1[𝑥𝑘−1]]\u0001, (7) where ℎ𝑘is the hidden state of the backbone and 𝑊1[𝑥𝑘−1] is the Markov Embedding from the previous draft token."
+   },
+   {
+    "w": "significant",
+    "ipa": "sɪgˈnɪfɪkənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "重要的",
+    "ex": "across parallel workers creates a significant bandwidth bottleneck."
+   },
+   {
+    "w": "similarly",
+    "ipa": "ˈsɪmələrli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "类似地，相似地",
+    "ex": "Similarly, compared to DFlash, DSpark yields relative improvements of 16.3%, 18.4%, and 18.3% across the three scales."
+   },
+   {
+    "w": "simply",
+    "ipa": "ˈsɪmpli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "简单地；朴素地",
+    "ex": "This demonstrates that injecting local auto-regression via a lightweight sequential head offers a highly favorable accuracy-parameter trade-off, achieving better sequence coherence than simply stacking deeper parallel layers."
+   },
+   {
+    "w": "simultaneously",
+    "ipa": "ˌsaɪməlˈteɪniəsli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "同步地，同时地",
+    "ex": "Simultaneously, its lightweight sequential head mitigates the rapid acceptance decay typical of parallel generation."
+   },
+   {
+    "w": "smoothly",
+    "ipa": "sˈmuðli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "平稳地",
+    "ex": "The average verification length decreases smoothly with load, ensuring that low-confidence draft tokens are pruned before they consume critical batch capacity."
+   },
+   {
+    "w": "solely",
+    "ipa": "ˈsoʊəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "单独地，唯一地",
+    "ex": "At the first draft position, both architectures predict the next token based solely on the target context."
+   },
+   {
+    "w": "source",
+    "ipa": "sɔrs",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "来源",
+    "ex": "We use Open-PerfectBlend, an open-sourced version of PerfectBlend (Xu et al., 2024) consisting of 1.3 million samples."
+   },
+   {
+    "w": "sparse",
+    "ipa": "spɑrs",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "稀疏的；稀少的",
+    "ex": "The complex intra-sequence dependencies are then strictly conveyed via a marker tensor integrated into our sparse attention implementation."
+   },
+   {
+    "w": "specify",
+    "ipa": "ˈspɛsəˌfaɪ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "指定，具体说明",
+    "ex": "Here, an SLA (Service Level Agreement) specifies the minimum per-user generation speed (in tokens per second) that the system must guarantee."
+   },
+   {
+    "w": "speculation",
+    "ipa": "ˌspɛkjəˈleɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "推测， 思索； 投机活动， 投机买卖",
+    "ex": "Other strategies include self-speculation via early exits (Elhoushi et al., 2024;"
+   },
+   {
+    "w": "stabilize",
+    "ipa": "ˈsteɪbəˌlaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "使稳固，使安定",
+    "ex": "capacity. This load-aware behavior stabilizes production deployment: DSpark maximizes"
+   },
+   {
+    "w": "stack",
+    "ipa": "stæk",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "堆，垛；堆积",
+    "ex": "This demonstrates that injecting local auto-regression via a lightweight sequential head offers a highly favorable accuracy-parameter trade-off, achieving better sequence coherence than simply stacking deeper parallel layers."
+   },
+   {
+    "w": "stall",
+    "ipa": "stɔl",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "货摊，书摊；马厩",
+    "ex": "Because ZOS requires the batch size for the next step to be known before the current step completes, synchronous scheduling would inevitably stall the GPU pipeline."
+   },
+   {
+    "w": "static",
+    "ipa": "ˈstætɪk",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "静的；静态的",
+    "ex": "This inherent variance in data predictability means a static verification length often wastes compute on trailing tokens that are highly likely to be rejected."
+   },
+   {
+    "w": "steadily",
+    "ipa": "ˈstɛdəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "稳定地,坚定地",
+    "ex": "As the threshold increases, the acceptance rate steadily rises because the estimator filters out tokens that would ultimately be rejected (hashed bars)."
+   },
+   {
+    "w": "steer",
+    "ipa": "stɪr",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "驾驶",
+    "ex": "One direction retains the single-pass architecture but changes what the model sees or how it is trained: introducing latent variables as conditioning input to steer all positions toward a consistent output (Gu et al., 2018;"
+   },
+   {
+    "w": "stem",
+    "ipa": "stɛm",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "茎，(树)干；起源",
+    "ex": "This performance bottleneck stems from two interacting factors."
+   },
+   {
+    "w": "stepwise",
+    "ipa": "ˈstɛpwaɪz",
+    "pos": "adj.",
+    "lv": "GRE",
+    "m": "楼梯式的, 逐步的",
+    "ex": "Note that this stepwise early-stopping yields the global maximum throughput if and only if the objective Θ is unimodal, which implicitly assumes a smoothly decaying hardware capacity curve."
+   },
+   {
+    "w": "strategy",
+    "ipa": "ˈstrætəʤi",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "策略，战略",
+    "ex": "Other strategies include self-speculation via early exits (Elhoushi et al., 2024;"
+   },
+   {
+    "w": "strictly",
+    "ipa": "ˈstrɪktli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "严格地",
+    "ex": "The complex intra-sequence dependencies are then strictly conveyed via a marker tensor integrated into our sparse attention implementation."
+   },
+   {
+    "w": "structural",
+    "ipa": "ˈstrəkʧərəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "结构的，构造的",
+    "ex": "This structural gap yields a substantial accuracy margin at position 1, with DFlash starting noticeably higher than Eagle3 (e.g., 0.88 vs."
+   },
+   {
+    "w": "subsequent",
+    "ipa": "ˈsəbsəkwənt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "随后的，后来的",
+    "ex": "Verification proceeds left to right: the first rejection at position 𝑘discards all subsequent tokens 𝑥𝑘+1, . . . , 𝑥𝛾, regardless of their quality."
+   },
+   {
+    "w": "subsequently",
+    "ipa": "ˈsəbsəkwəntli",
+    "pos": "adv.",
+    "lv": "专四",
+    "m": "随后",
+    "ex": "Furthermore, the confidence head is trained end-to-end alongside the draft model and subsequently calibrated via STS to provide reliable scheduling signals."
+   },
+   {
+    "w": "substantial",
+    "ipa": "səbˈstænʃəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "大量的",
+    "ex": "This structural gap yields a substantial accuracy margin at position 1, with DFlash starting noticeably higher than Eagle3 (e.g., 0.88 vs."
+   },
+   {
+    "w": "successfully",
+    "ipa": "səkˈsɛsfəli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "成功地",
+    "ex": "In a single verification step, the total batch size (measured in tokens) sent to the target model is 𝐵= Í𝑅 𝑟=1(1 + ℓ𝑟), and the expected number of successfully accepted tokens is 𝜏= Í𝑅 𝑟=1 \u00001 + Íℓ𝑟 𝑗=1 𝑎𝑟,𝑗 \u0001."
+   },
+   {
+    "w": "suffix",
+    "ipa": "ˈsəfɪks",
+    "pos": "v.；n.",
+    "lv": "专四",
+    "m": "添后缀；后缀；下标",
+    "ex": "To evaluate whether the confidence head can effectively prune these unpromising suffixes, we conduct an offline threshold sweep using Qwen3-4B."
+   },
+   {
+    "w": "supersede",
+    "ipa": "ˌsupərˈsid",
+    "pos": "v.",
+    "lv": "专八",
+    "m": "取代，代替；紧接着……而到来",
+    "ex": "MTP-1 represents the former production setup, having been superseded by DSpark two weeks following the DeepSeek-V4-preview release."
+   },
+   {
+    "w": "supervise",
+    "ipa": "ˈsupərˌvaɪz",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "监督，监视",
+    "ex": "We supervise 𝑐𝑘using the analytical acceptance rate per-step 𝑐∗ 𝑘."
+   },
+   {
+    "w": "supervision",
+    "ipa": "ˌsupərˈvɪʒən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "监督",
+    "ex": "Training the draft model requires the target model’s output distributions for supervision."
+   },
+   {
+    "w": "supplement",
+    "ipa": "ˌsəpləˈmɛnt",
+    "pos": "—",
+    "lv": "四级",
+    "m": "增补，补充",
+    "ex": "The sequential stage supplements the base logits with a prefix-dependent transition bias 𝐵𝑘(𝑥0, 𝑥<𝑘, 𝑥𝑘), allowing each draft position to condition on previously sampled tokens within the block."
+   },
+   {
+    "w": "suppress",
+    "ipa": "səˈprɛs",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "镇压，压制",
+    "ex": "Returning to the earlier example: once position 1 samples “of”, the Markov head boosts “course” and suppresses “problem” at position 2, which mitigates the cross-mode collision. • RNN head."
+   },
+   {
+    "w": "sustain",
+    "ipa": "səˈsteɪn",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "维持",
+    "ex": "DSpark sustains robust concurrency under heavy load"
+   },
+   {
+    "w": "synchronous",
+    "ipa": "ˈsɪŋkrənəs",
+    "pos": "adj.",
+    "lv": "GRE",
+    "m": "同时的, [物]同步的",
+    "ex": "Because ZOS requires the batch size for the next step to be known before the current step completes, synchronous scheduling would inevitably stall the GPU pipeline."
+   },
+   {
+    "w": "telemetry",
+    "ipa": "təˈlɛmətri",
+    "pos": "n.",
+    "lv": "超纲",
+    "m": "遥测（技术）",
+    "ex": "In all figures, the scatter points represent raw telemetry data sampled directly from live user traffic, capturing complex, real-world request distributions, while the solid lines represent the fitted performance frontiers."
+   },
+   {
+    "w": "temporal",
+    "ipa": "ˈtɛmpərəl",
+    "pos": "adj.；n.",
+    "lv": "六级",
+    "m": "暂时的；当时的；现世的；世间万物；暂存的事物",
+    "ex": "While approximating the capacity 𝐾introduces a slight temporal offset, the selection mechanism is fundamentally rank-preserving: the most confident draft tokens are always prioritized for verification."
+   },
+   {
+    "w": "temporarily",
+    "ipa": "ˌtɛmpərˈɛrəli",
+    "pos": "adv.",
+    "lv": "六级",
+    "m": "临时",
+    "ex": "Instead, we temporarily cache the target model’s forward-pass activations and communicate only the hidden states immediately preceding the language modeling (LM) head."
+   },
+   {
+    "w": "threshold",
+    "ipa": "θˈrɛˌʃoʊld",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "门槛",
+    "ex": "To evaluate whether the confidence head can effectively prune these unpromising suffixes, we conduct an offline threshold sweep using Qwen3-4B."
+   },
+   {
+    "w": "throughput",
+    "ipa": "θˈruˌpʊt",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "生产量，生产能力",
+    "ex": "At matched practical throughput levels, which provide a more stable comparison, DSpark accelerates per-user generation speeds by 60% to 85%."
+   },
+   {
+    "w": "token",
+    "ipa": "ˈtoʊkən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "辅币；象征",
+    "ex": "Parallel drafters produce all 𝛾draft tokens in a single forward pass, making 𝑇draft nearly independent of the block size (Cai et al., 2024;"
+   },
+   {
+    "w": "trail",
+    "ipa": "treɪl",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "痕迹；小径；跟踪",
+    "ex": "This inherent variance in data predictability means a static verification length often wastes compute on trailing tokens that are highly likely to be rejected."
+   },
+   {
+    "w": "transfer",
+    "ipa": "ˈtrænsfər",
+    "pos": "—",
+    "lv": "四级",
+    "m": "转换，调换",
+    "ex": "Transferring the target model’s full-vocabulary logits (𝑉≈105)"
+   },
+   {
+    "w": "transformation",
+    "ipa": "ˌtrænsfərˈmeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "变化；改造；转变",
+    "ex": "Crucially, temperature scaling is an order-preserving transformation: it rectifies the predicted probabilities to match empirical acceptance rates without disrupting the relative draft token rankings learned by the confidence …"
+   },
+   {
+    "w": "transformer",
+    "ipa": "trænsˈfɔrmər",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "变压器，转换器",
+    "ex": "Non-Autoregressive Transformers (NATs, Gu et al., 2018) pioneered this direction by predicting all positions independently in a single pass."
+   },
+   {
+    "w": "transition",
+    "ipa": "trænˈzɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "过渡",
+    "ex": "The simplest instantiation restricts 𝐵𝑘to depend only on the immediately preceding token, reducing it to a first-order transition 𝐵(𝑥𝑘−1, 𝑥𝑘)."
+   },
+   {
+    "w": "ultimately",
+    "ipa": "ˈəltəmətli",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "最后，最终",
+    "ex": "As the threshold increases, the acceptance rate steadily rises because the estimator filters out tokens that would ultimately be rejected (hashed bars)."
+   },
+   {
+    "w": "underlying",
+    "ipa": "ˌəndərˈlaɪɪŋ",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "潜在的，基础的",
+    "ex": "This approach ensures that the evaluation of position 𝑘is not penalized by earlier prefix errors, revealing the underlying predictive quality at each specific step."
+   },
+   {
+    "w": "uneven",
+    "ipa": "əˈnivən",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "不均衡的",
+    "ex": "Standard decode kernels are heavily optimized for fixed query lengths; naively processing variable-length verified prefixes leads to severe GPU under-utilization due to padding and uneven workload distribution."
+   },
+   {
+    "w": "unify",
+    "ipa": "ˈjunəˌfaɪ",
+    "pos": "vt.",
+    "lv": "六级",
+    "m": "使联合， 统一； 使相同， 使一致",
+    "ex": "Therefore, fully unlocking the potential of large draft blocks requires a unified mechanism that routes target model compute only toward tokens with a positive expected return."
+   },
+   {
+    "w": "unimodal",
+    "ipa": "ˈjunɪˈmoʊdl",
+    "pos": "adj.",
+    "lv": "超纲",
+    "m": "单峰性的；单模态的",
+    "ex": "Note that this stepwise early-stopping yields the global maximum throughput if and only if the objective Θ is unimodal, which implicitly assumes a smoothly decaying hardware capacity curve."
+   },
+   {
+    "w": "unnecessary",
+    "ipa": "ənˈnɛsəˌsɛri",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "不必要的；多余的，无用的",
+    "ex": "However, under high-concurrency deployments, every unnecessary verification occupies target model batch capacity that could otherwise serve other active requests (Liu et al., 2024b;"
+   },
+   {
+    "w": "unpromising",
+    "ipa": "ənˈprɔmɪsɪŋ",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "没有希望的(结果未必良好的)",
+    "ex": "To evaluate whether the confidence head can effectively prune these unpromising suffixes, we conduct an offline threshold sweep using Qwen3-4B."
+   },
+   {
+    "w": "up-to-date",
+    "ipa": "əp tɪ deɪt",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "直到最近的， 现代的； 跟上时代的",
+    "ex": "the current step are still strictly sorted by their actual, up-to-date cumulative confidence scores;"
+   },
+   {
+    "w": "upcoming",
+    "ipa": "ˈəpˌkəmɪŋ",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "即将来临的",
+    "ex": "Instead, we approximate the upcoming verification capacity using the confidence head outputs from two steps prior."
+   },
+   {
+    "w": "upfront",
+    "ipa": "ˈəpˌfrənt",
+    "pos": "adj.；adv.",
+    "lv": "专八",
+    "m": "预付的；在前面的；正直的，坦率的；在前面；提前支付（工资）",
+    "ex": "For complex queries with inherently low acceptance rates, this upfront drafting compute is unrecoverable."
+   },
+   {
+    "w": "utility",
+    "ipa": "juˈtɪləti",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "使用，公共设施",
+    "ex": "Because pure parallel generation (DFlash) suffers from rapid acceptance decay (Figure 2), its marginal utility diminishes for long blocks."
+   },
+   {
+    "w": "utilization",
+    "ipa": "ˌjutələˈzeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "利用",
+    "ex": "Building on this asynchronous pipeline, we resolve the hardware utilization bottleneck."
+   },
+   {
+    "w": "validate",
+    "ipa": "ˈvælədeɪt",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "证实，验证；确认；使生效",
+    "ex": "We validate the estimator in isolation here, reserving the hardware-aware prefix scheduler (Section 3.2.2) for live production evaluation in Section 5."
+   },
+   {
+    "w": "variable",
+    "ipa": "ˈvɛriəbəl",
+    "pos": "adj.；n.",
+    "lv": "四级",
+    "m": "易变的；变量",
+    "ex": "One direction retains the single-pass architecture but changes what the model sees or how it is trained: introducing latent variables as conditioning input to steer all positions toward a consistent output (Gu et al., 2018;"
+   },
+   {
+    "w": "variance",
+    "ipa": "ˈvɛriəns",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "不同",
+    "ex": "This inherent variance in data predictability means a static verification length often wastes compute on trailing tokens that are highly likely to be rejected."
+   },
+   {
+    "w": "variant",
+    "ipa": "ˈvɛriənt",
+    "pos": "adj.；n.",
+    "lv": "六级",
+    "m": "不同的；多样的；变体；转化",
+    "ex": "Unless otherwise stated, DSpark denotes the Markov-head variant; we study the RNN-head variant in Section 4.3.2."
+   },
+   {
+    "w": "variation",
+    "ipa": "ˌvɛriˈeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "变化，变动；变异",
+    "ex": "This rate is determined by the total variation distance between the draft distribution 𝑝𝑑 𝑘and the target distribution 𝑝𝑡 𝑘: 𝑐∗ 𝑘= 1 −1 2 ∥𝑝𝑑 𝑘−𝑝𝑡 𝑘∥1. (8) Post-hoc Calibration."
+   },
+   {
+    "w": "vary",
+    "ipa": "ˈvɛri",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "变化；不同",
+    "ex": "To isolate this effect, we fix the block size to 7 and vary the number of DSpark layers from 1 to 5, comparing it against a 5-layer DFlash baseline."
+   },
+   {
+    "w": "vector",
+    "ipa": "ˈvɛktər",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "矢量；飞机航线",
+    "ex": "(4) Here, 𝑥0 denotes the anchor token from the previous verification cycle, 𝑈𝑘is the base logit vector produced by the parallel backbone at position 𝑘, and V is the vocabulary."
+   },
+   {
+    "w": "verifiable",
+    "ipa": "ˈvɛrəˌfaɪəbəl",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "可证实的， 可核实的",
+    "ex": "DDTree, TAPS and JetSpec then extend the draft chain to verifiable trees (Hu et al., 2026a;"
+   },
+   {
+    "w": "verification",
+    "ipa": "ˌvɛrəfəˈkeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "确认",
+    "ex": "Since the target model dominates the verification compute time at this batch size, the sequential block’s latency overhead is negligible."
+   },
+   {
+    "w": "verify",
+    "ipa": "ˈvɛrəˌfaɪ",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "证实，查证；证明",
+    "ex": "Beyond drafter architecture, another line of work focuses on determining the optimal number of speculative tokens to generate or verify in each round."
+   },
+   {
+    "w": "violation",
+    "ipa": "vaɪəˈleɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "违反",
+    "ex": "A retrospective global search would thus inadvertently leak 𝑥𝑟,𝑘into the admission decision for step 𝑘, introducing selection bias (we provide a concrete counterexample demonstrating this theoretical violation in Appendix A)."
+   },
+   {
+    "w": "whereas",
+    "ipa": "wɛˈræz",
+    "pos": "conj.",
+    "lv": "六级",
+    "m": "然而， 但是， 尽管",
+    "ex": "First, the algorithm assumes a smooth, unimodal capacity curve, whereas the true hardware capacity SPS(𝐵) is inherently discrete, exhibiting a jagged, step-wise degradation (Yan et al., 2020)."
+   },
+   {
+    "w": "widen",
+    "ipa": "ˈwaɪdən",
+    "pos": "v.；v.",
+    "lv": "四级",
+    "m": "加宽；变宽",
+    "ex": "More importantly, the performance gap steadily widens as 𝛾increases."
+   },
+   {
+    "w": "yield",
+    "ipa": "jild",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "屈服，产出；产量",
+    "ex": "This structural gap yields a substantial accuracy margin at position 1, with DFlash starting noticeably higher than Eagle3 (e.g., 0.88 vs."
+   }
+  ]
+ },
+ {
+  "sec": "References · 参考文献区用词（正文未出现）",
+  "short": "文献区",
+  "icon": "R",
+  "words": [
+   {
+    "w": "acceleration",
+    "ipa": "ˌækˌsɛlərˈeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "加速；加速度",
+    "ex": "EAGLE-3: Scaling up inference acceleration of large language models via training-time test."
+   },
+   {
+    "w": "agnostic",
+    "ipa": "ægˈnɑstɪk",
+    "pos": "n.；adj.",
+    "lv": "专八",
+    "m": "不可知论者；不可知论的",
+    "ex": "Masked diffusion models are secretly time-agnostic masked models and exploit inaccurate categorical sampling."
+   },
+   {
+    "w": "berg",
+    "ipa": "bərg",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "冰山",
+    "ex": "Tarlow, and R. van den Berg."
+   },
+   {
+    "w": "blend",
+    "ipa": "blɛnd",
+    "pos": "—",
+    "lv": "四级",
+    "m": "混和",
+    "ex": "The perfect blend: Redefining rlhf with mixture of judges. arXiv preprint arXiv:2409.20370, 2024."
+   },
+   {
+    "w": "cape",
+    "ipa": "keɪp",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "披肩，斗篷；海角",
+    "ex": "GliDe with a CaPE: A low-hassle method to accelerate speculative decoding."
+   },
+   {
+    "w": "categorical",
+    "ipa": "ˌkætəˈgɔrɪkəl",
+    "pos": "adj.",
+    "lv": "专八",
+    "m": "绝对的（名词categoricalness，副词categorically，异体字categoric）；直截了当的；无条件的；属于某一范畴的",
+    "ex": "Masked diffusion models are secretly time-agnostic masked models and exploit inaccurate categorical sampling."
+   },
+   {
+    "w": "classification",
+    "ipa": "ˌklæsəfəˈkeɪʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "分类，级别",
+    "ex": "End-to-end non-autoregressive neural machine translation with con-nectionist temporal classification."
+   },
+   {
+    "w": "comprehensive",
+    "ipa": "ˌkɑmpriˈhɛnsɪv",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "综合的，全面的",
+    "ex": "Unlocking efficiency in large language model inference: A comprehensive survey of speculative decoding."
+   },
+   {
+    "w": "con",
+    "ipa": "kɑn",
+    "pos": "n.；v.；adv.；adj.；prep.",
+    "lv": "专八",
+    "m": "反对票；反对论；精读；默记；反面地；欺诈的；以…",
+    "ex": "End-to-end non-autoregressive neural machine translation with con-nectionist temporal classification."
+   },
+   {
+    "w": "contamination",
+    "ipa": "kənˌtæməˈneɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "污染",
+    "ex": "Livecodebench: Holistic and contamination free evaluation of large language models for code."
+   },
+   {
+    "w": "controllable",
+    "ipa": "kənˈtroʊləbəl",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "可管理的, 可控制的",
+    "ex": "Diffusion-LM improves controllable text generation."
+   },
+   {
+    "w": "convex",
+    "ipa": "ˈkɑnˌvɛks",
+    "pos": "adj.；n.",
+    "lv": "专四",
+    "m": "凸面的；凸圆的；凸面体；凸状",
+    "ex": "Beyond MLE: Convex learning for text generation."
+   },
+   {
+    "w": "demystify",
+    "ipa": "diˈmɪstəˌfaɪ",
+    "pos": "v.",
+    "lv": "GRE",
+    "m": "减少…的神秘性",
+    "ex": "Demystifying tensor cores to optimize half-precision matrix multiply."
+   },
+   {
+    "w": "den",
+    "ipa": "dɛn",
+    "pos": "n.；vi.；vt.",
+    "lv": "专四",
+    "m": "贼窝，私室；兽穴，窝巢；小房间；藏到洞里；住在肮脏简陋的小房间里；把……赶进洞穴",
+    "ex": "Tarlow, and R. van den Berg."
+   },
+   {
+    "w": "dependence",
+    "ipa": "dɪˈpɛndəns",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "依靠， 依赖； 信任",
+    "ex": "This retrospective dependence introduces selection bias: the scheduler favors tokens that lead to highly confident continuations, even though the admission decision for 𝑥1 should have been made before observing 𝑥1."
+   },
+   {
+    "w": "diffusion",
+    "ipa": "dɪfˈjuʒən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "传播，散布",
+    "ex": "Masked diffusion models are secretly time-agnostic masked models and exploit inaccurate categorical sampling."
+   },
+   {
+    "w": "drift",
+    "ipa": "drɪft",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "漂流，漂泊；漂流",
+    "ex": "Attention drift: What autoregressive speculative decoding models learn, 2026."
+   },
+   {
+    "w": "dual",
+    "ipa": "duəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "双的， 两重的",
+    "ex": "Pard-2: Target-aligned parallel draft model for dual-mode speculative decoding. arXiv preprint arXiv:2605.08632, 2026b."
+   },
+   {
+    "w": "echo",
+    "ipa": "ˈɛkoʊ",
+    "pos": "n.；v.",
+    "lv": "四级",
+    "m": "回声，反响；重复",
+    "ex": "Echo: Elastic speculative decoding with sparse gating for high-concurrency scenarios. arXiv preprint arXiv:2604.09603, 2026b."
+   },
+   {
+    "w": "elastic",
+    "ipa": "ɪˈlæstɪk",
+    "pos": "n.；adj.",
+    "lv": "四级",
+    "m": "松紧带；有弹性的",
+    "ex": "Echo: Elastic speculative decoding with sparse gating for high-concurrency scenarios. arXiv preprint arXiv:2604.09603, 2026b."
+   },
+   {
+    "w": "enhance",
+    "ipa": "ɛnˈhæns",
+    "pos": "v.",
+    "lv": "六级",
+    "m": "提高；加强；增加",
+    "ex": "Fastmtp: Accelerating llm inference with enhanced multi-token prediction, 2025."
+   },
+   {
+    "w": "exploit",
+    "ipa": "ˌɛkˈsplɔɪt",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "开采",
+    "ex": "Masked diffusion models are secretly time-agnostic masked models and exploit inaccurate categorical sampling."
+   },
+   {
+    "w": "formally",
+    "ipa": "ˈfɔrməli",
+    "pos": "adv.",
+    "lv": "托福",
+    "m": "正式地, 形式上",
+    "ex": "Formally, the admission event for the 𝑘-th draft token, ℓ𝑟≥𝑘,"
+   },
+   {
+    "w": "fourteenth",
+    "ipa": "ˌfɔrˈtinθ",
+    "pos": "adj.；n.；num.",
+    "lv": "专四",
+    "m": "第十四的；第十四个的；第十四；月的第十四日；十四分之一；第十四",
+    "ex": "In The Fourteenth International Conference on Learning Representations, 2026a."
+   },
+   {
+    "w": "generative",
+    "ipa": "ˈʤɛnərətɪv",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "生产的，有生产力的",
+    "ex": "FlowSeq: Non-autoregressive conditional sequence generation with generative flow."
+   },
+   {
+    "w": "glide",
+    "ipa": "glaɪd",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "滑动；消逝；滑行",
+    "ex": "GliDe with a CaPE: A low-hassle method to accelerate speculative decoding."
+   },
+   {
+    "w": "grammatical",
+    "ipa": "grəˈmætɪkəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "语法上的",
+    "ex": "Instantaneous grammatical error correction with shallow aggressive decoding."
+   },
+   {
+    "w": "halt",
+    "ipa": "hɔlt",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "停止；立定；停住",
+    "ex": "Since Θ1 < Θ0, the scheduler halts immediately and returns ℓ= 0 before evaluating any continuation-dependent quantity such as 𝑐2."
+   },
+   {
+    "w": "harmonize",
+    "ipa": "ˈhɑrməˌnaɪz",
+    "pos": "v.",
+    "lv": "考博",
+    "m": "协调",
+    "ex": "Learning harmonized representations for speculative sampling, 2025."
+   },
+   {
+    "w": "hassle",
+    "ipa": "ˈhæsəl",
+    "pos": "v.；n.",
+    "lv": "专八",
+    "m": "找麻烦，搅扰；与…争辩；使…烦恼；困难，麻烦；激战",
+    "ex": "GliDe with a CaPE: A low-hassle method to accelerate speculative decoding."
+   },
+   {
+    "w": "hence",
+    "ipa": "hɛns",
+    "pos": "adv.",
+    "lv": "四级",
+    "m": "因此，所以；今后",
+    "ex": "Suppose the retrospective scheduler behaves as above: 𝑥1 = 𝐴yields a high continuation confidence and hence ℓ= 2, while 𝑥1 = 𝐵yields a low continuation confidence and hence ℓ= 0."
+   },
+   {
+    "w": "holistic",
+    "ipa": "hoʊˈlɪstɪk",
+    "pos": "adj.",
+    "lv": "雅思",
+    "m": "整体的， 全面的； 功能整体性的",
+    "ex": "Livecodebench: Holistic and contamination free evaluation of large language models for code."
+   },
+   {
+    "w": "hybrid",
+    "ipa": "ˈhaɪbrɪd",
+    "pos": "n.；adj.",
+    "lv": "六级",
+    "m": "杂种，混血儿；混合物；混合的；杂种的",
+    "ex": "Draft less, retrieve more: Hybrid tree construction for speculative decoding, 2026."
+   },
+   {
+    "w": "hydra",
+    "ipa": "ˈhaɪdrə",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "[希神]九头怪蛇, 难以根除之祸害, [动]水螅",
+    "ex": "Hydra: Sequentially-dependent draft heads for medusa decoding."
+   },
+   {
+    "w": "hyper",
+    "ipa": "ˈhaɪpər",
+    "pos": "adj.",
+    "lv": "托福",
+    "m": "亢奋的,高度紧张的",
+    "ex": "Liang. mHC: Manifold-constrained hyper-connections."
+   },
+   {
+    "w": "inaccurate",
+    "ipa": "ˌɪˈnækjərət",
+    "pos": "adj.",
+    "lv": "专四",
+    "m": "不精密的，不准确的",
+    "ex": "Masked diffusion models are secretly time-agnostic masked models and exploit inaccurate categorical sampling."
+   },
+   {
+    "w": "instantaneous",
+    "ipa": "ˌɪnstənˈtæniəs",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "即时的，瞬间的",
+    "ex": "Instantaneous grammatical error correction with shallow aggressive decoding."
+   },
+   {
+    "w": "interpolate",
+    "ipa": "ˌɪˈtərpəˌleɪt",
+    "pos": "v.",
+    "lv": "GRE",
+    "m": "窜改, 添写进去, 插入新语句",
+    "ex": "Block diffusion: Interpolating between autoregressive and diffusion language models."
+   },
+   {
+    "w": "issue",
+    "ipa": "ˈɪʃu",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "发行；问题",
+    "ex": "The early-stopping mechanism prevents this issue in the causal greedy scheduler."
+   },
+   {
+    "w": "linguistic",
+    "ipa": "lɪŋgˈwɪstɪk",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "语言的；语言学的",
+    "ex": "In Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), pages 3909–3921, 2025b."
+   },
+   {
+    "w": "machinery",
+    "ipa": "məˈʃinəri",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "机器， 机械",
+    "ex": "Association for Computing Machinery."
+   },
+   {
+    "w": "management",
+    "ipa": "ˈmænɪʤmənt",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "管理；经营，处理",
+    "ex": "Efficient memory management for large language model serving with pagedattention."
+   },
+   {
+    "w": "manifold",
+    "ipa": "ˈmænɪˌfoʊld",
+    "pos": "v.；adj.；n.",
+    "lv": "专四",
+    "m": "复写，复印；增多；使……多样化；多方面的，有许多部分的；各式各样的；多种；复印本",
+    "ex": "Liang. mHC: Manifold-constrained hyper-connections."
+   },
+   {
+    "w": "manual",
+    "ipa": "ˈmænjuəl",
+    "pos": "adj.；n.",
+    "lv": "四级",
+    "m": "体力的；手册",
+    "ex": "THE END OF MANUAL DECODING: TOWARDS TRULY END-TO-END LANGUAGE MODELS."
+   },
+   {
+    "w": "mexico",
+    "ipa": "ˈmɛksəˌkoʊ",
+    "pos": "n.",
+    "lv": "托福",
+    "m": "墨西哥(拉丁美洲国家)",
+    "ex": "Wang, editors, Findings of the Association for Computational Linguistics: NAACL 2025, pages 6090–6104, Albuquerque, New Mexico, Apr."
+   },
+   {
+    "w": "precision",
+    "ipa": "priˈsɪʒən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "精确，精密，精密度",
+    "ex": "Demystifying tensor cores to optimize half-precision matrix multiply."
+   },
+   {
+    "w": "proceeding",
+    "ipa": "prəˈsidɪŋ",
+    "pos": "n.",
+    "lv": "考研",
+    "m": "程序，行动，事项",
+    "ex": "Liu, editors, Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP), pages 1098– 1108, Online, Nov."
+   },
+   {
+    "w": "python",
+    "ipa": "ˈpaɪθɑn",
+    "pos": "n.",
+    "lv": "专八",
+    "m": "巨蟒；大蟒",
+    "ex": "Speed, Python: Pick Two."
+   },
+   {
+    "w": "radiology",
+    "ipa": "ˌreɪdiˈɑləʤi",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "放射学，放射诊断学",
+    "ex": "Radiology, 143(1):29–36, 1982. doi: 10.1148/radiology.143.1.7063747."
+   },
+   {
+    "w": "redefine",
+    "ipa": "ridɪˈfaɪn",
+    "pos": "v.",
+    "lv": "托福",
+    "m": "重新定义",
+    "ex": "The perfect blend: Redefining rlhf with mixture of judges. arXiv preprint arXiv:2409.20370, 2024."
+   },
+   {
+    "w": "reflection",
+    "ipa": "rɪˈflɛkʃən",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "反射；映象；反映",
+    "ex": "Insights into deepseek-v3: Scaling challenges and reflections on hardware for ai architectures."
+   },
+   {
+    "w": "restore",
+    "ipa": "rɪˈstɔr",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "修复",
+    "ex": "This restores the non-anticipating property required by the standard losslessness argument."
+   },
+   {
+    "w": "retrieve",
+    "ipa": "rɪˈtriv",
+    "pos": "vi.",
+    "lv": "六级",
+    "m": "重新得到， 取回， 收回； 挽回， 补救； 检索",
+    "ex": "Draft less, retrieve more: Hybrid tree construction for speculative decoding, 2026."
+   },
+   {
+    "w": "solve",
+    "ipa": "sɑlv",
+    "pos": "v.",
+    "lv": "四级",
+    "m": "解决",
+    "ex": "Training verifiers to solve math word problems. arXiv preprint arXiv:2110.14168, 2021."
+   },
+   {
+    "w": "specialization",
+    "ipa": "ˌspɛʃələˈzeɪʃən",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "特殊化, 专门化",
+    "ex": "Deepseekmoe: Towards ultimate expert specialization in mixture-of-experts language models."
+   },
+   {
+    "w": "survey",
+    "ipa": "ˈsərˌveɪ",
+    "pos": "v.；n.",
+    "lv": "四级",
+    "m": "调查，审视，仔细考虑；勘测，测量，测绘，调查",
+    "ex": "Unlocking efficiency in large language model inference: A comprehensive survey of speculative decoding."
+   },
+   {
+    "w": "symposium",
+    "ipa": "sɪmˈpoʊziəm",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "座谈会",
+    "ex": "In Proceedings of the 2025 ACM Symposium on Cloud Computing, SoCC ’25, page 361–374, New York, NY, USA, 2026b."
+   },
+   {
+    "w": "synthesis",
+    "ipa": "ˈsɪnθəsəs",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "综合，综合物；（化学或生物学物质的）合成；（用电子方式对声音、语音或音乐的）合成",
+    "ex": "Program synthesis with large language models. arXiv preprint arXiv:2108.07732, 2021b."
+   },
+   {
+    "w": "talon",
+    "ipa": "ˈtælən",
+    "pos": "n.",
+    "lv": "GRE",
+    "m": "爪, 魔爪",
+    "ex": "Talon: Confidence-aware speculative decoding with adaptive token trees. arXiv preprint arXiv:2601.07353, 2026c."
+   },
+   {
+    "w": "tan",
+    "ipa": "tæn",
+    "pos": "vi.；vt.；n.",
+    "lv": "四级",
+    "m": "晒成棕褐色；使晒成棕褐色；硝制；棕褐色， 棕黄色； 晒成棕褐色， 晒黑",
+    "ex": "Y. Ren, J. Liu, X. Tan, Z. Zhao, S. Zhao, and T.-Y. Liu. A study of non-autoregressive model"
+   },
+   {
+    "w": "thirteenth",
+    "ipa": "ˈθərˈtinθ",
+    "pos": "adj.；n.",
+    "lv": "专四",
+    "m": "第十三的；十三分之一的；第十三；十三分之一",
+    "ex": "In The Thirteenth International Conference on Learning Representations, 2025."
+   },
+   {
+    "w": "tradeoff",
+    "ipa": "ˈtreɪˌdɔf",
+    "pos": "n.",
+    "lv": "考博",
+    "m": "权衡，交易",
+    "ex": "Magicdec: Breaking the latency-throughput tradeoff for long context generation with speculative decoding."
+   },
+   {
+    "w": "ultimate",
+    "ipa": "ˈəltəmət",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "最后的，最终的",
+    "ex": "Deepseekmoe: Towards ultimate expert specialization in mixture-of-experts language models."
+   },
+   {
+    "w": "uncertainty",
+    "ipa": "ənˈsərtənti",
+    "pos": "n.",
+    "lv": "六级",
+    "m": "犹豫， 迟疑； 不确定； 无把握",
+    "ex": "Can you trust your model’s uncertainty? evaluating predictive uncertainty under dataset shift."
+   },
+   {
+    "w": "van",
+    "ipa": "væn",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "大篷车，运货车",
+    "ex": "Tarlow, and R. van den Berg."
+   },
+   {
+    "w": "virtual",
+    "ipa": "ˈvərʧuəl",
+    "pos": "adj.",
+    "lv": "六级",
+    "m": "虚拟的",
+    "ex": "Srikumar, editors, Findings of the Association for Computational Linguistics ACL 2024, pages 7655–7671, Bangkok, Thailand and virtual meeting, Aug."
+   },
+   {
+    "w": "visible",
+    "ipa": "ˈvɪzəbəl",
+    "pos": "adj.",
+    "lv": "四级",
+    "m": "看得见的",
+    "ex": "must be determined by scheduler-visible information available before the token 𝑥𝑟,𝑘is sampled."
+   },
+   {
+    "w": "volume",
+    "ipa": "ˈvɑljum",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "卷，册；容积；音量",
+    "ex": "In Proceedings of the 63rd Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers), pages 3909–3921, 2025b."
+   },
+   {
+    "w": "workshop",
+    "ipa": "ˈwərkˌʃɑp",
+    "pos": "n.",
+    "lv": "四级",
+    "m": "车间，工场；创作室",
+    "ex": "Chen, editors, Proceedings of The 4th NeurIPS Efficient Natural Language and Speech Processing Workshop, volume 262 of Proceedings of Machine Learning Research, pages 456– 467."
+   },
+   {
+    "w": "yen",
+    "ipa": "jɛn",
+    "pos": "v.",
+    "lv": "GRE",
+    "m": "渴望",
+    "ex": "R. Sadhukhan, J. Chen, Z. Chen, V. Tiwari, R. Lai, J. Shi, I. E.-H. Yen, A. May, T. Chen, and B. Chen."
+   }
+  ]
+ }
+];
+// lv 一律写中文档名（十一档平级，2026-09-30 定案；旧短码由 build 脚本自动翻译）
+const LVCLS={"四级":"t4","六级":"t6","考研":"tk","考博":"tp","专四":"tm4","专八":"tm8","雅思":"ty","托福":"tt","GRE":"tg","超纲":"tsuper"};
+const LVNAME={"四级":"四级","六级":"六级","考研":"考研","考博":"考博","专四":"专业四级","专八":"专业八级","雅思":"雅思","托福":"托福","GRE":"GRE","超纲":"超纲（大纲未收）"};
+const LVSHORT={"四级":"4","六级":"6","考研":"考研","考博":"考博","专四":"专四","专八":"专八","雅思":"雅思","托福":"托福","GRE":"GRE","超纲":"★超纲"};
+const LVORDER=["四级","六级","考研","考博","专四","专八","雅思","托福","GRE","超纲"];
+
+let mode="sec";
+let theme="theme-mag"; // 章节视图固定杂志风；按级别视图固定暗色大页
+
+function cardHTML(x,sec){
+  const from = mode==="lv" ? `<div class="from">出自 ${sec}</div>` : "";
+  if(theme==="theme-paper"){
+    return `<div class="word"><span class="w">${x.w}<span class="ipa">/${x.ipa}/</span><i class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</i></span>
+      <span><span class="pos">${x.pos}</span><span class="m">${x.m}</span>${from}</span>
+      <span class="ex">${x.ex}</span></div>`;
+  }
+  if(theme==="theme-mag") return "";
+  return `<div class="card lv${x.lv}" data-say="${x.w}"><span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span><span class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</span>
+    <div class="m">${x.pos} ${x.m}</div><div class="ex">${x.ex}</div>${from}</div>`;
+}
+function magRow(x,sec){
+  return `<tr data-say="${x.w}"><td class="w"><span class="hwband">${x.w}</span><span class="ipa">/${x.ipa}/</span></td>
+    <td class="lv"><b class="tag ${LVCLS[x.lv]}">${LVSHORT[x.lv]}</b></td>
+    <td class="m">${x.pos} ${x.m}${mode==="lv"?`<span class="from">出自 ${sec}</span>`:""}</td>
+    <td class="ex">${x.ex}</td></tr>`;
+}
+function groupHTML(title,icon,inner){
+  if(theme==="theme-mag") return `<div class="sec"><h2>${title}</h2><table>${inner}</table></div>`;
+  if(theme==="theme-dark"||theme==="theme-fresh")
+    return `<div class="sec"><h2>${theme==="theme-dark"?"":"<span class='n'>"+icon+"</span>"}${title}</h2><div class="grid">${inner}</div></div>`;
+  return `<div class="sec"><h2>${title}</h2>${inner}</div>`;
+}
+
+function render(){
+  document.body.classList.toggle("lv-mode",mode==="lv");
+  // 注意：必须用 classList.add，不能整体赋值 className —— 否则会抹掉 body.night，
+  // 而夜晚章节视图依赖 body.night.theme-mag 这条 CSS，抹掉后点「按章节」会静默退回白天。
+  if(mode==="sec")document.body.classList.add("theme-mag");
+  const app=document.getElementById("app");
+  let html="";
+  if(mode==="sec"){
+    for(const s of DATA){
+      html += theme==="theme-mag"
+        ? groupHTML(s.sec,s.icon,s.words.map(x=>magRow(x,s.short)).join(""))
+        : groupHTML(s.sec,s.icon,s.words.map(x=>cardHTML(x,s.short)).join(""));
+    }
+  }else{
+    // 学习模式同款暗色大页：每个级别一块
+    const dot={"四级":"var(--c4)","六级":"var(--c6)","考研":"var(--ckaon)","考博":"var(--cphd)","专四":"var(--cm4)","专八":"var(--cm8)","雅思":"var(--cy)","托福":"var(--ct)","GRE":"var(--cg)","超纲":"var(--csuper)"};
+    html=LVORDER.map(lv=>{
+      const items=[];
+      DATA.forEach(s=>s.words.forEach(x=>{if(x.lv===lv)items.push([x,s.short])}));   // ov 已废除（2026-09-30）
+      if(!items.length)return"";   // 本词表里没有这一档 → 不出空面板
+      items.sort((a,b)=>a[0].w.localeCompare(b[0].w));
+      const cls={"六级":"l6","考研":"lk","考博":"lp","专四":"lm4","专八":"lm8","雅思":"ly","托福":"lt","GRE":"lg","超纲":"lsuper"}[lv]||"";
+      return `<div class="lvslide ${cls}">
+        <div class="ltitle"><span style="color:${dot[lv]}">${LVNAME[lv]}</span>词汇<small>${items.length} words · 按字母排序 · 悬停看原文例句 · 点击发音</small></div>
+        <div class="sgrid">${items.map(([x,sec])=>`
+          <div class="lcard" data-say="${x.w}">
+            <span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span>
+            <div class="m">${x.pos} ${x.m}</div>
+            <div class="ex">${x.ex}</div>
+            <div class="from">出自 ${sec}</div>
+          </div>`).join("")}</div></div>`;
+    }).join("");
+  }
+  app.innerHTML=html;
+}
+function syncToolbar(){
+  document.getElementById("v-sec").classList.toggle("on",mode==="sec");
+  document.getElementById("v-lv").classList.toggle("on",mode==="lv");
+}
+document.getElementById("v-sec").onclick=()=>{mode="sec";theme="theme-mag";syncToolbar();render();};
+document.getElementById("v-lv").onclick=()=>{mode="lv";syncToolbar();render();};
+
+// 朗读：多引擎在线 TTS 自动降级（有道 / Polly / 百度 / 谷歌），可按下拉切换主音色
+// 合并自 .agents 有道源版 与 workbuddy Polly 源版 —— 单文件同时支持两套引擎
+const VOICE_MAP={
+  yd1:{src:"yd",label:"美式 · 有道（推荐）"},
+  yd0:{src:"yd",label:"英式 · 有道"},
+  Brian:{src:"se",label:"Brian · 英式男声"},
+  Amy:{src:"se",label:"Amy · 英式女声"},
+  Matthew:{src:"se",label:"Matthew · 美式男声"},
+  Joanna:{src:"se",label:"Joanna · 美式女声"},
+  Salli:{src:"se",label:"Salli · 美式女声"},
+  Ivy:{src:"se",label:"Ivy · 美式童声"},
+  bd:{src:"bd",label:"百度翻译 · 女声"},
+  gg:{src:"gg",label:"谷歌翻译"},
+  mute:{src:"mute",label:"🔇 不朗读"}
+};
+const VOICE_ORDER=["yd1","yd0","Brian","Amy","Matthew","Joanna","Salli","Ivy","bd","gg","mute"];
+let ONLINE="yd1"; // 默认有道 · 美音（保留 .agents 版行为）
+try{const sv=localStorage.getItem("vocab_voice");if(sv&&VOICE_MAP[sv])ONLINE=sv;}catch(e){}
+const ENG=["yd","se","bd","gg"];               // 全部可选引擎
+const ENG_NAME={yd:"有道",se:"Polly",bd:"百度",gg:"谷歌"};
+const POLLY_VOICES={Brian:1,Amy:1,Matthew:1,Joanna:1,Salli:1,Ivy:1};
+let SRC_ORDER=ENG.slice(),srcIdx=0;           // 降级顺序：按所选音色的主引擎优先
+function applyVoiceOrder(){
+  const want=VOICE_MAP[ONLINE].src;
+  const i=ENG.indexOf(want);
+  SRC_ORDER=i<0?ENG.slice():ENG.slice(i).concat(ENG.slice(0,i));
+}
+applyVoiceOrder();
+let audio=null;
+function ttsURL(src,t){
+  const q=encodeURIComponent(t);
+  if(src==="yd")return `https://dict.youdao.com/dictvoice?type=${ONLINE==="yd0"?"0":"1"}&audio=${q}`;
+  if(src==="se")return `https://api.streamelements.com/kappa/v2/speech?voice=${POLLY_VOICES[ONLINE]?ONLINE:"Brian"}&text=${q}`;
+  if(src==="bd")return `https://fanyi.baidu.com/gettts?lan=en&text=${q}&spd=5&source=web`;
+  return `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&tl=en&q=${q}`;
+}
+function fillVoiceSel(){
+  const sel=document.getElementById("voiceSel");if(!sel)return;
+  sel.innerHTML=VOICE_ORDER.map(v=>`<option value="${v}" ${ONLINE===v?"selected":""}>${VOICE_MAP[v].label}</option>`).join("");
+  const st=document.getElementById("srcState");
+  if(st)st.textContent=ENG_NAME[SRC_ORDER[srcIdx]]||"";
+}
+fillVoiceSel();
+let saying=0; // 防并发
+function say(t){
+  if(ONLINE==="mute"){try{if(audio){audio.pause();audio=null}}catch(e){}return}
+  const my=++saying;
+  trySrc(0,t,my);
+}
+function trySrc(i,t,my){
+  if(my!==saying)return;
+  if(i>=SRC_ORDER.length){const st=document.getElementById("srcState");if(st)st.textContent="无可用源";return}
+  const src=SRC_ORDER[i];
+  const st=document.getElementById("srcState");
+  if(st)st.textContent="尝试 "+ENG_NAME[src];
+  try{if(audio){audio.pause();audio=null}}catch(e){}
+  const a=new Audio(ttsURL(src,t));
+  let ok=false,advanced=false;
+  const advance=()=>{ if(!ok&&!advanced&&my===saying){advanced=true;trySrc(i+1,t,my);} };
+  a.addEventListener("playing",()=>{ok=true;
+    if(srcIdx!==i){srcIdx=i;fillVoiceSel();} // 记住能用的源
+  });
+  a.addEventListener("error",advance);
+  audio=a;
+  a.play().catch(advance);
+  setTimeout(()=>{ if(!ok&&my===saying&&a.paused)advance(); },2500);
+}
+document.getElementById("voiceSel").addEventListener("change",e=>{
+  ONLINE=e.target.value; applyVoiceOrder(); srcIdx=0; // 换音色重新从头试源
+  try{localStorage.setItem("vocab_voice",ONLINE);}catch(e){}
+  if(ONLINE!=="mute") say("Hello, let us learn new words together.");
+});
+/* ---- 白天 / 夜晚 ---- */
+let style="day";
+try{const s=localStorage.getItem("vocab_style");if(["day","night","paper"].indexOf(s)>=0)style=s;}catch(e){}
+function applyStyle(){
+  document.body.classList.toggle("night",style==="night");
+  document.body.classList.toggle("paper",style==="paper");
+  ["day","night","paper"].forEach(k=>{const b=document.getElementById("st-"+k);if(b)b.classList.toggle("on",style===k);});
+  if(typeof studyEl!=="undefined"&&studyEl)studyEl.classList.toggle("day",style!=="night");
+}
+document.getElementById("st-day").onclick=()=>{style="day";try{localStorage.setItem("vocab_style","day")}catch(e){};applyStyle();};
+document.getElementById("st-night").onclick=()=>{style="night";try{localStorage.setItem("vocab_style","night")}catch(e){};applyStyle();};
+document.getElementById("st-paper").onclick=()=>{style="paper";try{localStorage.setItem("vocab_style","paper")}catch(e){};applyStyle();};
+document.getElementById("app").addEventListener("click",e=>{
+  const el=e.target.closest("[data-say]"); if(el) say(el.dataset.say);
+});
+
+/* ---------- 学习模式：按章节分页的 PPT 翻页 ---------- */
+const PER_PAGE = 12; // 每页最多词数，放不下自动续页
+let slides=[],si=0;
+function buildSlides(){
+  slides=[];
+  for(const s of DATA){
+    for(let i=0;i<s.words.length;i+=PER_PAGE){
+      slides.push({sec:s.sec,page:Math.floor(i/PER_PAGE)+1,
+        pages:Math.ceil(s.words.length/PER_PAGE),words:s.words.slice(i,i+PER_PAGE)});
+    }
+  }
+}
+const studyEl=document.getElementById("study");
+let open=false;
+function showSlide(){
+  const sl=slides[si];
+  const title=sl.pages>1 ? `${sl.sec}（第 ${sl.page}/${sl.pages} 页）` : sl.sec;
+  document.getElementById("sPage").innerHTML =
+    `<div class="stitle">${title}<small>${sl.words.length} words</small></div>
+     <div class="sgrid">${sl.words.map(x=>`
+       <div class="scard" data-say="${x.w}">
+         <span class="w">${x.w}</span><span class="ipa">/${x.ipa}/</span><span class="tag ${LVCLS[x.lv]}" style="font-size:11px;padding:2px 8px">${LVSHORT[x.lv]}</span>
+         <div class="m">${x.pos} ${x.m}</div>
+         <div class="ex">${x.ex}</div>
+       </div>`).join("")}</div>`;
+  document.getElementById("sIdx").textContent=(si+1)+" / "+slides.length;
+  document.getElementById("sbar").style.width=((si+1)/slides.length*100)+"%";
+  document.getElementById("sPrev").disabled=si===0;
+  document.getElementById("sNext").disabled=si===slides.length-1;
+  studyEl.querySelector(".sbody").scrollTop=0;
+}
+function studyOpen(){ buildSlides(); si=0; open=true; studyEl.classList.add("on"); applyStyle(); showSlide(); }
+function studyClose(){ open=false; studyEl.classList.remove("on"); }
+function next(){ if(si<slides.length-1){ si++; showSlide(); } }
+function prev(){ if(si>0){ si--; showSlide(); } }
+document.getElementById("v-study").onclick=()=>open?studyClose():studyOpen();
+document.getElementById("sClose").onclick=studyClose;
+document.getElementById("sExit").onclick=studyClose;
+document.getElementById("sNext").onclick=next;
+document.getElementById("sPrev").onclick=prev;
+studyEl.addEventListener("click",e=>{
+  const el=e.target.closest("[data-say]"); if(el) say(el.dataset.say);
+});
+document.addEventListener("keydown",e=>{
+  if(!open) return;
+  if(e.code==="Space"||e.key==="ArrowRight"||e.key==="PageDown"){ e.preventDefault(); next(); }
+  else if(e.key==="ArrowLeft"||e.key==="PageUp"){ prev(); }
+  else if(e.key==="Escape"){ studyClose(); }
+});
+applyStyle(); syncToolbar(); render();
+</script>
+<a href="../../vocab.html" target="_self" style="position:fixed;left:14px;bottom:14px;z-index:9999;font:600 13px/1 -apple-system,system-ui,sans-serif;color:#fff;background:rgba(0,0,0,.55);padding:8px 12px;border-radius:20px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.25)">← 返回索引</a></body>
+</html>
