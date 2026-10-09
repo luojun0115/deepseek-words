@@ -32,11 +32,8 @@ arXiv 号 `2401.02954` → `2609.19969`）里需要单独学的单词挑出来�
 
 ## 怎么用
 
-线上地址：**`https://luojun0115.github.io/deepseek-words/`**（仓库 `github.com/luojun0115/deepseek-words`）。
+线上地址：**`https://luojun0115.github.io/deepseek-words/`**（仓库 `github.com/luojun0115/deepseek-words`，2026-10-09 已上线）。
 本地预览：`npm run build && npm run preview` → `http://localhost:4173/deepseek-words/`。
-
-线上那个地址现在还是 404：首次自动部署在“内容守卫”那一步挂了（原因与修法见 `DECISIONS.md` §D4），
-修好后需要再 push 一次才真上线。
 
 **词汇学习页**（`/vocab` 选一篇进去）
 - 「按章节 / 按级别综合」两种看法：跟论文走，或按考试档集中扫
@@ -88,17 +85,16 @@ npm run selfcheck  # 断链实验：把仓库拷进隔离副本、只读自身�
 
 ## 怎么部署（GitHub Pages）
 
-已配好，push 到 `main` 即自动构建发布（`.github/workflows/deploy.yml`）：
-`verify` → `npm ci` → `vitepress build` → `deploy-pages`。
+已跑通（2026-10-09 站点已上线），push 到 `main` 即自动构建发布（`.github/workflows/deploy.yml`）：
+`verify` → `npm ci` → `vitepress build` → `deploy-pages`。之后每次 push 都跑完整链路，没有「只 push 不构建」。
 
-**只有两处需要手动**（都在 GitHub 网页上）：
+只在首次接仓时需要手动两处（都在 GitHub 网页上，已经做过；**换了仓库名 / 新建仓时要再点一次**）：
 
 1. 首次推送：`git push -u origin main`
 2. Settings → Pages → Source 选 **GitHub Actions**。默认是「Deploy from a branch」，
    不改成 Actions 的话，构建成功也看不到站点——它只会去发布 `main` 分支根目录。
 
-之后每次 push 都跑完整链路，没有「只 push 不构建」。要托管到别的静态服务同理：
-`npm run build` 后把 `.vitepress/dist/` 整个交出去。
+要托管到别的静态服务同理：`npm run build` 后把 `.vitepress/dist/` 整个交出去。
 
 `base` 默认 `/deepseek-words/`（跟仓库名 `deepseek-words` 一致）。换仓库名或子路径要同步改 `config.mts`，
 或临时 `DOCS_BASE=/xxx/ npm run build`；`cleanUrls: false` 不许改，理由见 `DECISIONS.md` §C5。

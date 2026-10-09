@@ -311,21 +311,25 @@ CI 里它存得下、只是没人跑 `npm run hooks`，于是旧写法在 CI 直
 本地（无这两个变量）照旧硬判——拿一个没装钩子的干净 clone 跑一遍仍是 `✗ exit 1`，确认没把门禁改成哑炮。
 其余 12 项在 CI 照跑。
 
-### D4. GitHub Pages 部署（2026-10-09 已 push · 首跑挂了 · 已修因，等重跑）
+### D4. GitHub Pages 部署（2026-10-09 已上线；首跑挂在 verify、修完的第二次跑绿）
 
 站点 `https://luojun0115.github.io/deepseek-words/`，remote `origin → https://github.com/luojun0115/deepseek-words.git`。
 **已配成自动部署**：`on: push → main`（外加 `workflow_dispatch` 可手动重跑），
 以后只要有改动 push 到 main，Action 就自动 对账 → 构建 → 发布，不用任何人再到网页上操作。
 
-**首跑实况（REST 匿名读到，无需 gh CLI）**：仓已推上去（`git ls-remote` 实测 `refs/heads/main` 与本地 HEAD 同为
-`7d66c77`）；Actions run #1 `completed / failure`，挂在第四步 `Verify content consistency`（后面的装依赖/构建/发布全 skipped），
-所以线上 `https://…/deepseek-words/` 与 `/vocab.html` 都是 404。挂的原因就是上面第 7 项在 CI 里误判（不是 Node 20 那条告警——
-告警只是告警，Checkout 与 Setup Node 两步皆 success）。修完必须重新 push（或网页上 Re-run）才能上线。
-另：Settings → Pages → Source 是否已改成 GitHub Actions 仍没法匿名确认（`/pages` 端点返 404，可能是没启用也可能是要登录），
-推完看 Actions 绿的但站点仍 404，先查这一项。
+**两次跑的实况（REST 匿名读到，无需 gh CLI；公开仓可读 `/actions/runs` 与 `/actions/runs/<id>/jobs`）**：
+run #1（`7d66c77`）`completed / failure`，挂在第四步 `Verify content consistency`（后面装依赖/构建/发布全 skipped），
+所以当时线上全是 404。挂的就是上面那第 7 项在 CI 里误判——**不是 Node 20 那条告警**，告警只是告警，
+Checkout 与 Setup Node 两步皆 success。run #2（`e6c6ef7`，修完那个判据 + action 全升 Node 24）`completed / success`，
+线上随即 200：`/`、`/papers.html`、`/vocab.html`、`/listen.html`、`/notes.html`、一篇笔记页、
+一篇 `study/vocab/` 与 `study/listen/`、一张 `study/master/` 全 200，`/README.md` 与 `/DECISIONS.md` 仍 404（`srcExclude` 在站上也生效）。
+另拿部署产物与本地 `dist` 对指纹：同一份 `assets/style.DwVic_ZB.css`，且里面确实是新版轻提示——线上就是最新那版。
+（踩过一次：轻提示是纯 CSS `::after` 的 `content`，**只在样式表里，不在页面 HTML 里**，
+拿页面正文去 grep 会得到一个假失败。）
 
-**需你在仓库页面上点一次（仅一次）**：Settings → Pages → Build and deployment → Source 选 **GitHub Actions**
-（本机没 gh CLI，这步只能网页上点；选错成 Branch 会拿仓库源码当站点发，页面全白）。
+**Settings → Pages → Source = GitHub Actions 这条已经确认生效**：run #2 的 deploy job 发布成功、站点 200，
+Source 若还停在「Deploy from a branch」就不会有这个结果（匿名读 `/pages` 端点始终返 404，分不清是没启用还是要登录，
+所以当时没能正面确认，事后由上线结果反推）。
 
 已就位的件：
 
