@@ -19,8 +19,8 @@ const LLM_GALLERY = 'https://sebastianraschka.com/llm-architecture-gallery/?comp
 export default defineConfig({
   base: BASE,
   lang: 'zh-CN',
-  title: 'DeepSeek 论文词汇学习站',
-  description: `${ST.papers} 篇 DeepSeek 技术报告 · 词汇学习 + 词汇朗读，一站式学习门户`,
+  title: '鲸读 · DeepSeek 论文词汇',
+  description: `${ST.papers} 篇 DeepSeek 技术报告 · 词汇学习 + 词汇朗读，逐词读懂论文`,
   appearance: false,
   // GitHub Pages 不做 URL 重写，cleanUrls 会让 /vocab 404（盘上只有 vocab.html）
   cleanUrls: false,
@@ -55,7 +55,7 @@ export default defineConfig({
     outline: false,
     footer: {
       // 页脚只留站名＋规模，不写内部口径（「十一档词表…全量重做」这类用户明确不要）
-      copyright: `DeepSeek 论文词汇学习门户 · ${ST.papers} 篇技术报告的核心词汇`,
+      copyright: `鲸读 · ${ST.papers} 篇 DeepSeek 技术报告的核心词汇`,
     },
     search: { provider: 'local' },
   },

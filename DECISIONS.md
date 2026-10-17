@@ -119,6 +119,17 @@ build 后页面出现 `<h2 id="反向测试">`、「未写」32→31、轻提示
 ⚠ 例外：`/study/` 下 32 张静态词页顶部副标题仍写着「全量口径重做 · N 节 X 词 · 十一档 + 超纲（日期）」，
 2026-10-08 用户定案**暂不动**；要改就改 `../词页重做_20261008/build_pages.py` 的 `sub` 一行再批量重出。
 
+### A6. 站名改为「鲸读」（2026-10-16 用户定案）
+
+旧名「DeepSeek 论文词汇学习站」用户嫌不好听，定为 **「鲸读 · DeepSeek 论文词汇」**：
+短品牌名「鲸读」（鲸扣 DeepSeek 蓝鲸 logo，读扣朗读＋阅读）＋说明后缀，顶栏和标签页都放得下。
+
+落地一处不漏（旧名全仓 grep 清零）：`config.mts` 的 `title`/`description`/页脚 `copyright`、
+`index.md` 的 frontmatter `title` 与 H1、`check_portal.cjs` 的 `首页标题正确` 断言、`README.md` 标题行。
+
+同日标签页图标（`public/favicon.svg`）由「词」字方块换成 DeepSeek 蓝鲸 logo（品牌色 `#4D6BFE`，
+源文件去掉 `1em` 尺寸与内联 style 后落仓），用户点名只换 favicon，顶栏不加 logo 图。
+
 ---
 
 ## B. 页面与样式定案
