@@ -1,5 +1,5 @@
 {
-  "_note": "站外导航页（/sites）的数据源。58 站上墙 + 5 站待选 + 3 个自有空位。 改名单改这里，页面与自检都从这份数据读，不写死在组件里。待选站（pending）数据保 留但页面不渲染（DECISIONS §A7）。分组顺序 = 墙上的行序（每组一行，组牌在左列）。dev 组（开发者社区）内按色相交错排布，相邻两块色相都 ≥ 50°。",
+  "_note": "站外导航页（/sites）的数据源。60 站上墙 + 5 站待选 + 3 个自有空位。 改名单改这里，页面与自检都从这份数据读，不写死在组件里。待选站（pending）数据保 留但页面不渲染（DECISIONS §A7）；其中 Papers with Code 已于 2025-07-24 关停，条目暂留备查（§A12）。分组顺序 = 墙上的行序（每组一行，组牌在左列）。dev 组（开发者社区）与 media 组（媒体与图书馆）内按色相交错排布，相邻两块色相都 ≥ 50°。",
   "groups": [
     { "id": "papers", "name": "论文源", "en": "PAPERS", "kind": "sites" },
     { "id": "llm", "name": "大模型", "en": "LLM", "kind": "sites" },
@@ -68,11 +68,13 @@
     { "slug": "haoel", "name": "左耳朵耗子 · CSDN 专栏", "short": "左耳朵耗子", "url": "https://blog.csdn.net/haoel", "brand": "#7b3f9e", "group": "dev", "logo": "/logos/haoel.png" },
     { "slug": "iconfont", "name": "阿里图标库 Iconfont", "short": "Iconfont", "url": "https://www.iconfont.cn", "brand": "#00f9e4", "group": "dev", "logo": "/logos/iconfont.png" },
 
-    { "slug": "infoq", "name": "InfoQ", "short": "InfoQ", "url": "https://www.infoq.cn", "brand": "#3f7ae0", "group": "media", "logo": "/logos/infoq.png" },
-    { "slug": "cctv", "name": "央视网", "short": "央视网", "url": "https://www.cctv.com", "brand": "#1a4f9c", "group": "media", "logo": "/logos/cctv.png" },
     { "slug": "cnr", "name": "央广网", "short": "央广网", "url": "https://www.cnr.cn", "brand": "#c8000a", "group": "media", "logo": "/logos/cnr.png" },
-    { "slug": "clcn", "name": "首都图书馆", "short": "首都图书馆", "url": "https://www.clcn.net.cn", "brand": "#8d6e3f", "group": "media", "logo": "/logos/clcn.png" },
+    { "slug": "infoq", "name": "InfoQ", "short": "InfoQ", "url": "https://www.infoq.cn", "brand": "#3f7ae0", "group": "media", "logo": "/logos/infoq.png" },
     { "slug": "nlc", "name": "国家图书馆", "short": "国家图书馆", "url": "https://www.nlc.cn", "brand": "#a4343a", "group": "media", "logo": "/logos/nlc.png" },
+    { "slug": "chinadaily", "name": "中国日报中文网", "short": "中国日报", "url": "https://cn.chinadaily.com.cn", "brand": "#00457e", "group": "media", "logo": "/logos/chinadaily.png" },
+    { "slug": "qstheory", "name": "求是网", "short": "求是网", "url": "https://www.qstheory.cn", "brand": "#d20202", "group": "media", "logo": "/logos/qstheory.png" },
+    { "slug": "cctv", "name": "央视网", "short": "央视网", "url": "https://www.cctv.com", "brand": "#1a4f9c", "group": "media", "logo": "/logos/cctv.png" },
+    { "slug": "clcn", "name": "首都图书馆", "short": "首都图书馆", "url": "https://www.clcn.net.cn", "brand": "#8d6e3f", "group": "media", "logo": "/logos/clcn.png" },
 
     { "slug": "newrank", "name": "新榜", "short": "新榜", "url": "https://www.newrank.cn", "brand": "#e34d26", "group": "data", "logo": "/logos/newrank.png" },
     { "slug": "feigua", "name": "飞瓜数据", "short": "飞瓜数据", "url": "https://www.feigua.cn", "brand": "#f2a63c", "group": "data", "logo": "/logos/feigua.png" },
