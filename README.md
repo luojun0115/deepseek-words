@@ -104,7 +104,8 @@ npm run selfcheck  # 断链实验：把仓库拷进隔离副本、只读自身�
 | 要动什么 | 改哪儿 |
 |---|---|
 | 论文总览页的正文、表格、图例 | `content/DeepSeek_论文列表.md`，然后 `npm run papers`（**别改 `papers.md`**，它由文稿生成，会被覆盖）|
-| 学习笔记正文 | `notes/<编号>_<论文短名>.md`（文件名对应 `data/papers.json` 的 `dir`）：两条 `---` 之间的注释以下随便写，标题、表格、代码块、图片都支持，写完 `npm run build` 就渲染到 `/notes` 点进去的那页；空着时页面只显一行轻提示（那句提示里不会出现仓库路径，读者不需要看这些）|
+| 学习笔记正文 | `notes/<编号>_<论文短名>.md`（文件名对应 `data/papers.json` 的 `dir`）：两条 `---` 之间的注释以下随便写，标题、表格、代码块、图片都支持，写完 `npm run build` 就渲染到 `/notes` 点进去的那页；空着时页面只显一行轻提示（那句提示里不会出现仓库路径，读者不需要看这些）。专题横笔记（不带 `NN_` 编号前缀的 md，如 `notes/位置编码.md`）也放这个目录：`gen-notes --check` 只按编号前缀与 papers.json 对平，专题笔记不参与；`/notes` 索引页底部有专题入口|
+| 精读工程过程档 | `deep-reading/`：32 篇深度精读的解读方案、引用规范、来源档案（sources/，逐条原始链接）、模型对照系（跨模型对比基准）、笔记草稿 drafts/（过审后才同步进 notes/）、进度与变更日志，供外部模型审查对账；已在 `srcExclude` 排除、不进站点|
 | 首页开头那张介绍 | `index.md` + `components/HomeIntro.vue` |
 | 索引卡、搜索、排序、每篇入口按钮 | `components/PaperIndex.vue` + `.vitepress/theme/custom.css`，然后 build |
 | 顶栏栏目、站外「模型架构」地址 | `.vitepress/config.mts` 的 `nav`，然后 build |
