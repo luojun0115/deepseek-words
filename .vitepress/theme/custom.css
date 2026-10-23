@@ -487,13 +487,14 @@
 }
 
 /* ============ 顶栏「找论文」+ 搜索弹窗（components/PaperSearch.vue）============ */
-/* 顶栏按钮：与 VitePress 导航同高，跟主题切换钮并排（Layout.vue 的 #nav-bar-content-after） */
+/* 顶栏按钮：与 VitePress 导航同高，跟主题切换钮并排（Layout.vue 的 #nav-bar-content-after）
+   尺寸/字色照 MotionFace 原型 .btn（14px / 600 / ink，胶囊描边），图标也换成原型的放大镜 */
 .dr-find {
-  display: inline-flex; align-items: center; gap: 6px;
-  height: 32px; padding: 0 12px; margin-right: 10px;
+  display: inline-flex; align-items: center; gap: 7px;
+  height: 34px; padding: 0 16px; margin-right: 10px;
   border: var(--dr-bw) solid var(--dr-line); border-radius: 999px;
-  background: var(--dr-panel); color: var(--dr-ink2);
-  font-size: 13px; font-weight: 600; line-height: 1; cursor: pointer;
+  background: var(--dr-panel); color: var(--dr-ink);
+  font-size: 14px; font-weight: 600; line-height: 1; cursor: pointer;
   transition: border-color .15s, color .15s, background .15s;
 }
 .dr-find svg { width: 14px; height: 14px; flex: 0 0 auto; }
@@ -585,17 +586,33 @@
   font-size: 10px; font-weight: 600; line-height: 1;
 }
 
-/* ============ 顶栏照原型定制（2026-10-23 用户定案，§B7）============ */
-/* 黑块鲸鱼 logo（themeConfig.logo 自动渲染在 title 前） */
-.VPNavBarTitle .VPImage { width: 30px; height: 30px; border-radius: 9px; }
-/* 双层站名：siteTitle 的 HTML（config.mts） */
-.VPNavBarTitle .title .st-big { font-size: 17px; font-weight: 750; letter-spacing: -.01em; color: var(--dr-ink); }
+/* ============ 顶栏照原型还原（2026-10-24，§B9：MotionFace 原型顶栏）============ */
+/* 黑块鲸鱼 logo（themeConfig.logo 自动渲染在 title 前）——原型 .brand-mark 34px / 圆角 10px */
+.VPNavBarTitle .VPImage { width: 34px; height: 34px; border-radius: 10px; }
+/* 双层站名：siteTitle 的 HTML（config.mts）——原型 .brand-name 19px */
+.VPNavBarTitle .title .st-big { font-size: 19px; font-weight: 750; letter-spacing: -.01em; color: var(--dr-ink); }
 .VPNavBarTitle .title .st-sub { font-size: 11.5px; color: var(--dr-ink2); margin-left: 8px; }
-/* 栏目胶囊：当前页黄绿底变主题 accent 底 + 配套字色（对比度门禁 §B4 保证）。
-   VitePress 默认 line-height 撑满导航高（胶囊会成大椭圆吃掉文字），压回 1.5 让底色贴合文字 */
-.VPNavBarMenuLink { padding: 5px 13px; border-radius: 999px; font-weight: 600; line-height: 1.5; transition: background .15s, color .15s; }
-.VPNavBarMenuLink:hover { background: var(--dr-soft); }
-.VPNavBarMenuLink.active { background: var(--dr-accent) !important; color: var(--dr-on) !important; }
+/* 栏目胶囊：当前页 = 原型的柠檬绿（--dr-sig 全站恒定，不随主题变）。
+   §B7 当初把它改成「跟主题 accent」，这回按原型还原；但仍走真源（theme-defs.mjs 的
+   SIGNATURE）+ 对比度门禁（gen-theme-css.mjs 单独校这一对），不是裸写死在 CSS 里。
+
+   ⚠ 下面这几项必须带 !important：VitePress 默认顶栏样式是带 scoped 属性选择器的
+   （.VPNavBarMenuLink[data-v-815115f5]，特异性 0,2,0），会压过我们 0,1,0 的自定义规则。
+   其中最要命的是默认的 line-height: var(--vp-nav-height)（=64px）——它会把链接撑满
+   整个导航高度，胶囊就成了竖着的椭圆（原型是横的扁胶囊）。 */
+.VPNavBarMenuLink {
+  padding: 8px 14px !important;      /* 原型 .nav a 的 8px 14px */
+  border-radius: 999px;
+  font-weight: 600 !important;       /* 原型 600；默认 500 偏细 */
+  line-height: normal !important;    /* 压掉默认的 64px，否则胶囊变形 */
+  color: var(--dr-ink2) !important;  /* 原型 .nav a 是 muted（次要字色） */
+  transition: background .15s, color .15s;
+}
+.VPNavBarMenuLink:hover { background: var(--dr-soft); color: var(--dr-ink) !important; }
+.VPNavBarMenuLink.active { background: var(--dr-sig) !important; color: var(--dr-sig-ink) !important; }
+/* 原型顶栏没有 VitePress 自带的搜索框（检索交给右边的「找论文」弹窗）。
+   且本地搜索的 ⌘K 只是按钮上写死的装饰字、并没有绑键盘，藏掉不丢功能。 */
+.VPNavBarSearch { display: none; }
 
 /* ============ 站外导航页（pageClass: sites，components/SiteNavWall.vue）============ */
 /* 这一页是「方案 C · 积木墙」：五组各占一行，组内砖块等宽、整行铺满，

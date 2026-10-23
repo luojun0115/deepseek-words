@@ -19,7 +19,7 @@ const NOTE_BLANK = new Set(Object.entries(NOTE_SRC)
 const noteHref = (p) => withBase('/notes/' + p.dir + '.html')
 const written = (p) => !NOTE_BLANK.has(p.dir)
 
-const sortBy = ref('num')       // num | words
+const sortBy = ref('num')       // num | words | time
 
 /* 说明行跟着页面口径走：词汇页没有朗读入口，别写成「听读」 */
 const hint = computed(() => {
@@ -32,9 +32,18 @@ const hint = computed(() => {
 /* 搜索已移到顶栏「找论文」弹窗（PaperSearch.vue），这里只负责排序 */
 const list = computed(() => {
   const r = papers.slice()
-  r.sort((a, b) => sortBy.value === 'words'
-    ? b.words - a.words
-    : a.num.localeCompare(b.num))
+  if (sortBy.value === 'words') {
+    r.sort((a, b) => b.words - a.words)
+  } else if (sortBy.value === 'time') {
+    /* 「按时间」= arXiv 编号前 6 位（YYMM.NNNNN，即发布年月+日），
+       定长数字串按字符比就等于按时间比，所以直接比字符串，不必转 Date。
+       方向取「新→旧」：编号本身就是时间正序（01=2401 月 … 32=2609 月），
+       若也给「旧→新」那和「按编号」一模一样，这个选项就没有存在意义。 */
+    const k = (p) => String(p.arxiv || '')
+    r.sort((a, b) => (k(a) < k(b) ? 1 : k(a) > k(b) ? -1 : 0))
+  } else {
+    r.sort((a, b) => a.num.localeCompare(b.num))
+  }
   return r
 })
 
@@ -70,6 +79,7 @@ const master = computed(() => {
         <select v-model="sortBy">
           <option value="num">按编号</option>
           <option value="words">按词数</option>
+          <option value="time">按时间（新→旧）</option>
         </select>
       </label>
     </div>

@@ -113,3 +113,13 @@ export const THEMES = [
 ]
 
 export const DEFAULT_THEME = 'forest'
+
+/* 全站恒定的 signature 色：顶栏当前栏目胶囊 = MotionFace 原型的柠檬绿。
+   十套主题各有自己的 accent，但顶栏这颗「柠檬糖」不跟主题走——
+   和「黑色页脚恒定锚点」是同一个思路（§B9）：页面主体随主题呼吸，顶栏这一颗始终认得出。
+   它是恒定值而不是每套主题各配，所以不进 THEME_VARS（那儿是逐套校验的变量），
+   但照样走真源 + 对比度门禁：gen-theme-css.mjs 会单独校这一对。 */
+export const SIGNATURE = {
+  '--dr-sig': '#d9f45f',
+  '--dr-sig-ink': '#17211f',
+}

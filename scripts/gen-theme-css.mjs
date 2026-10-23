@@ -5,7 +5,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { THEMES, THEME_VARS, DEFAULT_THEME } from '../.vitepress/theme/theme-defs.mjs'
+import { THEMES, THEME_VARS, DEFAULT_THEME, SIGNATURE } from '../.vitepress/theme/theme-defs.mjs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const OUT = path.resolve(__dirname, '../.vitepress/theme/theme.generated.css')
@@ -36,6 +36,11 @@ const ratio = (a, b) => {
 const errs = []
 const rows = []
 if (THEMES.length > 10) errs.push(`主题共 ${THEMES.length} 套，数字键 1–0 只能直达 10 套（要么删几套，要么改 ThemeSwitcher 的键位方案）`)
+// 全站恒定的 signature 色（顶栏胶囊）不随主题走，但照样过门禁：墨字压柠檬绿要 ≥ 4.5:1
+const sigRatio = ratio(SIGNATURE['--dr-sig-ink'], SIGNATURE['--dr-sig'])
+if (sigRatio < MIN) {
+  errs.push(`signature 顶栏胶囊 字/底：${SIGNATURE['--dr-sig-ink']} vs ${SIGNATURE['--dr-sig']} = ${sigRatio.toFixed(2)}:1 < ${MIN}:1`)
+}
 for (const [i, t] of THEMES.entries()) {
   for (const v of THEME_VARS) {
     if (!(v in t.v)) { console.error(`主题 ${t.id} 缺变量 ${v}`); process.exit(1) }
@@ -49,6 +54,9 @@ for (const [i, t] of THEMES.entries()) {
 }
 
 let css = `/* 自动生成，勿手改；改主题请编辑 theme-defs.mjs 后重跑本脚本 */\n`
+
+// 全站恒定的 signature 色：写在 :root，所有主题共用（不随 data-theme 变）
+css += `:root {\n${Object.entries(SIGNATURE).map(([k, v]) => `  ${k}: ${v};`).join('\n')}\n}\n\n`
 
 for (const t of THEMES) {
   const sel = t.id === DEFAULT_THEME ? `:root, html[data-theme='${t.id}']` : `html[data-theme='${t.id}']`
@@ -89,4 +97,5 @@ if (errs.length) {
 
 fs.writeFileSync(OUT, css)
 console.log(rows.join('\n'))
+console.log(`signature 顶栏胶囊 字/底 = ${sigRatio.toFixed(1)}:1（恒定，不随主题）`)
 console.log(`生成 ${THEMES.length} 套主题（默认：${DEFAULT_THEME}）· 对比度全部 ≥ ${MIN}:1 → ${path.relative(process.cwd(), OUT)}`)

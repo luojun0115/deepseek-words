@@ -61,7 +61,7 @@ function onKey(e) {
 <template>
   <button class="dr-find" type="button" aria-haspopup="dialog" title="搜索论文（按名称 / 编号 / arXiv）" @click="show">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true">
-      <path d="M7 3h7l4 4v14H7z" /><path d="M14 3v5h4" /><path d="M10 12h5M10 16h5" />
+      <circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" />
     </svg>
     <span>找论文</span>
   </button>

@@ -67,15 +67,30 @@ const ok = (name, cond, extra = '') => {
   // 2026-10-09 用户定案取消「总集」栏（三张总集页在 /vocab 与 /listen 顶部横幅里已能直达）
   ok('顶栏无「总集」栏（入口已并入两个索引页）', !navTxt.includes('总集'), navTxt.join('/'))
 
-  // 1d-2) 顶栏照原型定制（2026-10-23 用户定案 §B7）：黑块鲸鱼 logo + 双层站名 + 当前栏目胶囊高亮
+  // 1d-2) 顶栏照原型定制（2026-10-23 定案 §B7 → 2026-10-24 照原型还原 §B9）：
+  //       黑块鲸鱼 logo + 双层站名 + 当前栏目胶囊高亮（底色 = 全站恒定的 signature 柠檬绿）
   ok('顶栏有黑块鲸鱼 logo', (await page.locator('.VPNavBarTitle .VPImage').count()) === 1)
   ok('顶栏双层站名（鲸读 + 副题）',
     (await page.locator('.VPNavBarTitle .st-big').textContent()) === '鲸读' &&
     (await page.locator('.VPNavBarTitle .st-sub').count()) === 1)
+  // 胶囊底色必须等于真源 theme-defs.mjs 的 SIGNATURE['--dr-sig']（不是「非透明」这种弱判据，
+  // 否则胶囊退化成任意颜色也照样过检）。真源是 ESM，这里读文件正则取，避免多一套加载逻辑。
+  const sigHex = ((require('fs').readFileSync(
+    require('path').resolve(__dirname, '../.vitepress/theme/theme-defs.mjs'), 'utf8')
+    .match(/'--dr-sig':\s*'(#[0-9a-fA-F]{6})'/) || [])[1] || '').toLowerCase()
+  const sigRgb = sigHex
+    ? `rgb(${parseInt(sigHex.slice(1, 3), 16)}, ${parseInt(sigHex.slice(3, 5), 16)}, ${parseInt(sigHex.slice(5, 7), 16)})`
+    : ''
   const act = page.locator('.VPNavBarMenuLink.active')
   const actBg = await act.first().evaluate((e) => getComputedStyle(e).backgroundColor)
-  ok(`当前栏目「${navTxt[0]}」是胶囊高亮（accent 底）`,
-    (await act.count()) === 1 && (await act.first().textContent()).trim() === navTxt[0] && actBg !== 'rgba(0, 0, 0, 0)', actBg)
+  ok(`当前栏目「${navTxt[0]}」是胶囊高亮（signature 底 ${sigHex}）`,
+    (await act.count()) === 1 && (await act.first().textContent()).trim() === navTxt[0] &&
+    actBg !== 'rgba(0, 0, 0, 0)' && (!sigRgb || actBg === sigRgb), actBg)
+  // 2026-10-24 §B9：原型顶栏没有搜索框（检索交给右端「找论文」弹窗），VitePress 自带的那个要藏掉。
+  // 注意本地搜索的 ⌘K 只是按钮上写死的装饰字、没绑键盘事件，藏掉不丢功能。
+  ok('顶栏无 VitePress 自带搜索框（照原型）',
+    (await page.locator('.VPNavBarSearch').count()) === 0 ||
+    !(await page.locator('.VPNavBarSearch').first().isVisible()))
 
   // 1e) 顶栏「模型架构」（2026-10-09 用户要求：站外链）+ 1e-2)「站外导航」（2026-10-23 用户要求：
   //     放在「模型架构」右边，指站内页 /sites）
@@ -121,6 +136,28 @@ const ok = (name, cond, extra = '') => {
   ok('无级别胶囊/档位筛选残留',
     (await page.locator('.dr-lib .dr-bd, .dr-lib .dr-pill, .dr-tools select').count()) === 1,
     '应只剩 1 个排序下拉')
+
+  // 3b) 排序下拉（2026-10-24 用户要求加「按时间」）：选项齐 + 切过去确实按 arXiv 号倒序
+  const sortOpts = await page.$$eval('.dr-tools select option', els => els.map(e => e.textContent.trim()))
+  ok('排序下拉三项齐全（编号 / 词数 / 时间）',
+    sortOpts.length === 3 && sortOpts.includes('按编号') && sortOpts.includes('按词数') && sortOpts.includes('按时间（新→旧）'),
+    sortOpts.join(' / '))
+  const cardNums = () => page.$$eval('.dr-lib .dr-card-media', els =>
+    els.map(e => (e.getAttribute('aria-label') || '').split('·')[0].trim()))
+  await page.selectOption('.dr-tools select', 'time')
+  await page.waitForTimeout(250)
+  const timeSeq = await cardNums()
+  // 期望顺序从 data/papers.json 现算（按 arXiv 号倒序），不写死编号，
+  // 以后补新论文 / 调编号，这条断言都不用改
+  const PAPERS = require('../data/papers.json')
+  const wantSeq = PAPERS.slice()
+    .sort((a, b) => String(b.arxiv || '').localeCompare(String(a.arxiv || '')))
+    .map(p => p.num)
+  ok('切「按时间」后 32 张卡按 arXiv 号倒序（最新在前）',
+    JSON.stringify(timeSeq) === JSON.stringify(wantSeq),
+    timeSeq.slice(0, 3).join(',') + ' … ' + timeSeq.slice(-2).join(','))
+  await page.selectOption('.dr-tools select', 'num')   // 复位，别把时间序留给后面的断言
+  await page.waitForTimeout(150)
 
   // 4) 顶栏「换背景」圆钮（2026-10-09 用户要求：不显示主题名文字，点一下就换）
   //    主题名单/顺序/默认项/哪套是暗色全从 theme-defs.mjs 现读，加配色不用改这里

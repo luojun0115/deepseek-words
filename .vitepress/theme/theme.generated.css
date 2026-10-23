@@ -1,4 +1,9 @@
 /* 自动生成，勿手改；改主题请编辑 theme-defs.mjs 后重跑本脚本 */
+:root {
+  --dr-sig: #d9f45f;
+  --dr-sig-ink: #17211f;
+}
+
 :root, html[data-theme='forest'] {
   --dr-bg: #f3f6f1;
   --dr-bg2: #e8efe6;
