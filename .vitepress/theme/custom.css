@@ -69,35 +69,35 @@
   border-radius: var(--dr-radius); padding: 7px 10px;
 }
 
-/* 栅格：同排等高交给 grid，不用 min-height（旧坑8，见 DECISIONS §C 开头的对照注）；1440 视口下一排 4 卡 */
-.dr-lib .dr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+/* 栅格：同排等高交给 grid，不用 min-height（旧坑8，见 DECISIONS §C 开头的对照注）；1440 视口下一排 4 卡。
+   gap 对齐原型 masonry（行 34 / 列 24），minmax 收到 280 保住 4 列（300+34 间隙在 1256 容器会掉 3 列） */
+.dr-lib .dr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 34px 24px; }
+/* 卡片同步自 MotionFace 原型（2026-10-23）：金句封面海报 + 英文题 + 三键，无框裸排。
+   编号/短名/年份都画在海报图内，卡面不重复；海报配色写死（§B6 分界），骨架悬停效果走主题变量 */
 .dr-lib .dr-card {
-  display: flex; flex-direction: column;
-  background: var(--dr-panel); border: var(--dr-bw) solid var(--dr-line);
-  border-radius: var(--dr-radius); padding: 16px 18px;
-  transition: box-shadow .15s, border-color .15s, transform .15s;
+  display: flex; flex-direction: column; min-width: 0;
 }
-.dr-lib .dr-card:hover { border-color: var(--dr-accent); box-shadow: 0 6px 22px rgba(0,0,0,.08); transform: translateY(-2px); }
-
-.dr-lib .dr-card-top { display: flex; align-items: center; gap: 10px; }
-.dr-lib .dr-num {
-  font: 700 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
-  color: var(--dr-accent); background: var(--dr-soft);
-  border-radius: 6px; padding: 4px 7px; letter-spacing: .5px;
+.dr-lib .dr-card-media {
+  aspect-ratio: 16 / 10; border-radius: 18px; overflow: hidden;
+  background: var(--dr-bg2) center / cover no-repeat;
+  outline: 1px solid transparent; outline-offset: -1px;
+  transition: transform .25s ease, box-shadow .25s ease, outline-color .25s ease;
 }
+.dr-lib .dr-card:hover .dr-card-media {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgb(29 29 27 / 14%);
+  outline-color: color-mix(in srgb, var(--dr-accent) 55%, transparent);
+}
+.dr-lib .dr-card-body { padding: 12px 4px 0; display: flex; flex-direction: column; flex: 1; }
 .dr-lib .dr-card-nm {
-  font: 700 16px/1.3 var(--dr-hf); color: var(--dr-ink);
+  font: 700 15px/1.42 var(--dr-hf); color: var(--dr-ink);
   text-decoration: none; margin: 0;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
 }
-.dr-lib .dr-full {
-  font: 400 12.5px/1.5 var(--dr-hf); color: var(--dr-ink2);
-  margin: 8px 0 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-  min-height: 0;
-}
-.dr-lib .dr-meta { font-size: 11.5px; color: var(--dr-ink2); margin-top: 6px; }
+.dr-lib .dr-card:hover .dr-card-nm { text-decoration: underline; text-underline-offset: 3px; }
 
-/* 底部两按钮：底对齐交给 flex（旧坑8，同上） */
-.dr-lib .dr-acts { display: flex; gap: 8px; margin-top: auto; padding-top: 14px; }
+/* 底部三键：底对齐交给 flex（旧坑8，同上） */
+.dr-lib .dr-acts { display: flex; gap: 7px; margin-top: auto; padding-top: 12px; flex-wrap: wrap; }
 .dr-lib .dr-go {
   flex: 1; text-align: center; text-decoration: none;
   font-weight: 600; font-size: 13px; line-height: 1; border-radius: 8px; padding: 9px 0;
@@ -166,7 +166,7 @@
   border-bottom: var(--dr-bw) solid var(--dr-line);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
 }
-/* 编号 chip 跟卡片上的 .dr-num 一个口径（主题强调色 + 主题淡底）：
+/* 编号 chip（笔记页头）用主题强调色 + 主题淡底：
    试过直接用笔记栏目的青蓝 #0284c7，量下来在十套里最差 3.65:1（小字号），
    换成主题色后每套都拿自己配好的对比度，不跟主题抢颜。青蓝只留给按钮/返回链 */
 .dr-note-num {

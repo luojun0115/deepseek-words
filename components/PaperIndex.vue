@@ -75,17 +75,20 @@ const master = computed(() => {
     </div>
 
     <div class="dr-grid">
+      <!-- 卡片同步自 MotionFace 原型（design/20261020_MotionFace风格）：金句封面海报 + 英文题 + 三键。
+           编号 / 短名 / 年份都画在封面图内（covers3 生成，图随 public/covers 进仓），卡面不再重复 -->
       <div v-for="p in list" :key="p.num" class="dr-card">
-        <div class="dr-card-top">
-          <span class="dr-num">{{ p.num }}</span>
-          <h3 class="dr-card-nm">{{ p.short }}</h3>
-        </div>
-        <p class="dr-full">{{ p.title }}</p>
-        <div class="dr-meta">{{ p.year }} · arXiv:{{ p.arxiv }} · {{ p.words }} 词</div>
-        <div class="dr-acts">
-          <a v-if="mode !== 'listen' && mode !== 'note'" class="dr-go v" :href="withBase(p.vocabPath)" target="_self">词汇学习</a>
-          <a v-if="mode !== 'vocab' && mode !== 'note'" class="dr-go l" :href="withBase(p.listenPath)" target="_self">词汇朗读</a>
-          <a class="dr-go n" :href="noteHref(p)" target="_self">学习笔记<i v-if="mode === 'note' && !written(p)" class="dr-nb">未写</i></a>
+        <div
+          class="dr-card-media" role="img" :aria-label="p.num + ' · ' + p.short + ' 金句封面'"
+          :style="{ backgroundImage: `url(${withBase('/covers/' + p.num + '_' + p.short + '.png')})` }"
+        ></div>
+        <div class="dr-card-body">
+          <h3 class="dr-card-nm">{{ p.title }}</h3>
+          <div class="dr-acts">
+            <a v-if="mode !== 'listen' && mode !== 'note'" class="dr-go v" :href="withBase(p.vocabPath)" target="_self">词汇学习</a>
+            <a v-if="mode !== 'vocab' && mode !== 'note'" class="dr-go l" :href="withBase(p.listenPath)" target="_self">词汇朗读</a>
+            <a class="dr-go n" :href="noteHref(p)" target="_self">学习笔记<i v-if="mode === 'note' && !written(p)" class="dr-nb">未写</i></a>
+          </div>
         </div>
       </div>
     </div>

@@ -45,6 +45,13 @@ const ok = (name, cond, extra = '') => {
   const cols = await page.evaluate(() => getComputedStyle(document.querySelector('.dr-lib .dr-grid')).gridTemplateColumns.split(' ').length)
   ok('1440 视口下一排 4 卡', cols === 4, '实得 ' + cols + ' 列')
 
+  // 1b-2) 论文卡金句封面（2026-10-23 同步 MotionFace 原型：covers3 海报随 public/covers 进仓）
+  const covs = await page.$$eval('.dr-lib .dr-card-media', els => els.map(e => e.style.backgroundImage || ''))
+  ok('论文卡 32 张全带金句封面', covs.length === NP && covs.every(s => s.includes('/covers/')), '实得 ' + covs.length + ' 张')
+  const covURL = ((covs[0] || '').match(/url\("?([^")]+)"?\)/) || [])[1]
+  const covCode = covURL ? await page.evaluate(u => fetch(u).then(r => r.status).catch(() => 0), covURL) : 0
+  ok('封面图可加载（首张 HTTP 200）', covCode === 200, (covURL || '?') + ' → ' + covCode)
+
   // 1c) 首页报头（components/HomeIntro.vue，2026-10-23 改版：原 .dr-intro 学法卡换成报纸头版）
   //     两枚入口分指「背词」与「论文总览」
   const ways = await page.$$eval('.dr-hero .dp-links a', els => els.map(e => e.getAttribute('href')))
@@ -134,7 +141,8 @@ const ok = (name, cond, extra = '') => {
   ok(`数字键 ${KEYOF(di)} 切回默认（${nameOf(DEFAULT_THEME)}）`, await did() === DEFAULT_THEME, await did())
 
   // 5) 点进静态词汇页：URL + title + 无站点外壳（DECISIONS §C1）
-  await page.click('.dr-lib .dr-card:has-text("DeepSeek-LLM") .dr-go.v')
+  //    卡片改版后卡面只显英文全名（无短名文本），按封面 aria-label 的编号前缀定位
+  await page.click('.dr-lib .dr-card:has([aria-label^="01 ·"]) .dr-go.v')
   await page.waitForLoadState('networkidle')
   ok('跳进词汇页 URL', page.url().includes('/study/vocab/'), page.url())
   const hasShell = await page.evaluate(() => !!document.querySelector('.VPNav, .VPLocalNav, .VPSidebar, #app .VPDoc'))
@@ -263,7 +271,7 @@ const ok = (name, cond, extra = '') => {
   ok('未写的篇目带「未写」小标（与空白文件数对平）', nbCount === PP.length - writtenNotes(PP), `标=${nbCount} 已写=${writtenNotes(PP)}`)
   await page.screenshot({ path: SHOT + '/28_notes索引.png' })
 
-  await page.click('.dr-lib .dr-card:has-text("' + PP[0].short + '") .dr-go.n')
+  await page.click('.dr-lib .dr-card:has([aria-label^="' + PP[0].num + ' ·"]) .dr-go.n')
   await page.waitForLoadState('networkidle')
   ok('点进笔记页 URL', page.url() === BASE + '/notes/' + PP[0].dir + '.html', page.url())
   ok('笔记页是站内页（有顶栏外壳，区别于 /study/ 静态页）', (await page.locator('.VPNav').count()) === 1)
