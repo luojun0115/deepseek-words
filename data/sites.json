@@ -1,5 +1,5 @@
 {
-  "_note": "站外导航页（/sites）的数据源。51 站上墙 + 5 站待选 + 3 个自有空位。改名单改这里，页面与自检都从这份数据读，不写死在组件里。待选站（pending）数据保留但页面不渲染（DECISIONS §A7）。分组顺序 = 墙上的行序（每组一行，组牌在左列）。",
+  "_note": "站外导航页（/sites）的数据源。57 站上墙 + 5 站待选 + 3 个自有空位。改名单改这里，页面与自检都从这份数据读，不写死在组件里。待选站（pending）数据保留但页面不渲染（DECISIONS §A7）。分组顺序 = 墙上的行序（每组一行，组牌在左列）。dev 组（开发者社区）内按色相交错排布，相邻两块色相都 ≥ 50°。",
   "groups": [
     { "id": "papers", "name": "论文源", "en": "PAPERS", "kind": "sites" },
     { "id": "llm", "name": "大模型", "en": "LLM", "kind": "sites" },
@@ -8,6 +8,7 @@
     { "id": "tools", "name": "工具与测试", "en": "TOOLS", "kind": "sites" },
     { "id": "courses", "name": "课程与读书", "en": "COURSES", "kind": "sites" },
     { "id": "community", "name": "社区", "en": "COMMUNITY", "kind": "sites" },
+    { "id": "dev", "name": "开发者社区", "en": "DEV", "kind": "sites" },
     { "id": "media", "name": "媒体与图书馆", "en": "MEDIA", "kind": "sites" },
     { "id": "data", "name": "数据与工具", "en": "DATA", "kind": "sites" },
     { "id": "video", "name": "视频与热榜", "en": "VIDEO", "kind": "sites" },
@@ -58,6 +59,13 @@
     { "slug": "v2ex", "name": "V2EX", "short": "V2EX", "url": "https://www.v2ex.com", "brand": "#e8c547", "group": "community", "logo": "/logos/v2ex.png" },
     { "slug": "reddit", "name": "Reddit", "short": "Reddit", "url": "https://www.reddit.com", "brand": "#ff4500", "group": "community", "logo": "/logos/reddit.png" },
     { "slug": "hn", "name": "Hacker News", "short": "HN", "url": "https://news.ycombinator.com", "brand": "#ff6600", "group": "community", "logo": "/logos/hn.png" },
+
+    { "slug": "cnblogs", "name": "博客园", "short": "博客园", "url": "https://www.cnblogs.com", "brand": "#1878c0", "group": "dev", "logo": "/logos/cnblogs.png" },
+    { "slug": "aliyundev", "name": "阿里云开发者社区", "short": "阿里云社区", "url": "https://developer.aliyun.com", "brand": "#f06000", "group": "dev", "logo": "/logos/aliyundev.png" },
+    { "slug": "oschina", "name": "开源中国 OSCHINA", "short": "开源中国", "url": "https://www.oschina.net", "brand": "#30a848", "group": "dev", "logo": "/logos/oschina.png" },
+    { "slug": "tencentdev", "name": "腾讯云开发者社区", "short": "腾讯云社区", "url": "https://cloud.tencent.com/developer", "brand": "#00b6cf", "group": "dev", "logo": "/logos/tencentdev.png" },
+    { "slug": "liaoxuefeng", "name": "廖学峰官方网站", "short": "廖学峰", "url": "https://www.liaoxuefeng.com", "brand": "#dbbb00", "group": "dev", "logo": "/logos/liaoxuefeng.png" },
+    { "slug": "haoel", "name": "左耳朵耗子 · CSDN 专栏", "short": "左耳朵耗子", "url": "https://blog.csdn.net/haoel", "brand": "#7b3f9e", "group": "dev", "logo": "/logos/haoel.png" },
 
     { "slug": "infoq", "name": "InfoQ", "short": "InfoQ", "url": "https://www.infoq.cn", "brand": "#3f7ae0", "group": "media", "logo": "/logos/infoq.png" },
     { "slug": "cctv", "name": "央视网", "short": "央视网", "url": "https://www.cctv.com", "brand": "#1a4f9c", "group": "media", "logo": "/logos/cctv.png" },

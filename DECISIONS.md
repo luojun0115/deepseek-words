@@ -372,6 +372,73 @@ algo 组三块色相 **36° / 16° / 151°**，彼此分明。
 
 ---
 
+### A11. /sites 第四批：新开「开发者社区」组（2026-10-24 用户定案）
+
+用户原话：「再增加博客园、开源中国、腾讯云社区、阿里云社区、廖学峰网站还有一个左耳朵耗子的他的网站」
+
+**清单口径（57 上墙 / 5 待选 / 3 空位）**，唯一真源仍是 `data/sites.json`。
+
+| 分组 | 站数 | 站点 |
+|---|---|---|
+| papers 论文源 | 3 | arXiv、HF Papers、Google Scholar |
+| llm 大模型 | 8 | Claude Code、Codex、Qwen、DeepSeek、MiMo、GLM、Kimi、MiniMax |
+| code 代码与编程 | 7 | GitHub、菜鸟教程、Python、MySQL、Pytest、小众软件、慕课网 |
+| algo 算法与刷题 | 3 | 力扣、牛客网、CodeTop |
+| tools 工具与测试 | 5 | 小林 coding、测试之家、Selenium、Playwright、Redis |
+| courses 课程与读书 | 7 | 极客时间、得到、微信读书、网易公开课、大学慕课、TED、智慧教育 |
+| community 社区 | 5 | 知乎、豆瓣、V2EX、Reddit、Hacker News |
+| **dev 开发者社区** | 6 | **博客园**、**阿里云社区**、**开源中国**、**腾讯云社区**、**廖学峰**、**左耳朵耗子** |
+| media 媒体与图书馆 | 5 | InfoQ、央视网、央广网、首都图书馆、国家图书馆 |
+| data 数据与工具 | 4 | 新榜、飞瓜数据、蝉妈妈、Folo |
+| video 视频与热榜 | 4 | B 站、YouTube、今日热榜、今日热榜·开发者 |
+| mine 我的站点 | 3 空位 | 我的 GitHub / 博客·主页 / 待添加 |
+
+**为什么要新开 dev 组**：博客园、开源中国、腾讯云社区、阿里云社区是**中文开发者社区**，
+与 community 组的泛社交社区（知乎/豆瓣/V2EX/Reddit/HN）不同质；
+廖学峰、左耳朵耗子是**中文技术博客**。塞进 community 会涨到 11 块（砖宽压到 ~90px），
+单开 **dev 开发者社区**（6 块）既保住语义，行宽也在 3–8 块版式上限内。
+
+**左耳朵耗子这一站换了链接（原站已死）**：`haoel.com` 现在 **302 跳到 HugeDomains 的域名停放出售页**
+（陈皓 2023 年去世后博客下线，域名过期被抢注），原链是死链，不该上墙。
+改链到**他本人的 CSDN 专栏** `https://blog.csdn.net/haoel`（专栏名「空谷幽兰，心如皓月」），
+砖面 short 仍是「左耳朵耗子」，悬停 title/aria 用「左耳朵耗子 · CSDN 专栏」标明出处。
+**logo 用 GitHub 头像**（`avatars.githubusercontent.com/haoel`，460×460 他本人画像）：
+CSDN 对直连有 WAF（「请进行安全验证」），浏览器也拿不到 icon 声明；
+而 `avatars.githubusercontent.com` 与 `github.com` 主站是**不同线路**，能直连。
+头像做圆形遮罩（4× 超采样）当标识。
+
+**廖学峰的 logo 是 SVG，只能用浏览器光栅化**：该站 `/favicon.ico` 是 302（跳首页），
+`icon.horse` 给的是**占位符**（灰底灰色 L 形），真正的标识是 `/static/logo.svg`
+（深蓝灰圆底 + 黄色火箭）。本机**没有 rsvg-convert / inkscape / imagemagick / cairosvg**，
+于是用 Playwright 驱动 Chrome 渲染 SVG 再截图。两个坑：
+① `chromium.launch()` 会卡在下载浏览器（ms-playwright 缓存版本对不上）→ 必须 `channel: 'chrome'` 用系统装的 Chrome；
+② SVG 是 **XML 文档没有 `<head>`**，`page.addStyleTag` 直接抛 `Cannot read properties of null` → 把 SVG 包进一层透明底 HTML 再截。
+
+**dev 组内按色相交错排布**（不是按名字顺序）：`soften()` 输出色只由色相决定（§A8），
+同色相并排两块会看成同一块砖。实测六站 logo 主色：
+博客园 hue 211° 蓝、阿里云 25° 橙、开源中国 134° 绿、腾讯云 202° 青、廖学峰 202° 深蓝灰（撞）、左耳朵耗子 32° 暖棕（撞）。
+调整两处：**腾讯云社区改取 logo 渐变里的青** `#00b6cf`（hue 186°）避开博客园 211°；
+**廖学峰改取火箭黄** `#dbbb00`（hue 51°）避开腾讯云 202°；左耳朵耗子取**深紫** `#7b3f9e`（hue 278°）避开阿里橙。
+最后按「蓝-橙-绿-青-黄-紫」交错排列，**相邻两块色相差全部 ≥ 50°**（实测最小 55°，比既有各组都宽）。
+
+**落地文件**：`data/sites.json`（57 站 / 12 组；`_note` 数字同步更新）、
+`public/logos/` +6 枚（57 枚）、`components/SiteNavWall.vue`
+（`PATTERN` 从 51 项扩到 **57 项**，按原节奏续满 7 个周期 + `1`；导语补上「开发者社区」；注释「十一组」→「十二组」）。
+`scripts/check_portal.cjs` 仍**不用改**（断言数量动态读 `SITES.sites.length`）。
+
+自检断言实测 **77/77 全过**：`/sites 页 57 块实砖 + 3 个空位 + 12 块组牌`、
+`/sites 每块都是站外链（地址与清单逐一对应）`、`/sites 57 枚 logo 全部加载成功`、
+`/sites 砖面文字对比度 ≥ 4.5`（最低 **4.52:1**）。
+目检：亮色 + 深夜两态，dev 组六块 logo 清晰、色相分明。
+
+> 顺带记一笔（**本次未改**）：media 组里央广网与国家图书馆都是 hue 357°，
+> 并排两块几乎同色。属既有批次遗留，动它会改动用户已验收过的版面，留到专门一轮再处理。
+>
+> 交付时的网络状况：直连 GitHub 仍超时、机场线路也不通，**push 未执行**，
+> 第二、三、四批（49 / 51 / 57 站）三个 commit 都留在本地分支未推送。
+
+---
+
 ## B. 页面与样式定案
 
 ### B1. 论文总览链接不带下划线（2026-10-08 用户要求）
