@@ -77,13 +77,16 @@ const ok = (name, cond, extra = '') => {
   ok(`当前栏目「${navTxt[0]}」是胶囊高亮（accent 底）`,
     (await act.count()) === 1 && (await act.first().textContent()).trim() === navTxt[0] && actBg !== 'rgba(0, 0, 0, 0)', actBg)
 
-  // 1e) 顶栏「模型架构」（2026-10-09 用户要求：站外链，固定排在最后一栏）
+  // 1e) 顶栏「模型架构」（2026-10-09 用户要求：站外链）+ 1e-2)「站外导航」（2026-10-23 用户要求：
+  //     放在「模型架构」右边，指站内页 /sites）
   //     期望地址从 config.mts 里那一行常量现取，改地址不用改自检
   const CFG = require('fs').readFileSync(require('path').resolve(__dirname, '../.vitepress/config.mts'), 'utf8')
   const GALLERY = (CFG.match(/const LLM_GALLERY = '([^']+)'/) || [])[1]
   const gi = navTxt.indexOf('模型架构')
-  ok('顶栏「模型架构」是最后一栏（站内栏目都在它左边）',
-     gi === navTxt.length - 1 && navTxt.indexOf('学习笔记') === gi - 1, navTxt.join('/'))
+  const si = navTxt.indexOf('站外导航')
+  ok('顶栏「模型架构」在倒数第二栏、「站外导航」在最后一栏（站内栏目都在它左边）',
+     gi > 0 && si === gi + 1 && navTxt.indexOf('学习笔记') < gi && si === navTxt.length - 1,
+     navTxt.join('/'))
   const ext = page.locator('.VPNavBarMenuLink', { hasText: '模型架构' }).first()
   const extHref = await ext.getAttribute('href')
   const extTarget = await ext.getAttribute('target')
@@ -91,6 +94,11 @@ const ok = (name, cond, extra = '') => {
      !!GALLERY && extHref === GALLERY && extTarget === '_blank' &&
      /noreferrer/.test((await ext.getAttribute('rel')) || ''),
      (extHref || '未找到') + ' · target=' + extTarget)
+  // 「站外导航」是站内页：带 base 的 .html，且不新标签打开
+  const navLink = page.locator('.VPNavBarMenuLink', { hasText: '站外导航' }).first()
+  const navHref = await navLink.getAttribute('href')
+  ok('「站外导航」指向站内 /sites.html（带 base，同标签打开）',
+     navHref === BPATH + 'sites.html' && !(await navLink.getAttribute('target')), navHref || '未找到')
   const bodyTxt = await page.locator('body').innerText()
   ok('首页无旧栏目名残留', !/词汇网页|单词听力/.test(bodyTxt),
      ['词汇网页', '单词听力'].filter(k => bodyTxt.includes(k)).join('、'))
@@ -310,12 +318,52 @@ const ok = (name, cond, extra = '') => {
   ok('页头只跟着笔记页（索引页无、SPA 切走后也会拆掉）',
     (await page.locator('.dr-note-hd').count()) === 0)
 
+  // 7e) /sites 站外导航页（2026-10-23 用户要求：顶栏「模型架构」右边加一栏，
+  //     页面用「方案 C · 积木墙」把 25 个外站砌成一面墙）。清单在 data/sites.json，自检也从那儿读
+  const SITES = require('../data/sites.json')
+  await page.goto(BASE + '/sites.html', { waitUntil: 'networkidle' })
+  const nBlk = await page.locator('.dr-nav .nav-blk:not(.ghost)').count()
+  const nGhost = await page.locator('.dr-nav .nav-blk.ghost').count()
+  const nPlate = await page.locator('.dr-nav .nav-plate').count()
+  ok(`/sites 页 ${SITES.sites.length} 块实砖 + ${SITES.slots.length} 个空位 + ${SITES.groups.length} 块组牌`,
+     nBlk === SITES.sites.length && nGhost === SITES.slots.length && nPlate === SITES.groups.length,
+     `实砖=${nBlk} 空位=${nGhost} 组牌=${nPlate}`)
+  // 每块都是站外链：新标签 + noreferrer + 地址与清单逐一对应
+  const hrefs = await page.$$eval('.dr-nav .nav-blk:not(.ghost)',
+    els => els.map(e => [e.getAttribute('href'), e.getAttribute('target'), e.getAttribute('rel') || '']))
+  const wantHref = SITES.sites.map(s => s.url)
+  const badLink = hrefs.filter((h, i) => h[0] !== wantHref[i] || h[1] !== '_blank' || !/noreferrer/.test(h[2]))
+  ok('/sites 每块都是站外链（新标签 + noreferrer，地址与清单逐一对应）',
+     hrefs.length === wantHref.length && badLink.length === 0,
+     badLink.length ? badLink.slice(0, 3).map(b => b[0]).join(',') : `${hrefs.length} 块全对`)
+  // 25 枚 logo 全部加载（logo 在 public/logos/，缺一个就是碎图）
+  const imgOK = await page.$$eval('.dr-nav .nav-blk img', els => els.filter(e => e.naturalWidth > 0).length)
+  ok(`/sites ${SITES.sites.length} 枚 logo 全部加载成功`, imgOK === SITES.sites.length,
+     `实得 ${imgOK}/${SITES.sites.length}`)
+  // 待选站只留数据、不渲染（DECISIONS §A7）
+  const navTxt2 = await page.locator('.dr-nav').innerText()
+  const pendHit = SITES.pending.filter(p => navTxt2.includes(p.name))
+  ok('/sites 不渲染待选站（数据保留、正式站不上墙）', pendHit.length === 0, pendHit.join(',') || '无')
+  // 砖面文字对比度：块底色是褪色品牌色，文字统一近黑，必须 ≥ 4.5:1
+  const contra = await page.$$eval('.dr-nav .nav-blk:not(.ghost)', els => els.map(e => {
+    const c = getComputedStyle(e)
+    const f = s => { const [r, g, b] = s.match(/[\d.]+/g).map(Number)
+      const h = v => { v /= 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4) }
+      return .2126 * h(r) + .7152 * h(g) + .0722 * h(b) }
+    const L1 = f(c.color), L2 = f(c.backgroundColor)
+    const [x, y] = [L1, L2].sort((m, n) => n - m)
+    return +((x + .05) / (y + .05)).toFixed(2)
+  }))
+  ok('/sites 砖面文字对比度 ≥ 4.5', Math.min(...contra) >= 4.5,
+     `最低 ${Math.min(...contra)}:1（${contra.filter(c => c < 4.5).length} 块不达标）`)
+  await page.screenshot({ path: SHOT + '/30_站外导航页.png', fullPage: true })
+
   // 8b) 门户五页禁词：内部口径/勘误/工作区痕迹一律不上页面（2026-10-08 用户两次要求；/master 已取消）
   //     只管门户外壳；/study/ 下静态词页的副标题（“全量口径重做 · 十一档 + 超纲”）同期定案暂不动
   // 2026-10-09 追加：静态笔记页（不在 /study/ 下的站内页）也拉进来扫同一张黑名单
   const BANNED = ['十一档', '全量重做', '全量口径', '双视图', 'TTS', '工作区',
     '本次补录', '漏收', 'sitemap', '剔除记录', '归属更正', '此前记录有误', '档位筛选']
-  const PAGES = ['/', '/vocab.html', '/listen.html', '/papers.html', '/notes.html',
+  const PAGES = ['/', '/vocab.html', '/listen.html', '/papers.html', '/notes.html', '/sites.html',
     '/notes/' + PP[0].dir + '.html']
   for (const p of PAGES) {
     await page.goto(BASE + p, { waitUntil: 'networkidle' })

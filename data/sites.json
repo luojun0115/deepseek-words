@@ -1,0 +1,54 @@
+{
+  "_note": "站外导航页（/sites）的数据源。25 站上墙 + 5 站待选 + 3 个自有空位。改名单改这里，页面与自检都从这份数据读，不写死在组件里。待选站（pending）数据保留但页面不渲染（DECISIONS §A7）。",
+  "groups": [
+    { "id": "papers", "name": "论文源", "en": "PAPERS", "kind": "sites" },
+    { "id": "code", "name": "代码与编程", "en": "CODE", "kind": "sites" },
+    { "id": "courses", "name": "课程与读书", "en": "COURSES", "kind": "sites" },
+    { "id": "community", "name": "社区与视频", "en": "COMMUNITY", "kind": "sites" },
+    { "id": "media", "name": "媒体与图书馆", "en": "MEDIA", "kind": "sites" },
+    { "id": "mine", "name": "我的站点", "en": "MINE", "kind": "slots" }
+  ],
+  "sites": [
+    { "slug": "arxiv", "name": "arXiv", "short": "arXiv", "url": "https://arxiv.org", "brand": "#b31b1b", "group": "papers", "logo": "/logos/arxiv.png" },
+    { "slug": "huggingface", "name": "HF Papers", "short": "HF Papers", "url": "https://huggingface.co/papers", "brand": "#ffcc4d", "group": "papers", "logo": "/logos/huggingface.png" },
+    { "slug": "scholar", "name": "Google Scholar", "short": "Scholar", "url": "https://scholar.google.com", "brand": "#4285f4", "group": "papers", "logo": "/logos/scholar.png" },
+
+    { "slug": "github", "name": "GitHub", "short": "GitHub", "url": "https://github.com", "brand": "#24292f", "group": "code", "logo": "/logos/github.png" },
+    { "slug": "leetcode", "name": "力扣 LeetCode", "short": "力扣", "url": "https://leetcode.cn", "brand": "#ffa116", "group": "code", "logo": "/logos/leetcode.png" },
+    { "slug": "runoob", "name": "菜鸟教程", "short": "菜鸟教程", "url": "https://www.runoob.com", "brand": "#29a533", "group": "code", "logo": "/logos/runoob.png" },
+    { "slug": "python", "name": "Python 官网", "short": "Python", "url": "https://www.python.org", "brand": "#3776ab", "group": "code", "logo": "/logos/python.png" },
+    { "slug": "mysql", "name": "MySQL 官网", "short": "MySQL", "url": "https://www.mysql.com", "brand": "#00758f", "group": "code", "logo": "/logos/mysql.png" },
+    { "slug": "pytest", "name": "Pytest 官网", "short": "Pytest", "url": "https://docs.pytest.org", "brand": "#2ea3a3", "group": "code", "logo": "/logos/pytest.png" },
+
+    { "slug": "geekbang", "name": "极客时间", "short": "极客时间", "url": "https://time.geekbang.org", "brand": "#f86442", "group": "courses", "logo": "/logos/geekbang.png" },
+    { "slug": "dedao", "name": "得到", "short": "得到", "url": "https://www.dedao.cn", "brand": "#c81023", "group": "courses", "logo": "/logos/dedao.png" },
+    { "slug": "weread", "name": "微信读书", "short": "微信读书", "url": "https://weread.qq.com", "brand": "#6b7bf7", "group": "courses", "logo": "/logos/weread.png" },
+    { "slug": "open163", "name": "网易公开课", "short": "网易公开课", "url": "https://open.163.com", "brand": "#3ea44e", "group": "courses", "logo": "/logos/open163.png" },
+    { "slug": "icourse", "name": "大学慕课", "short": "大学慕课", "url": "https://www.icourse163.org", "brand": "#2f8fd8", "group": "courses", "logo": "/logos/icourse.png" },
+    { "slug": "ted", "name": "TED", "short": "TED", "url": "https://www.ted.com", "brand": "#e62b1e", "group": "courses", "logo": "/logos/ted.png" },
+
+    { "slug": "zhihu", "name": "知乎", "short": "知乎", "url": "https://www.zhihu.com", "brand": "#0084ff", "group": "community", "logo": "/logos/zhihu.png" },
+    { "slug": "reddit", "name": "Reddit", "short": "Reddit", "url": "https://www.reddit.com", "brand": "#ff4500", "group": "community", "logo": "/logos/reddit.png" },
+    { "slug": "hn", "name": "Hacker News", "short": "HN", "url": "https://news.ycombinator.com", "brand": "#ff6600", "group": "community", "logo": "/logos/hn.png" },
+    { "slug": "tophub", "name": "今日热榜", "short": "今日热榜", "url": "https://tophub.today", "brand": "#f04124", "group": "community", "logo": "/logos/tophub.png" },
+    { "slug": "bilibili", "name": "哔哩哔哩", "short": "B 站", "url": "https://www.bilibili.com", "brand": "#fb7299", "group": "community", "logo": "/logos/bilibili.png" },
+    { "slug": "youtube", "name": "YouTube", "short": "YouTube", "url": "https://www.youtube.com", "brand": "#ff0000", "group": "community", "logo": "/logos/youtube.png" },
+
+    { "slug": "cctv", "name": "央视网", "short": "央视网", "url": "https://www.cctv.com", "brand": "#1a4f9c", "group": "media", "logo": "/logos/cctv.png" },
+    { "slug": "cnr", "name": "央广网", "short": "央广网", "url": "https://www.cnr.cn", "brand": "#c8000a", "group": "media", "logo": "/logos/cnr.png" },
+    { "slug": "clcn", "name": "首都图书馆", "short": "首都图书馆", "url": "https://www.clcn.net.cn", "brand": "#8d6e3f", "group": "media", "logo": "/logos/clcn.png" },
+    { "slug": "nlc", "name": "国家图书馆", "short": "国家图书馆", "url": "https://www.nlc.cn", "brand": "#a4343a", "group": "media", "logo": "/logos/nlc.png" }
+  ],
+  "slots": [
+    { "name": "我的 GitHub", "hint": "留给你自己的 GitHub" },
+    { "name": "博客 / 主页", "hint": "留给你自己的博客" },
+    { "name": "待添加", "hint": "再加一个站" }
+  ],
+  "pending": [
+    { "slug": "paperswithcode", "name": "Papers with Code", "url": "https://paperswithcode.com", "brand": "#3b6ea5", "group": "papers" },
+    { "slug": "alphaxiv", "name": "alphaXiv", "url": "https://www.alphaxiv.org", "brand": "#6b46c1", "group": "papers" },
+    { "slug": "semanticscholar", "name": "Semantic Scholar", "url": "https://www.semanticscholar.org", "brand": "#1857b6", "group": "papers" },
+    { "slug": "openreview", "name": "OpenReview", "url": "https://openreview.net", "brand": "#c8a951", "group": "papers" },
+    { "slug": "connectedpapers", "name": "Connected Papers", "url": "https://www.connectedpapers.com", "brand": "#4a7ebb", "group": "papers" }
+  ]
+}

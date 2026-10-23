@@ -57,6 +57,9 @@ export default defineConfig({
       { text: '学习笔记', link: '/notes' },
       // 2026-10-09 用户要求：放在「词汇朗读」右边，点出去站外画廊（新标签）
       { text: '模型架构', link: LLM_GALLERY },
+      // 2026-10-23 用户要求：放在「模型架构」右边，点进去是站外导航页（站内页 /sites，
+      // 主体是「方案 C · 积木墙」，清单走 data/sites.json）
+      { text: '站外导航', link: '/sites' },
     ],
     sidebar: {},
     outline: false,

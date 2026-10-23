@@ -199,7 +199,8 @@
 }
 
 .dr-hero .dr-paper { text-align: center; color: var(--dr-ink); }
-.dr-hero .dp-top {
+.dr-hero .dp-top,
+.dr-nav .dp-top {
   display: flex; justify-content: space-between; align-items: baseline;
   padding: 0 1px 8px; border-bottom: var(--dr-bw) solid var(--dr-ink);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -212,20 +213,26 @@
   font-size: 46px; line-height: 1.1; font-weight: 900;
   letter-spacing: .005em; color: var(--dr-ink);
 }
-.dr-hero .dp-rule { height: 3px; background: var(--dr-ink); margin: 14px 0 0; }
-.dr-hero .dp-rule.thin { height: 1px; margin: 12px 0 0; }
-.dr-hero .dp-deck {
+.dr-hero .dp-rule,
+.dr-nav .dp-rule { height: 3px; background: var(--dr-ink); margin: 14px 0 0; }
+.dr-hero .dp-rule.thin,
+.dr-nav .dp-rule.thin { height: 1px; margin: 12px 0 0; }
+.dr-hero .dp-deck,
+.dr-nav .dp-deck {
   margin: 12px 0 0; max-width: none;
   font-family: var(--dr-hf);
   font-size: 12.5px; line-height: 1.6; letter-spacing: .1em; color: var(--dr-ink);
 }
-.dr-hero .dp-foot {
+.dr-hero .dp-foot,
+.dr-nav .dp-foot {
   margin: 20px 0 0; display: flex; align-items: baseline;
   justify-content: space-between; gap: 24px;
   font-size: 11.5px; line-height: 1.5; color: var(--dr-ink2);
 }
 .dr-hero .dp-foot p { margin: 0; }
-.dr-hero .dp-foot b {
+.dr-nav .dp-foot p { margin: 0; }
+.dr-hero .dp-foot b,
+.dr-nav .dp-foot b {
   font-size: 15px; font-weight: 700; color: var(--dr-ink);
   letter-spacing: -.01em; margin-right: 4px;
 }
@@ -583,6 +590,119 @@
 .VPNavBarMenuLink:hover { background: var(--dr-soft); }
 .VPNavBarMenuLink.active { background: var(--dr-accent) !important; color: var(--dr-on) !important; }
 
+/* ============ 站外导航页（pageClass: sites，components/SiteNavWall.vue）============ */
+/* 这一页是「方案 C · 积木墙」：五组各占一行，组内砖块等宽、整行铺满，
+   行与行砖数不同（3 / 6 / 6 / 6 / 4 / 3）——砖宽随行变，就是这面墙的「乱中有序」。
+   砖块底色是各站品牌色降饱和后的「褪色印刷色板」，属于砖自己，不跟站内主题走；
+   主题只管报头/组标签/报尾那一层报纸语言（.dr-nav 复用 .dr-hero 的报眼与双线）。 */
+.sites .vp-doc a { text-decoration: none; }
+
+.dr-nav {
+  max-width: 1160px; margin: 0 auto; padding: 6px 0 12px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+  color: var(--dr-ink);
+}
+.dr-nav h1 {
+  margin: 12px 0 0; padding: 0; border: 0;
+  font-family: var(--dr-hf); font-size: 42px; line-height: 1.1; font-weight: 900;
+  letter-spacing: .005em; color: var(--dr-ink);
+}
+.dr-nav h1 em { font-style: normal; color: var(--dr-accent); }
+.dr-nav .dp-deck { line-height: 1.9; max-width: 62ch; }
+.dr-nav .dp-deck b { font-weight: 700; color: var(--dr-ink); }
+
+/* 抬头右侧：数字组 + 每组一枚代表色 */
+.dr-nav .nav-mast { display: grid; grid-template-columns: minmax(0, 1fr) 210px; gap: 34px; align-items: start; margin-top: 20px; }
+.dr-nav .nav-mast-r { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; padding-top: 4px; }
+.dr-nav .nav-nums { display: flex; gap: 16px; }
+.dr-nav .nav-nums div { text-align: right; }
+.dr-nav .nav-nums b { display: block; font-family: var(--dr-hf); font-size: 26px; font-weight: 900; line-height: 1; color: var(--dr-ink); }
+.dr-nav .nav-nums span { display: block; margin-top: 6px; font: 700 8px/1 ui-monospace, Menlo, monospace; letter-spacing: .16em; color: var(--dr-ink2); }
+.dr-nav .nav-swatches { display: flex; gap: 5px; }
+.dr-nav .nav-swatches i { width: 13px; height: 13px; border-radius: 3px; display: block; }
+
+/* ---- 墙 ---- */
+/* 组牌放左列：它不占垂直空间，砖行就能紧贴着「一层压一层」砌下去
+   （组标签条横在行上方会把墙打断，砖就散成一片片小方块了）。 */
+.dr-nav .nav-wall {
+  display: grid; grid-template-columns: 92px minmax(0, 1fr); gap: 8px 16px;
+  margin-top: 26px; padding: 20px 22px 22px;
+  border: var(--dr-bw) solid var(--dr-line); border-radius: 14px;
+  background-color: var(--dr-bg2);
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--dr-line) 70%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--dr-line) 70%, transparent) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+.dr-nav .nav-plate {
+  grid-column: 1; display: flex; flex-direction: column; gap: 4px;
+  padding: 10px 9px 9px; border-radius: 10px;
+  background: var(--dr-panel); border: var(--dr-bw) solid var(--dr-line);
+}
+.dr-nav .nav-plate .nm {
+  font-family: var(--dr-hf); font-size: 13px; font-weight: 700; line-height: 1.3; color: var(--dr-ink);
+  /* 「媒体与图书馆」这类 6 字组名要断成 3+3 才不歪（balance 平均分行） */
+  text-wrap: balance; max-width: 100%;
+}
+.dr-nav .nav-plate .en { font: 700 7.5px/1 ui-monospace, Menlo, monospace; letter-spacing: .12em; color: var(--dr-ink2); }
+.dr-nav .nav-plate .ct { margin-top: auto; padding-top: 8px; font: 700 11px/1 ui-monospace, Menlo, monospace; color: var(--dr-ink2); }
+
+/* ---- 砖块 ---- */
+/* 每行砖宽 = (行宽 - (块数-1)*间隙) / 块数 → 一行正好铺满，行与行砖宽自然不同 */
+.dr-nav .nav-row { grid-column: 2; display: flex; gap: 8px; align-items: flex-end; }
+.dr-nav .nav-blk {
+  position: relative; flex: 0 0 calc((100% - (var(--n) - 1) * 8px) / var(--n));
+  min-width: 0; height: var(--h); border-radius: 10px;
+  background: var(--c); color: #16181a; text-decoration: none;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px;
+  transform: rotate(var(--r, 0deg));
+  box-shadow: 0 7px 0 color-mix(in srgb, var(--c) 58%, #000), 0 11px 18px rgb(27 27 27 / 18%);
+  overflow: hidden;
+  transition: transform .2s cubic-bezier(.34, 1.4, .64, 1), box-shadow .2s;
+}
+/* 顶面高光 + 右侧暗立面：两个面才有体积 */
+.dr-nav .nav-blk::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 4px; background: rgb(255 255 255 / 45%); pointer-events: none; }
+.dr-nav .nav-blk .side { position: absolute; right: 0; top: 0; bottom: 0; width: 5px; background: rgb(0 0 0 / 9%); pointer-events: none; }
+.dr-nav .nav-blk:hover { transform: rotate(0deg) translateY(-7px); box-shadow: 0 12px 0 color-mix(in srgb, var(--c) 58%, #000), 0 20px 32px rgb(27 27 27 / 26%); z-index: 5; }
+.dr-nav .nav-blk .dot {
+  width: 46px; height: 46px; border-radius: 50%; background: #fff;
+  display: grid; place-items: center; flex: 0 0 auto;
+  box-shadow: 0 2px 6px rgb(0 0 0 / 18%);
+}
+.dr-nav .nav-blk .dot img { width: 30px; height: 30px; object-fit: contain; }
+.dr-nav .nav-blk .txt { display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 0; max-width: 100%; }
+.dr-nav .nav-blk .nm {
+  font-size: 12px; font-weight: 700; letter-spacing: .01em; text-align: center;
+  padding: 0 8px; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+/* 域名只出现在宽砖上（窄砖放不下）；用同一支近黑，靠字号与等宽字体分主次，不靠透明度 */
+.dr-nav .nav-blk .dom { font: 600 10.5px/1 ui-monospace, Menlo, monospace; letter-spacing: .02em; color: #16181a; }
+.dr-nav .nav-blk .no { position: absolute; left: 10px; top: 10px; font: 800 8.5px/1 ui-monospace, Menlo, monospace; opacity: .42; }
+.dr-nav .nav-blk .go { position: absolute; right: 13px; top: 9px; font-size: 12px; line-height: 1; opacity: 0; transition: opacity .18s; }
+.dr-nav .nav-blk:hover .go { opacity: .65; }
+
+/* 宽砖（3 / 4 块一行）改横排：logo 在左，站名 + 域名在右 */
+.dr-nav .nav-row.wide .nav-blk { flex-direction: row; justify-content: flex-start; gap: 14px; padding: 0 20px; }
+.dr-nav .nav-row.wide .nav-blk .txt { align-items: flex-start; }
+.dr-nav .nav-row.wide .nav-blk .nm { text-align: left; font-size: 14px; padding: 0; }
+.dr-nav .nav-row.wide .nav-blk .go { top: auto; bottom: 11px; right: 15px; }
+
+/* 空砖：留给用户自己的三个站 */
+.dr-nav .nav-blk.ghost {
+  background: none; border: 2px dashed var(--dr-line); color: var(--dr-ink2); box-shadow: none;
+}
+.dr-nav .nav-blk.ghost::before, .dr-nav .nav-blk.ghost .side { display: none; }
+.dr-nav .nav-blk.ghost:hover { transform: translateY(-5px); border-color: var(--dr-accent); color: var(--dr-accent); box-shadow: none; }
+.dr-nav .nav-blk.ghost .dot { width: auto; height: auto; background: none; box-shadow: none; font-size: 20px; font-weight: 300; }
+.dr-nav .nav-blk.ghost .nm { font-size: 12.5px; font-weight: 600; }
+
+/* 报尾 */
+.dr-nav .dp-foot { margin-top: 34px; padding-top: 14px; border-top: var(--dr-bw) solid var(--dr-ink); }
+.dr-nav .dp-foot .brand { display: flex; align-items: center; gap: 6px; }
+.dr-nav .dp-foot .brand i { width: 9px; height: 9px; border-radius: 2px; display: block; }
+.dr-nav .dp-foot .brand b { font-size: 13px; margin-right: 2px; }
+.dr-nav .dp-foot .go { color: var(--dr-accent); font-weight: 600; }
+
 /* ============ 首页 / 弹窗的响应式 ============ */
 @media (max-width: 1240px) {
   .dr-hero { grid-template-columns: minmax(0, 1fr) 420px; gap: 48px; }
@@ -590,10 +710,19 @@
   .dr-hero .dr-paper h1 { font-size: 42px; }
   .dr-hero .dp-foot { flex-direction: column; align-items: center; gap: 12px; }
 }
+/* 导航墙窄屏：砖块改为可换行铺开，不再死守「一行铺满」的等分宽度 */
+@media (max-width: 1100px) {
+  .dr-nav .nav-row { flex-wrap: wrap; }
+  .dr-nav .nav-blk { flex: 1 1 150px; }
+  .dr-nav .nav-row.wide .nav-blk { flex: 1 1 220px; }
+}
 @media (max-width: 980px) {
   .dr-hero { grid-template-columns: 1fr; gap: 26px; }
   .dr-hero-deck { width: 100%; max-width: 520px; margin: 0 auto; }
   .dr-hero .dr-paper h1 { font-size: 38px; }
+  .dr-nav .nav-mast { grid-template-columns: 1fr; gap: 18px; }
+  .dr-nav .nav-mast-r { align-items: flex-start; }
+  .dr-nav h1 { font-size: 34px; }
 }
 @media (max-width: 560px) {
   .dr-hero .dr-paper h1 { font-size: 30px; }
@@ -605,6 +734,15 @@
   .dr-find span { display: none; }
   .search-modal { padding: 60px 12px 12px; }
   .sm-foot span:last-child { display: none; }
+  .dr-nav h1 { font-size: 27px; }
+  .dr-nav .nav-blk .nm { font-size: 11.5px; }
+  .dr-nav .nav-row.wide .nav-blk .nm { font-size: 13px; }
+  .dr-nav .dp-foot { flex-direction: column; align-items: flex-start; gap: 8px; }
+  /* 窄屏：组牌从左列改为行首横条，砖行独占一行 */
+  .dr-nav .nav-wall { grid-template-columns: minmax(0, 1fr); padding: 14px 14px 16px; }
+  .dr-nav .nav-plate { grid-column: 1; flex-direction: row; align-items: baseline; gap: 9px; padding: 8px 10px; }
+  .dr-nav .nav-plate .ct { margin-top: 0; padding-top: 0; margin-left: auto; }
+  .dr-nav .nav-row { grid-column: 1; }
 }
 
 @media (prefers-reduced-motion: reduce) {
