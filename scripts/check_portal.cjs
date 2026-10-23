@@ -67,6 +67,16 @@ const ok = (name, cond, extra = '') => {
   // 2026-10-09 用户定案取消「总集」栏（三张总集页在 /vocab 与 /listen 顶部横幅里已能直达）
   ok('顶栏无「总集」栏（入口已并入两个索引页）', !navTxt.includes('总集'), navTxt.join('/'))
 
+  // 1d-2) 顶栏照原型定制（2026-10-23 用户定案 §B7）：黑块鲸鱼 logo + 双层站名 + 当前栏目胶囊高亮
+  ok('顶栏有黑块鲸鱼 logo', (await page.locator('.VPNavBarTitle .VPImage').count()) === 1)
+  ok('顶栏双层站名（鲸读 + 副题）',
+    (await page.locator('.VPNavBarTitle .st-big').textContent()) === '鲸读' &&
+    (await page.locator('.VPNavBarTitle .st-sub').count()) === 1)
+  const act = page.locator('.VPNavBarMenuLink.active')
+  const actBg = await act.first().evaluate((e) => getComputedStyle(e).backgroundColor)
+  ok(`当前栏目「${navTxt[0]}」是胶囊高亮（accent 底）`,
+    (await act.count()) === 1 && (await act.first().textContent()).trim() === navTxt[0] && actBg !== 'rgba(0, 0, 0, 0)', actBg)
+
   // 1e) 顶栏「模型架构」（2026-10-09 用户要求：站外链，固定排在最后一栏）
   //     期望地址从 config.mts 里那一行常量现取，改地址不用改自检
   const CFG = require('fs').readFileSync(require('path').resolve(__dirname, '../.vitepress/config.mts'), 'utf8')

@@ -571,6 +571,18 @@
   font-size: 10px; font-weight: 600; line-height: 1;
 }
 
+/* ============ 顶栏照原型定制（2026-10-23 用户定案，§B7）============ */
+/* 黑块鲸鱼 logo（themeConfig.logo 自动渲染在 title 前） */
+.VPNavBarTitle .VPImage { width: 30px; height: 30px; border-radius: 9px; }
+/* 双层站名：siteTitle 的 HTML（config.mts） */
+.VPNavBarTitle .title .st-big { font-size: 17px; font-weight: 750; letter-spacing: -.01em; color: var(--dr-ink); }
+.VPNavBarTitle .title .st-sub { font-size: 11.5px; color: var(--dr-ink2); margin-left: 8px; }
+/* 栏目胶囊：当前页黄绿底变主题 accent 底 + 配套字色（对比度门禁 §B4 保证）。
+   VitePress 默认 line-height 撑满导航高（胶囊会成大椭圆吃掉文字），压回 1.5 让底色贴合文字 */
+.VPNavBarMenuLink { padding: 5px 13px; border-radius: 999px; font-weight: 600; line-height: 1.5; transition: background .15s, color .15s; }
+.VPNavBarMenuLink:hover { background: var(--dr-soft); }
+.VPNavBarMenuLink.active { background: var(--dr-accent) !important; color: var(--dr-on) !important; }
+
 /* ============ 首页 / 弹窗的响应式 ============ */
 @media (max-width: 1240px) {
   .dr-hero { grid-template-columns: minmax(0, 1fr) 420px; gap: 48px; }
@@ -585,6 +597,7 @@
 }
 @media (max-width: 560px) {
   .dr-hero .dr-paper h1 { font-size: 30px; }
+  .VPNavBarTitle .title .st-sub { display: none; }   /* 窄屏藏副题（原型 980 断点的同款做法） */
   .dr-hero .dp-deck { font-size: 12px; letter-spacing: .06em; }
   .dr-hero .dp-foot { font-size: 11px; }
   .dr-hero .dp-foot b { font-size: 14px; }

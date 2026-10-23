@@ -42,6 +42,10 @@ export default defineConfig({
     ['link', { rel: 'icon', href: BASE + 'favicon.svg' }],
   ],
   themeConfig: {
+    // 顶栏照原型定制（2026-10-23 用户定案，解禁 §A6「顶栏纯文字」）：黑块鲸鱼 logo + 双层站名。
+    // siteTitle 支持 HTML（VPNavBarTitle 里 v-html 渲染），tab 标题仍用上面的 title
+    logo: '/whale-mark.svg',
+    siteTitle: '<span class="st-big">鲸读</span><span class="st-sub">DeepSeek 论文词汇</span>',
     nav: [
       // 2026-10-09 用户定案取消「总集」栏：三张总集页（词汇总集去重 / 听力全量 / 听力去重）
       // 已经挂在「词汇学习」与「词汇朗读」顶部横幅上，再占一个导航位是重复入口
