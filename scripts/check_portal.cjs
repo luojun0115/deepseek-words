@@ -319,7 +319,8 @@ const ok = (name, cond, extra = '') => {
     (await page.locator('.dr-note-hd').count()) === 0)
 
   // 7e) /sites 站外导航页（2026-10-23 用户要求：顶栏「模型架构」右边加一栏，
-  //     页面用「方案 C · 积木墙」把 25 个外站砌成一面墙）。清单在 data/sites.json，自检也从那儿读
+  //     页面用「方案 C · 积木墙」把外站砌成一面墙）。清单在 data/sites.json，自检也从那儿读
+  //     （数量全部动态读，加站不用改这里）
   const SITES = require('../data/sites.json')
   await page.goto(BASE + '/sites.html', { waitUntil: 'networkidle' })
   const nBlk = await page.locator('.dr-nav .nav-blk:not(.ghost)').count()
@@ -336,7 +337,7 @@ const ok = (name, cond, extra = '') => {
   ok('/sites 每块都是站外链（新标签 + noreferrer，地址与清单逐一对应）',
      hrefs.length === wantHref.length && badLink.length === 0,
      badLink.length ? badLink.slice(0, 3).map(b => b[0]).join(',') : `${hrefs.length} 块全对`)
-  // 25 枚 logo 全部加载（logo 在 public/logos/，缺一个就是碎图）
+  // 每站一枚 logo 全部加载（logo 在 public/logos/，缺一个就是碎图）
   const imgOK = await page.$$eval('.dr-nav .nav-blk img', els => els.filter(e => e.naturalWidth > 0).length)
   ok(`/sites ${SITES.sites.length} 枚 logo 全部加载成功`, imgOK === SITES.sites.length,
      `实得 ${imgOK}/${SITES.sites.length}`)

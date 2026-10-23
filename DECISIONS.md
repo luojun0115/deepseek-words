@@ -187,6 +187,69 @@ Papers with Code、alphaXiv、Semantic Scholar、OpenReview、Connected Papers�
 
 截图存档 `previews/30_站外导航页.png`。
 
+> ⚠ 本条是 **2026-10-23 首版历史态**：25 上墙 / 6 组 / 社区与视频合一组 / 砖面字色 `#16181a`。
+> 2026-10-24 用户要求加站后，**现口径以 §A8 为准**（38 上墙 / 8 组 / 大模型组独立 / 字色 `#0d0f11`）。
+
+### A8. /sites 导航页扩充为大模型 + 开发者生态（2026-10-24 用户定案）
+
+用户原话：「再增加一个 infoq，再增加一个小众软件，再增加一个豆瓣 V2 ex 和 https://tophub.today/c/developer。
+另外再增加一个大模型分类，把以下官方网站：Claude Code、Codex、Qwen（千问）、DeepSeek、MIMO、GLM、Kimi、MiniMax 再增加豆瓣」。
+
+**清单口径（38 上墙 / 5 待选 / 3 空位）**，仍是唯一真源 `data/sites.json`：
+
+| 分组 | 站数 | 站点 |
+|---|---|---|
+| papers 论文源 | 3 | arXiv、HF Papers、Google Scholar |
+| llm 大模型 | 8 | Claude Code、OpenAI Codex、Qwen 千问、DeepSeek、小米 MiMo、GLM 智谱、Kimi、MiniMax |
+| code 代码与编程 | 7 | GitHub、力扣、菜鸟教程、Python、MySQL、Pytest、**小众软件** |
+| courses 课程与读书 | 6 | 极客时间、得到、微信读书、网易公开课、大学慕课、TED |
+| community 社区 | 5 | 知乎、**豆瓣**、**V2EX**、Reddit、Hacker News |
+| media 媒体与图书馆 | 5 | **InfoQ**、央视网、央广网、首都图书馆、国家图书馆 |
+| video 视频与热榜 | 4 | B 站、YouTube、今日热榜、**今日热榜·开发者** |
+| mine 我的站点 | 3 空位 | 我的 GitHub / 博客·主页 / 待添加（虚线砖，不渲染链接）|
+
+**分组重排的依据**：首版把「知乎/Reddit/HN/今日热榜/B站/YouTube」塞在同一个「社区与视频」组（6 块），
+用户点名的豆瓣、V2EX、InfoQ、今日热榜开发者频道加进来后，这一组会涨到 10 块，
+砖行被压得太窄（10 块并排每块只有 ~100px 宽，域名放不下、logo 被挤扁）。
+于是**拆成 community（5）与 video（4）**，并**新增 llm 组（8）**放在论文源正下方——
+用户点名的 8 家大模型官网本来就是这个站的使用者入口，逻辑上就该紧跟论文源。
+组序 3/8/7/6/5/5/4/3，**每行 4–8 块**，行宽随块数变（`flex: 0 0 calc((100% - (var(--n) - 1) * 8px) / var(--n))`，
+`--n` 由组内块数算出），首尾两行窄、中间宽，仍是「乱中有序」的砌墙感。
+
+**「再增加豆瓣」按重复强调处理**：豆瓣 与 V2EX 视为两个独立站，豆瓣进 community 组、V2EX 也进 community 组，
+不是把「豆瓣 V2EX」当成一个站名。
+
+**soften() 输出色只由色相决定**：品牌色 hex→HSL 后饱和度取 `min(s, 0.55)`、亮度夹到 **0.60–0.70**，
+所以调 brand 的明暗对砖面色**完全无效**，同色系的两块砖会一模一样。
+今日热榜（`#f04124`）与今日热榜·开发者频道（`tophub.today/c/developer`）是同站不同频道、
+logo 也完全相同，相邻两块同 logo 同色看着像重复 →
+**开发者榜 brand 改 `#1f6feb`（蓝）**，靠换色相区分（换明暗无效，见上）。
+
+**砖面文字色 `#16181a` → `#0d0f11`**：新增的千问（紫）与 GLM（蓝）块，
+soften 后仍是较暗的紫蓝，块上近黑文字只有 4.51:1 / 4.34:1，**双双不达 4.5**。
+把块面文字压得更近黑后，全站最低对比度 **4.68:1，0 块不达标**（改动前后实测）。
+
+**新增的抓 logo 流水线**（`design/20261023_站点优化方案/`，不入 git）：
+站点自身 `favicon.ico` → HTML 里 `<link rel="icon">` 抠真实地址 → 公共图标服务（icon.horse / icons.duckduckgo / favicon.im）。
+首轮 13 站只抓到 7 个（decode miss / 404 / 连接超时 / google s2 超时），
+补探测脚本后 13/13 齐。InfoQ 是「不透明白方块 + 蓝字」型，
+`ImageDraw.floodfill` 抠不掉（角上本就是透明，near_white 又要求 `a>0`）→
+改写 `fix_infoq.py` 把**所有近白像素整体转透明**（去掉 7933 个），再按内容 bbox 缩放居中（104×70）。
+
+**窄砖显示名**：每组最多 8 块，砖宽窄到放不下全称，所以 `short` 字段给窄砖用短名
+（千问 / GLM / MiMo / Kimi / MiniMax / Codex / DeepSeek / Claude Code / 开发者榜），
+≤4 块的组才显示完整域名。
+
+**落地文件**：`data/sites.json`（重写）、`public/logos/` +13 枚（38 枚）、
+`components/SiteNavWall.vue`（`PATTERN` 扩到 38 项、H1 由写死的「二十五块积木」改成 `{{ total }} 块积木`、导语重写）、
+`.vitepress/theme/custom.css`（`.dr-nav .nav-blk` 与 `.dom` 的文字色改 `#0d0f11`）、
+`scripts/check_portal.cjs`（**断言数量本来就是动态读 `SITES.sites.length`，加站不用改**）。
+
+自检断言（`check_portal.cjs` 第 7e 组，实测 **77/77 全过**）：
+`/sites 页 38 块实砖 + 3 个空位 + 8 块组牌`、`/sites 每块都是站外链（地址与清单逐一对应）`、
+`/sites 38 枚 logo 全部加载成功`、`/sites 不渲染待选站`、`/sites 砖面文字对比度 ≥ 4.5`。
+目检：亮色 + 深夜两态各行铺满（gapRight ≈ 0）、控制台 0 错。
+
 ---
 
 ## B. 页面与样式定案
