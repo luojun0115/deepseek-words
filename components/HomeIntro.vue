@@ -60,7 +60,7 @@ onUnmounted(() => { if (timer) window.clearInterval(timer) })
         <span>DeepSeek · Paper Vocabulary</span>
         <span>Vol. {{ String(stats.papers).padStart(3, '0') }}</span>
       </div>
-      <h1>百篇 DeepSeek<br />论文与技术报告<br />一站读透</h1>
+      <h1>百篇 <span class="hi">DeepSeek</span><br />论文与技术报告<br /><span class="hi2">一站读透</span></h1>
       <div class="dp-rule"></div>
       <p class="dp-deck">原文 / 词汇表 / 听力表 / 听力页 / 朗读页 / 精读笔记</p>
       <div class="dp-rule thin"></div>

@@ -7,6 +7,8 @@
   --dr-ink2: #4a5a4d;
   --dr-line: #d3ddce;
   --dr-accent: #2f6b3a;
+  --dr-hi: #3a54d6;
+  --dr-hi2: #a8321f;
   --dr-on: #ffffff;
   --dr-soft: #dcead9;
   --dr-hf: Georgia, "Songti SC", serif;
@@ -43,6 +45,8 @@ html[data-theme='default'] {
   --dr-ink2: #5b6068;
   --dr-line: #e5e7eb;
   --dr-accent: #4f46e5;
+  --dr-hi: #3a54d6;
+  --dr-hi2: #b3261e;
   --dr-on: #ffffff;
   --dr-soft: #eef0ff;
   --dr-hf: Georgia, "Songti SC", serif;
@@ -79,6 +83,8 @@ html[data-theme='paper'] {
   --dr-ink2: #6b6555;
   --dr-line: #ddd8ca;
   --dr-accent: #567038;
+  --dr-hi: #3a54d6;
+  --dr-hi2: #a3321e;
   --dr-on: #ffffff;
   --dr-soft: #e6ecd8;
   --dr-hf: Georgia, "Songti SC", serif;
@@ -115,6 +121,8 @@ html[data-theme='sea'] {
   --dr-ink2: #4a6a72;
   --dr-line: #cfe3e6;
   --dr-accent: #0e7490;
+  --dr-hi: #3a54d6;
+  --dr-hi2: #b3261e;
   --dr-on: #ffffff;
   --dr-soft: #d9ecef;
   --dr-hf: Georgia, "Songti SC", serif;
@@ -151,6 +159,8 @@ html[data-theme='wine'] {
   --dr-ink2: #7a5a5c;
   --dr-line: #eccfc9;
   --dr-accent: #a02c46;
+  --dr-hi: #3a54d6;
+  --dr-hi2: #8a5a00;
   --dr-on: #ffffff;
   --dr-soft: #f4dcd8;
   --dr-hf: Georgia, "Songti SC", serif;
@@ -187,6 +197,8 @@ html[data-theme='coffee'] {
   --dr-ink2: #6f5f4d;
   --dr-line: #ded2c1;
   --dr-accent: #7a5230;
+  --dr-hi: #3a54d6;
+  --dr-hi2: #9a3412;
   --dr-on: #ffffff;
   --dr-soft: #ece0cf;
   --dr-hf: Georgia, "Songti SC", serif;
@@ -223,6 +235,8 @@ html[data-theme='mono'] {
   --dr-ink2: #4b4b4b;
   --dr-line: #d4d4d4;
   --dr-accent: #111111;
+  --dr-hi: #3a54d6;
+  --dr-hi2: #b3261e;
   --dr-on: #ffffff;
   --dr-soft: #ebebeb;
   --dr-hf: Georgia, "Songti SC", serif;
@@ -259,6 +273,8 @@ html[data-theme='midnight'] {
   --dr-ink2: #9aa4b2;
   --dr-line: #2a3038;
   --dr-accent: #58a6ff;
+  --dr-hi: #7aa2f7;
+  --dr-hi2: #ffb570;
   --dr-on: #0d1117;
   --dr-soft: #1b2735;
   --dr-hf: Georgia, "Songti SC", serif;
@@ -295,6 +311,8 @@ html[data-theme='indigo'] {
   --dr-ink2: #94a3b8;
   --dr-line: #26334d;
   --dr-accent: #818cf8;
+  --dr-hi: #7aa2f7;
+  --dr-hi2: #fdba74;
   --dr-on: #0f172a;
   --dr-soft: #1e293b;
   --dr-hf: Georgia, "Songti SC", serif;
@@ -331,6 +349,8 @@ html[data-theme='pine'] {
   --dr-ink2: #93a99a;
   --dr-line: #223329;
   --dr-accent: #5cbb7f;
+  --dr-hi: #7aa2f7;
+  --dr-hi2: #f0b072;
   --dr-on: #0b1611;
   --dr-soft: #17281d;
   --dr-hf: Georgia, "Songti SC", serif;

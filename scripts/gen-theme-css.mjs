@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // 由 theme-defs.mjs 生成 theme.generated.css（单一真源 → CSS）。
-// 两道关卡：① 12 个变量缺任何一个 → 退出码 1；② 逐套算 WCAG 对比度，不达标的配色 → 退出码 1
+// 两道关卡：① 14 个变量缺任何一个 → 退出码 1；② 逐套算 WCAG 对比度，不达标的配色 → 退出码 1
 //（新加配色时靠它拦住「看着好看但读不清」的套，而不是等到页面上发现）
 import fs from 'node:fs'
 import path from 'node:path'
@@ -18,6 +18,8 @@ const PAIRS = [
   ['--dr-ink2', '--dr-bg', '次要文字/背景'],
   ['--dr-accent', '--dr-bg', '主色/背景'],
   ['--dr-on', '--dr-accent', '按钮文字/主色'],
+  ['--dr-hi', '--dr-bg', '标题重音/背景'],
+  ['--dr-hi2', '--dr-bg', '标题次重音/背景'],
 ]
 const lin = (c) => (c <= 0.03928 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4)
 const lum = (hex) => {
@@ -43,7 +45,7 @@ for (const [i, t] of THEMES.entries()) {
     if (r < MIN) errs.push(`${t.name}(${t.id}) ${label}：${t.v[a]} vs ${t.v[b]} = ${r.toFixed(2)}:1 < ${MIN}:1`)
     return r.toFixed(1)
   })
-  rows.push(`  键 ${'1234567890'[i]}  ${t.name.padEnd(4, '　')} ${t.dark ? '暗' : '明'}  ${got.join(' / ')}   ← 正文bg · 正文panel · 次要bg · 主色bg · 按钮字`)
+  rows.push(`  键 ${'1234567890'[i]}  ${t.name.padEnd(4, '　')} ${t.dark ? '暗' : '明'}  ${got.join(' / ')}   ← 正文bg · 正文panel · 次要bg · 主色bg · 按钮字 · 标题重音 · 标题次重音`)
 }
 
 let css = `/* 自动生成，勿手改；改主题请编辑 theme-defs.mjs 后重跑本脚本 */\n`

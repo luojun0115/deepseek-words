@@ -213,6 +213,13 @@
   font-size: 46px; line-height: 1.1; font-weight: 900;
   letter-spacing: .005em; color: var(--dr-ink);
 }
+/* 标题双色：品牌名用「DeepSeek 蓝」，落点句用各主题的对比暖色（报纸双色印刷的思路）。
+   两个色值来自 theme-defs.mjs 的 --dr-hi / --dr-hi2，已过 gen-theme-css.mjs 的 4.5:1 门禁。
+   局部收紧字距，让着色词像咬紧的铅字，不靠放大字号抢版面。 */
+.dr-hero .dr-paper h1 .hi,
+.dr-hero .dr-paper h1 .hi2 { letter-spacing: -.012em; }
+.dr-hero .dr-paper h1 .hi { color: var(--dr-hi); }
+.dr-hero .dr-paper h1 .hi2 { color: var(--dr-hi2); }
 .dr-hero .dp-rule,
 .dr-nav .dp-rule { height: 3px; background: var(--dr-ink); margin: 14px 0 0; }
 .dr-hero .dp-rule.thin,
