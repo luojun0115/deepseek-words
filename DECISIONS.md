@@ -439,6 +439,60 @@ CSDN 对直连有 WAF（「请进行安全验证」），浏览器也拿不到 i
 
 ---
 
+### A12. /sites 第五批：补入阿里图标库 Iconfont（2026-10-24 用户定案）
+
+用户原话：「https://www.iconfont.cn/ 这个网站也放到导航站」
+
+**清单口径（58 上墙 / 5 待选 / 3 空位）**，唯一真源仍是 `data/sites.json`。
+
+**放 dev 组（开发者社区），不新开组**：Iconfont 是阿里系的图标设计/托管平台，
+与同组的阿里云开发者社区同源，服务对象是前端开发者——正是 dev 组的语义。
+dev 组 6 → 7 块，仍在「每行 3–8 块」版式上限内（7 块时砖宽实测 ~170px，域名 iconfont.cn 放得下）。
+
+**logo：`.favicon.ico` 直接返回 SVG**，content-type `image/svg+xml`、5688 字节——
+本项目第一次遇到「.ico 后缀其实是 SVG」。本机无 rsvg / cairosvg / ImageMagick，
+沿用 §A11 的浏览器光栅化路线（Playwright 驱动系统 Chrome，`channel: 'chrome'`，
+SVG 包进透明底 HTML 再截），再经 `normalize.py` 归一到 128×128 透明底、图形居中 104px。
+图形是 iconfont 的青绿小怪（青色渐变填充 + 深青描边 + 黑眼睛 + 靛蓝高光）。
+
+**brand 色取青 `#00f9e4`（hue 175°），不取靛蓝 `#4954ff`**：
+用 HSL 直方图统计 2756 个不透明像素，青色系（#00f0e4 / #00fce4 / #00f0d8）合计占 **34%**，
+是 logo 的视觉主色；靛蓝只出现在眼睛高光这类小面积地方。砖底色跟 logo 主色一致，砖上人一眼能认。
+
+**色相排布：放 dev 组末位，其余六块顺序与编号完全不动**。
+把青 175° 插到组内其他位置都会撞：插在腾讯云社区（187°）旁只差 **13°**、两块几乎同色；
+插在组首（博客园 206°）旁只差 **31°**。放组末则与左耳朵耗子（278°）环距 103°，
+dev 组**相邻最小环距仍是 55°**（与 §A11 同标准），实测 178° / 108° / 55° / 136° / 133° / 103°。
+砖块编号 39–45，iconfont 拿 45 号，39–44 六块编号不变。
+
+**`PATTERN` 从 57 项扩到 58 项**（末尾续 `1`，保持 `1,2,2,1,1,2,2,2` 的砌墙节奏）。
+video 组只有 4 块（≤4 → wide 组），高度固定 152px 不受 PATTERN 影响，末块高度与上批一致。
+
+**落地文件**：`data/sites.json`（58 站 / 12 组；`_note` 数字同步更新）、
+`public/logos/` +1 枚（58 枚）、`components/SiteNavWall.vue`（`PATTERN` 57 → 58）。
+`scripts/check_portal.cjs` 仍**不用改**（断言数量动态读 `SITES.sites.length`）。
+
+自检断言实测 **80/80 全过**：`/sites 页 58 块实砖 + 3 个空位 + 12 块组牌`、
+`/sites 每块都是站外链（地址与清单逐一对应）`、`/sites 58 枚 logo 全部加载成功`、
+`/sites 砖面文字对比度 ≥ 4.5`（最低 **4.52:1**）。
+目检：亮色 + 深夜两态；iconfont 砖块底色实测 `rgb(97, 209, 200)`（= hsl(175,55%,60%)），
+logo 30×30 正常渲染、编号 45、圆角 10px、href 指向 `https://www.iconfont.cn`。
+
+> 顺带记一笔（**本次未上墙**）：为给导航墙补内容，顺手对 99 个候选站做了存活探测，
+> 查出四个「已改名 / 已关停」的重要情报，以后加站别再用旧地址：
+> - **Papers with Code 已于 2025-07-24 关停**，域名现在 302 跳 HF Trending
+>   （HF Papers 已在墙上，不要重复加）；
+> - **通义灵码 2026-05-20 更名「Qoder CN 系列」**，官网是 `lingma.aliyun.com`
+>   （旧的 `lingcode.aliyun.com` 不通）；
+> - **LMSYS Chatbot Arena 2026-01-28 更名「Arena」**，官网是 `arena.ai`
+>   （旧的 `lmarena.ai` / `chat.lmsys.org` 不通）；
+> - **新智元**官网是 `aiera.com.cn`（不是 xinzhiyuan.com）。
+>
+> 探测时状态码 `000` 多为**本机对 Google 系 / Substack 不通**，不等于死链，别据此删站。
+> 探测脚本与候选清单留在 `design/20261024_站点扩充二批/`（`probe_candidates.sh` + `candidates.txt`）。
+
+---
+
 ## B. 页面与样式定案
 
 ### B1. 论文总览链接不带下划线（2026-10-08 用户要求）

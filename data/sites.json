@@ -1,5 +1,5 @@
 {
-  "_note": "站外导航页（/sites）的数据源。57 站上墙 + 5 站待选 + 3 个自有空位。改名单改这里，页面与自检都从这份数据读，不写死在组件里。待选站（pending）数据保留但页面不渲染（DECISIONS §A7）。分组顺序 = 墙上的行序（每组一行，组牌在左列）。dev 组（开发者社区）内按色相交错排布，相邻两块色相都 ≥ 50°。",
+  "_note": "站外导航页（/sites）的数据源。58 站上墙 + 5 站待选 + 3 个自有空位。 改名单改这里，页面与自检都从这份数据读，不写死在组件里。待选站（pending）数据保 留但页面不渲染（DECISIONS §A7）。分组顺序 = 墙上的行序（每组一行，组牌在左列）。dev 组（开发者社区）内按色相交错排布，相邻两块色相都 ≥ 50°。",
   "groups": [
     { "id": "papers", "name": "论文源", "en": "PAPERS", "kind": "sites" },
     { "id": "llm", "name": "大模型", "en": "LLM", "kind": "sites" },
@@ -66,6 +66,7 @@
     { "slug": "tencentdev", "name": "腾讯云开发者社区", "short": "腾讯云社区", "url": "https://cloud.tencent.com/developer", "brand": "#00b6cf", "group": "dev", "logo": "/logos/tencentdev.png" },
     { "slug": "liaoxuefeng", "name": "廖学峰官方网站", "short": "廖学峰", "url": "https://www.liaoxuefeng.com", "brand": "#dbbb00", "group": "dev", "logo": "/logos/liaoxuefeng.png" },
     { "slug": "haoel", "name": "左耳朵耗子 · CSDN 专栏", "short": "左耳朵耗子", "url": "https://blog.csdn.net/haoel", "brand": "#7b3f9e", "group": "dev", "logo": "/logos/haoel.png" },
+    { "slug": "iconfont", "name": "阿里图标库 Iconfont", "short": "Iconfont", "url": "https://www.iconfont.cn", "brand": "#00f9e4", "group": "dev", "logo": "/logos/iconfont.png" },
 
     { "slug": "infoq", "name": "InfoQ", "short": "InfoQ", "url": "https://www.infoq.cn", "brand": "#3f7ae0", "group": "media", "logo": "/logos/infoq.png" },
     { "slug": "cctv", "name": "央视网", "short": "央视网", "url": "https://www.cctv.com", "brand": "#1a4f9c", "group": "media", "logo": "/logos/cctv.png" },
