@@ -19,21 +19,24 @@ const NOTE_BLANK = new Set(Object.entries(NOTE_SRC)
 const noteHref = (p) => withBase('/notes/' + p.dir + '.html')
 const written = (p) => !NOTE_BLANK.has(p.dir)
 
-const q = ref('')
 const sortBy = ref('num')       // num | words
 
+/* 说明行跟着页面口径走：词汇页没有朗读入口，别写成「听读」 */
+const hint = computed(() => {
+  if (props.mode === 'vocab') return ' · 看词 / 写笔记'
+  if (props.mode === 'listen') return ' · 逐词连播'
+  if (props.mode === 'note') return ' · 每篇一份笔记'
+  return ' · 看词 / 听读 / 笔记'
+})
+
+/* 搜索已移到顶栏「找论文」弹窗（PaperSearch.vue），这里只负责排序 */
 const list = computed(() => {
-  let r = papers.slice()
-  const kw = q.value.trim().toLowerCase()
-  if (kw) r = r.filter(p =>
-    (p.short + ' ' + p.title + ' ' + p.num + ' ' + p.arxiv).toLowerCase().includes(kw))
+  const r = papers.slice()
   r.sort((a, b) => sortBy.value === 'words'
     ? b.words - a.words
     : a.num.localeCompare(b.num))
   return r
 })
-
-const totalWords = computed(() => papers.reduce((s, p) => s + p.words, 0))
 
 /* 总集入口：只在词汇页/听力页显示（首页 both 不显），点标题下方的箭头直达全局页 */
 const master = computed(() => {
@@ -61,13 +64,14 @@ const master = computed(() => {
       <a v-if="master.alt" class="dr-m-alt" :href="master.alt.href" target="_self">{{ master.alt.text }} →</a>
     </div>
     <div class="dr-tools">
-      <input class="dr-search" v-model="q" type="text"
-             :placeholder="'搜索论文名 / 编号 / arXiv，如 R1、OCR、2412…'" />
-      <select class="dr-search" style="flex:0 0 auto" v-model="sortBy">
-        <option value="num">按编号排序</option>
-        <option value="words">按词数排序</option>
-      </select>
-      <span class="dr-count">共 {{ list.length }} / {{ papers.length }} 篇 · 全库 {{ totalWords }} 词</span>
+      <p class="dr-hint">{{ papers.length }} 篇技术报告{{ hint }}</p>
+      <label class="dr-sort">
+        <span>排序</span>
+        <select v-model="sortBy">
+          <option value="num">按编号</option>
+          <option value="words">按词数</option>
+        </select>
+      </label>
     </div>
 
     <div class="dr-grid">

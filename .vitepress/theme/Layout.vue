@@ -2,11 +2,13 @@
 import DefaultTheme from 'vitepress/theme'
 import ThemeSwitcher from './ThemeSwitcher.vue'
 import NoteHeader from './NoteHeader.vue'
+import PaperSearch from '../../components/PaperSearch.vue'
 </script>
 
 <template>
   <DefaultTheme.Layout>
     <template #nav-bar-content-after>
+      <PaperSearch />
       <ThemeSwitcher />
     </template>
     <!-- 笔记页页头：非 .vp-doc 内部（查过 VPDoc.vue，doc-before 是 main 的兄弟），

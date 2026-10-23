@@ -54,18 +54,20 @@
 .dr-lib { color: var(--dr-ink); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; }
 
 .dr-lib .dr-tools {
-  display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
-  margin: 4px 0 18px;
+  display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+  margin: 4px 0 16px;
 }
-.dr-lib .dr-search {
-  flex: 1 1 240px; min-width: 200px;
-  font-weight: 400; font-size: 14px; line-height: 1; color: var(--dr-ink);
+/* 搜索框已移到顶栏「找论文」弹窗（components/PaperSearch.vue），这里只剩说明 + 排序 */
+.dr-lib .dr-hint { margin: 0; font-size: 13px; line-height: 1.5; color: var(--dr-ink2); }
+.dr-lib .dr-sort {
+  margin-left: auto; display: flex; align-items: center; gap: 8px;
+  font-size: 13px; line-height: 1; color: var(--dr-ink2);
+}
+.dr-lib .dr-sort select {
+  font-size: 13px; font-weight: 600; line-height: 1; color: var(--dr-ink); cursor: pointer;
   background: var(--dr-panel); border: var(--dr-bw) solid var(--dr-line);
-  border-radius: var(--dr-radius); padding: 10px 14px;
+  border-radius: var(--dr-radius); padding: 7px 10px;
 }
-.dr-lib .dr-search:focus { outline: 2px solid var(--dr-accent); outline-offset: -1px; }
-.dr-lib select.dr-search { flex: 0 0 auto; cursor: pointer; }
-.dr-lib .dr-count { font-size: 13px; color: var(--dr-ink2); white-space: nowrap; margin-left: auto; }
 
 /* 栅格：同排等高交给 grid，不用 min-height（旧坑8，见 DECISIONS §C 开头的对照注）；1440 视口下一排 4 卡 */
 .dr-lib .dr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
@@ -185,3 +187,414 @@
   padding: 7px 12px; border-radius: 9px; border: 1.5px solid var(--dr-line); transition: all .15s;
 }
 .dr-note-back:hover { color: #0284c7; border-color: #0284c7; background: rgba(2,132,199,.07); }
+
+/* ============ 首页报头（components/HomeIntro.vue）============ */
+/* 报纸头版：报眼 + 三行衬线大标题 + 粗细两条线 + 报尾。
+   线条与文字全部走主题变量——深色主题下 --dr-ink 变浅，等于自动反转成一张「夜报」。
+   选择器统一 `.dr-hero .dr-paper …` 两到三级，压过 VitePress 默认的 `.vp-doc h1/p`。 */
+.dr-hero {
+  display: grid; grid-template-columns: minmax(0, 1fr) 520px;
+  gap: 84px; align-items: start;
+  margin: 4px 0 26px;
+}
+
+.dr-hero .dr-paper { text-align: center; color: var(--dr-ink); }
+.dr-hero .dp-top {
+  display: flex; justify-content: space-between; align-items: baseline;
+  padding: 0 1px 8px; border-bottom: var(--dr-bw) solid var(--dr-ink);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 9.5px; line-height: 1; letter-spacing: .2em;
+  text-transform: uppercase; color: var(--dr-ink2);
+}
+.dr-hero .dr-paper h1 {
+  margin: 12px 0 0; padding: 0; border: 0;
+  font-family: var(--dr-hf);
+  font-size: 46px; line-height: 1.1; font-weight: 900;
+  letter-spacing: .005em; color: var(--dr-ink);
+}
+.dr-hero .dp-rule { height: 3px; background: var(--dr-ink); margin: 14px 0 0; }
+.dr-hero .dp-rule.thin { height: 1px; margin: 12px 0 0; }
+.dr-hero .dp-deck {
+  margin: 12px 0 0; max-width: none;
+  font-family: var(--dr-hf);
+  font-size: 12.5px; line-height: 1.6; letter-spacing: .1em; color: var(--dr-ink);
+}
+.dr-hero .dp-foot {
+  margin: 20px 0 0; display: flex; align-items: baseline;
+  justify-content: space-between; gap: 24px;
+  font-size: 11.5px; line-height: 1.5; color: var(--dr-ink2);
+}
+.dr-hero .dp-foot p { margin: 0; }
+.dr-hero .dp-foot b {
+  font-size: 15px; font-weight: 700; color: var(--dr-ink);
+  letter-spacing: -.01em; margin-right: 4px;
+}
+.dr-hero .dp-foot b.sm { font-size: 12px; margin-right: 3px; }
+.dr-hero .dp-foot .dot { color: var(--dr-ink2); margin: 0 7px; opacity: .6; }
+.dr-hero .dp-links { display: flex; align-items: baseline; gap: 20px; flex: 0 0 auto; }
+.dr-hero .dp-foot a {
+  color: var(--dr-ink); font-size: 13px; font-weight: 700;
+  text-decoration: none; letter-spacing: .02em;
+}
+.dr-hero .dp-foot a:hover { color: var(--dr-accent); }
+.dr-hero .dp-foot a.quiet { font-weight: 600; color: var(--dr-ink2); font-size: 12.5px; }
+
+/* ---- 右侧：艺术流派卡轮播 ---- */
+.dr-hero-deck { width: 520px; }
+.dr-hero-deck .deck { position: relative; width: 100%; aspect-ratio: 520 / 280; }
+.dr-hero-deck .art-card {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; margin: 0;
+  display: grid; place-items: center; overflow: hidden;
+  opacity: 0; visibility: hidden;
+}
+/* 新卡：从顶部擦下来盖住旧卡（clip-path 而不是淡入，两张卡的中央文字不会叠成重影） */
+.dr-hero-deck .art-card.on {
+  opacity: 1; visibility: visible; z-index: 2;
+  animation: drCardIn .5s cubic-bezier(.45, 0, .25, 1) both;
+}
+/* 旧卡：垫在下面不动，等新卡盖满（520ms 后由 JS 摘类）再隐藏 */
+.dr-hero-deck .art-card.ghost { opacity: 1; visibility: visible; z-index: 1; }
+@keyframes drCardIn {
+  from { clip-path: inset(0 0 100% 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+.dr-hero-deck .deck-meta {
+  margin-top: 10px; display: flex; align-items: baseline; gap: 10px;
+  font-size: 12px; line-height: 1.4; color: var(--dr-ink2);
+}
+.dr-hero-deck .deck-meta b { font-size: 13px; font-weight: 700; color: var(--dr-ink); letter-spacing: .01em; }
+.dr-hero-deck .deck-meta .yr {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px; letter-spacing: .06em;
+}
+.dr-hero-deck .deck-meta .cnt {
+  margin-left: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px; letter-spacing: .06em;
+}
+.dr-hero-deck .deck-meta .cnt b { font-size: 11px; color: var(--dr-ink); }
+
+/* 卡片底座（十种流派共用） */
+.dr-hero-deck .art-card { background: var(--dr-bg2); }
+.dr-hero-deck .art-card .t { position: relative; z-index: 3; text-align: center; }
+
+/* ---- 十种流派（配色是卡片自身的一部分，不跟站内主题走）---- */
+/* ① 野兽派 */
+.dr-hero-deck .fv { background: #f2b134; }
+.dr-hero-deck .fv::before {
+  content: ""; position: absolute; left: -60px; top: -70px; width: 320px; height: 270px;
+  background: #2a9d8f; border-radius: 58% 42% 46% 54% / 52% 48% 52% 48%;
+}
+.dr-hero-deck .fv::after {
+  content: ""; position: absolute; right: -50px; bottom: -80px; width: 300px; height: 250px;
+  background: #e4572e; border-radius: 44% 56% 62% 38% / 57% 43% 57% 43%;
+}
+.dr-hero-deck .fv .t {
+  font-family: Georgia, "Songti SC", serif; font-size: 40px; font-weight: 700;
+  color: #17211f; line-height: 1.12; letter-spacing: -.01em;
+}
+.dr-hero-deck .fv .grain {
+  position: absolute; inset: 0; opacity: .5;
+  background-image:
+    repeating-linear-gradient(88deg, rgb(0 0 0 / 5%) 0 1px, transparent 1px 5px),
+    repeating-linear-gradient(3deg, rgb(255 255 255 / 7%) 0 1px, transparent 1px 7px);
+}
+
+/* ② 构成主义 */
+.dr-hero-deck .cs { background: #efeade; }
+.dr-hero-deck .cs .band {
+  position: absolute; left: -40px; right: -40px; top: 50%;
+  background: #c8362a; padding: 20px 44px;
+  transform: translateY(-50%) rotate(-11deg);
+}
+.dr-hero-deck .cs .dot {
+  position: absolute; right: 36px; bottom: 28px; width: 74px; height: 74px;
+  background: #141414; border-radius: 50%;
+}
+.dr-hero-deck .cs .tri {
+  position: absolute; right: 128px; top: -26px; width: 0; height: 0;
+  border-left: 56px solid transparent; border-right: 56px solid transparent;
+  border-bottom: 84px solid #141414;
+}
+.dr-hero-deck .cs .t {
+  position: relative; z-index: 4;
+  color: #f5efe3; font-size: 30px; font-weight: 900; text-align: left;
+  text-transform: uppercase; letter-spacing: -.01em; line-height: 1.1;
+}
+
+/* ③ 包豪斯 */
+.dr-hero-deck .bh { background: #f4f1e8; }
+.dr-hero-deck .bh .c1 { position: absolute; left: 44px; top: 40px; width: 54px; height: 54px; background: #d8341f; border-radius: 50%; }
+.dr-hero-deck .bh .sq { position: absolute; right: 44px; bottom: 40px; width: 52px; height: 52px; background: #1f4fa8; }
+.dr-hero-deck .bh .tr {
+  position: absolute; left: 44px; bottom: 36px; width: 0; height: 0;
+  border-left: 30px solid transparent; border-right: 30px solid transparent;
+  border-bottom: 50px solid #e8b21c;
+}
+.dr-hero-deck .bh .t {
+  font-size: 38px; font-weight: 700; color: #141414; line-height: 1.12; letter-spacing: -.02em;
+}
+
+/* ④ 风格派 */
+.dr-hero-deck .ds {
+  background-color: #f7f4ea;
+  background-image:
+    repeating-linear-gradient(to right, #141414 0 5px, transparent 5px 86.66px),
+    repeating-linear-gradient(to bottom, #141414 0 5px, transparent 5px 70px);
+}
+.dr-hero-deck .ds .r { position: absolute; right: 0; top: 0; width: 86px; height: 70px; background: #d8341f; }
+.dr-hero-deck .ds .y { position: absolute; left: 0; bottom: 0; width: 86px; height: 70px; background: #e8b21c; }
+.dr-hero-deck .ds .b { position: absolute; right: 0; bottom: 0; width: 86px; height: 70px; background: #1f4fa8; }
+.dr-hero-deck .ds .t {
+  width: 346.6px; height: 140px; display: grid; place-items: center; text-align: center;
+  background: #f7f4ea;
+  font-size: 24px; font-weight: 700; color: #141414; line-height: 1.2; letter-spacing: -.02em;
+  box-shadow: 0 0 0 5px #141414;
+}
+
+/* ⑤ 波普 */
+.dr-hero-deck .pp { background: #ffd93d; }
+.dr-hero-deck .pp::before {
+  content: ""; position: absolute; inset: 0;
+  background-image: radial-gradient(#e63946 1.8px, transparent 2.2px);
+  background-size: 11px 11px; opacity: .3;
+}
+.dr-hero-deck .pp .t {
+  font-size: 39px; font-weight: 900; color: #fff; line-height: 1.3;
+  text-transform: uppercase; letter-spacing: .01em;
+  -webkit-text-stroke: 2.4px #141414;
+  text-shadow: 6px 6px 0 #e63946;
+}
+
+/* ⑥ 欧普 */
+.dr-hero-deck .op {
+  background: repeating-radial-gradient(circle at 58% 38%, #111 0 7px, #fff 7px 14px);
+}
+.dr-hero-deck .op::before {
+  content: ""; position: absolute; inset: 0; opacity: .5;
+  background: repeating-radial-gradient(circle at 38% 66%, #111 0 6px, transparent 6px 13px);
+}
+.dr-hero-deck .op .t {
+  background: #fff; color: #111; padding: 12px 20px;
+  font-size: 26px; font-weight: 800; line-height: 1.22;
+  text-transform: uppercase; letter-spacing: .02em;
+  box-shadow: 0 0 0 6px #111;
+}
+
+/* ⑦ 孟菲斯 */
+.dr-hero-deck .mm { background: #f7f0e4; }
+.dr-hero-deck .mm::before {
+  content: ""; position: absolute; left: -24px; bottom: -26px; width: 150px; height: 110px;
+  background: repeating-linear-gradient(45deg, #00b3b0 0 8px, transparent 8px 16px);
+  transform: rotate(-8deg);
+}
+.dr-hero-deck .mm::after {
+  content: ""; position: absolute; right: -34px; top: -34px; width: 140px; height: 140px;
+  background: radial-gradient(#f25c9a 3px, transparent 3.4px) 0 0 / 14px 14px;
+  border-radius: 50%;
+}
+.dr-hero-deck .mm .zig {
+  position: absolute; left: 34px; top: 30px; width: 0; height: 0;
+  border-left: 26px solid transparent; border-right: 26px solid transparent;
+  border-bottom: 44px solid #e8b21c; transform: rotate(-12deg);
+}
+.dr-hero-deck .mm .bar {
+  position: absolute; right: 40px; bottom: 38px; width: 92px; height: 12px;
+  background: #141414; transform: rotate(-8deg);
+}
+.dr-hero-deck .mm .t {
+  font-size: 42px; font-weight: 800; color: #141414; line-height: 1.12;
+  letter-spacing: -.03em; transform: rotate(-3deg);
+}
+
+/* ⑧ 装饰艺术 */
+.dr-hero-deck .ad { background: #10241f; }
+.dr-hero-deck .ad::before {
+  content: ""; position: absolute; inset: 0;
+  background: repeating-conic-gradient(from 0deg at 50% 118%,
+    rgb(216 180 90 / 16%) 0deg 1.5deg, transparent 1.5deg 7deg);
+}
+.dr-hero-deck .ad::after {
+  content: ""; position: absolute; inset: 11px;
+  border: 1px solid rgb(216 180 90 / 55%);
+  box-shadow: inset 0 0 0 4px #10241f, inset 0 0 0 5px rgb(216 180 90 / 32%);
+}
+.dr-hero-deck .ad .t {
+  font-family: Georgia, "Songti SC", serif; color: #d8b45a;
+  font-size: 27px; letter-spacing: .17em; text-transform: uppercase; line-height: 1.65;
+}
+
+/* ⑨ 水墨 */
+.dr-hero-deck .ink {
+  background: #f7f4ec;
+  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 6%);
+}
+.dr-hero-deck .ink::before {
+  content: ""; position: absolute; right: -44px; top: -52px;
+  width: 254px; height: 196px; background: #16160f;
+  border-radius: 58% 42% 46% 54% / 52% 58% 42% 48%;
+  filter: blur(2px); opacity: .94; transform: rotate(-11deg);
+  box-shadow: 0 0 30px 14px rgb(22 22 15 / 16%);
+}
+.dr-hero-deck .ink::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .28;
+  background-image: repeating-linear-gradient(90deg, rgb(0 0 0 / 5%) 0 1px, transparent 1px 4px);
+}
+.dr-hero-deck .ink .t {
+  position: relative; z-index: 2;
+  font-family: "Songti SC", "STSong", Georgia, serif;
+  font-size: 33px; font-weight: 600; color: #14140f;
+  letter-spacing: .02em; line-height: 1.28; text-align: left;
+  padding-left: 44px; width: 100%;
+}
+.dr-hero-deck .ink .seal {
+  position: absolute; right: 42px; bottom: 38px; width: 38px; height: 38px;
+  background: #b3321f; color: #fdf6ec; display: grid; place-items: center;
+  font: 700 9px/1.25 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .04em; text-align: center;
+}
+
+/* ⑩ 达达 */
+.dr-hero-deck .dd { background: #efe9dc; }
+.dr-hero-deck .dd .s1 {
+  position: absolute; left: -30px; top: 36px; width: 400px; height: 40px;
+  background: #141414; transform: rotate(-3deg);
+}
+.dr-hero-deck .dd .s2 {
+  position: absolute; right: -34px; bottom: 44px; width: 330px; height: 36px;
+  background: #e6dfd0; border: 1px solid #141414; transform: rotate(2.6deg);
+}
+.dr-hero-deck .dd .t {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 25px; line-height: 1.32; color: #141414;
+  background: #fdfbf5; padding: 12px 16px; transform: rotate(-2deg);
+  box-shadow: 4px 4px 0 #141414; text-align: center;
+}
+
+/* ============ 顶栏「找论文」+ 搜索弹窗（components/PaperSearch.vue）============ */
+/* 顶栏按钮：与 VitePress 导航同高，跟主题切换钮并排（Layout.vue 的 #nav-bar-content-after） */
+.dr-find {
+  display: inline-flex; align-items: center; gap: 6px;
+  height: 32px; padding: 0 12px; margin-right: 10px;
+  border: var(--dr-bw) solid var(--dr-line); border-radius: 999px;
+  background: var(--dr-panel); color: var(--dr-ink2);
+  font-size: 13px; font-weight: 600; line-height: 1; cursor: pointer;
+  transition: border-color .15s, color .15s, background .15s;
+}
+.dr-find svg { width: 14px; height: 14px; flex: 0 0 auto; }
+.dr-find:hover { border-color: var(--dr-accent); color: var(--dr-accent); }
+.dr-find:focus-visible { outline: 2px solid var(--dr-accent); outline-offset: 2px; }
+
+/* 弹窗：App 级浮层，压过 VitePress 导航（--vp-z-index-nav 是 40） */
+.search-modal {
+  position: fixed; inset: 0; z-index: 120;
+  display: flex; justify-content: center; align-items: flex-start;
+  padding: min(15vh, 150px) 20px 24px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+}
+.sm-backdrop {
+  position: absolute; inset: 0;
+  background: rgb(16 18 16 / 42%);
+  -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+  animation: smFade .18s ease both;
+}
+.sm-panel {
+  position: relative; width: min(880px, 100%);
+  background: var(--dr-panel); border-radius: 18px;
+  box-shadow: 0 40px 90px -30px rgb(10 12 10 / 55%), 0 0 0 1px var(--dr-line);
+  overflow: hidden;
+  animation: smIn .22s cubic-bezier(.2, .8, .3, 1) both;
+}
+@keyframes smFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes smIn {
+  from { opacity: 0; transform: translateY(-10px) scale(.985); }
+  to { opacity: 1; transform: none; }
+}
+.sm-bar {
+  display: flex; align-items: center; gap: 14px;
+  padding: 20px 24px; border-bottom: var(--dr-bw) solid var(--dr-line);
+}
+.sm-icon { width: 20px; height: 20px; flex: 0 0 auto; color: var(--dr-ink2); }
+.sm-bar input {
+  flex: 1; min-width: 0; border: 0; background: none; outline: none;
+  padding: 5px 0; font-size: 17px; line-height: 1.3; color: var(--dr-ink);
+}
+.sm-bar input::placeholder { color: var(--dr-ink2); opacity: .75; }
+.sm-esc {
+  flex: 0 0 auto; border: var(--dr-bw) solid var(--dr-line); border-radius: 6px;
+  background: var(--dr-panel); color: var(--dr-ink2); cursor: pointer;
+  padding: 5px 9px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10.5px; font-weight: 600; line-height: 1; letter-spacing: .06em;
+}
+.sm-esc:hover { background: var(--dr-bg2); color: var(--dr-ink); }
+
+.sm-list {
+  min-height: 260px; max-height: min(62vh, 640px); overflow-y: auto; padding: 8px 8px 16px;
+  /* 底部 28px 渐隐：滚到一半露出的那一条不再是生硬的切边 */
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 28px), transparent);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 28px), transparent);
+}
+.sm-item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 13px 14px; border-radius: 12px; cursor: pointer;
+  text-decoration: none; color: inherit;
+}
+.sm-item + .sm-item { margin-top: 2px; }
+.sm-item .n {
+  flex: 0 0 28px; color: var(--dr-ink2);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11.5px; font-weight: 600; line-height: 1; letter-spacing: .04em;
+}
+.sm-item .t {
+  flex: 1; min-width: 0; color: var(--dr-ink);
+  font-size: 14.5px; font-weight: 600; line-height: 1.4;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.sm-item .y { flex: 0 0 auto; color: var(--dr-ink2); font-size: 12px; line-height: 1; }
+.sm-item.on { background: var(--dr-ink); }
+.sm-item.on .t, .sm-item.on .y { color: var(--dr-bg); }
+.sm-item.on .n { color: var(--dr-bg); opacity: .6; }
+.sm-empty { margin: 0; padding: 64px 0; text-align: center; font-size: 14.5px; color: var(--dr-ink2); }
+
+.sm-foot {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  padding: 13px 24px; border-top: var(--dr-bw) solid var(--dr-line);
+  font-size: 12px; line-height: 1.4; color: var(--dr-ink2);
+}
+.sm-foot kbd {
+  padding: 2px 4px; margin: 0 1px;
+  border: var(--dr-bw) solid var(--dr-line); border-radius: 4px;
+  background: var(--dr-panel); color: var(--dr-ink2);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px; font-weight: 600; line-height: 1;
+}
+
+/* ============ 首页 / 弹窗的响应式 ============ */
+@media (max-width: 1240px) {
+  .dr-hero { grid-template-columns: minmax(0, 1fr) 420px; gap: 48px; }
+  .dr-hero-deck { width: 420px; }
+  .dr-hero .dr-paper h1 { font-size: 42px; }
+  .dr-hero .dp-foot { flex-direction: column; align-items: center; gap: 12px; }
+}
+@media (max-width: 980px) {
+  .dr-hero { grid-template-columns: 1fr; gap: 26px; }
+  .dr-hero-deck { width: 100%; max-width: 520px; margin: 0 auto; }
+  .dr-hero .dr-paper h1 { font-size: 38px; }
+}
+@media (max-width: 560px) {
+  .dr-hero .dr-paper h1 { font-size: 30px; }
+  .dr-hero .dp-deck { font-size: 12px; letter-spacing: .06em; }
+  .dr-hero .dp-foot { font-size: 11px; }
+  .dr-hero .dp-foot b { font-size: 14px; }
+  .dr-find { width: 32px; padding: 0; margin-right: 8px; justify-content: center; }
+  .dr-find span { display: none; }
+  .search-modal { padding: 60px 12px 12px; }
+  .sm-foot span:last-child { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dr-hero-deck .art-card.on { animation: none; }
+  .sm-backdrop, .sm-panel { animation: none; }
+}

@@ -4,3 +4,9 @@ node_modules/
 .DS_Store
 previews/
 .stale_pages/
+# 改版过程稿（多方案 html + 内部诊断 md）：既不进 git 也不渲染（渲染由 config.mts 的 srcExclude 挡）
+design/
+# 自查截图产物（check_portal / shot_station 的输出，与 previews/ 同性质）
+scripts/shots/
+# 解读资源整理的素材原稿（内容已分发进 notes/，工作过程文件）
+opencode_glm-5.3-flash_DeepSeek_LLM_2401.02954_解读资源_V1.md

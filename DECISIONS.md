@@ -169,6 +169,32 @@ build 后页面出现 `<h2 id="反向测试">`、「未写」32→31、轻提示
 现两键均 `flex:1 1 0`（+ `min-width:0`）、副键文字居中。`/vocab` 只有一个主键，依旧整行。
 自检断言：`/listen 总集入口两键平分`。
 
+### B6. 首页改成报纸头版 + 艺术卡轮播，搜索搬到顶栏（2026-10-23 用户定案）
+
+首屏先在 `design/20261020_MotionFace风格/` 里迭代定稿，再搬进正式站：
+左栏是「报眼 + 三行衬线大标题 + 粗细两条线 + 报尾」的报纸头版，右栏是十种艺术流派卡
+（野兽派 / 达达 / 风格派 / 包豪斯 / 构成主义 / 装饰艺术 / 波普 / 欧普 / 孟菲斯 / 水墨）
+按艺术史年代自动轮播，2.6s 一张。卡片之间用 `clip-path` 从顶部擦入，**不是淡入**——
+淡入会让两张卡中央的文字半透明叠成重影（实测）。
+
+⚠ 配色分两类，别混：报头的线、字走主题变量（`--dr-ink` / `--dr-line`），深色主题下自动反转成
+「夜报」；十张卡片的配色是卡片自身的一部分，写死不跟主题走，否则换主题时色块会失真。
+
+索引区原来的搜索框已删，搜索统一到顶栏「找论文」：`components/PaperSearch.vue` 挂在
+`Layout.vue` 的 `#nav-bar-content-after`，点开是居中弹窗，输入即筛，`↑↓` 选、`↵` 打开、`esc` 关；
+只做「在 32 篇之间跳转」，全文检索仍交给 VitePress 自带搜索。索引头部只剩
+「32 篇技术报告 · 看词 / 听读 / 笔记」+ 排序（说明行按 `mode` 换文案，词汇页不会写成「听读」）。
+`index.md` 里的 Markdown `# 标题` 同时删掉，页面 h1 由报头承担，避免同屏两个 h1。
+
+自检断言：`/ 首页报头两枚入口（带 base 的 .html）`、`「找论文」输入 "R1" 收敛到少数`、
+`esc 关闭弹窗且解锁页面滚动`。
+
+同批修掉一个既存泄漏：`design/` 下的 6 个 `.md`（改版说明、诊断、否决记录）原来会被 VitePress
+当页面编译，导航里虽没有入口、但 URL 能直接打开，正文还带着源码文件名。已把 `design/**`
+加进 `config.mts` 的 `srcExclude`，与 `README.md` / `DECISIONS.md` / `deep-reading/**` 同类处理。
+git 侧用户同日定案（2026-10-23）：`design/` 既不进 git 也不渲染，已加进 `.gitignore`
+（目录从未被跟踪过，加一行即生效，无需 `git rm --cached`）。
+
 > 宽版页面放不开容器宽度是机制问题不是审美定案，已归 §C10。
 
 ---
@@ -394,8 +420,9 @@ scripts/
 | 论文总览页正文/表格/图例 | `content/DeepSeek_论文列表.md`（不是 `papers.md`！）| `npm run papers` → build |
 | 学习笔记正文 | `notes/<编号>_<短名>.md` | `npm run build`（无需重生数据，§A3）|
 | 笔记页页头 | `theme/NoteHeader.vue` + `custom.css` 的 `.dr-note-*` | build |
-| 首页开头介绍 | `index.md` + `components/HomeIntro.vue` | build |
-| 索引卡 / 搜索 / 排序 / 入口按钮 | `components/PaperIndex.vue` + `theme/custom.css` | build |
+| 首页报头 + 艺术卡轮播（§B6）| `components/HomeIntro.vue` + `theme/custom.css` 的 `.dr-hero*` | build |
+| 顶栏「找论文」搜索弹窗（§B6）| `components/PaperSearch.vue` + `theme/custom.css` 的 `.search-modal` / `.sm-*` | build |
+| 索引卡 / 排序 / 入口按钮 | `components/PaperIndex.vue` + `theme/custom.css` | build |
 | 顶栏栏目 · 站外「模型架构」地址 | `config.mts` 的 `nav`（外链在顶部 `const LLM_GALLERY`）| build |
 | 配色 | `theme/theme-defs.mjs`（10 套，数组顺序＝数字键）| `gen-theme-css.mjs`（对比度门）→ build |
 | 卡片上的篇目 / 词数 / 档位 | 真源是 `public/study/vocab/*.html` 自带的 `DATA` | `npm run data` → build |

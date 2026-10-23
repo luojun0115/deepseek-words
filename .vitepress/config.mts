@@ -25,9 +25,12 @@ export default defineConfig({
   // GitHub Pages 不做 URL 重写，cleanUrls 会让 /vocab 404（盘上只有 vocab.html）
   cleanUrls: false,
   lastUpdated: false,
-  // 两份都是仓库文档，不是站点内容：README 讲怎么干活、DECISIONS 记定案史，
+  // 仓库文档不进站点：README 讲怎么干活、DECISIONS 记定案史、deep-reading/ 是 32 篇精读的
+  // 过程档（解读方案/来源证据/进度，供外部审查对账）——都不是站点内容，
   // 都不该被编译成页面挂进站点（站点里已有 /papers /vocab /listen /notes 五页）
-  srcExclude: ['README.md', 'DECISIONS.md'],
+  // design/ 是改版过程稿（多方案 html + 诊断 md）：里面的 .md 会被当页面编译，
+  // 等于把内部诊断、源码文件名、否决记录直接发布到公开站（2026-10-23 实测 6 个页面泄漏）
+  srcExclude: ['README.md', 'DECISIONS.md', 'deep-reading/**', 'design/**'],
   head: [
     // 防刷新闪白：样式之前先把 data-theme 从 localStorage 落到 <html>。
     // 默认值与合法 id 名单都从 theme-defs.mjs 注入（不写死主题 id，否则改默认主题会闪一下旧主题）；

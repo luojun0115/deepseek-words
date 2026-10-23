@@ -45,11 +45,12 @@ const ok = (name, cond, extra = '') => {
   const cols = await page.evaluate(() => getComputedStyle(document.querySelector('.dr-lib .dr-grid')).gridTemplateColumns.split(' ').length)
   ok('1440 视口下一排 4 卡', cols === 4, '实得 ' + cols + ' 列')
 
-  // 1c) 首页学法介绍卡（components/HomeIntro.vue，2026-10-08 用户要求收进卡片）：两枚入口分指两种学法
-  const ways = await page.$$eval('.dr-intro .dr-way', els => els.map(e => e.getAttribute('href')))
+  // 1c) 首页报头（components/HomeIntro.vue，2026-10-23 改版：原 .dr-intro 学法卡换成报纸头版）
+  //     两枚入口分指「背词」与「论文总览」
+  const ways = await page.$$eval('.dr-hero .dp-links a', els => els.map(e => e.getAttribute('href')))
   // cleanUrls 已关（Pages 不做重写），入口必须是带 base 的 .html；根绝对路径在子路径下会跑到用户站
-  ok('/ 首页学法卡两枚入口（带 base 的 .html）',
-     ways.join(',') === [BPATH + 'vocab.html', BPATH + 'listen.html'].join(','), ways.join(',') || '未找到')
+  ok('/ 首页报头两枚入口（带 base 的 .html）',
+     ways.join(',') === [BPATH + 'vocab.html', BPATH + 'papers.html'].join(','), ways.join(',') || '未找到')
 
   // 1d) 栏目名（2026-10-08 用户定案：「词汇网页」→「词汇学习」，「单词听力」→「词汇朗读」）
   //     只改文案不改 URL/文件名，所以旧页面文件名里的「单词听力」不在检查范围内。
@@ -77,13 +78,19 @@ const ok = (name, cond, extra = '') => {
   ok('首页无旧栏目名残留', !/词汇网页|单词听力/.test(bodyTxt),
      ['词汇网页', '单词听力'].filter(k => bodyTxt.includes(k)).join('、'))
 
-  // 2) 搜索收敛
-  await page.fill('.dr-lib .dr-search', 'R1')
+  // 2) 搜索收敛（2026-10-23 改版：索引区的搜索框移到顶栏「找论文」弹窗）
+  await page.click('.dr-find')
+  await page.waitForTimeout(300)
+  await page.fill('.sm-bar input', 'R1')
   await page.waitForTimeout(200)
-  const afterSearch = await page.locator('.dr-lib .dr-card').count()
-  ok('搜索 "R1" 收敛到少数', afterSearch >= 1 && afterSearch < NP, '剩 ' + afterSearch)
-  await page.fill('.dr-lib .dr-search', '')
-  await page.waitForTimeout(150)
+  const afterSearch = await page.locator('.sm-item').count()
+  ok('「找论文」输入 "R1" 收敛到少数', afterSearch >= 1 && afterSearch < NP, '剩 ' + afterSearch)
+  await page.keyboard.press('Escape')
+  await page.waitForTimeout(250)
+  ok('esc 关闭弹窗且解锁页面滚动',
+     (await page.locator('.search-modal').count()) === 0 &&
+     (await page.evaluate(() => document.body.style.overflow)) === '',
+     'modal=' + (await page.locator('.search-modal').count()))
 
   // 3) 档位筛选已删（2026-10-08 用户定案：9/10 档全篇都有，筛了等于没筛）；只断言无残留
   ok('无级别胶囊/档位筛选残留',
@@ -261,9 +268,16 @@ const ok = (name, cond, extra = '') => {
   ok('点进笔记页 URL', page.url() === BASE + '/notes/' + PP[0].dir + '.html', page.url())
   ok('笔记页是站内页（有顶栏外壳，区别于 /study/ 静态页）', (await page.locator('.VPNav').count()) === 1)
   ok('笔记页标题带篇名', (await page.title()).includes(PP[0].short), await page.title())
-  const hint = await page.evaluate(() =>
-    getComputedStyle(document.querySelector('.note-page .vp-doc > div'), '::after').content)
-  ok('空白笔记页显示一行轻提示', /还没有写笔记/.test(hint), hint.slice(0, 30))
+  // 轻提示只在正文为空时出现；32 篇笔记全部写完后这条要跳过而不是判失败
+  const bodyEmpty = await page.evaluate(() => {
+    const el = document.querySelector('.note-page .vp-doc > div')
+    return !!el && el.textContent.trim() === ''
+  })
+  const hint = bodyEmpty
+    ? await page.evaluate(() => getComputedStyle(document.querySelector('.note-page .vp-doc > div'), '::after').content)
+    : ''
+  ok(bodyEmpty ? '空白笔记页显示一行轻提示' : '笔记正文已写满，轻提示断言跳过（当前无空白页）',
+     bodyEmpty ? /还没有写笔记/.test(hint) : true, bodyEmpty ? hint.slice(0, 30) : 'skip')
   await page.screenshot({ path: SHOT + '/29_空白笔记页.png' })
   // 页头由主题层 NoteHeader.vue 按 URL 反查 papers.json 补（md 里不写一个字节）
   const hdNm = await page.locator('.dr-note-hd .dr-note-txt b').first().textContent()
