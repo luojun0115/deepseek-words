@@ -318,6 +318,59 @@ Playwright 官方主色本就是紫，而 Selenium 绿与 code 组里菜鸟教�
 
 ---
 
+### A10. /sites 第三批：单开「算法与刷题」组（2026-10-24 用户定案）
+
+用户原话：「https://codetop.cc/home 这个也要增加，这也是算法刷题的。另外，还有牛客网也要加一下」
+
+**清单口径（51 上墙 / 5 待选 / 3 空位）**，唯一真源仍是 `data/sites.json`。
+
+**本批的关键决策：力扣从 code 组移走，和牛客网、CodeTop 组成新组「算法与刷题」**。
+
+| 分组 | 站数 | 站点 |
+|---|---|---|
+| papers 论文源 | 3 | arXiv、HF Papers、Google Scholar |
+| llm 大模型 | 8 | Claude Code、Codex、Qwen、DeepSeek、MiMo、GLM、Kimi、MiniMax |
+| code 代码与编程 | 7 | GitHub、菜鸟教程、Python、MySQL、Pytest、小众软件、慕课网 |
+| **algo 算法与刷题** | 3 | **力扣 LeetCode**、**牛客网**、**CodeTop** |
+| tools 工具与测试 | 5 | 小林 coding、测试之家、Selenium、Playwright、Redis |
+| courses 课程与读书 | 7 | 极客时间、得到、微信读书、网易公开课、大学慕课、TED、智慧教育 |
+| community 社区 | 5 | 知乎、豆瓣、V2EX、Reddit、Hacker News |
+| media 媒体与图书馆 | 5 | InfoQ、央视网、央广网、首都图书馆、国家图书馆 |
+| data 数据与工具 | 4 | 新榜、飞瓜数据、蝉妈妈、Folo |
+| video 视频与热榜 | 4 | B 站、YouTube、今日热榜、今日热榜·开发者 |
+| mine 我的站点 | 3 空位 | 我的 GitHub / 博客·主页 / 待添加 |
+
+**为什么要动「力扣」**：code 组已有 8 块，再塞牛客网与 CodeTop 就是 10 块，
+砖宽压到 ~100px（实测 8 块时每块已只剩 ~170px），域名放不下、logo 被挤扁。
+而这两站与力扣本来就是同一类（算法刷题 / 笔试真题），
+**把力扣挪进新组是语义与版式双赢**：code 组回到 7 块，algo 组 3 块（≤4 块 → 显示完整域名）。
+组序 3/8/7/3/5/7/5/5/4/4/3，仍是每行 3–8 块。
+
+**牛客网品牌色为什么不是纯品牌橙**：logo 主色实测 `#f06400`（hue 27°），
+而力扣是 `#ffa116`（hue 36°）—— **只差 9°**。`soften()` 输出色只由色相决定（见 §A8），
+褪色成印刷色板后这两块会几乎一样。故牛客网取 **深红调变体 `#e04e1a`（hue 16°）**，
+与力扣拉开 20°；CodeTop 取 logo 实测绿 `#2fa36b`（hue 151°）。
+algo 组三块色相 **36° / 16° / 151°**，彼此分明。
+
+**这批抓 logo 意外顺利**：牛客网与 CodeTop 的 `/favicon.ico` 都 **direct 命中**，
+不用走 HTML 抠取与公共图标服务兜底（上一批的 selenium / playwright / imooc 才需要）。
+主色不是猜的，用 HSL 直方图统计得出：牛客网 hue 27° 橙、CodeTop hue 153° 绿（另含 hue 210° 的深蓝描边）。
+
+**落地文件**：`data/sites.json`（51 站 / 11 组；`_note` 里的数字同步更新）、
+`public/logos/` +2 枚（51 枚）、`components/SiteNavWall.vue`
+（`PATTERN` 从 49 项扩到 **51 项**，末尾续 `1,2,1`；导语补上「算法」；注释「十组」→「十一组」）。
+`scripts/check_portal.cjs` 仍**不用改**（断言数量动态读 `SITES.sites.length`）。
+
+自检断言实测 **77/77 全过**：`/sites 页 51 块实砖 + 3 个空位 + 11 块组牌`、
+`/sites 每块都是站外链（地址与清单逐一对应）`、`/sites 51 枚 logo 全部加载成功`、
+`/sites 砖面文字对比度 ≥ 4.5`（最低 **4.52:1**）。
+目检：亮色 + 深夜两态，algo 组三块 logo 清晰、色相分明。
+
+> 交付时的网络状况：直连 GitHub 超时、机场 12 个节点全部超时，**push 未执行**，
+> 成果留在本地 commit（见 §A9 之后那次提交）。这属于网络阻塞，不是代码问题。
+
+---
+
 ## B. 页面与样式定案
 
 ### B1. 论文总览链接不带下划线（2026-10-08 用户要求）

@@ -1,9 +1,10 @@
 {
-  "_note": "站外导航页（/sites）的数据源。49 站上墙 + 5 站待选 + 3 个自有空位。改名单改这里，页面与自检都从这份数据读，不写死在组件里。待选站（pending）数据保留但页面不渲染（DECISIONS §A7）。分组顺序 = 墙上的行序（每组一行，组牌在左列）。",
+  "_note": "站外导航页（/sites）的数据源。51 站上墙 + 5 站待选 + 3 个自有空位。改名单改这里，页面与自检都从这份数据读，不写死在组件里。待选站（pending）数据保留但页面不渲染（DECISIONS §A7）。分组顺序 = 墙上的行序（每组一行，组牌在左列）。",
   "groups": [
     { "id": "papers", "name": "论文源", "en": "PAPERS", "kind": "sites" },
     { "id": "llm", "name": "大模型", "en": "LLM", "kind": "sites" },
     { "id": "code", "name": "代码与编程", "en": "CODE", "kind": "sites" },
+    { "id": "algo", "name": "算法与刷题", "en": "ALGO", "kind": "sites" },
     { "id": "tools", "name": "工具与测试", "en": "TOOLS", "kind": "sites" },
     { "id": "courses", "name": "课程与读书", "en": "COURSES", "kind": "sites" },
     { "id": "community", "name": "社区", "en": "COMMUNITY", "kind": "sites" },
@@ -27,13 +28,16 @@
     { "slug": "minimax", "name": "MiniMax", "short": "MiniMax", "url": "https://www.minimax.cn", "brand": "#ff6b35", "group": "llm", "logo": "/logos/minimax.png" },
 
     { "slug": "github", "name": "GitHub", "short": "GitHub", "url": "https://github.com", "brand": "#24292f", "group": "code", "logo": "/logos/github.png" },
-    { "slug": "leetcode", "name": "力扣 LeetCode", "short": "力扣", "url": "https://leetcode.cn", "brand": "#ffa116", "group": "code", "logo": "/logos/leetcode.png" },
     { "slug": "runoob", "name": "菜鸟教程", "short": "菜鸟教程", "url": "https://www.runoob.com", "brand": "#29a533", "group": "code", "logo": "/logos/runoob.png" },
     { "slug": "python", "name": "Python 官网", "short": "Python", "url": "https://www.python.org", "brand": "#3776ab", "group": "code", "logo": "/logos/python.png" },
     { "slug": "mysql", "name": "MySQL 官网", "short": "MySQL", "url": "https://www.mysql.com", "brand": "#00758f", "group": "code", "logo": "/logos/mysql.png" },
     { "slug": "pytest", "name": "Pytest 官网", "short": "Pytest", "url": "https://docs.pytest.org", "brand": "#2ea3a3", "group": "code", "logo": "/logos/pytest.png" },
     { "slug": "appinn", "name": "小众软件", "short": "小众软件", "url": "https://www.appinn.com", "brand": "#1e7fd8", "group": "code", "logo": "/logos/appinn.png" },
     { "slug": "imooc", "name": "慕课网", "short": "慕课网", "url": "https://www.imooc.com", "brand": "#e8452c", "group": "code", "logo": "/logos/imooc.png" },
+
+    { "slug": "leetcode", "name": "力扣 LeetCode", "short": "力扣", "url": "https://leetcode.cn", "brand": "#ffa116", "group": "algo", "logo": "/logos/leetcode.png" },
+    { "slug": "nowcoder", "name": "牛客网", "short": "牛客网", "url": "https://www.nowcoder.com", "brand": "#e04e1a", "group": "algo", "logo": "/logos/nowcoder.png" },
+    { "slug": "codetop", "name": "CodeTop", "short": "CodeTop", "url": "https://codetop.cc", "brand": "#2fa36b", "group": "algo", "logo": "/logos/codetop.png" },
 
     { "slug": "xiaolincoding", "name": "小林 coding", "short": "小林coding", "url": "https://www.xiaolincoding.com", "brand": "#2f6bd8", "group": "tools", "logo": "/logos/xiaolincoding.png" },
     { "slug": "testerhome", "name": "测试之家 TesterHome", "short": "测试之家", "url": "https://testerhome.com", "brand": "#00a3a3", "group": "tools", "logo": "/logos/testerhome.png" },
