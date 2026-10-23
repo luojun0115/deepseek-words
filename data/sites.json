@@ -1,12 +1,14 @@
 {
-  "_note": "站外导航页（/sites）的数据源。38 站上墙 + 5 站待选 + 3 个自有空位。改名单改这里，页面与自检都从这份数据读，不写死在组件里。待选站（pending）数据保留但页面不渲染（DECISIONS §A7）。分组顺序 = 墙上的行序（每组一行，组牌在左列）。",
+  "_note": "站外导航页（/sites）的数据源。49 站上墙 + 5 站待选 + 3 个自有空位。改名单改这里，页面与自检都从这份数据读，不写死在组件里。待选站（pending）数据保留但页面不渲染（DECISIONS §A7）。分组顺序 = 墙上的行序（每组一行，组牌在左列）。",
   "groups": [
     { "id": "papers", "name": "论文源", "en": "PAPERS", "kind": "sites" },
     { "id": "llm", "name": "大模型", "en": "LLM", "kind": "sites" },
     { "id": "code", "name": "代码与编程", "en": "CODE", "kind": "sites" },
+    { "id": "tools", "name": "工具与测试", "en": "TOOLS", "kind": "sites" },
     { "id": "courses", "name": "课程与读书", "en": "COURSES", "kind": "sites" },
     { "id": "community", "name": "社区", "en": "COMMUNITY", "kind": "sites" },
     { "id": "media", "name": "媒体与图书馆", "en": "MEDIA", "kind": "sites" },
+    { "id": "data", "name": "数据与工具", "en": "DATA", "kind": "sites" },
     { "id": "video", "name": "视频与热榜", "en": "VIDEO", "kind": "sites" },
     { "id": "mine", "name": "我的站点", "en": "MINE", "kind": "slots" }
   ],
@@ -31,6 +33,13 @@
     { "slug": "mysql", "name": "MySQL 官网", "short": "MySQL", "url": "https://www.mysql.com", "brand": "#00758f", "group": "code", "logo": "/logos/mysql.png" },
     { "slug": "pytest", "name": "Pytest 官网", "short": "Pytest", "url": "https://docs.pytest.org", "brand": "#2ea3a3", "group": "code", "logo": "/logos/pytest.png" },
     { "slug": "appinn", "name": "小众软件", "short": "小众软件", "url": "https://www.appinn.com", "brand": "#1e7fd8", "group": "code", "logo": "/logos/appinn.png" },
+    { "slug": "imooc", "name": "慕课网", "short": "慕课网", "url": "https://www.imooc.com", "brand": "#e8452c", "group": "code", "logo": "/logos/imooc.png" },
+
+    { "slug": "xiaolincoding", "name": "小林 coding", "short": "小林coding", "url": "https://www.xiaolincoding.com", "brand": "#2f6bd8", "group": "tools", "logo": "/logos/xiaolincoding.png" },
+    { "slug": "testerhome", "name": "测试之家 TesterHome", "short": "测试之家", "url": "https://testerhome.com", "brand": "#00a3a3", "group": "tools", "logo": "/logos/testerhome.png" },
+    { "slug": "selenium", "name": "Selenium 官网", "short": "Selenium", "url": "https://www.selenium.dev", "brand": "#43b02a", "group": "tools", "logo": "/logos/selenium.png" },
+    { "slug": "playwright", "name": "Playwright 官网", "short": "Playwright", "url": "https://playwright.dev", "brand": "#6b4fbb", "group": "tools", "logo": "/logos/playwright.png" },
+    { "slug": "redis", "name": "Redis 官网", "short": "Redis", "url": "https://redis.io", "brand": "#d82c20", "group": "tools", "logo": "/logos/redis.png" },
 
     { "slug": "geekbang", "name": "极客时间", "short": "极客时间", "url": "https://time.geekbang.org", "brand": "#f86442", "group": "courses", "logo": "/logos/geekbang.png" },
     { "slug": "dedao", "name": "得到", "short": "得到", "url": "https://www.dedao.cn", "brand": "#c81023", "group": "courses", "logo": "/logos/dedao.png" },
@@ -38,6 +47,7 @@
     { "slug": "open163", "name": "网易公开课", "short": "网易公开课", "url": "https://open.163.com", "brand": "#3ea44e", "group": "courses", "logo": "/logos/open163.png" },
     { "slug": "icourse", "name": "大学慕课", "short": "大学慕课", "url": "https://www.icourse163.org", "brand": "#2f8fd8", "group": "courses", "logo": "/logos/icourse.png" },
     { "slug": "ted", "name": "TED", "short": "TED", "url": "https://www.ted.com", "brand": "#e62b1e", "group": "courses", "logo": "/logos/ted.png" },
+    { "slug": "smartedu", "name": "国家中小学智慧教育平台", "short": "智慧教育", "url": "https://www.zxx.edu.cn", "brand": "#1c6dd0", "group": "courses", "logo": "/logos/smartedu.png" },
 
     { "slug": "zhihu", "name": "知乎", "short": "知乎", "url": "https://www.zhihu.com", "brand": "#0084ff", "group": "community", "logo": "/logos/zhihu.png" },
     { "slug": "douban", "name": "豆瓣", "short": "豆瓣", "url": "https://www.douban.com", "brand": "#33b045", "group": "community", "logo": "/logos/douban.png" },
@@ -50,6 +60,11 @@
     { "slug": "cnr", "name": "央广网", "short": "央广网", "url": "https://www.cnr.cn", "brand": "#c8000a", "group": "media", "logo": "/logos/cnr.png" },
     { "slug": "clcn", "name": "首都图书馆", "short": "首都图书馆", "url": "https://www.clcn.net.cn", "brand": "#8d6e3f", "group": "media", "logo": "/logos/clcn.png" },
     { "slug": "nlc", "name": "国家图书馆", "short": "国家图书馆", "url": "https://www.nlc.cn", "brand": "#a4343a", "group": "media", "logo": "/logos/nlc.png" },
+
+    { "slug": "newrank", "name": "新榜", "short": "新榜", "url": "https://www.newrank.cn", "brand": "#e34d26", "group": "data", "logo": "/logos/newrank.png" },
+    { "slug": "feigua", "name": "飞瓜数据", "short": "飞瓜数据", "url": "https://www.feigua.cn", "brand": "#f2a63c", "group": "data", "logo": "/logos/feigua.png" },
+    { "slug": "chanmama", "name": "蝉妈妈", "short": "蝉妈妈", "url": "https://www.chanmama.com", "brand": "#8bc53f", "group": "data", "logo": "/logos/chanmama.png" },
+    { "slug": "folo", "name": "Folo", "short": "Folo", "url": "https://folo.is", "brand": "#4a7dd6", "group": "data", "logo": "/logos/folo.png" },
 
     { "slug": "bilibili", "name": "哔哩哔哩", "short": "B 站", "url": "https://www.bilibili.com", "brand": "#fb7299", "group": "video", "logo": "/logos/bilibili.png" },
     { "slug": "youtube", "name": "YouTube", "short": "YouTube", "url": "https://www.youtube.com", "brand": "#ff0000", "group": "video", "logo": "/logos/youtube.png" },
@@ -65,7 +80,7 @@
     { "slug": "paperswithcode", "name": "Papers with Code", "url": "https://paperswithcode.com", "brand": "#3b6ea5", "group": "papers" },
     { "slug": "alphaxiv", "name": "alphaXiv", "url": "https://www.alphaxiv.org", "brand": "#6b46c1", "group": "papers" },
     { "slug": "semanticscholar", "name": "Semantic Scholar", "url": "https://www.semanticscholar.org", "brand": "#1857b6", "group": "papers" },
-    { "slug": "openreview", "name": "OpenReview", "url": "https://openreview.net", "brand": "#c8a951", "group": "papers" },
+    { "slug": "openreview", "name": "OpenReview", "url": "https://openreview.org", "brand": "#c8a951", "group": "papers" },
     { "slug": "connectedpapers", "name": "Connected Papers", "url": "https://www.connectedpapers.com", "brand": "#4a7ebb", "group": "papers" }
   ]
 }

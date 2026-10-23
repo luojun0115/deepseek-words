@@ -252,6 +252,72 @@ soften 后仍是较暗的紫蓝，块上近黑文字只有 4.51:1 / 4.34:1，**�
 
 ---
 
+### A9. /sites 第二批扩充：工具测试 + 数据榜单（2026-10-24 用户定案）
+
+用户原话：「再增加国家中小学智慧教育平台增加新榜、飞瓜数据、蝉妈妈小林 coding 还有测试之家，也就是 Test Home、
+慕课网增加 selenium 官网，增加 playwright 官网增加 Redis 官网增加 folo官网」
+
+**「慕课网增加 selenium 官网」按两个独立站读**：慕课网（imooc.com）与 Selenium 官网（selenium.dev）各占一块，
+不是「慕课网增加 Selenium 官网」这一件事。全批共 **11 个新站**。
+
+**清单口径（49 上墙 / 5 待选 / 3 空位）**，唯一真源仍是 `data/sites.json`：
+
+| 分组 | 站数 | 站点 |
+|---|---|---|
+| papers 论文源 | 3 | arXiv、HF Papers、Google Scholar |
+| llm 大模型 | 8 | Claude Code、Codex、Qwen、DeepSeek、MiMo、GLM、Kimi、MiniMax |
+| code 代码与编程 | 8 | GitHub、力扣、菜鸟教程、Python、MySQL、Pytest、小众软件、**慕课网** |
+| **tools 工具与测试** | 5 | **小林 coding**、**测试之家 TesterHome**、**Selenium 官网**、**Playwright 官网**、**Redis 官网** |
+| courses 课程与读书 | 7 | 极客时间、得到、微信读书、网易公开课、大学慕课、TED、**国家中小学智慧教育平台** |
+| community 社区 | 5 | 知乎、豆瓣、V2EX、Reddit、Hacker News |
+| media 媒体与图书馆 | 5 | InfoQ、央视网、央广网、首都图书馆、国家图书馆 |
+| **data 数据与工具** | 4 | **新榜**、**飞瓜数据**、**蝉妈妈**、**Folo** |
+| video 视频与热榜 | 4 | B 站、YouTube、今日热榜、今日热榜·开发者 |
+| mine 我的站点 | 3 空位 | 我的 GitHub / 博客·主页 / 待添加 |
+
+**为什么新开 groups 而不是塞进现有组**：
+Selenium / Playwright 是**浏览器自动化测试框架**、Redis 是**缓存数据库**、小林 coding 是**编程教程站**、
+TesterHome 是**测试社区**——塞进 code 组会让那行涨到 12 块，砖宽压到 ~90px；
+塞进 courses 组语义也不对（它们不是「课程与读书」）。
+于是新开 **tools 工具与测试**（5 块），并把 Selenium 品牌色定为**绿**、Playwright 定为**紫**——
+Playwright 官方主色本就是紫，而 Selenium 绿与 code 组里菜鸟教程的绿相邻会撞，
+故 Selenium 取 `#43b02a`、Playwright 取 `#6b4fbb`。
+新榜 / 飞瓜数据 / 蝉妈妈 是**新媒体与电商数据榜单**、Folo 是**RSS 聚合阅读**，
+与 media（媒体机构与图书馆）不同质，单开 **data 数据与工具**（4 块）。
+组序 3/8/8/5/7/5/5/4/4/3，仍是每行 4–8 块、行宽随块数变。
+
+**这批抓 logo 踩到的三个新坑**（`design/20261024_站点扩充二批/`，不入 git）：
+
+1. **`href` 可能没有引号**：selenium.dev 是 `href=/favicons/favicon.ico`、playwright.dev 是
+   `rel=icon href=/img/playwright-logo.ico`，原正则要求 `href="..."` 直接漏掉这两家 →
+   改成 `href=["\']?([^"\'\s>]+)` 两种写法都吃，再加 `SIZE_RE` 按 `WxH` 取**最大档**
+   （selenium 因此拿到 pwa-512x512 而不是 32×32）。
+2. **反爬站要用真浏览器读地址**：imooc.com 对 `requests` 返回 988 字节的拦截 HTML，
+   `/favicon.ico` 也偶发返回 HTML；icon.horse 给的却是**灰底竖条占位符**（坏图）。
+   解法：用 Playwright 打开页面读 `<link rel="apple-touch-icon">` → 拿到 `touch-icon-ipad-retina.png`（152×152）。
+   （Playwright 探测本身也坑：imooc 是 React SPA，会报 `Execution context was destroyed`，
+   要改 `waitUntil:'load'` 并监听 `response` 事件收集真实资源 URL。）
+3. **只有 16×16 favicon 的站要从横版 logo 裁图形**：zxx.edu.cn 的 favicon 只有 16×16，放大后糊。
+   页面里另有 `img/logo.a56c6f3d.png`（572×96 横版，左图右字）。
+   按「列投影找最长段 = 文字段」切**切不干净**——图形尾巴和首字「国」会粘成一段（实测 x=5–165），
+   改成**按颜色分离**（`b > r+40 & b > 110` 取蓝色像素 bbox）才切出图形；
+   但 bbox 里还拖着一缕黑字残影，最后把**所有非蓝像素整体转透明**才干净（104×72）。
+
+**品牌色定稿**（避开同组撞色相）：智慧教育 `#1c6dd0`、慕课网 `#e8452c`、小林 coding `#2f6bd8`、
+测试之家 `#00a3a3`、Selenium `#43b02a`、Playwright `#6b4fbb`、Redis `#d82c20`、
+新榜 `#e34d26`、飞瓜数据 `#f2a63c`、蝉妈妈 `#8bc53f`、Folo `#4a7dd6`。
+
+**落地文件**：`data/sites.json`（重写，49 站 / 10 组）、`public/logos/` +11 枚（49 枚）、
+`components/SiteNavWall.vue`（`PATTERN` 从 38 项扩到 **49 项**，保持 `1,2,2,1,1,2,2,2` 节奏续写；
+导语补上「工具」「数据」「视频」）、`scripts/check_portal.cjs`（**断言数量本来就是动态读，加站不用改**）。
+
+自检断言实测 **77/77 全过**：`/sites 页 49 块实砖 + 3 个空位 + 10 块组牌`、
+`/sites 每块都是站外链（地址与清单逐一对应）`、`/sites 49 枚 logo 全部加载成功`、
+`/sites 不渲染待选站`、`/sites 砖面文字对比度 ≥ 4.5`（最低 **4.52:1**，0 块不达标）。
+目检：亮色 + 深夜两态，11 枚新 logo 全部清晰可辨。
+
+---
+
 ## B. 页面与样式定案
 
 ### B1. 论文总览链接不带下划线（2026-10-08 用户要求）
