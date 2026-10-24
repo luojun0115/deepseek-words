@@ -92,15 +92,16 @@ const ok = (name, cond, extra = '') => {
     (await page.locator('.VPNavBarSearch').count()) === 0 ||
     !(await page.locator('.VPNavBarSearch').first().isVisible()))
 
-  // 1e) 顶栏「模型架构」（2026-10-09 用户要求：站外链）+ 1e-2)「站外导航」（2026-10-23 用户要求：
-  //     放在「模型架构」右边，指站内页 /sites）
+  // 1e) 顶栏「模型架构」（2026-10-09 用户要求：站外链）+ 1e-2)「站外导航」（2026-10-23 新增）
+  //     2026-10-24 用户要求「模型架构放在最右侧，也就是放在站外导航的右侧」——
+  //     栏序变成 …学习笔记 / 站外导航 / 模型架构，「模型架构」回到最后一栏（§A2 原始位置）
   //     期望地址从 config.mts 里那一行常量现取，改地址不用改自检
   const CFG = require('fs').readFileSync(require('path').resolve(__dirname, '../.vitepress/config.mts'), 'utf8')
   const GALLERY = (CFG.match(/const LLM_GALLERY = '([^']+)'/) || [])[1]
   const gi = navTxt.indexOf('模型架构')
   const si = navTxt.indexOf('站外导航')
-  ok('顶栏「模型架构」在倒数第二栏、「站外导航」在最后一栏（站内栏目都在它左边）',
-     gi > 0 && si === gi + 1 && navTxt.indexOf('学习笔记') < gi && si === navTxt.length - 1,
+  ok('顶栏「站外导航」在倒数第二栏、「模型架构」在最后一栏（站内栏目都在它们左边）',
+     si > 0 && gi === si + 1 && navTxt.indexOf('学习笔记') < si && gi === navTxt.length - 1,
      navTxt.join('/'))
   const ext = page.locator('.VPNavBarMenuLink', { hasText: '模型架构' }).first()
   const extHref = await ext.getAttribute('href')
