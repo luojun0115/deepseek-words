@@ -40,7 +40,7 @@ const step = (name, cmd, args) => {
 }
 
 step('gen-data --check（json ← 仓内词汇页）', 'python3', ['scripts/gen-data.py', '--check'])
-step('refresh-papers --check（papers.md ← 仓内文稿）', process.execPath, ['scripts/refresh-papers.mjs', '--check'])
+step('refresh-papers --check（notes/papers.md ← 仓内文稿）', process.execPath, ['scripts/refresh-papers.mjs', '--check'])
 step('verify_content（全量守卫，含再跑一遍上面两项）', process.execPath, ['scripts/verify_content.mjs'])
 
 fs.rmSync(TMP, { recursive: true, force: true })

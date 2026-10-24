@@ -22,11 +22,14 @@ arXiv 号 `2401.02954` → `2609.19969`）里需要单独学的单词挑出来�
 | 栏目 | 地址 | 是什么 |
 |---|---|---|
 | 首页 | `/` | 项目介绍 + 论文检索索引（默认落地页）|
-| 论文总览 | `/papers` | DeepSeek 系列发展脉络（文稿即源码）|
 | 词汇学习 | `/vocab` | 32 篇词页索引，逐篇按章节/级别学词、听发音 |
 | 词汇朗读 | `/listen` | 32 篇听力页索引，逐词连播 |
 | 学习笔记 | `/notes` | 32 篇笔记，每篇一份本地 md，写什么上什么 |
 | 模型架构 | 站外 `sebastianraschka.com/llm-architecture-gallery` | Sebastian Raschka 的 LLM 架构对比画廊（地址在 `config.mts` 的 `LLM_GALLERY`）|
+
+论文总览**不占导航位**，也不在仓根：它是 `notes/papers.md`（由 `content/` 文稿生成），
+排在学习笔记索引页末尾「专题与索引」组的第一张卡，点封面进 `/notes/papers.html`
+（见 `DECISIONS.md` §A26）。
 
 另外有三张**总集页**不占导航位，挂在栏目页顶部横幅上（见「怎么用」）。
 
@@ -103,8 +106,9 @@ npm run selfcheck  # 断链实验：把仓库拷进隔离副本、只读自身�
 
 | 要动什么 | 改哪儿 |
 |---|---|
-| 论文总览页的正文、表格、图例 | `content/DeepSeek_论文列表.md`，然后 `npm run papers`（**别改 `papers.md`**，它由文稿生成，会被覆盖）|
-| 学习笔记正文 | `notes/<编号>_<论文短名>.md`（文件名对应 `data/papers.json` 的 `dir`）：两条 `---` 之间的注释以下随便写，标题、表格、代码块、图片都支持，写完 `npm run build` 就渲染到 `/notes` 点进去的那页；空着时页面只显一行轻提示（那句提示里不会出现仓库路径，读者不需要看这些）。专题横笔记（不带 `NN_` 编号前缀的 md，如 `notes/位置编码.md`）也放这个目录：`gen-notes --check` 只按编号前缀与 papers.json 对平，专题笔记不参与；`/notes` 索引页底部有专题入口|
+| 论文总览页的正文、表格、图例 | `content/DeepSeek_论文列表.md`，然后 `npm run papers`（**别改 `notes/papers.md`**，它由文稿生成，会被覆盖）|
+| 学习笔记正文 | `notes/<编号>_<论文短名>.md`（文件名对应 `data/papers.json` 的 `dir`）：两条 `---` 之间的注释以下随便写，标题、表格、代码块、图片都支持，写完 `npm run build` 就渲染到 `/notes` 点进去的那页；空着时页面只显一行轻提示（那句提示里不会出现仓库路径，读者不需要看这些）。专题横笔记（不带 `NN_` 编号前缀的 md，如 `notes/位置编码.md`）也放这个目录：`gen-notes --check` 只按编号前缀与 papers.json 对平，专题笔记不参与 |
+| 新增一篇专题笔记（带封面）| ① `notes/<名>.md`，frontmatter 里写 `cover: "金句第一行， / 金句第二行。"`（可选 `coverKicker` / `coverYear`）；② `npm run covers` 出封面 `public/covers/T_<名>.png`；③ `npm run build`。`/notes` 索引页底部会自动多一张专题卡，组件无需改动（见 `DECISIONS.md` §A25）|
 | 精读工程过程档 | `deep-reading/`：32 篇深度精读的解读方案、引用规范、来源档案（sources/，逐条原始链接）、模型对照系（跨模型对比基准）、笔记草稿 drafts/（过审后才同步进 notes/）、进度与变更日志，供外部模型审查对账；已在 `srcExclude` 排除、不进站点|
 | 首页开头那张介绍 | `index.md` + `components/HomeIntro.vue` |
 | 索引卡、搜索、排序、每篇入口按钮 | `components/PaperIndex.vue` + `.vitepress/theme/custom.css`，然后 build |

@@ -1217,6 +1217,139 @@ alpha = 亮度(原像素)        # 白 X → 255，黑底 → 0
 实测 X 为 57 号砖、砖底 `rgb(153,153,153)`（灰）、logo 正常加载、href 指向 `https://x.com`。
 亮色 + 深夜两态目检通过。
 
+### A24. 顶栏取消「论文总览」栏，改为学习笔记索引页的首张导览卡（2026-10-24 用户定案）
+
+用户原话：「取消『论文总览』这一个，把这篇文档加入到学习笔记中，给它生成一个封面，点击就可以进入页面，就够了」。
+
+`/papers` 页**没有删**（正文仍是 `papers.md` → `content/` 文稿那套），降级的是它的**入口形态**：
+
+| 位置 | 改前 | 改后 |
+|---|---|---|
+| 顶栏 nav | `论文总览 → /papers` 独立一栏 | 无此栏（`config.mts` 注释指本条） |
+| `/notes` 索引页 | 32 张论文卡 | 首卡换成「论文总览」导览卡（`.dr-card.is-index`），点封面进 `/papers.html` |
+| 首页报头 | 「看论文总览」→ `/papers.html` | 「看学习笔记」→ `/notes.html` |
+
+导览卡走 `components/PaperIndex.vue` 里一段 `v-if="mode === 'note'"` 的模板，**不进 `list`**，
+所以不受排序影响、也不参与 `{{ papers.length }}` 计数。封面 `public/covers/00_论文总览.png`
+（1200×750，沿用 `design/20261020_MotionFace风格/covers3` 的 A 风格：近黑底 + 引号 + 衬线金句 +
+柠檬绿短横线），生成脚本留在 `design/20261024_笔记总览封面/gen.cjs`。
+
+样式只加了两行（`.dr-lib a.dr-card`），因为整卡是 `<a>`，要压掉 `.vp-doc a` 的下划线与主题蓝；
+尺寸全部复用 `.dr-card` 既有规则，跟 32 张论文卡排在一起看不出差别。
+
+自检口径跟着改了三处，都靠 `.is-index` 排除：
+`论文卡 32 张全带金句封面`（选择器加 `:not(.is-index)`）、
+`/notes 页 32 卡 × 一枚「学习笔记」按钮`（同上）、
+`/ 首页报头两枚入口`（期望值第二项改 `notes.html`）。
+另新增一条正向断言：`笔记索引首卡是「论文总览」导览卡，指向 /papers.html（带 base）`。
+实测 **81/81 全过**。
+
+> ⚠ 同日晚些又定案一次：`papers.md` 归档进 `notes/`，`.is-index` 那张写死的「导览卡」已删，
+> URL 从 `/papers.html` 变成 `/notes/papers.html`，该断言也随之改写 —— 见 **§A26**。
+
+### A25. 专题笔记也出封面，排在笔记索引页 32 张论文卡之后（2026-10-24 用户要求）
+
+用户原话：「位置编码那篇文章你也给我生成封面，就是以后额外的文章你都要生成一个封面，放在学习笔记下面」。
+
+要的不是一张图，是**加文章不用改代码**的机制。分三层：
+
+**① 金句写在文章自己的 frontmatter 里**（`notes/<名>.md`），三个字段都自解释：
+
+| 字段 | 作用 | 不写时 |
+|---|---|---|
+| `cover` | 封面金句，用 ` / ` 手动断行 | 退回用 `title`（去掉「· 专题笔记」尾巴）|
+| `coverKicker` | 封面顶部小字 | `Topic · <文件名>` |
+| `coverYear` | 封面底部年份 | 只显示「鲸读 · 专题」|
+
+**② `scripts/gen-topic-covers.mjs`（`npm run covers`）扫目录出图。**
+认法与 `gen-notes.mjs` 一致：`notes/` 下**不带 `NN_` 前缀**的 md 就是专题。
+输出 `public/covers/T_<名>.png`，1200×750，A/B/C **按显示顺序**（order 排序后）轮换，与 32 篇封面同一套模板、
+同一套 `fitSize` 字号算法。文件写盘前先比字节：内容没变就丢掉临时文件，git 保持干净；`--force` 强制重写。
+
+> ⚠ 早期版本做的是「md 比 png 新才重出」的增量。这个思路跟「配色按顺序轮换」是冲突的：
+> 2026-10-24 加第三篇（解读资源）时，新文章插进列表前部把后面的下标顶了一格，
+> 而增量不重出旧图，页面上就出现「两张同色、一张错位」。现在改成每次全量渲染（多花两三秒），
+> 配色永远跟列表对齐。
+
+**③ `components/PaperIndex.vue` 在 `mode === 'note'` 时自动渲染专题组。**
+数据来自已有的 `import.meta.glob('../notes/*.md', ?raw)`——同一个 glob 既判「写没写」，也解析专题的
+`title`，所以**不需要任何 json 中转**。组头 `.dr-group-hd` 用 `grid-column: 1/-1` 跨满整排，
+上方一条细线跟 32 篇论文分开（两类内容本来就不是一回事）。
+
+顺带解决的：`notes.md` 底部原来手写的那条「专题笔记 → 位置编码」文字链接已删，
+入口统一成卡片（否则同一个东西两个入口）。
+
+⚠ 三类卡片共用 `.dr-card`，数卡片时要分清，自检已统一用类名而不是 `:not()` 堆叠：
+
+| 类名 | 是什么 | 谁在用 |
+|---|---|---|
+| `.is-paper` | 32 篇论文卡 | `论文卡 32 张全带金句封面`、`/notes 页 32 卡` 两条断言 |
+| `.is-index` | 笔记索引首卡的「论文总览」导览卡 | §A24 |
+| `.is-topic` | 专题笔记卡 | `专题笔记 N 张卡`、`专题卡封面可加载` 两条断言 |
+
+（`.is-index` 那张「论文总览导览卡」是 §A24 的过渡形态，§A26 已删；专题组现在是
+「论文总览 + 专题文章」，见 §A26 / §A27。）
+
+自检断言新增 3 条（实测 **84/84**）：`专题笔记 N 张卡（不带编号前缀的 md 全部上墙）`、
+`专题卡指向 /notes/<名>.html（带 base）`、`专题卡封面图可加载（HTTP 200）`。
+期望篇数从 `notes/` 目录现算，加文章不用改断言。
+
+端到端实测过：新建一篇 md + 写 `cover` → `npm run covers` 出图 → build 后笔记页第 2 张专题卡带上封面。
+
+### A26. 论文总览归档进 notes/，索引页不再有「导览卡」特例（2026-10-24 用户定案）
+
+用户原话：「papers.md 这个文章既然已经放在学习笔记下面了，是不是它也应该放在合适的位置啊…
+就是和学习笔记的那些文件放在一起方便以后的渲染」。
+
+对。§A24 那次只是把**入口**挪进笔记页，文件本身还留在仓根、前端还留着一张写死的 `.is-index` 卡
+（标题拼 `papers.length`、封面路径写死 `00_论文总览.png`）。文件一挪，这张特例就没必要存在了。
+
+**改动清单**
+
+| 位置 | 改前 | 改后 |
+|---|---|---|
+| 产物路径 | `papers.md`（仓根）| `notes/papers.md` |
+| URL | `/papers.html` | `/notes/papers.html` |
+| 生成器 | `refresh-papers.mjs` 写到仓根 | 写到 `notes/`，HEAD 里多带 `order` / `cover` / `coverKicker` / `coverYear` |
+| 前端 | `PaperIndex.vue` 里一段 `v-if="mode === 'note'"` 的 `.is-index` 卡 | 删掉；它跟专题笔记一样由 `TOPICS` 渲染 |
+| 封面 | `00_论文总览.png`（手工单出一张）| `T_papers.png`（`npm run covers` 按 frontmatter 出） |
+| 笔记页分组 | 「专题笔记」 | 「专题与索引」（论文总览 + 专题文章）|
+
+**为什么这不违反 A25 定的「专题」语义**：它确实是专题组里唯一的脚本产物。
+`notes/papers.md` 的第一行 frontmatter 之后就是一句话提醒——改内容请改 `content/DeepSeek_论文列表.md`，
+不要手改这个文件（下次 `npm run papers` 会覆盖）。README 的「改哪里」表也是这么写的。
+
+**新增 frontmatter 字段 `order`**（组内排序权重，越小越前，缺省 500）：
+`notes/papers.md` 写 `order: 1`，所以它固定排在专题组第一张。这样不用在组件里特判文件名。
+
+**三类卡变两类**：`.is-paper`（32 篇论文）与 `.is-topic`（专题与索引组），`.is-index` 已废弃。
+`.dr-lib a.dr-card` 那两行 CSS 仍需要——整卡是 `<a>`，要压掉 `.vp-doc a` 的下划线与主题蓝。
+
+**自检跟着改**：`/papers.html` 全部换成 `/notes/papers.html`（页面断言、黑话扫描清单两处），
+`专题笔记 N 张卡` 改名 `专题与索引组 N 张卡`，新增 `专题组有组头`、`专题组首卡是论文总览（order: 1）`、
+`专题卡 N 张全带封面` 三条。实测 **verify 13/13 · check_portal 86/86**。
+
+顺带修的两处：① `npm run covers` 的风格序号改成按「在专题列表里的位置」取，
+否则补一篇新文章会把老封面的配色顶掉；② B 风格右下角的大水印号对专题传空——
+专题文章没有论文编号，印个 `02` 会跟 32 篇那边的编号撞语义。
+
+### A27. `opencode_*.md` 那份解读资源也归档进 notes/（2026-10-24 用户定案）
+
+用户原话：「这个也放学习笔记里面吧」。指的是仓根的
+`opencode_glm-5.3-flash_DeepSeek_LLM_2401.02954_解读资源_V1.md`——它原先被 `.gitignore` 挡着
+（注释写着「内容已分发进 notes/，工作过程文件」），所以线上一直 404，但本地 `npm run build` 会把它编进 `dist/`。
+
+现在它成为 `notes/DeepSeek-LLM-解读资源.md`（`order: 30`，排在论文总览之后、位置编码之前）：
+
+- **内容基本照搬**，只清掉三处作者向表述：「整理者：opencode（GLM）」「本仓 `papers.md` 的第 01 篇」
+  「后续如需增补解读，另存为 `_V2` 递增版本，不覆盖本文件」。末尾改成一句读者向的指路：去 01 笔记看正文精读。
+- **`.gitignore` 那两行删了**。改名后本来就不再匹配那条规则，但留着一句指向不存在文件的注释只会误导。
+- 它与 `notes/01_DeepSeek-LLM.md` 末尾的「全网解读资源」小节**有重叠**（01 那份更全但少几条）：
+  保留两份是有意的——一份进正文当参考，一份独立成页当完整清单，第 0 节的标题注记与第 6 节的阅读路径只在这里有。
+
+**为什么不把它并进 01 笔记**：并进去会得到一份超长笔记，而它的价值恰恰是「当目录用」——
+读者在索引页看到「一篇论文，28 份外部解读」，点进去按图索骥。
+
 ---
 
 ## B. 页面与样式定案
@@ -1657,18 +1790,22 @@ README 只留一张简表，完整目录树、脚本清单与命令全集在这�
 components/                  # PaperIndex.vue（索引 + 每篇入口）· HomeIntro.vue（首页介绍卡）
 content/DeepSeek_论文列表.md  # ★ 论文总览的文稿母本（文稿即源码）
 notes/<编号>_<短名>.md        # ★ 学习笔记，一篇一份，用户手写、脚本只补缺
+notes/papers.md              # 论文总览的产物（refresh-papers.mjs 从上面那份文稿生成，勿手改，§A26）
+notes/<其它名>.md            # 专题文章（不带 NN_ 前缀），封面由 npm run covers 按 frontmatter 出（§A25）
 data/papers.json master.json  # 清单与统计，由 gen-data.py 从仓内词汇页现推（勿手改）
 public/study/{vocab,listen,master}/  # 67 张同步进来的成品页
+public/covers/               # 32 篇论文封面（covers3 出）+ T_<名>.png 专题封面（npm run covers 出）
 public/.nojekyll              # 关 Jekyll 处理（否则下划线开头资产会被剔）
 .sync-manifest.json          # 源页 sha1 指纹（sync 产出，跟仓一起提交）
 .githooks/pre-push  .github/workflows/deploy.yml   # 上线两半门禁（§D4）
-index.md vocab.md listen.md papers.md notes.md     # 五张站内页（papers.md 由 content/ 渲染）
+index.md vocab.md listen.md notes.md  # 四张站内页（论文总览已归档进 notes/papers.md，§A26）
 README.md  DECISIONS.md                             # 两份仓内文档，都在 srcExclude 里
 scripts/
   sync-pages.mjs             # 复制 + 修返回链接 + 写指纹 + 校验（失效退出码 1）
   gen-data.py                # 仓内词汇页 → papers.json + master.json（缺页/越档/解析失败先报错、继不写盘）
   gen-notes.mjs              # papers.json → notes/ 补缺空白笔记（只补缺，带 main guard，§C9）
-  refresh-papers.mjs         # content/ 文稿 → papers.md（--check 只比对不写）
+  refresh-papers.mjs         # content/ 文稿 → notes/papers.md（--check 只比对不写）
+  gen-topic-covers.mjs       # 专题笔记封面：notes/ 里不带 NN_ 的 md → public/covers/T_<名>.png（npm run covers）
   add-numbers.py             # papers.json → 回写仓内文稿的「编号」列与图例
   gen-theme-css.mjs          # theme-defs.mjs → theme.generated.css（兼校 12 变量齐全 + 每套对比度 ≥ 4.5:1）
   verify_content.mjs         # 14 项内容守卫（零依赖，CI 也跑）
@@ -1682,8 +1819,9 @@ scripts/
 
 | 要动什么 | 文件 | 接着跑 |
 |---|---|---|
-| 论文总览页正文/表格/图例 | `content/DeepSeek_论文列表.md`（不是 `papers.md`！）| `npm run papers` → build |
+| 论文总览页正文/表格/图例 | `content/DeepSeek_论文列表.md`（不是 `notes/papers.md`！）| `npm run papers` → build |
 | 学习笔记正文 | `notes/<编号>_<短名>.md` | `npm run build`（无需重生数据，§A3）|
+| 新增专题文章（带封面）| `notes/<名>.md` + frontmatter 的 `cover`（可选 `order` / `coverKicker` / `coverYear`）| `npm run covers` → build（§A25）|
 | 笔记页页头 | `theme/NoteHeader.vue` + `custom.css` 的 `.dr-note-*` | build |
 | 首页报头 + 艺术卡轮播（§B6）| `components/HomeIntro.vue` + `theme/custom.css` 的 `.dr-hero*` | build |
 | 顶栏「找论文」搜索弹窗（§B6）| `components/PaperSearch.vue` + `theme/custom.css` 的 `.search-modal` / `.sm-*` | build |

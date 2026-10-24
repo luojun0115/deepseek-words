@@ -97,7 +97,7 @@ ok(`组件引用的 ${want.length} 张总集页都在`,
 //     （data/master.json 是数据文件不在此列；只查 .html 后缀的引用）。
 //     例外：check_portal.cjs 里那句 page.goto('/master.html') 是反向探针——它断言的正是 404。
 const ghost = []
-for (const f of ['.vitepress/config.mts', 'index.md', 'vocab.md', 'listen.md', 'papers.md', 'notes.md',
+for (const f of ['.vitepress/config.mts', 'index.md', 'vocab.md', 'listen.md', 'notes/papers.md', 'notes.md',
                  'components/PaperIndex.vue', 'components/HomeIntro.vue', '.vitepress/theme/custom.css',
                  'scripts/sync-pages.mjs', 'scripts/check_portal.cjs', 'scripts/shot_nav.cjs',
                  'scripts/gen-notes.mjs']) {
@@ -185,7 +185,7 @@ const run = (cmd, args) => {
 }
 for (const [name, cmd, args] of [
   ['papers.json / master.json 与仓内词汇页重推一致', 'python3', ['scripts/gen-data.py', '--check']],
-  ['papers.md 与仓内文稿母本一致（改了文稿没漏渲染）', process.execPath, ['scripts/refresh-papers.mjs', '--check']],
+  ['notes/papers.md 与仓内文稿母本一致（改了文稿没漏渲染）', process.execPath, ['scripts/refresh-papers.mjs', '--check']],
   // 2026-10-09 新增「学习笔记」栏目：notes/ 下的 md 必须和 papers.json 的 dir 一一对应
   ['notes/ 与 papers.json 篇目一一对应（不欠不多）', process.execPath, ['scripts/gen-notes.mjs', '--check']],
 ]) {

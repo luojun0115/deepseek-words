@@ -1,6 +1,10 @@
 ---
 pageClass: wide papers
 title: 论文总览
+order: 1
+cover: "32 篇技术报告， / 两年九个月，五条主线。"
+coverKicker: "Index · Papers"
+coverYear: "2024 — 2026"
 ---
 
 # 📚 DeepSeek 论文总览
@@ -15,7 +19,7 @@ DeepSeek 全系列论文的时间线、分主线清单与解读资源汇总。�
 
 | 编号 | 时间 | 论文名称（全称，点击直达 arXiv） | 主线 |
 |---|---|---|---|
-| 01 | 2024-01-05 | [DeepSeek LLM: Scaling Open Foundation Models with Advancing Hardware](https://arxiv.org/abs/2401.02954) | 🅻 |
+| 01 | 2024-01-05 | [DeepSeek LLM: Scaling Open-Source Language Models with Longtermism](https://arxiv.org/abs/2401.02954) | 🅻 |
 | 02 | 2024-01-11 | [DeepSeekMoE: Towards Ultimate Expert Specialization in Mixture-of-Experts Language Models](https://arxiv.org/abs/2401.06066) | 🅻 |
 | 03 | 2024-01-25 | [DeepSeek-Coder: When the Large Language Model Meets Programming — The Rise of Code Intelligence](https://arxiv.org/abs/2401.14196)（模型 2023-11 已发布） | 🅲 |
 | 04 | 2024-02-05 | [DeepSeekMath: Pushing the Limits of Mathematical Reasoning in Open Language Models](https://arxiv.org/abs/2402.03300) | 🅼 |

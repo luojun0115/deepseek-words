@@ -46,18 +46,21 @@ const ok = (name, cond, extra = '') => {
   ok('1440 视口下一排 4 卡', cols === 4, '实得 ' + cols + ' 列')
 
   // 1b-2) 论文卡金句封面（2026-10-23 同步 MotionFace 原型：covers3 海报随 public/covers 进仓）
-  const covs = await page.$$eval('.dr-lib .dr-card-media', els => els.map(e => e.style.backgroundImage || ''))
+  //       笔记索引页还有两类非论文卡：最前面的「论文总览」导览卡（.is-index）
+  //       与末尾的专题笔记卡（.is-topic）。论 文卡统一带 .is-paper，数封面只认它
+  const covs = await page.$$eval('.dr-lib .dr-card.is-paper .dr-card-media', els => els.map(e => e.style.backgroundImage || ''))
   ok('论文卡 32 张全带金句封面', covs.length === NP && covs.every(s => s.includes('/covers/')), '实得 ' + covs.length + ' 张')
   const covURL = ((covs[0] || '').match(/url\("?([^")]+)"?\)/) || [])[1]
   const covCode = covURL ? await page.evaluate(u => fetch(u).then(r => r.status).catch(() => 0), covURL) : 0
   ok('封面图可加载（首张 HTTP 200）', covCode === 200, (covURL || '?') + ' → ' + covCode)
 
   // 1c) 首页报头（components/HomeIntro.vue，2026-10-23 改版：原 .dr-intro 学法卡换成报纸头版）
-  //     两枚入口分指「背词」与「论文总览」
+  //     两枚入口分指「背词」与「学习笔记」（2026-10-24 用户取消「论文总览」栏后，
+  //     第二枚从 papers.html 改指 notes.html，论文总览降级为笔记索引最前面的封面卡）
   const ways = await page.$$eval('.dr-hero .dp-links a', els => els.map(e => e.getAttribute('href')))
   // cleanUrls 已关（Pages 不做重写），入口必须是带 base 的 .html；根绝对路径在子路径下会跑到用户站
   ok('/ 首页报头两枚入口（带 base 的 .html）',
-     ways.join(',') === [BPATH + 'vocab.html', BPATH + 'papers.html'].join(','), ways.join(',') || '未找到')
+     ways.join(',') === [BPATH + 'vocab.html', BPATH + 'notes.html'].join(','), ways.join(',') || '未找到')
 
   // 1d) 栏目名（2026-10-08 用户定案：「词汇网页」→「词汇学习」，「单词听力」→「词汇朗读」）
   //     只改文案不改 URL/文件名，所以旧页面文件名里的「单词听力」不在检查范围内。
@@ -253,9 +256,9 @@ const ok = (name, cond, extra = '') => {
     await lp.close()
   }
 
-  // 7b) /papers 论文总览页
-  await page.goto(BASE + '/papers.html', { waitUntil: 'networkidle' })
-  ok('/papers 页标题正确', (await page.locator('h1').first().textContent()).includes('论文总览'))
+  // 7b) 论文总览页（2026-10-24 从仓根 /papers.html 挪进 notes/papers.md，URL 变 /notes/papers.html）
+  await page.goto(BASE + '/notes/papers.html', { waitUntil: 'networkidle' })
+  ok('论文总览页标题正确', (await page.locator('h1').first().textContent()).includes('论文总览'))
   const tables = await page.locator('.vp-doc table').count()
   ok('/papers 页表格渲染', tables >= 8, '实得 ' + tables + ' 张')
   // 链接名称不带下划线（2026-10-08 用户要求），悬停时才显
@@ -315,12 +318,39 @@ const ok = (name, cond, extra = '') => {
   await page.screenshot({ path: SHOT + '/13_听力总集.png' })
 
   // 7d) /notes 学习笔记索引（2026-10-09 新增栏目）：卡片、按钮、未写标记、空白页轻提示
+  //     2026-10-24：页面里除了 32 张论文卡（.is-paper），末尾还有「专题与索引」组（.is-topic）——
+  //     论文总览 notes/papers.md 与各篇专题笔记都在这一组。论文卡口径用 .is-paper，
+  //     「一篇论文一张卡一枚笔记按钮」
   await page.goto(BASE + '/notes.html', { waitUntil: 'networkidle' })
   const PP = require('../data/papers.json')
+  const PAPER_CARD = '.dr-lib .dr-card.is-paper'
   ok(`/notes 页 ${NP} 卡 × 一枚「学习笔记」按钮`,
-    (await page.locator('.dr-lib .dr-card').count()) === NP && (await page.locator('.dr-lib .dr-go.n').count()) === NP,
-    `card=${await page.locator('.dr-lib .dr-card').count()} n=${await page.locator('.dr-lib .dr-go.n').count()}`)
-  const nbHref = await page.locator('.dr-lib .dr-card').first().locator('.dr-go.n').getAttribute('href')
+    (await page.locator(PAPER_CARD).count()) === NP && (await page.locator(PAPER_CARD + ' .dr-go.n').count()) === NP,
+    `card=${await page.locator(PAPER_CARD).count()} n=${await page.locator(PAPER_CARD + ' .dr-go.n').count()}`)
+  // 专题与索引组：不带 NN_ 编号前缀的 md 全在这里，封面是 T_<名>.png
+  // 论文总览 order: 1，固定排组内第一（它不是「专题」，是 32 篇的索引）
+  const topics = require('fs').readdirSync(require('path').resolve(__dirname, '../notes'))
+    .filter((f) => f.endsWith('.md') && !/^\d\d_/.test(f))
+  const topicCards = page.locator('.dr-lib .dr-card.is-topic')
+  ok(`专题与索引组 ${topics.length} 张卡（不带编号前缀的 md 全部上墙）`,
+    (await topicCards.count()) === topics.length, '实得 ' + (await topicCards.count()) + ' 张')
+  ok('专题组有组头（跟 32 篇论文卡分开）', (await page.locator('.dr-lib .dr-group-hd').count()) === 1)
+  if (topics.length) {
+    const leadHref = await topicCards.first().getAttribute('href')
+    ok('专题组首卡是「论文总览」notes/papers.html（order: 1，带 base）',
+      leadHref === BPATH + 'notes/papers.html', leadHref || '未找到')
+    const tHref = await topicCards.first().getAttribute('href')
+    ok('专题卡指向 /notes/<名>.html（带 base）',
+      /\/notes\/.+\.html$/.test(tHref || '') && (tHref || '').startsWith(BPATH), tHref || '未找到')
+    // 组内每一张的封面都要能加载（前面 32 篇论文卡另有一条「全带封面」的断言）
+    const tCovs = await topicCards.locator('.dr-card-media').evaluateAll((els) => els.map((e) => e.style.backgroundImage))
+    ok(`专题卡 ${topics.length} 张全带封面`, tCovs.length === topics.length && tCovs.every((s) => s.includes('/covers/T_')),
+      '实得 ' + tCovs.length + ' 张')
+    const tCode = await page.evaluate((u) => fetch(u).then((r) => r.status).catch(() => 0),
+      (tCovs[0].match(/url\("?([^")]+)"?\)/) || [])[1])
+    ok('专题卡封面图可加载（HTTP 200）', tCode === 200, tCode + '')
+  }
+  const nbHref = await page.locator(PAPER_CARD).first().locator('.dr-go.n').getAttribute('href')
   ok('笔记按钮指向 /notes/<编号>_<短名>.html（带 base）',
     nbHref === BPATH + 'notes/' + PP[0].dir + '.html', nbHref)
   const nbCount = await page.locator('.dr-lib .dr-nb').count()
@@ -402,7 +432,7 @@ const ok = (name, cond, extra = '') => {
   // 2026-10-09 追加：静态笔记页（不在 /study/ 下的站内页）也拉进来扫同一张黑名单
   const BANNED = ['十一档', '全量重做', '全量口径', '双视图', 'TTS', '工作区',
     '本次补录', '漏收', 'sitemap', '剔除记录', '归属更正', '此前记录有误', '档位筛选']
-  const PAGES = ['/', '/vocab.html', '/listen.html', '/papers.html', '/notes.html', '/sites.html',
+  const PAGES = ['/', '/vocab.html', '/listen.html', '/notes/papers.html', '/notes.html', '/sites.html',
     '/notes/' + PP[0].dir + '.html']
   for (const p of PAGES) {
     await page.goto(BASE + p, { waitUntil: 'networkidle' })

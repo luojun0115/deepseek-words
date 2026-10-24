@@ -117,6 +117,20 @@
   font-style: normal; font-size: 10.5px; font-weight: 600; margin-left: 5px;
   padding: 1px 5px; border-radius: 999px; border: 1px solid currentColor; opacity: .72;
 }
+/* 整卡可点的卡片（2026-10-24）：学习笔记索引页末尾「专题与索引」组里的卡（论文总览 +
+   各篇专题笔记）整张都是 <a>，所以要压掉 .vp-doc a 的下划线与主题蓝；
+   尺寸全部走上面 .dr-card 的同一套规则，跟 32 篇论文卡排在一起看不出差别 */
+.dr-lib a.dr-card, .dr-lib a.dr-card:hover { color: inherit; text-decoration: none; }
+.dr-lib a.dr-card .dr-go { display: block; width: 100%; }
+
+/* 专题笔记组头（2026-10-24）：32 篇论文卡跑完后，用一条细线隔开另一类内容。
+   grid-column: 1/-1 让它跨满整排，不被切成一张卡 */
+.dr-lib .dr-group-hd {
+  grid-column: 1 / -1; display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+  margin-top: 10px; padding-top: 22px; border-top: 1px solid var(--dr-line);
+}
+.dr-lib .dr-group-hd b { font-size: 15px; font-weight: 700; color: var(--dr-ink); }
+.dr-lib .dr-group-hd span { font-size: 12.5px; color: var(--dr-ink2); }
 
 /* 总集入口横幅（词汇页=总览全局 / 听力页=全部朗读），位于标题下方、工具条上方 */
 .dr-lib .dr-master { display: flex; align-items: stretch; gap: 10px; margin-bottom: 16px; }
@@ -289,6 +303,38 @@
 }
 .dr-hero-deck .deck-meta .cnt b { font-size: 11px; color: var(--dr-ink); }
 
+/* ---- 轮播导航：左右箭头 + 年代刻度尺（22 张以上必需）---- */
+.dr-hero-deck:focus-visible { outline: 2px solid var(--dr-ink); outline-offset: 4px; border-radius: 4px; }
+.dr-hero-deck .deck-arrow {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  z-index: 6; width: 32px; height: 32px; padding: 0;
+  border: 1px solid rgb(255 255 255 / 58%); border-radius: 50%;
+  background: rgb(0 0 0 / 46%); color: #fff;
+  box-shadow: 0 1px 7px rgb(0 0 0 / 28%);
+  font-size: 21px; line-height: 1; cursor: pointer;
+  display: grid; place-items: center;
+  opacity: .88; transition: opacity .2s, background .2s;
+}
+.dr-hero-deck .deck-arrow.prev { left: 9px; }
+.dr-hero-deck .deck-arrow.next { right: 9px; }
+.dr-hero-deck .deck-arrow:hover { opacity: 1; background: rgb(0 0 0 / 62%); }
+.dr-hero-deck .deck-arrow:focus-visible { outline: 2px solid #fff; outline-offset: 2px; opacity: 1; }
+
+/* 年代刻度尺：一张卡一个刻度，hover 出名字，点一下直接跳 */
+.dr-hero-deck .deck-ticks { display: flex; gap: 2px; margin-top: 9px; }
+.dr-hero-deck .tick {
+  flex: 1; height: 15px; padding: 0; border: 0; background: none;
+  cursor: pointer; position: relative;
+}
+.dr-hero-deck .tick::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px;
+  border-radius: 2px; background: var(--dr-line);
+  transition: background .2s, height .2s;
+}
+.dr-hero-deck .tick:hover::after { background: var(--dr-ink2); }
+.dr-hero-deck .tick.on::after { background: var(--dr-ink); height: 3px; }
+.dr-hero-deck .tick:focus-visible { outline: 1px solid var(--dr-ink); outline-offset: 1px; }
+
 /* 卡片底座（十种流派共用） */
 .dr-hero-deck .art-card { background: var(--dr-bg2); }
 .dr-hero-deck .art-card .t { position: relative; z-index: 3; text-align: center; }
@@ -306,8 +352,7 @@
 }
 .dr-hero-deck .fv .t {
   font-family: Georgia, "Songti SC", serif; font-size: 40px; font-weight: 700;
-  color: #17211f; line-height: 1.12; letter-spacing: -.01em;
-}
+  color: #17211f; line-height: 1.12; letter-spacing: -.01em;}
 .dr-hero-deck .fv .grain {
   position: absolute; inset: 0; opacity: .5;
   background-image:
@@ -319,7 +364,7 @@
 .dr-hero-deck .cs { background: #efeade; }
 .dr-hero-deck .cs .band {
   position: absolute; left: -40px; right: -40px; top: 50%;
-  background: #c8362a; padding: 20px 44px;
+  background: #c8362a; padding: 22px 40px;
   transform: translateY(-50%) rotate(-11deg);
 }
 .dr-hero-deck .cs .dot {
@@ -333,39 +378,50 @@
 }
 .dr-hero-deck .cs .t {
   position: relative; z-index: 4;
-  color: #f5efe3; font-size: 30px; font-weight: 900; text-align: left;
-  text-transform: uppercase; letter-spacing: -.01em; line-height: 1.1;
+  font-family: Futura, "Avenir Next", sans-serif;
+  color: #f7f2e6; font-size: 36px; font-weight: 700; text-align: left;
+  text-transform: uppercase; letter-spacing: -.3px; line-height: 1;
+  /* 一行横排、跟着斜带斜着走；宽度正好 520px，两端顶满红带在卡内的可见区 */
+  width: 520px; white-space: nowrap;
 }
 
 /* ③ 包豪斯 */
 .dr-hero-deck .bh { background: #f4f1e8; }
 .dr-hero-deck .bh .c1 { position: absolute; left: 44px; top: 40px; width: 54px; height: 54px; background: #d8341f; border-radius: 50%; }
-.dr-hero-deck .bh .sq { position: absolute; right: 44px; bottom: 40px; width: 52px; height: 52px; background: #1f4fa8; }
+.dr-hero-deck .bh .sq {
+  position: absolute; right: 44px; top: 50%;
+  width: 52px; height: 52px; background: #1f4fa8;
+  transform: translateY(-50%);
+}
 .dr-hero-deck .bh .tr {
   position: absolute; left: 44px; bottom: 36px; width: 0; height: 0;
   border-left: 30px solid transparent; border-right: 30px solid transparent;
   border-bottom: 50px solid #e8b21c;
 }
 .dr-hero-deck .bh .t {
-  font-size: 38px; font-weight: 700; color: #141414; line-height: 1.12; letter-spacing: -.02em;
-}
+  font-family: Futura, "Avenir Next", sans-serif;
+  font-size: 35px; font-weight: 500; color: #141414; line-height: 1.14; letter-spacing: -.005em;}
 
 /* ④ 风格派 */
+/* 网格线 5px → 2px：De Stijl 原本就是细铅笔线，5px 太粗，压不住大字 */
 .dr-hero-deck .ds {
   background-color: #f7f4ea;
   background-image:
-    repeating-linear-gradient(to right, #141414 0 5px, transparent 5px 86.66px),
-    repeating-linear-gradient(to bottom, #141414 0 5px, transparent 5px 70px);
+    repeating-linear-gradient(to right, #141414 0 2px, transparent 2px 86.66px),
+    repeating-linear-gradient(to bottom, #141414 0 2px, transparent 2px 70px);
 }
 .dr-hero-deck .ds .r { position: absolute; right: 0; top: 0; width: 86px; height: 70px; background: #d8341f; }
 .dr-hero-deck .ds .y { position: absolute; left: 0; bottom: 0; width: 86px; height: 70px; background: #e8b21c; }
 .dr-hero-deck .ds .b { position: absolute; right: 0; bottom: 0; width: 86px; height: 70px; background: #1f4fa8; }
+/* 大字直接压在网格上；字周一圈纸白晕把网格线从字底下推开，像蒙德里安画布上的字 */
 .dr-hero-deck .ds .t {
-  width: 346.6px; height: 140px; display: grid; place-items: center; text-align: center;
-  background: #f7f4ea;
-  font-size: 24px; font-weight: 700; color: #141414; line-height: 1.2; letter-spacing: -.02em;
-  box-shadow: 0 0 0 5px #141414;
-}
+  font-family: Futura, "Avenir Next", sans-serif;
+  font-size: 40px; font-weight: 500; color: #141414; line-height: 1.16; letter-spacing: .005em;
+  white-space: nowrap;
+  background: transparent; box-shadow: none;
+  text-shadow:
+    0 0 8px #f7f4ea, 0 0 8px #f7f4ea, 0 0 8px #f7f4ea,
+    0 0 3px #f7f4ea, 0 0 3px #f7f4ea;}
 
 /* ⑤ 波普 */
 .dr-hero-deck .pp { background: #ffd93d; }
@@ -378,8 +434,7 @@
   font-size: 39px; font-weight: 900; color: #fff; line-height: 1.3;
   text-transform: uppercase; letter-spacing: .01em;
   -webkit-text-stroke: 2.4px #141414;
-  text-shadow: 6px 6px 0 #e63946;
-}
+  text-shadow: 6px 6px 0 #e63946;}
 
 /* ⑥ 欧普 */
 .dr-hero-deck .op {
@@ -390,11 +445,12 @@
   background: repeating-radial-gradient(circle at 38% 66%, #111 0 6px, transparent 6px 13px);
 }
 .dr-hero-deck .op .t {
-  background: #fff; color: #111; padding: 12px 20px;
-  font-size: 26px; font-weight: 800; line-height: 1.22;
-  text-transform: uppercase; letter-spacing: .02em;
-  box-shadow: 0 0 0 6px #111;
-}
+  /* 黑白同心圆上改成黑底白字 + 白描边：块边界不糊，对比最强 */
+  background: #111; color: #fff; padding: 16px 26px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 34px; font-weight: 900; line-height: 1.18;
+  text-transform: uppercase; letter-spacing: .03em;
+  box-shadow: 0 0 0 3px #fff;}
 
 /* ⑦ 孟菲斯 */
 .dr-hero-deck .mm { background: #f7f0e4; }
@@ -418,8 +474,9 @@
   background: #141414; transform: rotate(-8deg);
 }
 .dr-hero-deck .mm .t {
-  font-size: 42px; font-weight: 800; color: #141414; line-height: 1.12;
-  letter-spacing: -.03em; transform: rotate(-3deg);
+  font-family: Futura, "Avenir Next", sans-serif;
+  font-size: 42px; font-weight: 700; color: #141414; line-height: 1.12;
+  letter-spacing: .005em; transform: rotate(-3deg);
 }
 
 /* ⑧ 装饰艺术 */
@@ -435,9 +492,9 @@
   box-shadow: inset 0 0 0 4px #10241f, inset 0 0 0 5px rgb(216 180 90 / 32%);
 }
 .dr-hero-deck .ad .t {
-  font-family: Georgia, "Songti SC", serif; color: #d8b45a;
-  font-size: 27px; letter-spacing: .17em; text-transform: uppercase; line-height: 1.65;
-}
+  /* Didot 的高对比细衬线才是正经 Art Deco，Georgia 太"报纸" */
+  font-family: Didot, "Bodoni 72", Georgia, serif; color: #d8b45a;
+  font-size: 46px; letter-spacing: .14em; text-transform: uppercase; line-height: 1.5;}
 
 /* ⑨ 水墨 */
 .dr-hero-deck .ink {
@@ -446,7 +503,7 @@
 }
 .dr-hero-deck .ink::before {
   content: ""; position: absolute; right: -44px; top: -52px;
-  width: 254px; height: 196px; background: #16160f;
+  width: 196px; height: 152px; background: #16160f;
   border-radius: 58% 42% 46% 54% / 52% 58% 42% 48%;
   filter: blur(2px); opacity: .94; transform: rotate(-11deg);
   box-shadow: 0 0 30px 14px rgb(22 22 15 / 16%);
@@ -459,9 +516,8 @@
   position: relative; z-index: 2;
   font-family: "Songti SC", "STSong", Georgia, serif;
   font-size: 33px; font-weight: 600; color: #14140f;
-  letter-spacing: .02em; line-height: 1.28; text-align: left;
-  padding-left: 44px; width: 100%;
-}
+  letter-spacing: .02em; line-height: 1.28; text-align: center;
+  padding-left: 0; width: 100%;}
 .dr-hero-deck .ink .seal {
   position: absolute; right: 42px; bottom: 38px; width: 38px; height: 38px;
   background: #b3321f; color: #fdf6ec; display: grid; place-items: center;
@@ -484,6 +540,1264 @@
   font-size: 25px; line-height: 1.32; color: #141414;
   background: #fdfbf5; padding: 12px 16px; transform: rotate(-2deg);
   box-shadow: 4px 4px 0 #141414; text-align: center;
+}
+
+/* ============ 大字报 / 宣传画四张（苏联构成 · 大跃进 · 手写大字报 · 剪纸宣传栏）============
+   字体说明：Hanzipen SC / Weibei SC / Xingkai SC 等中文字体**不含拉丁字形**，
+   英文必须单独配拉丁字体（Helvetica Neue / Bradley Hand），否则整行回退成手写体。 */
+
+/* ⑪ 苏联构成宣传海报 */
+.dr-hero-deck .soviet { background: #e7e0cd; }
+.dr-hero-deck .soviet .rays {
+  position: absolute; inset: 0;
+  background: repeating-conic-gradient(from 8deg at 88% 14%,
+    rgb(20 20 20 / 13%) 0deg 1.4deg, transparent 1.4deg 7deg);
+}
+.dr-hero-deck .soviet .disc {
+  position: absolute; right: -86px; top: -98px; width: 322px; height: 322px;
+  border-radius: 50%; background: #c8362a;
+}
+.dr-hero-deck .soviet .bar {
+  position: absolute; left: -60px; bottom: 10px; width: 470px; height: 15px;
+  background: #141414; transform: rotate(-12deg);
+}
+.dr-hero-deck .soviet .t {
+  position: relative; z-index: 3;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 52px; font-weight: 900; line-height: .9;
+  letter-spacing: -.04em; text-transform: uppercase; color: #141414;
+  transform: skewX(-11deg);
+  text-align: center; width: 100%; padding-left: 0;
+}
+
+/* ⑫ 大跃进宣传画 */
+.dr-hero-deck .dagu { background: #f7e8c3; }
+.dr-hero-deck .dagu .rays {
+  position: absolute; left: 50%; top: 17%; width: 1100px; height: 1100px;
+  transform: translate(-50%, -50%);
+  background: repeating-conic-gradient(from 0deg, #eebf45 0deg 6deg, transparent 6deg 19deg);
+}
+.dr-hero-deck .dagu .sun {
+  position: absolute; left: 50%; top: 17%; width: 104px; height: 104px;
+  margin: -52px 0 0 -52px; border-radius: 50%;
+  background: #d8341f; z-index: 2;
+}
+.dr-hero-deck .dagu .t { top: 50%;
+  position: absolute; left: 0; right: 0;
+  z-index: 3; margin: 0; align-self: auto;
+  font-family: "Songti SC", "STSong", SimSun, serif;
+  font-size: 42px; font-weight: 700; line-height: 1.1;
+  letter-spacing: .05em; color: #141414; text-align: center;
+  text-shadow: 3px 3px 0 #f7e8c3; transform: translateY(-50%);}
+.dr-hero-deck .dagu .sub {
+  position: absolute; left: 0; right: 0; bottom: 14px;
+  z-index: 3; margin: 0; align-self: auto;
+  font-family: "Songti SC", "STSong", SimSun, serif;
+  font-size: 17px; font-weight: 700; letter-spacing: .22em;
+  color: #d8341f; text-align: center;
+}
+
+/* ⑬ 手写大字报 */
+.dr-hero-deck .handbill { background: #fbf7ec; }
+.dr-hero-deck .handbill::before {
+  content: ""; position: absolute; inset: 9px;
+  border: 3px solid #c8362a; z-index: 2;
+}
+.dr-hero-deck .handbill .burst {
+  position: absolute; left: 50%; top: 26%; width: 1200px; height: 1200px;
+  transform: translate(-50%, -50%);
+  background: repeating-conic-gradient(from 0deg at 50% 50%,
+    rgb(20 20 20 / 9%) 0deg 1.2deg, transparent 1.2deg 14deg);
+}
+.dr-hero-deck .handbill .t { top: 50%;
+  position: absolute; left: 0; right: 0;
+  z-index: 3; margin: 0; align-self: auto;
+  font-family: "Xingkai SC", "Kaiti SC", "STKaiti", cursive;
+  font-size: 68px; font-weight: 700; line-height: 1.06;
+  letter-spacing: .1em; color: #141414;
+  /* letter-spacing 在最后一个字右侧也加一份，视觉中心会偏左半个字距 —— 补回来 */
+  text-indent: .05em;
+  transform: translateY(-50%) rotate(-1.4deg);
+}
+.dr-hero-deck .handbill .sub {
+  position: absolute; left: 0; right: 0; bottom: 36px;
+  z-index: 3; margin: 0; align-self: auto;
+  font-family: "Bradley Hand", "Marker Felt", cursive;
+  font-size: 18px; letter-spacing: .12em;
+  color: #c8362a; text-align: center;
+}
+
+/* ⑭ 剪纸宣传栏 */
+.dr-hero-deck .papercut { background: #c8362a; }
+.dr-hero-deck .papercut .scallop {
+  position: absolute; left: 0; right: 0; top: 0; height: 24px;
+  background: radial-gradient(circle at 12px 0, transparent 11px, #f5d34e 11.5px) 0 0 / 24px 24px repeat-x;
+}
+.dr-hero-deck .papercut .scallop.b { top: auto; bottom: 0; transform: rotate(180deg); }
+.dr-hero-deck .papercut .dots {
+  position: absolute; right: 34px; top: 42px; width: 104px; height: 104px;
+  background: radial-gradient(#f5d34e 4px, transparent 4.5px) 0 0 / 19px 19px;
+  border-radius: 50%;
+}
+/* 剪纸的正确表现是「贴在红纸上」——靠投影做浮起感，不是描边。
+   描边会把字芯吃掉、也会跟红底糊在一起；整卡只留 红 + 米白 + 黄装饰 三色。 */
+.dr-hero-deck .papercut .t { top: 50%;
+  position: absolute; left: 0; right: 0;
+  z-index: 3; margin: 0; align-self: auto;
+  font-family: "Hanzipen SC", "Weibei SC", "Heiti SC", sans-serif;
+  font-size: 62px; font-weight: 400; line-height: 1.06;
+  letter-spacing: .08em; color: #fdf6ec;
+  -webkit-text-stroke: none;
+  text-shadow: 4px 4px 0 rgb(20 20 20 / 42%); transform: translateY(-50%);}
+.dr-hero-deck .papercut .sub {
+  position: absolute; left: 0; right: 0; bottom: 34px;
+  z-index: 3; margin: 0; align-self: auto;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 18px; font-weight: 900; letter-spacing: .16em;
+  color: #fdf6ec; text-align: center;
+  -webkit-text-stroke: none;
+  text-shadow: 2px 2px 0 rgb(20 20 20 / 38%);
+}
+
+/* ============ 全谱系第一批（浮世绘 / 巴洛克 / 洛可可 / 印象派 / 点彩派 / 新艺术 / 立体主义 / 故障艺术）============ */
+
+/* 浮世绘（葛饰北斋 1830s）—— 神奈川冲浪里：深青海 + 白色卷爪浪 + 远处富士山 + 红日 */
+.dr-hero-deck .ukiyoe { background: #e9e3d2; }
+.dr-hero-deck .ukiyoe .sea {
+  position: absolute; left: -70px; right: -70px; bottom: -70px; height: 240px;
+  background: #2b4f7a;
+  border-radius: 44% 56% 0 0 / 62% 74% 0 0;
+}
+.dr-hero-deck .ukiyoe .wave {
+  position: absolute; right: 24px; bottom: 26px; width: 288px; height: 214px;
+  border: 19px solid #f7f3e8; border-radius: 50%;
+  border-right-color: transparent; border-bottom-color: transparent;
+  transform: rotate(34deg);
+}
+.dr-hero-deck .ukiyoe .wave2 {
+  position: absolute; right: 188px; bottom: 6px; width: 148px; height: 106px;
+  border: 13px solid #f7f3e8; border-radius: 50%;
+  border-right-color: transparent; border-bottom-color: transparent;
+  transform: rotate(34deg);
+}
+.dr-hero-deck .ukiyoe .mtn {
+  position: absolute; left: 128px; bottom: 116px; width: 0; height: 0;
+  border-left: 58px solid transparent; border-right: 58px solid transparent;
+  border-bottom: 70px solid #6b7f9c;
+}
+.dr-hero-deck .ukiyoe .sun {
+  position: absolute; right: 42px; top: 20px; width: 62px; height: 62px;
+  border-radius: 50%; background: #c0392b;
+}
+.dr-hero-deck .ukiyoe .t { width: max-content; top: 50%;
+  position: absolute; left: 50%; z-index: 3;
+  font-family: "Songti SC", "STSong", serif;
+  font-size: 29px; font-weight: 700; line-height: 1.16;
+  letter-spacing: .2em; color: #1d2b3d;
+  writing-mode: vertical-rl; transform: translate(-50%, -50%);}
+.dr-hero-deck .ukiyoe .seal {
+  position: absolute; left: 112px; top: 24px; width: 28px; height: 28px;
+  background: #c0392b; color: #f7f3e8; display: grid; place-items: center;
+  font: 700 10px/1.1 "Songti SC", serif; letter-spacing: 0;
+}
+
+/* 立体主义（毕加索 1910s）—— 碎裂多面体 + 斜体黑字 */
+.dr-hero-deck .cubism { background: #b6a48c; }
+.dr-hero-deck .cubism .f1 {
+  position: absolute; left: -20px; top: -20px; width: 300px; height: 210px;
+  background: #7d8b86; clip-path: polygon(0 22%, 62% 0, 100% 48%, 30% 100%);
+}
+.dr-hero-deck .cubism .f2 {
+  position: absolute; right: -30px; bottom: -24px; width: 300px; height: 200px;
+  background: #9c5b3c; clip-path: polygon(18% 0, 100% 26%, 74% 100%, 0 72%);
+}
+.dr-hero-deck .cubism .f3 {
+  position: absolute; right: 86px; top: 44px; width: 150px; height: 130px;
+  background: #d8cdb6; clip-path: polygon(0 14%, 78% 0, 100% 72%, 22% 100%);
+}
+.dr-hero-deck .cubism .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 40px; font-weight: 900; line-height: .92;
+  letter-spacing: -.03em; text-transform: uppercase; color: #22201c;
+  text-align: center;
+  transform: translateY(-50%) skewY(-6deg);
+}
+
+/* 印象派（莫奈 1870s）—— 短促色块并置：长条渐变 + 横向 mask 打断成短块 */
+.dr-hero-deck .impressionism { background: #cddbe4; }
+.dr-hero-deck .impressionism .s1 {
+  position: absolute; left: -30px; top: -20px; width: 380px; height: 200px;
+  background:
+    repeating-linear-gradient(76deg, #f6eccb 0 8px, transparent 8px 21px),
+    repeating-linear-gradient(-54deg, #8b9db4 0 7px, transparent 7px 19px);
+  -webkit-mask-image: repeating-linear-gradient(90deg, #000 0 7px, transparent 7px 15px);
+  mask-image: repeating-linear-gradient(90deg, #000 0 7px, transparent 7px 15px);
+  opacity: .72;
+}
+.dr-hero-deck .impressionism .s2 {
+  position: absolute; right: -40px; top: 34px; width: 330px; height: 210px;
+  background:
+    repeating-linear-gradient(112deg, #cf9a90 0 7px, transparent 7px 18px),
+    repeating-linear-gradient(-8deg, #eec470 0 6px, transparent 6px 17px);
+  -webkit-mask-image: repeating-linear-gradient(90deg, #000 0 9px, transparent 9px 18px);
+  mask-image: repeating-linear-gradient(90deg, #000 0 9px, transparent 9px 18px);
+  opacity: .62;
+}
+.dr-hero-deck .impressionism .s3 {
+  position: absolute; left: -20px; bottom: -34px; width: 450px; height: 200px;
+  background:
+    repeating-linear-gradient(-38deg, #a6ba8e 0 8px, transparent 8px 22px),
+    repeating-linear-gradient(52deg, #8497ae 0 6px, transparent 6px 16px);
+  -webkit-mask-image: repeating-linear-gradient(90deg, #000 0 6px, transparent 6px 13px);
+  mask-image: repeating-linear-gradient(90deg, #000 0 6px, transparent 6px 13px);
+  opacity: .66;
+}
+.dr-hero-deck .impressionism .dapple {
+  position: absolute; right: 36px; bottom: 22px; width: 156px; height: 114px;
+  background: radial-gradient(rgb(255 240 180 / 85%) 3px, transparent 3.6px) 0 0 / 14px 12px;
+}
+.dr-hero-deck .impressionism .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: "Bradley Hand", "Kaiti SC", cursive;
+  font-size: 45px; font-weight: 400; line-height: 1.1;
+  color: #24384f; text-align: center;
+  text-shadow: 2px 2px 0 rgb(246 236 203 / 80%), -1px -1px 0 rgb(246 236 203 / 65%); transform: translateY(-50%);}
+
+/* 点彩派（西涅克 1880s）—— 纯色圆点并置 */
+.dr-hero-deck .pointillism { background: #efe6cf; }
+.dr-hero-deck .pointillism .dots {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(#c0483c 3.4px, transparent 4px) 0 0 / 19px 19px,
+    radial-gradient(#2f5d7c 3.4px, transparent 4px) 9px 9px / 19px 19px,
+    radial-gradient(#e0a53c 3.4px, transparent 4px) 4px 14px / 19px 19px,
+    radial-gradient(#4f7a4a 3.4px, transparent 4px) 14px 4px / 19px 19px;
+  opacity: .8;
+}
+.dr-hero-deck .pointillism .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: "Optima", "Palatino", Georgia, serif;
+  font-size: 38px; font-weight: 600; line-height: 1.1;
+  letter-spacing: .04em; color: #1f2a33; text-align: center; transform: translateY(-50%);}
+
+/* 新艺术 / 青年风格（1890s）—— 鞭索曲线 + 金线 + 叶 */
+.dr-hero-deck .artnouveau { background: #ece4cf; }
+/* 鞭索曲线只留在左右两角，中间让给文字 */
+.dr-hero-deck .artnouveau .stem {
+  position: absolute; left: -124px; bottom: -84px; width: 280px; height: 280px;
+  border: 9px solid #6f8b52; border-left-color: transparent; border-bottom-color: transparent;
+  border-radius: 50%; transform: rotate(-18deg);
+}
+.dr-hero-deck .artnouveau .stem2 {
+  position: absolute; right: -124px; top: -84px; width: 280px; height: 280px;
+  border: 7px solid #a8793a; border-right-color: transparent; border-top-color: transparent;
+  border-radius: 50%; transform: rotate(16deg);
+}
+.dr-hero-deck .artnouveau .leaf {
+  position: absolute; left: 40px; top: 30px; width: 88px; height: 40px;
+  background: #6f8b52; border-radius: 0 100% 0 100%; transform: rotate(-28deg);
+}
+.dr-hero-deck .artnouveau .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: Optima, "Copperplate", Georgia, serif;
+  font-size: 38px; font-weight: 500; line-height: 1.08;
+  letter-spacing: .05em; color: #33401f; text-align: center;
+  text-indent: .025em; transform: translateY(-50%);}
+
+/* 巴洛克（1650s）—— 暗底 + 强光光束 + 金色 Didot */
+.dr-hero-deck .baroque { background: #16100a; }
+.dr-hero-deck .baroque .beam {
+  position: absolute; left: -60px; top: -120px; width: 330px; height: 560px;
+  background: linear-gradient(160deg, rgb(255 226 150 / 42%), transparent 62%);
+  transform: rotate(16deg);
+}
+.dr-hero-deck .baroque .halo {
+  position: absolute; right: 44px; top: 36px; width: 190px; height: 190px;
+  border-radius: 50%; background: radial-gradient(circle, rgb(255 232 168 / 95%) 0 22%, rgb(255 214 120 / 34%) 44%, transparent 68%);
+}
+.dr-hero-deck .baroque .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  text-align: center;
+  font-family: Didot, "Bodoni 72", Georgia, serif;
+  font-size: 42px; font-weight: 400; line-height: 1.02;
+  letter-spacing: .1em; text-transform: uppercase; color: #e8c46a;
+  text-shadow: 0 2px 14px rgb(255 200 90 / 45%); transform: translateY(-50%);}
+
+/* 洛可可（1730s）—— 象牙粉 + 螺贝卷草 + 金边 */
+.dr-hero-deck .rococo { background: #f2e0dc; }
+.dr-hero-deck .rococo .shell {
+  position: absolute; right: -40px; bottom: -50px; width: 300px; height: 260px;
+  border: 8px solid #c9a227; border-right-color: transparent; border-bottom-color: transparent;
+  border-radius: 50%; transform: rotate(-24deg);
+}
+.dr-hero-deck .rococo .shell2 {
+  position: absolute; left: -56px; top: -60px; width: 240px; height: 200px;
+  border: 6px solid #c9a227; border-left-color: transparent; border-top-color: transparent;
+  border-radius: 50%; transform: rotate(28deg);
+}
+.dr-hero-deck .rococo .petal {
+  position: absolute; right: 150px; top: 30px; width: 58px; height: 58px;
+  background: #e6a8b4; border-radius: 50% 0 50% 50%; transform: rotate(24deg);
+}
+.dr-hero-deck .rococo .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: "Cochin", Optima, Georgia, serif;
+  font-size: 40px; font-weight: 400; line-height: 1.04;
+  letter-spacing: .08em; color: #8c4a52; text-align: center; transform: translateY(-50%);}
+
+/* 故障艺术 Glitch（1990s）—— RGB 色差错位 + 横向撕裂条 */
+.dr-hero-deck .glitch { background: #0d0d12; }
+/* 扫描线：细密横纹，CRT 底噪 */
+.dr-hero-deck .glitch .scan {
+  position: absolute; inset: 0; opacity: .55;
+  background: repeating-linear-gradient(0deg, rgb(255 255 255 / 6%) 0 1px, transparent 1px 4px);
+}
+/* 撕裂条：只留三条，且不压文字主体 */
+/* 撕裂条只走文字带（y 94—180）之外，避免横穿字面 */
+.dr-hero-deck .glitch .bars {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(0deg, transparent 0 28px, rgb(0 229 255 / 62%) 28px 36px, transparent 36px 206px,
+      rgb(255 0 120 / 58%) 206px 214px, transparent 214px);
+}
+.dr-hero-deck .glitch .blocks {
+  position: absolute; left: -28px; top: -22px; width: 212px; height: 146px;
+  background: rgb(255 0 120 / 17%);
+  box-shadow: 16px 0 0 rgb(0 229 255 / 17%), -14px 8px 0 rgb(0 255 170 / 13%);
+}
+.dr-hero-deck .glitch .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 40px; font-weight: 700; line-height: 1.08;
+  letter-spacing: .02em; color: #f2f2f2; text-align: center;
+  text-shadow: 3px 0 0 rgb(255 0 120 / 90%), -3px 0 0 rgb(0 229 255 / 90%); transform: translateY(-50%);}
+
+
+/* ============ 全谱系第二批：古代与中世纪八种（洞穴壁画 / 彩陶 / 古埃及 / 古希腊陶瓶 / 拜占庭 / 敦煌 / 罗马式 / 哥特彩窗）============ */
+
+/* ① 洞穴壁画（拉斯科 约 4 万年前）—— 洞壁手印 + 赭石岩画线 */
+.dr-hero-deck .caveman { background: #b39a7d; }
+.dr-hero-deck .caveman .rock {
+  position: absolute; inset: 0; opacity: .55;
+  background-image:
+    repeating-linear-gradient(28deg, rgb(60 40 25 / 13%) 0 3px, transparent 3px 9px),
+    repeating-linear-gradient(-51deg, rgb(255 240 210 / 9%) 0 2px, transparent 2px 7px);
+}
+.dr-hero-deck .caveman .torch {
+  position: absolute; left: 92px; bottom: 28px; width: 74px; height: 168px;
+}
+.dr-hero-deck .caveman .torch i { position: absolute; background: #8c3b1e; display: block; }
+.dr-hero-deck .caveman .torch .hd {
+  left: 50%; top: 0; translate: -50% 0; width: 28px; height: 32px; border-radius: 50%;
+}
+.dr-hero-deck .caveman .torch .bd {
+  left: 50%; top: 36px; translate: -50% 0; width: 30px; height: 70px;
+}
+.dr-hero-deck .caveman .torch .al {
+  left: 8px; top: 44px; width: 15px; height: 62px;
+  transform: rotate(15deg); transform-origin: top center;
+}
+.dr-hero-deck .caveman .torch .ar {
+  right: 8px; top: 44px; width: 15px; height: 62px;
+  transform: rotate(-15deg); transform-origin: top center;
+}
+.dr-hero-deck .caveman .torch .ll {
+  left: 13px; bottom: -4px; width: 15px; height: 72px;
+  transform: rotate(9deg); transform-origin: top center;
+}
+.dr-hero-deck .caveman .torch .lr {
+  right: 13px; bottom: -4px; width: 15px; height: 72px;
+  transform: rotate(-9deg); transform-origin: top center;
+}
+.dr-hero-deck .caveman .stroke {
+  position: absolute; left: 236px; bottom: 46px; width: 208px; height: 72px;
+  border: 8px solid #7d3319; border-bottom-color: transparent; border-left-color: transparent;
+  border-radius: 50%; transform: rotate(-8deg);
+}
+.dr-hero-deck .caveman .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: "Bradley Hand", "Kaiti SC", cursive;
+  font-size: 38px; font-weight: 400; line-height: 1.08; color: #3b2413; text-align: center; transform: translateY(-50%);}
+
+/* ② 彩陶纹样（仰韶 / 马家窑 约 5000 年前） */
+.dr-hero-deck .caitao { background: #c8875a; }
+.dr-hero-deck .caitao .swirl {
+  position: absolute; left: 8px; bottom: 18px; width: 168px; height: 168px;
+  background: repeating-radial-gradient(circle at 50% 50%, #241a12 0 6px, transparent 6px 21px);
+  border-radius: 50%;
+  -webkit-mask-image: conic-gradient(from 0deg, #000 0 52%, transparent 52% 100%);
+  mask-image: conic-gradient(from 0deg, #000 0 52%, transparent 52% 100%);
+}
+.dr-hero-deck .caitao .band {
+  position: absolute; right: -30px; top: -30px; width: 320px; height: 130px;
+  background: repeating-linear-gradient(58deg, #241a12 0 11px, transparent 11px 32px);
+  opacity: .8;
+}
+.dr-hero-deck .caitao .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: "Songti SC", "STSong", serif;
+  font-size: 38px; font-weight: 700; line-height: 1.1;
+  letter-spacing: .06em; color: #241a12; text-align: center;
+  text-indent: .03em; transform: translateY(-50%);}
+
+/* ③ 古埃及壁画（约 3000 年前）—— 正面律人形（头 + 三角裙 + 双臂下垂）+ 竖排象形符号列 */
+.dr-hero-deck .egypt { background: #d8a23e; }
+.dr-hero-deck .egypt .fig {
+  position: absolute; left: 88px; bottom: 22px; width: 78px; height: 162px; background: #4a2c14;
+  clip-path: polygon(22% 0, 78% 0, 60% 40%, 100% 100%, 0 100%, 40% 40%);
+}
+/* 头必须单独成元素：clip-path 会把伪元素一起裁掉 */
+.dr-hero-deck .egypt .head {
+  position: absolute; left: 110px; bottom: 182px; width: 34px; height: 38px;
+  border-radius: 50%; background: #4a2c14;
+}
+.dr-hero-deck .egypt .arm {
+  position: absolute; bottom: 92px; width: 12px; height: 76px;
+  background: #4a2c14; border-radius: 6px;
+}
+.dr-hero-deck .egypt .arm.l { left: 96px; }
+.dr-hero-deck .egypt .arm.r { left: 146px; }
+/* 象形符号：竖排四列，每列条形高度不同 */
+.dr-hero-deck .egypt .g1, .dr-hero-deck .egypt .g2,
+.dr-hero-deck .egypt .g3, .dr-hero-deck .egypt .g4 {
+  position: absolute; top: 24px; height: 150px; opacity: .44;
+}
+.dr-hero-deck .egypt .g1 { right: 190px; width: 22px; background: repeating-linear-gradient(0deg, #4a2c14 0 9px, transparent 9px 27px); }
+.dr-hero-deck .egypt .g2 { right: 148px; width: 15px; background: repeating-linear-gradient(0deg, #4a2c14 0 17px, transparent 17px 27px); }
+.dr-hero-deck .egypt .g3 { right: 112px; width: 26px; background: repeating-linear-gradient(0deg, #4a2c14 0 6px, transparent 6px 27px); }
+.dr-hero-deck .egypt .g4 { right: 62px; width: 18px; background: repeating-linear-gradient(0deg, #4a2c14 0 13px, transparent 13px 27px); }
+.dr-hero-deck .egypt .eye {
+  position: absolute; right: 44px; top: 86px; width: 40px; height: 20px;
+  border: 6px solid #4a2c14; border-radius: 50%; opacity: .5;
+}
+.dr-hero-deck .egypt .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: "Kaiti SC", "Songti SC", serif;
+  font-size: 34px; font-weight: 700; line-height: 1.12; color: #4a2c14; text-align: center;
+  text-indent: .03em; transform: translateY(-50%);}
+
+/* ④ 古希腊陶瓶（黑绘 / 红绘 约 2500 年前） */
+.dr-hero-deck .greekvase { background: #c1662f; }
+.dr-hero-deck .greekvase .meander {
+  position: absolute; left: 0; right: 0; top: 0; height: 24px; background: #231009;
+}
+.dr-hero-deck .greekvase .meander.b { top: auto; bottom: 0; }
+.dr-hero-deck .greekvase .meander::after {
+  content: ""; position: absolute; inset: 5px 0;
+  background:
+    repeating-linear-gradient(90deg, #c1662f 0 8px, transparent 8px 25px),
+    repeating-linear-gradient(0deg, transparent 0 3px, #c1662f 3px 7px, transparent 7px 11px);
+}
+.dr-hero-deck .greekvase .fig {
+  position: absolute; left: 62px; bottom: 36px; width: 66px; height: 168px; background: #231009;
+}
+.dr-hero-deck .greekvase .fig::before {
+  content: ""; position: absolute; left: 50%; top: -40px; translate: -50% 0;
+  width: 44px; height: 44px; border-radius: 50%; background: #231009;
+}
+.dr-hero-deck .greekvase .fig::after {
+  content: ""; position: absolute; left: -30px; top: 18px; width: 126px; height: 20px; background: #231009;
+}
+.dr-hero-deck .greekvase .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: "Optima", Georgia, serif;
+  font-size: 36px; font-weight: 600; line-height: 1.1;
+  letter-spacing: .04em; color: #231009; text-align: center;
+  text-indent: .02em; transform: translateY(-50%);}
+
+/* ⑤ 拜占庭金马赛克（约 500 年） */
+.dr-hero-deck .byzantine { background: #14304d; }
+.dr-hero-deck .byzantine .mosaic {
+  position: absolute; inset: 0; opacity: .34;
+  background:
+    linear-gradient(90deg, #d4ae35 8px, transparent 8px) 0 0 / 16px 16px,
+    linear-gradient(#d4ae35 8px, transparent 8px) 4px 4px / 16px 16px;
+}
+.dr-hero-deck .byzantine .saint {
+  position: absolute; left: 42px; bottom: 22px; width: 96px; height: 176px;
+  background: #d4ae35; border-radius: 44% 44% 8% 8% / 34% 34% 4% 4%;
+}
+.dr-hero-deck .byzantine .saint::before {
+  content: ""; position: absolute; left: 50%; top: -46px; translate: -50% 0;
+  width: 54px; height: 54px; border-radius: 50%; background: #d4ae35;
+}
+.dr-hero-deck .byzantine .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: Didot, "Bodoni 72", Georgia, serif;
+  font-size: 36px; font-weight: 400; line-height: 1.1;
+  letter-spacing: .06em; color: #ecd089; text-align: center;
+  text-indent: .03em; transform: translateY(-50%);}
+
+/* ⑥ 敦煌壁画 / 飞天（约 700 年） */
+.dr-hero-deck .dunhuang { background: #8f4a33; }
+.dr-hero-deck .dunhuang .ribbon {
+  position: absolute; left: -40px; right: -40px; top: 74px; height: 126px;
+  background: linear-gradient(90deg, #2f7a86, #46997f 28%, #79b3a0 54%, #2f7a86 82%);
+  clip-path: polygon(0 28%, 30% 0, 62% 26%, 100% 4%, 100% 76%, 62% 100%, 30% 70%, 0 96%);
+  opacity: .92;
+}
+.dr-hero-deck .dunhuang .fly {
+  position: absolute; left: 104px; bottom: 26px; width: 122px; height: 156px;
+  background: #e6d19a;
+  clip-path: polygon(50% 0, 100% 42%, 70% 100%, 30% 100%, 0 42%);
+}
+.dr-hero-deck .dunhuang .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: "Songti SC", "STSong", serif;
+  font-size: 36px; font-weight: 700; line-height: 1.1;
+  letter-spacing: .08em; color: #f0dcae; text-align: center;
+  text-indent: .04em; transform: translateY(-50%);}
+
+/* ⑦ 罗马式（约 1000 年） */
+.dr-hero-deck .romanesque { background: #6b6154; }
+.dr-hero-deck .romanesque .stone {
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(0deg, rgb(0 0 0 / 24%) 0 2px, transparent 2px 48px),
+    repeating-linear-gradient(90deg, rgb(0 0 0 / 18%) 0 2px, transparent 2px 76px);
+}
+.dr-hero-deck .romanesque .arch {
+  position: absolute; left: 116px; bottom: -46px; width: 288px; height: 258px;
+  background: #2b2620; border-radius: 50% 50% 0 0 / 64% 64% 0 0;
+}
+.dr-hero-deck .romanesque .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: Georgia, "Songti SC", serif;
+  font-size: 34px; font-weight: 700; line-height: 1.12;
+  letter-spacing: .04em; color: #e3d8c2; text-align: center; transform: translateY(-50%);}
+
+/* ⑧ 哥特彩窗（约 1250 年）—— 三联尖拱 + 玫瑰窗 + 铅条 */
+.dr-hero-deck .gothic { background: #141018; }
+.dr-hero-deck .gothic .arch {
+  position: absolute; bottom: 0; width: 104px; height: 168px;
+  background: #1f4f8f;
+  clip-path: polygon(50% 0, 100% 32%, 100% 100%, 0 100%, 0 32%);
+}
+.dr-hero-deck .gothic .arch::after {
+  content: ""; position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(0deg, rgb(20 16 24 / 68%) 0 3px, transparent 3px 34px),
+    linear-gradient(0deg, #b8322c 0 52%, #d8b53a 52% 100%);
+}
+.dr-hero-deck .gothic .a1 { left: 62px; }
+.dr-hero-deck .gothic .a2 { left: 50%; translate: -50% 0; width: 118px; height: 214px; background: #1f4f8f; }
+.dr-hero-deck .gothic .a2::after {
+  background:
+    repeating-linear-gradient(0deg, rgb(20 16 24 / 68%) 0 3px, transparent 3px 36px),
+    linear-gradient(0deg, #d8b53a 0 46%, #b8322c 46% 100%);
+}
+.dr-hero-deck .gothic .a3 { right: 62px; }
+.dr-hero-deck .gothic .a2::before {
+  content: ""; position: absolute; left: 50%; top: 0; bottom: 0; width: 5px;
+  translate: -50% 0; background: #141018;
+}
+.dr-hero-deck .gothic .rose {
+  position: absolute; left: 50%; top: 2px; translate: -50% 0; width: 66px; height: 66px;
+  border-radius: 50%; z-index: 4;
+  background: repeating-conic-gradient(
+    #d8b53a 0 18deg, #b8322c 18deg 36deg, #1f4f8f 36deg 54deg, #e8d79a 54deg 72deg);
+  box-shadow: 0 0 0 6px #141018, inset 0 0 0 5px #141018;
+}
+.dr-hero-deck .gothic .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 5;
+  font-family: Didot, "Bodoni 72", Georgia, serif;
+  font-size: 28px; font-weight: 400; line-height: 1.1;
+  letter-spacing: .1em; color: #f4e7b6; text-align: center;
+  text-shadow: 0 2px 10px rgb(20 16 24 / 85%); transform: translateY(-50%);}
+
+/* ============ 全谱系第三批：文艺复兴到 19 世纪八种（文艺复兴 / 威尼斯画派 / 荷兰黄金时代 / 新古典主义 / 浪漫主义 / 现实主义 / 后印象派 / 象征主义）============ */
+
+/* ① 文艺复兴（1400—1600）—— 透视地平线 + 三角构图 */
+.dr-hero-deck .renaissance { background: #b8956a; }
+.dr-hero-deck .renaissance .ground {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 40%;
+  background: linear-gradient(#8a6a45, #6d5236);
+}
+.dr-hero-deck .renaissance .rays {
+  position: absolute; left: 50%; bottom: 40%; translate: -50% 0;
+  width: 900px; height: 320px;
+  background: repeating-conic-gradient(from 180deg at 50% 100%,
+    rgb(255 240 210 / 8%) 0deg 1.1deg, transparent 1.1deg 15deg);
+  clip-path: polygon(44% 0, 56% 0, 100% 100%, 0 100%);
+}
+.dr-hero-deck .renaissance .dome {
+  position: absolute; left: 50%; bottom: 176px; translate: -50% 0;
+  width: 76px; height: 76px; border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, #f6ecd6, #c9a978);
+  box-shadow: 0 0 0 5px rgb(120 92 56 / 30%);
+}
+.dr-hero-deck .renaissance .arch {
+  position: absolute; left: 50%; bottom: 40%; translate: -50% 0;
+  width: 150px; height: 150px; border: 12px solid #f2e6cc;
+  border-bottom-color: transparent; border-radius: 50% 50% 0 0;
+}
+.dr-hero-deck .renaissance .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: "Optima", Georgia, serif;
+  font-size: 34px; font-weight: 600; line-height: 1.1;
+  letter-spacing: .1em; color: #f4ead6; text-align: center; text-indent: .05em; transform: translateY(-50%);}
+
+/* ② 威尼斯画派（1500—1600）—— 厚彩 + 金色高光 */
+.dr-hero-deck .venetian { background: #8a2b1e; }
+.dr-hero-deck .venetian .blob1 {
+  position: absolute; left: -40px; top: -50px; width: 320px; height: 260px;
+  background: #c85a2c; border-radius: 54% 46% 48% 52%; filter: blur(6px);
+}
+.dr-hero-deck .venetian .blob2 {
+  position: absolute; right: -50px; bottom: -60px; width: 340px; height: 280px;
+  background: #5c1a6e; border-radius: 46% 54% 56% 44%; filter: blur(8px);
+}
+.dr-hero-deck .venetian .gold {
+  position: absolute; left: 50%; top: 42px; translate: -50% 0;
+  width: 210px; height: 130px;
+  background: radial-gradient(ellipse at 50% 40%, rgb(240 200 90 / 78%), transparent 68%);
+  filter: blur(10px);
+}
+.dr-hero-deck .venetian .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: Didot, "Bodoni 72", Georgia, serif;
+  font-size: 36px; font-weight: 400; line-height: 1.1;
+  letter-spacing: .06em; color: #f2d488; text-align: center; text-indent: .03em; transform: translateY(-50%);}
+
+/* ③ 荷兰黄金时代写实（1600—1700）—— 暗背景 + 窗口光 */
+.dr-hero-deck .dutchgolden { background: #2b2018; }
+.dr-hero-deck .dutchgolden .light {
+  position: absolute; left: -40px; top: -60px; width: 420px; height: 420px;
+  background: radial-gradient(circle at 30% 30%, rgb(255 226 160 / 46%), transparent 62%);
+  filter: blur(4px);
+}
+.dr-hero-deck .dutchgolden .weave {
+  position: absolute; inset: 0; opacity: .3;
+  background-image:
+    repeating-linear-gradient(90deg, rgb(255 235 200 / 9%) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(0deg, rgb(0 0 0 / 16%) 0 1px, transparent 1px 4px);
+}
+.dr-hero-deck .dutchgolden .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: Georgia, "Songti SC", serif;
+  font-size: 32px; font-weight: 400; line-height: 1.16;
+  letter-spacing: .04em; color: #e8dcc2; text-align: center; text-indent: .02em; transform: translateY(-50%);}
+
+/* ④ 新古典主义（1760—1830）—— 对称浅浮雕 + 壁柱 */
+.dr-hero-deck .neoclassic { background: #efe9dc; }
+.dr-hero-deck .neoclassic .pilaster {
+  position: absolute; top: -10px; bottom: 0; width: 74px;
+  background: linear-gradient(90deg, #ded5c2, #f6f1e4 40%, #d6ccb8);
+  box-shadow: inset 0 0 0 1px rgb(90 74 50 / 18%);
+}
+.dr-hero-deck .neoclassic .pilaster.l { left: 74px; }
+.dr-hero-deck .neoclassic .pilaster.r { right: 74px; }
+.dr-hero-deck .neoclassic .disc {
+  position: absolute; left: 50%; top: 26px; translate: -50% 0;
+  width: 116px; height: 116px; border-radius: 50%;
+  background: radial-gradient(circle at 40% 34%, #e8d9b8, #b08a4e);
+  box-shadow: 0 3px 0 rgb(120 92 48 / 45%);
+}
+.dr-hero-deck .neoclassic .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: Didot, "Bodoni 72", Georgia, serif;
+  font-size: 32px; font-weight: 400; line-height: 1.1;
+  letter-spacing: .16em; text-transform: uppercase; color: #7a3524; text-align: center;
+  text-indent: .08em; transform: translateY(-50%);}
+
+/* ⑤ 浪漫主义（1800—1850）—— 风暴暗云 + 崇高 */
+.dr-hero-deck .romanticism { background: #2b2440; }
+.dr-hero-deck .romanticism .storm {
+  position: absolute; left: 50%; top: 18px; translate: -50% 0;
+  width: 720px; height: 720px;
+  background:
+    repeating-conic-gradient(from 14deg, rgb(198 118 138 / 9%) 0deg 2deg, transparent 2deg 26deg),
+    repeating-conic-gradient(from 0deg, rgb(120 130 180 / 13%) 0deg 1.3deg, transparent 1.3deg 19deg);
+  border-radius: 50%;
+}
+.dr-hero-deck .romanticism .flash {
+  position: absolute; left: 50%; top: 40px; translate: -50% 0;
+  width: 130px; height: 190px;
+  background: linear-gradient(#f5e6a8, transparent 76%);
+  clip-path: polygon(58% 0, 100% 0, 66% 40%, 94% 40%, 26% 100%, 48% 56%, 10% 56%);
+  opacity: .82;
+}
+.dr-hero-deck .romanticism .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: "Kaiti SC", "Songti SC", serif;
+  font-size: 38px; font-weight: 700; line-height: 1.1;
+  letter-spacing: .12em; color: #f0e8d4; text-align: center; text-indent: .06em; transform: translateY(-50%);}
+
+/* ⑥ 现实主义（1840—1880）—— 灰褐土色 + 沉静地平线 */
+.dr-hero-deck .realism { background: #8d7f6a; }
+.dr-hero-deck .realism .sky {
+  position: absolute; left: 0; right: 0; top: 0; height: 56%;
+  background: linear-gradient(#b3ac97, #978d76);
+}
+.dr-hero-deck .realism .farmer {
+  position: absolute; left: 50%; bottom: 43%; translate: -50% 0;
+  width: 22px; height: 46px; background: #3a3026;
+}
+.dr-hero-deck .realism .farmer::before {
+  content: ""; position: absolute; left: 50%; top: -13px; translate: -50% 0;
+  width: 15px; height: 15px; border-radius: 50%; background: #3a3026;
+}
+.dr-hero-deck .realism .farmer::after {
+  content: ""; position: absolute; left: -14px; top: 12px; width: 50px; height: 5px;
+  background: #3a3026; transform: rotate(-12deg);
+}
+.dr-hero-deck .realism .tree {
+  position: absolute; right: 58px; bottom: 43%; width: 9px; height: 74px; background: #3a3026;
+}
+.dr-hero-deck .realism .tree::before {
+  content: ""; position: absolute; left: -22px; top: 4px; width: 52px; height: 6px;
+  background: #3a3026; transform: rotate(16deg);
+}
+.dr-hero-deck .realism .field {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 46%;
+  background: linear-gradient(#7a6a52, #5d5140);
+}
+.dr-hero-deck .realism .furrow {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 46%;
+  background: repeating-linear-gradient(84deg, rgb(0 0 0 / 16%) 0 2px, transparent 2px 26px);
+}
+.dr-hero-deck .realism .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: Georgia, "Songti SC", serif;
+  font-size: 34px; font-weight: 700; line-height: 1.14;
+  letter-spacing: .03em; color: #2b241b; text-align: center; text-indent: .015em; transform: translateY(-50%);}
+
+/* ⑦ 后印象派（1886—1905）—— 旋转厚涂笔触 */
+.dr-hero-deck .postimpressionism { background: #1f4f8f; }
+.dr-hero-deck .postimpressionism .swirl {
+  position: absolute; left: 50%; top: 50%; translate: -50% -50%;
+  width: 640px; height: 640px; border-radius: 50%;
+  background: repeating-conic-gradient(from 0deg,
+    #f2d24a 0deg 5deg, #2f8f6a 5deg 10deg, #16386b 10deg 16deg);
+  -webkit-mask-image: radial-gradient(circle, transparent 0 96px, #000 96px 150px, transparent 150px);
+  mask-image: radial-gradient(circle, transparent 0 96px, #000 96px 150px, transparent 150px);
+}
+.dr-hero-deck .postimpressionism .star {
+  position: absolute; left: 50%; top: 50%; translate: -50% -50%;
+  width: 150px; height: 150px; border-radius: 50%;
+  background: radial-gradient(circle, #fbeaa0 0 26%, #f2d24a 34%, transparent 62%);
+}
+.dr-hero-deck .postimpressionism .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: "Bradley Hand", "Kaiti SC", cursive;
+  font-size: 40px; font-weight: 400; line-height: 1.08;
+  color: #f4ead2; text-align: center;
+  text-shadow: 2px 2px 0 rgb(22 56 107 / 80%); transform: translateY(-50%);}
+
+/* ⑧ 象征主义（1880—1910）—— 金蓝梦境 + 枯枝 */
+.dr-hero-deck .symbolism { background: #241a10; }
+.dr-hero-deck .symbolism .halo {
+  position: absolute; left: 50%; top: 44px; translate: -50% 0;
+  width: 230px; height: 230px; border-radius: 50%;
+  background: radial-gradient(circle, rgb(214 168 84 / 62%), transparent 66%);
+  filter: blur(3px);
+}
+.dr-hero-deck .symbolism .moth {
+  position: absolute; left: 50%; top: 100px; translate: -50% 0;
+  width: 11px; height: 38px; background: #e0c98a; border-radius: 50%;
+}
+.dr-hero-deck .symbolism .moth::before {
+  content: ""; position: absolute; left: -36px; top: -14px;
+  width: 44px; height: 32px; background: #e0c98a;
+  border-radius: 52% 22% 52% 22%; transform: rotate(-24deg);
+}
+.dr-hero-deck .symbolism .moth::after {
+  content: ""; position: absolute; right: -36px; top: -14px;
+  width: 44px; height: 32px; background: #e0c98a;
+  border-radius: 22% 52% 22% 52%; transform: rotate(24deg);
+}
+.dr-hero-deck .symbolism .branch {
+  position: absolute; right: -40px; bottom: 30px; width: 300px; height: 160px;
+  border: 9px solid #3a2a1a; border-right-color: transparent; border-bottom-color: transparent;
+  border-radius: 50%; transform: rotate(-14deg);
+}
+.dr-hero-deck .symbolism .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: Didot, "Bodoni 72", Georgia, serif;
+  font-size: 34px; font-weight: 400; line-height: 1.12;
+  letter-spacing: .1em; color: #dcb461; text-align: center; text-indent: .05em; transform: translateY(-50%);}
+
+/* ============ 全谱系第四批：泥金手抄本到墨西哥壁画八种（泥金手抄本 / 纳斯卡 / 波斯浮雕 / 伊斯兰几何 / 唐三彩 / 青绿山水 / 工艺美术 / 墨西哥壁画）============ */
+
+/* ① 泥金手抄本 Illumination（约 1200） */
+.dr-hero-deck .illumination { background: #7a1f22; }
+.dr-hero-deck .illumination .parch {
+  position: absolute; inset: 14px 22px;
+  background: #f0e2c0;
+  box-shadow: inset 0 0 0 1px rgb(122 31 34 / 30%), 0 0 0 3px #c9a227;
+}
+.dr-hero-deck .illumination .vine {
+  position: absolute; left: 40px; top: 32px; width: 250px; height: 250px;
+  border: 7px solid #2f6b4f; border-right-color: transparent; border-bottom-color: transparent;
+  border-radius: 50%; transform: rotate(-16deg);
+}
+.dr-hero-deck .illumination .leaf {
+  position: absolute; left: 128px; top: 78px; width: 78px; height: 34px;
+  background: #2f6b4f; border-radius: 0 100% 0 100%; transform: rotate(-30deg);
+}
+.dr-hero-deck .illumination .drop {
+  position: absolute; right: 46px; top: 30px; width: 46px; height: 46px;
+  background: #c9a227; border-radius: 50% 50% 50% 6%; transform: rotate(45deg);
+}
+.dr-hero-deck .illumination .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: "Cochin", Optima, Georgia, serif;
+  font-size: 34px; font-weight: 400; line-height: 1.1;
+  letter-spacing: .08em; color: #7a1f22; text-align: center; text-indent: .04em; transform: translateY(-50%);}
+
+/* ② 纳斯卡线条（约 500 BCE） */
+.dr-hero-deck .nascapaint { background: #c9ab74; }
+.dr-hero-deck .nascapaint .lines {
+  position: absolute; inset: 0; opacity: .82;
+  background:
+    repeating-linear-gradient(58deg, transparent 0 34px, #4a3524 34px 39px, transparent 39px 78px),
+    repeating-linear-gradient(-24deg, transparent 0 46px, #4a3524 46px 50px, transparent 50px 96px);
+}
+.dr-hero-deck .nascapaint .bird {
+  position: absolute; left: 50%; top: 50%; translate: -50% -50%;
+  width: 150px; height: 96px; background: #4a3524;
+  clip-path: polygon(0 62%, 22% 30%, 48% 44%, 62% 6%, 78% 46%, 100% 38%, 92% 78%, 46% 96%, 12% 86%);
+}
+.dr-hero-deck .nascapaint .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: "Optima", "Copperplate", Georgia, serif;
+  font-size: 34px; font-weight: 500; line-height: 1.1;
+  letter-spacing: .14em; color: #3d2b1c; text-align: center; text-indent: .07em; transform: translateY(-50%);}
+
+/* ③ 古波斯浮雕（约 500 BCE，波斯波利斯） */
+.dr-hero-deck .persianrelief { background: #b9ac97; }
+.dr-hero-deck .persianrelief .sky {
+  position: absolute; inset: 0; background: linear-gradient(#9fb0bd, #c3b49c 60%);
+}
+.dr-hero-deck .persianrelief .body {
+  position: absolute; left: 50%; top: 118px; translate: -50% 0;
+  width: 66px; height: 122px; background: #7d6a52;
+  border-radius: 40% 40% 18% 18% / 26% 26% 10% 10%;
+}
+.dr-hero-deck .persianrelief .body::before {
+  content: ""; position: absolute; left: 50%; top: -40px; translate: -50% 0;
+  width: 44px; height: 46px; border-radius: 50% 50% 34% 34%; background: #7d6a52;
+}
+/* 两翼对称，翼上排羽毛用重复渐变做浮雕感 */
+.dr-hero-deck .persianrelief .wing {
+  position: absolute; top: 74px; width: 168px; height: 96px; background: #6f5d47;
+  clip-path: polygon(100% 46%, 74% 4%, 52% 14%, 32% 0, 0 26%, 22% 52%, 0 78%, 40% 66%, 72% 100%, 100% 70%);
+}
+.dr-hero-deck .persianrelief .wing.l { left: 44px; }
+.dr-hero-deck .persianrelief .wing.r { right: 44px; transform: scaleX(-1); }
+.dr-hero-deck .persianrelief .wing::after {
+  content: ""; position: absolute; inset: 0;
+  background: repeating-linear-gradient(64deg, rgb(255 245 220 / 22%) 0 2px, transparent 2px 13px);
+}
+.dr-hero-deck .persianrelief .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: "Optima", Georgia, serif;
+  font-size: 32px; font-weight: 600; line-height: 1.1;
+  letter-spacing: .1em; color: #4a3d2c; text-align: center; text-indent: .05em; transform: translateY(-50%);}
+
+/* ④ 伊斯兰几何纹样（约 800） */
+.dr-hero-deck .islamic { background: #10396b; }
+.dr-hero-deck .islamic .star {
+  position: absolute; left: 50%; top: 50%; translate: -50% -50%;
+  width: 230px; height: 230px;
+  background:
+    repeating-conic-gradient(from 0deg, #d4ae35 0deg 15deg, transparent 15deg 45deg),
+    repeating-conic-gradient(from 22.5deg, #d4ae35 0deg 15deg, transparent 15deg 45deg);
+  -webkit-mask-image: radial-gradient(circle, #000 0 62px, transparent 62px 92px, #000 92px 115px, transparent 115px);
+  mask-image: radial-gradient(circle, #000 0 62px, transparent 62px 92px, #000 92px 115px, transparent 115px);
+}
+.dr-hero-deck .islamic .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: "Optima", "Copperplate", Georgia, serif;
+  font-size: 32px; font-weight: 500; line-height: 1.1;
+  letter-spacing: .12em; color: #e8cd7a; text-align: center; text-indent: .06em; transform: translateY(-50%);}
+
+/* ⑤ 唐三彩（约 700） */
+.dr-hero-deck .tangsancai { background: #e6d8bc; }
+/* 釉彩：从器身往下淌的彩条（唐三彩的标志） */
+.dr-hero-deck .tangsancai .glaze {
+  position: absolute; left: 46px; top: 88px; width: 250px; height: 186px;
+  background:
+    linear-gradient(#d98324 0 34%, #a8631f 34% 100%) 0 0 / 48px 100% no-repeat,
+    linear-gradient(#4f8a4a 0 22%, #3d6b3a 22% 100%) 48px 12px / 40px 100% no-repeat,
+    linear-gradient(#f2ecd8 0 30%, #ded5bd 30% 100%) 88px 0 / 34px 100% no-repeat,
+    linear-gradient(#3f6b8a 0 18%, #2f5170 18% 100%) 122px 16px / 44px 100% no-repeat,
+    linear-gradient(#c85a2c 0 26%, #9c4322 26% 100%) 166px 6px / 40px 100% no-repeat;
+  border-radius: 14px 14px 4px 4px;
+  clip-path: polygon(0 0, 100% 0, 100% 84%, 92% 100%, 84% 84%, 74% 100%, 66% 84%, 54% 100%, 44% 84%, 32% 100%, 20% 84%, 8% 100%, 0 84%);
+}
+/* 骆驼：脖子与头必须是 .camel 的子元素，否则会按卡片定位跑飞 */
+.dr-hero-deck .tangsancai .camel {
+  position: absolute; right: 44px; top: 96px;
+  width: 150px; height: 48px; background: #a8631f;
+  border-radius: 46% 40% 36% 30% / 58% 56% 44% 40%;
+}
+.dr-hero-deck .tangsancai .camel::before {
+  content: ""; position: absolute; left: 50%; top: -16px; translate: -50% 0;
+  width: 54px; height: 30px; border-radius: 50% 50% 18% 18%; background: #b56e24;
+}
+.dr-hero-deck .tangsancai .camel::after {
+  content: ""; position: absolute; left: 8px; bottom: -26px; width: 134px; height: 28px;
+  background: repeating-linear-gradient(90deg, #a8631f 0 12px, transparent 12px 36px);
+}
+.dr-hero-deck .tangsancai .hump {
+  position: absolute; right: 2px; top: -12px; width: 14px; height: 46px;
+  background: #a8631f; transform: rotate(-16deg);
+}
+.dr-hero-deck .tangsancai .head {
+  position: absolute; right: -12px; top: -24px; width: 36px; height: 17px;
+  background: #a8631f; border-radius: 40% 60% 50% 40%; transform: rotate(-10deg);
+}
+.dr-hero-deck .tangsancai .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: "Songti SC", "STSong", serif;
+  font-size: 36px; font-weight: 700; line-height: 1.1;
+  letter-spacing: .1em; color: #6b3a12; text-align: center; text-indent: .05em; transform: translateY(-50%);}
+
+/* ⑥ 青绿山水（约 1100，王希孟） */
+.dr-hero-deck .bluegreen { background: #e8e2d0; }
+.dr-hero-deck .bluegreen .mountain {
+  position: absolute; left: -20px; bottom: 0; width: 340px; height: 220px;
+  background: linear-gradient(160deg, #3f7a6a, #1f4a4f);
+  clip-path: polygon(0 100%, 14% 44%, 32% 62%, 48% 12%, 64% 48%, 78% 30%, 100% 100%);
+}
+.dr-hero-deck .bluegreen .mountain2 {
+  position: absolute; right: -30px; bottom: 0; width: 300px; height: 190px;
+  background: linear-gradient(200deg, #5a8a6a, #2c5a5c);
+  clip-path: polygon(0 100%, 22% 52%, 40% 70%, 62% 20%, 82% 56%, 100% 100%);
+}
+.dr-hero-deck .bluegreen .gold {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 54%;
+  background: linear-gradient(transparent, rgb(212 174 53 / 34%));
+}
+.dr-hero-deck .bluegreen .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: "Songti SC", "STSong", serif;
+  font-size: 36px; font-weight: 700; line-height: 1.1;
+  letter-spacing: .14em; color: #1f4a4f; text-align: center; text-indent: .07em; transform: translateY(-50%);}
+
+/* ⑦ 工艺美术运动（约 1880，莫里斯） */
+.dr-hero-deck .artsandcrafts { background: #1f3a63; }
+.dr-hero-deck .artsandcrafts .wall {
+  position: absolute; inset: 0; opacity: .9;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 46px, rgb(255 255 255 / 10%) 46px 48px),
+    repeating-linear-gradient(90deg, transparent 0 46px, rgb(255 255 255 / 10%) 46px 48px);
+}
+.dr-hero-deck .artsandcrafts .leafy {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 30px 14px at 70px 70px, #d8a54a 0 60%, transparent 62%),
+    radial-gradient(ellipse 30px 14px at 163px 163px, #d8a54a 0 60%, transparent 62%),
+    radial-gradient(ellipse 30px 14px at 256px 70px, #d8a54a 0 60%, transparent 62%),
+    radial-gradient(ellipse 30px 14px at 349px 163px, #d8a54a 0 60%, transparent 62%),
+    radial-gradient(ellipse 30px 14px at 442px 70px, #d8a54a 0 60%, transparent 62%),
+    radial-gradient(ellipse 30px 14px at 116px 256px, #d8a54a 0 60%, transparent 62%),
+    radial-gradient(ellipse 30px 14px at 302px 256px, #d8a54a 0 60%, transparent 62%),
+    radial-gradient(ellipse 30px 14px at 395px 256px, #d8a54a 0 60%, transparent 62%);
+}
+.dr-hero-deck .artsandcrafts .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: "Optima", "Copperplate", Georgia, serif;
+  font-size: 32px; font-weight: 500; line-height: 1.1;
+  letter-spacing: .1em; color: #f0e4c8; text-align: center; text-indent: .05em; transform: translateY(-50%);}
+
+/* ⑧ 墨西哥壁画（约 1920，里维拉） */
+.dr-hero-deck .muralism { background: #b3a58c; }
+.dr-hero-deck .muralism .rock {
+  position: absolute; inset: 0; opacity: .4;
+  background-image:
+    repeating-linear-gradient(37deg, rgb(0 0 0 / 10%) 0 3px, transparent 3px 11px),
+    repeating-linear-gradient(-58deg, rgb(255 240 210 / 8%) 0 2px, transparent 2px 9px);
+}
+.dr-hero-deck .muralism .worker {
+  position: absolute; left: 50%; bottom: 24px; translate: -50% 0;
+  width: 112px; height: 138px; background: #b8452c;
+  border-radius: 26% 26% 6% 6%;
+}
+.dr-hero-deck .muralism .worker::before {
+  content: ""; position: absolute; left: 50%; top: -30px; translate: -50% 0;
+  width: 38px; height: 40px; border-radius: 46% 46% 38% 38%; background: #6b3a24;
+}
+.dr-hero-deck .muralism .worker::after {
+  content: ""; position: absolute; left: -26px; top: 18px; width: 164px; height: 30px;
+  background: #b8452c; border-radius: 14px;
+}
+.dr-hero-deck .muralism .hat {
+  position: absolute; left: 50%; bottom: 150px; translate: -50% 0;
+  width: 168px; height: 22px; border-radius: 50%;
+  background: #2f5a3e;
+}
+.dr-hero-deck .muralism .hat::after {
+  content: ""; position: absolute; left: 50%; top: -20px; translate: -50% 0;
+  width: 62px; height: 24px; border-radius: 50% 50% 20% 20%; background: #3a6d4a;
+}
+.dr-hero-deck .muralism .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: "Songti SC", "STSong", serif;
+  font-size: 36px; font-weight: 700; line-height: 1.1;
+  letter-spacing: .1em; color: #2f5a3e; text-align: center; text-indent: .05em; transform: translateY(-50%);}
+
+/* ============ 全谱系第五批：罗马马赛克到生成艺术十一种（罗马马赛克 / 高丽青瓷 / 蒙古岩画 / 超现实 / 抽象表现 / 瑞士国际主义 / 日本海报 / 超级波普 / 极简 / 扁平 / 生成艺术）============ */
+
+/* ① 古罗马马赛克（约 100） */
+.dr-hero-deck .romanmosaic { background: #2b2620; }
+.dr-hero-deck .romanmosaic .tiles {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(90deg, #b8452c 0 26%, transparent 26% 100%) 0 0 / 46px 46px,
+    linear-gradient(#d8c8a4 0 26%, transparent 26% 100%) 0 0 / 46px 46px,
+    linear-gradient(90deg, transparent 0 50%, #6b7f9c 50% 74%, transparent 74%) 0 0 / 46px 46px,
+    linear-gradient(0deg, transparent 0 50%, #e0d4b4 50% 74%, transparent 74%) 0 0 / 46px 46px;
+  background-color: #3a332a;
+}
+.dr-hero-deck .romanmosaic .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: Georgia, "Songti SC", serif;
+  font-size: 32px; font-weight: 700; line-height: 1.1;
+  letter-spacing: .06em; color: #f0e6cc; text-align: center; text-indent: .03em;
+  text-shadow: 0 2px 8px rgb(20 16 12 / 80%); transform: translateY(-50%);}
+
+/* ② 蒙古草原岩画（约 1200） */
+.dr-hero-deck .mongolrock { background: #b39a7d; }
+.dr-hero-deck .mongolrock .horse {
+  position: absolute; left: 50%; top: 92px; translate: -50% 0;
+  width: 108px; height: 148px; background: #6b3a1e;
+  border-radius: 46% 46% 26% 26% / 34% 34% 10% 10%;
+}
+.dr-hero-deck .mongolrock .horse::before {
+  content: ""; position: absolute; left: 50%; top: -32px; translate: -50% 0;
+  width: 42px; height: 40px; border-radius: 50% 50% 36% 36%; background: #6b3a1e;
+}
+/* 双翼对称展开，翼上羽纹用重复渐变做岩刻感 */
+.dr-hero-deck .mongolrock .wing {
+  position: absolute; top: 108px; width: 168px; height: 92px; background: #6b3a1e;
+  clip-path: polygon(100% 42%, 72% 2%, 50% 14%, 30% 0, 0 24%, 20% 50%, 0 76%, 38% 64%, 70% 100%, 100% 66%);
+}
+.dr-hero-deck .mongolrock .wing.l { left: 36px; }
+.dr-hero-deck .mongolrock .wing.r { right: 36px; transform: scaleX(-1); }
+.dr-hero-deck .mongolrock .wing::after {
+  content: ""; position: absolute; inset: 0;
+  background: repeating-linear-gradient(58deg, rgb(230 210 180 / 22%) 0 2px, transparent 2px 13px);
+}
+.dr-hero-deck .mongolrock .stroke {
+  position: absolute; left: 40px; bottom: 40px; width: 200px; height: 70px;
+  border: 8px solid #6b3a1e; border-bottom-color: transparent; border-left-color: transparent;
+  border-radius: 50%; transform: rotate(-10deg);
+}
+.dr-hero-deck .mongolrock .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: "Bradley Hand", "Kaiti SC", cursive;
+  font-size: 36px; font-weight: 400; line-height: 1.1; color: #3b2413; text-align: center; transform: translateY(-50%);}
+
+/* ③ 高丽青瓷 / 金缮（约 1150） */
+.dr-hero-deck .celadon { background: #e7e2d4; }
+.dr-hero-deck .celadon .bowl {
+  position: absolute; left: 50%; top: 66px; translate: -50% 0;
+  width: 232px; height: 152px; background: #7fa08c;
+  border-radius: 50% 50% 46% 46% / 30% 30% 70% 70%;
+  box-shadow: inset 0 16px 26px rgb(255 255 255 / 26%), inset 0 -10px 20px rgb(40 70 58 / 34%);
+}
+.dr-hero-deck .celadon .bowl::before {
+  content: ""; position: absolute; left: 50%; top: -12px; translate: -50% 0;
+  width: 232px; height: 30px; border-radius: 50%;
+  background: #93b2a0; box-shadow: inset 0 4px 8px rgb(40 70 58 / 34%);
+}
+.dr-hero-deck .celadon .crack {
+  position: absolute; left: 50%; top: 92px; translate: -50% 0;
+  width: 170px; height: 110px;
+  background:
+    linear-gradient(74deg, transparent 0 47%, #d8b25a 47% 49.5%, transparent 49.5%) 0 0 / 170px 52px no-repeat,
+    linear-gradient(-58deg, transparent 0 55%, #d8b25a 55% 57.5%, transparent 57.5%) 0 48px / 170px 60px no-repeat;
+}
+.dr-hero-deck .celadon .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: "Songti SC", "STSong", serif;
+  font-size: 30px; font-weight: 700; line-height: 1.1;
+  letter-spacing: .12em; color: #3d5a4c; text-align: center; text-indent: .06em; transform: translateY(-50%);}
+
+/* ④ 超现实主义（1924，达利） */
+.dr-hero-deck .surrealism { background: #c9a978; }
+.dr-hero-deck .surrealism .plain {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 44%;
+  background: linear-gradient(#b8976a, #8f7346);
+}
+.dr-hero-deck .surrealism .clock {
+  position: absolute; right: 108px; top: 74px; width: 112px; height: 112px;
+  border-radius: 50%; background: #e8dcc0;
+  box-shadow: 0 6px 0 rgb(120 96 52 / 40%);
+}
+.dr-hero-deck .surrealism .clock::before {
+  content: ""; position: absolute; left: 50%; top: 50%; width: 5px; height: 40px;
+  translate: -50% -100%; background: #3a3026; transform-origin: bottom center; transform: rotate(38deg);
+}
+.dr-hero-deck .surrealism .clock::after {
+  content: ""; position: absolute; left: 50%; top: 50%; width: 40px; height: 4px;
+  translate: -50% -50%; background: #3a3026; transform-origin: center; transform: rotate(-24deg);
+}
+.dr-hero-deck .surrealism .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: "Optima", Georgia, serif;
+  font-size: 32px; font-weight: 400; line-height: 1.1;
+  letter-spacing: .12em; color: #3a3026; text-align: center; text-indent: .06em; transform: translateY(-50%);}
+
+/* ⑤ 抽象表现主义（1947，波洛克） */
+.dr-hero-deck .abstractexp { background: #e6e0d2; }
+.dr-hero-deck .abstractexp .drip {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 8px 4px at 90px 60px, #1d1d1d 0 60%, transparent 62%),
+    radial-gradient(ellipse 6px 3px at 180px 120px, #b8452c 0 60%, transparent 62%),
+    radial-gradient(ellipse 9px 4px at 300px 70px, #1d1d1d 0 60%, transparent 62%),
+    radial-gradient(ellipse 7px 3px at 420px 150px, #2f4f7a 0 60%, transparent 62%),
+    radial-gradient(ellipse 5px 3px at 250px 190px, #1d1d1d 0 60%, transparent 62%);
+}
+.dr-hero-deck .abstractexp .web {
+  position: absolute; inset: 0; opacity: .6;
+  background:
+    repeating-linear-gradient(28deg, transparent 0 40px, rgb(29 29 29 / 55%) 40px 43px, transparent 43px 86px),
+    repeating-linear-gradient(-46deg, transparent 0 34px, rgb(184 69 44 / 42%) 34px 37px, transparent 37px 74px);
+}
+.dr-hero-deck .abstractexp .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 32px; font-weight: 900; line-height: 1.1;
+  letter-spacing: .02em; color: #1d1d1d; text-align: center;
+  text-shadow: 2px 2px 0 rgb(255 255 255 / 70%); transform: translateY(-50%);}
+
+/* ⑥ 超级波普（1962，沃霍尔） */
+.dr-hero-deck .superpop { background: #f2e9d8; }
+.dr-hero-deck .superpop .can {
+  position: absolute; left: 50%; top: 56px; translate: -50% 0;
+  width: 168px; height: 190px; background: #d9a441;
+  border-radius: 8px 8px 14px 14px;
+  box-shadow: inset 0 -30px 0 rgb(0 0 0 / 8%);
+}
+.dr-hero-deck .superpop .can::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 26px;
+  background: #c99a3c; border-radius: 8px 8px 0 0;
+}
+.dr-hero-deck .superpop .dots {
+  position: absolute; left: 50%; top: 92px; translate: -50% 0;
+  width: 128px; height: 110px;
+  background: radial-gradient(#b8452c 4px, transparent 4.5px) 0 0 / 16px 16px;
+}
+.dr-hero-deck .superpop .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 30px; font-weight: 900; line-height: 1.06;
+  letter-spacing: .04em; text-transform: uppercase; color: #b8452c; text-align: center;
+  text-indent: .02em; transform: translateY(-50%);}
+
+/* ⑦ 极简主义（1965） */
+.dr-hero-deck .minimalism { background: #f4f4f2; }
+.dr-hero-deck .minimalism .line {
+  position: absolute; left: 92px; top: 50%; width: 336px; height: 2px;
+  background: #1a1a1a; transform: translateY(-50%);
+}
+.dr-hero-deck .minimalism .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 22px; font-weight: 400; line-height: 1.2;
+  letter-spacing: .22em; text-transform: uppercase; color: #1a1a1a; text-align: center;
+  text-indent: .11em; transform: translateY(-50%);}
+
+/* ⑧ 战后日本海报（1955） */
+.dr-hero-deck .japanposter { background: #f4ead6; }
+.dr-hero-deck .japanposter .sun {
+  position: absolute; right: 62px; top: 34px; width: 128px; height: 128px;
+  border-radius: 50%; background: #d8492f;
+}
+.dr-hero-deck .japanposter .wave {
+  position: absolute; left: -40px; right: -40px; bottom: -40px; height: 150px;
+  background: linear-gradient(#2f6f8f, #1d4a63);
+  border-radius: 52% 48% 0 0 / 100% 100% 0 0;
+}
+.dr-hero-deck .japanposter .t { width: max-content; top: 50%;
+  position: absolute; left: 50%; z-index: 3;
+  font-family: "Songti SC", "STSong", serif;
+  font-size: 38px; font-weight: 700; line-height: 1.18;
+  letter-spacing: .1em; color: #1d4a63; writing-mode: vertical-rl; transform: translate(-50%, -50%);}
+.dr-hero-deck .japanposter .sub {
+  position: absolute; left: 40px; bottom: 26px; z-index: 3;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 15px; font-weight: 700; letter-spacing: .22em; color: #f4ead6;
+}
+
+/* ⑨ 扁平设计（2010） */
+.dr-hero-deck .flatdesign { background: #2d7ff9; }
+.dr-hero-deck .flatdesign .circle {
+  position: absolute; right: -40px; top: -40px; width: 210px; height: 210px;
+  border-radius: 50%; background: #ffd23f;
+}
+.dr-hero-deck .flatdesign .square {
+  position: absolute; left: 46px; bottom: 34px; width: 96px; height: 96px;
+  background: #ef476f;
+}
+.dr-hero-deck .flatdesign .tri {
+  position: absolute; right: 96px; bottom: 40px; width: 0; height: 0;
+  border-left: 48px solid transparent; border-right: 48px solid transparent;
+  border-bottom: 84px solid #06d6a0;
+}
+.dr-hero-deck .flatdesign .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: "PingFang SC", "Heiti SC", "Helvetica Neue", sans-serif;
+  font-size: 38px; font-weight: 700; line-height: 1.08;
+  letter-spacing: .02em; color: #ffffff; text-align: center; transform: translateY(-50%);}
+
+/* ⑩ 瑞士国际主义 / 极简 UI（1950） */
+.dr-hero-deck .swissgrid { background: #f7f7f5; }
+.dr-hero-deck .swissgrid .grid {
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(90deg, rgb(20 20 20 / 10%) 0 1px, transparent 1px 52px),
+    repeating-linear-gradient(0deg, rgb(20 20 20 / 10%) 0 1px, transparent 1px 52px);
+}
+.dr-hero-deck .swissgrid .bar {
+  position: absolute; left: 0; top: 104px; width: 100%; height: 26px; background: #e2231a;
+}
+.dr-hero-deck .swissgrid .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 30px; font-weight: 700; line-height: 1.1;
+  letter-spacing: .04em; color: #141414; text-align: center; text-indent: .02em; transform: translateY(-50%);}
+.dr-hero-deck .swissgrid .sub {
+  position: absolute; left: 0; right: 0; bottom: 26px; z-index: 3;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px; font-weight: 400; letter-spacing: .3em;
+  text-transform: uppercase; color: #6b6b6b; text-align: center; text-indent: .15em;
+}
+
+/* ⑪ 生成艺术 / AI 艺术（2020） */
+.dr-hero-deck .genart { background: #0a0a12; }
+.dr-hero-deck .genart .field {
+  position: absolute; inset: 0;
+  background:
+    repeating-conic-gradient(from 0deg at 42% 58%, #ff2e88 0deg 2deg, transparent 2deg 6deg),
+    repeating-radial-gradient(circle at 62% 44%, #00e0ff 0 3px, transparent 3px 14px),
+    radial-gradient(circle at 40% 55%, #7b2ff7 0 10%, transparent 62%);
+  opacity: .82;
+  filter: blur(1px);
+}
+.dr-hero-deck .genart .grid {
+  position: absolute; inset: 0; opacity: .3;
+  background: repeating-linear-gradient(0deg, rgb(255 255 255 / 16%) 0 1px, transparent 1px 5px);
+}
+.dr-hero-deck .genart .t { top: 50%;
+  position: absolute; left: 0; right: 0; z-index: 3;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 30px; font-weight: 700; line-height: 1.1;
+  letter-spacing: .08em; color: #eaf6ff; text-align: center;
+  text-shadow: 0 0 16px rgb(120 220 255 / 70%); transform: translateY(-50%);}
+
+/* ============================================================
+   文字居中后的可读性兜底（2026-10-24）
+   文字移到正中后会压在主体图形上 → 用 currentColor 同色光晕把字"浮"起来。
+   用 filter 而不是 text-shadow：不会覆盖各卡自己写的描边/投影。
+   ============================================================ */
+.dr-hero-deck .art-card .t {
+  filter: drop-shadow(0 0 4px currentColor) drop-shadow(0 0 11px currentColor);
 }
 
 /* ============ 顶栏「找论文」+ 搜索弹窗（components/PaperSearch.vue）============ */

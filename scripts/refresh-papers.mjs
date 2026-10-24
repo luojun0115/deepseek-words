@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-// 论文总览页刷新：仓内文稿母本 content/DeepSeek_论文列表.md → papers.md（加 frontmatter+导流头）→ 可选重建。
-// 用法：node scripts/refresh-papers.mjs            # 只重新生成 papers.md
+// 论文总览页刷新：仓内文稿母本 content/DeepSeek_论文列表.md → notes/papers.md（加 frontmatter+导流头）→ 可选重建。
+// 用法：node scripts/refresh-papers.mjs            # 只重新生成 notes/papers.md
 //       node scripts/refresh-papers.mjs --build   # 生成后顺带 npm run build
-//       node scripts/refresh-papers.mjs --check   # 只对账（papers.md 是不是文稿的当前产物），不写盘
+//       node scripts/refresh-papers.mjs --check   # 只对账（是不是文稿的当前产物），不写盘
 import fs from 'node:fs'
 import path from 'node:path'
 import { execSync } from 'node:child_process'
@@ -27,9 +27,18 @@ if (!fs.existsSync(SRC)) {
 // 建页篇数跟 papers.json 走（加篇/重排编号后不必改这里的文案）
 const np = JSON.parse(fs.readFileSync(path.join(PORTAL, 'data/papers.json'), 'utf8')).length
 
+// 2026-10-24 用户定案：论文总览归入「学习笔记」栏目，产物从仓根 papers.md 挪到 notes/papers.md。
+// 好处是它跟专题笔记同目录、走同一套渲染：PaperIndex.vue 用同一个 glob 扫到它、
+// gen-topic-covers.mjs 给它出封面，组件里不再需要一张写死的「导览卡」特例。
+// 注意：它不是人工写的笔记（由本脚本从文稿生成），改内容请改 content/DeepSeek_论文列表.md。
+// order 是组内排序权重（越小越前），索引页理应排第一；专题笔记不写就是默认 500。
 const HEAD = `---
 pageClass: wide papers
 title: 论文总览
+order: 1
+cover: "${np} 篇技术报告， / 两年九个月，五条主线。"
+coverKicker: "Index · Papers"
+coverYear: "2024 — 2026"
 ---
 
 # 📚 DeepSeek 论文总览
@@ -39,17 +48,17 @@ DeepSeek 全系列论文的时间线、分主线清单与解读资源汇总。�
 `
 
 const body = fs.readFileSync(SRC, 'utf8')
-const out = path.join(PORTAL, 'papers.md')
+const out = path.join(PORTAL, 'notes', 'papers.md')
 const before = fs.existsSync(out) ? fs.readFileSync(out, 'utf8') : ''
 
 // --check：pre-push 钩子与自检用它拦「改了文稿忘渲染就 push」（跟 gen-data --check 同一套路）
 if (process.argv.includes('--check')) {
   if (before !== HEAD + body) {
-    console.error(`✗ papers.md 与文稿母本 content/DeepSeek_论文列表.md 不同步（改了文稿忘渲染）` +
-      `\n  跑一句 npm run papers 重新生成，再把 papers.md 一起提交`)
+    console.error(`✗ notes/papers.md 与文稿母本 content/DeepSeek_论文列表.md 不同步（改了文稿忘渲染）` +
+      `\n  跑一句 npm run papers 重新生成，再把 notes/papers.md 一起提交`)
     process.exit(1)
   }
-  console.log(`✓ refresh-papers --check：papers.md 与仓内文稿一致（${body.split('\n').length} 行正文）`)
+  console.log(`✓ refresh-papers --check：notes/papers.md 与仓内文稿一致（${body.split('\n').length} 行正文）`)
   process.exit(0)
 }
 
@@ -58,7 +67,7 @@ fs.writeFileSync(out, HEAD + body)
 // 报告变化规模（按正文行数粗算，忽略头部）
 const strip = s => s.split('\n').slice(HEAD.trimEnd().split('\n').length).join('\n')
 const changed = before ? (strip(before) === strip(body) ? 0 : Math.abs(body.split('\n').length - strip(before).split('\n').length)) : -1
-console.log(`✓ papers.md 已刷新（源：${SRC}）`)
+console.log(`✓ notes/papers.md 已刷新（源：${SRC}）`)
 console.log(changed === -1 ? '  首次生成' : changed === 0 ? '  内容无变化' : `  正文约变动 ${changed} 行`)
 
 if (process.argv.includes('--build')) {

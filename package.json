@@ -10,6 +10,7 @@
     "sync": "node scripts/sync-pages.mjs",
     "data": "python3 scripts/gen-data.py",
     "notes": "node scripts/gen-notes.mjs",
+    "covers": "node scripts/gen-topic-covers.mjs",
     "papers": "node scripts/refresh-papers.mjs",
     "verify": "node scripts/verify_content.mjs",
     "selfcheck": "node scripts/selfcheck_in_repo.mjs",
