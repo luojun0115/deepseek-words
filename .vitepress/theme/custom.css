@@ -179,8 +179,9 @@
 .dr-lib .dr-official.is-navy .dr-official-url { color: rgba(255, 255, 255, .36); }
 
 /* 置顶角标：右上实心小三角，「置顶」两字平行于斜边（45° 往右下）。
-   做法：字整体 rotate(45deg)，字心沿（右,上）推 0.354em（行高一半 × √2/2），
-   字的"脚"正好压在斜边上 —— 四个角逐一验算都落在三角内。偏移用 em 写，字号变了自动跟随。 */
+   做法：字整体 rotate(45deg)，字心沿（右,上）推 0.85em —— 正好落在直角三角的重心上
+   （重心在角框中心的 +L/6, -L/6 方向；L/6 ÷ 字号 ≈ 0.85em），字就"待"在三角中间而不是压在斜边上。
+   偏移用 em 写，字号变了自动跟随。 */
 .dr-lib .dr-pin {
   position: absolute; top: 0; right: 0; width: 56px; height: 56px; z-index: 3; pointer-events: none;
   border-radius: 0 20px 0 0; overflow: hidden;
@@ -190,7 +191,7 @@
 }
 .dr-lib .dr-pin b {
   position: absolute; left: 50%; top: 50%; transform-origin: 50% 50%;
-  transform: translate(-50%, -50%) translate(0.354em, -0.354em) rotate(45deg);
+  transform: translate(-50%, -50%) translate(0.85em, -0.85em) rotate(45deg);
   font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
   font-size: 11px; font-weight: 700; line-height: 1; letter-spacing: .08em;
   color: #FFD21E; white-space: nowrap;
@@ -2603,5 +2604,71 @@
   clip-path: polygon(100% 14%, 80% 4%, 58% 10%, 36% 2%, 16% 10%, 0 24%,
     12% 40%, 2% 56%, 18% 64%, 10% 84%, 32% 74%, 42% 94%, 58% 76%, 74% 90%, 100% 74%);
 }
-.dr-hero-deck .mongolrock .wing.l { left: 62px; right: auto; transform: rotate(6deg); }
-.dr-hero-deck .mongolrock .wing.r { right: 62px; left: auto; transform: scaleX(-1) rotate(6deg); }
+/* 第 14 张：头补喙，跟波斯那张一致，是鸟不是人 */
+.dr-hero-deck .mongolrock .horse::before {
+  border-radius: 0;
+  clip-path: polygon(0 6%, 62% 0, 100% 34%, 60% 48%, 58% 100%, 4% 100%);
+}
+
+/* 第 14 张：三块图形（身+双翼）往中间收拢，翼根离身体更近 */
+.dr-hero-deck .mongolrock .wing.l { left: 96px; right: auto; transform: rotate(6deg); }
+.dr-hero-deck .mongolrock .wing.r { right: 96px; left: auto; transform: scaleX(-1) rotate(6deg); }
+
+/* —— 第 18/21 张 修复（2026-10-25 用户指定「还是有些问题」）—— */
+/* 第 18 张 文艺复兴：米色圆盘顶到卡顶，白字横穿圆盘（「is all」被吞）
+   → 圆盘落进拱门内当圆窗；顶部文字改深棕色（白字在米褐天空上对比度只有 2.4:1） */
+.dr-hero-deck .renaissance .dome { bottom: 149px; }
+.dr-hero-deck .renaissance .t {
+  top: 16px; transform: none;
+  font-size: 30px; color: #4a3320; letter-spacing: .05em; text-indent: .03em;
+  text-shadow: 0 1px 0 rgb(255 246 228 / 45%);
+}
+
+/* 第 21 张 巴洛克：硬边梯形光柱像贴上去的几何块 → 改成柔化光锥；
+   玫瑰窗缩小并上移，与底部文字拉开距离；两侧拱柱提亮一点；文字改一行 */
+.dr-hero-deck .baroque .rosace {
+  top: 40px; width: 136px; height: 136px;
+  box-shadow: 0 0 54px rgb(255 200 96 / 30%);
+}
+.dr-hero-deck .baroque .beam {
+  top: -70px; width: 380px; height: 320px;
+  background: radial-gradient(ellipse at 50% 0%, rgb(255 226 150 / 34%), transparent 72%);
+  clip-path: none; filter: blur(14px);
+}
+.dr-hero-deck .baroque .arch {
+  background: linear-gradient(180deg, #0d0805 0%, #33260f 62%, #241a0c 100%);
+}
+.dr-hero-deck .baroque .t { bottom: 22px; font-size: 26px; }
+
+/* —— 第 18/21 张 二次收尾（2026-10-25）—— */
+/* 第 18 张：拱门顶与文字下缘还有一点交叠 → 拱门压矮一点 */
+.dr-hero-deck .renaissance .arch { height: 126px; }
+
+/* 第 21 张：柔化后光柱失去方向（一片黄雾）→ 改回有方向感的放射光束（只做轻度模糊）；
+   玫瑰窗辐条加粗，更像教堂彩窗的窗棂分隔 */
+.dr-hero-deck .baroque .beam {
+  top: -60px; width: 520px; height: 300px;
+  background: repeating-conic-gradient(from 180deg at 50% 0%,
+    rgb(255 226 150 / 17%) 0 7deg, transparent 7deg 24deg);
+  clip-path: none; filter: blur(6px);
+}
+.dr-hero-deck .baroque .rosace {
+  background:
+    repeating-conic-gradient(from 0deg at 50% 50%, #e0ac4c 0 4.5deg, transparent 4.5deg 18deg),
+    radial-gradient(circle at 50% 50%, #f6dda0 0 10%, transparent 10%),
+    radial-gradient(circle at 50% 50%, transparent 0 58%, #b8862f 58% 66%, transparent 66%),
+    radial-gradient(circle at 50% 50%, #1c1309 0 100%);
+}
+
+/* —— 第 3/11/14 张（2026-10-25 用户指定：间距再大一点 / 第 3 张去文字）—— */
+/* 第 3 张 古埃及：去掉「一站读透」，只留侧身人物 + 象形文字列 + 眼形符号 */
+.dr-hero-deck .egypt .t { display: none; }
+
+/* 第 11 张 伊斯兰：文字上移 + 星形下移，间距从 9px 拉到 ~36px */
+.dr-hero-deck .islamic .t { top: 20px; }
+.dr-hero-deck .islamic .star { top: 60%; }
+
+/* 第 14 张 蒙古岩画：文字上移 + 飞禽下移，间距从 ~10px 拉到 ~28px */
+.dr-hero-deck .mongolrock .t { top: 18px; }
+.dr-hero-deck .mongolrock .horse { top: 116px; }
+.dr-hero-deck .mongolrock .wing { top: 124px; }
