@@ -10,7 +10,7 @@ coverFile: 缩放定律05_重复数据
 pageClass: note-page
 ---
 
-[← 专题总览](../index.md)
+[← 专题总览](../index.md) · [全网解读资源 →](解读资源.md)
 
 # 05 · Hernandez 2022：从重复数据学到的缩放律与可解释性
 
@@ -133,13 +133,9 @@ Lee et al. 2021（去重必要性）→【本文 2022.05：重复的伤害何时
 
 ## ⑨ 资源与延伸阅读
 
-- **A 一手原文**：[Scaling Laws and Interpretability of Learning from Repeated Data（arXiv:2205.10487）](https://arxiv.org/abs/2205.10487) —— 取用：§1.1 结果摘要、§2 各图
-- **B 官方资源**：[HTML 全文（arXiv）](https://arxiv.org/html/2205.10487v1)
-- **C 二手解读**：
-  - [alphaxiv · 讨论页](https://www.alphaxiv.org/abs/2205.10487) —— 取用：结论速览与社区追问
-  - [UW CSE 599J · Scaling Laws 课程讲义](https://koh.pw/cse599j/slides/CSE599J_1-10-24.pdf) —— 取用：把本文放进九篇缩放律课程的讲授顺序
-  - [Olsson et al. 2022 · In-context Learning and Induction Heads](https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html) —— 取用：归纳头探针的原始定义
-- **D 讨论**：[r/mlscaling · 相关讨论存档](https://www.reddit.com/r/mlscaling/) —— 取用：发布期的机制解读争论
+- **一手原文**：[Scaling Laws and Interpretability of Learning from Repeated Data（arXiv:2205.10487）](https://arxiv.org/abs/2205.10487) —— 本文取用：§1.1 结果摘要、§2 各图
+- **全网解读**：见同目录 **[解读资源.md](解读资源.md)**（知乎 / 中文媒体 / 视频 / 英文站点 / 社区 / 一手资源 / 建议路径）——**只维护这一份，本文不再列链接副本**
+
 
 ## ⑩ 核心术语表
 

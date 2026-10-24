@@ -10,7 +10,7 @@ coverFile: 缩放定律07_下游任务
 pageClass: note-page
 ---
 
-[← 专题总览](../index.md)
+[← 专题总览](../index.md) · [全网解读资源 →](解读资源.md)
 
 # 07 · Isik 2024：下游任务的缩放律
 
@@ -114,14 +114,9 @@ Kaplan/Chinchilla（上游 loss 律）→【本文 2024：下游指标律 + 脱�
 
 ## ⑨ 资源与延伸阅读
 
-- **A 一手原文**：[v1（arXiv:2402.04177v1，原名即用户所列标题）](https://arxiv.org/abs/2402.04177v1) · [v3（ICLR 2025 机器翻译专版）](https://arxiv.org/abs/2402.04177) —— 取用：v1 摘要（对齐/log-law/脱钩三结论）、v3 的 COMET 扩展
-- **B 官方资源**：[ICLR 2025 论文页](https://iclr.cc/virtual/2025/poster/27915)
-- **C 二手解读**：
-  - [Berivan Isik · USC 报告页（2024-10）](https://sites.usc.edu/aif4s/cool_timeline/talk-by-berivan-isik-google-research/) —— 取用：作者本人的研究综述口径
-  - [Downstream Scaling Laws 主题页（Emergent Mind）](https://www.emergentmind.com/topics/downstream-scaling-laws) —— 取用：本领域综述地图
-  - [Lourie et al. 2025 · Scaling Laws Are Unreliable for Downstream Tasks（EMNLP Findings）](https://aclanthology.org/2025.findings-emnlp.877.pdf) —— 取用：批判性续作
-  - [Bansal et al. 2022 · Data Scaling Laws in NMT（ICML）](https://proceedings.mlr.press/v162/bansal22b/bansal22b.pdf) —— 取用：前置工作
-- **D 讲座**：作者在 USC 的同名报告（见 C 第一条页面内录像链接）
+- **一手原文**：[v1（arXiv:2402.04177v1，原名即用户所列标题）](https://arxiv.org/abs/2402.04177v1) —— 本文取用：v1 摘要（对齐/log-law/脱钩三结论）、v3 的 COMET 扩展
+- **全网解读**：见同目录 **[解读资源.md](解读资源.md)**（知乎 / 中文媒体 / 视频 / 英文站点 / 社区 / 一手资源 / 建议路径）——**只维护这一份，本文不再列链接副本**
+
 
 ## ⑩ 核心术语表
 

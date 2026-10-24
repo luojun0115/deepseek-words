@@ -10,7 +10,7 @@ coverFile: 缩放定律04_数据剪枝
 pageClass: note-page
 ---
 
-[← 专题总览](../index.md)
+[← 专题总览](../index.md) · [全网解读资源 →](解读资源.md)
 
 # 04 · Sorscher 2022：Beyond Neural Scaling Laws — 数据剪枝打破幂律
 
@@ -113,12 +113,9 @@ Kaplan/Chinchilla（数据当均匀介质）→【本文 2022：数据有结构�
 
 ## ⑨ 资源与延伸阅读
 
-- **A 一手原文**：[Beyond Neural Scaling Laws（arXiv:2206.14486）](https://arxiv.org/abs/2206.14486) —— 取用：§3（三种数据结构）、§4（ImageNet 实验）
-- **B 官方资源**：[NeurIPS 2022 收录页](https://proceedings.neurips.cc/paper_files/paper/2022/hash/7b75da9b61eda40fa35453ee5d077df6-Abstract-Conference.html) · [OpenReview 讨论](https://openreview.net/forum?id=UmvSlP-PyV)（含审稿人对理论适用范围的追问）
-- **C 二手解读 / 延伸**：
-  - [Epoch AI · Scaling laws literature review（Villalobos）](https://epoch.ai/publications/scaling-laws-literature-review) —— 取用：本文在缩放律谱系中的位置
-  - [JEST: Data curation via joint example selection（arXiv:2406.17711）](https://arxiv.org/abs/2406.17711) —— 取用：剪枝思想的工业化续作
-- **D 视频**：[Beyond neural scaling laws – Paper Explained（YouTube）](https://www.youtube.com/watch?v=joZaCw5PxYs) —— 取用：三种数据结构的动画演示
+- **一手原文**：[Beyond Neural Scaling Laws（arXiv:2206.14486）](https://arxiv.org/abs/2206.14486) —— 本文取用：§3（三种数据结构）、§4（ImageNet 实验）
+- **全网解读**：见同目录 **[解读资源.md](解读资源.md)**（知乎 / 中文媒体 / 视频 / 英文站点 / 社区 / 一手资源 / 建议路径）——**只维护这一份，本文不再列链接副本**
+
 
 ## ⑩ 核心术语表
 

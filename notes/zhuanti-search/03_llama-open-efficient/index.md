@@ -10,7 +10,7 @@ coverFile: 缩放定律03_LLaMA
 pageClass: note-page
 ---
 
-[← 专题总览](../index.md)
+[← 专题总览](../index.md) · [全网解读资源 →](解读资源.md)
 
 # 03 · LLaMA 2023：Open and Efficient Foundation Language Models
 
@@ -121,12 +121,9 @@ Kaplan 2020 → Chinchilla 2022 →【本文 2023：换目标函数】→ Llama-
 
 ## ⑨ 资源与延伸阅读
 
-- **A 一手原文**：[LLaMA: Open and Efficient Foundation Language Models（arXiv:2302.13971）](https://arxiv.org/abs/2302.13971) —— 取用：§2（数据配比）、§3（基准对比）
-- **B 官方资源**：[Meta AI 公告页](https://ai.meta.com/blog/large-language-model-llama-meta-ai/)
-- **C 二手解读**：
-  - [LLaMA Paper Summary（AI Zero to Hero）](https://ai.noblerworks.com/papers/language-models/15-llama/summary/) —— 取用：训练配方速查
-  - [alphaxiv · LLaMA 讨论页](https://www.alphaxiv.org/abs/2302.13971) —— 取用：65B vs Chinchilla 的逐任务对比整理
-- **D 视频**：[LLaMA 论文讲解（YouTube）](https://www.youtube.com/watch?v=E5OnoYF2oAk) —— 取用：7B~65B 系列的设计动机串讲
+- **一手原文**：[LLaMA: Open and Efficient Foundation Language Models（arXiv:2302.13971）](https://arxiv.org/abs/2302.13971) —— 本文取用：§2（数据配比）、§3（基准对比）
+- **全网解读**：见同目录 **[解读资源.md](解读资源.md)**（知乎 / 中文媒体 / 视频 / 英文站点 / 社区 / 一手资源 / 建议路径）——**只维护这一份，本文不再列链接副本**
+
 
 ## ⑩ 核心术语表
 

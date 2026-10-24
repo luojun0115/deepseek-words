@@ -10,7 +10,7 @@ coverFile: 缩放定律01_Kaplan
 pageClass: note-page
 ---
 
-[← 专题总览](../index.md)
+[← 专题总览](../index.md) · [全网解读资源 →](解读资源.md)
 
 # 01 · Kaplan 2020：Scaling Laws for Neural Language Models
 
@@ -129,13 +129,9 @@ log(损失)
 
 ## ⑨ 资源与延伸阅读
 
-- **A 一手原文**：[Scaling Laws for Neural Language Models（arXiv:2001.08361）](https://arxiv.org/abs/2001.08361) —— 取用：Table 1（三条幂律参数）、§6.2（算力分配）
-- **B 同组后续**：[GPT-3 论文（arXiv:2005.14165）](https://arxiv.org/abs/2005.14165) —— 本文策略的第一个大规模落地
-- **C 二手解读**：
-  - [Scaling laws for neural language models · 走读笔记（Krish Patel, UWaterloo）](https://cs.uwaterloo.ca/~k587pate/notes/scaling-laws-kaplan.html) —— 取用：逐条推导与曲线讲解
-  - [Scaling Laws: Kaplan, Chinchilla, Mirage Emergence（TheoremPath 专题页）](https://theorempath.com/topics/scaling-laws) —— 取用：两代定律的对照框架
-  - [Chinchilla Scaling: A replication attempt（arXiv:2404.10102）](https://arxiv.org/abs/2404.10102) —— 取用：对 Kaplan 拟合方法的批判细节
-- **D 课程讲义**：[UW CSE 599J · Scaling Laws 课程（2024 冬，第 1 讲）](https://koh.pw/cse599j/slides/CSE599J_1-10-24.pdf) —— 取用：教学视角的九篇缩放律综述串讲
+- **一手原文**：[Scaling Laws for Neural Language Models（arXiv:2001.08361）](https://arxiv.org/abs/2001.08361) —— 本文取用：Table 1（三条幂律参数）、§6.2（算力分配）
+- **全网解读**：见同目录 **[解读资源.md](解读资源.md)**（知乎 / 中文媒体 / 视频 / 英文站点 / 社区 / 一手资源 / 建议路径）——**只维护这一份，本文不再列链接副本**
+
 
 ## ⑩ 核心术语表
 

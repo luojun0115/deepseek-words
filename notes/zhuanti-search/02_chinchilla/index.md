@@ -10,7 +10,7 @@ coverFile: 缩放定律02_Chinchilla
 pageClass: note-page
 ---
 
-[← 专题总览](../index.md)
+[← 专题总览](../index.md) · [全网解读资源 →](解读资源.md)
 
 # 02 · Chinchilla 2022：Training Compute-Optimal Large Language Models
 
@@ -123,13 +123,9 @@ Kaplan 2020（模型为王 C^0.73）→【本文 2022：1:1 等比】→ LLaMA 2
 
 ## ⑨ 资源与延伸阅读
 
-- **A 一手原文**：[Training Compute-Optimal Large Language Models（arXiv:2203.15556）](https://arxiv.org/abs/2203.15556) —— 取用：Table 3（拟合常数与欠训估算）、§3（三种方法）
-- **B 官方资源**：[NeurIPS 2022 正式版](https://proceedings.neurips.cc/paper/2022/file/c1e2faff6f588870935f114ebe04a3e5-Paper-Conference.pdf) · [HuggingFace Papers 页](https://huggingface.co/papers/2203.15556)
-- **C 二手解读**：
-  - [Chinchilla — The Paper That Changed AI（Omar Faroque 博客）](https://www.omarfaroque.com/posts/chinchilla.html) —— 取用："改判"叙事的清晰时间线
-  - [Chinchilla Scaling: A replication attempt（arXiv:2404.10102）](https://arxiv.org/abs/2404.10102) —— 取用：对三法原始数据的复核与修正
-  - [TheoremPath · Scaling Laws 专题页](https://theorempath.com/topics/scaling-laws) —— 取用：Kaplan vs Chinchilla 的公式级对照
-- **D 讨论存档**：[r/mlscaling · Chinchilla 发布讨论串（2022-03）](https://www.reddit.com/r/mlscaling/comments/trwkck/training_computeoptimal_large_language_models/) —— 取用：发布当周的业界第一反应
+- **一手原文**：[Training Compute-Optimal Large Language Models（arXiv:2203.15556）](https://arxiv.org/abs/2203.15556) —— 本文取用：Table 3（拟合常数与欠训估算）、§3（三种方法）
+- **全网解读**：见同目录 **[解读资源.md](解读资源.md)**（知乎 / 中文媒体 / 视频 / 英文站点 / 社区 / 一手资源 / 建议路径）——**只维护这一份，本文不再列链接副本**
+
 
 ## ⑩ 核心术语表
 

@@ -10,7 +10,7 @@ coverFile: 缩放定律06_数据受限
 pageClass: note-page
 ---
 
-[← 专题总览](../index.md)
+[← 专题总览](../index.md) · [全网解读资源 →](解读资源.md)
 
 # 06 · Muennighoff 2023：数据受限语言模型的缩放律
 
@@ -127,13 +127,9 @@ Villalobos 2022（数据见顶预测）→ Hernandez 2022（重复的伤害，�
 
 ## ⑨ 资源与延伸阅读
 
-- **A 一手原文**：[Scaling Data-Constrained Language Models（arXiv:2305.16264）](https://arxiv.org/abs/2305.16264) —— 取用：§4（4 epochs 曲线）、§5（受限缩放律）
-- **B 官方资源**：[GitHub · huggingface/datablations](https://github.com/huggingface/datablations)（400 runs 的模型与数据）· [HuggingFace Papers 页](https://huggingface.co/papers/2305.16264)
-- **C 二手解读**：
-  - [数据受限语言模型扩展（BAAI 中文导读）](https://hub.baai.ac.cn/view/27223) —— 取用：中文视角的结论摘要
-  - [Will We Run Out of Data?（arXiv:2211.04325）](https://arxiv.org/abs/2211.04325) —— 取用："数据见顶"的问题来源
-  - [r/MachineLearning · 论文讨论串](https://www.reddit.com/r/MachineLearning/comments/16ifl84/r_scaling_dataconstrained_language_models_hugging/) —— 取用：作者答疑与业界反馈
-- **D 讨论**：[Niklas Muennighoff · 后续实践推文](https://x.com/Muennighoff/status/1724134083905884408)（38B token 重复 8 epochs 训芬兰语 LLM）—— 取用：法则在小语种场景的应用验证
+- **一手原文**：[Scaling Data-Constrained Language Models（arXiv:2305.16264）](https://arxiv.org/abs/2305.16264) —— 本文取用：§4（4 epochs 曲线）、§5（受限缩放律）
+- **全网解读**：见同目录 **[解读资源.md](解读资源.md)**（知乎 / 中文媒体 / 视频 / 英文站点 / 社区 / 一手资源 / 建议路径）——**只维护这一份，本文不再列链接副本**
+
 
 ## ⑩ 核心术语表
 

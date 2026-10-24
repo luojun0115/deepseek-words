@@ -10,7 +10,7 @@ coverFile: 缩放定律08_观测缩放律
 pageClass: note-page
 ---
 
-[← 专题总览](../index.md)
+[← 专题总览](../index.md) · [全网解读资源 →](解读资源.md)
 
 # 08 · Ruan 2024：观测缩放律——不训练也能预测 GPT-4
 
@@ -115,12 +115,9 @@ Schaeffer 2023（涌现 = Mirage？）→【本文 2024.05：能力空间的 S �
 
 ## ⑨ 资源与延伸阅读
 
-- **A 一手原文**：[Observational Scaling Laws（arXiv:2405.10938）](https://arxiv.org/abs/2405.10938) —— 取用：摘要（四大预测任务）、§4-6
-- **B 官方资源**：[GitHub · ryoungj/obsscaling](https://github.com/ryoungj/obsscaling)（代码与拟合脚本）· [NeurIPS 2024 Spotlight 页](https://neurips.cc/virtual/2024/poster/95350)
-- **C 二手解读**：
-  - [alphaxiv · 讨论页](https://www.alphaxiv.org/abs/2405.10938) —— 取用：方法速览与"GPT-4 预测"热评
-  - [NeurIPS 官方摘要页](https://proceedings.neurips.cc/paper_files/paper/2024/hash/1cded4f97cf5f01a284c574110b7e3b9-Abstract-Conference.html)
-- **D 相关前置**：[Schaeffer et al. 2023 · Are Emergent Abilities of LLMs a Mirage?](https://arxiv.org/abs/2304.15004) —— 取用："涌现是否假象"争论的原始论文
+- **一手原文**：[Observational Scaling Laws（arXiv:2405.10938）](https://arxiv.org/abs/2405.10938) —— 本文取用：摘要（四大预测任务）、§4-6
+- **全网解读**：见同目录 **[解读资源.md](解读资源.md)**（知乎 / 中文媒体 / 视频 / 英文站点 / 社区 / 一手资源 / 建议路径）——**只维护这一份，本文不再列链接副本**
+
 
 ## ⑩ 核心术语表
 

@@ -10,7 +10,7 @@ coverFile: 缩放定律09_gzip
 pageClass: note-page
 ---
 
-[← 专题总览](../index.md)
+[← 专题总览](../index.md) · [全网解读资源 →](解读资源.md)
 
 # 09 · Pandey 2024：gzip 预测数据依赖的缩放律
 
@@ -136,13 +136,9 @@ Jones 2021（律随任务难度平移）→ Sorscher 2022（数据结构改变�
 
 ## ⑨ 资源与延伸阅读
 
-- **A 一手原文**：[gzip Predicts Data-dependent Scaling Laws（arXiv:2405.16684）](https://arxiv.org/abs/2405.16684) —— 取用：Eq.1-4、Table 1-3
-- **B 官方资源**：[GitHub · KhoomeiK/complexity-scaling](https://github.com/KhoomeiK/complexity-scaling)（PCFG 生成器 + 拟合代码）
-- **C 二手解读**：
-  - [Papers Explained · gzip Predicts Data-dependent Scaling Laws（Ritvik 19, Medium）](https://ritvik19.medium.com/papers-explained-570-gzip-predicts-data-dependent-scaling-laws-44c1d94b1213) —— 取用：压缩率测量与实验流程的逐步讲解
-  - [mlsanity · 论文页](https://mlsanity.com/paper/2405.16684/) —— 取用：结论速览
-  - [Delétang et al. 2023 · Language Modeling Is Compression（arXiv:2309.10668）](https://arxiv.org/abs/2309.10668) —— 取用："LM 即压缩器"的姊妹视角
-- **D 前置**：[Jones 2021 · Scaling Laws for Board Games（arXiv:2104.03787）](https://arxiv.org/abs/2104.03787) —— 取用："律随难度平移"的首个证据
+- **一手原文**：[gzip Predicts Data-dependent Scaling Laws（arXiv:2405.16684）](https://arxiv.org/abs/2405.16684) —— 本文取用：Eq.1-4、Table 1-3
+- **全网解读**：见同目录 **[解读资源.md](解读资源.md)**（知乎 / 中文媒体 / 视频 / 英文站点 / 社区 / 一手资源 / 建议路径）——**只维护这一份，本文不再列链接副本**
+
 
 ## ⑩ 核心术语表
 
