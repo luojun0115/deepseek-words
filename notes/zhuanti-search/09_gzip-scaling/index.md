@@ -126,7 +126,7 @@ Jones 2021（律随任务难度平移）→ Sorscher 2022（数据结构改变�
     ↘ 后续数据混合律（data mixing laws）研究把"复杂度→配比"推向连续优化
 ```
 
-**与 DeepSeek 系列的关联**：DeepSeek 系对代码/数学语料的配比显著高于 LLaMA 时代（[03 篇](../03_llama-open-efficient/README.md) 的 7% → V3 的大幅加权），方向与本文一致：**难压缩的语料要多喂**；DeepSeek-Coder 的训练配置可视为"按数据复杂度调分配"的工业案例。
+**与 DeepSeek 系列的关联**：DeepSeek 系对代码/数学语料的配比显著高于 LLaMA 时代（[03 篇](../03_llama-open-efficient/index.md) 的 7% → V3 的大幅加权），方向与本文一致：**难压缩的语料要多喂**；DeepSeek-Coder 的训练配置可视为"按数据复杂度调分配"的工业案例。
 
 ## ⑨ 资源与延伸阅读
 

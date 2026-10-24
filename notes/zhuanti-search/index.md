@@ -1,6 +1,6 @@
 ---
 # 专题精读工作区：缩放定律（Scaling Laws）。
-# 本目录一篇论文一个子目录，每个子目录的 README.md 是精读正文：
+# 本目录一篇论文一个子目录，每个子目录的 index.md 是精读正文（目录首页）：
 # 身份卡 / 定位与动机 / 核心贡献 / 方法精读 / 实验解读 / 知识点拓展 / 批判性评价 / 谱系定位 / 资源来源 / 术语表。
 # 文件在 notes/ 子目录下、不带 NN_ 编号前缀，不属于 data/papers.json，也不占用 /notes 索引的论文卡位
 # （PaperIndex 的 glob 只扫 notes/*.md 一层，详见 components/PaperIndex.vue）。
@@ -39,17 +39,17 @@ pageClass: note-page
 
 | # | 目录 | 简称 | 一句话 | 年份 / 机构 | arXiv |
 |---|------|------|--------|------------|-------|
-| 01 | [01_kaplan-scaling-laws](01_kaplan-scaling-laws/README.md) | Kaplan | 损失随参数/数据/算力呈幂律，大模型更省样本 | 2020 · OpenAI / JHU | [2001.08361](https://arxiv.org/abs/2001.08361) |
-| 02 | [02_chinchilla](02_chinchilla/README.md) | Chinchilla | 计算最优 ≈ 模型与数据 1:1 等比，~20 tokens/参数 | 2022 · DeepMind | [2203.15556](https://arxiv.org/abs/2203.15556) |
-| 03 | [03_llama-open-efficient](03_llama-open-efficient/README.md) | LLaMA | 推理最优 > 训练最优：小模型多训 token 的开源底座 | 2023 · Meta AI | [2302.13971](https://arxiv.org/abs/2302.13971) |
-| 04 | [04_beyond-data-pruning](04_beyond-data-pruning/README.md) | 数据剪枝 | 好的剪枝指标把幂律刻度变成指数级 | 2022 · Princeton/DeepMind | [2206.14486](https://arxiv.org/abs/2206.14486) |
-| 05 | [05_repeated-data](05_repeated-data/README.md) | 重复数据 | 少量数据重复过多遍 → 双下降，抄写/归纳头被破坏 | 2022 · Anthropic | [2205.10487](https://arxiv.org/abs/2205.10487) |
-| 06 | [06_data-constrained](06_data-constrained/README.md) | 数据受限 | 重复 ≤4 epochs ≈ 新数据；数据不够时的最优解 | 2023 · HuggingFace/哈佛 | [2305.16264](https://arxiv.org/abs/2305.16264) |
-| 07 | [07_downstream-scaling](07_downstream-scaling/README.md) | 下游任务 | 预训练 loss 单调改善 ≠ 下游指标单调改善 | 2024 · Stanford/Google | [2402.04177](https://arxiv.org/abs/2402.04177) |
-| 08 | [08_observational-scaling](08_observational-scaling/README.md) | 观测缩放律 | 不训练新模型，用 ~100 个公开模型预测 GPT-4 | 2024 · 滑铁卢/GDM/斯坦福 | [2405.10938](https://arxiv.org/abs/2405.10938) |
-| 09 | [09_gzip-scaling](09_gzip-scaling/README.md) | gzip | 数据越难压缩，定律越偏向"多买数据" | 2024 · Reworkd | [2405.16684](https://arxiv.org/abs/2405.16684) |
+| 01 | [01_kaplan-scaling-laws](01_kaplan-scaling-laws/index.md) | Kaplan | 损失随参数/数据/算力呈幂律，大模型更省样本 | 2020 · OpenAI / JHU | [2001.08361](https://arxiv.org/abs/2001.08361) |
+| 02 | [02_chinchilla](02_chinchilla/index.md) | Chinchilla | 计算最优 ≈ 模型与数据 1:1 等比，~20 tokens/参数 | 2022 · DeepMind | [2203.15556](https://arxiv.org/abs/2203.15556) |
+| 03 | [03_llama-open-efficient](03_llama-open-efficient/index.md) | LLaMA | 推理最优 > 训练最优：小模型多训 token 的开源底座 | 2023 · Meta AI | [2302.13971](https://arxiv.org/abs/2302.13971) |
+| 04 | [04_beyond-data-pruning](04_beyond-data-pruning/index.md) | 数据剪枝 | 好的剪枝指标把幂律刻度变成指数级 | 2022 · Princeton/DeepMind | [2206.14486](https://arxiv.org/abs/2206.14486) |
+| 05 | [05_repeated-data](05_repeated-data/index.md) | 重复数据 | 少量数据重复过多遍 → 双下降，抄写/归纳头被破坏 | 2022 · Anthropic | [2205.10487](https://arxiv.org/abs/2205.10487) |
+| 06 | [06_data-constrained](06_data-constrained/index.md) | 数据受限 | 重复 ≤4 epochs ≈ 新数据；数据不够时的最优解 | 2023 · HuggingFace/哈佛 | [2305.16264](https://arxiv.org/abs/2305.16264) |
+| 07 | [07_downstream-scaling](07_downstream-scaling/index.md) | 下游任务 | 预训练 loss 单调改善 ≠ 下游指标单调改善 | 2024 · Stanford/Google | [2402.04177](https://arxiv.org/abs/2402.04177) |
+| 08 | [08_observational-scaling](08_observational-scaling/index.md) | 观测缩放律 | 不训练新模型，用 ~100 个公开模型预测 GPT-4 | 2024 · 滑铁卢/GDM/斯坦福 | [2405.10938](https://arxiv.org/abs/2405.10938) |
+| 09 | [09_gzip-scaling](09_gzip-scaling/index.md) | gzip | 数据越难压缩，定律越偏向"多买数据" | 2024 · Reworkd | [2405.16684](https://arxiv.org/abs/2405.16684) |
 
-> **状态**：9 篇精读全部完成，可点进子目录阅读。每个论文目录含两个文件：**README.md**＝精读正文（身份卡 / 方法精读 / 实验解读 / 批判性评价 / 谱系定位 / 资源来源 / 术语表）；**解读资源.md**＝全网解读导航（知乎 / 中文媒体 / B站 / YouTube / X 与社区 / 官方资源 / 建议阅读路径，2026-10-24 检索整理）。
+> **状态**：9 篇精读全部完成，可点进子目录阅读。每个论文目录含两个文件：**index.md**＝精读正文（身份卡 / 方法精读 / 实验解读 / 批判性评价 / 谱系定位 / 资源来源 / 术语表）；**解读资源.md**＝全网解读导航（知乎 / 中文媒体 / B站 / YouTube / X 与社区 / 官方资源 / 建议阅读路径，2026-10-24 检索整理）。
 >
 > **索引卡入口**：本专题在 [/notes「专题与索引」组](../缩放定律.md) 挂了 10 张封面卡（1 张专题总览 + 9 张论文卡，`npm run covers` 出图），从那里可以跳进本目录的任何一篇。
 

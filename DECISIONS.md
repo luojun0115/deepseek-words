@@ -1477,6 +1477,23 @@ alpha = 亮度(原像素)        # 白 X → 255，黑底 → 0
 
 ---
 
+### A33. 缩放定律专题「合为一处」：正文只留子目录，顶层卡页只存元数据（2026-10-25 用户要求）
+
+用户：「他们应该合为一处，都合到这个专题 search 下面的相应目录里面」。
+
+- **诊断**：`notes/缩放定律*.md`（10 个，316 行）的正文 **全部是派生物**——「论文信息」= 子目录身份卡、「三分钟速览」= 子目录核心贡献的精简、「9 篇速览表/三条阅读主线」= `zhuanti-search/index.md` 总目录与建议阅读顺序的子集。两份会漂移。
+- **合并结果**：
+  - 正文只保留一份：`zhuanti-search/index.md`（专题总览）+ `zhuanti-search/NN_xxx/index.md`（精读）+ `NN_xxx/解读资源.md`；
+    子目录的 `README.md` 全部改名 `index.md`，目录地址因此变干净：`/notes/zhuanti-search/01_kaplan-scaling-laws/`（不再是 `…/README.html`）。
+  - 顶层 10 个卡页缩成 24 行纯壳：frontmatter（封面金句 / order / coverKicker / coverYear，`npm run covers` 只读这些）
+    + 一段 `location.replace` 跳到正文 + 一行 fallback 链接。点卡片直接落到正文，不再多一层摘要页。
+- **连带修改**：9 份解读资源的回链 `README.md → index.md`、正文互链、`zhuanti-search/index.md` 的表格/说明；
+  解读资源散文里的「README 精读」统一改叫「精读正文」（不再指文件名）。
+- **封面重出**：`notes/papers.md` 搬走后专题从 13 变 12，A/B/C 风格按显示顺序轮换 → 12 张封面全换了搭配（脚本行为，已重出并目检）。
+- 端到端验证：`/notes` 专题卡仍 12 张 → 点「缩放定律 01」落到 `/notes/zhuanti-search/01_kaplan-scaling-laws/`（h1 = 01 · Kaplan 2020…），总览卡落到 `…/zhuanti-search/`。
+
+---
+
 ## B. 页面与样式定案
 
 ### B1. 论文总览链接不带下划线（2026-10-08 用户要求）
