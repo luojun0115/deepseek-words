@@ -132,6 +132,82 @@
 .dr-lib .dr-group-hd b { font-size: 15px; font-weight: 700; color: var(--dr-ink); }
 .dr-lib .dr-group-hd span { font-size: 12.5px; color: var(--dr-ink2); }
 
+/* ============ 官方入口卡（2026-10-25 用户定案）============
+   学习笔记页最前面两张站外官方入口：① HF 官方论文库（撞色黄）② GitHub 官方组织仓库（深藏青）。
+   卡面照抄 covers3 的海报层级：顶部 mono 小标 → 品牌标识 → 中文衬线金句 → 强调短横 → 底部 mono 域名；
+   右上角「置顶」小三角，字平行于斜边（45°）。
+   全部 CSS 直绘：矢量文字，任意 DPR 清晰，不新增 PNG、不动 covers 生成流水线。 */
+.dr-lib .dr-card.is-official { position: relative; }
+.dr-lib .dr-official {
+  /* 必须 relative：卡内的小标、域名、细框都是绝对定位，参照系要是媒体区本身，
+     否则会相对整张卡（含下方标题与按钮）定位，域名那行会压到按钮上 */
+  position: relative;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+}
+/* color 也要给：GitHub 标识是 fill="currentColor" 的内联 SVG，
+   不显式设色就会继承 .dr-lib 的墨绿，标识会变成绿的 */
+.dr-lib .dr-official.is-yellow { background: #FFD21E; color: #1d1d1b; }
+.dr-lib .dr-official.is-navy { background: #1b2a4a; color: #f0f6fc; }
+.dr-lib .dr-official-frame {
+  position: absolute; inset: 8px; border: 1px solid rgba(29, 29, 27, .16); border-radius: 6px;
+  pointer-events: none;
+}
+.dr-lib .dr-official.is-navy .dr-official-frame { border-color: rgba(255, 255, 255, .14); }
+.dr-lib .dr-official-kicker {
+  position: absolute; top: 13px; left: 0; right: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 8px; line-height: 1; letter-spacing: .16em; color: rgba(29, 29, 27, .58);
+}
+.dr-lib .dr-official.is-navy .dr-official-kicker { color: rgba(255, 255, 255, .5); }
+.dr-lib .dr-official-mark { font-size: 24px; line-height: 1; margin-bottom: 3px; }
+.dr-lib .dr-official-mark svg { display: block; }
+.dr-lib .dr-official-line {
+  font-family: var(--dr-hf); font-weight: 600; font-size: 21px; line-height: 1.32;
+  letter-spacing: .005em; color: #1d1d1b; padding: 0 20px;
+}
+.dr-lib .dr-official-line span { display: block; }
+.dr-lib .dr-official.is-navy .dr-official-line { color: #f0f6fc; }
+.dr-lib .dr-official-rule {
+  width: 14px; height: 2px; border-radius: 1px; margin-top: 9px; background: #c72a2a;
+}
+.dr-lib .dr-official.is-navy .dr-official-rule { background: #58a6ff; }
+.dr-lib .dr-official-url {
+  position: absolute; bottom: 12px; left: 0; right: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 7.5px; line-height: 1; letter-spacing: .1em; color: rgba(29, 29, 27, .5);
+}
+.dr-lib .dr-official.is-navy .dr-official-url { color: rgba(255, 255, 255, .36); }
+
+/* 置顶角标：右上实心小三角，「置顶」两字平行于斜边（45° 往右下）。
+   做法：字整体 rotate(45deg)，字心沿（右,上）推 0.354em（行高一半 × √2/2），
+   字的"脚"正好压在斜边上 —— 四个角逐一验算都落在三角内。偏移用 em 写，字号变了自动跟随。 */
+.dr-lib .dr-pin {
+  position: absolute; top: 0; right: 0; width: 56px; height: 56px; z-index: 3; pointer-events: none;
+  border-radius: 0 20px 0 0; overflow: hidden;
+}
+.dr-lib .dr-pin i {
+  position: absolute; inset: 0; background: #1d1d1b; clip-path: polygon(0 0, 100% 0, 100% 100%);
+}
+.dr-lib .dr-pin b {
+  position: absolute; left: 50%; top: 50%; transform-origin: 50% 50%;
+  transform: translate(-50%, -50%) translate(0.354em, -0.354em) rotate(45deg);
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+  font-size: 11px; font-weight: 700; line-height: 1; letter-spacing: .08em;
+  color: #FFD21E; white-space: nowrap;
+}
+/* GitHub 卡是深底，角标反过来用黄三角 + 墨字，两张卡互为反相 */
+.dr-lib .dr-pin.is-invert i { background: #FFD21E; }
+.dr-lib .dr-pin.is-invert b { color: #1d1d1b; }
+
+/* 外链键：中性描边，不跟绿/橙/蓝三键抢色；颜色随主题走（深色主题下墨色会糊在深底上） */
+.dr-lib .dr-go.o {
+  color: var(--dr-ink); background: transparent;
+  border: 1.5px solid color-mix(in srgb, var(--dr-ink) 34%, transparent);
+}
+.dr-lib .dr-go.o:hover {
+  border-color: var(--dr-ink); background: color-mix(in srgb, var(--dr-ink) 7%, transparent);
+}
+
 /* 总集入口横幅（词汇页=总览全局 / 听力页=全部朗读），位于标题下方、工具条上方 */
 .dr-lib .dr-master { display: flex; align-items: stretch; gap: 10px; margin-bottom: 16px; }
 .dr-lib .dr-m-main {
@@ -2253,3 +2329,279 @@
   letter-spacing: .38em; text-indent: .38em; color: #d8341f;
   border-top: 2px solid #d8341f; padding-top: 10px;
 }
+
+/* 欧普艺术：文案换成 attention is all need，字号收小一档（2026-10-24 用户要求） */
+.dr-hero-deck .op .t {
+  font-size: 26px; letter-spacing: .04em; text-indent: .02em;
+}
+
+/* 战后日本海报：去掉日文竖排，只留 DeepSeek 作主标（2026-10-24 用户要求） */
+.dr-hero-deck .japanposter .t {
+  left: 42px; right: auto; top: 88px; transform: none;
+  writing-mode: horizontal-tb; width: auto;
+  font-size: 46px; font-weight: 700; letter-spacing: .04em; text-indent: .02em;
+  color: #1d4a63;
+}
+
+/* 扁平设计：原来 38px 两行太重，改主标 + 副标大小结合（2026-10-24 用户要求） */
+.dr-hero-deck .flatdesign .t {
+  top: 50%; transform: translateY(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.dr-hero-deck .flatdesign .lg {
+  font-size: 50px; font-weight: 800; line-height: .94;
+  letter-spacing: -.01em; color: #ffffff;
+}
+/* 右上黄圆再往角上挪，让主标末尾的 k 离开黄底（白字压黄底对比太低） */
+.dr-hero-deck .flatdesign .circle { right: -56px; top: -56px; }
+/* 绿三角是 border 画的，视觉比预估靠左 → 下移，别压住副标末尾的 need */
+.dr-hero-deck .flatdesign .tri { bottom: 6px; }
+.dr-hero-deck .flatdesign .sm {
+  font-size: 20px; font-weight: 700; line-height: 1;
+  letter-spacing: .3em; text-indent: .3em; color: #ffd23f;
+}
+
+/* 第 6 张 古波斯浮雕：文案改英文 + 文字挪到下方，避开上半的双翼兽（2026-10-24 用户要求） */
+.dr-hero-deck .persianrelief .t {
+  top: auto; bottom: 16px; transform: none;
+  font-size: 25px; letter-spacing: .04em; text-indent: .02em;
+}
+
+/* 波斯翼兽重画：双翼改成有羽毛分叉的羽翼（原造型像两把刀），身躯加宽成兽躯 */
+.dr-hero-deck .persianrelief .wing {
+  top: 8px; width: 150px; height: 104px;
+  clip-path: polygon(100% 96%, 92% 44%, 78% 12%, 58% 0, 44% 12%, 32% 2%, 20% 16%,
+    9% 7%, 0 24%, 11% 44%, 4% 60%, 22% 70%, 42% 80%, 64% 90%, 82% 96%);
+}
+.dr-hero-deck .persianrelief .body {
+  top: 64px; width: 62px; height: 80px;
+  border-radius: 46% 46% 22% 22% / 34% 34% 12% 12%;
+}
+
+/* 第 9 张 唐三彩：去掉文字，陶罐 + 骆驼作为一组居中排布（2026-10-24 用户要求「不要放这个文字了，把配图居中」） */
+.dr-hero-deck .tangsancai .glaze { left: 98px; top: 96px; width: 186px; height: 116px; }
+.dr-hero-deck .tangsancai .camel { left: 308px; top: 150px; width: 114px; height: 36px; }
+
+/* 高丽青瓷：按用户要求去掉文字，碗与裂纹整体往画面正中放（2026-10-24） */
+.dr-hero-deck .celadon .bowl { top: 84px; }
+.dr-hero-deck .celadon .crack { top: 98px; }
+
+/* 高丽青瓷：碗口是 .bowl::before，原来浮在碗顶（top:-12px）像扣了个盖子 → 改成嵌在碗口位置的内壁 */
+.dr-hero-deck .celadon .bowl {
+  top: 84px; width: 172px; height: 112px; background: #7fa08c;
+  border-radius: 50% 50% 46% 46% / 30% 30% 70% 70%;
+  box-shadow: inset 0 16px 26px rgb(255 255 255 / 26%), inset 0 -10px 20px rgb(40 70 58 / 34%);
+}
+.dr-hero-deck .celadon .bowl::before {
+  top: 6px; width: 176px; height: 36px;
+  background: #6f937f; border: 2px solid #5e8471; border-radius: 50%;
+  box-shadow: inset 0 5px 9px rgb(0 0 0 / 20%);
+}
+
+/* ============================================================
+   巴洛克重设计（2026-10-24 用户要求「那个图设计得不好，重新设计」）
+   旧版只有一条斜光带 + 一个光晕圆，太单薄、看不出巴洛克。
+   新版：教堂玫瑰窗（辐条 + 中心亮圆 + 外圈金环）+ 顶部天光 + 两侧暗色拱柱，
+   文字改放底部一行金衬线，不压玫瑰窗。
+   ============================================================ */
+.dr-hero-deck .baroque { background: #150e06; }
+.dr-hero-deck .baroque .arch {
+  position: absolute; top: 0; width: 104px; height: 280px;
+  background: linear-gradient(180deg, #0b0704 0%, #241a0c 62%, #1b1208 100%);
+}
+.dr-hero-deck .baroque .arch.l { left: 0; border-radius: 0 46% 0 0 / 0 20% 0 0; }
+.dr-hero-deck .baroque .arch.r { right: 0; border-radius: 46% 0 0 0 / 20% 0 0 0; }
+.dr-hero-deck .baroque .beam {
+  position: absolute; left: 50%; top: -40px; width: 340px; height: 300px;
+  translate: -50% 0; transform: none;
+  background: linear-gradient(180deg, rgb(255 228 156 / 42%), rgb(255 210 120 / 10%) 58%, transparent 84%);
+  clip-path: polygon(40% 0, 60% 0, 100% 100%, 0 100%);
+}
+.dr-hero-deck .baroque .rosace {
+  position: absolute; left: 50%; top: 34px; translate: -50% 0;
+  width: 168px; height: 168px; border-radius: 50%;
+  background:
+    repeating-conic-gradient(from 0deg at 50% 50%, #e0ac4c 0 2.6deg, transparent 2.6deg 15deg),
+    radial-gradient(circle at 50% 50%, #f6dda0 0 11%, transparent 11%),
+    radial-gradient(circle at 50% 50%, transparent 0 60%, #b8862f 60% 67%, transparent 67%),
+    radial-gradient(circle at 50% 50%, #1c1309 0 100%);
+  box-shadow: 0 0 44px rgb(255 200 96 / 28%);
+}
+.dr-hero-deck .baroque .t {
+  top: auto; bottom: 18px; transform: none;
+  font-size: 26px; color: #e9c877; letter-spacing: .1em; text-indent: .05em;
+  text-shadow: 0 2px 10px rgb(0 0 0 / 55%);
+}
+
+/* 现实主义：农夫与树的原造型都是「十字」像十字架 → 改成可辨认的剪影
+   农夫 = 斗笠 + 身体 + 斜扛的农具；树 = 树干 + 椭圆树冠 + 分叉枝 */
+.dr-hero-deck .realism .farmer {
+  bottom: 40%; width: 30px; height: 40px;
+  border-radius: 40% 40% 12% 12% / 34% 34% 10% 10%;
+}
+.dr-hero-deck .realism .farmer::before {
+  left: 50%; top: -12px; translate: -50% 0; width: 44px; height: 13px;
+  border-radius: 0; background: #3a3026;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+.dr-hero-deck .realism .farmer::after {
+  left: 50%; top: 9px; width: 64px; height: 4px;
+  background: #3a3026; transform: translateX(-50%) rotate(-14deg);
+}
+.dr-hero-deck .realism .tree { height: 58px; }
+.dr-hero-deck .realism .tree::before {
+  left: -31px; top: -32px; width: 72px; height: 44px; height: 44px;
+  background: #3a3026; transform: none; border-radius: 52% 48% 46% 54%;
+}
+.dr-hero-deck .realism .tree::after {
+  content: ""; position: absolute; left: -15px; top: 6px;
+  width: 30px; height: 4px; background: #3a3026; transform: rotate(18deg);
+}
+
+/* ============================================================
+   第 3/4/6/10/11/14/15 张 布局与造型整改（2026-10-25 用户指定）
+   ============================================================ */
+
+/* 第 3 张 古埃及：正面圆头 + 两条垂臂像稻草人 → 侧身剪影（长袍 + 侧脸轮廓 + 前伸手臂） */
+.dr-hero-deck .egypt .fig {
+  left: 104px; bottom: 20px; width: 86px; height: 168px;
+  clip-path: polygon(30% 0, 62% 0, 70% 16%, 88% 40%, 100% 100%, 0 100%, 16% 44%);
+}
+.dr-hero-deck .egypt .head {
+  left: 126px; bottom: 184px; width: 40px; height: 42px; border-radius: 0;
+  clip-path: polygon(0 0, 74% 0, 100% 30%, 74% 44%, 96% 56%, 62% 100%, 0 100%);
+}
+.dr-hero-deck .egypt .arm.l { left: 104px; bottom: 96px; width: 10px; height: 68px; transform: rotate(20deg); }
+.dr-hero-deck .egypt .arm.r { left: 150px; bottom: 92px; width: 10px; height: 60px; transform: rotate(-9deg); }
+
+/* 第 4 张 古希腊：人被横杠穿成十字 → 换成真正的双耳陶瓶（amphora），文字挪到底部当标签 */
+.dr-hero-deck .greekvase .fig {
+  left: 50%; translate: -50% 0; bottom: 62px; width: 122px; height: 168px; background: #231009;
+  clip-path: polygon(38% 0, 62% 0, 66% 14%, 85% 34%, 95% 63%, 88% 100%, 12% 100%, 5% 63%, 15% 34%, 34% 14%);
+}
+.dr-hero-deck .greekvase .fig::before {
+  left: 50%; top: -16px; translate: -50% 0; width: 42px; height: 20px;
+  border-radius: 3px; background: #231009;
+}
+.dr-hero-deck .greekvase .fig::after { content: none; }
+.dr-hero-deck .greekvase .ear {
+  position: absolute; top: 104px; width: 26px; height: 48px;
+  border: 6px solid #231009; border-radius: 50%; background: transparent;
+}
+.dr-hero-deck .greekvase .ear.l { left: 186px; }
+.dr-hero-deck .greekvase .ear.r { right: 186px; }
+.dr-hero-deck .greekvase .t {
+  top: auto; bottom: 14px; transform: none;
+  font-size: 26px; letter-spacing: .04em; text-indent: .02em;
+}
+
+/* 第 6 张 波斯浮雕：双翼原来向上对开 + 人偶身 → 正面展翅，加尾羽收成一个整体 */
+.dr-hero-deck .persianrelief .wing {
+  top: 96px; width: 178px; height: 132px;
+  clip-path: polygon(0% 26%, 14% 10%, 27% 28%, 40% 12%, 54% 30%, 68% 14%,
+    82% 32%, 96% 18%, 100% 40%, 90% 56%, 98% 76%, 82% 66%, 88% 96%,
+    68% 74%, 70% 100%, 52% 76%, 50% 100%, 32% 74%, 30% 96%, 12% 66%, 0% 78%);
+}
+.dr-hero-deck .persianrelief .wing.l { left: 26px; right: auto; }
+.dr-hero-deck .persianrelief .wing.r { right: 26px; left: auto; transform: scaleX(-1); }
+.dr-hero-deck .persianrelief .body {
+  top: 74px; width: 58px; height: 104px;
+  border-radius: 42% 42% 30% 30% / 22% 22% 16% 16%;
+}
+.dr-hero-deck .persianrelief .body::before { top: -30px; width: 40px; height: 38px; }
+.dr-hero-deck .persianrelief .tail {
+  position: absolute; left: 50%; top: 166px; translate: -50% 0;
+  width: 78px; height: 48px; background: #6f5d47;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+/* 第 10 张 敦煌：去掉文字，飘带与飞天重新居中 */
+.dr-hero-deck .dunhuang .ribbon { top: 46px; height: 120px; }
+.dr-hero-deck .dunhuang .fly {
+  left: 50%; translate: -50% 0; bottom: 18px; width: 124px; height: 158px;
+}
+
+/* 第 11 张 伊斯兰：文字与下方金色星形整体下移 */
+.dr-hero-deck .islamic .t { top: 36px; }
+.dr-hero-deck .islamic .star { top: 56%; }
+
+/* 第 14 张 蒙古岩画：文字与隼整体下移，弧形笔画缩短下移，别像悬空的鞭子 */
+.dr-hero-deck .mongolrock .t { top: 32px; }
+.dr-hero-deck .mongolrock .horse { top: 92px; }
+.dr-hero-deck .mongolrock .wing { top: 98px; }
+.dr-hero-deck .mongolrock .stroke { left: 62px; bottom: 22px; width: 168px; height: 56px; border-width: 7px; }
+
+/* 第 15 张 高丽青瓷：碗的视觉重心偏上，整体再下移一点 */
+.dr-hero-deck .celadon .bowl { top: 96px; }
+.dr-hero-deck .celadon .crack { top: 110px; }
+
+/* —— 第二轮微调（2026-10-25）—— */
+.dr-hero-deck .greekvase .fig { bottom: 78px; }
+.dr-hero-deck .greekvase .t { bottom: 12px; }
+
+/* 第 6 张：翼收窄贴近身体、身躯加宽、尾羽缩小，别像两把梳子 */
+.dr-hero-deck .persianrelief .wing { top: 104px; width: 150px; height: 112px; }
+.dr-hero-deck .persianrelief .wing.l { left: 80px; right: auto; }
+.dr-hero-deck .persianrelief .wing.r { right: 80px; left: auto; }
+.dr-hero-deck .persianrelief .body { top: 78px; width: 76px; height: 104px; }
+.dr-hero-deck .persianrelief .tail { top: 178px; width: 62px; height: 40px; }
+
+/* 第 10 张：五边形改菱形藻井格 */
+.dr-hero-deck .dunhuang .fly {
+  bottom: 24px; width: 152px; height: 152px;
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+}
+
+/* 第 14 张：那条弧形笔画改成贴底的地面线，别再像悬空的鞭子 */
+.dr-hero-deck .mongolrock .stroke {
+  left: 24px; right: 24px; bottom: 10px; width: auto; height: 0;
+  border: 0; border-top: 6px solid #6b3a1e; border-radius: 0;
+}
+
+/* 第 15 张：碗再下移一点，视觉重心落到画面中线 */
+.dr-hero-deck .celadon .bowl { top: 106px; }
+.dr-hero-deck .celadon .crack { top: 120px; }
+
+/* —— 第三轮微调（2026-10-25）—— */
+/* 第 4 张：底部黑色回纹带会压住文字 → 文字挪到瓶子上方 */
+.dr-hero-deck .greekvase .t {
+  top: 20px; bottom: auto; transform: none;
+  font-size: 26px; letter-spacing: .04em; text-indent: .02em;
+}
+
+/* 第 6 张：翼形换成「上缘平缓 + 下缘三爪」的展翅形（原来上下都分叉像梳子），去掉三角尾羽 */
+.dr-hero-deck .persianrelief .wing {
+  top: 104px; width: 150px; height: 112px;
+  clip-path: polygon(100% 14%, 80% 4%, 58% 10%, 36% 2%, 16% 10%, 0 24%,
+    12% 40%, 2% 56%, 18% 64%, 10% 84%, 32% 74%, 42% 94%, 58% 76%, 74% 90%, 100% 74%);
+}
+.dr-hero-deck .persianrelief .tail { display: none; }
+
+/* 第 14 张：地面线要水平（原规则带 rotate），身体前倾像俯冲的猎鹰 */
+.dr-hero-deck .mongolrock .stroke { transform: none; }
+.dr-hero-deck .mongolrock .horse { transform: rotate(-10deg); }
+.dr-hero-deck .mongolrock .wing { transform: rotate(6deg); }
+.dr-hero-deck .mongolrock .wing.r { transform: scaleX(-1) rotate(6deg); }
+
+/* 第 15 张：碗再下移一点 */
+.dr-hero-deck .celadon .bowl { top: 114px; }
+.dr-hero-deck .celadon .crack { top: 128px; }
+
+/* —— 第四轮微调（2026-10-25）—— */
+/* 第 4 张：文字压顶部回纹带 → 挪到底部回纹带上方（瓶底 202 / meander 256，中间正好放一行） */
+.dr-hero-deck .greekvase .t { top: auto; bottom: 34px; }
+
+/* 第 6 张：头加鹰喙，正面头像才像鸟 */
+.dr-hero-deck .persianrelief .body::before {
+  border-radius: 0;
+  clip-path: polygon(0 4%, 66% 0, 100% 38%, 60% 50%, 58% 100%, 4% 100%);
+}
+
+/* 第 14 张：双翼换成展翅形（原来是两块锯齿板），缩小贴近身体 */
+.dr-hero-deck .mongolrock .wing {
+  top: 100px; width: 132px; height: 94px;
+  clip-path: polygon(100% 14%, 80% 4%, 58% 10%, 36% 2%, 16% 10%, 0 24%,
+    12% 40%, 2% 56%, 18% 64%, 10% 84%, 32% 74%, 42% 94%, 58% 76%, 74% 90%, 100% 74%);
+}
+.dr-hero-deck .mongolrock .wing.l { left: 62px; right: auto; transform: rotate(6deg); }
+.dr-hero-deck .mongolrock .wing.r { right: 62px; left: auto; transform: scaleX(-1) rotate(6deg); }

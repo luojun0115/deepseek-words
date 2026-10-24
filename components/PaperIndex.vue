@@ -47,6 +47,39 @@ const TOPICS = Object.entries(NOTE_SRC)
 
 const sortBy = ref('num')       // num | words | time
 
+/* 官方入口卡（2026-10-25 用户定案）：学习笔记页最前面两张站外官方入口。
+   ① HF 官方论文库（撞色黄）② GitHub 官方组织仓库（深藏青）。
+   卡面照抄 covers3 的海报层级：顶部 mono 小标 → 品牌标识 → 中文衬线金句 → 强调短横 → 底部 mono 域名；
+   右上角是「置顶」小三角，字平行于斜边（45°）。整张卡是外链 <a>，按钮只能是 <span>（不能嵌套 <a>）。
+   数字 45 是 2026-10-25 取自 GitHub API 的 public_repos 当时值，仓库数会涨，需要时改这里。 */
+const GH_MARK = 'M6.766 11.328c-2.063-.25-3.516-1.734-3.516-3.656 0-.781.281-1.625.75-2.188-.203-.515-.172-1.609.063-2.062.625-.078 1.468.25 1.968.703.594-.187 1.219-.281 1.985-.281.765 0 1.39.094 1.953.265.484-.437 1.344-.765 1.969-.687.218.422.25 1.515.046 2.047.5.593.766 1.39.766 2.203 0 1.922-1.453 3.375-3.547 3.64.531.344.89 1.094.89 1.954v1.625c0 .468.391.734.86.547C13.781 14.359 16 11.53 16 8.03 16 3.61 12.406 0 7.984 0 3.563 0 0 3.61 0 8.031a7.88 7.88 0 0 0 5.172 7.422c.422.156.828-.125.828-.547v-1.25c-.219.094-.5.156-.75.156-1.031 0-1.64-.562-2.078-1.609-.172-.422-.36-.672-.719-.719-.187-.015-.25-.093-.25-.187 0-.188.313-.328.625-.328.453 0 .844.281 1.25.86.313.452.64.655 1.031.655s.641-.14 1-.5c.266-.265.47-.5.657-.656'
+const OFFICIAL = [
+  {
+    key: 'hf',
+    href: 'https://huggingface.co/deepseek-ai/papers',
+    title: '官方论文库 · Hugging Face',
+    kicker: '00 · OFFICIAL INDEX',
+    mark: '🤗',
+    markType: 'emoji',
+    lines: ['官方论文全收录，', '一个链接全直达。'],
+    url: 'huggingface.co/deepseek-ai/papers',
+    btn: '前往 HF 论文页 ↗',
+    skin: 'yellow',
+  },
+  {
+    key: 'gh',
+    href: 'https://github.com/orgs/deepseek-ai/repositories',
+    title: '官方开源仓库 · GitHub',
+    kicker: 'ORG · 45 REPOS',
+    mark: GH_MARK,
+    markType: 'svg',
+    lines: ['引擎、内核、配方，', '官方仓库全公开。'],
+    url: 'github.com/deepseek-ai',
+    btn: '前往 GitHub 仓库 ↗',
+    skin: 'navy',
+  },
+]
+
 /* 说明行跟着页面口径走：词汇页没有朗读入口，别写成「听读」 */
 const hint = computed(() => {
   if (props.mode === 'vocab') return ' · 看词 / 写笔记'
@@ -111,6 +144,43 @@ const master = computed(() => {
     </div>
 
     <div class="dr-grid">
+      <!-- 官方入口卡（2026-10-25）：学习笔记页最前面两张站外官方入口，排在 32 篇论文卡之前。
+           整卡是外链 <a>，所以里面的"按钮"是 <span>（不能嵌套 <a>）。
+           卡面用 CSS 直绘（矢量文字，任意 DPR 清晰），不新增 PNG、不动 covers 生成流水线。 -->
+      <template v-if="mode === 'note'">
+        <a
+          v-for="o in OFFICIAL"
+          :key="o.key"
+          class="dr-card is-official"
+          :href="o.href"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <div class="dr-pin" :class="{ 'is-invert': o.skin === 'navy' }"><i></i><b>置顶</b></div>
+          <div class="dr-card-media dr-official" :class="'is-' + o.skin">
+            <div class="dr-official-frame"></div>
+            <div class="dr-official-kicker">{{ o.kicker }}</div>
+            <div class="dr-official-mark">
+              <span v-if="o.markType === 'emoji'">{{ o.mark }}</span>
+              <svg v-else viewBox="0 0 16 16" width="26" height="26" fill="currentColor" aria-hidden="true">
+                <path :d="o.mark" />
+              </svg>
+            </div>
+            <div class="dr-official-line">
+              <span v-for="(l, i) in o.lines" :key="i">{{ l }}</span>
+            </div>
+            <div class="dr-official-rule"></div>
+            <div class="dr-official-url">{{ o.url }}</div>
+          </div>
+          <div class="dr-card-body">
+            <h3 class="dr-card-nm">{{ o.title }}</h3>
+            <div class="dr-acts">
+              <span class="dr-go o">{{ o.btn }}</span>
+            </div>
+          </div>
+        </a>
+      </template>
+
       <!-- 卡片同步自 MotionFace 原型（design/20261020_MotionFace风格）：金句封面海报 + 英文题 + 三键。
            编号 / 短名 / 年份都画在封面图内（covers3 生成，图随 public/covers 进仓），卡面不再重复 -->
       <div v-for="p in list" :key="p.num" class="dr-card is-paper">

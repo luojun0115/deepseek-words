@@ -1372,6 +1372,40 @@ alpha = 亮度(原像素)        # 白 X → 255，黑底 → 0
 
 ---
 
+### A29. 学习笔记页最前面两张「官方入口卡」（2026-10-25 用户定案）
+
+用户要求：把 https://huggingface.co/deepseek-ai/papers 与 https://github.com/orgs/deepseek-ai/repositories
+各做一张卡、链到对应页面，排在学习笔记（/notes）最前面，HF 那张右上角搞小三角写「置顶」；
+先出设计稿、经用户审核后再实施。设计稿在 `design/20261024_HF置顶卡/`（HF）与 `design/20261025_GitHub仓库卡/`（GitHub），
+`design/` 不进 git 也不参与渲染。
+
+- **卡面语言照抄 covers3 的海报层级**（顶部 mono 小标 → 品牌标识 → 中文衬线金句 → 强调短横 → 底部 mono 域名），
+  所以插在 32 张论文卡最前面不会突兀。前三版都被否：v1 三方案（HF 黄海报等）、v2 安静的纸底索引卡
+  （没中文金句、字小，跟满屏海报不是一套语言）、v3 三方向里用户选定①撞色黄。
+- **两张卡**（都在 `components/PaperIndex.vue` 的 `OFFICIAL` 常量里，只在 `mode==='note'` 渲染，首页不显示）：
+
+  | 卡 | 链接 | 底色 | 金句 | 角标 |
+  |---|---|---|---|---|
+  | 官方论文库 · Hugging Face | huggingface.co/deepseek-ai/papers | 撞色黄 #FFD21E | 官方论文全收录，一个链接全直达。 | 墨色三角 + 黄字 |
+  | 官方开源仓库 · GitHub | github.com/orgs/deepseek-ai/repositories | 深藏青 #1b2a4a | 引擎、内核、配方，官方仓库全公开。 | 黄三角 + 墨字（与前者反相）|
+
+- **底色不用 GitHub 官网的 #0d1117**：那个近黑跟站内 32 张黑封面几乎一样，两张卡并排会糊成一片；
+  藏青出自 covers3 的 POSTER 色板（B 风格用过）。GitHub 标识用官方矢量（Octicons `mark-github`，MIT）内联，
+  不用 emoji（HF 那张的 🤗 恰好就是 HF 的标识）。
+- **「置顶」角标**：右上实心小三角（56px），字**平行于三角斜边**（45° 往右下）——用户明确要求过
+  「与三角底边平行」；做法是字整体 `rotate(45deg)`，字心沿（右,上）推 `0.354em`（行高一半 × √2/2），
+  字的"脚"正好压在斜边上。偏移用 em 写，字号变化自动跟随。中途一版取过 -25° 反向轻斜（看着像垂直于斜边），
+  已被用户否掉。
+- **封面 CSS 直绘**（矢量文字、任意 DPR 清晰），不新增 PNG、不动 `npm run covers` 流水线；不新增页面，
+  不改 config / verify / check_portal 的页面清单。整卡是外链 `<a>`，里面的按钮只能是 `<span>`（不能嵌套 `<a>`）。
+- **文案按实数写**：GitHub 仓库数 45 取自 2026-10-25 的 `GET /orgs/deepseek-ai`（`public_repos`），
+  金句里的「引擎 / 内核 / 配方」分别对应 DeepInfer、FlashMLA·DeepGEMM·DeepEP、deepseek-recipe；
+  仓库数会涨，数字变了要回来改 `OFFICIAL[].kicker`。
+- 两个实现坑：`.dr-official` 必须 `position:relative`（否则卡内绝对定位的小标/域名相对整张卡，域名会压到按钮上）；
+  `currentColor` 的内联 SVG 要给 `.is-navy` 显式设 `color`，否则继承墨绿、标识变绿。
+
+---
+
 ## B. 页面与样式定案
 
 ### B1. 论文总览链接不带下划线（2026-10-08 用户要求）
