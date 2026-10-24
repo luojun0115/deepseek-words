@@ -5,7 +5,7 @@ import papers from '../data/papers.json'
 import ms from '../data/master.json'      // 总集统计（merge_all.py 产出），文案不写死数字
 
 const props = defineProps({
-  mode: { type: String, default: 'both' },   // both | vocab | listen | note
+  mode: { type: String, default: 'both' },   // both | vocab | listen | note | arxiv
 })
 
 /* 笔记“写没写”：构建期直接读 notes/*.md 原文（import.meta.glob 的 ?raw），
@@ -85,8 +85,15 @@ const hint = computed(() => {
   if (props.mode === 'vocab') return ' · 看词 / 写笔记'
   if (props.mode === 'listen') return ' · 逐词连播'
   if (props.mode === 'note') return ' · 每篇一份笔记'
+  if (props.mode === 'arxiv') return ' · 点卡片直达 arXiv 原文'
   return ' · 看词 / 听读 / 笔记'
 })
+
+/* 论文总览页（mode='arxiv'）：整卡外链 arXiv 原文。32 篇都有 arXiv 号；
+   万一哪篇没有，回退到 HF 官方论文库，绝不给死链 */
+const arxivHref = (p) => p.arxiv
+  ? 'https://arxiv.org/abs/' + p.arxiv
+  : 'https://huggingface.co/deepseek-ai/papers'
 
 /* 搜索已移到顶栏「找论文」弹窗（PaperSearch.vue），这里只负责排序 */
 const list = computed(() => {
@@ -183,7 +190,30 @@ const master = computed(() => {
 
       <!-- 卡片同步自 MotionFace 原型（design/20261020_MotionFace风格）：金句封面海报 + 英文题 + 三键。
            编号 / 短名 / 年份都画在封面图内（covers3 生成，图随 public/covers 进仓），卡面不再重复 -->
-      <div v-for="p in list" :key="p.num" class="dr-card is-paper">
+      <!-- 论文卡：同步自 MotionFace 原型（design/20261020_MotionFace风格）：金句封面海报 + 英文题 + 三键。
+           编号 / 短名 / 年份都画在封面图内（covers3 生成，图随 public/covers 进仓），卡面不再重复。
+           mode='arxiv'（论文总览页用）时整卡是外链 <a> 直达 arXiv 原文，按钮用 <span>（不能嵌套 <a>）；
+           其余模式下卡体是 <div>，三键各自是站内链接 -->
+      <template v-for="p in list" :key="p.num">
+        <a
+          v-if="mode === 'arxiv'"
+          class="dr-card is-paper"
+          :href="arxivHref(p)"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <div
+            class="dr-card-media" role="img" :aria-label="p.num + ' · ' + p.short + ' 金句封面'"
+            :style="{ backgroundImage: `url(${withBase('/covers/' + p.num + '_' + p.short + '.png')})` }"
+          ></div>
+          <div class="dr-card-body">
+            <h3 class="dr-card-nm">{{ p.title }}</h3>
+            <div class="dr-acts">
+              <span class="dr-go o">论文原文 ↗</span>
+            </div>
+          </div>
+        </a>
+        <div v-else class="dr-card is-paper">
         <div
           class="dr-card-media" role="img" :aria-label="p.num + ' · ' + p.short + ' 金句封面'"
           :style="{ backgroundImage: `url(${withBase('/covers/' + p.num + '_' + p.short + '.png')})` }"
@@ -196,7 +226,8 @@ const master = computed(() => {
             <a class="dr-go n" :href="noteHref(p)" target="_self">学习笔记<i v-if="mode === 'note' && !written(p)" class="dr-nb">未写</i></a>
           </div>
         </div>
-      </div>
+        </div>
+      </template>
 
       <!-- 专题与索引组（2026-10-24）：不进 papers.json 的页面都排这儿——论文总览（notes/papers.md）
            加上不通读单篇的专题文章，跟 32 篇论文卡用一条细线隔开。

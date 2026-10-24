@@ -1407,6 +1407,23 @@ alpha = 亮度(原像素)        # 白 X → 255，黑底 → 0
 
 ---
 
+### A30. 论文总览页顶部加「arXiv 卡片墙」（2026-10-25 用户要求）
+
+用户要求：论文总览也做成卡片式，且链接直接连到论文原文。落地方式：
+
+- **PaperIndex.vue 新增 `mode='arxiv'`**：同一套金句封面卡（covers 图不重画），但整卡是外链 `<a>` →
+  `https://arxiv.org/abs/<arxiv>`（新标签），单键「论文原文 ↗」（中性描边，与官方入口卡的外键同色）。
+  32 篇都有 arXiv 号；万一哪篇没有，回退到 HF 官方论文库，不给死链。
+  实现上把论文卡的 v-for 包进 `<template v-for>`：arxiv 模式渲染 `<a>`，其余模式渲染原 `<div>` + 三键。
+- **注入点在生成器不在文稿**：`refresh-papers.mjs` 的 HEAD 段加了 `<script setup>` 导入与
+  `<PaperIndex mode="arxiv" />` 标签（相对路径 `../components/`，notes/ 与 content/ 两个位置都能解析）；
+  文稿母本 `content/DeepSeek_论文列表.md` 保持纯文稿，不被污染。改完跑 `npm run papers` 重新生成。
+- **页面结构**：卡片墙在页首（提示行「点卡片直达 arXiv 原文」+ 排序器），下面原有时间线表与
+  分主线解读资源表**原样保留**作细表 —— 卡片是视觉目录，文字表是检索目录，两者不互斥。
+- 根目录还有一个历史遗留的 `papers.md` 跳转桩（`location.replace` → notes/papers.html），与本次无关。
+
+---
+
 ## B. 页面与样式定案
 
 ### B1. 论文总览链接不带下划线（2026-10-08 用户要求）
