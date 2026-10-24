@@ -956,6 +956,60 @@ Source 若还停在「Deploy from a branch」就不会有这个结果（匿名�
 
 临时换 base：`DOCS_BASE=/ npm run build`；自检配套用 `PORTAL_BASE=http://localhost:4188`。
 
+#### D4.1 push 走不通时的应急通道（2026-10-24 实测，7 个 commit 卡了 2 小时）
+
+**症状**：01:01 推成功 `0d313dc` 之后，接下来 7 个 commit 全部推不上去，`git push` 报
+`Failed to connect to 127.0.0.1 port 7890`；把代理配置临时清空后又变成
+`LibreSSL SSL_connect: SSL_ERROR_SYSCALL` 或 `port 443 after 75012 ms`。
+
+**三层根因（要分开看，混在一起会误判成"网络抽风"）**：
+
+1. **代理侧根本不可用**。`~/.gitconfig` 的 `http.proxy=http://127.0.0.1:7890` 本身没错，
+   但 Clash Verge 当时挂着的一元机场订阅，节点全是 `server: 127.0.0.1, port: 443` 的**占位符**
+   （节点名直接叫「请立即到官网下载新客户端！」）—— 这类订阅要求本机另有一个本地转发进程，
+   当时那个进程不在。另一个订阅 BIEREN 的节点名写着「过期时间：2025-05-02」，早已失效。
+2. **`~/.gitconfig` 里 `https.proxy = https://127.0.0.1:7890` 是无效写法**。git 只认 `http.proxy`
+   （对 http/https 目标都生效），`https.proxy` 不是标准项；而且就算认，代理地址用 `https://` 去连
+   Clash 的混合端口也会 SSL 失败。**这条清掉不影响功能，但留着会误导排查。**
+3. **直连也分 IP 段**。DNS 把 `github.com` 解析到亚洲段 `20.205.243.166`，该段在此网络下
+   **CONNECT 可建、TLS 握手被掐断**（`SSL_ERROR_SYSCALL`，0.6s 即失败）；
+   而美西段 `140.82.112.3 / 113.3 / 114.3`、`20.27.177.113`、`20.200.245.247` 实测 HTTP 200（1–3s）。
+   → **"GitHub 不通"这句话必须带上 IP 段才是有效结论。**
+
+**解法：SSH-22 直连美西 IP**。
+
+```
+ssh -T -o HostKeyAlias=github.com -o StrictHostKeyChecking=accept-new git@140.82.113.3
+# → Hi luojun0115! You've successfully authenticated
+```
+
+推送（**不改 remote、不改 ~/.gitconfig**）：
+
+```
+git -c core.sshCommand="ssh -o HostKeyAlias=github.com" \
+    push ssh://git@140.82.113.3/luojun0115/deepseek-words.git main:main
+```
+
+**四个踩过的细节**：
+- `ssh.github.com:443` 这个"绕防火墙"通道只在香港段（20.205.243.160）上，**而那段正好不通**；
+  美西 IP 不跑 SSH-443，但**跑 SSH-22**。所以"443 被封就换 443"在这里没用，换 IP 段才有用。
+- `git -c remote.origin.url=... push origin main` **不会生效**（仍走原 https URL），
+  必须直接把 URL 写在 push 参数里。
+- `HostKeyAlias=github.com` 不能省：连的是裸 IP，不指定别名会拿 IP 去校验 host key，
+  要么报 mismatch，要么在 known_hosts 里留下一条按 IP 记的脏条目。
+- **push 到 URL 不会更新 `refs/remotes/origin/main`**，推成功后必须补一次
+  `git fetch <url> main:refs/remotes/origin/main`，否则 `rev-list origin/main..main` 仍显示领先，
+  会误判成"没推上去"而重复推。
+
+**链路本身时通时断**：同一个 IP 可能几分钟前通、几分钟后 75 秒超时（手动 ssh 成功过一次、
+紧接着连试 3 次全超时）。所以不要"一次失败就下结论"，要逐个 IP 试 —— 已固化为
+`scripts/push_via_ssh.sh`（探测候选 IP → 选中第一个认证通过的 → push → 同步 origin/main；
+`--dry-run` 只探测不推）。**注意脚本必须在仓库目录下执行**，在别的目录跑会因
+`git rev-parse --show-toplevel` 取不到仓库而选错上下文。
+
+**结果**：`0d313dc..dbc3579` 推送成功，Pages 约 20 秒后上线；
+线上 `/sites.html` 实测 **60 块实砖 + 3 个空位 + 12 块组牌**，求是网 / 中国日报 / Iconfont 三站链接逐一正确。
+
 ### D5. 仓库目录与脚本全清单
 
 README 只留一张简表，完整目录树、脚本清单与命令全集在这里。
@@ -985,6 +1039,7 @@ scripts/
   selfcheck_in_repo.mjs      # 断链实验：孤立副本里重建内容（npm run selfcheck）
   check_portal.cjs           # Playwright 全路径自检（61 项，不进 CI，§D2）
   shot_nav.cjs shot_themes.cjs  # 顶栏/首页与逐套配色截图（人工核版面，不断言）
+  push_via_ssh.sh            # 应急推送：HTTPS 走不通时改走 SSH-22 直连可达 IP（§D4.1）
 ```
 
 常见维护任务的完整对照（改哪个文件 → 接着跑什么）：
