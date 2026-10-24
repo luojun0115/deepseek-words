@@ -8,7 +8,7 @@ coverKicker: "Topic · Scaling Laws · 09 gzip"
 coverYear: "2024"
 ---
 
-[← 学习笔记索引](../notes.html) · [← 专题总览](缩放定律.md)
+[← 学习笔记索引](/notes/) · [← 专题总览](缩放定律.md)
 
 # 缩放定律 09 · Pandey 2024：gzip Predicts Data-dependent Scaling Laws
 

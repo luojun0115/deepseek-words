@@ -8,7 +8,7 @@ coverKicker: "Topic · Scaling Laws · 01 Kaplan"
 coverYear: "2020"
 ---
 
-[← 学习笔记索引](../notes.html) · [← 专题总览](缩放定律.md)
+[← 学习笔记索引](/notes/) · [← 专题总览](缩放定律.md)
 
 # 缩放定律 01 · Kaplan 2020：Scaling Laws for Neural Language Models
 

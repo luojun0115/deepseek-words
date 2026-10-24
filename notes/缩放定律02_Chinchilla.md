@@ -8,7 +8,7 @@ coverKicker: "Topic · Scaling Laws · 02 Chinchilla"
 coverYear: "2022"
 ---
 
-[← 学习笔记索引](../notes.html) · [← 专题总览](缩放定律.md)
+[← 学习笔记索引](/notes/) · [← 专题总览](缩放定律.md)
 
 # 缩放定律 02 · Chinchilla 2022：Training Compute-Optimal Large Language Models
 

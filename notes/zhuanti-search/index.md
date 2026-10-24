@@ -8,7 +8,7 @@ title: 缩放定律 · Scaling Laws 专题精读（9 篇）
 pageClass: note-page
 ---
 
-[← 学习笔记索引](../../notes.md)
+[← 学习笔记索引](/notes/)
 
 # 缩放定律 · Scaling Laws 专题精读
 
