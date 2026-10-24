@@ -1,9 +1,10 @@
 {
-  "_note": "站外导航页（/sites）的数据源。65 站上墙 + 5 站待选 + 3 个自有空位，16 组。 改名单改这里，页面与自检都从这份数据读，不写死在组件里。待选站（pending）数据保留但页面不渲染（DECISIONS §A7）；其中 Papers with Code 已于 2025-07-24 关停，条目暂留备查（§A12）。分组顺序 = 墙上的行序（每组一行，组牌在左列）。第八批按「同类同排」重划分组（§A16），第九批撤掉小林 coding 并把博客园挪进 docs（§A17），第十批新增 Python 框架与前端框架两组（§A18）。",
+  "_note": "站外导航页（/sites）的数据源。69 站上墙 + 5 站待选 + 3 个自有空位，17 组。 改名单改这里，页面与自检都从这份数据读，不写死在组件里。待选站（pending）数据保留但页面不渲染（DECISIONS §A7）；其中 Papers with Code 已于 2025-07-24 关停，条目暂留备查（§A12）。分组顺序 = 墙上的行序（每组一行，组牌在左列）。第八批按「同类同排」重划分组（§A16），第九批撤掉小林 coding 并把博客园挪进 docs（§A17），第十批新增 Python 框架与前端框架（§A18），第十一批新增基础设施（§A19）。",
   "groups": [
     { "id": "papers", "name": "论文源", "en": "PAPERS", "kind": "sites" },
     { "id": "llm", "name": "大模型", "en": "LLM", "kind": "sites" },
     { "id": "code", "name": "代码与编程", "en": "CODE", "kind": "sites" },
+    { "id": "infra", "name": "基础设施", "en": "INFRA", "kind": "sites" },
     { "id": "pyfw", "name": "Python 框架", "en": "PYTHON", "kind": "sites" },
     { "id": "frontend", "name": "前端框架", "en": "FRONTEND", "kind": "sites" },
     { "id": "algo", "name": "算法与刷题", "en": "ALGO", "kind": "sites" },
@@ -36,6 +37,11 @@
     { "slug": "mysql", "name": "MySQL 官网", "short": "MySQL", "url": "https://www.mysql.com", "brand": "#00758f", "group": "code", "logo": "/logos/mysql.png" },
     { "slug": "redis", "name": "Redis 官网", "short": "Redis", "url": "https://redis.io", "brand": "#d82c20", "group": "code", "logo": "/logos/redis.png" },
     { "slug": "python", "name": "Python 官网", "short": "Python", "url": "https://www.python.org", "brand": "#3776ab", "group": "code", "logo": "/logos/python.png" },
+
+    { "slug": "kafka", "name": "Apache Kafka", "short": "Kafka", "url": "https://kafka.apache.org", "brand": "#e2562c", "group": "infra", "logo": "/logos/kafka.png" },
+    { "slug": "docker", "name": "Docker", "short": "Docker", "url": "https://www.docker.com", "brand": "#1d63ed", "group": "infra", "logo": "/logos/docker.png" },
+    { "slug": "elasticsearch", "name": "Elasticsearch", "short": "ES", "url": "https://www.elastic.co/elasticsearch", "brand": "#fdc926", "group": "infra", "logo": "/logos/elasticsearch.png" },
+    { "slug": "kubernetes", "name": "Kubernetes", "short": "K8s", "url": "https://kubernetes.io", "brand": "#5283e9", "group": "infra", "logo": "/logos/kubernetes.png" },
 
     { "slug": "fastapi", "name": "FastAPI", "short": "FastAPI", "url": "https://fastapi.tiangolo.com", "brand": "#039688", "group": "pyfw", "logo": "/logos/fastapi.png" },
     { "slug": "flask", "name": "Flask", "short": "Flask", "url": "https://flask.palletsprojects.com", "brand": "#000000", "group": "pyfw", "logo": "/logos/flask.png" },
