@@ -66,7 +66,7 @@ const CARDS = [
   { k: 'dunhuang', n: '敦煌壁画', y: 'DUNHUANG · 700',
     inner: '<span class="ribbon"></span><span class="fly"></span>' },
   { k: 'romanesque', n: '罗马式', y: 'ROMANESQUE · 1000',
-    inner: '<span class="stone"></span><span class="arch"></span><div class="t">DeepSeek is<br>all you need</div>' },
+    inner: '<span class="stone"></span><span class="arch"></span>' },
   { k: 'gothic', n: '哥特彩窗', y: 'GOTHIC · 1250',
     inner: '<span class="arch a1"></span><span class="arch a2"></span><span class="arch a3"></span><span class="rose"></span>' },
   /* ↓ 全谱系第三批：文艺复兴、威尼斯画派、荷兰黄金时代、新古典主义、浪漫主义、现实主义、后印象派、象征主义 */
