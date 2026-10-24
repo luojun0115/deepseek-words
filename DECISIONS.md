@@ -1424,7 +1424,29 @@ alpha = 亮度(原像素)        # 白 X → 255，黑底 → 0
   文稿母本 `content/DeepSeek_论文列表.md` 保持纯文稿，不被污染。改完跑 `npm run papers` 重新生成。
 - **页面结构**：卡片墙在页首（提示行「点卡片直达 arXiv 原文」+ 排序器），下面原有时间线表与
   分主线解读资源表**原样保留**作细表 —— 卡片是视觉目录，文字表是检索目录，两者不互斥。
-- 根目录还有一个历史遗留的 `papers.md` 跳转桩（`location.replace` → notes/papers.html），与本次无关。
+- 根目录还有一个历史遗留的 `papers.md` 跳转粧（`location.replace` → notes/papers.html），与本次无关。
+
+---
+
+### A31. 论文总览升独立 tab：自己的文件夹 papers/，三个专门页面（2026-10-25 用户要求）
+
+用户：「论文总览是一个单独的 tab 了 那么就给它搞一个单独的文件夹 里面放专门的东西吧」。
+
+- **文件夹 papers/**（仓根）。文稿母本仍是一份（content/DeepSeek_论文列表.md，用户唯一编辑点），
+  生成器 `refresh-papers.mjs` 按顶级「# B.」「# C.」标题把正文切成三页：
+  - `papers/index.md` — 总览：卡片墙（整卡直达 arXiv）+ 时间线 + arXiv 分主线表；URL `/papers/`
+  - `papers/official.md` — 官方发布：开源周 / HF 技术笔记 / 官网 News 公告
+  - `papers/resources.md` — 解读资源：综述 / 视频汇总（以后新增的大段也归这里）
+  独立成页后段首编号字母（A./B./C./D.）失去上下文，生成时统一去掉。
+- **插位变更**：papers.md 离开 notes/ 后，/notes「专题与索引」组不再有论文总览卡（组头文案同步改）；
+  T_papers.png 封面废弃删除；nav 与首页报头的论文总览入口改指 `/papers/`；
+  根目录 papers.md 跳转粧改指 `/papers/`。
+- **顺手修了个从建站就存在的 bug**：跳转粧里 `useData()` 写在 onMounted 回调里——不在 setup 上下文，
+  整段抛 `TypeError: t is not a function`，**这个跳转从来没生效过**；改用直接导入的 `withBase`（任意时机可用）。
+- **断言与守卫同步**：verify_content 文件清单、check_portal（论文总览页 URL/表格数、专题组首卡、
+  报头入口、黑名单扫描页清单）、shot_nav 截图路径、selfcheck 描述；
+  refresh-papers `--check` 现在对 papers/ 三个文件对账。
+- 旧地址：/papers.html 有跳转粧；/notes/papers.html 存在过一天直接 404（内部无引用）。
 
 ---
 

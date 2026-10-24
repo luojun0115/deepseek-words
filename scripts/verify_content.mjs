@@ -97,7 +97,7 @@ ok(`组件引用的 ${want.length} 张总集页都在`,
 //     （data/master.json 是数据文件不在此列；只查 .html 后缀的引用）。
 //     例外：check_portal.cjs 里那句 page.goto('/master.html') 是反向探针——它断言的正是 404。
 const ghost = []
-for (const f of ['.vitepress/config.mts', 'index.md', 'vocab.md', 'listen.md', 'notes/papers.md', 'notes.md',
+for (const f of ['.vitepress/config.mts', 'index.md', 'vocab.md', 'listen.md', 'papers/index.md', 'notes.md',
                  'components/PaperIndex.vue', 'components/HomeIntro.vue', '.vitepress/theme/custom.css',
                  'scripts/sync-pages.mjs', 'scripts/check_portal.cjs', 'scripts/shot_nav.cjs',
                  'scripts/gen-notes.mjs']) {

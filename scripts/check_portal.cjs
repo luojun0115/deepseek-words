@@ -62,8 +62,8 @@ const ok = (name, cond, extra = '') => {
   //     2026-10-24 用户反馈「卡片左边的东西消失了」→ 报头入口从两枚恢复成三枚：
   //     背词 / 论文总览 / 学习笔记。论文总览页面本体已归档进 notes/papers.md，
   //     /papers.html 保留为自动跳转页（收藏的旧链接不失效）。
-  ok('/ 首页报头三枚入口（带 base 的 .html）',
-     ways.join(',') === [BPATH + 'vocab.html', BPATH + 'papers.html', BPATH + 'notes.html'].join(','),
+  ok('/ 首页报头三枚入口（带 base；论文总览 2026-10-25 搬进 papers/ 文件夹）',
+     ways.join(',') === [BPATH + 'vocab.html', BPATH + 'papers/', BPATH + 'notes.html'].join(','),
      ways.join(',') || '未找到')
 
   // 1d) 栏目名（2026-10-08 用户定案：「词汇网页」→「词汇学习」，「单词听力」→「词汇朗读」）
@@ -260,16 +260,25 @@ const ok = (name, cond, extra = '') => {
     await lp.close()
   }
 
-  // 7b) 论文总览页（2026-10-24 从仓根 /papers.html 挪进 notes/papers.md，URL 变 /notes/papers.html）
-  await page.goto(BASE + '/notes/papers.html', { waitUntil: 'networkidle' })
+  // 7b) 论文总览（2026-10-25 升独立 tab：页面搬进 papers/ 文件夹，URL 变 /papers/；
+  //     旧地址 /papers.html 与 /notes/papers.html 都有跳转粧接着）
+  await page.goto(BASE + '/papers/', { waitUntil: 'networkidle' })
   ok('论文总览页标题正确', (await page.locator('h1').first().textContent()).includes('论文总览'))
   const tables = await page.locator('.vp-doc table').count()
-  ok('/papers 页表格渲染', tables >= 8, '实得 ' + tables + ' 张')
+  ok('/papers 总览页表格渲染', tables >= 5, '实得 ' + tables + ' 张')
   // 链接名称不带下划线（2026-10-08 用户要求），悬停时才显
   const deco = await page.evaluate(() =>
     getComputedStyle(document.querySelector('.vp-doc table a')).textDecorationLine)
   ok('/papers 页链接无下划线', deco === 'none', '实得 ' + deco)
   await page.screenshot({ path: SHOT + '/05_papers页.png' })
+
+  // 7b-2) 拆出的两页：官方发布 / 解读资源（2026-10-25 papers/ 文件夹里的专门页）
+  await page.goto(BASE + '/papers/official.html', { waitUntil: 'networkidle' })
+  ok('官方发布页有开源周表', (await page.locator('.vp-doc table').count()) >= 3,
+    '实得 ' + (await page.locator('.vp-doc table').count()) + ' 张')
+  await page.goto(BASE + '/papers/resources.html', { waitUntil: 'networkidle' })
+  ok('解读资源页有外链清单', (await page.locator('.vp-doc a[href*="bilibili"], .vp-doc a[href*="youtube"], .vp-doc a[href*="zhihu"]').count()) >= 10,
+    '实得 ' + (await page.locator('.vp-doc a[href*="bilibili"], .vp-doc a[href*="youtube"], .vp-doc a[href*="zhihu"]').count()) + ' 条')
 
   // 7c) 三张静态总集页（入口在 /vocab 与 /listen 顶部横幅；/master 站根页已于 2026-10-09 取消）
   //     探 404 用一个独立 page：故意访 404 会进 console，不能污染主页面的“0 报错”判定
@@ -332,7 +341,7 @@ const ok = (name, cond, extra = '') => {
     (await page.locator(PAPER_CARD).count()) === NP && (await page.locator(PAPER_CARD + ' .dr-go.n').count()) === NP,
     `card=${await page.locator(PAPER_CARD).count()} n=${await page.locator(PAPER_CARD + ' .dr-go.n').count()}`)
   // 专题与索引组：不带 NN_ 编号前缀的 md 全在这里，封面是 T_<名>.png
-  // 论文总览 order: 1，固定排组内第一（它不是「专题」，是 32 篇的索引）
+  // 2026-10-25：论文总览升级为独立 tab（papers/ 文件夹），组里只剩专题文章
   const topics = require('fs').readdirSync(require('path').resolve(__dirname, '../notes'))
     .filter((f) => f.endsWith('.md') && !/^\d\d_/.test(f))
   const topicCards = page.locator('.dr-lib .dr-card.is-topic')
@@ -341,8 +350,9 @@ const ok = (name, cond, extra = '') => {
   ok('专题组有组头（跟 32 篇论文卡分开）', (await page.locator('.dr-lib .dr-group-hd').count()) === 1)
   if (topics.length) {
     const leadHref = await topicCards.first().getAttribute('href')
-    ok('专题组首卡是「论文总览」notes/papers.html（order: 1，带 base）',
-      leadHref === BPATH + 'notes/papers.html', leadHref || '未找到')
+    ok('专题组首卡指向 /notes/<名>.html（带 base；论文总览已不在组内）',
+      /\/notes\/.+\.html$/.test(leadHref || '') && (leadHref || '').startsWith(BPATH) && !(leadHref || '').includes('papers'),
+      leadHref || '未找到')
     const tHref = await topicCards.first().getAttribute('href')
     ok('专题卡指向 /notes/<名>.html（带 base）',
       /\/notes\/.+\.html$/.test(tHref || '') && (tHref || '').startsWith(BPATH), tHref || '未找到')
@@ -436,7 +446,7 @@ const ok = (name, cond, extra = '') => {
   // 2026-10-09 追加：静态笔记页（不在 /study/ 下的站内页）也拉进来扫同一张黑名单
   const BANNED = ['十一档', '全量重做', '全量口径', '双视图', 'TTS', '工作区',
     '本次补录', '漏收', 'sitemap', '剔除记录', '归属更正', '此前记录有误', '档位筛选']
-  const PAGES = ['/', '/vocab.html', '/listen.html', '/notes/papers.html', '/notes.html', '/sites.html',
+  const PAGES = ['/', '/vocab.html', '/listen.html', '/papers/', '/papers/official.html', '/papers/resources.html', '/notes.html', '/sites.html',
     '/notes/' + PP[0].dir + '.html']
   for (const p of PAGES) {
     await page.goto(BASE + p, { waitUntil: 'networkidle' })

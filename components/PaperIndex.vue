@@ -237,7 +237,7 @@ const master = computed(() => {
       <template v-if="mode === 'note' && TOPICS.length">
         <div class="dr-group-hd">
           <b>专题与索引</b>
-          <span>论文总览，以及横向串主题的专题文章 · {{ TOPICS.length }} 篇</span>
+          <span>横向串主题的专题文章 · {{ TOPICS.length }} 篇（论文总览已升级为独立 tab：/papers/）</span>
         </div>
         <a v-for="t in TOPICS" :key="t.dir" class="dr-card is-topic" :href="t.href" target="_self">
           <div
