@@ -19,6 +19,6 @@ const paper = computed(() => papers.find((p) => p.dir === dir.value) || null)
       <b>{{ paper.short }}</b>
       <i>{{ paper.title }}</i>
     </span>
-    <a class="dr-note-back" :href="withBase('/notes.html')">← 笔记索引</a>
+    <a class="dr-note-back" :href="withBase('/notes/')">← 笔记索引</a>
   </div>
 </template>

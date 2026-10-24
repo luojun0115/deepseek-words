@@ -2748,3 +2748,41 @@
     radial-gradient(#3f7fa8 4.5px, transparent 5.5px) 11px 11px / 22px 22px;
   box-shadow: 0 0 0 6px rgb(255 250 240 / 55%);
 }
+
+/* ============================================================
+   第 5 张 古希腊陶瓶 去文字后的主体归位（2026-10-25）
+   ============================================================ */
+/* 去文字后实测：瓶上留白 10px、下留白 54px（上重下轻）→ 瓶整体下移 22px，两边各 32px */
+.dr-hero-deck .greekvase .fig { bottom: 56px; }
+.dr-hero-deck .greekvase .ear { top: 126px; }
+
+/* ============================================================
+   第 11 / 12 / 17 张 去文字（2026-10-25）
+   ============================================================ */
+/* 第 12 张 伊斯兰几何：去文字后星形从 60% 拉回画面正中（60% 是给文字让位时的位置） */
+.dr-hero-deck .islamic .star { top: 50%; }
+
+/* ============================================================
+   「去文字后图形悬空」修复（2026-10-25 用户指出：第 6/8 张图飘到天上）
+   ============================================================ */
+/* 第 7 张 波斯浮雕：翼兽原来整个悬在渐变天空里、下面 64px 全空 →
+   底部加一道岩石山崖剪影，翼兽立其上（岩顶 y=218，正好接住翼兽底 216） */
+.dr-hero-deck .persianrelief .rock {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 62px; background: #6b4a2c;
+  clip-path: polygon(0 100%, 0 58%, 9% 34%, 19% 52%, 30% 20%, 41% 46%, 52% 26%,
+    63% 50%, 74% 30%, 86% 54%, 100% 40%, 100% 100%);
+}
+
+/* 第 9 张 拜占庭：金人原来贴卡底孤零零 → 加拜占庭圣像的金色光环 + 底部基座带 */
+.dr-hero-deck .byzantine .halo {
+  position: absolute; left: 50%; top: 92px; translate: -50% 0;
+  width: 112px; height: 112px; border-radius: 50%;
+  border: 7px solid #d4ae35; opacity: .5;
+}
+.dr-hero-deck .byzantine .base {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 14px; background: #d4ae35;
+}
+.dr-hero-deck .byzantine .saint { bottom: 14px; }
+
+/* 第 47 张 大跃进：红日顶出卡边界 4px → 下移一点 */
+.dr-hero-deck .dagu .sun { top: 19%; }

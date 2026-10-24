@@ -60,9 +60,9 @@ const CARDS = [
   { k: 'egypt', n: '古埃及', y: 'EGYPT · 3000 BCE',
     inner: '<span class="g1"></span><span class="g2"></span><span class="g3"></span><span class="g4"></span><span class="eye"></span><span class="head"></span><span class="fig"></span><span class="arm l"></span><span class="arm r"></span>' },
   { k: 'greekvase', n: '古希腊陶瓶', y: 'GREEK VASE · 2500 BCE',
-    inner: '<span class="meander"></span><span class="meander b"></span><span class="fig"></span><span class="ear l"></span><span class="ear r"></span><div class="t">DeepSeek is all you need</div>' },
+    inner: '<span class="meander"></span><span class="meander b"></span><span class="fig"></span><span class="ear l"></span><span class="ear r"></span>' },
   { k: 'byzantine', n: '拜占庭金马赛克', y: 'BYZANTINE · 500',
-    inner: '<span class="mosaic"></span><span class="saint"></span>' },
+    inner: '<span class="mosaic"></span><span class="halo"></span><span class="saint"></span><span class="base"></span>' },
   { k: 'dunhuang', n: '敦煌壁画', y: 'DUNHUANG · 700',
     inner: '<span class="ribbon"></span><span class="fly"></span>' },
   { k: 'romanesque', n: '罗马式', y: 'ROMANESQUE · 1000',
@@ -92,9 +92,9 @@ const CARDS = [
   { k: 'nascapaint', n: '纳斯卡线条', y: 'NASCA · 500 BCE',
     inner: '<span class="lines"></span><span class="bird"></span><div class="t">DeepSeek is all you need</div>' },
   { k: 'persianrelief', n: '古波斯浮雕', y: 'PERSIAN RELIEF · 500 BCE',
-    inner: '<span class="sky"></span><span class="wing l"></span><span class="wing r"></span><span class="body"></span><span class="tail"></span>' },
+    inner: '<span class="sky"></span><span class="wing l"></span><span class="wing r"></span><span class="body"></span><span class="tail"></span><span class="rock"></span>' },
   { k: 'islamic', n: '伊斯兰几何', y: 'ISLAMIC · 800',
-    inner: '<span class="star"></span><div class="t">DeepSeek is all you need</div>' },
+    inner: '<span class="star"></span>' },
   { k: 'tangsancai', n: '唐三彩', y: 'TANG SANCAI · 700',
     inner: '<span class="glaze"></span><span class="camel"><i class="hump"></i><i class="head"></i></span>' },
   { k: 'bluegreen', n: '青绿山水', y: 'BLUE-GREEN · 1100',
@@ -130,10 +130,10 @@ const CARDS = [
 
 /* 按艺术史年代排，不是 DOM 顺序 */
 const ORDER = [
-  22, 23, 24, 25, 39, 40, 46, 26, 42, 27, 41, 28, 43, 47, 48, 38, 29,
-  30, 31, 32, 15, 16, 33, 34, 14, 35, 17, 18, 44, 19, 36, 37,
-  0, 20, 9, 3, 2, 1, 10, 45, 49, 7, 50, 51, 52, 11, 4, 5, 12, 53, 54,
-  13, 6, 21, 55, 56, 8,
+  12, 22, 23, 24, 25, 39, 40, 46, 26, 42, 27, 41, 28, 43, 47, 48, 38,
+  29, 30, 31, 32, 15, 16, 33, 34, 14, 35, 17, 18, 44, 19, 36, 37, 0,
+  20, 9, 3, 2, 1, 10, 45, 49, 7, 50, 51, 52, 11, 4, 5, 53, 54,
+  13, 6, 21, 55, 56, 8
 ]
 const deck = computed(() => ORDER.map((i) => CARDS[i]))
 
@@ -195,12 +195,10 @@ onUnmounted(() => { if (timer) window.clearInterval(timer) })
           已上线 <b class="sm">{{ stats.papers }}</b> 篇<span class="dot">·</span><b>{{ (stats.dedupWords || 0).toLocaleString() }}</b> 个去重核心词<span class="dot">·</span>全库 {{ (stats.totalWords || 0).toLocaleString() }} 词次
         </p>
         <span class="dp-links">
-          <a :href="withBase('/vocab.html')">开始背词 →</a>
-          <!-- 2026-10-24 用户定案取消「论文总览」栏：报头这枚入口改指学习笔记，
-               论文总览已归档进 notes/papers.md（笔记索引页「专题与索引」组第一张卡） -->
-          <!-- 2026-10-24 用户反馈「卡片左边的东西消失了」：论文总览入口不撤，与学习笔记并列 -->
+          <a :href="withBase('/vocab/')">开始背词 →</a>
+          <!-- 2026-10-25 用户定案：论文总览升独立 tab（papers/ 文件夹），报头入口直接指 /papers/ -->
           <a class="quiet" :href="withBase('/papers/')">看论文总览</a>
-          <a class="quiet" :href="withBase('/notes.html')">看学习笔记</a>
+          <a class="quiet" :href="withBase('/notes/')">看学习笔记</a>
         </span>
       </div>
     </div>

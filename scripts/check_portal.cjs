@@ -62,8 +62,8 @@ const ok = (name, cond, extra = '') => {
   //     2026-10-24 用户反馈「卡片左边的东西消失了」→ 报头入口从两枚恢复成三枚：
   //     背词 / 论文总览 / 学习笔记。论文总览页面本体已归档进 notes/papers.md，
   //     /papers.html 保留为自动跳转页（收藏的旧链接不失效）。
-  ok('/ 首页报头三枚入口（带 base；论文总览 2026-10-25 搬进 papers/ 文件夹）',
-     ways.join(',') === [BPATH + 'vocab.html', BPATH + 'papers/', BPATH + 'notes.html'].join(','),
+  ok('/ 首页报头三枚入口（带 base；五个 tab 都已目录化）',
+     ways.join(',') === [BPATH + 'vocab/', BPATH + 'papers/', BPATH + 'notes/'].join(','),
      ways.join(',') || '未找到')
 
   // 1d) 栏目名（2026-10-08 用户定案：「词汇网页」→「词汇学习」，「单词听力」→「词汇朗读」）
@@ -120,8 +120,8 @@ const ok = (name, cond, extra = '') => {
   // 「站外导航」是站内页：带 base 的 .html，且不新标签打开
   const navLink = page.locator('.VPNavBarMenuLink', { hasText: '站外导航' }).first()
   const navHref = await navLink.getAttribute('href')
-  ok('「站外导航」指向站内 /sites.html（带 base，同标签打开）',
-     navHref === BPATH + 'sites.html' && !(await navLink.getAttribute('target')), navHref || '未找到')
+  ok('「站外导航」指向站内 /sites/（带 base，同标签打开）',
+     navHref === BPATH + 'sites/' && !(await navLink.getAttribute('target')), navHref || '未找到')
   const bodyTxt = await page.locator('body').innerText()
   ok('首页无旧栏目名残留', !/词汇网页|单词听力/.test(bodyTxt),
      ['词汇网页', '单词听力'].filter(k => bodyTxt.includes(k)).join('、'))
@@ -215,10 +215,10 @@ const ok = (name, cond, extra = '') => {
 
   // 6) 返回浮标：必须是相对路径，且点击真能落到索引页（根绝对路径在 Pages 子路径下会 404）
   const backHref = await page.locator('a:has-text("返回索引")').first().getAttribute('href')
-  ok('词汇页返回浮标为相对路径', backHref === '../../vocab.html', backHref)
+  ok('词汇页返回浮标为相对路径', backHref === '../../vocab.html', backHref + '（旧地址，经根跳转粧到 /vocab/）')
   await page.click('a:has-text("返回索引")')
   await page.waitForLoadState('networkidle')
-  ok('点浮标落到词汇学习索引页', page.url() === BASE + '/vocab.html', page.url())
+  ok('点浮标落到词汇学习索引页（经根跳转粧到 /vocab/）', page.url() === BASE + '/vocab/', page.url())
   await page.goBack()
   await page.waitForLoadState('networkidle')
   ok('回退出静态页', page.url().includes('/study/vocab/'), page.url())
@@ -227,13 +227,13 @@ const ok = (name, cond, extra = '') => {
   ok('返回回到门户首页', page.url().replace(/\/$/, '') === BASE, page.url())
 
   // 7) /vocab /listen 专页
-  await page.goto(BASE + '/vocab.html', { waitUntil: 'networkidle' })
+  await page.goto(BASE + '/vocab/', { waitUntil: 'networkidle' })
   const vocabBtns = await page.locator('.dr-lib .dr-go.v').count()
   const listenBtnsVocab = await page.locator('.dr-lib .dr-go.l').count()
   ok('/vocab 页只出词汇按钮', vocabBtns === NP && listenBtnsVocab === 0, `v=${vocabBtns} l=${listenBtnsVocab}`)
   ok('/vocab 页每卡也带第三枚「学习笔记」按钮', (await page.locator('.dr-lib .dr-go.n').count()) === NP)
   await page.screenshot({ path: SHOT + '/04_vocab页.png' })
-  await page.goto(BASE + '/listen.html', { waitUntil: 'networkidle' })
+  await page.goto(BASE + '/listen/', { waitUntil: 'networkidle' })
   ok('/listen 页只出听力按钮', (await page.locator('.dr-lib .dr-go.l').count()) === NP)
   // 总集入口两键平分（2026-10-08 用户要求；旧写法 main=flex:1 + alt=内容宽，实测 1148:154）
   const mm = await page.evaluate(() => {
@@ -250,13 +250,13 @@ const ok = (name, cond, extra = '') => {
     const LISTEN0 = BASE + '/study/listen/' + encodeURIComponent('01_DeepSeek-LLM_单词听力.html')
     await lp.goto(LISTEN0, { waitUntil: 'domcontentloaded' })
     const resolved = await lp.evaluate(() => new URL('../../listen.html', location.href).href)
-    ok('听力页相对返回路径解析到子路径内（不会逃到站点根）', resolved === BASE + '/listen.html', resolved)
+    ok('听力页相对返回路径解析到子路径内（不会逃到 站点根；经根跳转粧到 /listen/）', resolved === BASE + '/listen.html', resolved)
     // 从站内点进来（有上一历史）：同一个按钮应该 history.back()
-    await lp.goto(BASE + '/listen.html', { waitUntil: 'networkidle' })
+    await lp.goto(BASE + '/listen/', { waitUntil: 'networkidle' })
     await lp.goto(LISTEN0, { waitUntil: 'domcontentloaded' })
     await lp.click('#backBtn')
     await lp.waitForLoadState('networkidle')
-    ok('从站内进来→同一按钮走 history.back 回朗读索引', lp.url() === BASE + '/listen.html', lp.url())
+    ok('从站内进来→同一按钮走 history.back 回朗读索引（经根跳转粧到 /listen/）', lp.url() === BASE + '/listen/', lp.url())
     await lp.close()
   }
 
@@ -334,7 +334,7 @@ const ok = (name, cond, extra = '') => {
   //     2026-10-24：页面里除了 32 张论文卡（.is-paper），末尾还有「专题与索引」组（.is-topic）——
   //     论文总览 notes/papers.md 与各篇专题笔记都在这一组。论文卡口径用 .is-paper，
   //     「一篇论文一张卡一枚笔记按钮」
-  await page.goto(BASE + '/notes.html', { waitUntil: 'networkidle' })
+  await page.goto(BASE + '/notes/', { waitUntil: 'networkidle' })
   const PP = require('../data/papers.json')
   const PAPER_CARD = '.dr-lib .dr-card.is-paper'
   ok(`/notes 页 ${NP} 卡 × 一枚「学习笔记」按钮`,
@@ -396,14 +396,14 @@ const ok = (name, cond, extra = '') => {
   // SPA 切页不发网络请求，networkidle 会立刻返回——页头是响应式拆掉的，得等它真离开 DOM
   await page.waitForSelector('.dr-note-hd', { state: 'detached', timeout: 5000 }).catch(() => {})
   await page.waitForLoadState('networkidle')
-  ok('点页头「← 笔记索引」回 /notes（带 base，不逃到站点根）', page.url() === BASE + '/notes.html', page.url())
+  ok('点页头「← 笔记索引」回 /notes（带 base，不逃到站点根）', page.url() === BASE + '/notes/', page.url())
   ok('页头只跟着笔记页（索引页无、SPA 切走后也会拆掉）',
     (await page.locator('.dr-note-hd').count()) === 0)
 
   // 7e) /sites 站外导航页（2026-10-23 用户要求：顶栏「模型架构」右边加一栏，
   //     页面用「方案 C · 积木墙」把外站砌成一面墙）。清单在 data/sites.json，自检也从那儿读
   //     （数量全部动态读，加站不用改这里）
-  const SITES = require('../data/sites.json')
+  const SITES = require('../sites/sites.json')
   await page.goto(BASE + '/sites.html', { waitUntil: 'networkidle' })
   const nBlk = await page.locator('.dr-nav .nav-blk:not(.ghost)').count()
   const nGhost = await page.locator('.dr-nav .nav-blk.ghost').count()
@@ -446,7 +446,7 @@ const ok = (name, cond, extra = '') => {
   // 2026-10-09 追加：静态笔记页（不在 /study/ 下的站内页）也拉进来扫同一张黑名单
   const BANNED = ['十一档', '全量重做', '全量口径', '双视图', 'TTS', '工作区',
     '本次补录', '漏收', 'sitemap', '剔除记录', '归属更正', '此前记录有误', '档位筛选']
-  const PAGES = ['/', '/vocab.html', '/listen.html', '/papers/index.html', '/papers/official.html', '/papers/resources.html', '/notes.html', '/sites.html',
+  const PAGES = ['/', '/vocab/', '/listen/', '/papers/index.html', '/papers/official.html', '/papers/resources.html', '/notes/', '/sites/',
     '/notes/' + PP[0].dir + '.html']
   for (const p of PAGES) {
     await page.goto(BASE + p, { waitUntil: 'networkidle' })
@@ -458,7 +458,7 @@ const ok = (name, cond, extra = '') => {
   // 8c) 笔记栏目专门：「怎么写笔记」这类仓库操作说明不属于站点（2026-10-09 用户要求）。
   //     不开全站的「仓库/npm run」黑名单：论文总览页里「视频/资料聚合仓库」是在介绍外部 GitHub 仓库，那是正当正文
   const AUTHORING = ['npm run', 'notes/', 'papers.json', 'frontmatter', '构建']
-  for (const p of ['/notes.html', '/notes/' + PP[0].dir + '.html']) {
+  for (const p of ['/notes/', '/notes/' + PP[0].dir + '.html']) {
     await page.goto(BASE + p, { waitUntil: 'networkidle' })
     const txt = await page.evaluate(() => document.body.innerText)
     const hit = AUTHORING.filter(w => txt.includes(w))

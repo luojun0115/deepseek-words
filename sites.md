@@ -1,12 +1,19 @@
 ---
-pageClass: wide sites
+pageClass: wide
 title: 站外导航
 ---
-<script setup>
-import SiteNavWall from './components/SiteNavWall.vue'
-</script>
 
-<!-- 页面主体是「方案 C · 积木墙」（components/SiteNavWall.vue）：
-     报眼 / 大标题 / 粗细双线 / 导语 / 砖墙 / 报尾，与首页报头同一套骨架。
-     站点清单与分组走 data/sites.json，页面不写死任何一个站。 -->
-<SiteNavWall />
+# 站外导航
+
+本页已并入 [站外导航](/sites/)——AI 学习相关的站外站点清单都在那里。
+
+<script setup>
+import { onMounted } from 'vue'
+import { withBase } from 'vitepress'
+
+// 旧址 /sites.html 自动跳到新址（2026-10-25 各 tab 目录化），避免收藏的链接失效。
+// withBase 直接从 'vitepress' 导入（不能把 useData() 搭在 onMounted 回调里——不在 setup 上下文会抛错）。
+onMounted(() => {
+  location.replace(withBase('/sites/'))
+})
+</script>

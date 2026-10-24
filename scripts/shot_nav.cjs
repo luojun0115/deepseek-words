@@ -12,8 +12,8 @@ const BASE = process.env.PORTAL_BASE || 'http://localhost:4188/deepseek-words'
   const b = await chromium.launch()
   const pg = await b.newPage({ viewport: { width: 1440, height: 900 } })
   const targets = [[BASE + '/', '改名后_01_首页导航与两键'],
-                   [BASE + '/vocab.html', '改名后_02_词汇学习索引'],
-                   [BASE + '/listen.html', '改名后_03_词汇朗读索引'],
+                   [BASE + '/vocab/', '改名后_02_词 汇学习索引'],
+                   [BASE + '/listen/', '改名后_03_词汇朗读索引'],
                    [BASE + '/papers/', '改名后_04_论文总览']]   // 2026-10-25 搬进 papers/ 文件夹，URL 变 /papers/
   for (const [url, name] of targets) {
     await pg.goto(url, { waitUntil: 'networkidle' })

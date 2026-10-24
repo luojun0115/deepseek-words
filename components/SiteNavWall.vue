@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from 'vue'
 import { withBase } from 'vitepress'
-import data from '../data/sites.json'
+import data from '../sites/sites.json'
 
 /* 站外导航墙（方案 C · 积木墙）：十二组各占一行，组内砖块等宽、整行铺满，
    行与行之间宽度不同（3 块 / 8 块 / 7 块 / 6 块…）——这就是这面墙的「乱中有序」。

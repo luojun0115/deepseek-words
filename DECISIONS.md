@@ -1450,6 +1450,33 @@ alpha = 亮度(原像素)        # 白 X → 255，黑底 → 0
 
 ---
 
+### A32. 全站目录化：每个 tab 一个文件夹，用户改源、构建渲染（2026-10-25 用户要求）
+
+用户：「每个 tab 都有单独的目录 这样以后我在改东西的时候 直接改那个目录里的内容 然后你再给我渲染」。
+
+- **目录结构**（index.md 留在仓根是 VitePress 硬要求，首页是唯一例外）：
+  | tab | 目录 | 用户改什么 | 怎么渲染 |
+  |---|---|---|---|
+  | 首页 | 仓根 index.md + components/HomeIntro.vue | 组件/文案 | build |
+  | 论文总览 | papers/：论文清单.md（母本）+ index/official/resources 三页 | 改母本 → `npm run papers` | build |
+  | 词汇学习 | vocab/index.md（tab 页） | 暂无手改内容（词页在 /study/vocab，技能产出） | build |
+  | 词汇朗读 | listen/index.md（tab 页） | 同上 | build |
+  | 学习笔记 | notes/index.md（tab 页）+ NN_*.md 笔记 + 专题*.md | 直接改 md，无需渲染步骤 | build |
+  | 站外导航 | sites/index.md + sites.json（数据真源） | 改 json 加站 | build |
+- **URL 全部目录化**：/papers/ /vocab/ /listen/ /notes/ /sites/（目录 index）；
+  根下 vocab.md/listen.md/notes.md/sites.md 四个**跳转粧**接住旧 .html 收藏链接
+  （papers.md 粧已有；坑：withBase 直接从 'vitepress' 导入，useData() 不能搭在 onMounted 回调里）。
+- **notes/index.md 的排除**：它落进 notes/ 后会被 PaperIndex TOPICS、gen-topic-covers、gen-notes
+  当成专题笔记拤进来——三处都加 `f !== 'index.md'` 排除（tab 页本身不是专题，不出封面不参入对平）。
+- **静态词页的返回链接不动**：/study/ 下技能产出的返回浮标仍指旧地址 ../../vocab.html、
+  ../../listen.html——经根跳转粧一跳照常可达（sync-pages 的源目录已不在，无法重生成，不改产物）。
+- **引用与断言同步**：config nav、首页报头入口、NoteHeader 返回链接、SiteNavWall 数据导入、
+  check_portal（站外导航链接/词汇听力页 goto/返回浮标落地 URL/notes 页 goto/黑名单扫描清单/听页返回测试）、
+  shot_nav、selfcheck 描述、README「维护：改哪里」表；add-numbers.py 母本路径同步。
+- `data/` 只剩 papers.json + master.json（跨 tab 构建数据）；`content/` 目录已空、删除。
+
+---
+
 ## B. 页面与样式定案
 
 ### B1. 论文总览链接不带下划线（2026-10-08 用户要求）

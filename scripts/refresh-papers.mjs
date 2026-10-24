@@ -18,13 +18,14 @@ import { fileURLToPath } from 'node:url'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const PORTAL = path.resolve(__dirname, '..')
 
-// 2026-10-09 定案：文稿就是仓库自己的源码（不再是工作区里另一个目录）。
-// 找不到就报错退出，**绝不回退到别处的旧副本**（那会静默用错源文稿，比报错更坏）
+// 2026-10-09 定案：文稿就是仓库自己的源码。
+// 2026-10-25 定案：母本搬进 papers/ 文件夹（papers/论文清单.md）——一个 tab 一个目录，
+// 用户改目录里的文稿 → 跑本脚本渲染成三页。找不到就报错退出，**绝不回退到别处的旧副本**。
 const SRC = process.env.PAPERS_SRC
   ? path.resolve(process.env.PAPERS_SRC)
-  : path.join(PORTAL, 'content', 'DeepSeek_论文列表.md')
+  : path.join(PORTAL, 'papers', '论文清单.md')
 if (!fs.existsSync(SRC)) {
-  console.error(`✗ 找不到文稿母本：${SRC}\n  它就在仓库里（content/DeepSeek_论文列表.md）——被删了则 git checkout 取回；` +
+  console.error(`✗ 找不到文稿母本：${SRC}\n  它就在仓库里（papers/论文清单.md）——被删了则 git checkout 取回；` +
     `临时换一份用 PAPERS_SRC=/path/to/x.md`)
   process.exit(1)
 }

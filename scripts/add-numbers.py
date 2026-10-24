@@ -15,7 +15,7 @@ PAPERS = os.path.join(HERE, "..", "data", "papers.json")
 FORCE = "--force" in sys.argv
 # 文稿母本在仓内（与 refresh-papers.mjs 同一份，两边默认值必须一致）
 SRC = next((a for a in sys.argv[1:] if not a.startswith("--")),
-           os.path.join(HERE, "..", "content", "DeepSeek_论文列表.md"))
+           os.path.join(HERE, "..", "papers", "论文清单.md"))
 
 num_by_arxiv = {p["arxiv"]: p["num"] for p in json.load(io.open(PAPERS, encoding="utf-8")) if p["arxiv"]}
 papers = json.load(io.open(PAPERS, encoding="utf-8"))

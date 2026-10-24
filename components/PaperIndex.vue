@@ -31,7 +31,7 @@ const fmValue = (src, key) => {
   return hit ? hit[1].trim().replace(/^(['"])([\s\S]*)\1$/, '$2').trim() : ''
 }
 const TOPICS = Object.entries(NOTE_SRC)
-  .filter(([k]) => !/\/\d\d_[^/]*\.md$/.test(k))            // 没有编号前缀 = 专题
+  .filter(([k]) => !/\/\d\d_[^/]*\.md$/.test(k) && !/\/index\.md$/.test(k))  // 无编号前缀 = 专题；index.md 是 tab 页本身
   .map(([k, src]) => {
     const dir = k.split('/').pop().replace(/\.md$/, '')
     return {

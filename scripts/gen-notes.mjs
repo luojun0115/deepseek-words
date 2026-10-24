@@ -36,7 +36,7 @@ const tpl = (p) => [
 export function main (check = process.argv.includes('--check')) {
   const papers = JSON.parse(fs.readFileSync(path.join(PORTAL, 'data/papers.json'), 'utf8'))
   const want = papers.map((p) => p.dir + '.md')
-  const have = fs.existsSync(NOTES) ? fs.readdirSync(NOTES).filter((f) => f.endsWith('.md')) : []
+  const have = fs.existsSync(NOTES) ? fs.readdirSync(NOTES).filter((f) => f.endsWith('.md') && f !== 'index.md') : []
   // 论文笔记 = 带 NN_ 编号前缀（与 papers.json 的 dir 对平）；不带前缀的是专题笔记，另计不报错
   const isPaper = (f) => /^\d{2}_/.test(f)
   const missing = want.filter((f) => !have.includes(f))

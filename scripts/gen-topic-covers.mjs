@@ -143,9 +143,10 @@ function html(style, lines, top, bot, i, num) {
   </div></body></html>`
 }
 
-/* 专题 = 文件名不带 NN_ 前缀的 md（与 gen-notes.mjs 的认法一致：只有编号前缀才算论文笔记） */
+/* 专题 = 文件名不带 NN_ 前缀的 md（与 gen-notes.mjs 的认法一致：只有编号前 缀才算论文笔记）；
+   index.md 是学习笔记 tab 页本身（2026-10-25 搬进 notes/），不出封面 */
 const topics = fs.readdirSync(NOTES)
-  .filter((f) => f.endsWith('.md') && !/^\d\d_/.test(f))
+  .filter((f) => f.endsWith('.md') && !/^\d\d_/.test(f) && f !== 'index.md')
   .sort()
 
 if (!topics.length) {
