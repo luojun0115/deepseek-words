@@ -262,7 +262,7 @@ const ok = (name, cond, extra = '') => {
 
   // 7b) 论文总览（2026-10-25 升独立 tab：页面搬进 papers/ 文件夹，URL 变 /papers/；
   //     旧地址 /papers.html 与 /notes/papers.html 都有跳转粧接着）
-  await page.goto(BASE + '/papers/', { waitUntil: 'networkidle' })
+  await page.goto(BASE + '/papers/index.html', { waitUntil: 'networkidle' })
   ok('论文总览页标题正确', (await page.locator('h1').first().textContent()).includes('论文总览'))
   const tables = await page.locator('.vp-doc table').count()
   ok('/papers 总览页表格渲染', tables >= 5, '实得 ' + tables + ' 张')
@@ -446,7 +446,7 @@ const ok = (name, cond, extra = '') => {
   // 2026-10-09 追加：静态笔记页（不在 /study/ 下的站内页）也拉进来扫同一张黑名单
   const BANNED = ['十一档', '全量重做', '全量口径', '双视图', 'TTS', '工作区',
     '本次补录', '漏收', 'sitemap', '剔除记录', '归属更正', '此前记录有误', '档位筛选']
-  const PAGES = ['/', '/vocab.html', '/listen.html', '/papers/', '/papers/official.html', '/papers/resources.html', '/notes.html', '/sites.html',
+  const PAGES = ['/', '/vocab.html', '/listen.html', '/papers/index.html', '/papers/official.html', '/papers/resources.html', '/notes.html', '/sites.html',
     '/notes/' + PP[0].dir + '.html']
   for (const p of PAGES) {
     await page.goto(BASE + p, { waitUntil: 'networkidle' })
