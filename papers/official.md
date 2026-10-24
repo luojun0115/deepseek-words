@@ -3,7 +3,7 @@ pageClass: wide papers
 title: 论文总览 · 官方发布
 ---
 
-**本栏目**： [📋 论文总览](/papers/index.md)  ·  **🚀 官方发布**  ·  [🔗 解读资源](/papers/resources.md)
+**本栏目**： [📋 论文总览](/papers/index.md)  ·  [📜 论文清单](/papers/清单.md)  ·  **🚀 官方发布**  ·  [🔗 解读资源](/papers/resources.md)
 
 # 未上 arXiv 的技术产出（GitHub / HuggingFace 独占）
 

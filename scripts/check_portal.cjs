@@ -261,18 +261,26 @@ const ok = (name, cond, extra = '') => {
   }
 
   // 7b) 论文总览（2026-10-25 升独立 tab：页面搬进 papers/ 文件夹，URL 变 /papers/；
-  //     旧地址 /papers.html 与 /notes/papers.html 都有跳转粧接着）
+  //     同日又按用户要求把长表拆成 /papers/清单.html——总览页只留卡片墙，
+  //     不再「卡片之后又一整篇文章」）
   await page.goto(BASE + '/papers/index.html', { waitUntil: 'networkidle' })
   ok('论文总览页标题正确', (await page.locator('h1').first().textContent()).includes('论文总览'))
+  const ovTables = await page.locator('.vp-doc table').count()
+  ok('/papers 总览页只留卡片墙（无长表）', ovTables === 0, '实得 ' + ovTables + ' 张表')
+  const ovCards = await page.locator('.dr-card.is-paper').count()
+  ok('/papers 总览页卡片墙完整', ovCards >= 32, '实得 ' + ovCards + ' 张')
+  await page.screenshot({ path: SHOT + '/05_papers页.png' })
+
+  // 7b-1) 论文清单页（时间线 + 分主线表；从总览拆出来的长表）
+  await page.goto(BASE + '/papers/清单.html', { waitUntil: 'networkidle' })
   const tables = await page.locator('.vp-doc table').count()
-  ok('/papers 总览页表格渲染', tables >= 5, '实得 ' + tables + ' 张')
+  ok('/papers 论文清单页表格渲染', tables >= 5, '实得 ' + tables + ' 张')
   // 链接名称不带下划线（2026-10-08 用户要求），悬停时才显
   const deco = await page.evaluate(() =>
     getComputedStyle(document.querySelector('.vp-doc table a')).textDecorationLine)
-  ok('/papers 页链接无下划线', deco === 'none', '实得 ' + deco)
-  await page.screenshot({ path: SHOT + '/05_papers页.png' })
+  ok('/papers 清单页链接无下划线', deco === 'none', '实得 ' + deco)
 
-  // 7b-2) 拆出的两页：官方发布 / 解读资源（2026-10-25 papers/ 文件夹里的专门页）
+  // 7b-2) 拆出的两页：官方发布 / 解读资源（2026-10-25 papers/ 文件夹里的专门页；同批还有 7b-1 的论文清单）
   await page.goto(BASE + '/papers/official.html', { waitUntil: 'networkidle' })
   ok('官方发布页有开源周表', (await page.locator('.vp-doc table').count()) >= 3,
     '实得 ' + (await page.locator('.vp-doc table').count()) + ' 张')
@@ -446,7 +454,7 @@ const ok = (name, cond, extra = '') => {
   // 2026-10-09 追加：静态笔记页（不在 /study/ 下的站内页）也拉进来扫同一张黑名单
   const BANNED = ['十一档', '全量重做', '全量口径', '双视图', 'TTS', '工作区',
     '本次补录', '漏收', 'sitemap', '剔除记录', '归属更正', '此前记录有误', '档位筛选']
-  const PAGES = ['/', '/vocab/', '/listen/', '/papers/index.html', '/papers/official.html', '/papers/resources.html', '/notes/', '/sites/',
+  const PAGES = ['/', '/vocab/', '/listen/', '/papers/index.html', '/papers/清单.html', '/papers/official.html', '/papers/resources.html', '/notes/', '/sites/',
     '/notes/' + PP[0].dir + '.html']
   for (const p of PAGES) {
     await page.goto(BASE + p, { waitUntil: 'networkidle' })

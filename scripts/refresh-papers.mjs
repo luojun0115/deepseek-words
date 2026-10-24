@@ -34,9 +34,12 @@ if (!fs.existsSync(SRC)) {
 const np = JSON.parse(fs.readFileSync(path.join(PORTAL, 'data/papers.json'), 'utf8')).length
 
 // 栏目导航行：当前页加粗不链接；链接写 .md 后缀，交给 VitePress 换成 base+.html（与文稿里 /vocab 同一套口径）
+// 2026-10-25 用户要求：长表不能再堆在卡片墙下面（“卡片之后又一个整篇文章”），
+// 时间线 + 分主线表单独成一页「论文清单」，与官方发布 / 解读资源同一排栏目。
 const NAV = (cur) => {
   const it = (label, href, on) => (on ? `**${label}**` : `[${label}](${href})`)
   return ['**本栏目**：', it('📋 论文总览', '/papers/index.md', cur === 'index'), ' · ',
+    it('📜 论文清单', '/papers/清单.md', cur === 'list'), ' · ',
     it('🚀 官方发布', '/papers/official.md', cur === 'official'), ' · ',
     it('🔗 解读资源', '/papers/resources.md', cur === 'resources')].join(' ')
 }
@@ -57,9 +60,19 @@ DeepSeek 全系列论文的时间线、分主线清单与解读资源汇总。�
 
 ${NAV('index')}
 
-<!-- 卡片墙（2026-10-25 用户要求）：32 张金句封面卡，整卡外链 arXiv 原文；
-     下面的文字表保留作细表（时间 / 主线 / 解读资源） -->
+<!-- 卡片墙（2026-10-25 用户要求）：32 张金句封面卡，整卡外链 arXiv 原文。
+     时间线表与分主线表已拆到同目录的 清单.md（本页只留卡片，不再当整篇文章用） -->
 <PaperIndex mode="arxiv" />
+
+> 想要文字版目录？看 [📜 论文清单](/papers/清单.md)：时间线一张表 + arXiv 分主线五张表。
+
+`,
+  list: `---
+pageClass: wide papers
+title: 论文总览 · 论文清单
+---
+
+${NAV('list')}
 
 `,
   official: `---
@@ -88,12 +101,14 @@ const iC = body.indexOf('\n# C.')
 if (iB < 0 || iC < 0)
   console.warn(`⚠ 文稿里没找到顶级「# B.」/「# C.」段：官方发布/解读资源两页会缺正文——先检查文稿结构再渲染`)
 // 独立成页后编号字母失去上下文：段首「# A. / # B. / # C. / # D.」统一去字母
-const partIndex = (iB < 0 ? body : body.slice(0, iB)).replace(/^# [A-Z]\.\s*/gm, '# ')
+// 前置部分（时间线表）+ A 段（arXiv 分主线表）→ 论文清单页
+const partList = (iB < 0 ? body : body.slice(0, iB)).replace(/^# [A-Z]\.\s*/gm, '# ')
 const partOfficial = iB < 0 ? '' : body.slice(iB, iC < 0 ? undefined : iC).replace(/^# [A-Z]\.\s*/gm, '# ')
 const partResources = iC < 0 ? '' : body.slice(iC).replace(/^# [A-Z]\.\s*/gm, '# ')
 
 const OUTS = [
-  ['papers/index.md', HEADS.index + partIndex],
+  ['papers/index.md', HEADS.index],
+  ['papers/清单.md', HEADS.list + (partList.trim() || '> 本节暂无内容。\n')],
   ['papers/official.md', HEADS.official + (partOfficial.trim() || '> 本节暂无内容。\n')],
   ['papers/resources.md', HEADS.resources + (partResources.trim() || '> 本节暂无内容。\n')],
 ]

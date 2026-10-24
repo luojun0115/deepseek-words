@@ -3,7 +3,7 @@ pageClass: wide papers
 title: 论文总览 · 解读资源
 ---
 
-**本栏目**： [📋 论文总览](/papers/index.md)  ·  [🚀 官方发布](/papers/official.md)  ·  **🔗 解读资源**
+**本栏目**： [📋 论文总览](/papers/index.md)  ·  [📜 论文清单](/papers/清单.md)  ·  [🚀 官方发布](/papers/official.md)  ·  **🔗 解读资源**
 
 # 一次读懂全系列（综述型解读，推荐优先看）
 
