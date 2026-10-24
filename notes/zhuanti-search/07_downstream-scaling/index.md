@@ -10,7 +10,7 @@ coverFile: 缩放定律07_下游任务
 pageClass: note-page
 ---
 
-[← 专题总览](../index.md) · [全网解读资源 →](解读资源.md)
+[← 专题总览](../index.md)
 
 # 07 · Isik 2024：下游任务的缩放律
 
@@ -115,7 +115,7 @@ Kaplan/Chinchilla（上游 loss 律）→【本文 2024：下游指标律 + 脱�
 ## ⑨ 资源与延伸阅读
 
 - **一手原文**：[v1（arXiv:2402.04177v1，原名即用户所列标题）](https://arxiv.org/abs/2402.04177v1) —— 本文取用：v1 摘要（对齐/log-law/脱钩三结论）、v3 的 COMET 扩展
-- **全网解读**：见同目录 **[解读资源.md](解读资源.md)**（知乎 / 中文媒体 / 视频 / 英文站点 / 社区 / 一手资源 / 建议路径）——**只维护这一份，本文不再列链接副本**
+- **全网解读**：见本文文末 **⑪ 全网解读资源**（分割线以下，同一页）
 
 
 ## ⑩ 核心术语表
@@ -127,3 +127,56 @@ Kaplan/Chinchilla（上游 loss 律）→【本文 2024：下游指标律 + 脱�
 | log-law | 对数律 | 下游指标随规模近对数增长的简化预测式 |
 | downstream cross-entropy | 下游交叉熵 | 微调任务上的连续损失，常与生成指标脱钩 |
 | transfer learning | 迁移学习 | 预训练 + 微调的两段式训练范式 |
+
+---
+
+## ⑪ 全网解读资源
+
+> 整理时间：2026-10-24
+
+### 检索关键词
+
+- 检索关键词：`downstream scaling laws`、`distribution alignment 对齐`、`log-law BLEU`、`Isik Ponomareva`。
+
+### 知乎（图文解读）
+
+| 链接 | 是什么 |
+|---|---|
+| [大模型 Scaling Law 同样适用于下游任务性能？斯坦福…](https://zhuanlan.zhihu.com/p/684168662) | **本篇最佳中文报道式解读**（2024-02-27）：迁移学习设定、对齐与 log-law 结论逐条讲 |
+| [爱可可AI前沿推介（2024.2.8）](https://zhuanlan.zhihu.com/p/681844981) | 发布当天收录：要点即"下游交叉熵并不总是可靠指标（如 BLEU）" |
+| [万字长文解读 Scaling Law 的一切，洞见 LLM 的未来](https://zhuanlan.zhihu.com/p/20966132534) | 全景综述中"从上游 loss 到下游指标"的一环 |
+
+### 英文 / 权威站点
+
+| 链接 | 是什么 |
+|---|---|
+| [Berivan Isik · USC 报告页（2024-10）](https://sites.usc.edu/aif4s/cool_timeline/talk-by-berivan-isik-google-research/) | **一作本人**的研究综述讲座（含论文页与录像入口） |
+| [ICLR 2025 正式版论文页](https://iclr.cc/virtual/2025/poster/27915) | 更名后的官方收录页（机器翻译专版，含 COMET 扩展） |
+| [Downstream Scaling Laws 主题页（Emergent Mind）](https://www.emergentmind.com/topics/downstream-scaling-laws) | 本研究方向的主题级综述地图 |
+| [Scaling Laws Are Unreliable for Downstream Tasks（Lourie et al., EMNLP 2025 Findings）](https://aclanthology.org/2025.findings-emnlp.877.pdf) | 批判性续作：小模型外推下游并不可靠——与本篇合读才是完整结论 |
+| [Data Scaling Laws in NMT: The Effect of Noise and Architecture（Bansal et al., ICML 2022）](https://proceedings.mlr.press/v162/bansal22b/bansal22b.pdf) | 前置工作：NMT 数据缩放的早期系统研究 |
+
+### 视频（B 站 / YouTube）
+
+| 链接 | 平台 | 是什么 |
+|---|---|---|
+| [8 篇 Scaling Laws 论文泛读](https://www.bilibili.com/video/BV1gisteJEWx/) | B站 | 缩放律谱系串讲，本篇"从 loss 到指标"的转折点位置 |
+| [作者 USC 报告录像](https://sites.usc.edu/aif4s/cool_timeline/talk-by-berivan-isik-google-research/) | YouTube/USC | 一作亲讲研究脉络（页面内含录像链接） |
+
+> 说明：本篇无单独的大流量解读视频；中文内容以知乎报道为主。
+
+### X（推特）与社区讨论
+
+> 说明：本篇发布期的讨论以评测/翻译圈研究者转评为主，未沉淀出单一高信度讨论串；社区讨论入口见 [Emergent Mind 主题页](https://www.emergentmind.com/topics/downstream-scaling-laws) 的论文关联列表。
+
+### 官方一手资源
+
+- 论文：[v1（2024-02，原名）](https://arxiv.org/abs/2402.04177v1) · [v3（ICLR 2025 版）](https://arxiv.org/abs/2402.04177)
+- 正式发表：[ICLR 2025 Poster 页](https://iclr.cc/virtual/2025/poster/27915)
+
+### 给阅读者的建议路径
+
+1. 先读 **知乎《同样适用于下游任务性能？》（#684168662）**拿到"对齐 → log-law → 脱钩"三段论；
+2. 对照本目录 **精读正文**的"三种缩放行为图解"，重点记住"BLEU 与下游 CE 会打架"；
+3. 一手细节读 **v1 原文摘要与实验节**，再对比 **v3（ICLR 版）**看正式发表时加了什么；
+4. 批判收尾读 **Lourie et al. 2025**——知道这条律的"不可靠边界"在哪。

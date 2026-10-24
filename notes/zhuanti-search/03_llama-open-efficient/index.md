@@ -10,7 +10,7 @@ coverFile: 缩放定律03_LLaMA
 pageClass: note-page
 ---
 
-[← 专题总览](../index.md) · [全网解读资源 →](解读资源.md)
+[← 专题总览](../index.md)
 
 # 03 · LLaMA 2023：Open and Efficient Foundation Language Models
 
@@ -122,7 +122,7 @@ Kaplan 2020 → Chinchilla 2022 →【本文 2023：换目标函数】→ Llama-
 ## ⑨ 资源与延伸阅读
 
 - **一手原文**：[LLaMA: Open and Efficient Foundation Language Models（arXiv:2302.13971）](https://arxiv.org/abs/2302.13971) —— 本文取用：§2（数据配比）、§3（基准对比）
-- **全网解读**：见同目录 **[解读资源.md](解读资源.md)**（知乎 / 中文媒体 / 视频 / 英文站点 / 社区 / 一手资源 / 建议路径）——**只维护这一份，本文不再列链接副本**
+- **全网解读**：见本文文末 **⑪ 全网解读资源**（分割线以下，同一页）
 
 
 ## ⑩ 核心术语表
@@ -135,3 +135,67 @@ Kaplan 2020 → Chinchilla 2022 →【本文 2023：换目标函数】→ Llama-
 | pre-norm RMSNorm | 前置均方根归一化 | 去掉均值中心的 LayerNorm 变体，训练更稳 |
 | SwiGLU | 门控线性单元变体 | FFN 激活改为 SiLU 门控，隐层乘 2/3 补偿参数 |
 | weight decay | 权重衰减 | 0.1 的 AdamW 正则，LLaMA 配方默认值 |
+
+---
+
+## ⑪ 全网解读资源
+
+> 整理时间：2026-10-24
+
+### 检索关键词
+
+- 检索关键词：`LLaMA paper`、`LLaMA 论文解读`、`inference-optimal 过度训练`、`Llama 开源家族`。
+
+### 知乎（图文解读）
+
+| 链接 | 是什么 |
+|---|---|
+| [从 Llama 1 到 3.1：Llama 模型架构演进详解](https://zhuanlan.zhihu.com/p/8828758250) | 从本篇的 RoPE/RMSNorm/SwiGLU 配方一路讲到 3.1，看家族如何滚雪球 |
+| [【独家】万字长文带你梳理 Llama 开源家族](https://zhuanlan.zhihu.com/p/694667061) | 2024-04，Llama 家族全梳理，本篇是族谱第一代 |
+| [大语言模型（LLM）相关学习资料整理](https://zhuanlan.zhihu.com/p/616280753) | 资料索引帖，本篇的论文/GitHub 入口收录在内 |
+
+### 中文博客与媒体
+
+| 链接 | 是什么 |
+|---|---|
+| [LLaMA（Open and Efficient Foundation Language Models）解读（博客园·LittleHann）](https://www.cnblogs.com/LittleHann/p/17331522.html) | 2023-04 的完整中文精读：架构调整与训练方法逐节走读 |
+| [深度长文｜多模态 Scaling Laws 新篇章（CSDN）](https://blog.csdn.net/cf2SudS8x8F0v/article/details/147200471) | 内含"为什么现在都过度训练（inference-optimal）"的脉络，本篇是起点 |
+
+### 视频（B 站 / YouTube）
+
+| 链接 | 平台 | 是什么 |
+|---|---|---|
+| [LLaMA 论文讲解](https://www.youtube.com/watch?v=E5OnoYF2oAk) | YouTube | 7B~65B 系列的设计动机与训练策略串讲 |
+| [Llama 3.1 论文精读（李沐·论文精读系列）](https://www.bilibili.com/video/BV1WM4m1y7Uh/) | B站 | 李沐未精读过 LLaMA-1 原篇，但这套 **Llama 3.1 五连讲**（[预训练数据](https://www.bilibili.com/video/BV1u142187S5/) / [训练 infra](https://www.bilibili.com/video/BV1b4421f7fa/)）是理解"小模型多训"路线演化的最佳视频；讲稿清单见 [mli/paper-reading](https://github.com/mli/paper-reading) |
+| [8 篇 Scaling Laws 论文泛读](https://www.bilibili.com/video/BV1gisteJEWx/) | B站 | 缩放律谱系串讲，本篇"换目标函数"的位置一目了然 |
+
+### 英文 / 权威站点
+
+| 链接 | 是什么 |
+|---|---|
+| [Meta AI 公告：Introducing LLaMA](https://ai.meta.com/blog/large-language-model-llama-meta-ai/) | 官方发布博客 |
+| [alphaxiv · LLaMA 讨论页](https://www.alphaxiv.org/abs/2302.13971) | 社区整理的逐任务对比（65B vs Chinchilla-70B 等） |
+| [LLaMA Paper Summary（AI Zero to Hero）](https://ai.noblerworks.com/papers/language-models/15-llama/summary/) | 训练配方速查卡（模型规格/优化器/数据配比） |
+| [Llama (language model) — Wikipedia](https://en.wikipedia.org/wiki/Llama_(language_model)) | 权重泄露史（2023-03-03 种子流出）与生态影响的时间线，研究"开放权重"事件必读 |
+| [Catching up on the weird world of LLMs（Simon Willison）](https://simonw.substack.com/p/catching-up-on-the-weird-world-of) | Llama 泄露引爆开源生态的第一时间评论 |
+
+### X（推特）与社区讨论
+
+| 链接 | 平台 | 是什么 |
+|---|---|---|
+| [Llama (language model) — Wikipedia「Leak」小节](https://en.wikipedia.org/wiki/Llama_(language_model)) | 百科 | 4chan 种子扩散 → Alpaca/Vicuna 生态爆发的完整时间线（含各方 X/论坛反应的引用源） |
+| [r/LocalLLaMA](https://www.reddit.com/r/LocalLLaMA/) | Reddit | 围绕 Llama 系权重与本地部署长大的社区，本篇是它的"创世事件" |
+
+> 说明：2023-02 发布期的原始推文分散在各研究者时间线中，无单一高信度讨论串；泄露与生态史以 Wikipedia 引用链最全。
+
+### 官方一手资源
+
+- 论文：[arXiv:2302.13971](https://arxiv.org/abs/2302.13971) · [PDF](https://arxiv.org/pdf/2302.13971)
+- 代码：[github.com/facebookresearch/llama](https://github.com/facebookresearch/llama)（LLaMA-1 原仓库，含申请表与下载脚本）
+
+### 给阅读者的建议路径
+
+1. 先读 **博客园 LittleHann 精读**（中文逐节走读原文）；
+2. 再看 **李沐 Llama 3.1 精读系列**理解这套配方如何演化到今天；
+3. 缩放立场（为什么"过度训练"）看 **YouTube #Zy23dMqk_Rs**（本专题 02 目录也收录）与本篇精读正文的"缩放立场的账"一节对照读；
+4. 想了解"一次泄露改变行业"，读 **Wikipedia Llama 词条** + **Simon Willison 评论**。

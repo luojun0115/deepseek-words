@@ -10,7 +10,7 @@ coverFile: 缩放定律05_重复数据
 pageClass: note-page
 ---
 
-[← 专题总览](../index.md) · [全网解读资源 →](解读资源.md)
+[← 专题总览](../index.md)
 
 # 05 · Hernandez 2022：从重复数据学到的缩放律与可解释性
 
@@ -134,7 +134,7 @@ Lee et al. 2021（去重必要性）→【本文 2022.05：重复的伤害何时
 ## ⑨ 资源与延伸阅读
 
 - **一手原文**：[Scaling Laws and Interpretability of Learning from Repeated Data（arXiv:2205.10487）](https://arxiv.org/abs/2205.10487) —— 本文取用：§1.1 结果摘要、§2 各图
-- **全网解读**：见同目录 **[解读资源.md](解读资源.md)**（知乎 / 中文媒体 / 视频 / 英文站点 / 社区 / 一手资源 / 建议路径）——**只维护这一份，本文不再列链接副本**
+- **全网解读**：见本文文末 **⑪ 全网解读资源**（分割线以下，同一页）
 
 
 ## ⑩ 核心术语表
@@ -147,3 +147,58 @@ Lee et al. 2021（去重必要性）→【本文 2022.05：重复的伤害何时
 | prefix matching | 前缀匹配 | 归纳头的标准行为探针 |
 | copying | 抄写 | 对上下文内容的精确复现能力，泛化的代理指标 |
 | effective model size | 等效模型规模 | 用受创模型的损失反推它相当于多大的健康模型 |
+
+---
+
+## ⑪ 全网解读资源
+
+> 整理时间：2026-10-24
+
+### 检索关键词
+
+- 检索关键词：`repeated data scaling laws`、`double descent 数据重复`、`induction heads 归纳头`、`Hernandez repeated data`。
+
+### 知乎（图文解读）
+
+| 链接 | 是什么 |
+|---|---|
+| [爱可可AI前沿推介（2022.5.26）](https://zhuanlan.zhihu.com/p/520030598) | 知名日报化推介（爱可可-爱生活）：发布当天收录，含中文一句话摘要与要点 |
+| [【译文】Scaling Laws, Carefully](https://zhuanlan.zhihu.com/p/2053808273044797046) | Lilian Weng 长文译文，在"重复数据的代价"一节引述本篇结论（[英文原版](https://lilianweng.github.io/posts/2026-06-24-scaling-laws/)） |
+
+### 英文 / 权威站点
+
+| 链接 | 是什么 |
+|---|---|
+| [In-context Learning and Induction Heads（Transformer Circuits）](https://transformer-circuits.pub/2022/in-context-learning-and-induction-heads/index.html) | **机制前置必读**：本篇的"归纳头探针"出自这里（Olsson et al. 2022，同团队） |
+| [alphaxiv · 讨论页](https://www.alphaxiv.org/abs/2205.10487) | 结论速览与社区追问（含双下降机制的 Q&A 摘要） |
+| [UW CSE 599J · Scaling Laws 课程讲义](https://koh.pw/cse599j/slides/CSE599J_1-10-24.pdf) | 把本篇放进缩放律九篇课程序列的教学视角 |
+| [Mechanistic Interpretability for AI Safety: A Review（arXiv:2404.14082）](https://arxiv.org/html/2404.14082v2) | 可解释性综述，把本篇列为"缩放律 × 机制解释"结合的代表作 |
+
+### 视频（B 站 / YouTube）
+
+| 链接 | 平台 | 是什么 |
+|---|---|---|
+| [8 篇 Scaling Laws 论文泛读](https://www.bilibili.com/video/BV1gisteJEWx/) | B站 | 缩放律谱系串讲，本篇"重复数据的伤害区"在谱系中的位置 |
+| [Will Scaling Laws Hold?](https://www.youtube.com/watch?v=nJ5RDmgyU0k) | YouTube | 综述向 talk，"repeated data eventually lost value" 的结论与本篇/06 篇一并呈现 |
+
+> 说明：本篇无单独的大流量解读视频；机制部分（归纳头）看 Transformer Circuits 原文配套的图示最有效。
+
+### X（推特）与社区讨论
+
+| 链接 | 平台 | 是什么 |
+|---|---|---|
+| [r/mlscaling 版块](https://www.reddit.com/r/mlscaling/) | Reddit | 发布期讨论归档（检索关键词 `repeated data Hernandez`） |
+| [ResearchGate 论文页](https://www.researchgate.net/publication/360804529_Scaling_Laws_and_Interpretability_of_Learning_from_Repeated_Data) | 学术 | 引用记录与作者答疑入口 |
+
+> 说明：X 上无单一高信度讨论串；本篇的"官方伴读"是同团队 Transformer Circuits 的归纳头长文（见上表），两者的 X 讨论是连体的。
+
+### 官方一手资源
+
+- 论文：[arXiv:2205.10487](https://arxiv.org/abs/2205.10487) · [HTML 全文](https://arxiv.org/html/2205.10487v1)（正文含全部关键数字，本专题精读引用出处均在此）
+
+### 给阅读者的建议路径
+
+1. 先读本目录 **精读正文**（把"90% 唯一 + 10% 重复"的实验设定与双下降图吃透）；
+2. 机制部分读 **Transformer Circuits《In-context Learning and Induction Heads》**——不懂归纳头就看不懂伤害为什么集中在泛化上；
+3. 对照读 **本专题 06（Muennighoff 2023）**：本篇是"小部分重复很多遍"，06 是"全量重复几遍"，两篇合起来才是重复数据的完整地图；
+4. 中文补给看 **爱可可推介（2022.5.26）** 与 **Lilian Weng 译文** 的相关小节。

@@ -10,7 +10,7 @@ coverFile: 缩放定律01_Kaplan
 pageClass: note-page
 ---
 
-[← 专题总览](../index.md) · [全网解读资源 →](解读资源.md)
+[← 专题总览](../index.md)
 
 # 01 · Kaplan 2020：Scaling Laws for Neural Language Models
 
@@ -130,7 +130,7 @@ log(损失)
 ## ⑨ 资源与延伸阅读
 
 - **一手原文**：[Scaling Laws for Neural Language Models（arXiv:2001.08361）](https://arxiv.org/abs/2001.08361) —— 本文取用：Table 1（三条幂律参数）、§6.2（算力分配）
-- **全网解读**：见同目录 **[解读资源.md](解读资源.md)**（知乎 / 中文媒体 / 视频 / 英文站点 / 社区 / 一手资源 / 建议路径）——**只维护这一份，本文不再列链接副本**
+- **全网解读**：见本文文末 **⑪ 全网解读资源**（分割线以下，同一页）
 
 
 ## ⑩ 核心术语表
@@ -143,3 +143,74 @@ log(损失)
 | sample efficiency | 样本效率 | 达到同一损失所需 token 数，越大越省 |
 | compute allocation | 算力分配 | 固定 FLOPs 下参数量与 token 量的最优配比 |
 | non-embedding parameters | 非嵌入参数 | 去掉词表嵌入矩阵后的参数计数口径 |
+
+---
+
+## ⑪ 全网解读资源
+
+> 整理时间：2026-10-24
+
+### 检索关键词
+
+- 检索关键词：`Scaling Laws for Neural Language Models`、`Kaplan scaling law`、`缩放定律 幂律`、`模型为王 0.73`。
+
+### 知乎（图文解读）
+
+| 链接 | 是什么 |
+|---|---|
+| [【大模型】Scaling Laws for Neural Language Models](https://zhuanlan.zhihu.com/p/665810769) | 逐节笔记式解读，含 C≈2N+2n 的前向算力拆解，适合对照原文 |
+| [大语言模型中的第一性原理：Scaling laws](https://zhuanlan.zhihu.com/p/671327709) | 进阶向：指出三条幂律联合起来会推出矛盾，帮你理解定律的适用边界 |
+| [解析大模型中的 Scaling Law](https://zhuanlan.zhihu.com/p/667489780) | Kaplan 与 Chinchilla 一起讲，C≈6ND 的推导清晰，入门首选 |
+| [万字长文解读 Scaling Law 的一切，洞见 LLM 的未来](https://zhuanlan.zhihu.com/p/20966132534) | 2025-02 的全景综述，Kaplan 在整条缩放律脉络中的位置讲得最全 |
+| [透视 Scaling Law 背后的信息论、流形假设与资源分配逻辑](https://zhuanlan.zhihu.com/p/2014387264638169865) | 理论视角：为什么幂律会出现（信息论/流形假说），2026-03 |
+
+### 中文博客与媒体
+
+| 链接 | 是什么 |
+|---|---|
+| [深度｜Scaling Law 的发展历程，与数据受限问题的解决措施（阿里云）](https://startup.aliyun.com/info/1087256.html) | 2024-08 长文，从 Kaplan 一路讲到数据受限（正好接本专题 06 篇） |
+| [OpenAI 与 DeepMind 的 Scaling Laws 之争（BAAI 智源社区）](https://hub.baai.ac.cn/view/34084) | 两代定律交锋的中文叙事，读 02 篇前先看这篇 |
+| [解析大模型中的 Scaling Law（CSDN 转载）](https://blog.csdn.net/qq_27590277/article/details/134544174) | 含 EleutherAI 工程师如何用这些启发式规划训练的视角 |
+| [什么是人工智能中的缩放定律？（AWS 中文）](https://aws.amazon.com/cn/what-is/scaling-laws-in-ai/) | 零基础科普，给完全没接触过幂律的读者铺垫 |
+
+### 视频（B 站 / YouTube）
+
+| 链接 | 平台 | 是什么 |
+|---|---|---|
+| [Jared Kaplan \| Scaling Laws and Their Implications（JHU 讲座）](https://www.youtube.com/watch?v=Suhp3OLASSo) | YouTube | **作者本人** 2022-03 在约翰霍普金斯的讲座，第一手口径 |
+| [Neural Scaling Laws — Fundamentals and Frontiers](https://www.youtube.com/watch?v=8tKgHh83m78) | YouTube | 缩放律全景综述报告，把 Kaplan 到后续前沿串成一条线 |
+| [8 篇 Scaling Laws 论文泛读，哪篇是你的心头好？](https://www.bilibili.com/video/BV1gisteJEWx/) | B站 | 本专题 9 篇的泛读串讲（高度重叠），快速建立谱系；YouTube 同款[带章节时间戳](https://www.youtube.com/watch?v=eindNx4Uk-M) |
+| [你真的懂 Scaling Law 吗？一口气搞懂 AI 的"缩放定律"](https://www.bilibili.com/video/BV1aa3b6PE7h/) | B站 | 科普向，从 Kaplan 讲起 |
+| [【深度解析】AI 大模型 scaling law 幂律法则（系列）](https://www.bilibili.com/video/BV1Kzp1eWEBx/) | B站 | 7 集系列，专讲"数据量/参数量/算力的最优分配" |
+| [解析大模型中的 Scaling Law（卢菁博士）](https://www.bilibili.com/video/BV1eN4y1z7N1/) | B站 | 讲透幂律与"为什么模型按 6/7B、13B、130B 分档"，铺垫必看 |
+
+### 英文 / 权威站点
+
+| 链接 | 是什么 |
+|---|---|
+| [Chinchilla Scaling: A replication attempt（arXiv:2404.10102）](https://arxiv.org/abs/2404.10102) | 对 Kaplan 拟合方法的批判细节 |
+| [Scaling Laws, Carefully（Lilian Weng，2026-06）](https://lilianweng.github.io/posts/2026-06-24-scaling-laws/) | 权威长文综述，Kaplan→Chinchilla→数据受限的批判性梳理；[知乎译文](https://zhuanlan.zhihu.com/p/2053808273044797046) |
+| [Kaplan Scaling Laws: Predicting Language Model Performance（mbrenndoerfer）](https://mbrenndoerfer.com/writing/kaplan-scaling-laws-language-model-performance) | Language AI Handbook 章节，公式与结论速查 |
+| [Scaling Laws: Kaplan, Chinchilla, Mirage Emergence（TheoremPath）](https://theorempath.com/topics/scaling-laws) | 分节指路式专题页（引用原文节号） |
+| [Scaling laws for neural language models · 走读笔记（UWaterloo）](https://cs.uwaterloo.ca/~k587pate/notes/scaling-laws-kaplan.html) | 逐图逐式走读，学生视角 |
+
+### X（推特）与社区讨论
+
+| 链接 | 平台 | 是什么 |
+|---|---|---|
+| [r/mlscaling 版块](https://www.reddit.com/r/mlscaling/) | Reddit | 缩放律研究的专门社区，Kaplan/Chinchilla 的历代讨论都归档于此 |
+| [UW CSE 599J · Scaling Laws 课程讲义](https://koh.pw/cse599j/slides/CSE599J_1-10-24.pdf) | 课程 | 华盛顿大学 2024 冬把本篇放在缩放律九篇第一讲 |
+
+> 说明：本篇发布于 2020 年（X 前身 Twitter 早期），未检索到高信度的原始讨论串；社区讨论以 Reddit r/mlscaling 归档为主。
+
+### 官方一手资源
+
+- 论文：[arXiv:2001.08361](https://arxiv.org/abs/2001.08361) · [PDF](https://arxiv.org/pdf/2001.08361)
+- 同组后续：[GPT-3 论文（arXiv:2005.14165）](https://arxiv.org/abs/2005.14165)——本篇策略的大规模落地
+
+### 给阅读者的建议路径
+
+1. 先看 **B站《8 篇 Scaling Laws 论文泛读》**（20 分钟知道这批论文都长什么样）；
+2. 再读 **知乎《解析大模型中的 Scaling Law》（#667489780）** 把 C≈6ND 与三条幂律吃透；
+3. 想听第一手叙事，看 **Jared Kaplan 本人讲座（YouTube #Suhp3OLASSo）**；
+4. 批判视角读 **Lilian Weng《Scaling Laws, Carefully》** 与知乎《第一性原理》篇（幂律的矛盾点）。

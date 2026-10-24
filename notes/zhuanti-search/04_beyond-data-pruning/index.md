@@ -10,7 +10,7 @@ coverFile: 缩放定律04_数据剪枝
 pageClass: note-page
 ---
 
-[← 专题总览](../index.md) · [全网解读资源 →](解读资源.md)
+[← 专题总览](../index.md)
 
 # 04 · Sorscher 2022：Beyond Neural Scaling Laws — 数据剪枝打破幂律
 
@@ -114,7 +114,7 @@ Kaplan/Chinchilla（数据当均匀介质）→【本文 2022：数据有结构�
 ## ⑨ 资源与延伸阅读
 
 - **一手原文**：[Beyond Neural Scaling Laws（arXiv:2206.14486）](https://arxiv.org/abs/2206.14486) —— 本文取用：§3（三种数据结构）、§4（ImageNet 实验）
-- **全网解读**：见同目录 **[解读资源.md](解读资源.md)**（知乎 / 中文媒体 / 视频 / 英文站点 / 社区 / 一手资源 / 建议路径）——**只维护这一份，本文不再列链接副本**
+- **全网解读**：见本文文末 **⑪ 全网解读资源**（分割线以下，同一页）
 
 
 ## ⑩ 核心术语表
@@ -126,3 +126,57 @@ Kaplan/Chinchilla（数据当均匀介质）→【本文 2022：数据有结构�
 | pruning metric | 剪枝指标 | 给样本打"值不值得学"分数的模型或规则 |
 | EL2C | 错误率型指标 | 用已训练模型的错误信息给样本定难度 |
 | exponential scaling | 指数缩放 | 误差 ~ exp(-cn)，快于一切幂律的下降速度 |
+
+---
+
+## ⑪ 全网解读资源
+
+> 整理时间：2026-10-24
+
+### 检索关键词
+
+- 检索关键词：`beyond neural scaling laws`、`data pruning`、`数据剪枝/数据修剪`、`heavy-tailed 指数缩放`、`Sorscher Ganguli`。
+
+### 知乎（图文解读）
+
+| 链接 | 是什么 |
+|---|---|
+| [Meta AI 新研究：实现 AGI 之路，数据剪枝比我们想象得更重要](https://zhuanlan.zhihu.com/p/544033320) | 2022-07 中文报道式解读：SVHN/CIFAR-10/ImageNet 上误差"指数缩放"的实验讲得最清楚 |
+| [机器学习学术速递 2022.6.30](https://zhuanlan.zhihu.com/p/535694691) | 发布当周的中文一句话速递（含标题直译"超越神经标度定律"） |
+| [透视 Scaling Law 背后的信息论、流形假设与资源分配逻辑](https://zhuanlan.zhihu.com/p/2014387264638169865) | 理论视角：本文"数据分布结构决定缩放上限"的思想放回信息论框架 |
+
+### 英文 / 权威站点
+
+| 链接 | 是什么 |
+|---|---|
+| [OpenReview · NeurIPS 2022 讨论页](https://openreview.net/forum?id=UmvSlP-PyV) | 审稿人与作者的往返讨论：指数缩放的适用条件被追问得最充分的地方 |
+| [NeurIPS 2022 正式版收录页](https://proceedings.neurips.cc/paper_files/paper/2022/hash/7b75da9b61eda40fa35453ee5d077df6-Abstract-Conference.html) | 官方摘要与评审信息 |
+| [Meta AI 收录页](https://ai.meta.com/research/publications/beyond-neural-scaling-laws-beating-power-law-scaling-via-data-pruning/) | 机构官方页面 |
+| [JEST: Data curation via joint example selection（arXiv:2406.17711）](https://arxiv.org/abs/2406.17711) | DeepMind 2024 续作：把"剪枝指标"做成工业流程，读本文后必看 |
+| [Epoch AI · Scaling laws literature review](https://epoch.ai/publications/scaling-laws-literature-review) | 本文在缩放律谱系中的位置（含逐篇评注的论文数据库） |
+
+### 视频（B 站 / YouTube）
+
+| 链接 | 平台 | 是什么 |
+|---|---|---|
+| [Beyond neural scaling laws – Paper Explained](https://www.youtube.com/watch?v=joZaCw5PxYs) | YouTube | 动画讲解：三种数据结构（最坏/典型/重尾）与对应缩放曲线，最直观的一版 |
+| [8 篇 Scaling Laws 论文泛读](https://www.bilibili.com/video/BV1gisteJEWx/) | B站 | 缩放律谱系串讲，本篇"打破幂律"的定位一目了然 |
+
+### X（推特）与社区讨论
+
+| 链接 | 平台 | 是什么 |
+|---|---|---|
+| [Surya Ganguli 的发布推文](https://x.com/SuryaGanguli/status/1542599453659451392) | X | 通讯作者亲发："如何用数据剪枝获得指数级缩放"——**作者第一手口径** |
+| [r/mlscaling · 发布讨论串（2022-06）](https://www.reddit.com/r/mlscaling/comments/vo5br7/220614486_beyond_neural_scaling_laws_beating/) | Reddit | 发布当周社区讨论：teacher-student 式剪枝与适用性争论 |
+
+### 官方一手资源
+
+- 论文：[arXiv:2206.14486](https://arxiv.org/abs/2206.14486) · [HTML 全文](https://arxiv.org/html/2206.14486v6)
+- 通讯作者主页：Surya Ganguli（Stanford），论文与 talk 汇总见其个人页
+
+### 给阅读者的建议路径
+
+1. 先看 **YouTube 动画讲解（#joZaCw5PxYs）**——三种数据结构的图示比文字直观得多；
+2. 再读 **知乎《数据剪枝比我们想象得更重要》**补实验细节（ImageNet/SVHN/CIFAR 数字）；
+3. 打架处看 **OpenReview 审稿往返**（"剪枝指标是不是循环依赖"被正面回应）；
+4. 进阶读 **作者 Ganguli 的发布推文** 与 **JEST 续作**，看理论如何变成 2024 年的工业管线。
