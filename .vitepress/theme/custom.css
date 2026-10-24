@@ -2238,3 +2238,18 @@
 }
 .dr-hero-deck .superpop .can { top: 52px; }
 .dr-hero-deck .superpop .dots { top: 70px; }
+
+/* 大跃进宣传画：主标大字 + 副标小字第二行，靠大小层次做版式（2026-10-24 用户要求） */
+.dr-hero-deck .dagu .t {
+  top: 58%; transform: translateY(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 12px;
+}
+.dr-hero-deck .dagu .lg {
+  font-size: 72px; font-weight: 900; line-height: .92;
+  letter-spacing: -.01em; color: #141414;
+}
+.dr-hero-deck .dagu .sm {
+  font-size: 19px; font-weight: 700; line-height: 1;
+  letter-spacing: .38em; text-indent: .38em; color: #d8341f;
+  border-top: 2px solid #d8341f; padding-top: 10px;
+}

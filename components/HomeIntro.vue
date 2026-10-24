@@ -30,7 +30,7 @@ const CARDS = [
   { k: 'soviet', n: '苏联构成宣传', y: 'Soviet Poster · 1920s',
     inner: '<span class="rays"></span><span class="disc"></span><span class="bar"></span><div class="t">DeepSeek is<br>all you need</div>' },
   { k: 'dagu', n: '大跃进宣传画', y: 'China · 1958',
-    inner: '<span class="rays"></span><span class="sun"></span><div class="t">DeepSeek is<br>all you need</div><div class="sub">深度求索 全面超越</div>' },
+    inner: '<span class="rays"></span><span class="sun"></span><div class="t"><span class="lg">DeepSeek</span><span class="sm">Is all you need</span></div><div class="sub">深度求索 全面超越</div>' },
   { k: 'handbill', n: '手写大字报', y: 'Handbill · 1960s',
     inner: '<span class="burst"></span><div class="t">一站读透</div><div class="sub">DEEPSEEK IS ALL YOU NEED</div>' },
   { k: 'papercut', n: '剪纸宣传栏', y: 'Paper Cut · 1980s',
