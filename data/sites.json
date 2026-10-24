@@ -1,5 +1,5 @@
 {
-  "_note": "站外导航页（/sites）的数据源。72 站上墙 + 5 站待选 + 3 个自有空位，18 组。 改名单改这里，页面与自检都从这份数据读，不写死在组件里。待选站（pending）数据保留但页面不渲染（DECISIONS §A7）；其中 Papers with Code 已于 2025-07-24 关停，条目暂留备查（§A12）。分组顺序 = 墙上的行序（每组一行，组牌在左列）。第八批按「同类同排」重划分组（§A16），第九批撤掉小林 coding 并把博客园挪进 docs（§A17），第十批新增 Python 框架与前端框架（§A18），第十一批新增基础设施（§A19），第十二批抽出编程语言组（§A20）。",
+  "_note": "站外导航页（/sites）的数据源。76 站上墙 + 5 站待选 + 3 个自有空位，18 组。 改名单改这里，页面与自检都从这份数据读，不写死在组件里。待选站（pending）数据保留但页面不渲染（DECISIONS §A7）；其中 Papers with Code 已于 2025-07-24 关停，条目暂留备查（§A12）。分组顺序 = 墙上的行序（每组一行，组牌在左列）。第八批按「同类同排」重划分组（§A16），第九批撤掉小林 coding 并把博客园挪进 docs（§A17），第十批新增 Python 框架与前端框架（§A18），第十一批新增基础设施（§A19），第十二批抽出编程语言组（§A20），第十三批基础设施扩到 8 块（§A21）。",
   "groups": [
     { "id": "papers", "name": "论文源", "en": "PAPERS", "kind": "sites" },
     { "id": "llm", "name": "大模型", "en": "LLM", "kind": "sites" },
@@ -44,9 +44,13 @@
     { "slug": "rust", "name": "Rust", "short": "Rust", "url": "https://www.rust-lang.org", "brand": "#000000", "group": "lang", "logo": "/logos/rust.png" },
 
     { "slug": "kafka", "name": "Apache Kafka", "short": "Kafka", "url": "https://kafka.apache.org", "brand": "#e2562c", "group": "infra", "logo": "/logos/kafka.png" },
+    { "slug": "nginx", "name": "Nginx", "short": "Nginx", "url": "https://nginx.org", "brand": "#1f9e55", "group": "infra", "logo": "/logos/nginx.png" },
+    { "slug": "rabbitmq", "name": "RabbitMQ", "short": "RabbitMQ", "url": "https://www.rabbitmq.com", "brand": "#ff6600", "group": "infra", "logo": "/logos/rabbitmq.png" },
     { "slug": "docker", "name": "Docker", "short": "Docker", "url": "https://www.docker.com", "brand": "#1d63ed", "group": "infra", "logo": "/logos/docker.png" },
     { "slug": "elasticsearch", "name": "Elasticsearch", "short": "ES", "url": "https://www.elastic.co/elasticsearch", "brand": "#fdc926", "group": "infra", "logo": "/logos/elasticsearch.png" },
     { "slug": "kubernetes", "name": "Kubernetes", "short": "K8s", "url": "https://kubernetes.io", "brand": "#5283e9", "group": "infra", "logo": "/logos/kubernetes.png" },
+    { "slug": "logstash", "name": "Logstash", "short": "Logstash", "url": "https://www.elastic.co/logstash", "brand": "#fdc514", "group": "infra", "logo": "/logos/logstash.png" },
+    { "slug": "tomcat", "name": "Apache Tomcat", "short": "Tomcat", "url": "https://tomcat.apache.org", "brand": "#000000", "group": "infra", "logo": "/logos/tomcat.png" },
 
     { "slug": "fastapi", "name": "FastAPI", "short": "FastAPI", "url": "https://fastapi.tiangolo.com", "brand": "#039688", "group": "pyfw", "logo": "/logos/fastapi.png" },
     { "slug": "flask", "name": "Flask", "short": "Flask", "url": "https://flask.palletsprojects.com", "brand": "#000000", "group": "pyfw", "logo": "/logos/flask.png" },
