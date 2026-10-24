@@ -2231,3 +2231,10 @@
 .dr-hero-deck .mongolrock .wing { top: 86px; }
 .dr-hero-deck .renaissance .dome { bottom: 202px; }
 .dr-hero-deck .gothic .rose { top: 76px; }
+
+/* 第 44 张 超级波普：文字挪到下方，别压中间的金罐头（2026-10-24 用户指定「挪到下方」） */
+.dr-hero-deck .superpop .t {
+  top: auto; bottom: 16px; transform: none;
+}
+.dr-hero-deck .superpop .can { top: 52px; }
+.dr-hero-deck .superpop .dots { top: 70px; }
