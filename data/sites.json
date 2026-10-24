@@ -1,5 +1,5 @@
 {
-  "_note": "站外导航页（/sites）的数据源。61 站上墙 + 5 站待选 + 3 个自有空位，14 组。 改名单改这里，页面与自检都从这份数据读，不写死在组件里。待选站（pending）数据保留但页面不渲染（DECISIONS §A7）；其中 Papers with Code 已于 2025-07-24 关停，条目暂留备查（§A12）。分组顺序 = 墙上的行序（每组一行，组牌在左列）。2026-10-24 第八批按「同类同排」重划分组（§A16）：代码与技术官网、测试工具、教程与文档、课程与学习、读书与图书馆、新闻与热榜各自成行。",
+  "_note": "站外导航页（/sites）的数据源。60 站上墙 + 5 站待选 + 3 个自有空位，14 组。 改名单改这里，页面与自检都从这份数据读，不写死在组件里。待选站（pending）数据保留但页面不渲染（DECISIONS §A7）；其中 Papers with Code 已于 2025-07-24 关停，条目暂留备查（§A12）。分组顺序 = 墙上的行序（每组一行，组牌在左列）。2026-10-24 第八批按「同类同排」重划分组（§A16），第九批撤掉「小林 coding」、把「博客园」挪进 docs（§A17）。",
   "groups": [
     { "id": "papers", "name": "论文源", "en": "PAPERS", "kind": "sites" },
     { "id": "llm", "name": "大模型", "en": "LLM", "kind": "sites" },
@@ -44,8 +44,8 @@
     { "slug": "testerhome", "name": "测试之家 TesterHome", "short": "测试之家", "url": "https://testerhome.com", "brand": "#00a3a3", "group": "tools", "logo": "/logos/testerhome.png" },
     { "slug": "playwright", "name": "Playwright 官网", "short": "Playwright", "url": "https://playwright.dev", "brand": "#6b4fbb", "group": "tools", "logo": "/logos/playwright.png" },
 
+    { "slug": "cnblogs", "name": "博客园", "short": "博客园", "url": "https://www.cnblogs.com", "brand": "#1878c0", "group": "docs", "logo": "/logos/cnblogs.png" },
     { "slug": "runoob", "name": "菜鸟教程", "short": "菜鸟教程", "url": "https://www.runoob.com", "brand": "#29a533", "group": "docs", "logo": "/logos/runoob.png" },
-    { "slug": "xiaolincoding", "name": "小林 coding", "short": "小林coding", "url": "https://www.xiaolincoding.com", "brand": "#2f6bd8", "group": "docs", "logo": "/logos/xiaolincoding.png" },
     { "slug": "geektimedocs", "name": "极客时间文档", "short": "极客文档", "url": "https://geektime-docs.netlify.app/ai-大数据/", "brand": "#04afac", "group": "docs", "logo": "/logos/geektime-docs.png" },
 
     { "slug": "dedao", "name": "得到", "short": "得到", "url": "https://www.dedao.cn", "brand": "#c81023", "group": "courses", "logo": "/logos/dedao.png" },
@@ -66,7 +66,6 @@
     { "slug": "reddit", "name": "Reddit", "short": "Reddit", "url": "https://www.reddit.com", "brand": "#ff4500", "group": "community", "logo": "/logos/reddit.png" },
     { "slug": "hn", "name": "Hacker News", "short": "HN", "url": "https://news.ycombinator.com", "brand": "#ff6600", "group": "community", "logo": "/logos/hn.png" },
 
-    { "slug": "cnblogs", "name": "博客园", "short": "博客园", "url": "https://www.cnblogs.com", "brand": "#1878c0", "group": "dev", "logo": "/logos/cnblogs.png" },
     { "slug": "liaoxuefeng", "name": "廖学峰官方网站", "short": "廖学峰", "url": "https://www.liaoxuefeng.com", "brand": "#dbbb00", "group": "dev", "logo": "/logos/liaoxuefeng.png" },
     { "slug": "tencentdev", "name": "腾讯云开发者社区", "short": "腾讯云社区", "url": "https://cloud.tencent.com/developer", "brand": "#00b6cf", "group": "dev", "logo": "/logos/tencentdev.png" },
     { "slug": "haoel", "name": "酷壳 CoolShell · 左耳朵耗子", "short": "左耳朵耗子", "url": "https://coolshell.cn/", "brand": "#e0c13d", "group": "dev", "logo": "/logos/coolshell.png" },
