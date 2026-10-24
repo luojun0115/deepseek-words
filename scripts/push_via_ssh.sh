@@ -71,6 +71,6 @@ if [ $rc -eq 0 ]; then
   GIT_SSH_COMMAND="ssh $SSH_OPTS" git fetch "ssh://git@$PICK/$OWNER" main:refs/remotes/origin/main >/dev/null 2>&1
   echo "✓ 推送完成，origin/main 已同步到 $(git rev-parse --short origin/main)"
 else
-  echo "✗ 推送失败（退出码 $rc）"
+  echo "✗ 推送失败（退出码 ${rc}）"
 fi
 exit $rc
