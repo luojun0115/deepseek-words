@@ -1,5 +1,5 @@
 {
-  "_note": "站外导航页（/sites）的数据源。77 站上墙 + 5 站待选 + 3 个自有空位，18 组。 改名单改这里，页面与自检都从这份数据读，不写死在组件里。待选站（pending）数据保留但页面不渲染（DECISIONS §A7）；其中 Papers with Code 已于 2025-07-24 关停，条目暂留备查（§A12）。分组顺序 = 墙上的行序（每组一行，组牌在左列）。第八批按「同类同排」重划分组（§A16），第九批撤掉小林 coding 并把博客园挪进 docs（§A17），第十批新增 Python 框架与前端框架（§A18），第十一批新增基础设施（§A19），第十二批抽出编程语言组（§A20），第十三批基础设施扩到 8 块（§A21），第十四批加 JMeter（§A22）。",
+  "_note": "站外导航页（/sites）的数据源。78 站上墙 + 5 站待选 + 3 个自有空位，18 组。 改名单改这里，页面与自检都从这份数据读，不写死在组件里。待选站（pending）数据保留但页面不渲染（DECISIONS §A7）；其中 Papers with Code 已于 2025-07-24 关停，条目暂留备查（§A12）。分组顺序 = 墙上的行序（每组一行，组牌在左列）。第八批按「同类同排」重划分组（§A16），第九批撤掉小林 coding 并把博客园挪进 docs（§A17），第十批新增 Python 框架与前端框架（§A18），第十一批新增基础设施（§A19），第十二批抽出编程语言组（§A20），第十三批基础设施扩到 8 块（§A21），第十四批加 JMeter（§A22），第十五批加 X（§A23）。",
   "groups": [
     { "id": "papers", "name": "论文源", "en": "PAPERS", "kind": "sites" },
     { "id": "llm", "name": "大模型", "en": "LLM", "kind": "sites" },
@@ -89,6 +89,7 @@
     { "slug": "douban", "name": "豆瓣", "short": "豆瓣", "url": "https://www.douban.com", "brand": "#33b045", "group": "community", "logo": "/logos/douban.png" },
     { "slug": "v2ex", "name": "V2EX", "short": "V2EX", "url": "https://www.v2ex.com", "brand": "#e8c547", "group": "community", "logo": "/logos/v2ex.png" },
     { "slug": "reddit", "name": "Reddit", "short": "Reddit", "url": "https://www.reddit.com", "brand": "#ff4500", "group": "community", "logo": "/logos/reddit.png" },
+    { "slug": "x", "name": "X（原 Twitter）", "short": "X", "url": "https://x.com", "brand": "#000000", "group": "community", "logo": "/logos/x.png" },
     { "slug": "hn", "name": "Hacker News", "short": "HN", "url": "https://news.ycombinator.com", "brand": "#ff6600", "group": "community", "logo": "/logos/hn.png" },
 
     { "slug": "liaoxuefeng", "name": "廖学峰官方网站", "short": "廖学峰", "url": "https://www.liaoxuefeng.com", "brand": "#dbbb00", "group": "dev", "logo": "/logos/liaoxuefeng.png" },
