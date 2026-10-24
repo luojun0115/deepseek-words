@@ -348,25 +348,32 @@ const ok = (name, cond, extra = '') => {
   ok(`/notes 页 ${NP} 卡 × 一枚「学习笔记」按钮`,
     (await page.locator(PAPER_CARD).count()) === NP && (await page.locator(PAPER_CARD + ' .dr-go.n').count()) === NP,
     `card=${await page.locator(PAPER_CARD).count()} n=${await page.locator(PAPER_CARD + ' .dr-go.n').count()}`)
-  // 专题与索引组：不带 NN_ 编号前缀的 md 全在这里，封面是 T_<名>.png
-  // 2026-10-25：论文总览升级为独立 tab（papers/ 文件夹），组里只剩专题文章
-  const topics = require('fs').readdirSync(require('path').resolve(__dirname, '../notes'))
-    .filter((f) => f.endsWith('.md') && !/^\d\d_/.test(f))
+  // 专题与索引组：不带 NN_ 编号前缀的 md 全在这里，封面是 T_<coverFile>.png
+  // 2026-10-25 起专题卡源多了 zhuanti-search：index.md（专题总览）+ 各子目录 index.md（每篇精读），
+  // 卡面元数据写在自己 frontmatter——不再有 notes/ 顶层的壳页
+  const notesDir = require('path').resolve(__dirname, '../notes')
+  const zDir = require('path').resolve(notesDir, 'zhuanti-search')
+  const fsx = require('fs')
+  const topics = fsx.readdirSync(notesDir)
+    .filter((f) => f.endsWith('.md') && !/^\d\d_/.test(f) && !['index.md', 'papers.md'].includes(f))
+  const zTopics = (fsx.existsSync(zDir) ? fsx.readdirSync(zDir, { withFileTypes: true }) : [])
+    .filter((d) => d.isDirectory() && fsx.existsSync(require('path').join(zDir, d.name, 'index.md'))).length
+    + (fsx.existsSync(require('path').join(zDir, 'index.md')) ? 1 : 0)
+  const nTopics = topics.length + zTopics
   const topicCards = page.locator('.dr-lib .dr-card.is-topic')
-  ok(`专题与索引组 ${topics.length} 张卡（不带编号前缀的 md 全部上墙）`,
-    (await topicCards.count()) === topics.length, '实得 ' + (await topicCards.count()) + ' 张')
+  ok(`专题与索引组 ${nTopics} 张卡（顶层专题 md + zhuanti-search 总览与子目录）`,
+    (await topicCards.count()) === nTopics, '实得 ' + (await topicCards.count()) + ' 张')
   ok('专题组有组头（跟 32 篇论文卡分开）', (await page.locator('.dr-lib .dr-group-hd').count()) === 1)
-  if (topics.length) {
+  if (nTopics) {
     const leadHref = await topicCards.first().getAttribute('href')
-    ok('专题组首卡指向 /notes/<名>.html（带 base；论文总览已不在组内）',
-      /\/notes\/.+\.html$/.test(leadHref || '') && (leadHref || '').startsWith(BPATH) && !(leadHref || '').includes('papers'),
-      leadHref || '未找到')
+    ok('专题组首卡指向 /notes/ 下的页（带 base，不逃出子路径）',
+      leadHref && leadHref.startsWith(BPATH + 'notes/'), leadHref || '未找到')
     const tHref = await topicCards.first().getAttribute('href')
     ok('专题卡指向 /notes/<名>.html（带 base）',
       /\/notes\/.+\.html$/.test(tHref || '') && (tHref || '').startsWith(BPATH), tHref || '未找到')
     // 组内每一张的封面都要能加载（前面 32 篇论文卡另有一条「全带封面」的断言）
     const tCovs = await topicCards.locator('.dr-card-media').evaluateAll((els) => els.map((e) => e.style.backgroundImage))
-    ok(`专题卡 ${topics.length} 张全带封面`, tCovs.length === topics.length && tCovs.every((s) => s.includes('/covers/T_')),
+    ok(`专题卡 ${nTopics} 张全带封面`, tCovs.length === nTopics && tCovs.every((s) => s.includes('/covers/T_')),
       '实得 ' + tCovs.length + ' 张')
     const tCode = await page.evaluate((u) => fetch(u).then((r) => r.status).catch(() => 0),
       (tCovs[0].match(/url\("?([^")]+)"?\)/) || [])[1])

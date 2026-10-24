@@ -1,6 +1,12 @@
 ---
+# 卡片元数据（/notes「专题与索引」组用，2026-10-25 从顶层卡页搬进来）：卡面金句 / 排序 / 封面图名
 # 缩放定律专题 05：Hernandez et al. 2022，Scaling Laws and Interpretability of Learning from Repeated Data（arXiv:2205.10487）
 title: 缩放定律 05 · Hernandez 2022：Scaling Laws and Interpretability of Learning from Repeated Data
+order: 605
+cover: "数据被背下来的那一刻， / 伤害最大。"
+coverKicker: "Topic · Scaling Laws · 05 Repeated Data"
+coverYear: "2022"
+coverFile: 缩放定律05_重复数据
 pageClass: note-page
 ---
 

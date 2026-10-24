@@ -133,12 +133,8 @@ for (const [f, content] of OUTS) {
   console.log(`✓ ${f} 已刷新${before && before !== content ? '（有变化）' : '（无变化）'}`)
 }
 
-// 旧位置清理：2026-10-24~25 页面曾住在 notes/papers.md（后又生成过），挪进 papers/ 后那里不该再有
-const legacy = path.join(PORTAL, 'notes', 'papers.md')
-if (fs.existsSync(legacy)) {
-  fs.rmSync(legacy)
-  console.log('✓ 已删除旧位置 notes/papers.md（页面搬进 papers/ 文件夹了）')
-}
+// 注意：不要再删 notes/papers.md——它是 /notes/papers.html 的**兼容跳转粧**（2026-10-25 用户反馈过
+// 学习笔记里的旧卡片点进来 404）。曾经这里有一段「旧位置清理」，后来撞上那次修桩，已拆掉。
 
 if (process.argv.includes('--build')) {
   execSync('npm run build', { cwd: PORTAL, stdio: 'inherit' })

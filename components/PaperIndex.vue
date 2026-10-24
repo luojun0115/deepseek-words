@@ -11,36 +11,44 @@ const props = defineProps({
 /* 笔记“写没写”：构建期直接读 notes/*.md 原文（import.meta.glob 的 ?raw），
    去掉 frontmatter 后正文为空就是未写。
    这样你往 md 里写几个字刷新站点就变，不需要重新生成任何 json。
-   判空口径与 scripts/gen-notes.mjs 一致（那边有注释说明）。 */
-const NOTE_SRC = import.meta.glob('../notes/*.md', { query: '?raw', eager: true, import: 'default' })
+   判空口径与 scripts/gen-notes.mjs 一致（那边有注释说明）。
+   2026-10-25 用户要求专题统一目录管理：卡片不再靠 notes/ 顶层的壳页，
+   而是直接读 notes/zhuanti-search/index.md 与子目录的 index.md（卡面元数据写在自己 frontmatter） */
+const NOTE_SRC = import.meta.glob(
+  ['../notes/*.md', '../notes/zhuanti-search/index.md', '../notes/zhuanti-search/*/index.md'],
+  { query: '?raw', eager: true, import: 'default' })
 const NOTE_BLANK = new Set(Object.entries(NOTE_SRC)
   .filter(([, src]) => !String(src).replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, '').trim())
   .map(([k]) => k.split('/').pop().replace(/\.md$/, '')))
 const noteHref = (p) => withBase('/notes/' + p.dir + '.html')
 const written = (p) => !NOTE_BLANK.has(p.dir)
 
-/* 专题笔记（2026-10-24 用户要求）：文件名不带 NN_ 编号前缀的 md，不属于 data/papers.json 的任何一篇，
-   通读一个主题。在笔记索引页排在 32 张论文卡之后，自成一组。
-   论文总览（notes/papers.md，由 scripts/refresh-papers.mjs 从文稿生成）也走这条路——
-   它以前是这里一张写死的「导览卡」特例，2026-10-24 用户定案挪进 notes/ 后特例就没了：
-   同一个 glob 扫到它，同一套封面（frontmatter 的 cover 字段），前端不再为它单独写一段模板。
-   加一篇文章 ＝ 写 md（frontmatter 带 cover）+ 跑一次 npm run covers，组件不用改。 */
+/* frontmatter 单行取值（卡面元数据用；都是一行字符串，不引 yaml 库） */
 const fmValue = (src, key) => {
   const fm = String(src).match(/^---\r?\n([\s\S]*?)\r?\n---/)
   const hit = fm && fm[1].match(new RegExp('^' + key + ':\\s*(.+)$', 'm'))
   return hit ? hit[1].trim().replace(/^(['"])([\s\S]*)\1$/, '$2').trim() : ''
 }
+
+/* 专题卡（2026-10-25 用户要求「专题的东西统一目录管理」）：
+   卡源 = notes/ 顶层不带 NN_ 前缀的 md（位置编码、解读资源等）+ zhuanti-search 的 index.md 与各子目录 index.md。
+   卡片的封面金句 / 排序 / 封面图名都写在正文自己的 frontmatter 里（cover / coverKicker / coverYear /
+   order / coverFile），不再另外维护顶层壳页；href 按路径形判定（子目录 index → 目录地址，顶层 → <名>.html） */
 const TOPICS = Object.entries(NOTE_SRC)
-  // 无编号前缀 = 专题；index.md 是 tab 页本身，papers.md 是 /notes/papers.html 的兼容跳转粧
-  .filter(([k]) => !/\/\d\d_[^/]*\.md$/.test(k) && !/\/(index|papers)\.md$/.test(k))
   .map(([k, src]) => {
-    const dir = k.split('/').pop().replace(/\.md$/, '')
+    const key = k.replace(/^\.\.\/notes\//, '').replace(/\.md$/, '').replace(/\/index$/, '')
+    return { key, isDir: /\/index\.md$/.test(k), src }
+  })
+  // 无编号前缀 = 专题；notes/index.md 是 tab 页本身、notes/papers.md 是兼容跳转粧，都不上墙
+  .filter(({ key }) => !/^\d\d_/.test(key) && key !== 'index' && key !== 'papers')
+  .map(({ key, isDir, src }) => {
+    const slug = fmValue(src, 'coverFile') || key.split('/').pop()
     return {
-      dir,
-      title: fmValue(src, 'title') || dir,
-      href: withBase('/notes/' + dir + '.html'),
-      cover: withBase('/covers/T_' + dir + '.png'),
-      // order：组内权重，越小越前。papers.md 的 frontmatter 写 1（索引页排第一），其余缺省 500
+      dir: key,
+      title: fmValue(src, 'title') || key,
+      href: withBase('/notes/' + (isDir ? key + '/' : key + '.html')),
+      cover: withBase('/covers/T_' + slug + '.png'),
+      // order：组内权重，越小越前；没写就是 500
       order: Number(fmValue(src, 'order')) || 500,
     }
   })

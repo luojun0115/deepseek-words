@@ -1,10 +1,16 @@
 ---
+# 卡片元数据（/notes「专题与索引」组用，2026-10-25 从顶层卡页搬进来）：卡面金句 / 排序 / 封面图名
 # 专题精读工作区：缩放定律（Scaling Laws）。
 # 本目录一篇论文一个子目录，每个子目录的 index.md 是精读正文（目录首页）：
 # 身份卡 / 定位与动机 / 核心贡献 / 方法精读 / 实验解读 / 知识点拓展 / 批判性评价 / 谱系定位 / 资源来源 / 术语表。
 # 文件在 notes/ 子目录下、不带 NN_ 编号前缀，不属于 data/papers.json，也不占用 /notes 索引的论文卡位
 # （PaperIndex 的 glob 只扫 notes/*.md 一层，详见 components/PaperIndex.vue）。
 title: 缩放定律 · Scaling Laws 专题精读（9 篇）
+order: 600
+cover: "先定律，再改判， / 最后给定律画出边界。"
+coverKicker: "Topic · Scaling Laws × 9"
+coverYear: "2020 — 2024"
+coverFile: 缩放定律
 pageClass: note-page
 ---
 
@@ -51,7 +57,8 @@ pageClass: note-page
 
 > **状态**：9 篇精读全部完成，可点进子目录阅读。每个论文目录含两个文件：**index.md**＝精读正文（身份卡 / 方法精读 / 实验解读 / 批判性评价 / 谱系定位 / 资源来源 / 术语表）；**解读资源.md**＝全网解读导航（知乎 / 中文媒体 / B站 / YouTube / X 与社区 / 官方资源 / 建议阅读路径，2026-10-24 检索整理）。
 >
-> **索引卡入口**：本专题在 [/notes「专题与索引」组](../缩放定律.md) 挂了 10 张封面卡（1 张专题总览 + 9 张论文卡，`npm run covers` 出图），从那里可以跳进本目录的任何一篇。
+> **索引卡入口**：本专题在 /notes「专题与索引」组挂了 10 张封面卡（1 张专题总览 + 9 张论文卡）。
+> 卡面元数据（`cover` 金句 / `coverKicker` / `coverYear` / `order` / `coverFile`）就写在**本页与各子目录 index.md 的 frontmatter** 里，`npm run covers` 按它出图；点卡片直接跳进对应正文。
 
 ## 二、建议阅读顺序
 

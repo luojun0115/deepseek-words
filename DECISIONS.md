@@ -1506,6 +1506,25 @@ alpha = 亮度(原像素)        # 白 X → 255，黑底 → 0
 
 ---
 
+### A35. 专题彻底统一目录：卡片由正文 frontmatter 派生，notes/ 顶层不再有缩放定律壳页（2026-10-25 用户要求）
+
+用户：「合完了为什么缩放定律那些 md 还存在？它们不是应该都在 search 那个目录吗？因为这是专题的东西，我就放在统一目录管理」。
+
+- **彻底去壳**：删掉 `notes/缩放定律*.md` 这 10 个顶层壳页；卡面元数据（`cover` 金句 / `coverKicker` / `coverYear` / `order` / `coverFile`）直接写进正文自己的 frontmatter——
+  `notes/zhuanti-search/index.md`（专题总览）与 `notes/zhuanti-search/<子目录>/index.md`（每篇精读）。
+- **卡片由正文派生**：
+  - `PaperIndex.vue` 的 glob 变为三模式 `['../notes/*.md', '../notes/zhuanti-search/index.md', '../notes/zhuanti-search/*/index.md']`；
+    卡片 href 按路径形判定（子目录 index → 目录地址 `…/01_kaplan-scaling-laws/`，顶层 md → `<名>.html`）。
+  - `gen-topic-covers.mjs` 同一套扫描 + 同一套封面命名（`coverFile` 优先，否则最后一段路径名），
+    因此**封面 PNG 字节未变**（重新跑出「写入 0 张」）。
+  - `/notes` 专题组仍 12 张卡（2 顶层专题 + 总览 + 9 篇），点卡**直接落正文**（不再多一层跳转）。
+- **新增字段 `coverFile`**：卡片封面图名默认跟文件名/目录名走；英文目录（如 `01_kaplan-scaling-laws`）想沿用已有 `T_缩放定律01_Kaplan.png` 就显式写它。
+- **回归修复**：`refresh-papers.mjs` 里那段「旧位置清理」会把 `notes/papers.md`（/notes/papers.html 兼容跳转粧）删掉——已拆掉并与桩里注释对齐；
+  否则每次 `npm run papers` 都会把那个 404 用户报过的地址重新弄坏。
+- 连带：`zhuanti-search/index.md` 里指向已删壳页的「索引卡入口」段落改写成新机制说明（否则建站死链）。
+
+---
+
 ## B. 页面与样式定案
 
 ### B1. 论文总览链接不带下划线（2026-10-08 用户要求）

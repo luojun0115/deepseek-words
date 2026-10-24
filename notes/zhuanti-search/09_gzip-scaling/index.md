@@ -1,6 +1,12 @@
 ---
+# 卡片元数据（/notes「专题与索引」组用，2026-10-25 从顶层卡页搬进来）：卡面金句 / 排序 / 封面图名
 # 缩放定律专题 09：Rohan Pandey 2024，gzip Predicts Data-dependent Scaling Laws（arXiv:2405.16684）
 title: 缩放定律 09 · Pandey 2024：gzip Predicts Data-dependent Scaling Laws
+order: 609
+cover: "数据多难压， / 定律就多偏数据。"
+coverKicker: "Topic · Scaling Laws · 09 gzip"
+coverYear: "2024"
+coverFile: 缩放定律09_gzip
 pageClass: note-page
 ---
 

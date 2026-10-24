@@ -1,6 +1,12 @@
 ---
+# 卡片元数据（/notes「专题与索引」组用，2026-10-25 从顶层卡页搬进来）：卡面金句 / 排序 / 封面图名
 # 缩放定律专题 07：Isik et al. 2024，Scaling Laws for Downstream Task Performance of Large Language Models（arXiv:2402.04177）
 title: 缩放定律 07 · Isik 2024：Scaling Laws for Downstream Task Performance of LLMs
+order: 607
+cover: "loss 在变好， / 分数未必。"
+coverKicker: "Topic · Scaling Laws · 07 Downstream"
+coverYear: "2024"
+coverFile: 缩放定律07_下游任务
 pageClass: note-page
 ---
 

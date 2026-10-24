@@ -1,6 +1,12 @@
 ---
+# 卡片元数据（/notes「专题与索引」组用，2026-10-25 从顶层卡页搬进来）：卡面金句 / 排序 / 封面图名
 # 缩放定律专题 02：Hoffmann et al. 2022，Training Compute-Optimal Large Language Models（arXiv:2203.15556）
 title: 缩放定律 02 · Chinchilla 2022：Training Compute-Optimal Large Language Models
+order: 602
+cover: "模型翻倍， / 数据也要翻倍。"
+coverKicker: "Topic · Scaling Laws · 02 Chinchilla"
+coverYear: "2022"
+coverFile: 缩放定律02_Chinchilla
 pageClass: note-page
 ---
 

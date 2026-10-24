@@ -1,6 +1,12 @@
 ---
+# 卡片元数据（/notes「专题与索引」组用，2026-10-25 从顶层卡页搬进来）：卡面金句 / 排序 / 封面图名
 # 缩放定律专题 08：Ruan, Maddison & Hashimoto 2024，Observational Scaling Laws and the Predictability of Language Model Performance（arXiv:2405.10938）
 title: 缩放定律 08 · Ruan 2024：Observational Scaling Laws and the Predictability of Language Model Performance
+order: 608
+cover: "不训练， / 也能预测 GPT-4。"
+coverKicker: "Topic · Scaling Laws · 08 Observational"
+coverYear: "2024"
+coverFile: 缩放定律08_观测缩放律
 pageClass: note-page
 ---
 

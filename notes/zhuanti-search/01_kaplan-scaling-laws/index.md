@@ -1,6 +1,12 @@
 ---
+# 卡片元数据（/notes「专题与索引」组用，2026-10-25 从顶层卡页搬进来）：卡面金句 / 排序 / 封面图名
 # 缩放定律专题 01：Kaplan et al. 2020，Scaling Laws for Neural Language Models（arXiv:2001.08361）
 title: 缩放定律 01 · Kaplan 2020：Scaling Laws for Neural Language Models
+order: 601
+cover: "损失随尺度， / 冥冥之中是幂律。"
+coverKicker: "Topic · Scaling Laws · 01 Kaplan"
+coverYear: "2020"
+coverFile: 缩放定律01_Kaplan
 pageClass: note-page
 ---
 

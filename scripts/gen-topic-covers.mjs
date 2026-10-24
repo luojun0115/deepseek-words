@@ -63,13 +63,54 @@ function readFrontmatter(src) {
   const m = src.match(/^---\r?\n([\s\S]*?)\r?\n---/)
   const body = m ? m[1] : ''
   const get = (key) => {
-    const v = body.match(new RegExp('^' + key + ':\\s*(.+)$', 'm'))
+    const v = body.match(new RegExp('^' + key + ':[ \\t]*(.+)$', 'm'))
     if (!v) return ''
     // 去掉包住整行的引号（YAML 里写了引号才不会被 # 或 : 打断）
     return v[1].trim().replace(/^(['"])([\s\S]*)\1$/, '$2').trim()
   }
-  return { title: get('title'), cover: get('cover'), kicker: get('coverKicker'), year: get('coverYear'), order: get('order') }
+  return { title: get('title'), cover: get('cover'), kicker: get('coverKicker'), year: get('coverYear'),
+           order: get('order'), coverFile: get('coverFile') }
 }
+
+/* 专题卡片的源（2026-10-25 用户要求专题统一目录管理：不再有顶层壳页）：
+   ① notes/ 顶层不带 NN_ 前缀的 md（排除 tab 页 index.md 与兼容粧 papers.md）
+   ② notes/zhuanti-search/index.md（专题总览）
+   ③ notes/zhuanti-search/<子目录>/index.md（每篇精读，卡面元数据写在自己 frontmatter）
+   封面图名 = frontmatter 的 coverFile，没写就用最后一段路径名（与 PaperIndex.vue 同一套口径） */
+const SOURCES = [
+  ...fs.readdirSync(NOTES)
+    .filter((f) => f.endsWith('.md') && !/^\d\d_/.test(f) && !['index.md', 'papers.md'].includes(f))
+    .sort()
+    .map((f) => ({ rel: f, key: f.replace(/\.md$/, '') })),
+  ...['zhuanti-search/index.md'].filter((rel) => fs.existsSync(path.join(NOTES, rel)))
+    .map((rel) => ({ rel, key: 'zhuanti-search' })),
+  ...fs.readdirSync(path.join(NOTES, 'zhuanti-search'), { withFileTypes: true })
+    .filter((d) => d.isDirectory() && fs.existsSync(path.join(NOTES, 'zhuanti-search', d.name, 'index.md')))
+    .map((d) => d.name).sort()
+    .map((name) => ({ rel: `zhuanti-search/${name}/index.md`, key: `zhuanti-search/${name}` })),
+]
+
+if (!SOURCES.length) {
+  console.log('notes/ 下没有专题笔记，跳过')
+  process.exit(0)
+}
+
+/* 先读全部 frontmatter 再统一排序：顺序要与 PaperIndex.vue 的 TOPICS 完全一致
+   （order 小在前，同 order 按 key），这样「第几张卡配哪套配色」是对得上的 */
+const items = SOURCES.map(({ rel, key }) => {
+  const fm = readFrontmatter(fs.readFileSync(path.join(NOTES, rel), 'utf8'))
+  const slug = fm.coverFile || key.split('/').pop()
+  // 金句：frontmatter 的 cover 优先；没写就把 title 去掉「· 专题笔记」这类尾巴当金句
+  const raw = fm.cover || (fm.title || slug).replace(/\s*·\s*专题笔记\s*$/, '')
+  return {
+    dir: key,
+    png: path.join(OUT, `T_${slug}.png`),
+    lines: raw.split('/').map((s) => s.trim()).filter(Boolean),
+    top: fm.kicker || `Topic · ${slug}`,
+    bot: fm.year ? `${fm.year} · 鲸读` : '鲸读 · 专题',
+    order: Number(fm.order) || 500,
+  }
+})
 
 /* 按最长一行的视觉宽度定字号（与 covers3 同一套算法，保证同批封面字号手感一致） */
 function fitSize(lines) {
@@ -143,34 +184,12 @@ function html(style, lines, top, bot, i, num) {
   </div></body></html>`
 }
 
-/* 专题 = 文件名不带 NN_ 前缀的 md（与 gen-notes.mjs 的认法一致：只有编号前 缀才算论文笔记）；
-   index.md 是学习笔记 tab 页本身（2026-10-25 搬进 notes/），
-   papers.md 是 /notes/papers.html 的兼容跳转粧——两者都不出封面 */
-const topics = fs.readdirSync(NOTES)
-  .filter((f) => f.endsWith('.md') && !/^\d\d_/.test(f) && !['index.md', 'papers.md'].includes(f))
-  .sort()
-
-if (!topics.length) {
-  console.log('notes/ 下没有专题笔记（不带 NN_ 编号前缀的 md），跳过')
+/* 专题卡片的源在上面 SOURCES 里（2026-10-25 起不再从 notes/ 顶层单层扫） */
+if (!items.length) {
+  console.log('notes/ 下没有专题笔记，跳过')
   process.exit(0)
 }
 
-/* 先读全部 frontmatter 再统一排序：顺序要与 PaperIndex.vue 的 TOPICS 完全一致
-   （order 小在前，同 order 按文件名），这样「第几张卡配哪套配色」是对得上的 */
-const items = topics.map((f) => {
-  const dir = f.replace(/\.md$/, '')
-  const fm = readFrontmatter(fs.readFileSync(path.join(NOTES, f), 'utf8'))
-  // 金句：frontmatter 的 cover 优先；没写就把 title 去掉「· 专题笔记」这类尾巴当金句
-  const raw = fm.cover || (fm.title || dir).replace(/\s*·\s*专题笔记\s*$/, '')
-  return {
-    dir,
-    png: path.join(OUT, `T_${dir}.png`),
-    lines: raw.split('/').map((s) => s.trim()).filter(Boolean),
-    top: fm.kicker || `Topic · ${dir}`,
-    bot: fm.year ? `${fm.year} · 鲸读` : '鲸读 · 专题',
-    order: Number(fm.order) || 500,
-  }
-})
 items.sort((a, b) => a.order - b.order || a.dir.localeCompare(b.dir))
 const jobs = items.map((it, i) => ({ ...it, hue: i % 3 }))
 
