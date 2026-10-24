@@ -151,10 +151,12 @@ const master = computed(() => {
     </div>
 
     <div class="dr-grid">
-      <!-- 官方入口卡（2026-10-25）：学习笔记页最前面两张站外官方入口，排在 32 篇论文卡之前。
+      <!-- 官方入口卡（2026-10-25）：两张站外官方入口，整卡外链。
+           2026-10-25 用户定案：从学习笔记页挪到论文总览页顶部（mode='arxiv'），
+           排在 32 张 arXiv 卡之前；学习笔记页不再显示。
            整卡是外链 <a>，所以里面的"按钮"是 <span>（不能嵌套 <a>）。
            卡面用 CSS 直绘（矢量文字，任意 DPR 清晰），不新增 PNG、不动 covers 生成流水线。 -->
-      <template v-if="mode === 'note'">
+      <template v-if="mode === 'arxiv'">
         <a
           v-for="o in OFFICIAL"
           :key="o.key"
