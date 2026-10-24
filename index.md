@@ -1,6 +1,6 @@
 ---
 pageClass: wide
-title: 鲸读 · DeepSeek 论文词汇
+title: 鲸读 · DeepSeek 论文精读
 ---
 <script setup>
 import PaperIndex from './components/PaperIndex.vue'

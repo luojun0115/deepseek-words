@@ -19,7 +19,7 @@ const LLM_GALLERY = 'https://sebastianraschka.com/llm-architecture-gallery/?comp
 export default defineConfig({
   base: BASE,
   lang: 'zh-CN',
-  title: '鲸读 · DeepSeek 论文词汇',
+  title: '鲸读 · DeepSeek 论文精读',
   description: `${ST.papers} 篇 DeepSeek 技术报告 · 词汇学习 + 词汇朗读，逐词读懂论文`,
   appearance: false,
   // GitHub Pages 不做 URL 重写，cleanUrls 会让 /vocab 404（盘上只有 vocab.html）
@@ -45,7 +45,7 @@ export default defineConfig({
     // 顶栏照原型定制（2026-10-23 用户定案，解禁 §A6「顶栏纯文字」）：黑块鲸鱼 logo + 双层站名。
     // siteTitle 支持 HTML（VPNavBarTitle 里 v-html 渲染），tab 标题仍用上面的 title
     logo: '/whale-mark.svg',
-    siteTitle: '<span class="st-big">鲸读</span><span class="st-sub">DeepSeek 论文词汇</span>',
+    siteTitle: '<span class="st-big">鲸读</span><span class="st-sub">DeepSeek 论文精读</span>',
     nav: [
       // 2026-10-09 用户定案取消「总集」栏：三张总集页（词汇总集去重 / 听力全量 / 听力去重）
       // 已经挂在「词汇学习」与「词汇朗读」顶部横幅上，再占一个导航位是重复入口

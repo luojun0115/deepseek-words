@@ -135,6 +135,21 @@ build 后页面出现 `<h2 id="反向测试">`、「未写」32→31、轻提示
 落地一处不漏（旧名全仓 grep 清零）：`config.mts` 的 `title`/`description`/页脚 `copyright`、
 `index.md` 的 frontmatter `title` 与 H1、`check_portal.cjs` 的 `首页标题正确` 断言、`README.md` 标题行。
 
+> ⚠ 2026-10-24 用户把后缀从「论文词汇」改为「**论文精读**」：全站标题现为
+> **「鲸读 · DeepSeek 论文精读」**。沿用上面那份清单，实际动了四处：
+> `config.mts` 的 `title` 与 `themeConfig.siteTitle` 的 `st-sub`、
+> `index.md` 的 frontmatter `title`、`check_portal.cjs` 的首页标题断言、`README.md` 标题行。
+>
+> 实测生效范围：首页 tab = `鲸读 · DeepSeek 论文精读`；其余页 = `页面名 | 鲸读 · DeepSeek 论文精读`
+> （论文总览 / 学习笔记 / 站外导航 逐一核过）；顶栏双层站名的副标题同步为 `DeepSeek 论文精读`。
+>
+> **刻意没动的两处**（容易顺手改错）：
+> - `public/study/vocab/NN_XXX_论文词汇.html` —— 这是**文件名约定**，牵动 67 个文件、
+>   `gen-data.py` 的 glob 与 `vocabPath` 拼装、以及笔记页里的相对链接。改名得连带重出全部词页，本轮不做。
+> - `description`（`32 篇 DeepSeek 技术报告 · 词汇学习 + 词汇朗读，逐词读懂论文`）与页脚
+>   `copyright`（`鲸读 · 32 篇 DeepSeek 技术报告的核心词汇`）—— 它们是**功能描述**不是站名，
+>   而且「词汇学习 / 词汇朗读」仍是站点两个主栏目，保留才准确。
+
 同日标签页图标（`public/favicon.svg`）由「词」字方块换成 DeepSeek 蓝鲸 logo（品牌色 `#4D6BFE`，
 源文件去掉 `1em` 尺寸与内联 style 后落仓），用户点名只换 favicon，顶栏不加 logo 图。
 

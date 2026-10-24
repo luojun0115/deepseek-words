@@ -38,7 +38,7 @@ const ok = (name, cond, extra = '') => {
   await page.goto(BASE + '/', { waitUntil: 'networkidle' })
   const cards = await page.locator('.dr-lib .dr-card').count()
   ok(`首页卡片=${NP} 篇`, cards === NP, '实得 ' + cards)
-  ok('首页标题正确', (await page.title()).includes('鲸读 · DeepSeek 论文词汇'))
+  ok('首页标题正确', (await page.title()).includes('鲸读 · DeepSeek 论文精读'))
   await page.screenshot({ path: SHOT + '/01_首页_default.png', fullPage: false })
 
   // 1b) 宽版 + 栅格：1440 视口下一排 4 卡
