@@ -59,8 +59,12 @@ const ok = (name, cond, extra = '') => {
   //     第二枚从 papers.html 改指 notes.html，论文总览降级为笔记索引最前面的封面卡）
   const ways = await page.$$eval('.dr-hero .dp-links a', els => els.map(e => e.getAttribute('href')))
   // cleanUrls 已关（Pages 不做重写），入口必须是带 base 的 .html；根绝对路径在子路径下会跑到用户站
-  ok('/ 首页报头两枚入口（带 base 的 .html）',
-     ways.join(',') === [BPATH + 'vocab.html', BPATH + 'notes.html'].join(','), ways.join(',') || '未找到')
+  //     2026-10-24 用户反馈「卡片左边的东西消失了」→ 报头入口从两枚恢复成三枚：
+  //     背词 / 论文总览 / 学习笔记。论文总览页面本体已归档进 notes/papers.md，
+  //     /papers.html 保留为自动跳转页（收藏的旧链接不失效）。
+  ok('/ 首页报头三枚入口（带 base 的 .html）',
+     ways.join(',') === [BPATH + 'vocab.html', BPATH + 'papers.html', BPATH + 'notes.html'].join(','),
+     ways.join(',') || '未找到')
 
   // 1d) 栏目名（2026-10-08 用户定案：「词汇网页」→「词汇学习」，「单词听力」→「词汇朗读」）
   //     只改文案不改 URL/文件名，所以旧页面文件名里的「单词听力」不在检查范围内。

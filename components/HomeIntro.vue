@@ -198,6 +198,8 @@ onUnmounted(() => { if (timer) window.clearInterval(timer) })
           <a :href="withBase('/vocab.html')">开始背词 →</a>
           <!-- 2026-10-24 用户定案取消「论文总览」栏：报头这枚入口改指学习笔记，
                论文总览已归档进 notes/papers.md（笔记索引页「专题与索引」组第一张卡） -->
+          <!-- 2026-10-24 用户反馈「卡片左边的东西消失了」：论文总览入口不撤，与学习笔记并列 -->
+          <a class="quiet" :href="withBase('/papers.html')">看论文总览</a>
           <a class="quiet" :href="withBase('/notes.html')">看学习笔记</a>
         </span>
       </div>
