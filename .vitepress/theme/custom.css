@@ -1868,13 +1868,12 @@
 .dr-hero-deck .tangsancai .camel { top: 30px; width: 114px; height: 36px; }
 
 /* ============================================================
-   文字居中后的可读性兜底（2026-10-24）
-   文字移到正中后会压在主体图形上 → 用 currentColor 同色光晕把字"浮"起来。
-   用 filter 而不是 text-shadow：不会覆盖各卡自己写的描边/投影。
+   文字可读性：2026-10-24 撤销全局模糊光晕
+   原先用 filter: drop-shadow(0 0 1.5px currentColor) drop-shadow(0 0 5px currentColor)
+   把字"浮"出图形，但 drop-shadow 会先把文字栅格化再做模糊 → 笔画边缘发虚，
+   用户反馈「卡片的清晰度有问题」。现在改回不加全局滤镜：
+   可读性靠「主体让位」（把压在字上的主体缩小挪开）+ 少数卡垫实心底衬来保证。
    ============================================================ */
-.dr-hero-deck .art-card .t {
-  filter: drop-shadow(0 0 1.5px currentColor) drop-shadow(0 0 5px currentColor);
-}
 
 /* ============ 顶栏「找论文」+ 搜索弹窗（components/PaperSearch.vue）============ */
 /* 顶栏按钮：与 VitePress 导航同高，跟主题切换钮并排（Layout.vue 的 #nav-bar-content-after）
