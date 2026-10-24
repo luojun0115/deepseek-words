@@ -1791,13 +1791,89 @@
   letter-spacing: .08em; color: #eaf6ff; text-align: center;
   text-shadow: 0 0 16px rgb(120 220 255 / 70%); transform: translateY(-50%);}
 
+
+/* ============================================================
+   主体让位：文字移到正中后，把压在文字带（y 105—215）上的主体缩小、
+   退到上/下半区。逐张手调，不用通用规则 —— 各卡构图差异太大。
+   ============================================================ */
+
+/* 古希腊陶瓶：黑瓶小人挪到最左 */
+.dr-hero-deck .greekvase .fig { left: 24px; bottom: 16px; width: 56px; height: 140px; }
+
+/* 古波斯浮雕：双翼兽整体上移并缩小 */
+.dr-hero-deck .persianrelief .wing { top: 12px; width: 126px; height: 70px; }
+.dr-hero-deck .persianrelief .wing.l { left: 66px; }
+.dr-hero-deck .persianrelief .wing.r { right: 66px; }
+.dr-hero-deck .persianrelief .body { top: 56px; width: 48px; height: 86px; }
+
+/* 拜占庭金马赛克：金人缩到左下角 */
+.dr-hero-deck .byzantine .saint { left: 16px; bottom: 10px; width: 82px; height: 148px; }
+
+/* 罗马式：黑拱门压住整个下半 → 压成底部矮拱 */
+.dr-hero-deck .romanesque .arch { left: 50%; translate: -50% 0; width: 206px; height: 182px; bottom: -76px; }
+
+/* 哥特彩窗：三联尖拱与玫瑰窗整体缩小 */
+.dr-hero-deck .gothic .arch,
+.dr-hero-deck .gothic .a1,
+.dr-hero-deck .gothic .a3 { width: 76px; height: 118px; }
+.dr-hero-deck .gothic .a2 { width: 84px; height: 148px; }
+.dr-hero-deck .gothic .rose { width: 48px; height: 48px; }
+
+/* 超级波普：罐头与网点缩小上移 */
+.dr-hero-deck .superpop .can { top: 24px; width: 128px; height: 146px; }
+.dr-hero-deck .superpop .dots { top: 48px; width: 96px; height: 82px; }
+
+/* 高丽青瓷：碗与金缮缩小上移 */
+.dr-hero-deck .celadon .bowl { top: 20px; width: 172px; height: 112px; }
+.dr-hero-deck .celadon .crack { top: 36px; width: 126px; height: 80px; }
+
+/* 蒙古岩画：隼与双翼缩小上移 */
+.dr-hero-deck .mongolrock .horse { top: 22px; width: 80px; height: 110px; }
+.dr-hero-deck .mongolrock .wing { top: 30px; width: 122px; height: 68px; }
+
+/* 伊斯兰几何：星形缩到上半 */
+.dr-hero-deck .islamic .star { width: 164px; height: 164px; }
+
+/* 纳斯卡：鸟形缩小上移 */
+.dr-hero-deck .nascapaint .bird { width: 108px; height: 70px; }
+
+/* 敦煌：飘带压到上半，飞天缩到左下 */
+.dr-hero-deck .dunhuang .ribbon { top: 30px; height: 92px; }
+.dr-hero-deck .dunhuang .fly { left: 84px; bottom: 8px; width: 92px; height: 116px; }
+
+/* 唐三彩：陶罐与骆驼缩小 */
+.dr-hero-deck .tangsancai .glaze { top: 54px; width: 186px; height: 140px; }
+.dr-hero-deck .tangsancai .camel { top: 62px; width: 114px; height: 36px; }
+
+/* 青绿山水：山峰压低，别顶到字 */
+.dr-hero-deck .bluegreen .mountain { height: 176px; }
+.dr-hero-deck .bluegreen .mountain2 { height: 150px; }
+
+/* 瑞士国际主义：红条从字上挪到下方 */
+.dr-hero-deck .swissgrid .bar { top: 244px; }
+
+
+/* 罗马马赛克：字压在彩色格子上会碎 → 垫一条深色衬底（马赛克铭牌的做法） */
+.dr-hero-deck .romanmosaic .t {
+  width: fit-content; margin: 0 auto;
+  background: rgb(22 18 14 / 74%); padding: 7px 16px; border-radius: 2px;
+}
+
+/* 墨西哥壁画：农夫与草帽缩到下方，别顶到字 */
+.dr-hero-deck .muralism .worker { width: 88px; height: 100px; bottom: 12px; }
+.dr-hero-deck .muralism .hat { bottom: 104px; width: 132px; }
+
+/* 唐三彩：釉彩陶罐与骆驼再上移一档 */
+.dr-hero-deck .tangsancai .glaze { top: 22px; width: 186px; height: 116px; }
+.dr-hero-deck .tangsancai .camel { top: 30px; width: 114px; height: 36px; }
+
 /* ============================================================
    文字居中后的可读性兜底（2026-10-24）
    文字移到正中后会压在主体图形上 → 用 currentColor 同色光晕把字"浮"起来。
    用 filter 而不是 text-shadow：不会覆盖各卡自己写的描边/投影。
    ============================================================ */
 .dr-hero-deck .art-card .t {
-  filter: drop-shadow(0 0 4px currentColor) drop-shadow(0 0 11px currentColor);
+  filter: drop-shadow(0 0 1.5px currentColor) drop-shadow(0 0 5px currentColor);
 }
 
 /* ============ 顶栏「找论文」+ 搜索弹窗（components/PaperSearch.vue）============ */
