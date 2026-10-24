@@ -1792,6 +1792,21 @@
   text-shadow: 0 0 16px rgb(120 220 255 / 70%); transform: translateY(-50%);}
 
 
+
+
+/* ===== 2026-10-24 用户点名整改：文字不压图中间 =====
+   第 32 张 象征主义：文字原为两行、居中，正压在展翅之蛾上 → 改一行并挪到顶部，
+        蛾与金色光晕保留在画面中段。
+   第 40 张 墨西哥壁画：文字原居中 → 按用户要求往上挪，给下方农夫留位。 */
+.dr-hero-deck .symbolism .t {
+  top: 16px; transform: none;
+  font-size: 33px; letter-spacing: .08em; text-indent: .04em;
+}
+.dr-hero-deck .muralism .t {
+  top: 26%; transform: none;
+  font-size: 31px; letter-spacing: .04em; text-indent: .02em;
+}
+
 /* ============================================================
    主体让位：文字移到正中后，把压在文字带（y 105—215）上的主体缩小、
    退到上/下半区。逐张手调，不用通用规则 —— 各卡构图差异太大。
@@ -1860,8 +1875,12 @@
 }
 
 /* 墨西哥壁画：农夫与草帽缩到下方，别顶到字 */
-.dr-hero-deck .muralism .worker { width: 88px; height: 100px; bottom: 12px; }
-.dr-hero-deck .muralism .hat { bottom: 104px; width: 132px; }
+/* 农夫比例：原来手臂比身体还宽，像保龄球瓶 —— 收窄手臂、缩小头与帽 */
+.dr-hero-deck .muralism .worker { width: 74px; height: 94px; bottom: 14px; }
+.dr-hero-deck .muralism .worker::before { width: 30px; height: 32px; top: -26px; }
+.dr-hero-deck .muralism .worker::after { width: 116px; height: 20px; left: -21px; top: 20px; }
+.dr-hero-deck .muralism .hat { bottom: 92px; width: 116px; height: 18px; }
+.dr-hero-deck .muralism .hat::after { width: 48px; height: 19px; top: -16px; }
 
 /* 唐三彩：釉彩陶罐与骆驼再上移一档 */
 .dr-hero-deck .tangsancai .glaze { top: 22px; width: 186px; height: 116px; }
@@ -2162,3 +2181,53 @@
   .dr-hero-deck .art-card.on { animation: none; }
   .sm-backdrop, .sm-panel { animation: none; }
 }
+
+/* ============================================================
+   文字不压图中间（2026-10-24 用户点名第 32、40 张后统一处理）
+   做法（与用户给的两个例子一致）：文字改成一整行、挪到卡片顶部，
+   画面中段留给具象主体。纹理类主体（印象派笔触、立体主义多面体等）
+   压着字不算问题，仍保持居中。
+   ============================================================ */
+.dr-hero-deck .bluegreen .t,
+.dr-hero-deck .islamic .t,
+.dr-hero-deck .superpop .t,
+.dr-hero-deck .surrealism .t,
+.dr-hero-deck .realism .t,
+.dr-hero-deck .neoclassic .t,
+.dr-hero-deck .nascapaint .t,
+.dr-hero-deck .caveman .t,
+.dr-hero-deck .celadon .t,
+.dr-hero-deck .mongolrock .t,
+.dr-hero-deck .renaissance .t,
+.dr-hero-deck .gothic .t {
+  top: 16px; transform: none;
+}
+
+
+/* 单行英文按实测宽度反推字号：目标 ≤ 360px（卡宽 520，左右各留 80px 余量） */
+.dr-hero-deck .caveman .t { font-size: 34px; }
+.dr-hero-deck .nascapaint .t { font-size: 25px; letter-spacing: .04em; text-indent: .02em; }
+.dr-hero-deck .islamic .t { font-size: 26px; letter-spacing: .06em; text-indent: .03em; }
+.dr-hero-deck .mongolrock .t { font-size: 34px; }
+.dr-hero-deck .gothic .t { font-size: 26px; }
+.dr-hero-deck .renaissance .t { font-size: 27px; letter-spacing: .06em; text-indent: .03em; }
+.dr-hero-deck .neoclassic .t { font-size: 24px; letter-spacing: .06em; text-indent: .03em; }
+.dr-hero-deck .surrealism .t { font-size: 26px; letter-spacing: .06em; text-indent: .03em; }
+.dr-hero-deck .superpop .t { font-size: 24px; letter-spacing: .02em; }
+.dr-hero-deck .symbolism .t { font-size: 27px; letter-spacing: .06em; text-indent: .03em; }
+
+/* 顶天立地的两根柱子与穹顶：下移，别顶到字 */
+.dr-hero-deck .neoclassic .pilaster { top: 62px; }
+.dr-hero-deck .renaissance .dome { bottom: 148px; }
+
+/* 顶部被文字占了的主体：放回画面中段 */
+.dr-hero-deck .superpop .can { top: 76px; }
+.dr-hero-deck .superpop .dots { top: 94px; }
+.dr-hero-deck .surrealism .clock { top: 140px; }
+.dr-hero-deck .neoclassic .disc { top: 92px; }
+.dr-hero-deck .celadon .bowl { top: 78px; }
+.dr-hero-deck .celadon .crack { top: 92px; }
+.dr-hero-deck .mongolrock .horse { top: 80px; }
+.dr-hero-deck .mongolrock .wing { top: 86px; }
+.dr-hero-deck .renaissance .dome { bottom: 202px; }
+.dr-hero-deck .gothic .rose { top: 76px; }
