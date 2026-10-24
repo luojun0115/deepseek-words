@@ -73,7 +73,7 @@ const CARDS = [
   { k: 'renaissance', n: '文艺复兴', y: 'RENAISSANCE · 1400',
     inner: '<span class="ground"></span><span class="rays"></span><span class="arch"></span><span class="dome"></span>' },
   { k: 'venetian', n: '威尼斯画派', y: 'VENETIAN · 1500',
-    inner: '<span class="frame"></span><span class="glow"></span>' },
+    inner: '<span class="velvet"></span><span class="medallion"></span><span class="embroidery"></span><span class="gem"></span><span class="frame"></span>' },
   { k: 'dutchgolden', n: '荷兰黄金时代', y: 'DUTCH GOLDEN · 1650',
     inner: '<span class="light"></span><span class="weave"></span><div class="t">DeepSeek is<br>all you need</div>' },
   { k: 'neoclassic', n: '新古典主义', y: 'NEOCLASSIC · 1780',

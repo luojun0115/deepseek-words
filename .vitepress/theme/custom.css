@@ -2801,3 +2801,196 @@
    不是实体物件，本来就该悬着；加粗到 10px 还导致出界 10px（卡高 280、弧底 290）。
    恢复原始细弧 8px + 原位置 bottom 46px，与左下火把人对角呼应。 */
 .dr-hero-deck .caveman .stroke { bottom: 46px; border-width: 8px; }
+
+/* ============================================================
+   第 20 张 威尼斯画派 重新设计（2026-10-25）
+   —— 上一版是「深绿底 + blur(3px) 径向光斑」，出来是一团失焦脏污。
+      本版全部改成硬边清晰：深绿底 + 金线菱格锦缎 + 四块硬边油彩色交叠。
+      配色取威尼斯画派标志色：朱红 / 金橙 / 孔雀蓝 / 象牙白。
+   ============================================================ */
+.dr-hero-deck .venetian { background: #17352e; }
+
+/* 底纹：细金线菱格（织锦质感），不用模糊 */
+.dr-hero-deck .venetian .silk {
+  position: absolute; inset: 0; opacity: .34;
+  background:
+    repeating-linear-gradient(45deg, rgb(206 168 92 / 22%) 0 1px, transparent 1px 24px),
+    repeating-linear-gradient(-45deg, rgb(206 168 92 / 22%) 0 1px, transparent 1px 24px);
+}
+
+/* 四块硬边油彩色，模拟提香画里大笔触的暖色堆积 */
+.dr-hero-deck .venetian .w1 {
+  position: absolute; left: 118px; top: 50px; width: 184px; height: 154px; background: #b3352b;
+  clip-path: polygon(12% 18%, 78% 0, 100% 46%, 74% 100%, 8% 88%, 0 44%);
+}
+.dr-hero-deck .venetian .w2 {
+  position: absolute; left: 236px; top: 84px; width: 190px; height: 142px; background: #d98a2b;
+  clip-path: polygon(6% 30%, 60% 0, 100% 34%, 86% 92%, 20% 100%, 0 62%);
+}
+.dr-hero-deck .venetian .w3 {
+  position: absolute; left: 164px; top: 126px; width: 188px; height: 122px; background: #2b6b8a;
+  clip-path: polygon(10% 6%, 88% 0, 100% 58%, 62% 100%, 6% 82%, 0 34%);
+}
+.dr-hero-deck .venetian .w4 {
+  position: absolute; left: 198px; top: 94px; width: 112px; height: 66px; background: #f2e3c4;
+  clip-path: polygon(18% 0, 100% 22%, 82% 100%, 0 76%);
+}
+
+/* 画框：细双线金框（外 3px + 内侧 1px 亮金） */
+.dr-hero-deck .venetian .frame {
+  position: absolute; inset: 11px; border: 3px solid #b8892f;
+  box-shadow: inset 0 0 0 1px rgb(240 210 140 / 50%);
+}
+
+/* ============================================================
+   第 20 张 威尼斯画派 · 第二版（2026-10-25）
+   —— v1「深绿+blur 光斑」= 糊；v2「深绿+大硬边色块」= 像色纸片叠。
+      v3 改用威尼斯的强符号：圣马可金色马赛克半圆拱 + 彩色马赛克砖 + 深红底。
+   ============================================================ */
+.dr-hero-deck .venetian { background: #4e1710; }
+
+/* 底：暗红教堂墙 + 极淡金线缝 */
+.dr-hero-deck .venetian .bgm {
+  position: absolute; inset: 0; opacity: .5;
+  background:
+    repeating-linear-gradient(0deg, rgb(226 182 96 / 12%) 0 1px, transparent 1px 26px),
+    repeating-linear-gradient(90deg, rgb(226 182 96 / 12%) 0 1px, transparent 1px 26px);
+}
+
+/* 主体：金色马赛克半圆拱（底与卡底齐平） */
+.dr-hero-deck .venetian .arch2 {
+  position: absolute; left: 50%; bottom: 0; translate: -50% 0;
+  width: 306px; height: 214px; border-radius: 153px 153px 0 0 / 176px 176px 0 0;
+  background:
+    repeating-linear-gradient(0deg, rgb(90 48 12 / 55%) 0 1px, transparent 1px 13px),
+    repeating-linear-gradient(90deg, rgb(90 48 12 / 55%) 0 1px, transparent 1px 13px),
+    linear-gradient(160deg, #e3b455, #c08a2e 60%, #a86f22);
+}
+
+/* 拱内四块彩色马赛克砖（圣马可镶嵌的朱红 / 孔雀蓝 / 翠绿 / 象牙） */
+.dr-hero-deck .venetian .t1 {
+  position: absolute; left: 168px; top: 78px; width: 52px; height: 52px; background: #b3352b;
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+}
+.dr-hero-deck .venetian .t2 {
+  position: absolute; left: 258px; top: 106px; width: 58px; height: 58px; background: #2b6b8a;
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+}
+.dr-hero-deck .venetian .t3 {
+  position: absolute; left: 196px; top: 152px; width: 50px; height: 50px; background: #2f7a52;
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+}
+.dr-hero-deck .venetian .t4 {
+  position: absolute; left: 292px; top: 62px; width: 40px; height: 40px; background: #f2e3c4;
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+}
+
+/* 画框：细金线 */
+.dr-hero-deck .venetian .frame {
+  position: absolute; inset: 11px; border: 2px solid #c9a227;
+  box-shadow: inset 0 0 0 1px rgb(240 210 140 / 35%);
+}
+
+/* ============================================================
+   第 20 张 威尼斯画派 · 方案 A：丝绒 + 金线刺绣（2026-10-25）
+   ============================================================ */
+.dr-hero-deck .venetian { background: #4a1410; }
+.dr-hero-deck .venetian .velvet {
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(90deg, rgb(255 224 186 / 8%) 0 1px, transparent 1px 7px),
+    linear-gradient(100deg, #6d2018, #3a0e0a 72%);
+}
+/* 中央金圈（威尼斯画派常用的深绿衬底 + 金环） */
+.dr-hero-deck .venetian .medallion {
+  position: absolute; left: 50%; top: 50%; translate: -50% -50%;
+  width: 188px; height: 188px; border-radius: 50%;
+  border: 4px solid #d8ad4a; background: #24463a;
+  box-shadow: 0 0 0 9px rgb(216 173 74 / 20%);
+}
+/* 圈内放射金线（绣纹），只保留中环一段 */
+.dr-hero-deck .venetian .embroidery {
+  position: absolute; left: 50%; top: 50%; translate: -50% -50%;
+  width: 164px; height: 164px; border-radius: 50%;
+  background: repeating-conic-gradient(from 0deg, rgb(216 173 74 / 72%) 0 2.4deg, transparent 2.4deg 45deg);
+  -webkit-mask: radial-gradient(circle, transparent 24%, #000 27%, #000 58%, transparent 61%);
+  mask: radial-gradient(circle, transparent 24%, #000 27%, #000 58%, transparent 61%);
+}
+/* 中心金菱 */
+.dr-hero-deck .venetian .gem {
+  position: absolute; left: 50%; top: 50%; translate: -50% -50%;
+  width: 46px; height: 46px; background: #d8ad4a;
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+}
+.dr-hero-deck .venetian .frame {
+  position: absolute; inset: 11px; border: 2px solid #c9a227;
+  box-shadow: inset 0 0 0 1px rgb(240 210 140 / 32%);
+}
+
+/* ============================================================
+   第 20 张 威尼斯画派 · 方案 B：色层油画（colorito，2026-10-25）
+   —— 五条斜向硬边色带层叠，每条内部是威尼斯色阶渐变：
+      朱红 → 金橙 → 象牙 → 孔雀蓝 → 深绿，模拟提香画布上的色层堆积。
+   ============================================================ */
+.dr-hero-deck .venetian { background: #12332b; }
+.dr-hero-deck .venetian .b1 {
+  position: absolute; left: -46px; top: -26px; width: 470px; height: 152px;
+  background: linear-gradient(104deg, #7d1a12 0%, #b3352b 46%, #d0742a 100%);
+  clip-path: polygon(0 26%, 100% 0, 100% 58%, 0 100%);
+}
+.dr-hero-deck .venetian .b2 {
+  position: absolute; left: 54px; top: 52px; width: 430px; height: 138px;
+  background: linear-gradient(104deg, #b3352b 0%, #d98a2b 52%, #e8b44c 100%);
+  clip-path: polygon(0 22%, 100% 0, 100% 60%, 0 100%);
+}
+.dr-hero-deck .venetian .b3 {
+  position: absolute; left: 126px; top: 118px; width: 424px; height: 126px;
+  background: linear-gradient(104deg, #e8b44c 0%, #f2e3c4 46%, #e2cfa4 100%);
+  clip-path: polygon(0 24%, 100% 0, 100% 62%, 0 100%);
+}
+.dr-hero-deck .venetian .b4 {
+  position: absolute; left: 188px; top: 176px; width: 400px; height: 132px;
+  background: linear-gradient(104deg, #2b6b8a 0%, #1d4f6b 54%, #123c50 100%);
+  clip-path: polygon(0 20%, 100% 0, 100% 64%, 0 100%);
+}
+.dr-hero-deck .venetian .b5 {
+  position: absolute; left: 268px; top: 232px; width: 340px; height: 120px;
+  background: linear-gradient(104deg, #123c50 0%, #0d2a22 60%, #0a1f19 100%);
+  clip-path: polygon(0 22%, 100% 0, 100% 60%, 0 100%);
+}
+
+/* ============================================================
+   第 20 张 威尼斯画派 · 定稿：丝绒 + 金线刺绣（2026-10-25）
+   —— 试过三版：①深绿+blur 光斑（糊成一团）②深绿+大硬边色块（像色纸片）
+      ③圣马可金马赛克拱（彩色砖像糖豆）④斜向色层油画（像斜条纹旗）。
+      定稿用「深红丝绒底 + 金框 + 深绿金圈 + 16 道放射金线绣纹 + 中心金菱」。
+   ============================================================ */
+.dr-hero-deck .venetian { background: #4a1410; }
+.dr-hero-deck .venetian .velvet {
+  position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(90deg, rgb(255 224 186 / 8%) 0 1px, transparent 1px 7px),
+    linear-gradient(100deg, #6d2018, #3a0e0a 72%);
+}
+.dr-hero-deck .venetian .medallion {
+  position: absolute; left: 50%; top: 50%; translate: -50% -50%;
+  width: 192px; height: 192px; border-radius: 50%;
+  border: 4px solid #d8ad4a; background: #24463a;
+  box-shadow: 0 0 0 3px rgb(58 14 10 / 70%), 0 0 0 10px rgb(216 173 74 / 18%);
+}
+.dr-hero-deck .venetian .embroidery {
+  position: absolute; left: 50%; top: 50%; translate: -50% -50%;
+  width: 168px; height: 168px; border-radius: 50%;
+  background: repeating-conic-gradient(from 0deg, rgb(216 173 74 / 78%) 0 2.2deg, transparent 2.2deg 22.5deg);
+  -webkit-mask: radial-gradient(circle, transparent 22%, #000 25%, #000 60%, transparent 63%);
+  mask: radial-gradient(circle, transparent 22%, #000 25%, #000 60%, transparent 63%);
+}
+.dr-hero-deck .venetian .gem {
+  position: absolute; left: 50%; top: 50%; translate: -50% -50%;
+  width: 52px; height: 52px; background: #d8ad4a;
+  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
+}
+.dr-hero-deck .venetian .frame {
+  position: absolute; inset: 11px; border: 2px solid #c9a227;
+  box-shadow: inset 0 0 0 1px rgb(240 210 140 / 32%);
+}
