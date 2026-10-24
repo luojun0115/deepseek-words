@@ -2672,3 +2672,66 @@
 .dr-hero-deck .mongolrock .t { top: 18px; }
 .dr-hero-deck .mongolrock .horse { top: 116px; }
 .dr-hero-deck .mongolrock .wing { top: 124px; }
+
+/* ============================================================
+   批量去文字（2026-10-25 用户指定 2/6/8/13/16/18/23/24/25 页）+ 第 19 张重设计
+   ============================================================ */
+
+/* 第 19 张 威尼斯：原来红底 + 橙紫两团 blur 成一团糊 → 整张重做成
+   提香式油画：深绿底 + 暖金多层油彩光斑 + 金色画框 */
+.dr-hero-deck .venetian { background: #1b3830; }
+.dr-hero-deck .venetian .frame {
+  position: absolute; inset: 13px; border: 4px solid #b8892f;
+  box-shadow: inset 0 0 0 1px rgb(240 210 140 / 55%), 0 0 0 1px rgb(0 0 0 / 30%);
+}
+.dr-hero-deck .venetian .glow {
+  position: absolute; left: 50%; top: 50%; translate: -50% -50%;
+  width: 300px; height: 196px; border-radius: 48% 52% 50% 50%;
+  background:
+    radial-gradient(ellipse at 36% 30%, rgb(255 233 170 / 92%) 0 7%, transparent 42%),
+    radial-gradient(ellipse at 66% 40%, rgb(226 150 66 / 78%) 0 9%, transparent 46%),
+    radial-gradient(ellipse at 50% 74%, rgb(150 78 40 / 72%) 0 12%, transparent 52%),
+    radial-gradient(ellipse at 50% 50%, rgb(206 146 62 / 46%) 0 26%, transparent 74%);
+  filter: blur(3px);
+}
+
+/* —— 去文字后的主体归位（2026-10-25）—— */
+/* 第 2 张 彩陶：同心弧从最左移到画面中心 */
+.dr-hero-deck .caitao .swirl { left: 50%; translate: -50% 0; bottom: 20px; }
+/* 第 8 张 拜占庭：金人从最左移到画面中心 */
+.dr-hero-deck .byzantine .saint { left: 50%; translate: -50% 0; bottom: 10px; }
+/* 第 13 张 青绿山水：两座山左右对称一点 */
+.dr-hero-deck .bluegreen .mountain { left: 0; height: 176px; }
+.dr-hero-deck .bluegreen .mountain2 { right: 0; height: 168px; }
+/* 第 16 张 手抄本：藤蔓弧线居中，叶子跟着平移 */
+.dr-hero-deck .illumination .vine { left: 50%; translate: -50% 0; top: 22px; }
+.dr-hero-deck .illumination .leaf { left: 133px; }
+
+/* ============================================================
+   第 29-34 页 去文字（2026-10-25 用户指定）
+   ============================================================ */
+/* 第 29 张 工艺美术：去文字后只剩满幅小花纹，加一朵居中的大金叶撑住画面 */
+.dr-hero-deck .artsandcrafts .leafy::before {
+  content: ''; position: absolute; left: 50%; top: 50%; translate: -50% -50%;
+  width: 132px; height: 64px; background: #d8a54a;
+  border-radius: 50% 50% 44% 44%;
+  box-shadow: 0 0 0 3px rgb(20 14 8 / 14%);
+}
+
+/* ============================================================
+   第 41/44/45/46/47/48/51/54/55/56/57 页 去文字（2026-10-25 用户指定）
+   ============================================================ */
+/* 第 46 张 大跃进：去掉底部「深度求索 全面超越」后，主副标组上移到画面中部 */
+.dr-hero-deck .dagu .t { top: 52%; }
+
+/* 第 47 张 波普艺术：整张原本只有文字 → 补一个红色爆炸星形主体 */
+.dr-hero-deck .pp .burst {
+  position: absolute; left: 50%; top: 50%; translate: -50% -50%;
+  width: 196px; height: 196px; background: #e8342a;
+  clip-path: polygon(50% 0, 61% 20%, 82% 8%, 82% 30%, 100% 38%, 84% 52%,
+    96% 72%, 74% 72%, 70% 96%, 54% 82%, 38% 100%, 33% 78%, 12% 84%, 20% 62%,
+    0 52%, 22% 42%, 8% 22%, 30% 24%);
+  box-shadow: 0 0 0 4px #fff;
+}
+/* 第 55 张 瑞士网格：连底部「Grid · Type · Contrast」一起去掉 */
+.dr-hero-deck .swissgrid .sub { display: none; }
