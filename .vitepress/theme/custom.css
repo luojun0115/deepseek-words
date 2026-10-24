@@ -2791,5 +2791,7 @@
    让人物与树踩到地面线（bottom 46%），并放大一档撑住画面 */
 .dr-hero-deck .realism .farmer { bottom: 46%; width: 40px; height: 52px; }
 .dr-hero-deck .realism .tree { bottom: 46%; width: 12px; height: 78px; }
-/* 第 2 张 洞穴壁画：右侧红弧原来悬在半空 → 贴到卡底，成为岩壁下缘的一道弧线 */
-.dr-hero-deck .caveman .stroke { bottom: 4px; border-width: 10px; }
+/* 第 2 张 洞穴壁画：上一轮把红弧「贴底 + 加粗」是改坏了 —— 它是画在岩壁上的一笔，
+   不是实体物件，本来就该悬着；加粗到 10px 还导致出界 10px（卡高 280、弧底 290）。
+   恢复原始细弧 8px + 原位置 bottom 46px，与左下火把人对角呼应。 */
+.dr-hero-deck .caveman .stroke { bottom: 46px; border-width: 8px; }
