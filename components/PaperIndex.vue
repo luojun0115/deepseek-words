@@ -31,7 +31,8 @@ const fmValue = (src, key) => {
   return hit ? hit[1].trim().replace(/^(['"])([\s\S]*)\1$/, '$2').trim() : ''
 }
 const TOPICS = Object.entries(NOTE_SRC)
-  .filter(([k]) => !/\/\d\d_[^/]*\.md$/.test(k) && !/\/index\.md$/.test(k))  // 无编号前缀 = 专题；index.md 是 tab 页本身
+  // 无编号前缀 = 专题；index.md 是 tab 页本身，papers.md 是 /notes/papers.html 的兼容跳转粧
+  .filter(([k]) => !/\/\d\d_[^/]*\.md$/.test(k) && !/\/(index|papers)\.md$/.test(k))
   .map(([k, src]) => {
     const dir = k.split('/').pop().replace(/\.md$/, '')
     return {
@@ -237,7 +238,9 @@ const master = computed(() => {
       <template v-if="mode === 'note' && TOPICS.length">
         <div class="dr-group-hd">
           <b>专题与索引</b>
-          <span>横向串主题的专题文章 · {{ TOPICS.length }} 篇（论文总览已升级为独立 tab：/papers/）</span>
+          <span>横向串主题的专题文章 · {{ TOPICS.length }} 篇 ·
+            <a class="dr-group-link" :href="withBase('/papers/')">论文总览 ↗</a>
+          </span>
         </div>
         <a v-for="t in TOPICS" :key="t.dir" class="dr-card is-topic" :href="t.href" target="_self">
           <div

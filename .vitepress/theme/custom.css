@@ -131,6 +131,12 @@
 }
 .dr-lib .dr-group-hd b { font-size: 15px; font-weight: 700; color: var(--dr-ink); }
 .dr-lib .dr-group-hd span { font-size: 12.5px; color: var(--dr-ink2); }
+/* 组头里指向独立 tab 的入口（2026-10-25）：学习笔记页 → 论文总览，给人一条能点的路 */
+.dr-lib .dr-group-hd .dr-group-link {
+  color: var(--dr-accent); text-decoration: none; font-weight: 600;
+  border-bottom: 1px solid transparent; transition: border-color .15s;
+}
+.dr-lib .dr-group-hd .dr-group-link:hover { border-bottom-color: currentColor; }
 
 /* ============ 官方入口卡（2026-10-25 用户定案）============
    学习笔记页最前面两张站外官方入口：① HF 官方论文库（撞色黄）② GitHub 官方组织仓库（深藏青）。
