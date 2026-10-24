@@ -2786,3 +2786,10 @@
 
 /* 第 47 张 大跃进：红日顶出卡边界 4px → 下移一点 */
 .dr-hero-deck .dagu .sun { top: 19%; }
+
+/* 第 27 张 现实主义：地面从 54% 起（field 高 46%），农夫/树原脚在 40%/43% → 悬空。
+   让人物与树踩到地面线（bottom 46%），并放大一档撑住画面 */
+.dr-hero-deck .realism .farmer { bottom: 46%; width: 40px; height: 52px; }
+.dr-hero-deck .realism .tree { bottom: 46%; width: 12px; height: 78px; }
+/* 第 2 张 洞穴壁画：右侧红弧原来悬在半空 → 贴到卡底，成为岩壁下缘的一道弧线 */
+.dr-hero-deck .caveman .stroke { bottom: 4px; border-width: 10px; }
