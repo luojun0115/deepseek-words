@@ -1,5 +1,5 @@
 {
-  "_note": "站外导航页（/sites）的数据源。76 站上墙 + 5 站待选 + 3 个自有空位，18 组。 改名单改这里，页面与自检都从这份数据读，不写死在组件里。待选站（pending）数据保留但页面不渲染（DECISIONS §A7）；其中 Papers with Code 已于 2025-07-24 关停，条目暂留备查（§A12）。分组顺序 = 墙上的行序（每组一行，组牌在左列）。第八批按「同类同排」重划分组（§A16），第九批撤掉小林 coding 并把博客园挪进 docs（§A17），第十批新增 Python 框架与前端框架（§A18），第十一批新增基础设施（§A19），第十二批抽出编程语言组（§A20），第十三批基础设施扩到 8 块（§A21）。",
+  "_note": "站外导航页（/sites）的数据源。77 站上墙 + 5 站待选 + 3 个自有空位，18 组。 改名单改这里，页面与自检都从这份数据读，不写死在组件里。待选站（pending）数据保留但页面不渲染（DECISIONS §A7）；其中 Papers with Code 已于 2025-07-24 关停，条目暂留备查（§A12）。分组顺序 = 墙上的行序（每组一行，组牌在左列）。第八批按「同类同排」重划分组（§A16），第九批撤掉小林 coding 并把博客园挪进 docs（§A17），第十批新增 Python 框架与前端框架（§A18），第十一批新增基础设施（§A19），第十二批抽出编程语言组（§A20），第十三批基础设施扩到 8 块（§A21），第十四批加 JMeter（§A22）。",
   "groups": [
     { "id": "papers", "name": "论文源", "en": "PAPERS", "kind": "sites" },
     { "id": "llm", "name": "大模型", "en": "LLM", "kind": "sites" },
@@ -67,6 +67,7 @@
     { "slug": "selenium", "name": "Selenium 官网", "short": "Selenium", "url": "https://www.selenium.dev", "brand": "#43b02a", "group": "tools", "logo": "/logos/selenium.png" },
     { "slug": "testerhome", "name": "测试之家 TesterHome", "short": "测试之家", "url": "https://testerhome.com", "brand": "#00a3a3", "group": "tools", "logo": "/logos/testerhome.png" },
     { "slug": "playwright", "name": "Playwright 官网", "short": "Playwright", "url": "https://playwright.dev", "brand": "#6b4fbb", "group": "tools", "logo": "/logos/playwright.png" },
+    { "slug": "jmeter", "name": "Apache JMeter", "short": "JMeter", "url": "https://jmeter.apache.org", "brand": "#ce2a3e", "group": "tools", "logo": "/logos/jmeter.png" },
 
     { "slug": "cnblogs", "name": "博客园", "short": "博客园", "url": "https://www.cnblogs.com", "brand": "#1878c0", "group": "docs", "logo": "/logos/cnblogs.png" },
     { "slug": "runoob", "name": "菜鸟教程", "short": "菜鸟教程", "url": "https://www.runoob.com", "brand": "#29a533", "group": "docs", "logo": "/logos/runoob.png" },
