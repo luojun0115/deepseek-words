@@ -1,9 +1,10 @@
 {
-  "_note": "站外导航页（/sites）的数据源。69 站上墙 + 5 站待选 + 3 个自有空位，17 组。 改名单改这里，页面与自检都从这份数据读，不写死在组件里。待选站（pending）数据保留但页面不渲染（DECISIONS §A7）；其中 Papers with Code 已于 2025-07-24 关停，条目暂留备查（§A12）。分组顺序 = 墙上的行序（每组一行，组牌在左列）。第八批按「同类同排」重划分组（§A16），第九批撤掉小林 coding 并把博客园挪进 docs（§A17），第十批新增 Python 框架与前端框架（§A18），第十一批新增基础设施（§A19）。",
+  "_note": "站外导航页（/sites）的数据源。72 站上墙 + 5 站待选 + 3 个自有空位，18 组。 改名单改这里，页面与自检都从这份数据读，不写死在组件里。待选站（pending）数据保留但页面不渲染（DECISIONS §A7）；其中 Papers with Code 已于 2025-07-24 关停，条目暂留备查（§A12）。分组顺序 = 墙上的行序（每组一行，组牌在左列）。第八批按「同类同排」重划分组（§A16），第九批撤掉小林 coding 并把博客园挪进 docs（§A17），第十批新增 Python 框架与前端框架（§A18），第十一批新增基础设施（§A19），第十二批抽出编程语言组（§A20）。",
   "groups": [
     { "id": "papers", "name": "论文源", "en": "PAPERS", "kind": "sites" },
     { "id": "llm", "name": "大模型", "en": "LLM", "kind": "sites" },
     { "id": "code", "name": "代码与编程", "en": "CODE", "kind": "sites" },
+    { "id": "lang", "name": "编程语言", "en": "LANG", "kind": "sites" },
     { "id": "infra", "name": "基础设施", "en": "INFRA", "kind": "sites" },
     { "id": "pyfw", "name": "Python 框架", "en": "PYTHON", "kind": "sites" },
     { "id": "frontend", "name": "前端框架", "en": "FRONTEND", "kind": "sites" },
@@ -33,10 +34,14 @@
     { "slug": "kimi", "name": "Kimi", "short": "Kimi", "url": "https://www.kimi.com", "brand": "#1f2328", "group": "llm", "logo": "/logos/kimi.png" },
     { "slug": "minimax", "name": "MiniMax", "short": "MiniMax", "url": "https://www.minimax.cn", "brand": "#ff6b35", "group": "llm", "logo": "/logos/minimax.png" },
 
-    { "slug": "github", "name": "GitHub", "short": "GitHub", "url": "https://github.com", "brand": "#24292f", "group": "code", "logo": "/logos/github.png" },
     { "slug": "mysql", "name": "MySQL 官网", "short": "MySQL", "url": "https://www.mysql.com", "brand": "#00758f", "group": "code", "logo": "/logos/mysql.png" },
     { "slug": "redis", "name": "Redis 官网", "short": "Redis", "url": "https://redis.io", "brand": "#d82c20", "group": "code", "logo": "/logos/redis.png" },
-    { "slug": "python", "name": "Python 官网", "short": "Python", "url": "https://www.python.org", "brand": "#3776ab", "group": "code", "logo": "/logos/python.png" },
+    { "slug": "github", "name": "GitHub", "short": "GitHub", "url": "https://github.com", "brand": "#24292f", "group": "code", "logo": "/logos/github.png" },
+
+    { "slug": "python", "name": "Python 官网", "short": "Python", "url": "https://www.python.org", "brand": "#3776ab", "group": "lang", "logo": "/logos/python.png" },
+    { "slug": "java", "name": "Java", "short": "Java", "url": "https://www.java.com", "brand": "#98163a", "group": "lang", "logo": "/logos/java.png" },
+    { "slug": "go", "name": "Go", "short": "Go", "url": "https://go.dev", "brand": "#76defa", "group": "lang", "logo": "/logos/go.png" },
+    { "slug": "rust", "name": "Rust", "short": "Rust", "url": "https://www.rust-lang.org", "brand": "#000000", "group": "lang", "logo": "/logos/rust.png" },
 
     { "slug": "kafka", "name": "Apache Kafka", "short": "Kafka", "url": "https://kafka.apache.org", "brand": "#e2562c", "group": "infra", "logo": "/logos/kafka.png" },
     { "slug": "docker", "name": "Docker", "short": "Docker", "url": "https://www.docker.com", "brand": "#1d63ed", "group": "infra", "logo": "/logos/docker.png" },
