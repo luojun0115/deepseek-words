@@ -7,7 +7,7 @@
 //   npm run notes                       补缺失的（一篇都不缺时只报一行）
 //   node scripts/gen-notes.mjs --check  只检查：缺 / 多 / 命名不符 → 退出码 1，不写盘
 //
-// 专题笔记（如 notes/位置编码.md）：不带 NN_ 编号前缀、不对应 papers.json 任何一篇的横 topic md，
+// 专题笔记（如 notes/zhuanti-search/ 下的专题页）：不带 NN_ 编号前缀、不对应 papers.json 任何一篇的横 topic md，
 // 不参与篇目对平——check 放行它们；只有带编号前缀的多余文件才判「多」（那才是论文已删或命名不符）。
 //
 // 也可以被 import（脚本主体有 main 守卫）：verify_content.mjs 复用同一个判空口径。

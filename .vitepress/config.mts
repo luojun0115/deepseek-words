@@ -32,7 +32,9 @@ export default defineConfig({
   // 等于把内部诊断、源码文件名、否决记录直接发布到公开站（2026-10-23 实测 6 个页面泄漏）
   // papers/论文清单.md 是论文总览的**源文稿**（由它生成 papers/ 下四页），本身不是页面：
   // 不排掉就会多出一个带原始编号标题的重复页 /papers/论文清单.html（2026-10-25 实测）
-  srcExclude: ['README.md', 'DECISIONS.md', 'deep-reading/**', 'design/**', 'papers/论文清单.md'],
+  // notes/zhuanti-search/drafts/ 是专题的**草稿区**（2026-10-25 用户要求把位置编码、
+  // DeepSeek-LLM 解读资源暂擱到这里）：只存盘不渲染，也不上卡片
+  srcExclude: ['README.md', 'DECISIONS.md', 'deep-reading/**', 'design/**', 'papers/论文清单.md', 'notes/zhuanti-search/drafts/**'],
   head: [
     // 防刷新闪白：样式之前先把 data-theme 从 localStorage 落到 <html>。
     // 默认值与合法 id 名单都从 theme-defs.mjs 注入（不写死主题 id，否则改默认主题会闪一下旧主题）；

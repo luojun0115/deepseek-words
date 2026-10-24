@@ -107,7 +107,7 @@ npm run selfcheck  # 断链实验：把仓库拷进隔离副本、只读自身�
 | 要动什么 | 改哪儿 |
 |---|---|
 | 论文总览的正文、表格、图例 | `papers/论文清单.md`，然后 `npm run papers`——它会按顶级「# B.」「# C.」标题把文稿切成四页：`papers/index.md`（卡片墙）/`papers/清单.md`（时间线 + 分主线表）/`papers/official.md`（官方发布）/`papers/resources.md`（解读资源）（**别手改那四个文件**，都是文稿生成，会被覆盖）|
-| 学习笔记正文 | `notes/<编号>_<论文短名>.md`（文件名对应 `data/papers.json` 的 `dir`）：两条 `---` 之间的注释以下随便写，标题、表格、代码块、图片都支持，写完 `npm run build` 就渲染到 `/notes/` 点进去的那页；空着时页面只显一行轻提示（那句提 示里不会出现仓库路径，读者不需要看这些）。专题横笔记（不带 `NN_` 编号前缀的 md，如 `notes/位置编码.md`）也放这个目录：`gen-notes --check` 只按编号前缀与 papers.json 对平，专题笔记不参与（`notes/index.md` 是 tab 页本身，也不算）|
+| 学习笔记正文 | `notes/<编号>_<论文短名>.md`（文件名对应 `data/papers.json` 的 `dir`）：两条 `---` 之间的注释以下随便写，标题、表格、代码块、图片都支持，写完 `npm run build` 就渲染到 `/notes/` 点进去的那页；空着时页面只显一行轻提示（那句提 示里不会出现仓库路径，读者不需要看这些）。专题横笔记（不带 `NN_` 编号前缀的 md，如 `notes/zhuanti-search/index.md` 这类专题页）也走这套机制：`gen-notes --check` 只按编号前缀与 papers.json 对平，专题笔记不参与（`notes/index.md` 是 tab 页本身，也不算）|
 | 新增一篇专题笔记（带封面）| ① `notes/<名>.md`，frontmatter 里写 `cover: "金句第一行， / 金句第二行。"`（可选 `coverKicker` / `coverYear` / `order` / `coverFile`）；② `npm run covers` 出封面 `public/covers/T_<名>.png`；③ `npm run build`。`/notes` 索引页底部会自动多一张专题卡，组件无需改动（见 `DECISIONS.md` §A25）|
 | 专题是「一个目录多篇」的（如缩放定律）| 卡面元数据直接写在每篇正文自己的 frontmatter（`notes/zhuanti-search/index.md` 与 `notes/zhuanti-search/<子目录>/index.md`）：`cover` / `coverKicker` / `coverYear` / `order` / `coverFile`；`npm run covers` 按它出图，`/notes` 自动上卡，**不要再在 notes/ 顶层另建壳页**（见 `DECISIONS.md` §A35）|
 | 精读工程过程档 | `deep-reading/`：32 篇深度精读的解读方案、引用规范、来源档案（sources/，逐条原始链接）、模型对照系（跨模型对比基准）、笔记草稿 drafts/（过审后才同步进 notes/）、进度与变更日志，供外部模型审查对账；已在 `srcExclude` 排除、不进站点|

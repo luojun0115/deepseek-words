@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// 专题笔记封面生成器：notes/ 下不带 NN_ 编号前缀的 md（如 位置编码.md）→ public/covers/T_<名>.png
+// 专题笔记封面生成器：notes/ 下不带 NN_ 编号前缀的 md（如 notes/zhuanti-search/index.md 这类专题页）→ public/covers/T_<名>.png
 //
 // 为什么单独一个脚本：32 篇论文的封面在 design/20261020_MotionFace风格/covers3 里一次出齐，
 // 专题笔记是随时会新增的（用户 2026-10-24 要求「以后额外的文章都要生成一个封面」），

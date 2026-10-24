@@ -1539,6 +1539,22 @@ alpha = 亮度(原像素)        # 白 X → 255，黑底 → 0
 
 ---
 
+### A37. 位置编码 / DeepSeek-LLM 解读资源退成专题草稿（2026-10-25 用户要求）
+
+用户：「这两个资源就不要弄卡片了，我暂时不需要它了，移到专题 search 下面新建一个草稿目录去，它不会进行渲染」。
+
+- `notes/位置编码.md`、`notes/DeepSeek-LLM-解读资源.md` → `notes/zhuanti-search/drafts/`（专题草稿区）：
+  离开 notes/ 顶层就不再上卡（`/notes` 专题卡从 12 降到 10，只剩缩放定律组）。
+- **不渲染**：`srcExclude` 加 `notes/zhuanti-search/drafts/**`（与 `design/**`、`papers/论文清单.md` 同一套隔离思路），
+  草稿页不进构建、不会被公开站索引到。
+- 两张孤立封面 `T_位置编码.png` / `T_DeepSeek-LLM-解读资源.png` 删除；`npm run covers` 不再涉及它们。
+- **死链清理**：`notes/15_DeepSeek-V3.md` 有 3 处指向 `./位置编码.html` 的内链，改成纯正文表述
+  （否则建站报 Dead link——上次 grep 只查了带 `.md` 的写法，漏了 `.html`）。
+- 断言同步：check_portal 的「专题卡 href」断言放宽为「顶层 md 是 `.html` / 专题子目录是目录地址」两种形态
+  （组内首卡现在是缩放定律总览，指向 `…/zhuanti-search/`）。
+
+---
+
 ## B. 页面与样式定案
 
 ### B1. 论文总览链接不带下划线（2026-10-08 用户要求）

@@ -369,8 +369,8 @@ const ok = (name, cond, extra = '') => {
     ok('专题组首卡指向 /notes/ 下的页（带 base，不逃出子路径）',
       leadHref && leadHref.startsWith(BPATH + 'notes/'), leadHref || '未找到')
     const tHref = await topicCards.first().getAttribute('href')
-    ok('专题卡指向 /notes/<名>.html（带 base）',
-      /\/notes\/.+\.html$/.test(tHref || '') && (tHref || '').startsWith(BPATH), tHref || '未找到')
+    ok('专题卡指向 /notes/ 下的页（带 base；顶层 md 是 .html，专题子目录是目录地址）',
+      /\/notes\/.+(\.html|\/)$/.test(tHref || '') && (tHref || '').startsWith(BPATH), tHref || '未找到')
     // 组内每一张的封面都要能加载（前面 32 篇论文卡另有一条「全带封面」的断言）
     const tCovs = await topicCards.locator('.dr-card-media').evaluateAll((els) => els.map((e) => e.style.backgroundImage))
     ok(`专题卡 ${nTopics} 张全带封面`, tCovs.length === nTopics && tCovs.every((s) => s.includes('/covers/T_')),
