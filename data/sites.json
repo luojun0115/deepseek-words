@@ -1,5 +1,5 @@
 {
-  "_note": "站外导航页（/sites）的数据源。60 站上墙 + 5 站待选 + 3 个自有空位。 改名单改这里，页面与自检都从这份数据读，不写死在组件里。待选站（pending）数据保 留但页面不渲染（DECISIONS §A7）；其中 Papers with Code 已于 2025-07-24 关停，条目暂留备查（§A12）。分组顺序 = 墙上的行序（每组一行，组牌在左列）。dev 组（开发者社区）与 media 组（媒体与图书馆）内按色相交错排布，相邻两块色相都 ≥ 50°。",
+  "_note": "站外导航页（/sites）的数据源。61 站上墙 + 5 站待选 + 3 个自有空位。 改名单改这里，页面与自检都从这份数据读，不写死在组件里。待选站（pending）数据保 留但页面不渲染（DECISIONS §A7）；其中 Papers with Code 已于 2025-07-24 关停，条目暂留备查（§A12）。分组顺序 = 墙上的行序（每组一行，组牌在左列）。dev、media、tools 三组内按色相交错排布：dev 最小 108°、media 138.8° 均过 50° 门槛；tools 因用户指定「小林 coding 与极客时间文档挨着」，该相邻对只能到 39.8°，是本组的环距上限。",
   "groups": [
     { "id": "papers", "name": "论文源", "en": "PAPERS", "kind": "sites" },
     { "id": "llm", "name": "大模型", "en": "LLM", "kind": "sites" },
@@ -41,8 +41,9 @@
     { "slug": "codetop", "name": "CodeTop", "short": "CodeTop", "url": "https://codetop.cc", "brand": "#2fa36b", "group": "algo", "logo": "/logos/codetop.png" },
 
     { "slug": "xiaolincoding", "name": "小林 coding", "short": "小林coding", "url": "https://www.xiaolincoding.com", "brand": "#2f6bd8", "group": "tools", "logo": "/logos/xiaolincoding.png" },
-    { "slug": "testerhome", "name": "测试之家 TesterHome", "short": "测试之家", "url": "https://testerhome.com", "brand": "#00a3a3", "group": "tools", "logo": "/logos/testerhome.png" },
+    { "slug": "geektimedocs", "name": "极客时间文档", "short": "极客文档", "url": "https://geektime-docs.netlify.app/ai-%E5%A4%A7%E6%95%B0%E6%8D%AE/", "brand": "#04afac", "group": "tools", "logo": "/logos/geektime-docs.png" },
     { "slug": "selenium", "name": "Selenium 官网", "short": "Selenium", "url": "https://www.selenium.dev", "brand": "#43b02a", "group": "tools", "logo": "/logos/selenium.png" },
+    { "slug": "testerhome", "name": "测试之家 TesterHome", "short": "测试之家", "url": "https://testerhome.com", "brand": "#00a3a3", "group": "tools", "logo": "/logos/testerhome.png" },
     { "slug": "playwright", "name": "Playwright 官网", "short": "Playwright", "url": "https://playwright.dev", "brand": "#6b4fbb", "group": "tools", "logo": "/logos/playwright.png" },
     { "slug": "redis", "name": "Redis 官网", "short": "Redis", "url": "https://redis.io", "brand": "#d82c20", "group": "tools", "logo": "/logos/redis.png" },
 
@@ -61,12 +62,12 @@
     { "slug": "hn", "name": "Hacker News", "short": "HN", "url": "https://news.ycombinator.com", "brand": "#ff6600", "group": "community", "logo": "/logos/hn.png" },
 
     { "slug": "cnblogs", "name": "博客园", "short": "博客园", "url": "https://www.cnblogs.com", "brand": "#1878c0", "group": "dev", "logo": "/logos/cnblogs.png" },
+    { "slug": "liaoxuefeng", "name": "廖学峰官方网站", "short": "廖学峰", "url": "https://www.liaoxuefeng.com", "brand": "#dbbb00", "group": "dev", "logo": "/logos/liaoxuefeng.png" },
+    { "slug": "tencentdev", "name": "腾讯云开发者社区", "short": "腾讯云社区", "url": "https://cloud.tencent.com/developer", "brand": "#00b6cf", "group": "dev", "logo": "/logos/tencentdev.png" },
+    { "slug": "haoel", "name": "酷壳 CoolShell · 左耳朵耗子", "short": "左耳朵耗子", "url": "https://coolshell.cn/", "brand": "#e0c13d", "group": "dev", "logo": "/logos/coolshell.png" },
+    { "slug": "iconfont", "name": "阿里图标库 Iconfont", "short": "Iconfont", "url": "https://www.iconfont.cn", "brand": "#00f9e4", "group": "dev", "logo": "/logos/iconfont.png" },
     { "slug": "aliyundev", "name": "阿里云开发者社区", "short": "阿里云社区", "url": "https://developer.aliyun.com", "brand": "#f06000", "group": "dev", "logo": "/logos/aliyundev.png" },
     { "slug": "oschina", "name": "开源中国 OSCHINA", "short": "开源中国", "url": "https://www.oschina.net", "brand": "#30a848", "group": "dev", "logo": "/logos/oschina.png" },
-    { "slug": "tencentdev", "name": "腾讯云开发者社区", "short": "腾讯云社区", "url": "https://cloud.tencent.com/developer", "brand": "#00b6cf", "group": "dev", "logo": "/logos/tencentdev.png" },
-    { "slug": "liaoxuefeng", "name": "廖学峰官方网站", "short": "廖学峰", "url": "https://www.liaoxuefeng.com", "brand": "#dbbb00", "group": "dev", "logo": "/logos/liaoxuefeng.png" },
-    { "slug": "haoel", "name": "左耳朵耗子 · CSDN 专栏", "short": "左耳朵耗子", "url": "https://blog.csdn.net/haoel", "brand": "#7b3f9e", "group": "dev", "logo": "/logos/haoel.png" },
-    { "slug": "iconfont", "name": "阿里图标库 Iconfont", "short": "Iconfont", "url": "https://www.iconfont.cn", "brand": "#00f9e4", "group": "dev", "logo": "/logos/iconfont.png" },
 
     { "slug": "cnr", "name": "央广网", "short": "央广网", "url": "https://www.cnr.cn", "brand": "#c8000a", "group": "media", "logo": "/logos/cnr.png" },
     { "slug": "infoq", "name": "InfoQ", "short": "InfoQ", "url": "https://www.infoq.cn", "brand": "#3f7ae0", "group": "media", "logo": "/logos/infoq.png" },
