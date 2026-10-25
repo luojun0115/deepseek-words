@@ -26,7 +26,7 @@
     { "slug": "scholar", "name": "Google Scholar", "short": "Scholar", "url": "https://scholar.google.com", "brand": "#4285f4", "group": "papers", "logo": "/logos/scholar.png" },
     { "slug": "modelscope", "name": "ModelScope 论文", "short": "魔搭论文", "url": "https://www.modelscope.cn/papers?page=1&type=hot", "dom": "modelscope.cn/papers", "brand": "#8B6FFF", "group": "papers", "logo": "/logos/modelscope.png" },
 
-    { "slug": "claudecode", "name": "Claude Code", "short": "Claude Code", "url": "https://claude.com/product/claude-code", "brand": "#d97757", "group": "llm", "logo": "/logos/claudecode.png" },
+    { "slug": "claudecode", "name": "Claude Code", "short": "Claude Code", "url": "https://code.claude.com/docs/en/overview", "brand": "#d97757", "group": "llm", "logo": "/logos/claudecode.png" },
     { "slug": "codex", "name": "OpenAI Codex", "short": "Codex", "url": "https://openai.com/codex/", "brand": "#111111", "group": "llm", "logo": "/logos/codex.png" },
     { "slug": "qwen", "name": "Qwen 千问", "short": "千问", "url": "https://chat.qwen.ai", "brand": "#615ced", "group": "llm", "logo": "/logos/qwen.png" },
     { "slug": "deepseek", "name": "DeepSeek", "short": "DeepSeek", "url": "https://www.deepseek.com", "brand": "#4d6bfe", "group": "llm", "logo": "/logos/deepseek.png" },

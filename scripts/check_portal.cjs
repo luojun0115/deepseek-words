@@ -365,7 +365,7 @@ const ok = (name, cond, extra = '') => {
 
   // 7d) /notes 学习笔记索引（2026-10-09 新增栏目）：卡片、按钮、未写标记、空白页轻提示
   //     2026-10-25：学习笔记拆成三个子栏——全部笔记 /notes/ · 专题案例 /notes/cases/ · 每日一文 /notes/daily/。
-  //     顶栏「学习笔记」是 VitePress 的下拉（VPNavBarMenuGroup），页内还有一条 .dr-subtabs 子栏条。
+  //     2026-10-26：顶栏「学习笔记」从下拉改回普通链接（指向 /notes/），子栏入口只在页内的 .dr-subtabs 条。
   //     原先挂在 /notes 末尾的「专题与索引」组整组搬到专题案例页。
   //     ⚠ 路径一律用显式 .html：本地 preview 会把 /notes/ 优先命中仓根的旧跳转桩 notes.md（notes.html），
   //       线上 GitHub Pages 是命中 notes/index.html（已核对线上）——两者不一致会造成 hydration 报警。
@@ -384,21 +384,19 @@ const ok = (name, cond, extra = '') => {
   ok('未写的篇目带「未写」小标（与空白文件数对平）', nbCount === PP.length - writtenNotes(PP), `标=${nbCount} 已写=${writtenNotes(PP)}`)
   await page.screenshot({ path: SHOT + '/28_notes索引.png' })
 
-  // 7d-1) 顶栏「学习笔记」下拉：父项 + 三个子项（全部笔记 / 专题案例 / 每日一文）
-  const grp = page.locator('.VPNavBarMenuGroup')
-  ok('顶栏「学习笔记」是下拉（不是普通链接）', (await grp.count()) === 1, '实得 ' + (await grp.count()) + ' 个')
-  const grpBtn = (await grp.count()) ? (await grp.first().innerText()).replace(/\s+/g, ' ').trim() : ''
-  ok('下拉父项写着「学习笔记」', grpBtn.includes('学习笔记'), grpBtn)
-  // 下拉面板默认是 visibility:hidden（hover 才出现），innerText 取不到 → 用 textContent
-  const subTxt = (await grp.count())
-    ? await grp.first().locator('.VPMenuLink .link').allTextContents() : []
-  ok('下拉三个子项＝全部笔记 / 专题案例 / 每日一文',
-    subTxt.join('/') === '全部笔记/专题案例/每日一文', subTxt.join('/'))
-  const subHrefs = (await grp.count())
-    ? await grp.first().locator('.VPMenuLink .link').evaluateAll((els) => els.map((e) => e.getAttribute('href'))) : []
-  ok('下拉子项指向站内三个目录页（带 base）',
-    subHrefs.join(',') === [BPATH + 'notes/', BPATH + 'notes/cases/', BPATH + 'notes/daily/'].join(','),
-    subHrefs.join(','))
+  // 7d-1) 顶栏「学习笔记」是普通链接（2026-10-26 用户定案去掉下拉）
+  //   用户的理由：「默认应该就是全部笔记，不要让用户非得去下拉里选」——
+  //   下拉父项只能当按钮（VitePress 的 link/items 二选一约束），点了只展开不跳转，
+  //   想看全部笔记得点两下。现在直接链接 /notes/，子栏入口只留页内那一条。
+  const notesNav = page.locator('.VPNavBarMenu .VPNavBarMenuLink', { hasText: '学习笔记' })
+  ok('顶栏「学习笔记」是普通链接（不再有下拉）', (await notesNav.count()) === 1,
+    '实得 ' + (await notesNav.count()) + ' 个')
+  const notesNavHref = (await notesNav.count()) ? await notesNav.first().getAttribute('href') : ''
+  ok('顶栏「学习笔记」直接指向 /notes/（全部笔记，带 base）',
+    notesNavHref === BPATH + 'notes/', notesNavHref || '未找到')
+  ok('顶栏不再有下拉菜单组（VPNavBarMenuGroup）',
+    (await page.locator('.VPNavBarMenuGroup').count()) === 0,
+    '实得 ' + (await page.locator('.VPNavBarMenuGroup').count()) + ' 个')
 
   // 7d-2) 页内子栏条：三个页面各有一条，当前项高亮
   for (const [label, p] of [

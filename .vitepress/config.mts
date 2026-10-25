@@ -63,18 +63,12 @@ export default defineConfig({
       { text: '词汇朗读', link: '/listen/' },
       // 2026-10-09 用户要求：每篇一份笔记，正文是仓内 notes/<编号>_<短名>.md（空白也能点进去）
       // 2026-10-25 用户要求：学习笔记下挂两个新栏——「专题案例」「每日一文」。
-      //   VitePress 顶栏下拉的硬约束：nav 项只要带了 link 就只渲染成链接，items（子项）会被忽略
-      //   （见 VPNavBarMenu.vue：'link' in item 优先于 VPNavBarMenuGroup）。
-      //   所以父项「学习笔记」只能当按钮用，直接链接那一项放进 items 里（第一项「全部笔记」）。
-      //   三个页面的 URL 全部走目录形式（cleanUrls 已关，靠 dir/index.html）。
-      {
-        text: '学习笔记',
-        items: [
-          { text: '全部笔记', link: '/notes/' },
-          { text: '专题案例', link: '/notes/cases/' },
-          { text: '每日一文', link: '/notes/daily/' },
-        ],
-      },
+      // 2026-10-26 用户定案：**去掉下拉**，顶栏「学习笔记」就是个普通链接 → /notes/（全部笔记）。
+      //   理由：「默认应该就是全部笔记，不要让用户非得去下拉里选」。
+      //   之前用 items 是因为 VitePress 的硬约束——nav 项带了 link 会忽略 items（'link' in item
+      //   优先于 VPNavBarMenuGroup），所以父项只能当按钮、点了只展开面板不跳转，想看全部笔记得点两下。
+      //   子栏入口现在只留页内那一条（components/NoteTabs.vue），顶栏不再重复。
+      { text: '学习笔记', link: '/notes/' },
       // 2026-10-23 用户要求：站外导航栏目（站内页 /sites，主体是「方案 C · 积木墙」，
       // 清单走 sites/sites.json）
       { text: '站外导航', link: '/sites/' },

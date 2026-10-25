@@ -2170,7 +2170,12 @@
    且本地搜索的 ⌘K 只是按钮上写死的装饰字、并没有绑键盘，藏掉不丢功能。 */
 .VPNavBarSearch { display: none; }
 
-/* ============ 顶栏「学习笔记」下拉（2026-10-25 新增两个子栏）============
+/* ============ 顶栏「学习笔记」下拉样式（2026-10-25 加，2026-10-26 已停用）============
+   ⚠ 当前顶栏没有下拉：用户 2026-10-26 定案「默认应该就是全部笔记，不要让用户非得去下拉里选」，
+   「学习笔记」已改回普通链接（→ /notes/），子栏入口只留页内的 .dr-subtabs 那一条。
+   下面这一整段现在不命中任何元素，留作以后恢复下拉时的现成样式（要恢复只需把 config.mts 的
+   nav 项改回 items，并把 check_portal.cjs 的 7d-1 断言改回去）。
+
    VitePress 的下拉走 VPNavBarMenuGroup：它和 VPFlyout 是**同一个元素**（class="VPFlyout VPNavBarMenuGroup"），
    父项是个 <button> 而不是 .VPNavBarMenuLink，所以上面那套胶囊样式它吃不到，得单独写一份
    （同样的 !important / 覆盖理由）。面板是 .menu → .VPMenu → .VPMenuLink > a.link，
