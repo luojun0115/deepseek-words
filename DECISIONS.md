@@ -1574,8 +1574,9 @@ alpha = 亮度(原像素)        # 白 X → 255，黑底 → 0
 | 专题案例 | `/notes/cases/` | 10 张专题卡（缩放定律总览 + 9 篇精读）| `notes/` 顶层不带 NN_ 前缀的 md + `notes/zhuanti-search/` 总览与子目录 |
 | 每日一文 | `/notes/daily/` | 每日短文列表（日期签 + 标题 + 摘要 + 标签）| `notes/daily/*.md`，一篇一个文件 |
 
-- **「专题与索引」组整组从 `/notes` 末尾搬到 `/notes/cases/`**（`PaperIndex.vue` 新增 `mode="topic"`：
-  只出专题卡、不出论文卡、排序下拉整块隐掉）。`/notes` 现在只留 32 篇论文卡。
+- **「专题与索引」组整组从 `/notes` 末尾搬到 `/notes/cases/`**。
+  ⚠ 2026-10-25 晚：专题页的版式又重做了一次，专题卡逻辑已从 `PaperIndex` 的 `mode="topic"`
+  搬进独立的 `components/TopicBoard.vue`（见 §A39）。`/notes` 现在只留 32 篇论文卡。
 - **每日一文**不用海报封面：短文不是卡。列表一行一条，卡源 `notes/daily/*.md`，
   frontmatter 写 `date / title / summary / tags`；**往目录里丢一个 md 就自动上列表**，不用改代码。
   `index.md` 与没写 `date` 的文件会被过滤掉（前者是 tab 页本身，后者是草稿）。
@@ -1595,6 +1596,61 @@ alpha = 亮度(原像素)        # 白 X → 255，黑底 → 0
 - ⚠ 本地 preview 伺服器会把 `/notes/` 优先命中**仓根的旧跳转桩** `notes.md`（→ notes.html），
   线上 GitHub Pages 是命中 `notes/index.html`（已核对线上）。两者不一致会造成 hydration 报警，
   自检里因此一律用显式 `.html` 路径（`/notes/index.html`）。
+
+### A39. 封面视觉系统重做：Claude Code 式暖纸底 + 8 色多彩盘（2026-10-25 用户要求）
+
+用户两条诉求一起落地：「专题案例那个设计太差了，你给我搞一下」+「卡片颜色都是黑的，
+给网站带来一股邪气……最少要用 Claude Code 那种风格，加一些多彩的元素，不要纯黑」。
+
+**① 封面配色整体系换掉（42 张 PNG 全部重出）**
+
+老体系的毛病：A 风格是纯黑底 `#0e0e0d` + 柠檬绿，B 风格里有深绿/藏青/深灰——
+10 张专题卡里 6 张落在暗色区，整面卡墙是黑的。
+
+新体系（`scripts/covers-style.mjs`，全站唯一真源）：
+
+| 规矩 | 内容 |
+|---|---|
+| 底色 | 暖纸白系 `#FBF7F0` / `#FFFDF9` / 主色 12% 淡彩，**没有一块纯黑** |
+| 彩色 | 只出现在图形元素（竖条/引号/边框/角标/方块阵），正文永远是深墨 `#241E17` |
+| 色盘 | 8 色轮换（陶土橙/青瓷/紫棠/姜黄/砖红/橄榄/玫红/靛蓝），每个色带 `main`（装饰）/ `deep`（小字）/ `soft`（淡底）三档 |
+| 版式 | L1 暖纸色边 / L2 淡彩色框 / L3 亮纸色签，拉丁方错位轮换，同排相邻必不同色 |
+
+- `deep` 变体专供 mono 小标与编号块（白字对比 ≥5.9:1），`main` 不做文字色。
+- **Claude Code 的调性来源**：暖米底 + 陶土橙品牌色 `#D97757` + 深棕墨字 + 克制的细边框 + 等宽标签；
+  在此之上加 7 个色让卡墙不单调。
+- 生成脚本拆三个文件：`covers-style.mjs`（色盘 + 三版式 HTML）· `covers-render.mjs`（起浏览器 + 比字节写盘）
+  · `covers-lines.mjs`（32 句导读金句，从 gitignore 的设计稿目录挪进 `scripts/`）。
+  两个入口：`gen-paper-covers.mjs`（32 篇论文）· `gen-topic-covers.mjs`（10 张专题，兼着 `npm run covers`）。
+  论文封面直接落到 `public/covers/`（旧流程是生成到设计稿目录再手工拷，两份容易走样）。
+- 官方入口卡 GitHub 卡的深藏青 `#1b2a4a` → 青瓷 `#0E7C86`（白字 4.88:1）。
+
+**② 专题案例页版式重做（`components/TopicBoard.vue`）**
+
+老版式是 `PaperIndex` 的 `mode="topic"`：10 张一模一样的「16:10 海报 + 标题 + 按钮」网格卡——
+看上去只是一排贴图墙，没有「专题 vs 篇目」的层次。
+
+新版式：**一个专题 = 一个板块**，板块头（彩色眉标 + 专题名 + 篇数）→ 头牌（左封面 + 右说明）
+→ 篇目目录（一行一篇：彩色序号块 + 标题 + 英文原题 + 金句 + 年份 + 虚线引导线 + 箭头）。
+
+- 专题卡逻辑从 `PaperIndex.vue` 整块搬进 `TopicBoard.vue`，`PaperIndex` 只管论文卡（`mode="topic"` 已删）。
+- 分组规则：按路径首段归组（`zhuanti-search/*` 归一个专题，顶层 md 自成一块），
+  组内 `order` 最小且无子路径的那张 = 头牌，其余 = 篇目行。**以后加新专题自动多一块，版式不用改**。
+- 金句里的「 / 」是封面断句标记，文本里也按行拆开（`.dr-tg-hero-quote span` 块级）。
+
+⚠ 样式坑：
+
+- VitePress 给正文里的 `h2` 加了 `border-top + padding-top`（`.vp-doc h2`，0,1,1）→ 板块头要多一条线，
+  用 `.vp-doc .dr-tg-name` 压掉。
+- 同理 `.vp-doc ol` 自带 `list-style` → 目录行的序号得用 `.vp-doc .dr-tg-list` 压掉，
+  否则彩色序号块旁边多出 ol 的「1. 2. 3.」。
+- 引号别挂在 `<p>` 上（金句已拆成 block 级 span，引号会被甩成单独两行），挂首/末行更稳。
+
+⚠ 自检新增门禁（`check_portal.cjs`，110 → 116 项）：
+
+- 封面色盘真源：底色是暖纸白、色盘 8 色且每色三档、色盘里没有黑色系。
+- **实渲染取样**：canvas 取封面图 (2,2) 像素，三通道和 > 180（最暗主色靛蓝 201，纯黑 0）。
+- 专题页：头牌 + 篇目行总数 == 专题卡总数、每个专题一块、篇目行序号块不是纯黑。
 
 ---
 
@@ -2052,6 +2108,10 @@ scripts/
   gen-notes.mjs              # papers.json → notes/ 补缺空白笔记（只补缺，带 main guard，§C9）
   refresh-papers.mjs         # content/ 文稿 → notes/papers.md（--check 只比对不写）
   gen-topic-covers.mjs       # 专题笔记封面：notes/ 里不带 NN_ 的 md → public/covers/T_<名>.png（npm run covers）
+  gen-paper-covers.mjs       # 32 篇论文封面：data/papers.json + 导读金句 → public/covers/NN_<短名>.png（npm run paper-covers）
+  covers-style.mjs           # 封面视觉系统真源：Claude Code 式暖纸底 + 8 色多彩盘 + L1/L2/L3 三版式（§A39）
+  covers-render.mjs          # 封面渲染公共动作：起浏览器（默认 → 系统 Chrome 兜底）+ 比字节写盘
+  covers-lines.mjs           # 32 句导读金句（论文封面的字）
   add-numbers.py             # papers.json → 回写仓内文稿的「编号」列与图例
   gen-theme-css.mjs          # theme-defs.mjs → theme.generated.css（兼校 12 变量齐全 + 每套对比度 ≥ 4.5:1）
   verify_content.mjs         # 14 项内容守卫（零依赖，CI 也跑）
@@ -2068,6 +2128,8 @@ scripts/
 | 论文总览页正文/表格/图例 | `content/DeepSeek_论文列表.md`（不是 `notes/papers.md`！）| `npm run papers` → build |
 | 学习笔记正文 | `notes/<编号>_<短名>.md` | `npm run build`（无需重生数据，§A3）|
 | 新增专题文章（带封面）| `notes/<名>.md` + frontmatter 的 `cover`（可选 `order` / `coverKicker` / `coverYear`）| `npm run covers` → build（§A25）|
+| 改封面配色 / 版式 | `scripts/covers-style.mjs`（色盘 + 三版式）| `npm run paper-covers && npm run covers` → build（§A39）|
+| 专题案例页版式 | `components/TopicBoard.vue` + `theme/custom.css` 的 `.dr-tg-*` | build（§A39）|
 | 笔记页页头 | `theme/NoteHeader.vue` + `custom.css` 的 `.dr-note-*` | build |
 | 首页报头 + 艺术卡轮播（§B6）| `components/HomeIntro.vue` + `theme/custom.css` 的 `.dr-hero*` | build |
 | 顶栏「找论文」搜索弹窗（§B6）| `components/PaperSearch.vue` + `theme/custom.css` 的 `.search-modal` / `.sm-*` | build |

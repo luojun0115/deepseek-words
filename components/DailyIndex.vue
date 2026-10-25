@@ -5,6 +5,7 @@
 // 加新文只要往 notes/daily/ 里丢一个 md，不用改任何代码。
 import { computed } from 'vue'
 import { withBase } from 'vitepress'
+import { PALETTE } from '../scripts/covers-style.mjs'
 
 const SRC = import.meta.glob('../notes/daily/*.md', { query: '?raw', eager: true, import: 'default' })
 
@@ -31,9 +32,11 @@ const items = computed(() => Object.entries(SRC)
       href: withBase('/notes/daily/' + file + '.html'),
     }
   })
-  // index.md 是这个目录的 tab 页本身，不是文章；没写日期的也不是文章（当草稿放着）
+    // index.md 是这个目录的 tab 页本身，不是文章；没写日期的也不是文章（当草稿放着）
   .filter((it) => it.file !== 'index' && it.date)
-  .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0)))
+  .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0))
+  // 每篇一个颜色（2026-10-25 用户要求：卡片不要都是黑的，要多彩）——色盘与封面同一套
+  .map((it, i) => ({ ...it, color: PALETTE[i % PALETTE.length] })))
 </script>
 
 <template>
@@ -43,7 +46,10 @@ const items = computed(() => Object.entries(SRC)
     </div>
     <a v-for="it in items" :key="it.file" class="dr-daily-row" :href="it.href">
       <span class="dr-daily-date">
-        <b>{{ it.day }}</b>
+        <span class="dr-daily-head">
+          <span class="dr-daily-mark" :style="{ background: it.color.main }"></span>
+          <b>{{ it.day }}</b>
+        </span>
         <i>{{ it.year }}.{{ it.mon }}</i>
       </span>
       <span class="dr-daily-txt">

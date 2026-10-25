@@ -51,8 +51,33 @@ const ok = (name, cond, extra = '') => {
   const covs = await page.$$eval('.dr-lib .dr-card.is-paper .dr-card-media', els => els.map(e => e.style.backgroundImage || ''))
   ok('论文卡 32 张全带金句封面', covs.length === NP && covs.every(s => s.includes('/covers/')), '实得 ' + covs.length + ' 张')
   const covURL = ((covs[0] || '').match(/url\("?([^")]+)"?\)/) || [])[1]
-  const covCode = covURL ? await page.evaluate(u => fetch(u).then(r => r.status).catch(() => 0), covURL) : 0
+    const covCode = covURL ? await page.evaluate(u => fetch(u).then(r => r.status).catch(() => 0), covURL) : 0
   ok('封面图可加载（首张 HTTP 200）', covCode === 200, (covURL || '?') + ' → ' + covCode)
+  // 1b-3) 封面配色门禁（2026-10-25 用户要求：卡片不要纯黑，要 Claude Code 式暖调多彩）
+  //   两道关：① 色盘真源里没有黑色系、底色是暖纸白；② 实际渲染出来的封面左上角不是黑色
+  const CS = require('../scripts/covers-style.mjs')
+  ok('封面底色是暖纸白（不是纯黑）', /^#f/i.test(CS.PAPER) && CS.PAPER !== '#000000', CS.PAPER)
+  ok('封面色盘 8 色，每色有 main/deep/soft 三档',
+    CS.PALETTE.length === 8 && CS.PALETTE.every((c) => c.main && c.deep && c.soft))
+  ok('封面色盘里没有黑色系', !CS.PALETTE.some((c) => /^#0{3,6}$/i.test(c.main)))
+  const covURLs = covs.map((s) => (s.match(/url\("?([^")]+)"?\)/) || [])[1]).filter(Boolean)
+  const topPixels = await page.evaluate(async (urls) => {
+    const out = []
+    for (const u of urls.slice(0, 8)) {
+      const img = new Image(); img.src = u
+      await img.decode()
+      const c = document.createElement('canvas'); c.width = img.width; c.height = img.height
+      const ctx = c.getContext('2d'); ctx.drawImage(img, 0, 0)
+      const d = ctx.getImageData(2, 2, 1, 1).data
+      out.push([d[0], d[1], d[2]])
+    }
+    return out
+  }, covURLs)
+  //   阈值 180：色盘里最暗的 main 色是靛蓝 #3A6BB0（三通道和 201），soft / 纸底都在 600 以上，
+  //   而纯黑是 0 —— 180 能把「暗色」和「黑」分开，不会误伤深色主色
+  ok('论文卡封面左上角不是黑色（实渲染取样）',
+    topPixels.length > 0 && topPixels.every((p) => p[0] + p[1] + p[2] > 180),
+    JSON.stringify(topPixels.slice(0, 3)))
 
   // 1c) 首页报头（components/HomeIntro.vue，2026-10-23 改版：原 .dr-intro 学法卡换成报纸头版）
   //     两枚入口分指「背词」与「学习笔记」（2026-10-24 用户取消「论文总览」栏后，
@@ -351,7 +376,7 @@ const ok = (name, cond, extra = '') => {
     (await page.locator(PAPER_CARD).count()) === NP && (await page.locator(PAPER_CARD + ' .dr-go.n').count()) === NP,
     `card=${await page.locator(PAPER_CARD).count()} n=${await page.locator(PAPER_CARD + ' .dr-go.n').count()}`)
   ok('/notes 页不再有专题卡（整组搬到专题案例页）',
-    (await page.locator('.dr-lib .dr-card.is-topic').count()) === 0)
+    (await page.locator('.dr-tg').count()) === 0)
   const nbHref = await page.locator(PAPER_CARD).first().locator('.dr-go.n').getAttribute('href')
   ok('笔记按钮指向 /notes/<编号>_<短名>.html（带 base）',
     nbHref === BPATH + 'notes/' + PP[0].dir + '.html', nbHref)
@@ -389,9 +414,10 @@ const ok = (name, cond, extra = '') => {
       (await on.count()) === 1 && (await on.first().innerText()).trim() === label)
   }
 
-  // 7d-3) 专题案例页：原先挂在 /notes 末尾的「专题与索引」组整组搬过来了
+    // 7d-3) 专题案例页（2026-10-25 重做版式：专题板块 = 头牌 + 篇目目录行）
   //     卡源口径不变：notes/ 顶层不带 NN_ 前缀的 md + zhuanti-search 总览与各子目录 index.md，
   //     封面是 T_<coverFile>.png
+  //     版式换成 components/TopicBoard.vue：.dr-tg（专题板块）→ .dr-tg-hero（头牌）+ .dr-tg-row（篇目行）
   const notesDir = require('path').resolve(__dirname, '../notes')
   const zDir = require('path').resolve(notesDir, 'zhuanti-search')
   const fsx = require('fs')
@@ -402,27 +428,37 @@ const ok = (name, cond, extra = '') => {
     + (fsx.existsSync(require('path').join(zDir, 'index.md')) ? 1 : 0)
   const nTopics = topics.length + zTopics
   await page.goto(BASE + '/notes/cases/index.html', { waitUntil: 'networkidle' })
-  const topicCards = page.locator('.dr-lib .dr-card.is-topic')
-  ok(`专题案例页 ${nTopics} 张专题卡（顶层专题 md + zhuanti-search 总览与子目录）`,
-    (await topicCards.count()) === nTopics, '实得 ' + (await topicCards.count()) + ' 张')
+  const tgBlocks = page.locator('.dr-tg')
+  const tgHero = page.locator('.dr-tg-hero')
+  const tgRow = page.locator('.dr-tg-row')
+  ok(`专题案例页 ${nTopics} 张专题卡（头牌 + 篇目行）`,
+    (await tgHero.count()) + (await tgRow.count()) === nTopics,
+    '头牌 ' + (await tgHero.count()) + ' + 篇目行 ' + (await tgRow.count()) + '，应得 ' + nTopics)
+  ok('专题案例页每个专题一块（板块数 ≤ 专题数）',
+    (await tgBlocks.count()) > 0 && (await tgBlocks.count()) <= nTopics, '实得 ' + (await tgBlocks.count()) + ' 块')
   ok('专题案例页没有论文卡（那一栏只放专题）', (await page.locator(PAPER_CARD).count()) === 0)
-  ok('专题案例页没有排序下拉（没有编号/词数可排）', (await page.locator('.dr-lib .dr-sort').count()) === 0)
+  ok('专题案例页没有排序下拉（没有编号/词数可排）', (await page.locator('.dr-sort').count()) === 0)
   if (nTopics) {
-    const leadHref = await topicCards.first().getAttribute('href')
-    ok('专题卡首卡指向 /notes/ 下的页（带 base，不逃出子路径）',
+    const leadHref = await tgHero.first().getAttribute('href')
+    ok('专题头牌指向 /notes/ 下的页（带 base，不逃出子路径）',
       leadHref && leadHref.startsWith(BPATH + 'notes/'), leadHref || '未找到')
-    const tHref = await topicCards.first().getAttribute('href')
-    ok('专题卡指向 /notes/ 下的页（带 base；顶层 md 是 .html，专题子目录是目录地址）',
+    const tHref = await tgRow.first().getAttribute('href')
+    ok('专题篇目行指向 /notes/ 下的页（带 base；顶层 md 是 .html，专题子目录是目录地址）',
       /\/notes\/.+(\.html|\/)$/.test(tHref || '') && (tHref || '').startsWith(BPATH), tHref || '未找到')
-    // 组内每一张的封面都要能加载（前面 32 篇论文卡另有一条「全带封面」的断言）
-    const tCovs = await topicCards.locator('.dr-card-media').evaluateAll((els) => els.map((e) => e.style.backgroundImage))
-    ok(`专题卡 ${nTopics} 张全带封面`, tCovs.length === nTopics && tCovs.every((s) => s.includes('/covers/T_')),
+    // 头牌封面要能加载（篇目行不挂封面图）
+    const tCovs = await tgHero.locator('.dr-tg-hero-media').evaluateAll((els) => els.map((e) => e.style.backgroundImage))
+    ok(`专题头牌 ${tCovs.length} 张全带封面`, tCovs.length > 0 && tCovs.every((s) => s.includes('/covers/T_')),
       '实得 ' + tCovs.length + ' 张')
     const tCode = await page.evaluate((u) => fetch(u).then((r) => r.status).catch(() => 0),
       (tCovs[0].match(/url\("?([^")]+)"?\)/) || [])[1])
-    ok('专题卡封面图可加载（HTTP 200）', tCode === 200, tCode + '')
+    ok('专题头牌封面图可加载（HTTP 200）', tCode === 200, tCode + '')
+    // 篇目行的彩色序号块：颜色逐行变化（多彩）
+    const noColors = await tgRow.locator('.dr-tg-row-no').evaluateAll((els) => els.map((e) => e.style.background))
+    ok('专题篇目行有色号块（多彩，不是纯黑）',
+      noColors.length > 0 && noColors.every((c) => c && !/rgb\(0, 0, 0\)/.test(c)),
+      noColors.length + ' 块，首个 ' + (noColors[0] || '无'))
   }
-  await page.screenshot({ path: SHOT + '/29_专题案例页.png' })
+  await page.screenshot({ path: SHOT + '/29_专题案例页.png', fullPage: true })
 
   // 7d-4) 每日一文：一条 md 一篇，列表条数与仓内文件数对平，且按日期倒序
   const dailyDir = require('path').resolve(notesDir, 'daily')
