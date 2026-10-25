@@ -108,7 +108,7 @@ const ok = (name, cond, extra = '') => {
   const gi = navTxt.indexOf('模型架构')
   const si = navTxt.indexOf('站外导航')
   ok('顶栏「站外导航」在倒数第二栏、「模型架构」在最后一栏（站内栏目都在它们左边）',
-     si > 0 && gi === si + 1 && navTxt.indexOf('学习笔记') < si && gi === navTxt.length - 1,
+     si > 0 && gi === si + 1 && gi === navTxt.length - 1,
      navTxt.join('/'))
   const ext = page.locator('.VPNavBarMenuLink', { hasText: '模型架构' }).first()
   const extHref = await ext.getAttribute('href')
@@ -339,18 +339,59 @@ const ok = (name, cond, extra = '') => {
   await page.screenshot({ path: SHOT + '/13_听力总集.png' })
 
   // 7d) /notes 学习笔记索引（2026-10-09 新增栏目）：卡片、按钮、未写标记、空白页轻提示
-  //     2026-10-24：页面里除了 32 张论文卡（.is-paper），末尾还有「专题与索引」组（.is-topic）——
-  //     论文总览 notes/papers.md 与各篇专题笔记都在这一组。论文卡口径用 .is-paper，
-  //     「一篇论文一张卡一枚笔记按钮」
-  await page.goto(BASE + '/notes/', { waitUntil: 'networkidle' })
+  //     2026-10-25：学习笔记拆成三个子栏——全部笔记 /notes/ · 专题案例 /notes/cases/ · 每日一文 /notes/daily/。
+  //     顶栏「学习笔记」是 VitePress 的下拉（VPNavBarMenuGroup），页内还有一条 .dr-subtabs 子栏条。
+  //     原先挂在 /notes 末尾的「专题与索引」组整组搬到专题案例页。
+  //     ⚠ 路径一律用显式 .html：本地 preview 会把 /notes/ 优先命中仓根的旧跳转桩 notes.md（notes.html），
+  //       线上 GitHub Pages 是命中 notes/index.html（已核对线上）——两者不一致会造成 hydration 报警。
+  await page.goto(BASE + '/notes/index.html', { waitUntil: 'networkidle' })
   const PP = require('../data/papers.json')
   const PAPER_CARD = '.dr-lib .dr-card.is-paper'
   ok(`/notes 页 ${NP} 卡 × 一枚「学习笔记」按钮`,
     (await page.locator(PAPER_CARD).count()) === NP && (await page.locator(PAPER_CARD + ' .dr-go.n').count()) === NP,
     `card=${await page.locator(PAPER_CARD).count()} n=${await page.locator(PAPER_CARD + ' .dr-go.n').count()}`)
-  // 专题与索引组：不带 NN_ 编号前缀的 md 全在这里，封面是 T_<coverFile>.png
-  // 2026-10-25 起专题卡源多了 zhuanti-search：index.md（专题总览）+ 各子目录 index.md（每篇精读），
-  // 卡面元数据写在自己 frontmatter——不再有 notes/ 顶层的壳页
+  ok('/notes 页不再有专题卡（整组搬到专题案例页）',
+    (await page.locator('.dr-lib .dr-card.is-topic').count()) === 0)
+  const nbHref = await page.locator(PAPER_CARD).first().locator('.dr-go.n').getAttribute('href')
+  ok('笔记按钮指向 /notes/<编号>_<短名>.html（带 base）',
+    nbHref === BPATH + 'notes/' + PP[0].dir + '.html', nbHref)
+  const nbCount = await page.locator('.dr-lib .dr-nb').count()
+  ok('未写的篇目带「未写」小标（与空白文件数对平）', nbCount === PP.length - writtenNotes(PP), `标=${nbCount} 已写=${writtenNotes(PP)}`)
+  await page.screenshot({ path: SHOT + '/28_notes索引.png' })
+
+  // 7d-1) 顶栏「学习笔记」下拉：父项 + 三个子项（全部笔记 / 专题案例 / 每日一文）
+  const grp = page.locator('.VPNavBarMenuGroup')
+  ok('顶栏「学习笔记」是下拉（不是普通链接）', (await grp.count()) === 1, '实得 ' + (await grp.count()) + ' 个')
+  const grpBtn = (await grp.count()) ? (await grp.first().innerText()).replace(/\s+/g, ' ').trim() : ''
+  ok('下拉父项写着「学习笔记」', grpBtn.includes('学习笔记'), grpBtn)
+  // 下拉面板默认是 visibility:hidden（hover 才出现），innerText 取不到 → 用 textContent
+  const subTxt = (await grp.count())
+    ? await grp.first().locator('.VPMenuLink .link').allTextContents() : []
+  ok('下拉三个子项＝全部笔记 / 专题案例 / 每日一文',
+    subTxt.join('/') === '全部笔记/专题案例/每日一文', subTxt.join('/'))
+  const subHrefs = (await grp.count())
+    ? await grp.first().locator('.VPMenuLink .link').evaluateAll((els) => els.map((e) => e.getAttribute('href'))) : []
+  ok('下拉子项指向站内三个目录页（带 base）',
+    subHrefs.join(',') === [BPATH + 'notes/', BPATH + 'notes/cases/', BPATH + 'notes/daily/'].join(','),
+    subHrefs.join(','))
+
+  // 7d-2) 页内子栏条：三个页面各有一条，当前项高亮
+  for (const [label, p] of [
+    ['全部笔记', '/notes/index.html'],
+    ['专题案例', '/notes/cases/index.html'],
+    ['每日一文', '/notes/daily/index.html'],
+  ]) {
+    await page.goto(BASE + p, { waitUntil: 'networkidle' })
+    const tabs = page.locator('.dr-subtabs .dr-subtab')
+    const on = page.locator('.dr-subtabs .dr-subtab.is-on')
+    ok(`${label} 页有子栏条（三项）`, (await tabs.count()) === 3, '实得 ' + (await tabs.count()))
+    ok(`${label} 页当前子栏＝${label}`,
+      (await on.count()) === 1 && (await on.first().innerText()).trim() === label)
+  }
+
+  // 7d-3) 专题案例页：原先挂在 /notes 末尾的「专题与索引」组整组搬过来了
+  //     卡源口径不变：notes/ 顶层不带 NN_ 前缀的 md + zhuanti-search 总览与各子目录 index.md，
+  //     封面是 T_<coverFile>.png
   const notesDir = require('path').resolve(__dirname, '../notes')
   const zDir = require('path').resolve(notesDir, 'zhuanti-search')
   const fsx = require('fs')
@@ -360,13 +401,15 @@ const ok = (name, cond, extra = '') => {
     .filter((d) => d.isDirectory() && fsx.existsSync(require('path').join(zDir, d.name, 'index.md'))).length
     + (fsx.existsSync(require('path').join(zDir, 'index.md')) ? 1 : 0)
   const nTopics = topics.length + zTopics
+  await page.goto(BASE + '/notes/cases/index.html', { waitUntil: 'networkidle' })
   const topicCards = page.locator('.dr-lib .dr-card.is-topic')
-  ok(`专题与索引组 ${nTopics} 张卡（顶层专题 md + zhuanti-search 总览与子目录）`,
+  ok(`专题案例页 ${nTopics} 张专题卡（顶层专题 md + zhuanti-search 总览与子目录）`,
     (await topicCards.count()) === nTopics, '实得 ' + (await topicCards.count()) + ' 张')
-  ok('专题组有组头（跟 32 篇论文卡分开）', (await page.locator('.dr-lib .dr-group-hd').count()) === 1)
+  ok('专题案例页没有论文卡（那一栏只放专题）', (await page.locator(PAPER_CARD).count()) === 0)
+  ok('专题案例页没有排序下拉（没有编号/词数可排）', (await page.locator('.dr-lib .dr-sort').count()) === 0)
   if (nTopics) {
     const leadHref = await topicCards.first().getAttribute('href')
-    ok('专题组首卡指向 /notes/ 下的页（带 base，不逃出子路径）',
+    ok('专题卡首卡指向 /notes/ 下的页（带 base，不逃出子路径）',
       leadHref && leadHref.startsWith(BPATH + 'notes/'), leadHref || '未找到')
     const tHref = await topicCards.first().getAttribute('href')
     ok('专题卡指向 /notes/ 下的页（带 base；顶层 md 是 .html，专题子目录是目录地址）',
@@ -379,13 +422,27 @@ const ok = (name, cond, extra = '') => {
       (tCovs[0].match(/url\("?([^")]+)"?\)/) || [])[1])
     ok('专题卡封面图可加载（HTTP 200）', tCode === 200, tCode + '')
   }
-  const nbHref = await page.locator(PAPER_CARD).first().locator('.dr-go.n').getAttribute('href')
-  ok('笔记按钮指向 /notes/<编号>_<短名>.html（带 base）',
-    nbHref === BPATH + 'notes/' + PP[0].dir + '.html', nbHref)
-  const nbCount = await page.locator('.dr-lib .dr-nb').count()
-  ok('未写的篇目带「未写」小标（与空白文件数对平）', nbCount === PP.length - writtenNotes(PP), `标=${nbCount} 已写=${writtenNotes(PP)}`)
-  await page.screenshot({ path: SHOT + '/28_notes索引.png' })
+  await page.screenshot({ path: SHOT + '/29_专题案例页.png' })
 
+  // 7d-4) 每日一文：一条 md 一篇，列表条数与仓内文件数对平，且按日期倒序
+  const dailyDir = require('path').resolve(notesDir, 'daily')
+  const dailyFiles = fsx.existsSync(dailyDir)
+    ? fsx.readdirSync(dailyDir).filter((f) => f.endsWith('.md') && f !== 'index.md') : []
+  await page.goto(BASE + '/notes/daily/index.html', { waitUntil: 'networkidle' })
+  const dailyRows = page.locator('.dr-daily .dr-daily-row')
+  ok(`每日一文 ${dailyFiles.length} 条（notes/daily/*.md 一篇一条）`,
+    (await dailyRows.count()) === dailyFiles.length, '实得 ' + (await dailyRows.count()) + ' 条')
+  const days = (await dailyRows.locator('.dr-daily-date b').allInnerTexts()).map(Number)
+  ok('每日一文按日期倒序（新的一天在上）',
+    days.every((d, i) => i === 0 || days[i - 1] >= d), days.join(','))
+  if (dailyFiles.length) {
+    const firstHref = await dailyRows.first().getAttribute('href')
+    ok('每日一文首条指向 /notes/daily/ 下的正文（带 base）',
+      firstHref && firstHref.startsWith(BPATH + 'notes/daily/'), firstHref || '未找到')
+  }
+  await page.screenshot({ path: SHOT + '/29b_每日一文页.png' })
+
+  await page.goto(BASE + '/notes/index.html', { waitUntil: 'networkidle' })
   await page.click('.dr-lib .dr-card:has([aria-label^="' + PP[0].num + ' ·"]) .dr-go.n')
   await page.waitForLoadState('networkidle')
   ok('点进笔记页 URL', page.url() === BASE + '/notes/' + PP[0].dir + '.html', page.url())
@@ -461,7 +518,8 @@ const ok = (name, cond, extra = '') => {
   // 2026-10-09 追加：静态笔记页（不在 /study/ 下的站内页）也拉进来扫同一张黑名单
   const BANNED = ['十一档', '全量重做', '全量口径', '双视图', 'TTS', '工作区',
     '本次补录', '漏收', 'sitemap', '剔除记录', '归属更正', '此前记录有误', '档位筛选']
-  const PAGES = ['/', '/vocab/', '/listen/', '/papers/index.html', '/papers/清单.html', '/papers/official.html', '/papers/resources.html', '/notes/', '/sites/',
+  const PAGES = ['/', '/vocab/', '/listen/', '/papers/index.html', '/papers/清单.html', '/papers/official.html', '/papers/resources.html',
+    '/notes/index.html', '/notes/cases/index.html', '/notes/daily/index.html', '/sites/',
     '/notes/' + PP[0].dir + '.html']
   for (const p of PAGES) {
     await page.goto(BASE + p, { waitUntil: 'networkidle' })
@@ -473,7 +531,7 @@ const ok = (name, cond, extra = '') => {
   // 8c) 笔记栏目专门：「怎么写笔记」这类仓库操作说明不属于站点（2026-10-09 用户要求）。
   //     不开全站的「仓库/npm run」黑名单：论文总览页里「视频/资料聚合仓库」是在介绍外部 GitHub 仓库，那是正当正文
   const AUTHORING = ['npm run', 'notes/', 'papers.json', 'frontmatter', '构建']
-  for (const p of ['/notes/', '/notes/' + PP[0].dir + '.html']) {
+  for (const p of ['/notes/index.html', '/notes/' + PP[0].dir + '.html']) {
     await page.goto(BASE + p, { waitUntil: 'networkidle' })
     const txt = await page.evaluate(() => document.body.innerText)
     const hit = AUTHORING.filter(w => txt.includes(w))
@@ -494,7 +552,14 @@ const ok = (name, cond, extra = '') => {
   }
 
   // 9) 控制台报错
-  ok('控制台 0 报错', errors.length === 0, errors.slice(0, 3).join(' | '))
+  //    「Hydration completed but contains mismatches.」是**本地 preview 特有的噪音**：
+  //    仓根为旧 .html 地址留了跳转桩（notes.md / vocab.md / listen.md / papers.md / sites.md），
+  //    preview 伺服器把目录地址（/vocab/）优先命中同名桩（vocab.html）——SSR 出的是桩的内容，
+  //    客户端路由又渲染真页面 → 必然 mismatch。
+  //    线上 GitHub Pages 命中的是 <dir>/index.html（已核对线上），没有这现象。
+  //    所以这里只把这一条过滤掉，其余报错照旧判失败。
+  const realErrs = errors.filter((e) => !/Hydration completed but contains mismatches/.test(e))
+  ok('控制台 0 报错（hydration mismatch 除外，见注）', realErrs.length === 0, realErrs.slice(0, 3).join(' | '))
 
   await b.close()
   const failed = results.filter(r => !r.pass)

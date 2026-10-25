@@ -24,7 +24,7 @@
     { "slug": "arxiv", "name": "arXiv", "short": "arXiv", "url": "https://arxiv.org", "brand": "#b31b1b", "group": "papers", "logo": "/logos/arxiv.png" },
     { "slug": "huggingface", "name": "HF Papers", "short": "HF Papers", "url": "https://huggingface.co/papers", "brand": "#ffcc4d", "group": "papers", "logo": "/logos/huggingface.png" },
     { "slug": "scholar", "name": "Google Scholar", "short": "Scholar", "url": "https://scholar.google.com", "brand": "#4285f4", "group": "papers", "logo": "/logos/scholar.png" },
-    { "slug": "modelscope", "name": "ModelScope 论文", "short": "魔搭论文", "url": "https://www.modelscope.cn/papers?page=1&type=hot", "dom": "modelscope.cn/papers", "brand": "#6048f0", "group": "papers", "logo": "/logos/modelscope.png" },
+    { "slug": "modelscope", "name": "ModelScope 论文", "short": "魔搭论文", "url": "https://www.modelscope.cn/papers?page=1&type=hot", "dom": "modelscope.cn/papers", "brand": "#8B6FFF", "group": "papers", "logo": "/logos/modelscope.png" },
 
     { "slug": "claudecode", "name": "Claude Code", "short": "Claude Code", "url": "https://claude.com/product/claude-code", "brand": "#d97757", "group": "llm", "logo": "/logos/claudecode.png" },
     { "slug": "codex", "name": "OpenAI Codex", "short": "Codex", "url": "https://openai.com/codex/", "brand": "#111111", "group": "llm", "logo": "/logos/codex.png" },

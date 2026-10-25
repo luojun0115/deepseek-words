@@ -31,6 +31,8 @@ const items = computed(() => Object.entries(SRC)
       href: withBase('/notes/daily/' + file + '.html'),
     }
   })
+  // index.md 是这个目录的 tab 页本身，不是文章；没写日期的也不是文章（当草稿放着）
+  .filter((it) => it.file !== 'index' && it.date)
   .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0)))
 </script>
 

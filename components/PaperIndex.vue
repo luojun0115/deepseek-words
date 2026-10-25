@@ -147,9 +147,12 @@ const master = computed(() => {
       </a>
       <a v-if="master.alt" class="dr-m-alt" :href="master.alt.href" target="_self">{{ master.alt.text }} →</a>
     </div>
+    <!-- 专题案例页（mode='topic'，2026-10-25 新增子栏）：只出专题卡墙，不排 32 篇论文卡，
+         也就没有编号/词数/时间可排——排序下拉整块隐掉。 -->
     <div class="dr-tools">
-      <p class="dr-hint">{{ papers.length }} 篇技术报告{{ hint }}</p>
-      <label class="dr-sort">
+      <p v-if="mode === 'topic'" class="dr-hint">{{ TOPICS.length }} 张专题卡 · 封面是这篇的核心判断，点进去是正文</p>
+      <p v-else class="dr-hint">{{ papers.length }} 篇技术报告{{ hint }}</p>
+      <label v-if="mode !== 'topic'" class="dr-sort">
         <span>排序</span>
         <select v-model="sortBy">
           <option value="num">按编号</option>
@@ -205,6 +208,7 @@ const master = computed(() => {
            编号 / 短名 / 年份都画在封面图内（covers3 生成，图随 public/covers 进仓），卡面不再重复。
            mode='arxiv'（论文总览页用）时整卡是外链 <a> 直达 arXiv 原文，按钮用 <span>（不能嵌套 <a>）；
            其余模式下卡体是 <div>，三键各自是站内链接 -->
+      <template v-if="mode !== 'topic'">
       <template v-for="p in list" :key="p.num">
         <a
           v-if="mode === 'arxiv'"
@@ -239,17 +243,12 @@ const master = computed(() => {
         </div>
         </div>
       </template>
+      </template>
 
-      <!-- 专题与索引组（2026-10-24）：不进 papers.json 的页面都排这儿——论文总览（notes/papers.md）
-           加上不通读单篇的专题文章，跟 32 篇论文卡用一条细线隔开。
-           往 notes/ 里加不带编号前缀的 md 就自动出现在这里，不用改模板 -->
-      <template v-if="mode === 'note' && TOPICS.length">
-        <div class="dr-group-hd">
-          <b>专题与索引</b>
-          <span>横向串主题的专题文章 · {{ TOPICS.length }} 篇 ·
-            <a class="dr-group-link" :href="withBase('/papers/')">论文总览 ↗</a>
-          </span>
-        </div>
+      <!-- 专题案例页（2026-10-25）：原先挂在 /notes 末尾的「专题与索引」组整体搬到 /notes/cases/。
+           /notes 现在只留 32 篇论文卡，顶部有子栏 tab 条（components/NoteTabs.vue）指过去。
+           卡源口径没变：notes/ 顶层不带 NN_ 前缀的 md + zhuanti-search 总览与各子目录 index.md。 -->
+      <template v-if="mode === 'topic' && TOPICS.length">
         <a v-for="t in TOPICS" :key="t.dir" class="dr-card is-topic" :href="t.href" target="_self">
           <div
             class="dr-card-media" role="img" :aria-label="t.title + ' 封面'"

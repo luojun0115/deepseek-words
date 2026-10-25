@@ -138,6 +138,66 @@
 }
 .dr-lib .dr-group-hd .dr-group-link:hover { border-bottom-color: currentColor; }
 
+/* ============ 学习笔记三个子栏（2026-10-25 新增）============
+   顶栏「学习笔记」已经是一个下拉（VitePress 的 nav items），页内再给一条子 tab：
+   全部笔记 /notes/ · 专题案例 /notes/cases/ · 每日一文 /notes/daily/。
+   一来进页面就知道自己在哪一栏；二来顶栏下拉是 hover 触发的，触屏上不好点，页内 tab 一直可点。 */
+.dr-subtabs {
+  display: flex; align-items: flex-end; gap: 2px; flex-wrap: wrap;
+  margin: 14px 0 26px; border-bottom: 1px solid var(--dr-line);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
+}
+.dr-subtab {
+  position: relative; margin-bottom: -1px;
+  padding: 11px 16px 13px; border-bottom: 2px solid transparent;
+  font-size: 15px; font-weight: 600; line-height: 1.2;
+  color: var(--dr-ink2); text-decoration: none;
+  transition: color .15s, border-color .15s;
+}
+.dr-subtab:hover { color: var(--dr-ink); }
+.dr-subtab.is-on { color: var(--dr-accent); border-bottom-color: var(--dr-accent); }
+
+/* ============ 每日一文列表（components/DailyIndex.vue）============
+   不用海报封面：每日一文是短文，不是一张卡；日期签 + 标题 + 摘要 + 标签，一行一条。 */
+.dr-daily { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif; }
+/* VitePress 默认给正文里的 <a> 加下划线（.vp-doc a，特异性 0,1,1），这里整行是一个 <a>，
+   不压掉的话标题/摘要/「读全文」会连成一片下划线——与站内 .dr-card 同一口径（见 .dr-lib a.dr-card）。 */
+.vp-doc .dr-daily-row, .vp-doc .dr-daily-row:hover { color: inherit; text-decoration: none; }
+.vp-doc .dr-daily-row {
+  display: flex; align-items: flex-start; gap: 22px;
+  padding: 20px 6px; border-top: 1px solid var(--dr-line);
+  transition: background .15s;
+}
+.dr-daily-row:first-child { border-top: 0; }
+.dr-daily-row:hover { background: color-mix(in srgb, var(--dr-ink) 3%, transparent); }
+.dr-daily-date { flex: 0 0 auto; width: 68px; text-align: right; padding-top: 2px; }
+.dr-daily-date b { display: block; font: 800 27px/1 var(--dr-hf); color: var(--dr-ink); }
+.dr-daily-date i {
+  display: block; margin-top: 7px;
+  font: 500 11px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .06em; color: var(--dr-ink2); font-style: normal;
+}
+.dr-daily-txt { flex: 1; min-width: 0; }
+.dr-daily-nm { display: block; font: 700 16.5px/1.45 var(--dr-hf); color: var(--dr-ink); }
+.vp-doc .dr-daily-row:hover .dr-daily-nm { text-decoration: underline; text-underline-offset: 3px; }
+.dr-daily-sum { display: block; margin-top: 6px; font: 400 13px/1.7 sans-serif; color: var(--dr-ink2); font-style: normal; }
+.dr-daily-tags {
+  display: block; margin-top: 10px; font: 500 11px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .06em; color: var(--dr-ink2); font-style: normal; opacity: .75;
+}
+.dr-daily-go {
+  flex: 0 0 auto; align-self: center; white-space: nowrap;
+  font: 600 12.5px/1 sans-serif; color: var(--dr-ink2);
+}
+.dr-daily-row:hover .dr-daily-go { color: var(--dr-accent); }
+.dr-daily-empty {
+  padding: 42px 0; text-align: center; font-size: 14px; color: var(--dr-ink2);
+}
+.dr-daily-empty code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px;
+  padding: 2px 6px; border-radius: 5px; background: var(--dr-soft);
+}
+
 /* ============ 官方入口卡（2026-10-25 用户定案）============
    学习笔记页最前面两张站外官方入口：① HF 官方论文库（撞色黄）② GitHub 官方组织仓库（深藏青）。
    卡面照抄 covers3 的海报层级：顶部 mono 小标 → 品牌标识 → 中文衬线金句 → 强调短横 → 底部 mono 域名；
@@ -2104,6 +2164,64 @@
 /* 原型顶栏没有 VitePress 自带的搜索框（检索交给右边的「找论文」弹窗）。
    且本地搜索的 ⌘K 只是按钮上写死的装饰字、并没有绑键盘，藏掉不丢功能。 */
 .VPNavBarSearch { display: none; }
+
+/* ============ 顶栏「学习笔记」下拉（2026-10-25 新增两个子栏）============
+   VitePress 的下拉走 VPNavBarMenuGroup：它和 VPFlyout 是**同一个元素**（class="VPFlyout VPNavBarMenuGroup"），
+   父项是个 <button> 而不是 .VPNavBarMenuLink，所以上面那套胶囊样式它吃不到，得单独写一份
+   （同样的 !important / 覆盖理由）。面板是 .menu → .VPMenu → .VPMenuLink > a.link，
+   子项的当前页标记是 a.link.active。 */
+.VPNavBar .VPNavBarMenu .VPNavBarMenuGroup .button {
+  display: flex; align-items: center;
+  height: auto; padding: 8px 14px !important;
+  border-radius: 999px; background: transparent;
+  font-weight: 600 !important; line-height: normal !important;
+  color: var(--dr-ink2) !important;
+  transition: background .15s, color .15s;
+}
+.VPNavBar .VPNavBarMenu .VPNavBarMenuGroup .button:hover {
+  background: var(--dr-soft); color: var(--dr-ink) !important;
+}
+/* 当前页落在「学习笔记」这一支里（任一子页）时，父项也给同款胶囊高亮 */
+.VPNavBar .VPNavBarMenu .VPNavBarMenuGroup.active .button {
+  background: var(--dr-sig) !important; color: var(--dr-sig-ink) !important;
+}
+.VPNavBar .VPNavBarMenu .VPNavBarMenuGroup .button .text {
+  display: flex; align-items: center; gap: 2px;
+  line-height: normal; font-size: 14px; font-weight: 600; color: inherit;
+}
+/* 展开箭头：默认是朝下的小三角，展开时转成朝上（照参考图那个上箭头的观感） */
+.VPNavBar .VPNavBarMenu .VPNavBarMenuGroup .button .vpi-chevron-down {
+  margin-left: 1px; font-size: 11px; opacity: .75;
+  transition: transform .2s ease;
+}
+.VPNavBar .VPNavBarMenu .VPNavBarMenuGroup:hover .button .vpi-chevron-down {
+  transform: rotate(180deg);
+}
+/* 面板：主题面板底 + 主题描边 + 主题圆角。左边缘与父项对齐（照参考图那个下拉面板的挂法） */
+.VPNavBar .VPNavBarMenu .VPNavBarMenuGroup .menu {
+  top: calc(100% - 4px); left: 0; right: auto;
+  padding: 6px; border-radius: 12px;
+  background: var(--dr-panel);
+  border: 1px solid var(--dr-line);
+  box-shadow: 0 12px 32px rgb(29 29 27 / 16%);
+}
+.VPNavBar .VPNavBarMenu .VPNavBarMenuGroup .menu .VPMenu {
+  min-width: 172px; padding: 0; border: 0; border-radius: 0;
+  background: transparent; box-shadow: none;
+}
+.VPNavBar .VPNavBarMenu .VPNavBarMenuGroup .menu .VPMenuLink .link {
+  display: block; padding: 9px 14px; border-radius: 8px;
+  font-size: 14px; font-weight: 600; line-height: 1.4;
+  color: var(--dr-ink2); text-decoration: none;
+  transition: background .15s, color .15s;
+}
+.VPNavBar .VPNavBarMenu .VPNavBarMenuGroup .menu .VPMenuLink .link:hover {
+  color: var(--dr-ink); background: var(--dr-soft);
+}
+.VPNavBar .VPNavBarMenu .VPNavBarMenuGroup .menu .VPMenuLink .link.active {
+  color: var(--dr-accent);
+  background: color-mix(in srgb, var(--dr-accent) 9%, transparent);
+}
 
 /* ============ 站外导航页（pageClass: sites，components/SiteNavWall.vue）============ */
 /* 这一页是「方案 C · 积木墙」：五组各占一行，组内砖块等宽、整行铺满，

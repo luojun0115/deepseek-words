@@ -1553,6 +1553,49 @@ alpha = 亮度(原像素)        # 白 X → 255，黑底 → 0
 - 断言同步：check_portal 的「专题卡 href」断言放宽为「顶层 md 是 `.html` / 专题子目录是目录地址」两种形态
   （组内首卡现在是缩放定律总览，指向 `…/zhuanti-search/`）。
 
+### A38. 学习笔记拆三个子栏：全部笔记 / 专题案例 / 每日一文（2026-10-25 用户要求）
+
+用户要「在学习笔记上加一个专题案例、每日一文的 tab」，参考一张课程站顶栏下拉的截图（父项 + 竖排子项面板）。
+落地是**两处入口**：
+
+- **顶栏下拉**：`.vitepress/config.mts` 的 nav 把「学习笔记」从 `link` 改成 `items`
+  （全部笔记 / 专题案例 / 每日一文）。
+  ⚠ VitePress 的硬约束：**nav 项只要带了 `link` 就只渲染成链接，`items` 会被忽略**
+  （见 `VPNavBarMenu.vue`：`'link' in item` 优先于 `VPNavBarMenuGroup`）。所以父项只能当按钮用，
+  直接链接那一项放进 items 里（第一项「全部笔记」）。
+- **页内子栏条**：`components/NoteTabs.vue`，三个页面各挂一条（当前项＝主题 accent + 短横）。
+  顶栏下拉是 hover 触发的，触屏上不好点；页内 tab 一直可点。
+
+三个页面（都走目录形式 URL，cleanUrls 已关，靠 `dir/index.html`）：
+
+| 页面 | URL | 内容 | 卡源 |
+|---|---|---|---|
+| 全部笔记 | `/notes/` | 32 篇论文卡 | `data/papers.json` |
+| 专题案例 | `/notes/cases/` | 10 张专题卡（缩放定律总览 + 9 篇精读）| `notes/` 顶层不带 NN_ 前缀的 md + `notes/zhuanti-search/` 总览与子目录 |
+| 每日一文 | `/notes/daily/` | 每日短文列表（日期签 + 标题 + 摘要 + 标签）| `notes/daily/*.md`，一篇一个文件 |
+
+- **「专题与索引」组整组从 `/notes` 末尾搬到 `/notes/cases/`**（`PaperIndex.vue` 新增 `mode="topic"`：
+  只出专题卡、不出论文卡、排序下拉整块隐掉）。`/notes` 现在只留 32 篇论文卡。
+- **每日一文**不用海报封面：短文不是卡。列表一行一条，卡源 `notes/daily/*.md`，
+  frontmatter 写 `date / title / summary / tags`；**往目录里丢一个 md 就自动上列表**，不用改代码。
+  `index.md` 与没写 `date` 的文件会被过滤掉（前者是 tab 页本身，后者是草稿）。
+- 首批三篇：MLA（DeepSeek-V2）、GRPO（DeepSeek-R1）、Janus（多模态）——内容取自站内对应笔记，不另造事实。
+
+⚠ 样式与断言：
+
+- 顶栏下拉的父项是 `<button>`（不是 `.VPNavBarMenuLink`），吃不到站内那套胶囊样式，
+  `custom.css` 里单写一份（同样的 !important 理由，见 §B7/§B9）。
+  `.VPNavBarMenuGroup` 与 `.VPFlyout` 是**同一个元素**（`class="VPFlyout VPNavBarMenuGroup"`），
+  选择器别写成 `.VPNavBarMenuGroup .VPFlyout .button`（匹配不到）。
+  面板条目是 `.VPMenuLink > a.link`，当前页标记在 `a.link.active` 上。
+- 每日一文整行是一个 `<a>`，VitePress 默认给正文链接加下划线 → 用 `.vp-doc .dr-daily-row` 压掉
+  （`.vp-doc a` 特异性 0,1,1，比 `.dr-daily-row` 高）。
+- 自检断言同步：专题卡断言从 `/notes` 挪到 `/notes/cases/`；新增「顶栏下拉三项」「三页子栏条与当前项」
+  「专题案例页无论文卡/无排序下拉」「每日一文条数与仓内文件数对平且按日期倒序」。
+- ⚠ 本地 preview 伺服器会把 `/notes/` 优先命中**仓根的旧跳转桩** `notes.md`（→ notes.html），
+  线上 GitHub Pages 是命中 `notes/index.html`（已核对线上）。两者不一致会造成 hydration 报警，
+  自检里因此一律用显式 `.html` 路径（`/notes/index.html`）。
+
 ---
 
 ## B. 页面与样式定案
