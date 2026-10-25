@@ -1,5 +1,5 @@
 {
-  "_note": "站外导航页（/sites）的数据源。78 站上墙 + 5 站待选 + 3 个自有空位，18 组。 改名单改这里，页面与自检都从这份数据读，不写死在组件里。待选站（pending）数据保留但页面不渲染（DECISIONS §A7）；其中 Papers with Code 已于 2025-07-24 关停，条目暂留备查（§A12）。分组顺序 = 墙上的行序（每组一行，组牌在左列）。第八批按「同类同排」重划分组（§A16），第九批撤掉小林 coding 并把博客园挪进 docs（§A17），第十批新增 Python 框架与前端框架（§A18），第十一批新增基础设施（§A19），第十二批抽出编程语言组（§A20），第十三批基础设施扩到 8 块（§A21），第十四批加 JMeter（§A22），第十五批加 X（§A23）。",
+  "_note": "站外导航页（/sites）的数据源。79 站上墙 + 5 站待选 + 3 个自有空位，18 组。 改名单改这里，页面与自检都从这份数据读，不写死在组件里。待选站（pending）数据保留但页面不渲染（DECISIONS §A7）；其中 Papers with Code 已于 2025-07-24 关停，条目暂留备查（§A12）。分组顺序 = 墙上的行序（每组一行，组牌在左列）。第八批按「同类同排」重划分组（§A16），第九批撤掉小林 coding 并把博客园挪进 docs（§A17），第十批新增 Python 框架与前端框架（§A18），第十一批新增基础设施（§A19），第十二批抽出编程语言组（§A20），第十三批基础设施扩到 8 块（§A21），第十四批加 JMeter（§A22），第十五批加 X（§A23）。",
   "groups": [
     { "id": "papers", "name": "论文源", "en": "PAPERS", "kind": "sites" },
     { "id": "llm", "name": "大模型", "en": "LLM", "kind": "sites" },
@@ -24,6 +24,7 @@
     { "slug": "arxiv", "name": "arXiv", "short": "arXiv", "url": "https://arxiv.org", "brand": "#b31b1b", "group": "papers", "logo": "/logos/arxiv.png" },
     { "slug": "huggingface", "name": "HF Papers", "short": "HF Papers", "url": "https://huggingface.co/papers", "brand": "#ffcc4d", "group": "papers", "logo": "/logos/huggingface.png" },
     { "slug": "scholar", "name": "Google Scholar", "short": "Scholar", "url": "https://scholar.google.com", "brand": "#4285f4", "group": "papers", "logo": "/logos/scholar.png" },
+    { "slug": "modelscope", "name": "ModelScope 论文", "short": "魔搭论文", "url": "https://www.modelscope.cn/papers?page=1&type=hot", "dom": "modelscope.cn/papers", "brand": "#6048f0", "group": "papers", "logo": "/logos/modelscope.png" },
 
     { "slug": "claudecode", "name": "Claude Code", "short": "Claude Code", "url": "https://claude.com/product/claude-code", "brand": "#d97757", "group": "llm", "logo": "/logos/claudecode.png" },
     { "slug": "codex", "name": "OpenAI Codex", "short": "Codex", "url": "https://openai.com/codex/", "brand": "#111111", "group": "llm", "logo": "/logos/codex.png" },

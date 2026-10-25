@@ -60,6 +60,9 @@ const rows = computed(() => GROUPS.map((g) => {
       name: s.name,
       short: s.short,
       url: s.url,
+      // dom：砖块上显示的域名。默认从 url 推导；带查询串的地址（如 ?page=1&type=hot）
+      // 在数据里写 dom 字段覆盖，免得把整串查询参数写到砖块上
+      domSrc: s.dom || '',
       brand: s.brand,
       logo: s.logo,
     }))
@@ -79,7 +82,7 @@ const courses = computed(() => {
         ...it,
         no: it.slot ? '' : String(++no).padStart(2, '0'),
         color: it.slot ? '' : css(it.brand),
-        dom: it.slot ? '' : it.url.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/$/, ''),
+        dom: it.slot ? '' : (it.domSrc || it.url.replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/\/$/, '')),
         h,
         rot,
       }
