@@ -3,14 +3,14 @@ pageClass: wide
 title: 专题案例
 ---
 <script setup>
-import TopicBoard from '../../components/TopicBoard.vue'
+import PaperIndex from '../../components/PaperIndex.vue'
 import NoteTabs from '../../components/NoteTabs.vue'
 </script>
 
 # 专题案例
 
-横向串主题的专题精读：一个专题一块，头牌是专题总览，下面按阅读顺序列出每篇精读。
+横向串主题的专题精读：一个专题一套卡，专题总览在前，每篇精读按阅读顺序跟在后面。
 
 <NoteTabs active="cases" />
 
-<TopicBoard />
+<PaperIndex mode="topic" />

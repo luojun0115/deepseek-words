@@ -23,6 +23,37 @@ const NOTE_BLANK = new Set(Object.entries(NOTE_SRC)
 const noteHref = (p) => withBase('/notes/' + p.dir + '.html')
 const written = (p) => !NOTE_BLANK.has(p.dir)
 
+/* frontmatter 单行取值（卡面元数据用；都是一行字符串，不引 yaml 库） */
+const fmValue = (src, key) => {
+  const fm = String(src).match(/^---\r?\n([\s\S]*?)\r?\n---/)
+  const hit = fm && fm[1].match(new RegExp('^' + key + ':\\s*(.+)$', 'm'))
+  return hit ? hit[1].trim().replace(/^(['"])([\s\S]*)\1$/, '$2').trim() : ''
+}
+
+/* 专题卡（2026-10-25 用户要求「专题的东西统一目录管理」）：
+   卡源 = notes/ 顶层不带 NN_ 前缀的 md（位置编码、解读资源等）+ zhuanti-search 的 index.md 与各子目录 index.md。
+   卡片的封面金句 / 排序 / 封面图名都写在正文自己的 frontmatter 里（cover / coverKicker / coverYear /
+   order / coverFile），不再另外维护顶层壳页；href 按路径形判定（子目录 index → 目录地址，顶层 → <名>.html） */
+const TOPICS = Object.entries(NOTE_SRC)
+  .map(([k, src]) => {
+    const key = k.replace(/^\.\.\/notes\//, '').replace(/\.md$/, '').replace(/\/index$/, '')
+    return { key, isDir: /\/index\.md$/.test(k), src }
+  })
+  // 无编号前缀 = 专题；notes/index.md 是 tab 页本身、notes/papers.md 是兼容跳转粧，都不上墙
+  .filter(({ key }) => !/^\d\d_/.test(key) && key !== 'index' && key !== 'papers')
+  .map(({ key, isDir, src }) => {
+    const slug = fmValue(src, 'coverFile') || key.split('/').pop()
+    return {
+      dir: key,
+      title: fmValue(src, 'title') || key,
+      href: withBase('/notes/' + (isDir ? key + '/' : key + '.html')),
+      cover: withBase('/covers/T_' + slug + '.png'),
+      // order：组内权重，越小越前；没写就是 500
+      order: Number(fmValue(src, 'order')) || 500,
+    }
+  })
+  .sort((a, b) => a.order - b.order || a.dir.localeCompare(b.dir))
+
 const sortBy = ref('num')       // num | words | time
 
 /* 官方入口卡（2026-10-25 用户定案）：学习笔记页最前面两张站外官方入口。
@@ -116,11 +147,12 @@ const master = computed(() => {
       </a>
       <a v-if="master.alt" class="dr-m-alt" :href="master.alt.href" target="_self">{{ master.alt.text }} →</a>
     </div>
-    <!-- 专题案例页（mode='topic'）已独立成 components/TopicBoard.vue（2026-10-25 用户要求重做版式）：
-         一个专题一块，头牌 + 篇目目录行，不再是这里的一排网格卡。PaperIndex 只管论文卡。 -->
+    <!-- 专题案例页（mode='topic'，2026-10-25 新增子栏）：只出专题卡墙，不排 32 篇论文卡，
+         也就没有编号/词数/时间可排——排序下拉整块隐掉。 -->
     <div class="dr-tools">
-      <p class="dr-hint">{{ papers.length }} 篇技术报告{{ hint }}</p>
-      <label class="dr-sort">
+      <p v-if="mode === 'topic'" class="dr-hint">{{ TOPICS.length }} 张专题卡 · 封面是这篇的核心判断，点进去是正文</p>
+      <p v-else class="dr-hint">{{ papers.length }} 篇技术报告{{ hint }}</p>
+      <label v-if="mode !== 'topic'" class="dr-sort">
         <span>排序</span>
         <select v-model="sortBy">
           <option value="num">按编号</option>
@@ -176,6 +208,7 @@ const master = computed(() => {
            编号 / 短名 / 年份都画在封面图内（covers3 生成，图随 public/covers 进仓），卡面不再重复。
            mode='arxiv'（论文总览页用）时整卡是外链 <a> 直达 arXiv 原文，按钮用 <span>（不能嵌套 <a>）；
            其余模式下卡体是 <div>，三键各自是站内链接 -->
+      <template v-if="mode !== 'topic'">
       <template v-for="p in list" :key="p.num">
         <a
           v-if="mode === 'arxiv'"
@@ -209,6 +242,25 @@ const master = computed(() => {
           </div>
         </div>
         </div>
+      </template>
+      </template>
+
+      <!-- 专题案例页（2026-10-25）：原先挂在 /notes 末尾的「专题与索引」组整体搬到 /notes/cases/。
+           /notes 现在只留 32 篇论文卡，顶部有子栏 tab 条（components/NoteTabs.vue）指过去。
+           卡源口径没变：notes/ 顶层不带 NN_ 前缀的 md + zhuanti-search 总览与各子目录 index.md。 -->
+      <template v-if="mode === 'topic' && TOPICS.length">
+        <a v-for="t in TOPICS" :key="t.dir" class="dr-card is-topic" :href="t.href" target="_self">
+          <div
+            class="dr-card-media" role="img" :aria-label="t.title + ' 封面'"
+            :style="{ backgroundImage: `url(${t.cover})` }"
+          ></div>
+          <div class="dr-card-body">
+            <h3 class="dr-card-nm">{{ t.title }}</h3>
+            <div class="dr-acts">
+              <span class="dr-go n">读专题</span>
+            </div>
+          </div>
+        </a>
       </template>
     </div>
 
