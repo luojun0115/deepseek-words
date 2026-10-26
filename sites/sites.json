@@ -1,5 +1,5 @@
 {
-  "_note": "站外导航页（/sites）的数据源。79 站上墙 + 5 站待选 + 3 个自有空位，18 组。 改名单改这里，页面与自检都从这份数据读，不写死在组件里。待选站（pending）数据保留但页面不渲染（DECISIONS §A7）；其中 Papers with Code 已于 2025-07-24 关停，条目暂留备查（§A12）。分组顺序 = 墙上的行序（每组一行，组牌在左列）。第八批按「同类同排」重划分组（§A16），第九批撤掉小林 coding 并把博客园挪进 docs（§A17），第十批新增 Python 框架与前端框架（§A18），第十一批新增基础设施（§A19），第十二批抽出编程语言组（§A20），第十三批基础设施扩到 8 块（§A21），第十四批加 JMeter（§A22），第十五批加 X（§A23）。",
+  "_note": "站外导航页（/sites）的数据源。80 站上墙 + 5 站待选 + 3 个自有空位，18 组。 改名单改这里，页面与自检都从这份数据读，不写死在组件里。待选站（pending）数据保留但页面不渲染（DECISIONS §A7）；其中 Papers with Code 已于 2025-07-24 关停，条目暂留备查（§A12）。分组顺序 = 墙上的行序（每组一行，组牌在左列）。第八批按「同类同排」重划分组（§A16），第九批撤掉小林 coding 并把博客园挪进 docs（§A17），第十批新增 Python 框架与前端框架（§A18），第十一批新增基础设施（§A19），第十二批抽出编程语言组（§A20），第十三批基础设施扩到 8 块（§A21），第十四批加 JMeter（§A22），第十五批加 X（§A23）。",
   "groups": [
     { "id": "papers", "name": "论文源", "en": "PAPERS", "kind": "sites" },
     { "id": "llm", "name": "大模型", "en": "LLM", "kind": "sites" },
@@ -99,8 +99,9 @@
     { "slug": "iconfont", "name": "阿里图标库 Iconfont", "short": "Iconfont", "url": "https://www.iconfont.cn", "brand": "#00f9e4", "group": "dev", "logo": "/logos/iconfont.png" },
     { "slug": "aliyundev", "name": "阿里云开发者社区", "short": "阿里云社区", "url": "https://developer.aliyun.com", "brand": "#f06000", "group": "dev", "logo": "/logos/aliyundev.png" },
     { "slug": "oschina", "name": "开源中国 OSCHINA", "short": "开源中国", "url": "https://www.oschina.net", "brand": "#30a848", "group": "dev", "logo": "/logos/oschina.png" },
+    { "slug": "infoq", "name": "InfoQ", "short": "InfoQ", "url": "https://www.infoq.cn", "brand": "#3f7ae0", "group": "dev", "logo": "/logos/infoq.png" },
 
-    { "slug": "infoq", "name": "InfoQ", "short": "InfoQ", "url": "https://www.infoq.cn", "brand": "#3f7ae0", "group": "news", "logo": "/logos/infoq.png" },
+    { "slug": "aihot", "name": "AIHOT · AI 动态", "short": "AIHOT", "url": "https://aihot.news/all", "brand": "#00c2d2", "group": "news", "logo": "/logos/aihot.png" },
     { "slug": "cnr", "name": "央广网", "short": "央广网", "url": "https://www.cnr.cn", "brand": "#c8000a", "group": "news", "logo": "/logos/cnr.png" },
     { "slug": "chinadaily", "name": "中国日报中文网", "short": "中国日报", "url": "https://cn.chinadaily.com.cn", "brand": "#00457e", "group": "news", "logo": "/logos/chinadaily.png" },
     { "slug": "qstheory", "name": "求是网", "short": "求是网", "url": "https://www.qstheory.cn", "brand": "#d20202", "group": "news", "logo": "/logos/qstheory.png" },
