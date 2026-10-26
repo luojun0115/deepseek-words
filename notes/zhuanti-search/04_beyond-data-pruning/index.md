@@ -1,4 +1,5 @@
 ---
+category: edge
 # 卡片元数据（/notes「专题与索引」组用，2026-10-25 从顶层卡页搬进来）：卡面金句 / 排序 / 封面图名
 # 缩放定律专题 04：Sorscher et al. 2022，Beyond Neural Scaling Laws: Beating Power Law Scaling via Data Pruning（arXiv:2206.14486）
 title: 缩放定律 04 · Sorscher 2022：Beyond Neural Scaling Laws — Beating Power Law Scaling via Data Pruning

@@ -12,6 +12,7 @@
     "notes": "node scripts/gen-notes.mjs",
     "covers": "node scripts/gen-topic-covers.mjs",
     "paper-covers": "node scripts/gen-paper-covers.mjs",
+    "community-covers": "node scripts/gen-community-covers.mjs",
     "papers": "node scripts/refresh-papers.mjs",
     "verify": "node scripts/verify_content.mjs",
     "selfcheck": "node scripts/selfcheck_in_repo.mjs",

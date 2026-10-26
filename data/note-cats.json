@@ -1,0 +1,37 @@
+{
+  "note": "学习笔记三个子栏的分类真源。一级＝栏目（三个），二级＝该栏下的分类。papers.json 每篇的 category、专题页 frontmatter 的 category 都用这里的 key；components/NoteTabs.vue 拿这里的 label 排二级行并算篇数。改分类名只改这里一处。",
+  "columns": {
+    "notes": {
+      "label": "全部笔记",
+      "href": "/notes/",
+      "color": "#2f6b3a",
+      "cats": [
+        { "key": "base", "label": "基础模型与架构" },
+        { "key": "mm", "label": "多模态与视觉" },
+        { "key": "rl", "label": "推理与强化学习" },
+        { "key": "math", "label": "数学与形式化证明" },
+        { "key": "agent", "label": "代码、智能体与系统" },
+        { "key": "moe", "label": "MoE 与条件记忆" },
+        { "key": "sparse", "label": "注意力与稀疏化" }
+      ]
+    },
+    "cases": {
+      "label": "专题案例",
+      "href": "/notes/cases/",
+      "color": "#7a63c8",
+      "cats": [
+        { "key": "overview", "label": "缩放定律总览" },
+        { "key": "edge", "label": "边界与外推" },
+        { "key": "data", "label": "数据与算力" },
+        { "key": "model", "label": "模型与架构" }
+      ]
+    },
+    "daily": {
+      "label": "每日一文",
+      "href": "/notes/daily/",
+      "color": "#c9931f",
+      "cats": [],
+      "note": "每日一文一共就 3 篇，二级行直接列文章本身（直链到正文），不做分类筛选。"
+    }
+  }
+}

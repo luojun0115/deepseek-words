@@ -398,19 +398,53 @@ const ok = (name, cond, extra = '') => {
     (await page.locator('.VPNavBarMenuGroup').count()) === 0,
     '实得 ' + (await page.locator('.VPNavBarMenuGroup').count()) + ' 个')
 
-  // 7d-2) 页内子栏条：三个页面各有一条，当前项高亮
-  for (const [label, p] of [
-    ['全部笔记', '/notes/index.html'],
-    ['专题案例', '/notes/cases/index.html'],
-    ['每日一文', '/notes/daily/index.html'],
+  // 7d-2) 页内子栏条（2026-10-26 改成两层：一级栏目纸签 + 二级分类纸带）
+  for (const [label, p, nSub] of [
+    ['全部笔记', '/notes/index.html', 7],
+    ['专题案例', '/notes/cases/index.html', 4],
+    ['每日一文', '/notes/daily/index.html', 3],
   ]) {
     await page.goto(BASE + p, { waitUntil: 'networkidle' })
-    const tabs = page.locator('.dr-subtabs .dr-subtab')
-    const on = page.locator('.dr-subtabs .dr-subtab.is-on')
-    ok(`${label} 页有子栏条（三项）`, (await tabs.count()) === 3, '实得 ' + (await tabs.count()))
+    await page.waitForTimeout(300)
+    const tabs = page.locator('.dr-subtabs .nt-l1 .nt-tab')
+    const on = page.locator('.dr-subtabs .nt-l1 .nt-tab.is-on')
+    ok(`${label} 页有子栏条（一级三项）`, (await tabs.count()) === 3, '实得 ' + (await tabs.count()))
     ok(`${label} 页当前子栏＝${label}`,
-      (await on.count()) === 1 && (await on.first().innerText()).trim() === label)
+      (await on.count()) === 1 && (await on.first().innerText()).trim() === label,
+      (await on.count()) ? (await on.first().innerText()).trim() : '无高亮')
+    const subs = page.locator('.dr-subtabs .nt-l2 .nt-sub')
+    ok(`${label} 页二级分类行有 ${nSub} 项`,
+      (await subs.count()) === nSub, '实得 ' + (await subs.count()))
   }
+
+  // 7d-2b) 二级分类真筛选：点分类 → URL 带 ?cat= → 卡墙只留这一类（2026-10-26）
+  const NC = require('../data/note-cats.json')
+  const nOf = (key) => PAPERS.filter((p) => p.category === key).length
+  await page.goto(BASE + '/notes/index.html', { waitUntil: 'networkidle' })
+  await page.waitForTimeout(300)
+  ok('未筛选时 32 张论文卡全在',
+    (await page.locator('.dr-grid > .dr-card:visible').count()) === PAPERS.length,
+    '实得 ' + (await page.locator('.dr-grid > .dr-card:visible').count()))
+  ok('二级分类带真实篇数（合计＝32）',
+    NC.columns.notes.cats.reduce((a, c) => a + nOf(c.key), 0) === PAPERS.length &&
+    (await page.locator('.dr-subtabs .nt-l2 .nt-n').count()) === NC.columns.notes.cats.length,
+    '篇数合计 ' + NC.columns.notes.cats.reduce((a, c) => a + nOf(c.key), 0))
+  await page.goto(BASE + '/notes/index.html?cat=mm', { waitUntil: 'networkidle' })
+  await page.waitForTimeout(500)
+  ok('?cat=mm 只剩多模态与视觉那几张卡',
+    (await page.locator('.dr-grid > .dr-card:visible').count()) === nOf('mm'),
+    '实得 ' + (await page.locator('.dr-grid > .dr-card:visible').count()) + '，应为 ' + nOf('mm'))
+  ok('筛选态下二级对应项高亮',
+    (await page.locator('.dr-subtabs .nt-l2 .nt-sub.is-on').count()) === 1 &&
+    (await page.locator('.dr-subtabs .nt-l2 .nt-sub.is-on').innerText()).includes('多模态与视觉'))
+  ok('筛选态有「正在看 … · 看全部」提示',
+    (await page.locator('.dr-filter:visible').count()) === 1 &&
+    (await page.locator('.dr-filter').innerText()).includes('多模态与视觉'))
+  await page.goto(BASE + '/notes/cases/index.html?cat=edge', { waitUntil: 'networkidle' })
+  await page.waitForTimeout(500)
+  ok('专题页 ?cat=edge 只留边界与外推那几张卡',
+    (await page.locator('.dr-grid > .dr-card:visible').count()) === 5,
+    '实得 ' + (await page.locator('.dr-grid > .dr-card:visible').count()))
 
     // 7d-3) 专题案例页（网格卡墙：topics 顶层 md + zhuanti-search 总览与各子目录 index.md）
   //     卡源口径不变：notes/ 顶层不带 NN_ 前缀的 md + zhuanti-search 总览与各子目录 index.md，
@@ -479,6 +513,109 @@ const ok = (name, cond, extra = '') => {
       firstHref && firstHref.startsWith(BPATH + 'notes/daily/'), firstHref || '未找到')
   }
   await page.screenshot({ path: SHOT + '/29b_每日一文页.png' })
+
+  // 7d-5) 社区大学（2026-10-26 用户要求新增的顶栏栏位，插在「学习笔记」右侧）
+  //     收的是别人做的成系列解读，一辑一套，卡片直链站外原视频。
+  //     期望数全部从 data/community.json 算，补一期二期不用改这里。
+  const CD = require('../data/community.json')
+  const cEps = CD.issues.reduce((a, i) => a + i.episodes.length, 0)
+  /* 页面默认「最新」＝数据书写顺序的倒序（新辑往后追加 → 新辑排最前），
+     下面所有逐辑逐集的期望都按这个渲染顺序算，别拿 issues[0] 当第一张。 */
+  const ccOrder = [...CD.issues].reverse()
+  await page.goto(BASE + '/notes/index.html', { waitUntil: 'networkidle' })
+  const navTexts = (await page.locator('.VPNavBarMenu .VPNavBarMenuLink').allInnerTexts()).map((s) => s.trim())
+  ok('顶栏「社区大学」紧跟在「学习笔记」右侧',
+    navTexts.indexOf('社区大学') === navTexts.indexOf('学习笔记') + 1 && navTexts.includes('社区大学'),
+    navTexts.join(' | '))
+  const ccNav = page.locator('.VPNavBarMenu .VPNavBarMenuLink', { hasText: '社区大学' })
+  ok('顶栏「社区大学」指向 /community/（带 base）',
+    (await ccNav.first().getAttribute('href')) === BPATH + 'community/',
+    (await ccNav.first().getAttribute('href')) || '未找到')
+
+  await page.goto(BASE + '/community/index.html', { waitUntil: 'networkidle' })
+  const ccCards = page.locator('.dr-lib.cc .cc-card')
+  ok(`社区大学 ${cEps} 张视频卡（${CD.issues.length} 辑，与 data/community.json 对平）`,
+    (await ccCards.count()) === cEps, '实得 ' + (await ccCards.count()) + ' 张')
+  ok(`社区大学 ${CD.issues.length} 枚期号纸签 + ${CD.issues.length} 块辑面板`,
+    (await page.locator('.dr-lib.cc .cc-chip').count()) === CD.issues.length &&
+    (await page.locator('.dr-lib.cc .cc-band').count()) === CD.issues.length)
+  ok('社区大学卡面叠了「第 N 集 / 时长」角标（2026-10-26 用户定案）',
+    (await page.locator('.cc-bdg-l').count()) === cEps && (await page.locator('.cc-bdg-r').count()) === cEps,
+    '左 ' + (await page.locator('.cc-bdg-l').count()) + ' 右 ' + (await page.locator('.cc-bdg-r').count()))
+  // 卡片全部跳站外，必须新标签 + 断引用；地址逐集对得上 data
+  const ccLinks = await ccCards.evaluateAll((els) => els.map((e) => ({
+    href: e.getAttribute('href'), target: e.getAttribute('target'), rel: e.getAttribute('rel'),
+  })))
+  const wantLinks = ccOrder.flatMap((i) => i.episodes.map((e) => 'https://www.bilibili.com/video/' + e.bvid + '/'))
+  ok('每张卡直链 data 里那条 B 站视频',
+    JSON.stringify(ccLinks.map((l) => l.href)) === JSON.stringify(wantLinks),
+    ccLinks[0].href || '未找到')
+  ok('外部卡一律新标签打开且带 rel=noreferrer',
+    ccLinks.every((l) => l.target === '_blank' && /noreferrer/.test(l.rel || '')))
+  const ccCovs = await ccCards.locator('.dr-card-media').evaluateAll((els) => els.map((e) => e.style.backgroundImage))
+  ok('社区大学卡全带封面（/covers/C<辑>_<集>.png）',
+    ccCovs.length === cEps && ccCovs.every((s) => /\/covers\/C\d+_\d+\.png/.test(s)), ccCovs[0] || '未找到')
+  const ccCovUrls = ccCovs.map((s) => (s.match(/url\("?([^")]+)"?\)/) || [])[1]).filter(Boolean)
+  const ccCovCode = await page.evaluate((urls) => Promise.all(urls.map((u) => fetch(u).then((r) => r.status))), ccCovUrls)
+  ok('社区大学封面全部可加载（HTTP 200）', ccCovCode.every((s) => s === 200), ccCovCode.join(','))
+  const ccTopPx = await page.evaluate(async (urls) => {
+    const out = []
+    for (const u of urls) {
+      const img = new Image(); img.src = u
+      await img.decode()
+      const c = document.createElement('canvas'); c.width = img.width; c.height = img.height
+      const ctx = c.getContext('2d'); ctx.drawImage(img, 0, 0)
+      const d = ctx.getImageData(2, 2, 1, 1).data
+      out.push([d[0], d[1], d[2]])
+    }
+    return out
+  }, ccCovUrls)
+  ok('社区大学封面左上角不是黑色（实渲染取样）',
+    ccTopPx.length === cEps && ccTopPx.every((p) => p[0] + p[1] + p[2] > 180), JSON.stringify(ccTopPx.slice(0, 2)))
+  const ccChips = (await page.locator('.dr-lib.cc .cc-chip').allInnerTexts())
+    .map((s) => s.replace(/\s+/g, ' '))
+  ok(`每枚纸签（共 ${ccOrder.length} 枚）都念全「辑名（共 N 集）总时长」+ 期号，且按最新在上排`,
+    ccChips.length === ccOrder.length && ccChips.every((t, k) => {
+      const iss = ccOrder[k]
+      return t.includes(iss.title) && t.includes(`（共 ${iss.episodes.length} 集）`) &&
+        /小时|分钟/.test(t) && t.includes(iss.no)
+    }), ccChips.join(' ‖ '))
+  const ccLines = await page.locator('.dr-lib.cc .cc-line').allInnerTexts()
+  ok('每块辑面板头都不重复自己那辑的辑名，只留一行主线',
+    ccLines.length === ccOrder.length && ccLines.every((t, k) => {
+      const iss = ccOrder[k]
+      return t.includes(iss.sub) && !t.includes(iss.title)
+    }), ccLines.map((s) => s.slice(0, 14) + '…').join(' ‖ '))
+  ok('页头统计行已撤（跟纸签完全重复）', (await page.locator('.dr-lib.cc .cc-stat').count()) === 0)
+
+  // 「最新 / 最早」排序钮（2026-10-26 用户按参考图要求加，**只排「辑」这一层**，辑里的集恒按观看顺序）
+  const ccSorts = page.locator('.cc-sort .cc-sort-o')
+  ok('排序钮两项＝最新 / 最早（形态照用户给的参考图：文字 + 竖线，不做边框不做底色）',
+    (await ccSorts.count()) === 2 && (await ccSorts.first().innerText()) === '最新'
+    && (await ccSorts.nth(1).innerText()) === '最早')
+  ok('默认「最新」高亮（最近添加那辑在上）',
+    (await page.locator('.cc-sort-o.is-on').count()) === 1
+    && (await page.locator('.cc-sort-o.is-on').innerText()) === '最新')
+  await ccSorts.nth(1).click()
+  await page.waitForTimeout(250)
+  ok('点「最早」切过去且只有一项高亮（辑序整体反过来）',
+    (await page.locator('.cc-sort-o.is-on').innerText()) === '最早'
+    && (await page.locator('.cc-issue').count()) === CD.issues.length,
+    '当前 ' + CD.issues.length + ' 辑；两辑以上翻序由 verify_sort.mjs 实测过')
+  const nosOf = async () => (await page.locator('.cc-chip-no').allInnerTexts()).map((s) => s.trim())
+  ok('点「最早」后辑序真的翻过来（第壹辑排到最前）',
+    JSON.stringify(await nosOf()) === JSON.stringify(CD.issues.map((i) => i.no)),
+    (await nosOf()).join(' → '))
+  const epNosAfter = await page.locator('.cc-issue').first().locator('.cc-bdg-l').allInnerTexts()
+  ok('排序不动辑内集序（第 1 集永远在最前）',
+    epNosAfter[0].trim() === '第 ' + CD.issues[0].episodes[0].no + ' 集', epNosAfter.slice(0, 2).join(','))
+  await ccSorts.first().click()
+  await page.waitForTimeout(250)
+  ok('点回「最新」可逆（又变成最近添加那辑在上）',
+    (await page.locator('.cc-sort-o.is-on').innerText()) === '最新'
+    && JSON.stringify(await nosOf()) === JSON.stringify(ccOrder.map((i) => i.no)),
+    (await nosOf()).join(' → '))
+  await page.screenshot({ path: SHOT + '/29c_社区大学页.png' })
 
   await page.goto(BASE + '/notes/index.html', { waitUntil: 'networkidle' })
   await page.click('.dr-lib .dr-card:has([aria-label^="' + PP[0].num + ' ·"]) .dr-go.n')
@@ -557,7 +694,7 @@ const ok = (name, cond, extra = '') => {
   const BANNED = ['十一档', '全量重做', '全量口径', '双视图', 'TTS', '工作区',
     '本次补录', '漏收', 'sitemap', '剔除记录', '归属更正', '此前记录有误', '档位筛选']
   const PAGES = ['/', '/vocab/', '/listen/', '/papers/index.html', '/papers/清单.html', '/papers/official.html', '/papers/resources.html',
-    '/notes/index.html', '/notes/cases/index.html', '/notes/daily/index.html', '/sites/',
+    '/notes/index.html', '/notes/cases/index.html', '/notes/daily/index.html', '/community/', '/sites/',
     '/notes/' + PP[0].dir + '.html']
   for (const p of PAGES) {
     await page.goto(BASE + p, { waitUntil: 'networkidle' })

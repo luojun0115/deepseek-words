@@ -1,4 +1,5 @@
 ---
+category: data
 # 卡片元数据（/notes「专题与索引」组用，2026-10-25 从顶层卡页搬进来）：卡面金句 / 排序 / 封面图名
 # 缩放定律专题 06：Muennighoff et al. 2023，Scaling Data-Constrained Language Models（arXiv:2305.16264）
 title: 缩放定律 06 · Muennighoff 2023：Scaling Data-Constrained Language Models

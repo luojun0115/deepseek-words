@@ -138,24 +138,79 @@
 }
 .dr-lib .dr-group-hd .dr-group-link:hover { border-bottom-color: currentColor; }
 
-/* ============ 学习笔记三个子栏（2026-10-25 新增）============
-   顶栏「学习笔记」已经是一个下拉（VitePress 的 nav items），页内再给一条子 tab：
-   全部笔记 /notes/ · 专题案例 /notes/cases/ · 每日一文 /notes/daily/。
-   一来进页面就知道自己在哪一栏；二来顶栏下拉是 hover 触发的，触屏上不好点，页内 tab 一直可点。 */
+/* ============ 学习笔记三个子栏（2026-10-26 改版：两层 · 丁-3 纸的层叠）============
+   旧版是一条三段下划线 tab（.dr-subtab），2026-10-26 用户定案改成两层：
+     一级＝三个栏目的**纸签**（米棕纸色，跟社区大学的期号签同一张纸，跨十套主题恒定）；
+     二级＝该栏下的分类，坐在一条**更浅的纸带**上，选中的那枚签压住纸带的边。
+   分界不是画出来的，是两张纸的明度差——所以纸签下沿是透明的、圆角只留上面两个。
+   参照设计稿：design/20261026_学习笔记栏目条五稿_丁细化/。
+   ⚠ VitePress 给正文里的 <a> 加下划线与主题蓝（.vp-doc a，特异性 0,1,1），
+     这里一律用两级类名（.dr-subtabs .nt-xx）压过它。 */
 .dr-subtabs {
-  display: flex; align-items: flex-end; gap: 2px; flex-wrap: wrap;
-  margin: 14px 0 26px; border-bottom: 1px solid var(--dr-line);
+  margin: 18px 0 26px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", sans-serif;
 }
-.dr-subtab {
-  position: relative; margin-bottom: -1px;
-  padding: 11px 16px 13px; border-bottom: 2px solid transparent;
-  font-size: 15px; font-weight: 600; line-height: 1.2;
-  color: var(--dr-ink2); text-decoration: none;
-  transition: color .15s, border-color .15s;
+.dr-subtabs .nt-l1 {
+  display: flex; align-items: center; gap: 9px; flex-wrap: wrap;
+  margin-bottom: -1px;   /* 选中的签压住纸带的上沿 */
 }
-.dr-subtab:hover { color: var(--dr-ink); }
-.dr-subtab.is-on { color: var(--dr-accent); border-bottom-color: var(--dr-accent); }
+.dr-subtabs .nt-tab {
+  position: relative; z-index: 1;
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 9px 18px; border-radius: 11px;
+  border: 1px solid color-mix(in srgb, var(--dr-ink) 11%, transparent);
+  background: transparent;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .45);
+  font-size: 18.5px; font-weight: 600; line-height: 1.25; letter-spacing: .012em;
+  color: var(--dr-ink2); text-decoration: none;
+  transition: background .18s, color .18s, box-shadow .18s, transform .18s, border-color .18s;
+}
+.dr-subtabs .nt-tab:hover {
+  color: #8a5a1e; border-color: color-mix(in srgb, #8a5a1e 34%, transparent);
+}
+.dr-subtabs .nt-dot {
+  width: 6px; height: 6px; border-radius: 2px; opacity: .45; transition: opacity .18s;
+}
+.dr-subtabs .nt-tab.is-on {
+  background: #f7eeda; color: #6f4514; border-color: #efe0c2;
+  border-bottom-color: transparent; border-radius: 11px 11px 0 0;
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / .85), 0 -1px 3px rgb(120 90 40 / .10);
+  transform: translateY(-1px);
+  z-index: 2;
+}
+.dr-subtabs .nt-tab.is-on .nt-dot { opacity: 1; }
+.dr-subtabs .nt-l2 {
+  position: relative; z-index: 0;
+  display: flex; align-items: center; gap: 30px; flex-wrap: wrap;
+  margin-top: 16px; padding: 12px 18px 13px;
+  border-radius: 0 0 12px 12px;
+  /* 纸带：亮色主题＝米棕纸压在纸底上；暗色主题＝同一张纸在夜里的样子（压得很淡的暖褐）。
+     light-dark() 跟着主题的 color-scheme 自动切换（theme.generated.css 里暗色主题写了 color-scheme: dark），
+     不必把三个暗色主题 id 一个个写死；前面一行为不支持 light-dark() 的老浏览器兜底。 */
+  background: color-mix(in srgb, #f7eeda 38%, var(--dr-bg));
+  background: light-dark(
+    color-mix(in srgb, #f7eeda 38%, var(--dr-bg)),
+    color-mix(in srgb, #f7eeda 10%, var(--dr-bg)));
+  border-top: 1px solid color-mix(in srgb, #efe0c2 70%, transparent);
+  border-top-color: light-dark(
+    color-mix(in srgb, #efe0c2 70%, transparent),
+    color-mix(in srgb, #efe0c2 16%, transparent));
+}
+.dr-subtabs .nt-sub {
+  font-size: 15.5px; font-weight: 400; line-height: 1.5; color: var(--dr-ink2);
+  text-decoration: none; padding: 2px 0;
+  transition: color .16s;
+}
+.dr-subtabs .nt-sub:hover { color: var(--dr-accent); }
+.dr-subtabs .nt-sub.is-on { color: #8a5a1e; font-weight: 600; }
+.dr-subtabs .nt-n {
+  margin-left: 6px; font: 500 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace; opacity: .55;
+}
+/* 分类筛选（2026-10-26）：二级行点分类 → ?cat=xxx → 卡墙上不属于该分类的卡加 .is-off 隐掉。
+   用「隐藏」而不是「从数组删掉」是为了不破坏 SSR 水合（SSR 渲全量卡，客户端再隐藏）。 */
+.dr-lib .dr-card.is-off { display: none; }
+.dr-lib .dr-filter b { color: var(--dr-accent); font-weight: 700; }
+.dr-lib .dr-filter a { color: var(--dr-accent); text-decoration: underline; text-underline-offset: 2px; }
 
 /* ============ 每日一文列表（components/DailyIndex.vue）============
    不用海报封面：每日一文是短文，不是一张卡；日期签 + 标题 + 摘要 + 标签，一行一条。 */
@@ -199,6 +254,100 @@
 .dr-daily-empty code {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12.5px;
   padding: 2px 6px; border-radius: 5px; background: var(--dr-soft);
+}
+
+/* ============ 社区大学（components/CommunityIndex.vue，2026-10-26 用户新增顶栏栏目）============
+   版式沿用 2026-10-25「专题研究」设计稿：期号纸签 → 淡色辑面板 → 卡片网格（卡片复用 .dr-card 骨架）。
+   纸签是米棕纸质、跨主题恒定——跟顶栏柠檬胶囊同一个思路：签是「纸」，不跟主题走。
+   2026-10-26 用户定案：辑标题上到纸签、放在「（共 N 集）」左边，纸签一行就把这辑是什么/多少集/多长说全，
+   辑面板头部不再重复辑名（只留那一行主线），页头那行统计也去掉（跟纸签完全重复）。 */
+/* 工具行：左边全站总量（多少辑多少集），右边「最新 | 最早」两个排序钮，
+   形态照 2026-10-26 用户给的参考图（文字 + 竖线分隔，当前项换主题色，不做边框不做底色）。
+   ⚠ 这对按钮只排「辑」的顺序（按添加时间的新旧），辑里的集恒按观看顺序——见 CommunityIndex.vue 里的注释。 */
+.dr-lib.cc .cc-tools {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 18px;
+  flex-wrap: wrap; margin: 16px 0 0;
+}
+.dr-lib.cc .cc-count {
+  font: 500 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .08em; color: var(--dr-ink2);
+}
+.dr-lib.cc .cc-count b { color: var(--dr-accent); font-weight: 700; }
+.dr-lib.cc .cc-sort { display: inline-flex; align-items: center; gap: 11px; }
+.dr-lib.cc .cc-sort-o {
+  appearance: none; border: 0; background: none; padding: 2px 0; cursor: pointer;
+  font: 600 14px/1.2 -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+  color: var(--dr-ink2); transition: color .15s;
+}
+.dr-lib.cc .cc-sort-o:hover { color: var(--dr-ink); }
+.dr-lib.cc .cc-sort-o.is-on { color: var(--dr-accent); }
+.dr-lib.cc .cc-sort-o:focus-visible { outline: 2px solid var(--dr-accent); outline-offset: 3px; border-radius: 3px; }
+.dr-lib.cc .cc-sort-sep { width: 1px; height: 13px; background: var(--dr-line); }
+.dr-lib.cc .cc-issue { margin: 30px 0 0; }
+.dr-lib.cc .cc-chip {
+  /* 列间距给 0：辑名和「（共 N 集）」是一个短语，中间不该有缝（用户定的写法就是紧挨着的） */
+  display: inline-flex; align-items: baseline; flex-wrap: wrap; gap: 4px 0;
+  background: #f7eeda; color: #8a5a1e;
+  font: 600 13px/1.5 -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+  letter-spacing: .02em; padding: 9px 15px; border-radius: 7px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, .06);
+}
+.dr-lib.cc .cc-chip-name {
+  font: 700 15.5px/1.4 var(--dr-hf); letter-spacing: .01em; color: #6f4514;
+}
+.dr-lib.cc .cc-chip-meta { opacity: .82; }
+.dr-lib.cc .cc-chip-no {
+  font-style: normal; font-weight: 700; letter-spacing: .06em;
+  margin-left: 11px; padding-left: 11px; border-left: 1px solid rgba(138, 90, 30, .3);
+}
+.dr-lib.cc .cc-band {
+  margin-top: 12px; padding: 22px 24px 24px; border-radius: 16px;
+  background: color-mix(in srgb, var(--dr-ink) 4%, var(--dr-bg));
+}
+.dr-lib.cc .cc-band-hd { display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap; margin-bottom: 20px; }
+/* 面板头那一行主线（.vp-doc p 自带上下边距，压回 0 交给 flex 的 gap） */
+.dr-lib.cc .cc-line {
+  margin: 0; font: 400 14px/1.7 -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+  color: var(--dr-ink2);
+}
+.dr-lib.cc .cc-more {
+  margin-left: auto; flex: none; white-space: nowrap;
+  font: 600 12.5px/1 sans-serif; color: var(--dr-ink2); text-decoration: none;
+}
+.dr-lib.cc .cc-more:hover { color: var(--dr-accent); }
+/* 多 UP 的辑：右侧只列 UP 名字，不是链接，所以不给 hover 变色也不给手型 */
+.dr-lib.cc .cc-ups { cursor: default; }
+.dr-lib.cc .cc-ups:hover { color: var(--dr-ink2); }
+/* 卡面角标（第 N 集 / 时长）。2026-10-26 用户定案要叠——这跟上面 §.dr-card
+   「编号/年份都画在海报图内，卡面不重复」的论文卡口径相反，是刻意的：
+   视频封面在网格里只有 280px 宽，封面上自己那套小字看不清。
+   ⚠ 做成**底部一条压暗带**而不是两个独立角标：封面改版后左上是大编号色块、
+   底部才是眉标与时长胶囊，顶部叠一条会正好盖掉编号块（实测过），
+   底部这条则把封面上重复的那两样一并压住，只留信息不撞信息。 */
+.dr-lib.cc .cc-card .dr-card-media { position: relative; }
+.dr-lib.cc .cc-strip {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  /* 实底字幕条（不是渐变）：封面自己的眉标/播放数/时长胶囊正好落在卡面底部这条上，
+     渐变压不住，字会跟字叠；实底一并盖掉，只留这一层读数。媒体区 overflow:hidden + 18px 圆角，
+     所以这条的下沿自动跟着圆。 */
+  padding: 8px 12px; background: rgba(18, 14, 10, .93);
+}
+.dr-lib.cc .cc-bdg {
+  font: 600 11.5px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: .06em; color: #fff; text-shadow: 0 1px 2px rgba(0, 0, 0, .45);
+}
+.dr-lib.cc .cc-bdg-l { flex: none; }
+.dr-lib.cc .cc-bdg-r { flex: none; font-weight: 700; }
+.dr-lib.cc .cc-sub {
+  margin: 6px 0 0; font: 400 12.5px/1.5 -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+  color: var(--dr-ink2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+/* 标题尾的 ↗：这一栏的卡全部跳站外，得让人点之前就知道出去 */
+.dr-lib.cc .cc-ext { font-style: normal; color: var(--dr-accent); margin-left: 4px; }
+.dr-lib.cc .cc-foot {
+  margin: 24px 0 0; padding-top: 14px; border-top: 1px dashed var(--dr-line);
+  font-size: 12px; line-height: 1.7; color: var(--dr-ink2);
 }
 
 /* ============ 官方入口卡（2026-10-25 用户定案）============

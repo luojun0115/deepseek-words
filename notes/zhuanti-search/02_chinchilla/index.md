@@ -1,4 +1,5 @@
 ---
+category: data
 # 卡片元数据（/notes「专题与索引」组用，2026-10-25 从顶层卡页搬进来）：卡面金句 / 排序 / 封面图名
 # 缩放定律专题 02：Hoffmann et al. 2022，Training Compute-Optimal Large Language Models（arXiv:2203.15556）
 title: 缩放定律 02 · Chinchilla 2022：Training Compute-Optimal Large Language Models

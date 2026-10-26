@@ -1,0 +1,205 @@
+{
+  "note": "社区大学：别人做的成系列解读，按「辑」收录（一辑＝一套完整的课/系列）。dur 单位是秒，views 与 seenAt 是采集当天的快照（B 站开放接口 seasons_archives_list），不是实时数。每集的 lines 是封面主视觉文案（数组一项＝一个断行），sub 是封面上的英文/补充行，cover 是 public/covers/ 下的文件名（由 npm run community-covers 画出，改名两边要一起改）。",
+  "issues": [
+    {
+      "no": "第壹辑",
+      "title": "DeepSeek-V3 / R1系列解读",
+      "sub": "DeepFinder 的 B 站系列课：从 V3/R1 总览，到 MLA、KV Cache、MoE、MTP 逐个拆开讲",
+      "up": "DeepFinder",
+      "mid": "3546734059850403",
+      "seasonId": "4785348",
+      "seenAt": "2026-10-26",
+      "episodes": [
+        {
+          "no": "01",
+          "cover": "C1_01.png",
+          "bvid": "BV18iNBehEwq",
+          "title": "Deepseek系列论文解读1【Deepseek-V3】【Deepseek-R1】",
+          "dur": 1317,
+          "views": 16372,
+          "lines": [
+            "DeepSeek-V3 与",
+            "DeepSeek-R1，两篇一起读。"
+          ],
+          "sub": "V3 · R1"
+        },
+        {
+          "no": "02",
+          "cover": "C1_02.png",
+          "bvid": "BV1paKseSE2D",
+          "title": "Deepseek系列论文2.1：MLA & MHA",
+          "dur": 2438,
+          "views": 7177,
+          "lines": [
+            "MLA 与 MHA。"
+          ],
+          "sub": "Multi-head Latent Attention & Multi-head Attention"
+        },
+        {
+          "no": "03",
+          "cover": "C1_03.png",
+          "bvid": "BV1AYKweDEYi",
+          "title": "Deepseek系列论文2.2：KV Cache，MQA, GQA, MLA",
+          "dur": 1181,
+          "views": 4411,
+          "lines": [
+            "KV Cache 的省法：",
+            "MQA、GQA、MLA。"
+          ],
+          "sub": "KV Cache · MQA · GQA · MLA"
+        },
+        {
+          "no": "04",
+          "cover": "C1_04.png",
+          "bvid": "BV1AiKPe4Eok",
+          "title": "Deepseek系列论文2.3：多头潜在注意力机制 MLA（Multi-Head Latent Attention）",
+          "dur": 1084,
+          "views": 6651,
+          "lines": [
+            "多头潜在注意力机制。"
+          ],
+          "sub": "Multi-Head Latent Attention"
+        },
+        {
+          "no": "05",
+          "cover": "C1_05.png",
+          "bvid": "BV1C1AGerE3C",
+          "title": "Deepseek系列论文3：混合专家机制与负载均衡（MoE & Load Balancing）",
+          "dur": 1003,
+          "views": 6034,
+          "lines": [
+            "混合专家机制",
+            "与负载均衡。"
+          ],
+          "sub": "Mixture-of-Experts & Load Balancing"
+        },
+        {
+          "no": "06",
+          "cover": "C1_06.png",
+          "bvid": "BV1ZAwRejEYA",
+          "title": "Deepseek系列论文4：MTP（Multi-Token Prediction）",
+          "dur": 591,
+          "views": 4062,
+          "lines": [
+            "MTP：",
+            "多 token 预测。"
+          ],
+          "sub": "Multi-Token Prediction"
+        }
+      ]
+    },
+    {
+      "no": "第贰辑",
+      "title": "DeepSeek 技术解读",
+      "sub": "向量隐修会的 B 站系列课：从 DSpark 的推测解码，到 V4.1-Flash 的 CED 与 CSA2，再到 MoE 与负载均衡",
+      "up": "向量隐修会",
+      "mid": "81603844",
+      "seasonId": "8758680",
+      "seenAt": "2026-10-26",
+      "episodes": [
+        {
+          "no": "01",
+          "cover": "C2_01.png",
+          "bvid": "BV1JEMy67Evx",
+          "title": "为什么DeepSeek的DSpark可以加速推理？推测解码（投机解码）的基本原理",
+          "dur": 2324,
+          "views": 7641,
+          "lines": [
+            "DSpark 的加速：",
+            "推测解码（投机解码）。"
+          ],
+          "sub": "Speculative Decoding"
+        },
+        {
+          "no": "02",
+          "cover": "C2_02.png",
+          "bvid": "BV1FVYk6gEZ1",
+          "title": "DeepSeek-V4.1-Flash 为什么能加快模型推理？理解 Causal Encoder-Decoder（CED） 架构",
+          "dur": 821,
+          "views": 13140,
+          "lines": [
+            "CED 架构：",
+            "因果编码器-解码器。"
+          ],
+          "sub": "Causal Encoder-Decoder"
+        },
+        {
+          "no": "03",
+          "cover": "C2_03.png",
+          "bvid": "BV1qMhy6eEMT",
+          "title": "DeepSeek V4.1 Flash 深度拆解：从架构到计算，讲透 CSA2",
+          "dur": 2582,
+          "views": 7797,
+          "lines": [
+            "CSA2：",
+            "从架构讲到计算。"
+          ],
+          "sub": "DeepSeek V4.1 Flash · CSA2"
+        },
+        {
+          "no": "04",
+          "cover": "C2_04.png",
+          "bvid": "BV1QfaD6mECi",
+          "title": "MoE（混合专家模型）是什么？",
+          "dur": 529,
+          "views": 14928,
+          "lines": [
+            "MoE 是什么？"
+          ],
+          "sub": "Mixture-of-Experts"
+        },
+        {
+          "no": "05",
+          "cover": "C2_05.png",
+          "bvid": "BV1uVpn6eErG",
+          "title": "DeepSeekMoE：细粒度专家与共享专家是什么？如何负载均衡？",
+          "dur": 1168,
+          "views": 2849,
+          "lines": [
+            "细粒度专家",
+            "与共享专家。"
+          ],
+          "sub": "DeepSeekMoE · Load Balancing"
+        }
+      ]
+    },
+    {
+      "no": "第叁辑",
+      "title": "DeepSeek 全系列串讲",
+      "sub": "两位 UP 各用一条长视频把整个系列串讲一遍：闪客 11 分钟通讲 V1~V4，张小珺 3 小时 21 分逐篇讲关键 9 篇",
+      "seenAt": "2026-10-26",
+      "episodes": [
+        {
+          "no": "01",
+          "cover": "C3_01.png",
+          "bvid": "BV1rpovBCEGH",
+          "title": "【闪客】深入解读 DeepSeek V1~V4！男女老少都听得懂～",
+          "dur": 698,
+          "views": 222146,
+          "up": "飞天闪客",
+          "mid": "325864133",
+          "lines": [
+            "DeepSeek V1~V4，",
+            "一条视频讲完。"
+          ],
+          "sub": "V1–V4 One-shot Overview"
+        },
+        {
+          "no": "02",
+          "cover": "C3_02.png",
+          "bvid": "BV1xuK5eREJi",
+          "title": "逐篇讲解DeepSeek关键9篇论文及创新点——“勇敢者的游戏”",
+          "dur": 12054,
+          "views": 66184,
+          "up": "张小珺商业访谈录",
+          "mid": "280780745",
+          "lines": [
+            "关键 9 篇，",
+            "逐篇讲创新点。"
+          ],
+          "sub": "Nine Key Papers, One by One"
+        }
+      ]
+    }
+  ]
+}

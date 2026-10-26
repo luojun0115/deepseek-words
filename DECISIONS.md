@@ -1660,6 +1660,139 @@ alpha = 亮度(原像素)        # 白 X → 255，黑底 → 0
 
 ---
 
+### A40. 新增顶栏栏目「社区大学」：别人做的成系列解读，按辑收录（2026-10-26 用户要求）
+
+用户原话：「增加一个 tab 叫社区大学的，放在学习笔记的右侧。设计呢是用之前那个专题研究 tab 的那种。
+加入一期内容叫 DeepSeek 系列论文解读，（B 站链接）这个链接下面有 6 个视频，你要按照每个视频的标题给它们生成一个封面」。
+
+**栏目定位**（跟已有栏目的分界，别混放）：
+
+- 学习笔记＝**自己逐篇写的**笔记（32 篇，`notes/NN_*.md`）。
+- 社区大学＝**别人做的**成系列解读（一辑＝一套完整的课/系列，卡片直链原视频，站内不存正文）。
+- 站外导航＝零散外链工具。
+- 顶栏动线因此是「自己写 → 别人讲 → 顺手存」，社区大学插在 `学习笔记` 与 `站外导航` 之间。
+
+**素材取法**：用户给的 `BV18iNBehEwq` 本身只有 1 P，「1234」指的是它所在的**合集**。
+走 `api.bilibili.com/x/web-interface/view?bvid=` 拿到 `ugc_season`，再用
+`x/polymer/web-space/seasons_archives_list?mid=&season_id=&page_size=30`（要带 UA + Referer）
+取回合集「Deepseek」全部 6 集：bvid / 标题 / 时长 / 播放数。这些数字是**采集当天快照**，
+落在 `data/community.json` 的 `seenAt` 上，页脚也写明「播放数为快照」，不做成实时数。
+
+**落地件**：
+
+| 件 | 位置 |
+|---|---|
+| 数据真源 | `data/community.json`（辑 → 集；页面与封面生成器读同一份）|
+| 页面 | `community/index.md` + `components/CommunityIndex.vue` |
+| 样式 | `theme/custom.css` 的 `.dr-lib.cc .cc-*` 段 |
+| 封面 | `scripts/gen-community-covers.mjs` → `public/covers/C<辑>_<集>.png`（`npm run community-covers`）|
+| 导航位 | `.vitepress/config.mts` nav，`学习笔记` 之后 |
+
+**封面**复用 §A39 的暖纸底 + 8 色盘 + L1/L2/L3 三版式（`covers-style.mjs` 是唯一真源），
+只把论文封面那套「引号 + 年份」换成视频的四角位（2026-10-26 两次改版后定案，三版式共用同一套）：
+
+| 角位 | 内容 | 说明 |
+|---|---|---|
+| 左上 | 编号大色块 `01` | 原来只有 L3 有这个形式，用户要求三版式统一成它 |
+| 右上 | **空** | 播放标做过三种样品（小电视 / 实心圆 / 细圆环）后用户否掉：「右下角已经显示时间了，其实这就代表是个视频了」。小电视那类图标留着以后确有需要时再加，由生成时自行把握 |
+| 右下 | 时长胶囊 `21:57` | 从右上/左下统一挪到右下（视频页通行位置） |
+| 左下 | 眉标「社区大学 · 辑名」+「N 播放 · UP 主 X」两行 | 顶部两角被编号占了，整块从顶部搬下来 |
+| 中央 | 主视觉大字 + 英文小字行 | 不变 |
+
+文案全部取自原标题里的术语，不替视频下判断。
+
+**两处用户拍板**（demo 三选一，见 `design/20261026_社区大学tab/`）：
+
+1. 卡下标题＝**B 站原标题**，一字不动（不做「整理版」）。
+2. 卡面**叠**「第 N 集 / 时长」角标。这跟 §B 里论文卡「编号/年份都画在海报图内，卡面不重复」的口径**相反**，
+   是刻意重复：视频封面在网格里只有 280px 宽，封面上自己那套小字看不清。
+   ⚠ 形态是**卡面底部一条实底字幕条**（`rgba(18,14,10,.93)`），不是两个独立角标、也不是渐变压暗：
+   封面四角被编号/时长占掉后，卡面读数放在任何一角都会跟封面自己的字撞位；
+   渐变压不盖住浅色封面上的小字（实测透出残影），只有近实底才干净。
+   媒体区 `overflow:hidden` + 18px 圆角，字幕条下沿自动跟圆。
+3. 辑标题**上到纸签**、放在集数左边，纸签一行念全「**辑名（共 N 集） 总时长 ｜ 第壹辑**」
+   （2026-10-26 用户第二次定案，写法照用户原话）。连带两处去重：辑面板头不再重复辑名（只留那一行主线），
+   页头那行「1 辑 6 集 2 小时 7 分」统计撤掉（跟纸签完全重复）。
+   辑名与「（共 N 集）」之间不留缝（`.cc-chip` 列间距 0，间距只给期号那道竖线）。
+4. 一期「DeepSeek 系列论文解读」改名「**DeepSeek-V3 / R1系列解读**」——只改 `data/community.json` 的
+   `title` 一个字段，页面辑标题 + 6 张封面的眉标全部跟着变（`npm run community-covers` 重出图）。
+5. 页头右侧加**「最新 | 最早」排序钮**（形态照用户给的参考图：文字 + 竖线分隔，当前项换主题色，不做边框不做底色）。
+   **排的对象是「辑」这一层，不是辑里的集**——用户特别叮嘱「这个排序是对所有的专辑，我现在有第壹辑，
+   以后可能还有第贰第叁第肆第伍辑」。集永远按观看顺序（第 1 集在最前），翻上来会毁掉追更的读法。
+   数据里的书写顺序就是添加顺序（新辑往后追加），所以 `最新`＝最近添加那辑在上（默认，书写顺序反过来），
+   `最早`＝最早添加那辑（第壹辑）在上。
+   ⚠ 标签走过一版：先按参考图做成「最热」，用户看完改成「最早」——他说得对，
+   这两个按钮说的是**添加时间的新旧**，而"最热"会被读成按播放数排（卡面上明摆着写着播放数）。
+   两个按钮仍挂 `title` 说明实际行为。纯前端切换，不写 URL 参数、不刷新。
+   验证：`design/20261026_社区大学tab/verify_sort.mjs` 临时塞一辑假数据 → build → 截两种顺序 → 还原
+   （实测输出 `第贰辑 → 第壹辑` / 点最早 `第壹辑 → 第贰辑`、集序不动）。
+   ⚠ 这类"点了没反应"的排查先看 preview 是不是旧的：build 会换 chunk 哈希名，
+   复用先前起着的 preview 会 404 掉 JS，页面不水合 → 按钮自然点不动（本条踩过一次）。
+6. 第贰辑「DeepSeek 技术解读」（UP **向量隐修会**，mid 81603844，season_id 8758680）收录 5 集。
+   **收录规则（用户定）：合集里只收标题带「DeepSeek」的**，所以该合集 8 条中的
+   「Transformer 中的 FFN」「MoE（混合专家模型）是什么？」「残差连接」「LayerNorm 与 RMSNorm」四条按字面规则不收。
+   ⚠ 例外一条：用户点名要加的 `BV1QfaD6mECi`（MoE 是什么）标题里其实**没有** DeepSeek，
+   与规则字面冲突——按"用户点名的 + 标题带 DeepSeek 的"收了它，并向用户回明可撤。
+   以后往这辑追加时先按规则筛，再问一句有无点名例外。
+   辑色盘/版式接着第壹辑的序号往后排（`coverLook` 吃扁平下标），所以两辑不会撞成同一套配色。
+7. 第叁辑「**DeepSeek 全系列串讲**」：用户丢来两条不同 UP 的长视频，让"你取个名字"。
+   取名理由：第壹/贰辑是**分机制逐集讲**，这两条是**一口气把整个系列串讲完**（闪客 11 分钟通讲 V1~V4、
+   张小珺 3 小时 21 分逐篇讲关键 9 篇），"串讲"是中文里现成的说法，跟"逐集"正好对仗。
+   ⚠ 这辑是**多 UP 合集**（飞天闪客 + 张小珺商业访谈录），不是某位 UP 的合集，所以：
+   - `up`/`mid` 从辑级下沉到**集级**（`e.up || iss.up` 兜底，老两辑的 JSON 不用动）；
+   - 面板头右侧单 UP 才给「UP 主空间 ›」链接，多 UP 只把名字列成一行纯文本（`.cc-ups`，不给链接不给 hover）；
+   - 封面底行的「UP 主 X」也改成读集级。
+   辑内顺序按用户丢链接的先后（先短后长），不是按发布日期——这辑没有合集自带的顺序。
+
+⚠ 生成器坑：三版式共用的角位 CSS（`.no/.dur/.meta`）必须拼在各版式自己的底纹覆盖**之前**，
+让后者能就地改位置（L3 的 `.no{top:96px}` 就是靠这个顺序盖掉默认的 `top:52px`）。
+顺序放反过一次：`.dur{right:52px}` 盖掉 L3 的 `right:auto`，时长胶囊被拉成一整条横杠。
+现在角位三版式完全统一，只有 L3 的编号为让开顶部主色横带而下移，不再有各版式各写一套的重复。
+
+⚠ 自检新增门禁（`check_portal.cjs`，114 → 134 项）：顶栏栏序（社区大学紧跟学习笔记右侧）、
+卡数与 `data/community.json` 对平、纸签/辑面板成对、每枚纸签都念全「辑名（共 N 集）总时长｜期号」、
+每块辑面板头都不重复自己那辑的辑名、页头统计行已撤、角标左右各 N、逐集直链与 data 一字不差、
+外链一律 `target=_blank` + `rel=noreferrer`、封面 200 可加载 + 左上角非黑取样、
+排序钮两项且默认「最新」、点「最早」后辑序真的反过来、排序不动辑内集序、点回「最新」可逆，
+并把 `/community/` 加进禁词与「根绝对链接漏网」两轮的页表。
+⚠ 期望顺序一律按**渲染顺序**（＝数据书写顺序的倒序）算，别拿 `issues[0]` 当页面第一张——
+第贰辑一进来就把这条绊倒过三次（直链清单、纸签断言、面板头断言）。
+
+### A41. 学习笔记页内栏目条改成两层：栏目纸签 + 分类纸带（2026-10-26 用户定案）
+
+用户嫌 `/notes` 顶部那条「全部笔记 / 专题案例 / 每日一文」**太干太单调**，
+连续否掉分段控件的几版形态（滑轨分段 / 墨底反白 / 纸面压印 / 直角等分格），
+最后给了一张课程站的**一级分类 + 二级子项**参照图，并在「丁」方案上指定：
+**分割线要精致到几乎感知不到**。
+
+定案 **丁-3 · 纸的层叠**：
+- 一级＝三个栏目的**纸签**（米棕纸 `#f7eeda` + 米棕字 `#6f4514`，跟社区大学的期号签同一张纸，跨十套主题恒定）；
+  选中签**下边框透明、圆角只留上面两个、上移 1px** → 视觉上"压住"下面的纸带。
+- 二级＝该栏下的**分类**，坐在一条更浅的**纸带**上；**边界不是画出来的，是两张纸的明度差**。
+- 二级项后带**真实篇数**（合计＝32，一篇不多一篇不少）。
+
+分类真源新增 `data/note-cats.json`（栏目 + 分类的 label 与顺序）；
+`data/papers.json` 每篇加 `category`；10 张专题页 frontmatter 加 `category`。
+二级项**真能点**：全部笔记 / 专题案例走 `?cat=xxx` 真筛选（卡片墙只留这一类 + 「正在看 … · 看全部」提示），
+每日一文只有 3 篇，二级直接列文章本身（直链正文）。
+
+⚠ 三个坑（都踩过，详见 `design/20261026_学习笔记栏目条五稿_丁细化/设计说明.md`）：
+1. **VitePress 的 `useRoute()` 里没有 `query`**（只有 path/data/params），而且同页只换 query
+   **不会重新挂载组件** → 只能 `onMounted` 时自己读 `window.location.search`，
+   二级链接一律 `target="_self"`（带 target 的链接不被 VitePress 拦截 → 整页重载）。
+2. SSR 阶段 `route.query` 是 undefined，直接 `route.query.cat` 会让构建期报
+   `TypeError: Cannot read properties of undefined (reading 'cat')`。
+3. 筛选**不能**靠「从数组里删元素」（会造成 SSR 水合不一致）→ 改成给不匹配的卡加 `.is-off`
+   （`display:none`），提示行用 `v-show` 不用 `v-if`。
+4. 暗色主题下纸带用 `light-dark()` 跟着 `color-scheme` 自动切（米棕 38% → 10%：
+   38% 压在深底上会发灰发浑），不必把三个暗色主题 id 写死。
+
+自检新增门禁（`check_portal.cjs`，134 → 143 项）：三个子栏页一级三项且当前项高亮、
+二级分类行项数（7 / 4 / 3）、未筛选时 32 张卡全在、二级带真实篇数且合计＝32、
+`?cat=mm` 只剩该分类的卡、二级对应项高亮、筛选提示行出现、专题页 `?cat=edge` 只剩 5 张。
+
+---
+
 ## B. 页面与样式定案
 
 ### B1. 论文总览链接不带下划线（2026-10-08 用户要求）
@@ -2092,17 +2225,22 @@ git -c core.sshCommand="ssh -o HostKeyAlias=github.com" \
 README 只留一张简表，完整目录树、脚本清单与命令全集在这里。
 
 ```
-.vitepress/config.mts        # 站点配置：base / nav 六栏 / cleanUrls:false / srcExclude
+.vitepress/config.mts        # 站点配置：base / nav 八栏 / cleanUrls:false / srcExclude
 .vitepress/theme/            # theme-defs.mjs（★主题真源）· NoteHeader.vue · ThemeSwitcher.vue
                              #   custom.css（索引样式）· Layout.vue · theme.generated.css（生成勿改）
-components/                  # PaperIndex.vue（索引 + 每篇入口）· HomeIntro.vue（首页介绍卡）
+components/                  # PaperIndex.vue（索引 + 每篇入口）· CommunityIndex.vue（社区大学，§A40）
+                             #   HomeIntro.vue（首页介绍卡）· NoteTabs.vue · DailyIndex.vue · PaperSearch.vue · SiteNavWall.vue
 content/DeepSeek_论文列表.md  # ★ 论文总览的文稿母本（文稿即源码）
 notes/<编号>_<短名>.md        # ★ 学习笔记，一篇一份，用户手写、脚本只补缺
 notes/papers.md              # 论文总览的产物（refresh-papers.mjs 从上面那份文稿生成，勿手改，§A26）
 notes/<其它名>.md            # 专题文章（不带 NN_ 前缀），封面由 npm run covers 按 frontmatter 出（§A25）
 data/papers.json master.json  # 清单与统计，由 gen-data.py 从仓内词汇页现推（勿手改）
+data/note-cats.json         # ★ 学习笔记子栏的分类真源（栏目 + 分类 label 与顺序），二级行与 ?cat= 筛选都读它（§A41）
+data/community.json          # ★ 社区大学的辑/集清单（B 站 bvid、时长、播放快照、封面文案），页面与封面生成器共读一份（§A40）
+community/index.md           # 社区大学页（顶栏第六栏，别人做的成系列解读，卡片直链原视频）
 public/study/{vocab,listen,master}/  # 67 张同步进来的成品页
-public/covers/               # 32 篇论文封面（covers3 出）+ T_<名>.png 专题封面（npm run covers 出）
+public/covers/               # 32 篇论文封面（covers3 出）+ T_<名>.png 专题封面（npm run covers）
+                             #   + C<辑>_<集>.png 社区大学视频封面（npm run community-covers，§A40）
 public/.nojekyll              # 关 Jekyll 处理（否则下划线开头资产会被剔）
 .sync-manifest.json          # 源页 sha1 指纹（sync 产出，跟仓一起提交）
 .githooks/pre-push  .github/workflows/deploy.yml   # 上线两半门禁（§D4）
@@ -2115,6 +2253,7 @@ scripts/
   refresh-papers.mjs         # content/ 文稿 → notes/papers.md（--check 只比对不写）
   gen-topic-covers.mjs       # 专题笔记封面：notes/ 里不带 NN_ 的 md → public/covers/T_<名>.png（npm run covers）
   gen-paper-covers.mjs       # 32 篇论文封面：data/papers.json + 导读金句 → public/covers/NN_<短名>.png（npm run paper-covers）
+  gen-community-covers.mjs   # 社区大学视频封面：data/community.json → public/covers/C<辑>_<集>.png（npm run community-covers，§A40）
   covers-style.mjs           # 封面视觉系统真源：Claude Code 式暖纸底 + 8 色多彩盘 + L1/L2/L3 三版式（§A39）
   covers-render.mjs          # 封面渲染公共动作：起浏览器（默认 → 系统 Chrome 兜底）+ 比字节写盘
   covers-lines.mjs           # 32 句导读金句（论文封面的字）
@@ -2122,7 +2261,7 @@ scripts/
   gen-theme-css.mjs          # theme-defs.mjs → theme.generated.css（兼校 12 变量齐全 + 每套对比度 ≥ 4.5:1）
   verify_content.mjs         # 14 项内容守卫（零依赖，CI 也跑）
   selfcheck_in_repo.mjs      # 断链实验：孤立副本里重建内容（npm run selfcheck）
-  check_portal.cjs           # Playwright 全路径自检（61 项，不进 CI，§D2）
+  check_portal.cjs           # Playwright 全路径自检（126 项，不进 CI，§D2）
   shot_nav.cjs shot_themes.cjs  # 顶栏/首页与逐套配色截图（人工核版面，不断言）
   push_via_ssh.sh            # 应急推送：HTTPS 走不通时改走 SSH-22 直连可达 IP（§D4.1）
 ```
@@ -2135,7 +2274,8 @@ scripts/
 | 学习笔记正文 | `notes/<编号>_<短名>.md` | `npm run build`（无需重生数据，§A3）|
 | 新增专题文章（带封面）| `notes/<名>.md` + frontmatter 的 `cover`（可选 `order` / `coverKicker` / `coverYear`）| `npm run covers` → build（§A25）|
 | 改封面配色 / 版式 | `scripts/covers-style.mjs`（色盘 + 三版式）| `npm run paper-covers && npm run covers` → build（§A39）|
-| 专题案例页版式 | `components/TopicBoard.vue` + `theme/custom.css` 的 `.dr-tg-*` | build（§A39）|
+| 专题案例页版式 | `components/PaperIndex.vue` 的 `mode="topic"` 分支 + `theme/custom.css` 的 `.dr-card.is-topic` | build（§A38，2026-10-26 板块化改版已回退）|
+| 社区大学加一期 / 加一集 | `data/community.json`（新增一个 issue 或往 episodes 里加一条）| `npm run community-covers` → build（§A40）|
 | 笔记页页头 | `theme/NoteHeader.vue` + `custom.css` 的 `.dr-note-*` | build |
 | 首页报头 + 艺术卡轮播（§B6）| `components/HomeIntro.vue` + `theme/custom.css` 的 `.dr-hero*` | build |
 | 顶栏「找论文」搜索弹窗（§B6）| `components/PaperSearch.vue` + `theme/custom.css` 的 `.search-modal` / `.sm-*` | build |

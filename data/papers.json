@@ -20,7 +20,8 @@
       "超纲": 6
     },
     "vocabPath": "/study/vocab/01_DeepSeek-LLM_论文词汇.html",
-    "listenPath": "/study/listen/01_DeepSeek-LLM_单词听力.html"
+    "listenPath": "/study/listen/01_DeepSeek-LLM_单词听力.html",
+    "category": "base"
   },
   {
     "num": "02",
@@ -43,7 +44,8 @@
       "超纲": 13
     },
     "vocabPath": "/study/vocab/02_DeepSeekMoE_论文词汇.html",
-    "listenPath": "/study/listen/02_DeepSeekMoE_单词听力.html"
+    "listenPath": "/study/listen/02_DeepSeekMoE_单词听力.html",
+    "category": "moe"
   },
   {
     "num": "03",
@@ -66,7 +68,8 @@
       "超纲": 13
     },
     "vocabPath": "/study/vocab/03_DeepSeek-Coder_论文词汇.html",
-    "listenPath": "/study/listen/03_DeepSeek-Coder_单词听力.html"
+    "listenPath": "/study/listen/03_DeepSeek-Coder_单词听力.html",
+    "category": "agent"
   },
   {
     "num": "04",
@@ -89,7 +92,8 @@
       "超纲": 14
     },
     "vocabPath": "/study/vocab/04_DeepSeekMath_论文词汇.html",
-    "listenPath": "/study/listen/04_DeepSeekMath_单词听力.html"
+    "listenPath": "/study/listen/04_DeepSeekMath_单词听力.html",
+    "category": "math"
   },
   {
     "num": "05",
@@ -112,7 +116,8 @@
       "超纲": 4
     },
     "vocabPath": "/study/vocab/05_DeepSeek-VL_论文词汇.html",
-    "listenPath": "/study/listen/05_DeepSeek-VL_单词听力.html"
+    "listenPath": "/study/listen/05_DeepSeek-VL_单词听力.html",
+    "category": "mm"
   },
   {
     "num": "06",
@@ -135,7 +140,8 @@
       "超纲": 3
     },
     "vocabPath": "/study/vocab/06_DeepSeek-V2_论文词汇.html",
-    "listenPath": "/study/listen/06_DeepSeek-V2_单词听力.html"
+    "listenPath": "/study/listen/06_DeepSeek-V2_单词听力.html",
+    "category": "base"
   },
   {
     "num": "07",
@@ -158,7 +164,8 @@
       "超纲": 7
     },
     "vocabPath": "/study/vocab/07_DeepSeek-Prover_论文词汇.html",
-    "listenPath": "/study/listen/07_DeepSeek-Prover_单词听力.html"
+    "listenPath": "/study/listen/07_DeepSeek-Prover_单词听力.html",
+    "category": "math"
   },
   {
     "num": "08",
@@ -181,7 +188,8 @@
       "超纲": 2
     },
     "vocabPath": "/study/vocab/08_DeepSeek-Coder-V2_论文词汇.html",
-    "listenPath": "/study/listen/08_DeepSeek-Coder-V2_单词听力.html"
+    "listenPath": "/study/listen/08_DeepSeek-Coder-V2_单词听力.html",
+    "category": "agent"
   },
   {
     "num": "09",
@@ -204,7 +212,8 @@
       "超纲": 10
     },
     "vocabPath": "/study/vocab/09_ESFT_论文词汇.html",
-    "listenPath": "/study/listen/09_ESFT_单词听力.html"
+    "listenPath": "/study/listen/09_ESFT_单词听力.html",
+    "category": "rl"
   },
   {
     "num": "10",
@@ -227,7 +236,8 @@
       "超纲": 6
     },
     "vocabPath": "/study/vocab/10_Prover-V1.5_论文词汇.html",
-    "listenPath": "/study/listen/10_Prover-V1.5_单词听力.html"
+    "listenPath": "/study/listen/10_Prover-V1.5_单词听力.html",
+    "category": "math"
   },
   {
     "num": "11",
@@ -250,7 +260,8 @@
       "超纲": 7
     },
     "vocabPath": "/study/vocab/11_Fire-Flyer_论文词汇.html",
-    "listenPath": "/study/listen/11_Fire-Flyer_单词听力.html"
+    "listenPath": "/study/listen/11_Fire-Flyer_单词听力.html",
+    "category": "rl"
   },
   {
     "num": "12",
@@ -273,7 +284,8 @@
       "超纲": 14
     },
     "vocabPath": "/study/vocab/12_Janus_论文词汇.html",
-    "listenPath": "/study/listen/12_Janus_单词听力.html"
+    "listenPath": "/study/listen/12_Janus_单词听力.html",
+    "category": "mm"
   },
   {
     "num": "13",
@@ -296,7 +308,8 @@
       "超纲": 7
     },
     "vocabPath": "/study/vocab/13_JanusFlow_论文词汇.html",
-    "listenPath": "/study/listen/13_JanusFlow_单词听力.html"
+    "listenPath": "/study/listen/13_JanusFlow_单词听力.html",
+    "category": "mm"
   },
   {
     "num": "14",
@@ -319,7 +332,8 @@
       "超纲": 8
     },
     "vocabPath": "/study/vocab/14_VL2_论文词汇.html",
-    "listenPath": "/study/listen/14_VL2_单词听力.html"
+    "listenPath": "/study/listen/14_VL2_单词听力.html",
+    "category": "mm"
   },
   {
     "num": "15",
@@ -342,7 +356,8 @@
       "超纲": 3
     },
     "vocabPath": "/study/vocab/15_DeepSeek-V3_论文词汇.html",
-    "listenPath": "/study/listen/15_DeepSeek-V3_单词听力.html"
+    "listenPath": "/study/listen/15_DeepSeek-V3_单词听力.html",
+    "category": "base"
   },
   {
     "num": "16",
@@ -365,7 +380,8 @@
       "超纲": 13
     },
     "vocabPath": "/study/vocab/16_DeepSeek-R1_论文词汇.html",
-    "listenPath": "/study/listen/16_DeepSeek-R1_单词听力.html"
+    "listenPath": "/study/listen/16_DeepSeek-R1_单词听力.html",
+    "category": "rl"
   },
   {
     "num": "17",
@@ -388,7 +404,8 @@
       "超纲": 4
     },
     "vocabPath": "/study/vocab/17_Janus-Pro_论文词汇.html",
-    "listenPath": "/study/listen/17_Janus-Pro_单词听力.html"
+    "listenPath": "/study/listen/17_Janus-Pro_单词听力.html",
+    "category": "mm"
   },
   {
     "num": "18",
@@ -411,7 +428,8 @@
       "超纲": 4
     },
     "vocabPath": "/study/vocab/18_NSA_论文词汇.html",
-    "listenPath": "/study/listen/18_NSA_单词听力.html"
+    "listenPath": "/study/listen/18_NSA_单词听力.html",
+    "category": "sparse"
   },
   {
     "num": "19",
@@ -434,7 +452,8 @@
       "超纲": 8
     },
     "vocabPath": "/study/vocab/19_RM_论文词汇.html",
-    "listenPath": "/study/listen/19_RM_单词听力.html"
+    "listenPath": "/study/listen/19_RM_单词听力.html",
+    "category": "rl"
   },
   {
     "num": "20",
@@ -457,7 +476,8 @@
       "超纲": 10
     },
     "vocabPath": "/study/vocab/20_Prover-V2_论文词汇.html",
-    "listenPath": "/study/listen/20_Prover-V2_单词听力.html"
+    "listenPath": "/study/listen/20_Prover-V2_单词听力.html",
+    "category": "math"
   },
   {
     "num": "21",
@@ -480,7 +500,8 @@
       "超纲": 9
     },
     "vocabPath": "/study/vocab/21_Insights-V3_论文词汇.html",
-    "listenPath": "/study/listen/21_Insights-V3_单词听力.html"
+    "listenPath": "/study/listen/21_Insights-V3_单词听力.html",
+    "category": "base"
   },
   {
     "num": "22",
@@ -503,7 +524,8 @@
       "超纲": 6
     },
     "vocabPath": "/study/vocab/22_DeepSeek-OCR_论文词汇.html",
-    "listenPath": "/study/listen/22_DeepSeek-OCR_单词听力.html"
+    "listenPath": "/study/listen/22_DeepSeek-OCR_单词听力.html",
+    "category": "mm"
   },
   {
     "num": "23",
@@ -526,7 +548,8 @@
       "超纲": 4
     },
     "vocabPath": "/study/vocab/23_DeepSeekMath-V2_论文词汇.html",
-    "listenPath": "/study/listen/23_DeepSeekMath-V2_单词听力.html"
+    "listenPath": "/study/listen/23_DeepSeekMath-V2_单词听力.html",
+    "category": "math"
   },
   {
     "num": "24",
@@ -549,7 +572,8 @@
       "超纲": 2
     },
     "vocabPath": "/study/vocab/24_DeepSeek-V3.2_论文词汇.html",
-    "listenPath": "/study/listen/24_DeepSeek-V3.2_单词听力.html"
+    "listenPath": "/study/listen/24_DeepSeek-V3.2_单词听力.html",
+    "category": "base"
   },
   {
     "num": "25",
@@ -572,7 +596,8 @@
       "超纲": 5
     },
     "vocabPath": "/study/vocab/25_mHC_论文词汇.html",
-    "listenPath": "/study/listen/25_mHC_单词听力.html"
+    "listenPath": "/study/listen/25_mHC_单词听力.html",
+    "category": "base"
   },
   {
     "num": "26",
@@ -595,7 +620,8 @@
       "超纲": 13
     },
     "vocabPath": "/study/vocab/26_Engram_论文词汇.html",
-    "listenPath": "/study/listen/26_Engram_单词听力.html"
+    "listenPath": "/study/listen/26_Engram_单词听力.html",
+    "category": "moe"
   },
   {
     "num": "27",
@@ -618,7 +644,8 @@
       "超纲": 8
     },
     "vocabPath": "/study/vocab/27_OCR2_论文词汇.html",
-    "listenPath": "/study/listen/27_OCR2_单词听力.html"
+    "listenPath": "/study/listen/27_OCR2_单词听力.html",
+    "category": "mm"
   },
   {
     "num": "28",
@@ -641,7 +668,8 @@
       "超纲": 2
     },
     "vocabPath": "/study/vocab/28_DualPath_论文词汇.html",
-    "listenPath": "/study/listen/28_DualPath_单词听力.html"
+    "listenPath": "/study/listen/28_DualPath_单词听力.html",
+    "category": "agent"
   },
   {
     "num": "29",
@@ -664,7 +692,8 @@
       "超纲": 9
     },
     "vocabPath": "/study/vocab/29_DeepSeek-V4_论文词汇.html",
-    "listenPath": "/study/listen/29_DeepSeek-V4_单词听力.html"
+    "listenPath": "/study/listen/29_DeepSeek-V4_单词听力.html",
+    "category": "base"
   },
   {
     "num": "30",
@@ -687,7 +716,8 @@
       "超纲": 9
     },
     "vocabPath": "/study/vocab/30_DSpark_论文词汇.html",
-    "listenPath": "/study/listen/30_DSpark_单词听力.html"
+    "listenPath": "/study/listen/30_DSpark_单词听力.html",
+    "category": "rl"
   },
   {
     "num": "31",
@@ -710,7 +740,8 @@
       "超纲": 40
     },
     "vocabPath": "/study/vocab/31_Spatiotemporal_论文词汇.html",
-    "listenPath": "/study/listen/31_Spatiotemporal_单词听力.html"
+    "listenPath": "/study/listen/31_Spatiotemporal_单词听力.html",
+    "category": "agent"
   },
   {
     "num": "32",
@@ -733,6 +764,7 @@
       "超纲": 8
     },
     "vocabPath": "/study/vocab/32_DeepSeek-V4.1-Flash_论文词汇.html",
-    "listenPath": "/study/listen/32_DeepSeek-V4.1-Flash_单词听力.html"
+    "listenPath": "/study/listen/32_DeepSeek-V4.1-Flash_单词听力.html",
+    "category": "base"
   }
 ]

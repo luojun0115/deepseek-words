@@ -1,4 +1,5 @@
 ---
+category: edge
 # 卡片元数据（/notes「专题与索引」组用，2026-10-25 从顶层卡页搬进来）：卡面金句 / 排序 / 封面图名
 # 缩放定律专题 08：Ruan, Maddison & Hashimoto 2024，Observational Scaling Laws and the Predictability of Language Model Performance（arXiv:2405.10938）
 title: 缩放定律 08 · Ruan 2024：Observational Scaling Laws and the Predictability of Language Model Performance

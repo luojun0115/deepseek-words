@@ -1,8 +1,9 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { withBase } from 'vitepress'   // GitHub Pages 站点在 /deepseek-words/ 子路径下，根绝对路径必须过 withBase
 import papers from '../data/papers.json'
 import ms from '../data/master.json'      // 总集统计（merge_all.py 产出），文案不写死数字
+import CATS from '../data/note-cats.json' // 子栏分类真源（label 与顺序）
 
 const props = defineProps({
   mode: { type: String, default: 'both' },   // both | vocab | listen | note | arxiv
@@ -50,9 +51,37 @@ const TOPICS = Object.entries(NOTE_SRC)
       cover: withBase('/covers/T_' + slug + '.png'),
       // order：组内权重，越小越前；没写就是 500
       order: Number(fmValue(src, 'order')) || 500,
+      category: fmValue(src, 'category') || '',
     }
   })
   .sort((a, b) => a.order - b.order || a.dir.localeCompare(b.dir))
+
+/* 分类筛选（2026-10-26）：页内子栏条的二级行点分类 → URL 带 ?cat=xxx → 卡片墙只留这一类。
+   ⚠ VitePress 的 useRoute() 只有 path / data / params，**没有 query**，而且同页只换 query
+   不会重新挂载组件，所以在 setup 里同步读不到；改成挂载时自己读 location.search
+   （二级链接带 target="_self" → 整页重载，每次都会重跑）。
+   ⚠ 筛选用「加 .is-off 隐藏」而不是「从数组里删掉」：SSR 渲的是全量卡片，
+   若客户端 setup 直接删元素会造成水合不一致（Vue 会报 hydration mismatch）。 */
+const cat = ref('')
+onMounted(() => {
+  cat.value = new URLSearchParams(window.location.search).get('cat') || ''
+})
+const catLabel = computed(() => {
+  for (const col of Object.values(CATS.columns)) {
+    const hit = col.cats.find((c) => c.key === cat.value)
+    if (hit) return hit.label
+  }
+  return cat.value
+})
+const catHref = computed(() => withBase(props.mode === 'topic' ? '/notes/cases/' : '/notes/'))
+const isOffPaper = (p) => cat.value && p.category !== cat.value
+const isOffTopic = (t) => cat.value && t.category !== cat.value
+const visibleCount = computed(() => {
+  if (!cat.value) return props.mode === 'topic' ? TOPICS.length : papers.length
+  return props.mode === 'topic'
+    ? TOPICS.filter((t) => t.category === cat.value).length
+    : papers.filter((p) => p.category === cat.value).length
+})
 
 const sortBy = ref('num')       // num | words | time
 
@@ -108,7 +137,7 @@ const arxivHref = (p) => p.arxiv
 
 /* 搜索已移到顶栏「找论文」弹窗（PaperSearch.vue），这里只负责排序 */
 const list = computed(() => {
-  const r = papers.slice()
+  const r = papers.slice()   /* 分类筛选不改这个数组：靠卡面上的 .is-off 隐藏（见上），否则会水合不一致 */
   if (sortBy.value === 'words') {
     r.sort((a, b) => b.words - a.words)
   } else if (sortBy.value === 'time') {
@@ -152,8 +181,9 @@ const master = computed(() => {
     <!-- 专题案例页（mode='topic'，2026-10-25 新增子栏）：只出专题卡墙，不排 32 篇论文卡，
          也就没有编号/词数/时间可排——排序下拉整块隐掉。 -->
     <div class="dr-tools">
-      <p v-if="mode === 'topic'" class="dr-hint">{{ TOPICS.length }} 张专题卡 · 封面是这篇的核心判断，点进去是正文</p>
-      <p v-else class="dr-hint">{{ papers.length }} 篇技术报告{{ hint }}</p>
+      <p v-show="cat" class="dr-hint dr-filter">正在看 <b>{{ catLabel }}</b> · {{ visibleCount }} 篇 · <a :href="catHref">看全部</a></p>
+      <p v-if="!cat && mode === 'topic'" class="dr-hint">{{ TOPICS.length }} 张专题卡 · 封面是这篇的核心判断，点进去是正文</p>
+      <p v-else-if="!cat" class="dr-hint">{{ papers.length }} 篇技术报告{{ hint }}</p>
       <label v-if="mode !== 'topic'" class="dr-sort">
         <span>排序</span>
         <select v-model="sortBy">
@@ -215,6 +245,7 @@ const master = computed(() => {
         <a
           v-if="mode === 'arxiv'"
           class="dr-card is-paper"
+          :class="{ 'is-off': isOffPaper(p) }"
           :href="arxivHref(p)"
           target="_blank"
           rel="noreferrer"
@@ -230,7 +261,7 @@ const master = computed(() => {
             </div>
           </div>
         </a>
-        <div v-else class="dr-card is-paper">
+        <div v-else class="dr-card is-paper" :class="{ 'is-off': isOffPaper(p) }">
         <div
           class="dr-card-media" role="img" :aria-label="p.num + ' · ' + p.short + ' 金句封面'"
           :style="{ backgroundImage: `url(${withBase('/covers/' + p.num + '_' + p.short + '.png')})` }"
@@ -251,7 +282,7 @@ const master = computed(() => {
            /notes 现在只留 32 篇论文卡，顶部有子栏 tab 条（components/NoteTabs.vue）指过去。
            卡源口径没变：notes/ 顶层不带 NN_ 前缀的 md + zhuanti-search 总览与各子目录 index.md。 -->
       <template v-if="mode === 'topic' && TOPICS.length">
-        <a v-for="t in TOPICS" :key="t.dir" class="dr-card is-topic" :href="t.href" target="_self">
+        <a v-for="t in TOPICS" :key="t.dir" class="dr-card is-topic" :class="{ 'is-off': isOffTopic(t) }" :href="t.href" target="_self">
           <div
             class="dr-card-media" role="img" :aria-label="t.title + ' 封面'"
             :style="{ backgroundImage: `url(${t.cover})` }"
@@ -266,6 +297,6 @@ const master = computed(() => {
       </template>
     </div>
 
-    <div v-if="!list.length" class="dr-empty">没有匹配的论文，换个关键词试试。</div>
+    <div v-if="!list.length || (cat && !visibleCount)" class="dr-empty">没有匹配的论文，换个关键词试试。</div>
   </div>
 </template>

@@ -1,4 +1,5 @@
 ---
+category: model
 # 卡片元数据（/notes「专题与索引」组用，2026-10-25 从顶层卡页搬进来）：卡面金句 / 排序 / 封面图名
 # 缩放定律专题 03：Touvron et al. 2023，LLaMA: Open and Efficient Foundation Language Models（arXiv:2302.13971）
 title: 缩放定律 03 · LLaMA 2023：Open and Efficient Foundation Language Models

@@ -13,6 +13,7 @@
   public/study/listen/NN_NAME_单词听力.html  → 只做存在性校验（缺页即报错，别写半成品）
 输出：
   data/papers.json   字段 num/dir/short/title/arxiv/year/words/bands/vocabPath/listenPath
+                      ＋ category（学习笔记子栏分类，§A41）：不在词页里，重推时从盘上原样带回来
   data/master.json   字段 papers/totalWords/dedupWords/firstNum/lastNum（首页与总集文案读它）
 
 用法：
@@ -135,6 +136,25 @@ if errors:
     sys.exit(1)
 
 nums = sorted(r['num'] for r in rows)
+
+# 手维护字段：category（学习笔记子栏的分类，§A41）不在词页里，重推时必须原样带回来，
+# 否则跑一句 npm run data 就把 32 篇的分类抹掉，二级分类行与 ?cat= 筛选会集体失灵。
+CATS = json.load(io.open(os.path.join(PORTAL, 'data', 'note-cats.json'), encoding='utf-8'))
+KNOWN_CATS = {c['key'] for col in CATS['columns'].values() for c in col['cats']}
+old_cat = {}
+old_path = os.path.join(PORTAL, 'data', 'papers.json')
+if os.path.exists(old_path):
+    try:
+        for it in json.load(io.open(old_path, encoding='utf-8')):
+            if it.get('category'):
+                old_cat[it.get('dir')] = it['category']
+    except Exception:
+        old_cat = {}
+for r in rows:
+    c = old_cat.get(r['dir'])
+    if c in KNOWN_CATS:
+        r['category'] = c
+
 papers_json = json.dumps(rows, ensure_ascii=False, indent=2) + '\n'
 master = {
     'papers': len(rows),
