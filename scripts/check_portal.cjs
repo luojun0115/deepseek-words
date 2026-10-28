@@ -522,6 +522,34 @@ const ok = (name, cond, extra = '') => {
   /* 页面默认「最新」＝数据书写顺序的倒序（新辑往后追加 → 新辑排最前），
      下面所有逐辑逐集的期望都按这个渲染顺序算，别拿 issues[0] 当第一张。 */
   const ccOrder = [...CD.issues].reverse()
+  /* 追加新辑最容易撞的两件事：同一条视频被收进两辑、封面文件名撞车。
+     2026-10-28 收第肆辑（EZ-Encoder 14 集）时补的守卫，纯查数据不碰页面。 */
+  const ccBvids = CD.issues.flatMap((i) => i.episodes.map((e) => e.bvid))
+  ok(`${cEps} 集无一条重复收录（bvid 全站唯一）`,
+    ccBvids.filter((v, k) => ccBvids.indexOf(v) !== k).length === 0,
+    '撞车：' + ccBvids.filter((v, k) => ccBvids.indexOf(v) !== k).join(','))
+  const ccCovers = CD.issues.flatMap((i) => i.episodes.map((e) => e.cover))
+  ok('封面文件名全站唯一', new Set(ccCovers).size === ccCovers.length,
+    '撞车：' + ccCovers.filter((v, k) => ccCovers.indexOf(v) !== k).join(','))
+  ok('每辑内部封面同前缀（第 N 辑 → C<N>_xx）',
+    CD.issues.every((i) => new Set(i.episodes.map((e) => (e.cover.match(/^C\d+_/) || [''])[0])).size === 1),
+    CD.issues.map((i) => i.no + ':' + ((i.episodes[0].cover.match(/^C\d+_/) || ['?'])[0] || '?')).join(' '))
+  /* 分篇（2026-10-28 用户定案 A 方案）：parts 里的集号必须存在、不重叠、每组至少 2 集。
+     纯查数据不碰页面——写错一个集号，页面上就会少一张卡、弹窗里少一行，很隐蔽。 */
+  ok('分篇（parts）集号都存在、不重叠、每组 ≥2 集',
+    CD.issues.every((i) => {
+      const nos = new Set(i.episodes.map((e) => e.no))
+      const seen = new Set()
+      for (const p of i.parts || []) {
+        if (p.eps.length < 2) return false
+        for (const no of p.eps) {
+          if (!nos.has(no) || seen.has(no)) return false
+          seen.add(no)
+        }
+      }
+      return true
+    }),
+    CD.issues.map((i) => i.no + ':' + ((i.parts || []).map((p) => p.eps.join('')).join('+') || '—')).join(' '))
   await page.goto(BASE + '/notes/index.html', { waitUntil: 'networkidle' })
   const navTexts = (await page.locator('.VPNavBarMenu .VPNavBarMenuLink').allInnerTexts()).map((s) => s.trim())
   ok('顶栏「社区大学」紧跟在「学习笔记」右侧',
@@ -533,28 +561,41 @@ const ok = (name, cond, extra = '') => {
     (await ccNav.first().getAttribute('href')) || '未找到')
 
   await page.goto(BASE + '/community/index.html', { waitUntil: 'networkidle' })
+  /* 分篇（2026-10-28 用户定案 A 方案）：有 parts 的辑，连载收成一张「代表卡」，点开弹窗才铺开子集。
+     所以页面卡片数 = 组数 + 未分组的单集数，不再等于总集数；总集数的完整性交给下面的弹窗断言兜。 */
+  const ccParts = CD.issues.flatMap((i) => (i.parts || []).map((p) => ({ ...p, iss: i })))
+  const ccGroupedNos = (i) => new Set((i.parts || []).flatMap((p) => p.eps))
+  const cSingles = CD.issues.reduce((a, i) => a + i.episodes.filter((e) => !ccGroupedNos(i).has(e.no)).length, 0)
+  const cCards = ccParts.length + cSingles
   const ccCards = page.locator('.dr-lib.cc .cc-card')
-  ok(`社区大学 ${cEps} 张视频卡（${CD.issues.length} 辑，与 data/community.json 对平）`,
-    (await ccCards.count()) === cEps, '实得 ' + (await ccCards.count()) + ' 张')
+  ok(`社区大学 ${cCards} 张卡（${ccParts.length} 张代表卡 + ${cSingles} 张单集，共 ${cEps} 集）`,
+    (await ccCards.count()) === cCards, '实得 ' + (await ccCards.count()) + ' 张')
   ok(`社区大学 ${CD.issues.length} 枚期号纸签 + ${CD.issues.length} 块辑面板`,
     (await page.locator('.dr-lib.cc .cc-chip').count()) === CD.issues.length &&
     (await page.locator('.dr-lib.cc .cc-band').count()) === CD.issues.length)
-  ok('社区大学卡面叠了「第 N 集 / 时长」角标（2026-10-26 用户定案）',
-    (await page.locator('.cc-bdg-l').count()) === cEps && (await page.locator('.cc-bdg-r').count()) === cEps,
+  // 角标：单集卡「第 N 集 / 时长」，代表卡「共 N 集 / 总时长」——两行都在，但读的不是一回事
+  ok('卡面角标齐（单集卡「第 N 集 / 时长」，代表卡「共 N 集 / 总时长」）',
+    (await page.locator('.cc-bdg-l').count()) === cCards && (await page.locator('.cc-bdg-r').count()) === cCards,
     '左 ' + (await page.locator('.cc-bdg-l').count()) + ' 右 ' + (await page.locator('.cc-bdg-r').count()))
-  // 卡片全部跳站外，必须新标签 + 断引用；地址逐集对得上 data
-  const ccLinks = await ccCards.evaluateAll((els) => els.map((e) => ({
+  const ccGroupLbl = await page.locator('.dr-lib.cc .cc-group .cc-bdg-l').allInnerTexts()
+  ok(`代表卡左角标一律念「共 N 集」（${ccGroupLbl.length} 张）`,
+    ccGroupLbl.length === ccParts.length && ccGroupLbl.every((t) => /^共 \d+ 集$/.test(t.trim())),
+    ccGroupLbl.join(' / '))
+  /* 直链只查单集卡：代表卡是 <button>，点开的是弹窗，没有 href */
+  const ccSingleLinks = await page.locator('.dr-lib.cc a.cc-card').evaluateAll((els) => els.map((e) => ({
     href: e.getAttribute('href'), target: e.getAttribute('target'), rel: e.getAttribute('rel'),
   })))
-  const wantLinks = ccOrder.flatMap((i) => i.episodes.map((e) => 'https://www.bilibili.com/video/' + e.bvid + '/'))
-  ok('每张卡直链 data 里那条 B 站视频',
-    JSON.stringify(ccLinks.map((l) => l.href)) === JSON.stringify(wantLinks),
-    ccLinks[0].href || '未找到')
+  const wantLinks = ccOrder.flatMap((i) => i.episodes
+    .filter((e) => !ccGroupedNos(i).has(e.no))
+    .map((e) => 'https://www.bilibili.com/video/' + e.bvid + '/'))
+  ok(`每张单集卡（${wantLinks.length} 张）直链 data 里那条 B 站视频，顺序＝辑内观看顺序`,
+    JSON.stringify(ccSingleLinks.map((l) => l.href)) === JSON.stringify(wantLinks),
+    (ccSingleLinks[0] || {}).href || '未找到')
   ok('外部卡一律新标签打开且带 rel=noreferrer',
-    ccLinks.every((l) => l.target === '_blank' && /noreferrer/.test(l.rel || '')))
+    ccSingleLinks.length > 0 && ccSingleLinks.every((l) => l.target === '_blank' && /noreferrer/.test(l.rel || '')))
   const ccCovs = await ccCards.locator('.dr-card-media').evaluateAll((els) => els.map((e) => e.style.backgroundImage))
-  ok('社区大学卡全带封面（/covers/C<辑>_<集>.png）',
-    ccCovs.length === cEps && ccCovs.every((s) => /\/covers\/C\d+_\d+\.png/.test(s)), ccCovs[0] || '未找到')
+  ok('社区大学卡全带封面（代表卡用该篇首集的封面）',
+    ccCovs.length === cCards && ccCovs.every((s) => /\/covers\/C\d+_\d+\.png/.test(s)), ccCovs[0] || '未找到')
   const ccCovUrls = ccCovs.map((s) => (s.match(/url\("?([^")]+)"?\)/) || [])[1]).filter(Boolean)
   const ccCovCode = await page.evaluate((urls) => Promise.all(urls.map((u) => fetch(u).then((r) => r.status))), ccCovUrls)
   ok('社区大学封面全部可加载（HTTP 200）', ccCovCode.every((s) => s === 200), ccCovCode.join(','))
@@ -571,7 +612,7 @@ const ok = (name, cond, extra = '') => {
     return out
   }, ccCovUrls)
   ok('社区大学封面左上角不是黑色（实渲染取样）',
-    ccTopPx.length === cEps && ccTopPx.every((p) => p[0] + p[1] + p[2] > 180), JSON.stringify(ccTopPx.slice(0, 2)))
+    ccTopPx.length === cCards && ccTopPx.every((p) => p[0] + p[1] + p[2] > 180), JSON.stringify(ccTopPx.slice(0, 2)))
   const ccChips = (await page.locator('.dr-lib.cc .cc-chip').allInnerTexts())
     .map((s) => s.replace(/\s+/g, ' '))
   ok(`每枚纸签（共 ${ccOrder.length} 枚）都念全「辑名（共 N 集）总时长」+ 期号，且按最新在上排`,
@@ -606,15 +647,47 @@ const ok = (name, cond, extra = '') => {
   ok('点「最早」后辑序真的翻过来（第壹辑排到最前）',
     JSON.stringify(await nosOf()) === JSON.stringify(CD.issues.map((i) => i.no)),
     (await nosOf()).join(' → '))
-  const epNosAfter = await page.locator('.cc-issue').first().locator('.cc-bdg-l').allInnerTexts()
-  ok('排序不动辑内集序（第 1 集永远在最前）',
-    epNosAfter[0].trim() === '第 ' + CD.issues[0].episodes[0].no + ' 集', epNosAfter.slice(0, 2).join(','))
+  /* 辑内集序：代表卡排在最前（它是这一辑的头一篇），所以取第一张**单集卡**来验 */
+  const epNosAfter = await page.locator('.cc-issue').first().locator('a.cc-card .cc-bdg-l').allInnerTexts()
+  const headSingle = CD.issues[0].episodes.find((e) => !ccGroupedNos(CD.issues[0]).has(e.no))
+  ok('排序不动辑内集序（未分组的第 1 集永远在最前）',
+    epNosAfter.length > 0 && epNosAfter[0].trim() === '第 ' + headSingle.no + ' 集', epNosAfter.slice(0, 2).join(','))
   await ccSorts.first().click()
   await page.waitForTimeout(250)
   ok('点回「最新」可逆（又变成最近添加那辑在上）',
     (await page.locator('.cc-sort-o.is-on').innerText()) === '最新'
     && JSON.stringify(await nosOf()) === JSON.stringify(ccOrder.map((i) => i.no)),
     (await nosOf()).join(' → '))
+  // 分篇弹窗（2026-10-28 A 方案）：点代表卡 → 纸片列出这一篇全部子集，页面高度一点不动
+  const headPart = (ccOrder[0].parts || [])[0]
+  ok('最新那辑带分篇数据（第一张代表卡可点）', !!headPart, ccOrder[0].no)
+  if (headPart) {
+    const pageH0 = await page.evaluate(() => document.body.scrollHeight)
+    await page.locator('.dr-lib.cc .cc-group').first().click()
+    await page.waitForTimeout(400)
+    const dlgTitle = (await page.locator('.cc-dlg-name').innerText()).trim()
+    const dlgRows = await page.locator('.cc-dlg-list li').count()
+    const pageH1 = await page.evaluate(() => document.body.scrollHeight)
+    ok(`点代表卡弹出纸片：标题是篇名，清单行数＝该篇集数（${headPart.eps.length}）`,
+      dlgTitle === headPart.name && dlgRows === headPart.eps.length, `标题「${dlgTitle}」行 ${dlgRows}`)
+    ok('弹窗打开不推动页面（body 高度不变）', pageH0 === pageH1, `${pageH0}px → ${pageH1}px`)
+    ok('弹窗打开时锁住背景滚动',
+      (await page.evaluate(() => document.body.style.overflow)) === 'hidden')
+    const dlgHrefs = await page.locator('.cc-dlg-list li a').evaluateAll((els) => els.map((e) => ({
+      href: e.getAttribute('href'), target: e.getAttribute('target'), rel: e.getAttribute('rel'),
+    })))
+    const wantPart = headPart.eps.map((no) =>
+      'https://www.bilibili.com/video/' + ccOrder[0].episodes.find((e) => e.no === no).bvid + '/')
+    ok('弹窗每行直链该集 B 站视频、新标签 + noreferrer',
+      JSON.stringify(dlgHrefs.map((l) => l.href)) === JSON.stringify(wantPart) &&
+      dlgHrefs.every((l) => l.target === '_blank' && /noreferrer/.test(l.rel || '')),
+      dlgHrefs[0] ? dlgHrefs[0].href : '未找到')
+    await page.keyboard.press('Escape')
+    await page.waitForTimeout(300)
+    ok('Esc 关掉弹窗且复原滚动锁',
+      (await page.locator('.cc-dlg').count()) === 0 &&
+      (await page.evaluate(() => document.body.style.overflow)) === '')
+  }
   await page.screenshot({ path: SHOT + '/29c_社区大学页.png' })
 
   await page.goto(BASE + '/notes/index.html', { waitUntil: 'networkidle' })

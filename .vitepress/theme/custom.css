@@ -350,6 +350,80 @@
   font-size: 12px; line-height: 1.7; color: var(--dr-ink2);
 }
 
+/* ============ 分篇：代表卡 + 弹窗（2026-10-28 用户定案 A 方案）============
+   一辑里有连载的（V3 报告 part1–4、R1 论文详解 7 集……）不再一集一卡铺满，
+   收成一张代表卡，点开弹一张纸片列出全部子集。
+   fixed + Teleport 到 body → 页面高度 0 变化（实测 2403px → 2403px）。
+   ⚠ 弹窗那层挂在 body 上、不在 .dr-lib 里，所以 .cc-dlg-* 的选择器不带 .dr-lib 前缀。 */
+.dr-lib.cc .cc-group {
+  appearance: none; border: 0; background: none; padding: 0; margin: 0; width: 100%;
+  font: inherit; color: inherit; text-align: left; cursor: pointer;
+}
+.dr-lib.cc .cc-group:focus-visible { outline: 2px solid var(--dr-accent); outline-offset: 4px; border-radius: 4px; }
+
+.cc-dlg-mask {
+  /* 1000：VitePress 的导航（fixed, z-index 40 上下）和本地搜索层都在 100 以内，
+     200 时实测压不住顶栏，顶栏会亮在遮罩上面 */
+  position: fixed; inset: 0; z-index: 1000; padding: 24px;
+  display: flex; align-items: center; justify-content: center;
+  background: color-mix(in srgb, var(--dr-ink) 28%, transparent);
+}
+.cc-dlg {
+  width: min(560px, 100%); max-height: min(78vh, 720px); overflow: auto;
+  background: color-mix(in srgb, var(--dr-bg) 88%, #fff);
+  border: 1px solid color-mix(in srgb, var(--dr-ink) 20%, transparent);
+  border-radius: 3px;
+  box-shadow: 0 26px 70px color-mix(in srgb, var(--dr-ink) 26%, transparent);
+  padding: 20px 24px 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+  color: var(--dr-ink);
+}
+.cc-dlg-hd { display: flex; align-items: baseline; gap: 14px; }
+.cc-dlg-name { flex: 1; font: 700 19px/1.35 var(--dr-hf); color: var(--dr-ink); }
+.cc-dlg-x {
+  flex: none; appearance: none; border: 0; background: none; padding: 0 2px; cursor: pointer;
+  font: 400 22px/1 var(--dr-hf); color: var(--dr-ink2);
+}
+.cc-dlg-x:hover { color: var(--dr-ink); }
+.cc-dlg-x:focus-visible { outline: 2px solid var(--dr-accent); outline-offset: 3px; border-radius: 3px; }
+.cc-dlg-meta {
+  margin: 6px 0 12px; padding-bottom: 11px;
+  border-bottom: 1px solid color-mix(in srgb, var(--dr-ink) 14%, transparent);
+  font: 400 12px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--dr-ink2); opacity: .85;
+}
+.cc-dlg-list { list-style: none; margin: 0; padding: 0; }
+.cc-dlg-list li a {
+  display: flex; align-items: baseline; gap: 12px; padding: 9px 2px; text-decoration: none;
+  color: var(--dr-ink2); border-bottom: 1px solid color-mix(in srgb, var(--dr-ink) 8%, transparent);
+}
+.cc-dlg-list li:last-child a { border-bottom: 0; }
+.cc-dlg-list li a:hover { background: color-mix(in srgb, var(--dr-ink) 4%, transparent); }
+.cc-dlg-list li a:hover .cc-dlg-tt { text-decoration: underline; text-underline-offset: 3px; }
+.cc-dlg-no {
+  flex: none; width: 22px; color: var(--dr-ink);
+  font: 700 11.5px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.cc-dlg-tt { flex: 1; min-width: 0; font: 500 14px/1.5 var(--dr-hf); color: var(--dr-ink); }
+.cc-dlg-du, .cc-dlg-vw {
+  flex: none; font-style: normal; opacity: .72;
+  font: 400 11.5px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.cc-dlg-foot {
+  margin: 12px 0 0; padding-top: 11px;
+  border-top: 1px solid color-mix(in srgb, var(--dr-ink) 14%, transparent);
+  font: 400 12.5px/1.6 -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+  color: var(--dr-ink2);
+}
+.cc-dlg-foot a { color: var(--dr-ink); text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--dr-ink) 40%, transparent); }
+.cc-dlg-foot a:hover { border-bottom-color: var(--dr-ink); }
+/* 窄屏：居中纸片在手机上太挤，落到屏幕底部当抽屉用 */
+@media (max-width: 640px) {
+  .cc-dlg-mask { padding: 0; align-items: flex-end; }
+  .cc-dlg { width: 100%; max-height: 82vh; border-radius: 10px 10px 0 0; padding: 18px 18px 14px; }
+  .cc-dlg-vw { display: none; }
+}
+
 /* ============ 官方入口卡（2026-10-25 用户定案）============
    学习笔记页最前面两张站外官方入口：① HF 官方论文库（撞色黄）② GitHub 官方组织仓库（深藏青）。
    卡面照抄 covers3 的海报层级：顶部 mono 小标 → 品牌标识 → 中文衬线金句 → 强调短横 → 底部 mono 域名；

@@ -86,6 +86,16 @@
           ],
           "sub": "Multi-Token Prediction"
         }
+      ],
+      "parts": [
+        {
+          "name": "MLA 与 KV Cache",
+          "eps": [
+            "02",
+            "03",
+            "04"
+          ]
+        }
       ]
     },
     {
@@ -161,6 +171,22 @@
           ],
           "sub": "DeepSeekMoE · Load Balancing"
         }
+      ],
+      "parts": [
+        {
+          "name": "V4.1-Flash 架构",
+          "eps": [
+            "02",
+            "03"
+          ]
+        },
+        {
+          "name": "MoE 与负载均衡",
+          "eps": [
+            "04",
+            "05"
+          ]
+        }
       ]
     },
     {
@@ -198,6 +224,222 @@
             "逐篇讲创新点。"
           ],
           "sub": "Nine Key Papers, One by One"
+        }
+      ]
+    },
+    {
+      "no": "第肆辑",
+      "title": "撸透 DeepSeek：从 V3 到 Engram",
+      "sub": "EZ-Encoder 的 B 站撸 paper 系列：V3 技术报告四集、R1 论文七集，再补 V3-0324 实测、OCR 与 Engram，单集最长一小时出头",
+      "up": "EZ-Encoder",
+      "mid": "3546829121652889",
+      "seasonId": "4769583",
+      "seenAt": "2026-10-28",
+      "episodes": [
+        {
+          "no": "01",
+          "cover": "C4_01.png",
+          "bvid": "BV1WYFQeGEf1",
+          "title": "EZ撸paper: DeepSeek-V3 技术报告详细解读 part1 | 开源最强模型 | 性价比之王",
+          "dur": 1605,
+          "views": 14508,
+          "lines": [
+            "V3 技术报告，",
+            "从头撸起。"
+          ],
+          "sub": "DeepSeek-V3 Technical Report · Part 1"
+        },
+        {
+          "no": "02",
+          "cover": "C4_02.png",
+          "bvid": "BV1HqFQezEMt",
+          "title": "EZ撸paper: DeepSeek-V3 技术报告详细解读 part2 | 开源最强模型 | 性价比之王的核心技术MLA",
+          "dur": 2739,
+          "views": 12122,
+          "lines": [
+            "性价比的核心：",
+            "MLA。"
+          ],
+          "sub": "Multi-head Latent Attention · Part 2"
+        },
+        {
+          "no": "03",
+          "cover": "C4_03.png",
+          "bvid": "BV15XFQebEBM",
+          "title": "EZ撸paper: DeepSeek-V3 论文中的隐藏细节 (part 3)：你不知道的关键点！| 可能存在的问题 | 论文深度解读+独家分析",
+          "dur": 2033,
+          "views": 8344,
+          "lines": [
+            "论文里的隐藏细节，",
+            "和可能的问题。"
+          ],
+          "sub": "Hidden Details & Caveats · Part 3"
+        },
+        {
+          "no": "04",
+          "cover": "C4_04.png",
+          "bvid": "BV1iQFQeFEwH",
+          "title": "EZ撸paper: DeepSeek-V3 论文中的隐藏细节 (part 4)：从入门到精通DeepSeek multi-token prediction |",
+          "dur": 2341,
+          "views": 12031,
+          "lines": [
+            "Multi-Token Prediction，",
+            "从入门到精通。"
+          ],
+          "sub": "MTP Explained · Part 4"
+        },
+        {
+          "no": "05",
+          "cover": "C4_05.png",
+          "bvid": "BV14dPfe5EJD",
+          "title": "EZ撸paper: DeepSeek-R1 论文详解 part 1：比肩 OpenAI-o1，如何做到的？| 论文深度解读+独家分析",
+          "dur": 1820,
+          "views": 31329,
+          "lines": [
+            "R1 比肩 o1，",
+            "凭什么？"
+          ],
+          "sub": "DeepSeek-R1 · Part 1"
+        },
+        {
+          "no": "06",
+          "cover": "C4_06.png",
+          "bvid": "BV1YDNqewEye",
+          "title": "EZ撸paper: DeepSeek-R1 论文详解 part 2：AGI是什么? | Reinforcement Learning快速入门 | AlphaGo",
+          "dur": 3470,
+          "views": 10276,
+          "lines": [
+            "强化学习快速入门：",
+            "从 AlphaGo 到 AGI。"
+          ],
+          "sub": "Reinforcement Learning · Part 2"
+        },
+        {
+          "no": "07",
+          "cover": "C4_07.png",
+          "bvid": "BV1bUA8eYEHJ",
+          "title": "EZ撸paper: DeepSeek-R1 论文详解 part 3：GPT发展史 | scaling law | 训练范式 | 涌现",
+          "dur": 3975,
+          "views": 7838,
+          "lines": [
+            "GPT 发展史：",
+            "缩放定律与涌现。"
+          ],
+          "sub": "Scaling Law & Emergence · Part 3"
+        },
+        {
+          "no": "08",
+          "cover": "C4_08.png",
+          "bvid": "BV1ky9TYeEBQ",
+          "title": "EZ撸paper: DeepSeek-R1 论文详解 part 4：AI推理的秘密武器，到底藏在哪里？| LLM如何思考? | 思维链",
+          "dur": 3519,
+          "views": 7241,
+          "lines": [
+            "AI 推理的秘密武器：",
+            "思维链。"
+          ],
+          "sub": "Chain-of-Thought · Part 4"
+        },
+        {
+          "no": "09",
+          "cover": "C4_09.png",
+          "bvid": "BV1YGR8YUEEd",
+          "title": "R1的黑马之路：它是如何超越O1？小修小改，还是彻底颠覆？| DeepSeek-R1 论文详解 part 5",
+          "dur": 3342,
+          "views": 5039,
+          "lines": [
+            "超越 o1，",
+            "小修小改还是颠覆？"
+          ],
+          "sub": "DeepSeek-R1 · Part 5"
+        },
+        {
+          "no": "10",
+          "cover": "C4_10.png",
+          "bvid": "BV1pq95YpEkG",
+          "title": "什么难题让DeepSeek-R1走火入魔? | R1疯狂思考与卡死 | LLM重复生成",
+          "dur": 2587,
+          "views": 5020,
+          "lines": [
+            "R1 为什么会",
+            "走火入魔？"
+          ],
+          "sub": "Overthinking & Repetition Loops"
+        },
+        {
+          "no": "11",
+          "cover": "C4_11.png",
+          "bvid": "BV1ThXhYBEuS",
+          "title": "不讲数学的GRPO算法解读  |  GRPO训练Gemma3 | 深入浅出DeepSeekMath | DeepSeek-R1 论文详解 part 6",
+          "dur": 2725,
+          "views": 11026,
+          "lines": [
+            "GRPO，",
+            "不讲数学也能懂。"
+          ],
+          "sub": "Group Relative Policy Optimization · Part 6"
+        },
+        {
+          "no": "12",
+          "cover": "C4_12.png",
+          "bvid": "BV1kDo8YzEq9",
+          "title": "DeepSeek-V3-0324 更新直接起飞, 实测告诉你有多强 | 完全免费+MIT协议, OpenAI慌吗?",
+          "dur": 691,
+          "views": 11453,
+          "lines": [
+            "V3-0324：",
+            "更新即起飞。"
+          ],
+          "sub": "DeepSeek-V3-0324 · Hands-on"
+        },
+        {
+          "no": "13",
+          "cover": "C4_13.png",
+          "bvid": "BV1YssezhEhj",
+          "title": "DeepSeek-OCR 提出解决长文本新范式 | 通过视觉编码压缩文本信息 |  压缩10倍仍可获得97%精度",
+          "dur": 2975,
+          "views": 8616,
+          "lines": [
+            "长文本的新解法：",
+            "把它变成图像。"
+          ],
+          "sub": "DeepSeek-OCR · Contexts Optical Compression"
+        },
+        {
+          "no": "14",
+          "cover": "C4_14.png",
+          "bvid": "BV1x3zWB6EU6",
+          "title": "DeepSeek Engram 论文串讲：从 Memory Network 到 N-gram Embedding",
+          "dur": 3744,
+          "views": 6463,
+          "lines": [
+            "Engram 串讲：",
+            "记忆网络的又一路。"
+          ],
+          "sub": "Memory Network → N-gram Embedding"
+        }
+      ],
+      "parts": [
+        {
+          "name": "DeepSeek-V3 技术报告",
+          "eps": [
+            "01",
+            "02",
+            "03",
+            "04"
+          ]
+        },
+        {
+          "name": "DeepSeek-R1 论文详解",
+          "eps": [
+            "05",
+            "06",
+            "07",
+            "08",
+            "09",
+            "10",
+            "11"
+          ]
         }
       ]
     }
