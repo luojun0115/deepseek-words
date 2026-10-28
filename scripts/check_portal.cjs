@@ -695,6 +695,15 @@ const ok = (name, cond, extra = '') => {
     ok(`点代表卡弹出纸片：标题是篇名，清单行数＝该篇集数（${headPart.eps.length}）`,
       dlgTitle === headPart.name && dlgRows === headPart.eps.length, `标题「${dlgTitle}」行 ${dlgRows}`)
     ok('弹窗打开不推动页面（body 高度不变）', pageH0 === pageH1, `${pageH0}px → ${pageH1}px`)
+    /* 2026-10-29 用户报「学习笔记 tab 点不了」：遮罩 z-index 1000 把 fixed 顶栏一起罩住，
+       弹窗开着时顶栏任何入口都点不动。遮罩上沿改成从 --vp-nav-height 之下开始。 */
+    const navHit = await page.evaluate(() => {
+      const el = document.elementFromPoint(600, 30)
+      return { cls: (el && (el.className || '')) + '', inNav: !!(el && el.closest && el.closest('.VPNav')),
+        masked: !!(el && el.classList && el.classList.contains('cc-dlg-mask')) }
+    })
+    ok('弹窗打开时顶栏导航仍可点（遮罩不盖顶栏）',
+      navHit.inNav && !navHit.masked, JSON.stringify(navHit))
     ok('弹窗打开时锁住背景滚动',
       (await page.evaluate(() => document.body.style.overflow)) === 'hidden')
     const dlgHrefs = await page.locator('.cc-dlg-list li a').evaluateAll((els) => els.map((e) => ({

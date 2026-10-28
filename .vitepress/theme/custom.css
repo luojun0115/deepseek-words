@@ -362,9 +362,10 @@
 .dr-lib.cc .cc-group:focus-visible { outline: 2px solid var(--dr-accent); outline-offset: 4px; border-radius: 4px; }
 
 .cc-dlg-mask {
-  /* 1000：VitePress 的导航（fixed, z-index 40 上下）和本地搜索层都在 100 以内，
-     200 时实测压不住顶栏，顶栏会亮在遮罩上面 */
-  position: fixed; inset: 0; z-index: 1000; padding: 24px;
+  /* 上沿从顶栏底下开始，**不盖住导航**（2026-10-29 用户报「学习笔记 tab 点不了」：
+     遮罩 z-index 1000 把 position:fixed 的顶栏一起罩住了，弹窗开着时顶栏任何入口都点不动）。
+     遮罩盖内容区、顶栏保持原样亮着，用户随时能点导航离开。 */
+  position: fixed; inset: var(--vp-nav-height, 64px) 0 0; z-index: 1000; padding: 24px;
   display: flex; align-items: center; justify-content: center;
   background: color-mix(in srgb, var(--dr-ink) 28%, transparent);
 }
