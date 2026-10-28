@@ -115,18 +115,32 @@ const shown = computed(() => (order.value === 'new' ? [...issues].reverse() : is
 const totalEps = issues.reduce((a, i) => a + i.count, 0)
 
 /* 弹窗：点代表卡打开某一篇的子集清单。fixed 定位，页面不位移。
-   三处关闭：点遮罩（@click.self 只认遮罩本身）、点右上角 ×、按 Esc。 */
+   三处关闭：点弹窗外的任何地方、点右上角 ×、按 Esc。
+   ⚠ 「点弹窗外就关」用 document 的 pointerdown 捕获监听，而不是只靠遮罩的 @click.self：
+   遮罩上沿从顶栏下方开始（不盖导航），用户点顶栏跳走时遮罩收不到这次点击；
+   线上实测（GitHub Pages）新页面 3–6 秒才渲染完、旧组件才卸载，这期间弹窗和
+   body 锁滚动会一直挂着，用户只觉得「点了没反应」。点哪儿立刻关掉才正常。 */
 const dlg = ref(null)
 const openDlg = (p) => { dlg.value = p }
 const closeDlg = () => { dlg.value = null }
 const lockScroll = (on) => {
   if (typeof document !== 'undefined') document.body.style.overflow = on ? 'hidden' : ''
 }
-watch(dlg, (v) => lockScroll(!!v))
+const outsideClose = (e) => {
+  if (e.target && e.target.closest && e.target.closest('.cc-dlg')) return
+  closeDlg()
+}
+watch(dlg, (v) => {
+  lockScroll(!!v)
+  if (typeof document === 'undefined') return
+  if (v) document.addEventListener('pointerdown', outsideClose, true)
+  else document.removeEventListener('pointerdown', outsideClose, true)
+})
 const onKey = (e) => { if (e.key === 'Escape' && dlg.value) closeDlg() }
 onMounted(() => document.addEventListener('keydown', onKey))
 onBeforeUnmount(() => {
   document.removeEventListener('keydown', onKey)
+  document.removeEventListener('pointerdown', outsideClose, true)
   lockScroll(false)
 })
 </script>
