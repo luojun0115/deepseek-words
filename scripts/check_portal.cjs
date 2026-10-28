@@ -578,9 +578,26 @@ const ok = (name, cond, extra = '') => {
     (await page.locator('.cc-bdg-l').count()) === cCards && (await page.locator('.cc-bdg-r').count()) === cCards,
     '左 ' + (await page.locator('.cc-bdg-l').count()) + ' 右 ' + (await page.locator('.cc-bdg-r').count()))
   const ccGroupLbl = await page.locator('.dr-lib.cc .cc-group .cc-bdg-l').allInnerTexts()
-  ok(`代表卡左角标一律念「共 N 集」（${ccGroupLbl.length} 张）`,
-    ccGroupLbl.length === ccParts.length && ccGroupLbl.every((t) => /^共 \d+ 集$/.test(t.trim())),
+  ok(`代表卡左角标念「第 N 篇 · 合集 M 集」（${ccGroupLbl.length} 张）`,
+    ccGroupLbl.length === ccParts.length && ccGroupLbl.every((t) => /^第 \d+ 篇 · 合集 \d+ 集$/.test(t.trim())),
     ccGroupLbl.join(' / '))
+  /* 编号按「张」从 01 连续走到底（2026-10-28 用户要求）：合集只占一个号，
+     不能因为一篇吃了 3 集就跳到 05——那样用户看着像缺号。
+     ⚠ 必须按 CSS order 排出视觉顺序再读：DOM 里合集总在单集之前，
+       直接按 DOM 读会把第壹辑读成 02,03,01。 */
+  const ccSeqs = await page.evaluate(() => [...document.querySelectorAll('.dr-lib.cc .cc-issue')].map((sec) =>
+    [...sec.querySelectorAll('.cc-strip .cc-bdg-l')]
+      .map((b) => ({
+        seq: (b.textContent.match(/第 (\d+)/) || [])[1],
+        order: Number(getComputedStyle(b.closest('.cc-card')).order) || 0,
+      }))
+      .filter((x) => x.seq)
+      .sort((a, b) => a.order - b.order)
+      .map((x) => x.seq)))
+  ok('每辑的卡片编号从 01 连续到 N，无跳号',
+    ccSeqs.length === CD.issues.length && ccSeqs.every((list) =>
+      list.length > 0 && list.every((n, i) => Number(n) === i + 1)),
+    ccSeqs.map((l) => l.join(',')).join(' | '))
   /* 直链只查单集卡：代表卡是 <button>，点开的是弹窗，没有 href */
   const ccSingleLinks = await page.locator('.dr-lib.cc a.cc-card').evaluateAll((els) => els.map((e) => ({
     href: e.getAttribute('href'), target: e.getAttribute('target'), rel: e.getAttribute('rel'),
@@ -647,11 +664,18 @@ const ok = (name, cond, extra = '') => {
   ok('点「最早」后辑序真的翻过来（第壹辑排到最前）',
     JSON.stringify(await nosOf()) === JSON.stringify(CD.issues.map((i) => i.no)),
     (await nosOf()).join(' → '))
-  /* 辑内集序：代表卡排在最前（它是这一辑的头一篇），所以取第一张**单集卡**来验 */
-  const epNosAfter = await page.locator('.cc-issue').first().locator('a.cc-card .cc-bdg-l').allInnerTexts()
-  const headSingle = CD.issues[0].episodes.find((e) => !ccGroupedNos(CD.issues[0]).has(e.no))
-  ok('排序不动辑内集序（未分组的第 1 集永远在最前）',
-    epNosAfter.length > 0 && epNosAfter[0].trim() === '第 ' + headSingle.no + ' 集', epNosAfter.slice(0, 2).join(','))
+  /* 辑内卡序：合集要留在它首集的位置上（第壹辑第 1 集是单集，合集是 2.1–2.3，
+     合集被提到最前就把观看顺序打乱了）。视觉顺序由 CSS order 决定，按 order 排完再看 data-no。 */
+  const seqAfter = await page.locator('.cc-issue').first().locator('.cc-card').evaluateAll((els) => els.map((e) => ({
+    no: e.getAttribute('data-no'), order: Number(getComputedStyle(e).order) || 0,
+  })))
+  const visualOrder = [...seqAfter].sort((a, b) => a.order - b.order)
+  ok('排序不动辑内卡序（按首集原始集号升序，合集不被提到最前）',
+    seqAfter.length > 0 && visualOrder.every((c, i) => i === 0 || Number(visualOrder[i - 1].no) < Number(c.no)),
+    visualOrder.map((c) => c.no).join(','))
+  ok('辑内第一张卡就是该辑第 1 集',
+    visualOrder.length > 0 && visualOrder[0].no === CD.issues[0].episodes[0].no,
+    visualOrder[0] ? visualOrder[0].no : '未找到')
   await ccSorts.first().click()
   await page.waitForTimeout(250)
   ok('点回「最新」可逆（又变成最近添加那辑在上）',

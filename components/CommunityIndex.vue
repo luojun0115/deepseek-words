@@ -48,25 +48,51 @@ const issues = DATA.issues.map((iss) => {
   // 单 UP 的辑给「UP 主空间 ›」链接；多 UP 的辑只把名字列出来，不给一个任意的链接
   const more = ups.length === 1 ? `https://space.bilibili.com/${eps[0].mid || iss.mid}` : null
   // 分篇：把 parts 里的集号翻成真的集对象；分过组的集不再单独出卡
-  const parts = (iss.parts || []).map((p) => {
-    const list = p.eps.map((no) => eps.find((e) => e.no === no)).filter(Boolean)
-    return {
-      key: `${iss.no}-${p.name}`,
-      name: p.name,
-      eps: list,
-      count: list.length,
-      span: fmtSpan(list.reduce((a, e) => a + e.durRaw, 0)),
-      up: iss.up,
-      more,
-      cover: list[0].cover,
+  const pad = (n) => String(n).padStart(2, '0')
+  /* 卡片要按「首集原始集号」排，不能把合集一律提到最前——
+     第壹辑的第 1 集是单集（系列解读 1），合集是 2.1–2.3，合集跑到最前就打乱了观看顺序。
+     排序靠 CSS order（parts 与 singles 在同一个 .dr-grid 里），编号按排好的位置连续编：
+     一辑里必须是 01、02、03、04 连着走，合集只占一个号（2026-10-28 用户要求）。 */
+  const partRaw = (iss.parts || []).map((p) => ({
+    name: p.name,
+    list: p.eps.map((no) => eps.find((e) => e.no === no)).filter(Boolean),
+    head: p.eps[0],
+  }))
+  const partNos = new Set((iss.parts || []).flatMap((p) => p.eps))
+  const merged = [
+    ...partRaw.map((p) => ({ kind: 'part', head: p.head, p })),
+    ...eps.filter((e) => !partNos.has(e.no)).map((e) => ({ kind: 'ep', head: e.no, e })),
+  ].sort((a, b) => Number(a.head) - Number(b.head))
+
+  const parts = []
+  const singles = []
+  merged.forEach((m, i) => {
+    const seq = pad(i + 1)
+    if (m.kind === 'part') {
+      // 组内序号从 1 重排（对齐 part 1/2/3，别露出原始 B 站分 P 号 05、06 那种跳号）
+      const list = m.p.list.map((e, j) => ({ ...e, seq: pad(j + 1) }))
+      parts.push({
+        key: `${iss.no}-${m.p.name}`,
+        name: m.p.name,
+        eps: list,
+        count: list.length,
+        seq,
+        head: m.head,
+        order: Number(m.head),
+        span: fmtSpan(list.reduce((a, e) => a + e.durRaw, 0)),
+        up: iss.up,
+        more,
+        cover: list[0].cover,
+      })
+    } else {
+      singles.push({ ...m.e, seq, order: Number(m.head) })
     }
   })
-  const grouped = new Set(parts.flatMap((p) => p.eps.map((e) => e.no)))
   return {
     ...iss,
     eps,
     parts,
-    singles: eps.filter((e) => !grouped.has(e.no)),
+    singles,
     // 纸签上念的是「辑名（共 N 集）总时长」——2026-10-26 用户定案把辑标题提到纸签上、
     // 放在集数左边，辑面板头部就不再重复标题，只留那一行主线。
     count: eps.length,
@@ -138,10 +164,12 @@ onBeforeUnmount(() => {
             :key="p.key"
             type="button"
             class="dr-card cc-card cc-group"
+            :style="{ order: p.order }"
+            :data-no="p.head"
             @click="openDlg(p)"
           >
             <div class="dr-card-media" role="img" :aria-label="p.name + ' 封面'" :style="{ backgroundImage: `url(${p.cover})` }">
-              <span class="cc-strip"><b class="cc-bdg cc-bdg-l">共 {{ p.count }} 集</b><b class="cc-bdg cc-bdg-r">{{ p.span }}</b></span>
+              <span class="cc-strip"><b class="cc-bdg cc-bdg-l">第 {{ p.seq }} 篇 · 合集 {{ p.count }} 集</b><b class="cc-bdg cc-bdg-r">{{ p.span }}</b></span>
             </div>
             <div class="dr-card-body">
               <h3 class="dr-card-nm">{{ p.name }}</h3>
@@ -153,12 +181,14 @@ onBeforeUnmount(() => {
             v-for="e in iss.singles"
             :key="e.bvid"
             class="dr-card cc-card"
+            :style="{ order: e.order }"
+            :data-no="e.no"
             :href="e.href"
             target="_blank"
             rel="noreferrer"
           >
             <div class="dr-card-media" role="img" :aria-label="e.title + ' 封面'" :style="{ backgroundImage: `url(${e.cover})` }">
-              <span class="cc-strip"><b class="cc-bdg cc-bdg-l">第 {{ e.no }} 集</b><b class="cc-bdg cc-bdg-r">{{ e.dur }}</b></span>
+              <span class="cc-strip"><b class="cc-bdg cc-bdg-l">第 {{ e.seq }} 集</b><b class="cc-bdg cc-bdg-r">{{ e.dur }}</b></span>
             </div>
             <div class="dr-card-body">
               <h3 class="dr-card-nm">{{ e.title }}<i class="cc-ext">↗</i></h3>
@@ -184,7 +214,7 @@ onBeforeUnmount(() => {
           <ul class="cc-dlg-list">
             <li v-for="e in dlg.eps" :key="e.bvid">
               <a :href="e.href" target="_blank" rel="noreferrer">
-                <b class="cc-dlg-no">{{ e.no }}</b>
+                <b class="cc-dlg-no">{{ e.seq }}</b>
                 <span class="cc-dlg-tt">{{ e.full }}</span>
                 <i class="cc-dlg-du">{{ e.dur }}</i>
                 <i class="cc-dlg-vw">{{ e.views }} 播放</i>
