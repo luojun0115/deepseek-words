@@ -171,22 +171,6 @@
           ],
           "sub": "DeepSeekMoE · Load Balancing"
         }
-      ],
-      "parts": [
-        {
-          "name": "V4.1-Flash 架构",
-          "eps": [
-            "02",
-            "03"
-          ]
-        },
-        {
-          "name": "MoE 与负载均衡",
-          "eps": [
-            "04",
-            "05"
-          ]
-        }
       ]
     },
     {
