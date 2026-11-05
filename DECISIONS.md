@@ -1928,8 +1928,40 @@ GitHub Actions 的美国 runner 上跑**（全球视角），这也正好是选 
    改名残留的 slug 自然消失，加一条反而要连带动三处“14 项”的口径文字。
 - **`check_portal.cjs` 暂不加角标断言**：空基线下无角标可断，等 Actions 首跑出真数据后再补。
 
-本地预跑与目检：`node scripts/check-links.mjs` → 起 preview →
+本地预跑与目检：`npm run links` → 起 preview →
 `NODE_PATH=$(npm root -g) node scripts/shot_dead_badge.cjs`。
+
+### A44. 论文列表默认改成「按时间（新→旧）」，并补旧→新方向（2026-11-05 用户要求）
+
+用户原话：「应该增加一个按时间从旧到新的排序，默认的顺序应该是新到旧。」
+
+⚠ **开工先把“哪个列表”问清楚**：这句需求我一开始误理解成站外导航墙，已经动过
+`sites.json`（给 86 站回填 `added` 入墙日期）+ `SiteNavWall.vue`（加了个“按时间”视图），
+被用户指出后全部回退（`git checkout -- sites/sites.json` + 删视图代码）。
+“排序”两个字在站内至少对应论文列表 / 站外导航 / 社区大学三处，先确认再写代码。
+
+改的是 `components/PaperIndex.vue`，三处：
+
+1. `sortBy` 默认从 `'num'` 改成 `'time'`；
+2. 下拉里「按时间」提到第一位，文案去掉括号里的方向（方向由按钮表达）；
+3. 下拉右侧新增**方向切换钮** `新→旧 ⇄ 旧→新`（`timeDesc` ref），**只在选「按时间」时出现**，
+   样式与 select 同颗形状（`custom.css` 的 `.dr-lib .dr-sort .dr-dir`）。
+
+时间口径沿用原有的 arXiv 编号前 6 位（YYMM.NNNNN = 发布年月），定长数字串比字符即可，不转 Date。
+
+**全站四页统一（2026-11-06 用户定案）**：`PaperIndex.vue` 是论文总览（arxiv）/ 词汇学习（vocab）/
+词汇朗读（listen）/ 学习笔记（note）四个 mode 共用的组件，所以上面那个默认值**对四页同时生效**，
+不再按 mode 分支。
+
+**一个要如实说明的数据事实**：现有 32 篇的**编号本身就是发布时间序**，
+实测「按编号」与「按时间 旧→新」的结果字符串**完全相等**，所以新方向钮一时看不出差异。
+保留它的理由是语义不同（编号 = 本站归档号，时间 = arXiv 发布年月），
+将来插入一篇早期回顾性论文（编号追加在后、发布在前）两者就会分叉。
+
+验证（`scripts/shot_paper_sort.cjs`）：默认卡序 32→01、点钮后 01→32、切「按编号」后方向钮自动消失、
+控制台无水合报错；SSR 产物也是 32→01（默认值在服务端与客户端一致）。
+⚠ 这个脚本必须用 `/papers/index.html` 地址跑：本地 `vitepress preview` 下**目录 URL 会回退成 SPA 空壳**，
+拿 `/papers/` 去测会得到“一张卡都找不到”的假失败。
 
 ---
 
@@ -2409,6 +2441,7 @@ scripts/
   check-links.mjs            # 站外导航死链检测：sites.json → sites/dead-links.json（零依赖，Actions 每周跑，§A43）
   shot_nav.cjs shot_themes.cjs  # 顶栏/首页与逐套配色截图（人工核版面，不断言）
   shot_dead_badge.cjs        # 404 角标目检截图（需先起 preview，§A43）
+  shot_paper_sort.cjs        # 论文列表时间排序与方向钮验证（需先起 preview，用 index.html 地址，§A44）
   push_via_ssh.sh            # 应急推送：HTTPS 走不通时改走 SSH-22 直连可达 IP（§D4.1）
 ```
 
@@ -2425,7 +2458,7 @@ scripts/
 | 笔记页页头 | `theme/NoteHeader.vue` + `custom.css` 的 `.dr-note-*` | build |
 | 首页报头 + 艺术卡轮播（§B6）| `components/HomeIntro.vue` + `theme/custom.css` 的 `.dr-hero*` | build |
 | 顶栏「找论文」搜索弹窗（§B6）| `components/PaperSearch.vue` + `theme/custom.css` 的 `.search-modal` / `.sm-*` | build |
-| 索引卡 / 排序 / 入口按钮 | `components/PaperIndex.vue` + `theme/custom.css` | build |
+| 索引卡 / 排序 / 入口按钮 | `components/PaperIndex.vue` + `theme/custom.css` | build（排序默认值与方向钮见 §A44，四页共用）|
 | 站外导航加一站 / 改分组 | `sites/sites.json`（名单与分组）+ `SiteNavWall.vue` 的 `PATTERN` 续一项 + `public/logos/` 图标 | `npm run links`（预跑，写的是 local 文件、不会动仓里那份）→ build（§A42）|
 | 死链周检手动跑一次 | 无需改文件 | GitHub 网页 Actions → Link check → Run workflow（本地跑的结果不发布，§A43）|
 | 顶栏栏目 · 站外「模型架构」地址 | `config.mts` 的 `nav`（外链在顶部 `const LLM_GALLERY`）| build |

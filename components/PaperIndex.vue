@@ -83,7 +83,8 @@ const visibleCount = computed(() => {
     : papers.filter((p) => p.category === cat.value).length
 })
 
-const sortBy = ref('num')       // num | words | time
+const sortBy = ref('time')      // num | words | time（2026-11-05 用户定案：默认按时间，新→旧）
+const timeDesc = ref(true)      // 按时间的方向：true = 新→旧（默认），false = 旧→新
 
 /* 官方入口卡（2026-10-25 定案，2026-10-26 按用户要求调顺序）：论文总览页最前面两张站外官方入口。
    ① GitHub 官方组织仓库（青瓷 #0E7C86）② HF 官方论文库（撞色黄 #FFD21E）。
@@ -143,10 +144,10 @@ const list = computed(() => {
   } else if (sortBy.value === 'time') {
     /* 「按时间」= arXiv 编号前 6 位（YYMM.NNNNN，即发布年月+日），
        定长数字串按字符比就等于按时间比，所以直接比字符串，不必转 Date。
-       方向取「新→旧」：编号本身就是时间正序（01=2401 月 … 32=2609 月），
-       若也给「旧→新」那和「按编号」一模一样，这个选项就没有存在意义。 */
+       2026-11-05 用户要求补旧→新方向：方向由 timeDesc 切换，默认新→旧。 */
     const k = (p) => String(p.arxiv || '')
-    r.sort((a, b) => (k(a) < k(b) ? 1 : k(a) > k(b) ? -1 : 0))
+    const cmp = (a, b) => (k(a) < k(b) ? 1 : k(a) > k(b) ? -1 : 0)
+    r.sort((a, b) => (timeDesc.value ? cmp(a, b) : -cmp(a, b)))
   } else {
     r.sort((a, b) => a.num.localeCompare(b.num))
   }
@@ -187,10 +188,11 @@ const master = computed(() => {
       <label v-if="mode !== 'topic'" class="dr-sort">
         <span>排序</span>
         <select v-model="sortBy">
+          <option value="time">按时间</option>
           <option value="num">按编号</option>
           <option value="words">按词数</option>
-          <option value="time">按时间（新→旧）</option>
         </select>
+        <button v-if="sortBy === 'time'" class="dr-dir" type="button" @click="timeDesc = !timeDesc" :aria-label="timeDesc ? '切换为从旧到新' : '切换为新到旧'">{{ timeDesc ? '新→旧' : '旧→新' }}</button>
       </label>
     </div>
 

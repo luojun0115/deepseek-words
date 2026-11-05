@@ -68,6 +68,14 @@
   background: var(--dr-panel); border: var(--dr-bw) solid var(--dr-line);
   border-radius: var(--dr-radius); padding: 7px 10px;
 }
+/* 时间方向切换钮（新→旧 / 旧→新）：只在「按时间」时出现，跟 select 同一颗形状（§A44） */
+.dr-lib .dr-sort .dr-dir {
+  font: 600 13px/1 inherit; color: var(--dr-ink); cursor: pointer;
+  background: var(--dr-panel); border: var(--dr-bw) solid var(--dr-line);
+  border-radius: var(--dr-radius); padding: 7px 10px;
+}
+.dr-lib .dr-sort .dr-dir:hover { border-color: var(--dr-accent); color: var(--dr-accent); }
+
 /* 栅格：同排等高交给 grid，不用 min-height（旧坑8，见 DECISIONS §C 开头的对照注）；1440 视口下一排 4 卡。
    gap 对齐原型 masonry（行 34 / 列 24），minmax 收到 280 保住 4 列（300+34 间隙在 1256 容器会掉 3 列） */
 .dr-lib .dr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 34px 24px; }
