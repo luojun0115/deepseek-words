@@ -1,5 +1,5 @@
 {
-  "_note": "站外导航页（/sites）的数据源。80 站上墙 + 5 站待选 + 3 个自有空位，18 组。 改名单改这里，页面与自检都从这份数据读，不写死在组件里。待选站（pending）数据保留但页面不渲染（DECISIONS §A7）；其中 Papers with Code 已于 2025-07-24 关停，条目暂留备查（§A12）。分组顺序 = 墙上的行序（每组一行，组牌在左列）。第八批按「同类同排」重划分组（§A16），第九批撤掉小林 coding 并把博客园挪进 docs（§A17），第十批新增 Python 框架与前端框架（§A18），第十一批新增基础设施（§A19），第十二批抽出编程语言组（§A20），第十三批基础设施扩到 8 块（§A21），第十四批加 JMeter（§A22），第十五批加 X（§A23）。",
+  "_note": "站外导航页（/sites）的数据源。82 站上墙 + 4 站待选 + 3 个自有空位，18 组。 改名单改这里，页面与自检都从这份数据读，不写死在组件里。待选站（pending）数据保留但页面不渲染（DECISIONS §A7）；其中 Papers with Code 已于 2025-07-24 关停，条目暂留备查（§A12）。分组顺序 = 墙上的行序（每组一行，组牌在左列）。第八批按「同类同排」重划分组（§A16），第九批撤掉小林 coding 并把博客园挪进 docs（§A17），第十批新增 Python 框架与前端框架（§A18），第十一批新增基础设施（§A19），第十二批抽出编程语言组（§A20），第十三批基础设施扩到 8 块（§A21），第十四批加 JMeter（§A22），第十五批加 X（§A23），第十六批加 alphaXiv（从待选转正，归论文源）与 DeepLearning.AI（课程与学习）。",
   "groups": [
     { "id": "papers", "name": "论文源", "en": "PAPERS", "kind": "sites" },
     { "id": "llm", "name": "大模型", "en": "LLM", "kind": "sites" },
@@ -25,6 +25,7 @@
     { "slug": "huggingface", "name": "HF Papers", "short": "HF Papers", "url": "https://huggingface.co/papers", "brand": "#ffcc4d", "group": "papers", "logo": "/logos/huggingface.png" },
     { "slug": "scholar", "name": "Google Scholar", "short": "Scholar", "url": "https://scholar.google.com", "brand": "#4285f4", "group": "papers", "logo": "/logos/scholar.png" },
     { "slug": "modelscope", "name": "ModelScope 论文", "short": "魔搭论文", "url": "https://www.modelscope.cn/papers?page=1&type=hot", "dom": "modelscope.cn/papers", "brand": "#8B6FFF", "group": "papers", "logo": "/logos/modelscope.png" },
+    { "slug": "alphaxiv", "name": "alphaXiv", "short": "alphaXiv", "url": "https://www.alphaxiv.org", "brand": "#a83131", "group": "papers", "logo": "/logos/alphaxiv.png" },
 
     { "slug": "claudecode", "name": "Claude Code", "short": "Claude Code", "url": "https://code.claude.com/docs/en/overview", "brand": "#d97757", "group": "llm", "logo": "/logos/claudecode.png" },
     { "slug": "codex", "name": "OpenAI Codex", "short": "Codex", "url": "https://openai.com/codex/", "brand": "#111111", "group": "llm", "logo": "/logos/codex.png" },
@@ -81,6 +82,7 @@
     { "slug": "ted", "name": "TED", "short": "TED", "url": "https://www.ted.com", "brand": "#e62b1e", "group": "courses", "logo": "/logos/ted.png" },
     { "slug": "smartedu", "name": "国家中小学智慧教育平台", "short": "智慧教育", "url": "https://www.zxx.edu.cn", "brand": "#1c6dd0", "group": "courses", "logo": "/logos/smartedu.png" },
     { "slug": "imooc", "name": "慕课网", "short": "慕课网", "url": "https://www.imooc.com", "brand": "#e8452c", "group": "courses", "logo": "/logos/imooc.png" },
+    { "slug": "deeplearning", "name": "DeepLearning.AI", "short": "DeepLearning", "url": "https://www.deeplearning.ai/courses", "brand": "#ff4a61", "group": "courses", "logo": "/logos/deeplearning.png" },
 
     { "slug": "nlc", "name": "国家图书馆", "short": "国家图书馆", "url": "https://www.nlc.cn", "brand": "#a4343a", "group": "reading", "logo": "/logos/nlc.png" },
     { "slug": "weread", "name": "微信读书", "short": "微信读书", "url": "https://weread.qq.com", "brand": "#6b7bf7", "group": "reading", "logo": "/logos/weread.png" },
@@ -125,7 +127,6 @@
   ],
   "pending": [
     { "slug": "paperswithcode", "name": "Papers with Code", "url": "https://paperswithcode.com", "brand": "#3b6ea5", "group": "papers" },
-    { "slug": "alphaxiv", "name": "alphaXiv", "url": "https://www.alphaxiv.org", "brand": "#6b46c1", "group": "papers" },
     { "slug": "semanticscholar", "name": "Semantic Scholar", "url": "https://www.semanticscholar.org", "brand": "#1857b6", "group": "papers" },
     { "slug": "openreview", "name": "OpenReview", "url": "https://openreview.org", "brand": "#c8a951", "group": "papers" },
     { "slug": "connectedpapers", "name": "Connected Papers", "url": "https://www.connectedpapers.com", "brand": "#4a7ebb", "group": "papers" }
