@@ -1963,6 +1963,31 @@ GitHub Actions 的美国 runner 上跑**（全球视角），这也正好是选 
 ⚠ 这个脚本必须用 `/papers/index.html` 地址跑：本地 `vitepress preview` 下**目录 URL 会回退成 SPA 空壳**，
 拿 `/papers/` 去测会得到“一张卡都找不到”的假失败。
 
+#### 形态定案：保持「下拉 + 方向钮」，不做成四个下拉选项
+
+2026-11-06 用户先要求改回纯下拉（四个选项），实现完又收回：
+「算了……你已经实现了 就不用改了……不用改下拉框了」——代码已按 `git checkout` 全部回退，
+**现行形态就是上面那个下拉三项 + 方向钮**，以后不要再提“拆成两个下拉选项”。
+
+#### ❗ 本次扯出两条真缺陷：上次提交把浏览器自检改红了
+
+`f4aa823`（上一批）改完**只跑了 `npm run verify` 和 build，没跑 `check_portal.cjs` 就 push 了**，
+而它里有两条断言恰好被这次改动打破
+（实测 155/157）：
+
+| 断言 | 怎么坏的 | 修法 |
+|---|---|---|
+| `排序下拉三项齐全` | 它认的文案是 `按时间（新→旧）`，但上一批把选项文案简化成了 `按时间` | 改成校 `按时间` |
+| `笔记按钮指向 /notes/<编号>_<短名>.html` | 它假设「第一张卡＝`papers.json[0]`」，而默认改成新→旧后首张变成了 32 号 | 从首张卡 `aria-label` 反查它是哪篇再校，不再写死 `PP[0]` |
+
+同时补了三条新断言把现行形态钉住（总数 157 → **159**）：
+`默认就是按时间新→旧（下拉值 time 且首屏最新在前）`、`方向钮初始文案＝新→旧`、
+`点方向钮后卡序翻成旧→新`。
+
+**教训（下次别再犯）**：改 `PaperIndex.vue` 这类“卡序/默认值/文案”的排序相关改动，
+**push 前必须跑 `node scripts/check_portal.cjs`**——`verify` 只看数据与文件对账，
+看不出页面顺序与文案口径飘移。
+
 ---
 
 ## B. 页面与样式定案
@@ -2437,7 +2462,7 @@ scripts/
   gen-theme-css.mjs          # theme-defs.mjs → theme.generated.css（兼校 12 变量齐全 + 每套对比度 ≥ 4.5:1）
   verify_content.mjs         # 14 项内容守卫（零依赖，CI 也跑）
   selfcheck_in_repo.mjs      # 断链实验：孤立副本里重建内容（npm run selfcheck）
-  check_portal.cjs           # Playwright 全路径自检（126 项，不进 CI，§D2）
+  check_portal.cjs           # Playwright 全路径自检（159 项，不进 CI，§D2）
   check-links.mjs            # 站外导航死链检测：sites.json → sites/dead-links.json（零依赖，Actions 每周跑，§A43）
   shot_nav.cjs shot_themes.cjs  # 顶栏/首页与逐套配色截图（人工核版面，不断言）
   shot_dead_badge.cjs        # 404 角标目检截图（需先起 preview，§A43）

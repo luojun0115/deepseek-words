@@ -170,25 +170,35 @@ const ok = (name, cond, extra = '') => {
     (await page.locator('.dr-lib .dr-bd, .dr-lib .dr-pill, .dr-tools select').count()) === 1,
     '应只剩 1 个排序下拉')
 
-  // 3b) 排序下拉（2026-10-24 用户要求加「按时间」）：选项齐 + 切过去确实按 arXiv 号倒序
+  // 3b) 排序（2026-10-24 加「按时间」；2026-11-05 默认改成按时间新→旧 + 补方向钮，§A44）
   const sortOpts = await page.$$eval('.dr-tools select option', els => els.map(e => e.textContent.trim()))
-  ok('排序下拉三项齐全（编号 / 词数 / 时间）',
-    sortOpts.length === 3 && sortOpts.includes('按编号') && sortOpts.includes('按词数') && sortOpts.includes('按时间（新→旧）'),
+  ok('排序下拉三项齐全（时间 / 编号 / 词数）',
+    sortOpts.length === 3 && sortOpts.includes('按编号') && sortOpts.includes('按词数') && sortOpts.includes('按时间'),
     sortOpts.join(' / '))
   const cardNums = () => page.$$eval('.dr-lib .dr-card-media', els =>
     els.map(e => (e.getAttribute('aria-label') || '').split('·')[0].trim()))
-  await page.selectOption('.dr-tools select', 'time')
-  await page.waitForTimeout(250)
-  const timeSeq = await cardNums()
   // 期望顺序从 data/papers.json 现算（按 arXiv 号倒序），不写死编号，
-  // 以后补新论文 / 调编号，这条断言都不用改
+  // 以后补新论文 / 调编号，这几条断言都不用改
   const PAPERS = require('../data/papers.json')
-  const wantSeq = PAPERS.slice()
+  const wantDesc = PAPERS.slice()
     .sort((a, b) => String(b.arxiv || '').localeCompare(String(a.arxiv || '')))
     .map(p => p.num)
-  ok('切「按时间」后 32 张卡按 arXiv 号倒序（最新在前）',
-    JSON.stringify(timeSeq) === JSON.stringify(wantSeq),
-    timeSeq.slice(0, 3).join(',') + ' … ' + timeSeq.slice(-2).join(','))
+  // 默认口径（2026-11-05 用户定案）：进页面不点任何东西就是「按时间 新→旧」
+  const homeSeq = await cardNums()
+  ok('默认就是按时间新→旧（下拉值 time 且首屏最新在前）',
+    (await page.locator('.dr-tools select').inputValue()) === 'time' &&
+    JSON.stringify(homeSeq) === JSON.stringify(wantDesc),
+    homeSeq.slice(0, 3).join(',') + ' … ' + homeSeq.slice(-2).join(','))
+  // 方向钮形态（§A44 定案：下拉选方向、钮切方向，没做成两个下拉选项）
+  ok('方向钮初始文案＝新→旧', (await page.locator('.dr-dir').innerText()) === '新→旧')
+  await page.locator('.dr-dir').click()
+  await page.waitForTimeout(250)
+  const ascSeq = await cardNums()
+  ok('点方向钮后卡序翻成旧→新',
+    JSON.stringify(ascSeq) === JSON.stringify(wantDesc.slice().reverse()),
+    ascSeq.slice(0, 3).join(',') + ' … ' + ascSeq.slice(-2).join(','))
+  await page.locator('.dr-dir').click()      // 复位成新→旧
+  await page.waitForTimeout(150)
   await page.selectOption('.dr-tools select', 'num')   // 复位，别把时间序留给后面的断言
   await page.waitForTimeout(150)
 
@@ -378,8 +388,13 @@ const ok = (name, cond, extra = '') => {
   ok('/notes 页不再有专题卡（整组搬到专题案例页）',
     (await page.locator('.dr-lib .dr-card.is-topic').count()) === 0)
   const nbHref = await page.locator(PAPER_CARD).first().locator('.dr-go.n').getAttribute('href')
+  // 不能假设「第一张卡＝PP[0]」：2026-11-05 默认排序改成按时间新→旧，首张是最新那篇（§A44）
+  // → 从首张卡的 aria-label 反查它是哪篇，再校它自己的笔记地址
+  const firstNum = (await page.locator(PAPER_CARD + ' .dr-card-media').first()
+    .getAttribute('aria-label') || '').split('·')[0].trim()
+  const firstRef = PP.find((p) => p.num === firstNum) || PP[0]
   ok('笔记按钮指向 /notes/<编号>_<短名>.html（带 base）',
-    nbHref === BPATH + 'notes/' + PP[0].dir + '.html', nbHref)
+    nbHref === BPATH + 'notes/' + firstRef.dir + '.html', nbHref)
   const nbCount = await page.locator('.dr-lib .dr-nb').count()
   ok('未写的篇目带「未写」小标（与空白文件数对平）', nbCount === PP.length - writtenNotes(PP), `标=${nbCount} 已写=${writtenNotes(PP)}`)
   await page.screenshot({ path: SHOT + '/28_notes索引.png' })
