@@ -48,11 +48,25 @@ const ok = (name, cond, extra = '') => {
   // 1b-2) 论文卡金句封面（2026-10-23 同步 MotionFace 原型：covers3 海报随 public/covers 进仓）
   //       笔记索引页还有两类非论文卡：最前面的「论文总览」导览卡（.is-index）
   //       与末尾的专题笔记卡（.is-topic）。论 文卡统一带 .is-paper，数封面只认它
-  const covs = await page.$$eval('.dr-lib .dr-card.is-paper .dr-card-media', els => els.map(e => e.style.backgroundImage || ''))
+  const covs = await page.$$eval('.dr-lib .dr-card.is-paper .dr-card-media > img', els => els.map(e => e.getAttribute('src') || ''))
   ok('论文卡 32 张全带金句封面', covs.length === NP && covs.every(s => s.includes('/covers/')), '实得 ' + covs.length + ' 张')
-  const covURL = ((covs[0] || '').match(/url\("?([^")]+)"?\)/) || [])[1]
+  const covURL = covs[0] || ''
     const covCode = covURL ? await page.evaluate(u => fetch(u).then(r => r.status).catch(() => 0), covURL) : 0
   ok('封面图可加载（首张 HTTP 200）', covCode === 200, (covURL || '?') + ' → ' + covCode)
+  // 1b-2b) 封面兜底（2026-11-06 用户要求）：每张卡都垫一层 CSS 直绘海报，真图叠在上面
+  const fbN = await page.locator('.dr-lib .dr-card.is-paper .dr-card-media > .dr-fb').count()
+  ok('每张论文卡都垫了一层封面兜底', fbN === NP, '实得 ' + fbN + ' 层')
+  const fbPainted = await page.$$eval('.dr-lib .dr-card.is-paper .dr-card-media', (els) => els.map((e) => {
+    const im = e.querySelector('img')
+    const f = e.querySelector('.dr-fb')
+    if (!im || !f) return 'missing'
+    const ir = im.getBoundingClientRect(), fr = f.getBoundingClientRect()
+    // 真图存在时：img 未被 @error 撑掉（display 非 none）且尺寸盖满兜底层
+    return getComputedStyle(im).display !== 'none' &&
+      Math.abs(ir.width - fr.width) < 2 && Math.abs(ir.height - fr.height) < 2 ? 'ok' : 'bad'
+  }))
+  ok('封面正常时兜底被真图完全盖住（不露色块）',
+    fbPainted.every((s) => s === 'ok'), '异常卡：' + fbPainted.filter((s) => s !== 'ok').length)
   // 1b-3) 封面配色门禁（2026-10-25 用户要求：卡片不要纯黑，要 Claude Code 式暖调多彩）
   //   两道关：① 色盘真源里没有黑色系、底色是暖纸白；② 实际渲染出来的封面左上角不是黑色
   const CS = require('../scripts/covers-style.mjs')
@@ -60,7 +74,7 @@ const ok = (name, cond, extra = '') => {
   ok('封面色盘 8 色，每色有 main/deep/soft 三档',
     CS.PALETTE.length === 8 && CS.PALETTE.every((c) => c.main && c.deep && c.soft))
   ok('封面色盘里没有黑色系', !CS.PALETTE.some((c) => /^#0{3,6}$/i.test(c.main)))
-  const covURLs = covs.map((s) => (s.match(/url\("?([^")]+)"?\)/) || [])[1]).filter(Boolean)
+  const covURLs = covs   // 2026-11-06 封面走 <img> 叠层后，covs 就是干净的 src（不再是 CSS 的 url("…") 串）
   const topPixels = await page.evaluate(async (urls) => {
     const out = []
     for (const u of urls.slice(0, 8)) {
@@ -486,12 +500,11 @@ const ok = (name, cond, extra = '') => {
     const tHref = await topicCards.first().getAttribute('href')
     ok('专题卡指向 /notes/ 下的页（带 base；顶层 md 是 .html，专题子目录是目录地址）',
       /\/notes\/.+(\.html|\/)$/.test(tHref || '') && (tHref || '').startsWith(BPATH), tHref || '未找到')
-    // 组内每一张的封面都要能加载（前面 32 篇论文卡另有一条「全带封面」的断言）
-    const tCovs = await topicCards.locator('.dr-card-media').evaluateAll((els) => els.map((e) => e.style.backgroundImage))
+    // 组内每一张的封面都要能加载（2026-11-06 改成 <img> 叠层，所以读 src 不再读 backgroundImage）
+    const tCovs = await topicCards.locator('.dr-card-media > img').evaluateAll((els) => els.map((e) => e.getAttribute('src') || ''))
     ok(`专题卡 ${nTopics} 张全带封面`, tCovs.length === nTopics && tCovs.every((s) => s.includes('/covers/T_')),
       '实得 ' + tCovs.length + ' 张')
-    const tCode = await page.evaluate((u) => fetch(u).then((r) => r.status).catch(() => 0),
-      (tCovs[0].match(/url\("?([^")]+)"?\)/) || [])[1])
+    const tCode = await page.evaluate((u) => fetch(u).then((r) => r.status).catch(() => 0), tCovs[0])
     ok('专题卡封面图可加载（HTTP 200）', tCode === 200, tCode + '')
     // 专题封面也不能是黑底（2026-10-25 用户要求：卡片不要纯黑）
     const tTopPx = await page.evaluate(async (urls) => {
@@ -505,7 +518,7 @@ const ok = (name, cond, extra = '') => {
         out.push([d[0], d[1], d[2]])
       }
       return out
-    }, tCovs.map((s) => (s.match(/url\("?([^")]+)"?\)/) || [])[1]).filter(Boolean))
+    }, tCovs)   // tCovs 已是干净的 img src（不再是 CSS 的 url("…") 串），直接传
     ok('专题卡封面左上角不是黑色（实渲染取样）',
       tTopPx.length > 0 && tTopPx.every((p) => p[0] + p[1] + p[2] > 180), JSON.stringify(tTopPx.slice(0, 2)))
   }

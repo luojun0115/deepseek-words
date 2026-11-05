@@ -1988,6 +1988,48 @@ GitHub Actions 的美国 runner 上跑**（全球视角），这也正好是选 
 **push 前必须跑 `node scripts/check_portal.cjs`**——`verify` 只看数据与文件对账，
 看不出页面顺序与文案口径飘移。
 
+### A45. 封面兜底：图缺失时露出 CSS 直绘海报，配色按卡片散列（2026-11-06 用户要求）
+
+用户原话：「可以搞一个默认封面嘛 对吧 即使失败了 没有封面的话」→「可以，但是颜色我觉得可以随机」。
+
+忘跑 `npm run covers`（或新文章刚丢进来）时，卡面原来是一片空白。
+
+#### ① 形态
+
+真封面改走 `<img>`（叠在上层），底下垫一张 **CSS 直绘的兜底海报**（左主色竖条 + 引号 +
+「封面还没生成 / 点进去照样能读全文」）；图 404 时兜底露出来。配色从 `covers-style.mjs` 的
+`PALETTE` 按卡片 key 散列取（与封面生成器同一真源，`DailyIndex.vue` 也读它）。
+涉及 `PaperIndex.vue` 三类卡：论文卡（arxiv 与非 arxiv 两个分支）+ 专题卡。
+
+#### ② 四个技术决定（都是实测出来的，不要改回去）
+
+1. **不用 CSS 多层背景**（`url(真图), url(兜底图)`）：看着最省事，但浏览器**无论真图在不在这层都会下载**，
+   出 8 个配色变体会让论文页多拉约 2MB（整页真封面总共才 3MB）。本方案零额外字节。
+2. **不生成 `T_default.png`**：PNG 就得养一个文件、且固定一色；CSS 直绘是矢量（任意 DPR 清晰），
+   沿用官方入口卡同套路（§A29）。
+3. **随机必须可复现**：用 `Math.random()` 会让服务端与客户端算出不同的色 → 直接水合报错。
+   改成 `key` 散列（`h = (h*31 + code) % 997`，与 `SiteNavWall.vue` 的 `rot` 同一思路）。
+4. **空 alt 只挡文字、不挡图标**：实测非空 alt 会把 alt 文字画在兜底上；改成 `alt=""` 后
+   Chrome **仍会在左上角画一个小破图图标**。所以必须 `@error` 把 img `display:none`，
+   并且 `onMounted` 再扫一遍 `complete && naturalWidth === 0` 的图——
+   **水合前就已失败的图不会再报 error**，只挂 `@error` 接不到它们。
+   语义（`role=img` + `aria-label`）留在外层 div，所以自检里那些 `aria-label` 选择器不用改。
+
+#### ③ 本次实测
+
+- 藏起 7 张真封面（6 论文 + 1 专题）→ 六张卡拿到**六种不同底色**，混在真封面里不违和；
+  截图存 `previews/138_兜底随机配色_论文页.png` 与 `139_…专题页.png`。
+- 恢复封面后 `check_portal.cjs` **161/161 全过**（新增两条断言：`每张论文卡都垫了一层封面兜底`、
+  `封面正常时兜底被真图完全盖住（不露色块）`）。
+- 呼应 §A44 那条教训：这次改成 `<img>` 后跑了完整自检，它当场抓出 **4 处 `url()` 提取**
+  （读 `backgroundImage` 的断言现在拿到的是 src 串，再跑正则就是空数组→假失败）和
+  2 处选择器问题——没跑就会静默红着上线。
+
+#### ④ 未覆盖
+
+**社区大学的 `C<辑>_<集>.png` 没兜底**（`CommunityIndex.vue` 是另一个组件，仍用 `background-image`，
+缺图就是一片空）——用户未要求，待定。
+
 ---
 
 ## B. 页面与样式定案
@@ -2462,7 +2504,7 @@ scripts/
   gen-theme-css.mjs          # theme-defs.mjs → theme.generated.css（兼校 12 变量齐全 + 每套对比度 ≥ 4.5:1）
   verify_content.mjs         # 14 项内容守卫（零依赖，CI 也跑）
   selfcheck_in_repo.mjs      # 断链实验：孤立副本里重建内容（npm run selfcheck）
-  check_portal.cjs           # Playwright 全路径自检（159 项，不进 CI，§D2）
+  check_portal.cjs           # Playwright 全路径自检（161 项，不进 CI，§D2）
   check-links.mjs            # 站外导航死链检测：sites.json → sites/dead-links.json（零依赖，Actions 每周跑，§A43）
   shot_nav.cjs shot_themes.cjs  # 顶栏/首页与逐套配色截图（人工核版面，不断言）
   shot_dead_badge.cjs        # 404 角标目检截图（需先起 preview，§A43）
@@ -2483,7 +2525,7 @@ scripts/
 | 笔记页页头 | `theme/NoteHeader.vue` + `custom.css` 的 `.dr-note-*` | build |
 | 首页报头 + 艺术卡轮播（§B6）| `components/HomeIntro.vue` + `theme/custom.css` 的 `.dr-hero*` | build |
 | 顶栏「找论文」搜索弹窗（§B6）| `components/PaperSearch.vue` + `theme/custom.css` 的 `.search-modal` / `.sm-*` | build |
-| 索引卡 / 排序 / 入口按钮 | `components/PaperIndex.vue` + `theme/custom.css` | build（排序默认值与方向钮见 §A44，四页共用）|
+| 索引卡 / 排序 / 入口按钮 | `components/PaperIndex.vue` + `theme/custom.css` | build（排序默认值与方向钮见 §A44，四页共用；封面兜底见 §A45）|
 | 站外导航加一站 / 改分组 | `sites/sites.json`（名单与分组）+ `SiteNavWall.vue` 的 `PATTERN` 续一项 + `public/logos/` 图标 | `npm run links`（预跑，写的是 local 文件、不会动仓里那份）→ build（§A42）|
 | 死链周检手动跑一次 | 无需改文件 | GitHub 网页 Actions → Link check → Run workflow（本地跑的结果不发布，§A43）|
 | 顶栏栏目 · 站外「模型架构」地址 | `config.mts` 的 `nav`（外链在顶部 `const LLM_GALLERY`）| build |

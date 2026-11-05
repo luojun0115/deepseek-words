@@ -4,6 +4,7 @@ import { withBase } from 'vitepress'   // GitHub Pages 站点在 /deepseek-words
 import papers from '../data/papers.json'
 import ms from '../data/master.json'      // 总集统计（merge_all.py 产出），文案不写死数字
 import CATS from '../data/note-cats.json' // 子栏分类真源（label 与顺序）
+import { PALETTE } from '../scripts/covers-style.mjs'  // 封面兜底配色盘（与封面生成器同一真源）
 
 const props = defineProps({
   mode: { type: String, default: 'both' },   // both | vocab | listen | note | arxiv
@@ -120,6 +121,31 @@ const OFFICIAL = [
     skin: 'yellow',
   },
 ]
+
+/* 封面兜底（2026-11-06 用户要求）：真封面走 `<img>`（叠在上层），底下垫一张 CSS 直绘的兜底海报。
+   图加载失败就不绘制（**img 的 alt 一律写空**：非空 alt 会被浏览器连破图图标一起画在兜底上；
+   语义由外层 div 的 role=img + aria-label 承担），兜底自然露出来。
+   为什么不用多层背景：那样**每张卡无论真封面在不在都会拉一遍兜底图**，
+   出 8 个配色变体会让论文页多下载约 2MB（整页真封面才 3MB），而本方案零额外下载。
+   配色按卡片 key 散列取，不用 Math.random：服务端与客户端必须算出同一个色，否则水合报错。
+   色盘与封面同一真源（scripts/covers-style.mjs 的 PALETTE，DailyIndex.vue 也读它）。 */
+const fbVars = (seed) => {
+  let h = 0
+  for (const ch of String(seed)) h = (h * 31 + ch.codePointAt(0)) % 997
+  const c = PALETTE[h % PALETTE.length]
+  return { '--fb': c.main, '--fb-d': c.deep, '--fb-s': c.soft }
+}
+
+/* 图加载失败时把 img 本身撑掉：空 alt 只能阻止 Chrome 画出 alt 文字，
+   左上角那个小破图图标仍会画，只有 display:none 才能干净露出兜底。
+   两条路都要：@error 接水合之后才失败的；挂载时扫一遍接那些**水合前就已失败**的
+   （complete 且 naturalWidth=0），否则那种图不会再报 error。 */
+const killBrokenImgs = () => {
+  document.querySelectorAll('.dr-card-media > img').forEach((im) => {
+    if (im.complete && im.naturalWidth === 0) im.style.display = 'none'
+  })
+}
+onMounted(killBrokenImgs)
 
 /* 说明行跟着页面口径走：词汇页没有朗读入口，别写成「听读」 */
 const hint = computed(() => {
@@ -252,10 +278,13 @@ const master = computed(() => {
           target="_blank"
           rel="noreferrer"
         >
-          <div
-            class="dr-card-media" role="img" :aria-label="p.num + ' · ' + p.short + ' 金句封面'"
-            :style="{ backgroundImage: `url(${withBase('/covers/' + p.num + '_' + p.short + '.png')})` }"
-          ></div>
+          <div class="dr-card-media" role="img" :aria-label="p.num + ' · ' + p.short + ' 金句封面'" :style="fbVars(p.short)">
+            <span class="dr-fb" aria-hidden="true"><b>“</b><i>封面还没生成<br>点进去照样能读全文</i></span>
+            <!-- alt 写空是为了不出 alt 文字；左上角的小破图图标由下面的 @error 抹掉。
+                 语义由外层 div 的 role=img + aria-label 承担。 -->
+            <img :src="withBase('/covers/' + p.num + '_' + p.short + '.png')" alt="" loading="lazy"
+                 @error="$event.target.style.display = 'none'">
+          </div>
           <div class="dr-card-body">
             <h3 class="dr-card-nm">{{ p.title }}</h3>
             <div class="dr-acts">
@@ -264,10 +293,11 @@ const master = computed(() => {
           </div>
         </a>
         <div v-else class="dr-card is-paper" :class="{ 'is-off': isOffPaper(p) }">
-        <div
-          class="dr-card-media" role="img" :aria-label="p.num + ' · ' + p.short + ' 金句封面'"
-          :style="{ backgroundImage: `url(${withBase('/covers/' + p.num + '_' + p.short + '.png')})` }"
-        ></div>
+        <div class="dr-card-media" role="img" :aria-label="p.num + ' · ' + p.short + ' 金句封面'" :style="fbVars(p.short)">
+          <span class="dr-fb" aria-hidden="true"><b>“</b><i>封面还没生成<br>点进去照样能读全文</i></span>
+          <img :src="withBase('/covers/' + p.num + '_' + p.short + '.png')" alt="" loading="lazy"
+               @error="$event.target.style.display = 'none'">
+        </div>
         <div class="dr-card-body">
           <h3 class="dr-card-nm">{{ p.title }}</h3>
           <div class="dr-acts">
@@ -285,10 +315,10 @@ const master = computed(() => {
            卡源口径没变：notes/ 顶层不带 NN_ 前缀的 md + zhuanti-search 总览与各子目录 index.md。 -->
       <template v-if="mode === 'topic' && TOPICS.length">
         <a v-for="t in TOPICS" :key="t.dir" class="dr-card is-topic" :class="{ 'is-off': isOffTopic(t) }" :href="t.href" target="_self">
-          <div
-            class="dr-card-media" role="img" :aria-label="t.title + ' 封面'"
-            :style="{ backgroundImage: `url(${t.cover})` }"
-          ></div>
+          <div class="dr-card-media" role="img" :aria-label="t.title + ' 封面'" :style="fbVars(t.dir)">
+            <span class="dr-fb" aria-hidden="true"><b>“</b><i>封面还没生成<br>点进去照样能读全文</i></span>
+            <img :src="t.cover" alt="" loading="lazy" @error="$event.target.style.display = 'none'">
+          </div>
           <div class="dr-card-body">
             <h3 class="dr-card-nm">{{ t.title }}</h3>
             <div class="dr-acts">
