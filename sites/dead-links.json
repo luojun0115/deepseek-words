@@ -1,0 +1,7 @@
+{
+  "_note": "站外导航死链检测结果，由 scripts/check-links.mjs 生成（GitHub Actions 每周一自动跑并回提本文件），勿手改。status=dead/unreachable 的站在墙上标「404」角标；blocked 多为反爬拦截，不标。ranFrom=local 的结果仅供预跑，本地 unreachable 可能是墙外拦截。",
+  "ranFrom": "pending",
+  "checkedAt": null,
+  "results": [],
+  "dead": []
+}

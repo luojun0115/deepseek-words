@@ -2,6 +2,11 @@
 import { computed } from 'vue'
 import { withBase } from 'vitepress'
 import data from '../sites/sites.json'
+/* 死链检测结果：由 scripts/check-links.mjs 生成（Actions 每周跑一次并回提），
+   里面的站在砖角标「404」，让用户知道点不开、别再点。 */
+import deadData from '../sites/dead-links.json'
+
+const DEAD = new Set(deadData.dead || [])
 
 /* 站外导航墙（方案 C · 积木墙）：十二组各占一行，组内砖块等宽、整行铺满，
    行与行之间宽度不同（3 块 / 8 块 / 7 块 / 6 块…）——这就是这面墙的「乱中有序」。
@@ -65,6 +70,7 @@ const rows = computed(() => GROUPS.map((g) => {
       domSrc: s.dom || '',
       brand: s.brand,
       logo: s.logo,
+      dead: DEAD.has(s.slug),
     }))
   return { group: g, items }
 }))
@@ -100,6 +106,7 @@ const swatches = computed(() =>
 
 const total = data.sites.length
 const nGroups = GROUPS.filter(g => g.kind === 'sites').length
+const nDead = data.sites.filter(s => DEAD.has(s.slug)).length
 </script>
 
 <template>
@@ -127,6 +134,7 @@ const nGroups = GROUPS.filter(g => g.kind === 'sites').length
           <div><b>{{ total }}</b><span>BLOCKS</span></div>
           <div><b>{{ String(nGroups).padStart(2, '0') }}</b><span>GROUPS</span></div>
           <div><b>{{ String(SLOTS.length).padStart(2, '0') }}</b><span>SLOTS</span></div>
+          <div v-if="nDead"><b class="dead-num">{{ String(nDead).padStart(2, '0') }}</b><span>404</span></div>
         </div>
         <div class="nav-swatches">
           <i v-for="(c, i) in swatches" :key="i" :style="{ background: c }"></i>
@@ -147,13 +155,13 @@ const nGroups = GROUPS.filter(g => g.kind === 'sites').length
             v-for="it in row.items"
             :key="it.name"
             class="nav-blk"
-            :class="{ ghost: it.slot }"
+            :class="{ ghost: it.slot, 'is-dead': it.dead }"
             :style="{ '--c': it.color, '--h': it.h + 'px', '--r': it.rot + 'deg' }"
             :href="it.slot ? undefined : it.url"
             :target="it.slot ? undefined : '_blank'"
             :rel="it.slot ? undefined : 'noreferrer'"
             :aria-label="it.slot ? it.hint : it.name"
-            :title="it.slot ? it.hint : it.name"
+            :title="it.slot ? it.hint : (it.dead ? it.name + '（链接已失效，周检标 404）' : it.name)"
           >
             <span v-if="it.no" class="no" aria-hidden="true">{{ it.no }}</span>
             <span class="side"></span>
@@ -165,7 +173,8 @@ const nGroups = GROUPS.filter(g => g.kind === 'sites').length
               <span class="nm">{{ it.short }}</span>
               <span v-if="row.wide && !it.slot" class="dom">{{ it.dom }}</span>
             </span>
-            <span v-if="!it.slot" class="go" aria-hidden="true">↗</span>
+            <span v-if="it.dead" class="dead404" aria-hidden="true">404</span>
+            <span v-else-if="!it.slot" class="go" aria-hidden="true">↗</span>
           </a>
         </div>
       </template>

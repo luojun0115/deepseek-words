@@ -1865,6 +1865,72 @@ alpha = 亮度(原像素)        # 白 X → 255，黑底 → 0
 二级分类行项数（7 / 4 / 3）、未筛选时 32 张卡全在、二级带真实篇数且合计＝32、
 `?cat=mm` 只剩该分类的卡、二级对应项高亮、筛选提示行出现、专题页 `?cat=edge` 只剩 5 张。
 
+### A42. /sites 第十六批：alphaXiv 从待选转正 + DeepLearning.AI（2026-11-05 用户要求）
+
+**清单口径（82 上墙 / 4 待选 / 3 空位 / 18 组不变）**：论文源 4 → 5 块，课程 7 → 8 块。
+
+- alphaXiv `#a83131`（从 `pending` 转正，brand 由待选里的 `#6b46c1` 改成官方红）排论文源行末位；
+- DeepLearning.AI `#ff4a61` 排课程行末位；`PATTERN` 从 78 项续到 82 项（尾部接 `1, 2, 2, 1`）。
+
+⚠ **本批 2026-11-05 上线时漏写了账本条目**（只改了 `sites.json` 的 `_note`），本条是事后补录。
+教训：批次类改动上线时 `_note` 与 `DECISIONS.md` 要同一步写，不能只靠 `_note` 当账本。
+
+### A43. /sites 死链周检与砖角标「404」（2026-11-05 用户要求）
+
+用户原话：「每周自动检测一次，如果检测到对应链接是 404，就在该导航的右上角加上 404 的标记。
+这样用户下次看到就知道是 404，就不会再点了。」
+
+#### ① 产线三件
+
+| 件 | 作用 |
+|---|---|
+| `scripts/check-links.mjs` | 零依赖纯 Node（内置 fetch），读 `sites.json` 的 82 上墙 + 4 待选全部探一遍（`npm run links`），写 `sites/dead-links.json` |
+| `.github/workflows/link-check.yml` | 每周一 01:00 UTC（北京 09:00）定时跑，也可手动 `workflow_dispatch`；结果有变化就回提并**显式触发** `deploy.yml` |
+| `SiteNavWall.vue` + `custom.css` | `dead` 数组里的 slug → 砖右上角常显红标、整砖褪色、抬头多一列 404 计数 |
+
+探法：**先 HEAD，非成功再用 GET 复核一次**（很多站不接 HEAD，单靠 HEAD 会把好站误判）。
+
+#### ② 判档口径（2026-11-05 用户确认）
+
+| status | 判定 | 是否标 404 |
+|---|---|---|
+| `ok` | 2xx / 3xx | 否 |
+| `dead` | 404 / 410 | **是** |
+| `unreachable` | DNS 失败 / 连接拒 / 超时 | **是**（对用户同样点不开） |
+| `blocked` | 403 / 405 / 429 / 503 | 否（反爬拦截，站没挂） |
+
+#### ③ 关键坑：本地跑的结果不能直接发布
+
+首次本地试跑报出 **12 个 unreachable，基本全是假阳性**——Google Scholar / HF / V2EX /
+Reddit / X / HN / YouTube 这些站是被**本机网络（GFW）拦截**，不是站挂了；
+反而真正关停的 Papers with Code 本地只报 DNS 失败。**结论：权威检测必须在
+GitHub Actions 的美国 runner 上跑**（全球视角），这也正好是选 Actions 而非本地 cron 的原因。
+
+落地做法：**两个输出文件从根上分开**——Actions（`GITHUB_ACTIONS=true`）写
+`sites/dead-links.json`（跟仓走），本地跑写 `sites/dead-links.local.json`（已进 `.gitignore`），
+所以仓里那份永远不可能被本地假阳性污染；本地想看角标就 `cp` 覆盖一下、记得改回。
+首次入库的那份是 `ranFrom: pending` 的**空基线**（`dead: []`），避免把 10 个好站误标上线，
+等 Actions 首跑才填真数据。
+
+#### ④ Actions 两个约束（已写在工作流文件头）
+
+1. **`GITHUB_TOKEN` 产生的 commit 不触发别的 workflow**（官方防递归设计），
+   所以回提后必须再显式调一次 `deploy.yml` 的 `workflow_dispatch`，否则站点永远是旧版；
+   这条 API 需要 `actions: write`，只给 `contents: write` 会 403。
+2. **仓库 60 天无活动会自动停用 `schedule`**（workflow 仍在，只是不再定时跑），
+   恢复只需在 Actions 页点 Enable。
+
+#### ⑤ 几个故意不做的事
+
+- **不自动摘砖**：只标不改数据，人工确认后再下砖（待选机制 §A7 同理）。
+- **不禁用跳转**：角标只是提示，砖仍可点（用户要的是“知道是 404”，不是屏蔽）。
+- **不加 `verify_content` 门禁防 stale slug**：`dead-links.json` 每次全量重生成，
+   改名残留的 slug 自然消失，加一条反而要连带动三处“14 项”的口径文字。
+- **`check_portal.cjs` 暂不加角标断言**：空基线下无角标可断，等 Actions 首跑出真数据后再补。
+
+本地预跑与目检：`node scripts/check-links.mjs` → 起 preview →
+`NODE_PATH=$(npm root -g) node scripts/shot_dead_badge.cjs`。
+
 ---
 
 ## B. 页面与样式定案
@@ -2317,7 +2383,11 @@ public/covers/               # 32 篇论文封面（covers3 出）+ T_<名>.png 
                              #   + C<辑>_<集>.png 社区大学视频封面（npm run community-covers，§A40）
 public/.nojekyll              # 关 Jekyll 处理（否则下划线开头资产会被剔）
 .sync-manifest.json          # 源页 sha1 指纹（sync 产出，跟仓一起提交）
+sites/sites.json             # ★ 站外导航真源（上墙 / 待选 / 空位 / 分组），页面与自检都读它，不写死在组件里（§A7）
+sites/dead-links.json         # 死链周检产物（check-links.mjs 生成，Actions 每周回提，勿手改，§A43）
+                             #   本地预跑另存 dead-links.local.json（已 ignore），防假阳性误提交
 .githooks/pre-push  .github/workflows/deploy.yml   # 上线两半门禁（§D4）
+.github/workflows/link-check.yml   # 每周一死链周检：跑脚本 → 回提产物 → 显式触发 deploy.yml（§A43）
 index.md vocab.md listen.md notes.md  # 四张站内页（论文总览已归档进 notes/papers.md，§A26）
 README.md  DECISIONS.md                             # 两份仓内文档，都在 srcExclude 里
 scripts/
@@ -2336,7 +2406,9 @@ scripts/
   verify_content.mjs         # 14 项内容守卫（零依赖，CI 也跑）
   selfcheck_in_repo.mjs      # 断链实验：孤立副本里重建内容（npm run selfcheck）
   check_portal.cjs           # Playwright 全路径自检（126 项，不进 CI，§D2）
+  check-links.mjs            # 站外导航死链检测：sites.json → sites/dead-links.json（零依赖，Actions 每周跑，§A43）
   shot_nav.cjs shot_themes.cjs  # 顶栏/首页与逐套配色截图（人工核版面，不断言）
+  shot_dead_badge.cjs        # 404 角标目检截图（需先起 preview，§A43）
   push_via_ssh.sh            # 应急推送：HTTPS 走不通时改走 SSH-22 直连可达 IP（§D4.1）
 ```
 
@@ -2354,6 +2426,8 @@ scripts/
 | 首页报头 + 艺术卡轮播（§B6）| `components/HomeIntro.vue` + `theme/custom.css` 的 `.dr-hero*` | build |
 | 顶栏「找论文」搜索弹窗（§B6）| `components/PaperSearch.vue` + `theme/custom.css` 的 `.search-modal` / `.sm-*` | build |
 | 索引卡 / 排序 / 入口按钮 | `components/PaperIndex.vue` + `theme/custom.css` | build |
+| 站外导航加一站 / 改分组 | `sites/sites.json`（名单与分组）+ `SiteNavWall.vue` 的 `PATTERN` 续一项 + `public/logos/` 图标 | `npm run links`（预跑，写的是 local 文件、不会动仓里那份）→ build（§A42）|
+| 死链周检手动跑一次 | 无需改文件 | GitHub 网页 Actions → Link check → Run workflow（本地跑的结果不发布，§A43）|
 | 顶栏栏目 · 站外「模型架构」地址 | `config.mts` 的 `nav`（外链在顶部 `const LLM_GALLERY`）| build |
 | 配色 | `theme/theme-defs.mjs`（10 套，数组顺序＝数字键）| `gen-theme-css.mjs`（对比度门）→ build |
 | 卡片上的篇目 / 词数 / 档位 | 真源是 `public/study/vocab/*.html` 自带的 `DATA` | `npm run data` → build |

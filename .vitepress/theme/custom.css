@@ -68,7 +68,6 @@
   background: var(--dr-panel); border: var(--dr-bw) solid var(--dr-line);
   border-radius: var(--dr-radius); padding: 7px 10px;
 }
-
 /* 栅格：同排等高交给 grid，不用 min-height（旧坑8，见 DECISIONS §C 开头的对照注）；1440 视口下一排 4 卡。
    gap 对齐原型 masonry（行 34 / 列 24），minmax 收到 280 保住 4 列（300+34 间隙在 1256 容器会掉 3 列） */
 .dr-lib .dr-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 34px 24px; }
@@ -2485,6 +2484,8 @@
 .dr-nav .nav-nums div { text-align: right; }
 .dr-nav .nav-nums b { display: block; font-family: var(--dr-hf); font-size: 26px; font-weight: 900; line-height: 1; color: var(--dr-ink); }
 .dr-nav .nav-nums span { display: block; margin-top: 6px; font: 700 8px/1 ui-monospace, Menlo, monospace; letter-spacing: .16em; color: var(--dr-ink2); }
+/* 抬头里的 404 计数：跟砖角标同色，只有存在死链时才出现 */
+.dr-nav .nav-nums .dead-num { color: #c8362b; }
 .dr-nav .nav-swatches { display: flex; gap: 5px; }
 .dr-nav .nav-swatches i { width: 13px; height: 13px; border-radius: 3px; display: block; }
 
@@ -2547,12 +2548,23 @@
 .dr-nav .nav-blk .no { position: absolute; left: 10px; top: 10px; font: 800 8.5px/1 ui-monospace, Menlo, monospace; opacity: .42; }
 .dr-nav .nav-blk .go { position: absolute; right: 13px; top: 9px; font-size: 12px; line-height: 1; opacity: 0; transition: opacity .18s; }
 .dr-nav .nav-blk:hover .go { opacity: .65; }
+/* 死链砖（周检 404/访问不通）：右上角常显红标，整砖褪色 + logo 压暗，一眼能看出与活砖不同 */
+.dr-nav .nav-blk.is-dead { filter: saturate(.45); }
+.dr-nav .nav-blk.is-dead .dot img { opacity: .5; }
+.dr-nav .nav-blk .dead404 {
+  position: absolute; right: 9px; top: 8px;
+  font: 800 8.5px/1 ui-monospace, Menlo, monospace; letter-spacing: .04em;
+  color: #fff; background: #c8362b; padding: 3px 5px 2px; border-radius: 3px;
+  box-shadow: 0 1px 0 rgb(0 0 0 / 25%);
+}
 
 /* 宽砖（3 / 4 块一行）改横排：logo 在左，站名 + 域名在右 */
 .dr-nav .nav-row.wide .nav-blk { flex-direction: row; justify-content: flex-start; gap: 14px; padding: 0 20px; }
 .dr-nav .nav-row.wide .nav-blk .txt { align-items: flex-start; }
 .dr-nav .nav-row.wide .nav-blk .nm { text-align: left; font-size: 14px; padding: 0; }
 .dr-nav .nav-row.wide .nav-blk .go { top: auto; bottom: 11px; right: 15px; }
+/* 宽砖的死链标跟普通砖一样钉右上角（.go 被上面移到底部，这里不让 404 标跟着跑） */
+.dr-nav .nav-row.wide .nav-blk .dead404 { top: 8px; bottom: auto; right: 9px; }
 
 /* 空砖：留给用户自己的三个站 */
 .dr-nav .nav-blk.ghost {

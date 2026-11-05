@@ -1,0 +1,87 @@
+# 站外导航死链周检（2026-11-05 用户要求）
+# 每周一自动跑一次 scripts/check-links.mjs，检测 /sites 墙上 82 站 + 4 待选是否还能打开；
+# 结果有变化就回提 sites/dead-links.json，并显式触发 deploy.yml 重新发布。
+# 页面上坏链那几块积木会带「404」角标（渲染见 components/SiteNavWall.vue）。
+#
+# 为什么必须在 Actions 上跑而不是本地 cron：
+# runner 在美国，拿到的是**全球视角**。本机跑时 Google Scholar / HF / V2EX / Reddit /
+# X / HN / YouTube 这些墙外站会报 unreachable（网络拦截，不是站挂了），
+# 直接提交就会把人家好站误标成 404。产物里的 ranFrom 字段就是用来区分这两种取数的。
+#
+# 两个已知约束（踩过别人才知道的坑，写在这免得下次重查）：
+# 1. **GITHUB_TOKEN 产生的 commit 不会触发别的 workflow**（官方防递归设计，
+#    docs.github.com/actions/security-for-github-actions/.../permissions-of-the-built-in-token）。
+#    所以回提之后必须**再显式调一次 deploy.yml 的 workflow_dispatch**，否则站点永远是旧版。
+#    这条 API 需要 `actions: write`，光给 `contents: write` 会 403。
+# 2. **仓库 60 天无活动，GitHub 会自动停用 schedule**（workflow 仍在，只是不再定时跑，
+#    Actions 页面会显示 "disabled"）。本仓活动频繁，暂时撞不上；真撞上了就在
+#    Actions → Link check → Enable workflow 点一下，或手动 Run workflow。
+name: Link check
+
+on:
+  schedule:
+    - cron: '0 1 * * 1'   # 每周一 01:00 UTC = 北京时间 09:00
+  workflow_dispatch:       # 随时手动跑一次（网页上 Run workflow）
+
+permissions:
+  contents: write          # 回提 dead-links.json
+  actions: write           # 显式触发 deploy.yml
+
+concurrency:
+  group: link-check
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # 检测脚本是零依赖纯 Node（只用内置 fetch / fs / path），
+      # 所以这里不跑 npm ci，省掉装依赖那几十秒。Node 版本跟 deploy.yml 的构建口径一致。
+      - name: Setup Node
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      # 在 Actions 里（GITHUB_ACTIONS=true）脚本写的就是跟仓走的 sites/dead-links.json；
+      # 本地同一个命令写的是 dead-links.local.json（已 ignore），两份不会互相污染。
+      - name: Run link check
+        run: npm run links
+
+      # 展示本次判档结果，便于在 Actions 日志里直接看到哪些站被标了 404
+      - name: Show result
+        run: |
+          echo "取数来源：$(node -e "console.log(require('./sites/dead-links.json').ranFrom)")"
+          echo "被标 404 的站：$(node -e "console.log(require('./sites/dead-links.json').dead.join(', ') || '（无）')")"
+
+      # 只有内容真的变了才提交（比对掉 checkedAt / ranFrom 这类每次都变的元信息没有意义，
+      # 整文件比对即可：dead 列表没变时 results 也基本不会变，偶尔多一次空提交无害）
+      - name: Commit result if changed
+        id: commit
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if [ -z "$(git status --porcelain sites/dead-links.json)" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "结果与上次一致，不提交"
+            exit 0
+          fi
+          git add sites/dead-links.json
+          git commit -m "chore(sites): 死链周检结果（$(date -u +%F)）"
+          git push origin HEAD:main
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      # 上面那条 commit 不会自己带起 deploy.yml（见文件头约束 1），所以显式派一次
+      - name: Trigger deploy
+        if: steps.commit.outputs.changed == 'true'
+        run: |
+          curl -sf -X POST \
+            -H "Authorization: Bearer $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/workflows/deploy.yml/dispatches" \
+            -d '{"ref":"main"}'
+          echo "已触发 deploy.yml 重新构建发布"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

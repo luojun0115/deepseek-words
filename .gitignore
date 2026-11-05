@@ -8,3 +8,5 @@ previews/
 design/
 # 自查截图产物（check_portal / shot_station 的输出，与 previews/ 同性质）
 scripts/shots/
+# 本地预跑的死链检测结果（墙内网络跑出的 unreachable 多是假阳性，不许进仓，见 DECISIONS §A43）
+sites/dead-links.local.json
